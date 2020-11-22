@@ -1,0 +1,182 @@
+<template>
+  <div>
+    <el-button type="warning" icon="el-icon-circle-plus" @click="Visible = true"></el-button>
+
+    <el-dialog style="margin-top: -13vh" title="مشترك جديد" :visible.sync="Visible">
+      <el-form
+        :model="tempForm"
+        :rules="rulesForm"
+        ref="dataForm"
+        class="demo-form-inline"
+        label-position="top"
+      >
+        <el-form-item v-bind:label="$t('CashDrawer.name')" prop="name">
+          <el-input type="text" v-model="tempForm.name"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="تاريخ ميلاد"
+          prop="DateofBirth"
+          :rules="[{ required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' } ]"
+        >
+          <el-date-picker v-model="tempForm.DateofBirth" type="date" placeholder="تاريخ ميلاد"></el-date-picker>
+        </el-form-item>
+        <el-form-item
+          label="الرقم الوطني"
+          prop="SSN"
+          :rules="[{ required: true, message: 'لايمكن ترك الرقم الوطني فارغ', trigger: 'blur' } ]"
+        >
+          <el-input type="text" v-model="tempForm.SSN" placeholder="الرقم الوطني"></el-input>
+        </el-form-item>
+        <el-form-item
+          v-bind:label="$t('AddVendors.phoneNumber1')"
+          prop="phoneNumber1"
+          :rules="[{ required: true, message: 'لايمكن ترك الرقم الهاتف فارغ', trigger: 'blur' } ]"
+        >
+          <el-input type="text" v-model="tempForm.phoneNumber1"></el-input>
+        </el-form-item>
+        <el-form-item v-bind:label="$t('AddVendors.PhoneNumber2')" prop="PhoneNumber2">
+          <el-input type="text" v-model="tempForm.PhoneNumber2"></el-input>
+        </el-form-item>
+        <el-form-item v-bind:label="$t('AddVendors.Email')" prop="Email">
+          <el-input type="text" v-model="tempForm.Email"></el-input>
+        </el-form-item>
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="description">
+          <el-input type="textarea" v-model="tempForm.Description"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="Visible = false">{{$t('AddVendors.Cancel')}}</el-button>
+        <el-button type="primary" @click="createData()">{{$t('AddVendors.Save')}}</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { Create } from "@/api/Member";
+import store from "@/store";
+
+export default {
+  name: "Member",
+  data() {
+    return {
+      Visible: false,
+      tempForm: {
+        ID: undefined,
+        Name: "",
+        SSN: "",
+        DateofBirth: "",
+        Email: "",
+        phoneNumber1: "",
+        PhoneNumber2: "",
+        Description: "",
+        Type: "New",
+        Tag: null
+      },
+      rulesForm: {
+        Name: [
+          {
+            required: true,
+            message: "الرجاء ادخال الاسم",
+            trigger: "blur"
+          },
+          {
+            minlength: 3,
+            maxlength: 50,
+            message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
+            trigger: "blur"
+          }
+        ]
+      }
+    };
+  },
+  created() {
+    this.resetTempForm();
+  },
+  methods: {
+    resetTempForm() {
+      this.tempForm = {
+        ID: undefined,
+        Name: "",
+        SSN: "",
+        DateofBirth: "",
+        Email: "",
+        phoneNumber1: "",
+        PhoneNumber2: "",
+        Description: "",
+        Type: "New"
+      };
+    },
+    createData() {
+      this.$refs["dataForm"].validate(valid => {
+        if (valid) {
+          if (
+            this.CheckMemberIsExist(
+              this.tempForm.phoneNumber1,
+              this.tempForm.SSN
+            )
+          ) {
+            Create(this.tempForm)
+              .then(response => {
+                this.Visible = false;
+                store.dispatch("Members/GetMember");
+                this.$notify({
+                  title: "تم ",
+                  message: "تم الإضافة بنجاح",
+                  type: "success",
+                  duration: 2000
+                });
+                this.$nextTick(() => {
+                  this.$router.replace({
+                    path: "/Gym/Edit/" + response
+                  });
+                });
+              this.SendHelloSms(this.tempForm.phoneNumber1 , this.tempForm.name)
+
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          } else {
+            this.$notify({
+              position: "top-left",
+              title: "تم ",
+              message: "يوجد عضو يحمل نفس رقم الهاتف او الرقم الوطني",
+              type: "warning",
+              duration: 20000
+            });
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    CheckMemberIsExist(phonenumber, ssn) {
+      const found = this.$store.getters.AllMembers.find(
+        element => (element.phoneNumber1 === phonenumber || element.SSN === ssn)
+      );
+      if (found != undefined) return false;
+      else return true;
+    },
+    SendHelloSms(phoneNumber ,name){
+        if (phoneNumber.length == 10) phoneNumber.slice(1);
+        axios({
+          method: "get",
+          url: "http://josmsservice.com/smsonline/msgservicejo.cfm",
+          params: {
+            numbers: "962" + phoneNumber,
+            senderid: "High Fit",
+            AccName: "highfit",
+            AccPass: "D7!cT5!SgU0",
+            msg: "عزيزي "+name+" نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح ",
+            requesttimeout: 5000000
+          }
+        }).then(response => {
+          console.log(response);
+        });
+
+    }
+  }
+};
+</script>

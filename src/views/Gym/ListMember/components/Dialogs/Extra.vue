@@ -1,0 +1,128 @@
+<template>
+  <div>
+    <el-button
+      style="width: 100px;"
+      type="success"
+      icon="el-icon-plus"
+      @click="Visibles = true"
+    >ايام إضافية</el-button>
+    <el-dialog style="margin-top: -13vh" title="تسجيل ايام اضافية" :visible.sync="Visibles">
+      <el-form
+        label-position="top"
+        :model="MembershipMovementOrder"
+        ref="dataForm"
+        class="demo-form-inline"
+      >
+        <el-row type="flex">
+          <el-col :span="24">
+            <el-form-item prop="Extra" label="عدد الايام">
+              <el-input-number v-model="Extra" :min="1" :max="100"></el-input-number>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="24">
+            <el-form-item
+              prop="description"
+              :rules="[{ required: true, message: 'لايمكن ترك ملاحظات فارغ', trigger: 'blur' } ]"
+              v-bind:label="$t('AddVendors.Description')"
+            >
+              <el-input v-model="MembershipMovementOrder.Description"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="24">
+            <el-form-item
+              prop="EditorName"
+              :rules="[{ required: true, message: 'لايمكن ترك محرر السند فارغ', trigger: 'blur' } ]"
+              v-bind:label="$t('AddVendors.EditorName')"
+            >
+              <el-select v-model="MembershipMovementOrder.EditorName" placeholder="محرر السند">
+                <el-option
+                  v-for="item in $store.getters.Editors"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="Visibles = false">{{$t('AddVendors.Cancel')}}</el-button>
+        <el-button :disabled="EnableSave" type="primary" @click="create()">{{$t('AddVendors.Save')}}</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { Create } from "@/api/MembershipMovementOrder";
+
+export default {
+  props: {
+    MemberShipMovementID: {
+      type: Number,
+      default: () => {
+        return undefined;
+      }
+    },
+    EndDate: null
+  },
+  data() {
+    return {
+      EnableSave: false,
+      MembershipMovementOrder: {
+        ID: undefined,
+        Type: "Extra",
+        StartDate: new Date(this.EndDate),
+        EndDate: new Date(),
+        Status: 0,
+        Description: "",
+        EditorName: "",
+        MemberShipMovementID: this.MemberShipMovementID
+      },
+      Extra: 0,
+      Description: "",
+      Visibles: false,
+    };
+  },
+  methods: {
+    create() {
+      this.$refs["dataForm"].validate(valid => {
+        if (valid) {
+          this.EnableSave = true;
+          console.log(this.EndDate);
+
+          this.MembershipMovementOrder.EndDate = new Date(
+            this.MembershipMovementOrder.EndDate.setTime(
+              this.MembershipMovementOrder.StartDate.getTime() +
+                3600 * 1000 * 24 * this.Extra
+            )
+          );
+          Create(this.MembershipMovementOrder).then(response => {
+            if (response) {
+              this.Visibles = false;
+              this.EnableSave = false;
+
+              this.$notify({
+                title: "تم ",
+                message: "تم الإضافة بنجاح",
+                type: "success",
+                duration: 2000
+              });
+              this.$nextTick(() => {
+                this.$router.replace({
+                  path: "/redirect" + this.$route.fullPath
+                });
+              });
+            }
+          });
+        }
+      });
+    }
+  }
+};
+</script>

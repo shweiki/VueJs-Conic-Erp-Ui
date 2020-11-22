@@ -1,0 +1,476 @@
+<template>
+  <div class="app-container">
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <el-button
+          :disabled="EnableSave"
+          style="float: left"
+          type="success"
+          icon="fa fa-save"
+          @click="createData('tempForm')"
+        >{{ $t('CashPool.Save') }}</el-button>
+        <span class="demonstration">{{ $t('NewPurchaseInvoice.Box') }}</span>
+        <el-select
+          disabled
+          v-model="CashAccount"
+          default-first-option
+          filterable
+          placeholder="صندوق"
+          autocomplete="off"
+        >
+          <el-option
+            v-for="item in CashAccounts"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+            <span style="float: right">{{ item.label }}</span>
+            <span style="float: left color: #8492a6 font-size: 12px">{{ item.value }}</span>
+          </el-option>
+        </el-select>
+        <span class="demonstration">إيراد</span>
+        <el-select
+          disabled
+          v-model="InComeAccount"
+          filterable
+          placeholder="إيراد"
+          autocomplete="off"
+        >
+          <el-option
+            v-for="item in InComeAccounts"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+            <span style="float: right">{{ item.label }}</span>
+            <span style="float: left color: #8492a6 font-size: 12px">{{ item.value }}</span>
+          </el-option>
+        </el-select>
+      </div>
+
+      <el-divider direction="vertical"></el-divider>
+      <span>{{$t('CashPool.Invoice')}}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>{{Selection.length}}</span>
+      <el-divider direction="vertical"></el-divider>
+
+      <span>{{$t('CashPool.Cash')}}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>{{TotalCash.toFixed(3)}} JOD</span>
+      <el-divider direction="vertical"></el-divider>
+
+      <span>{{$t('CashPool.Visa')}}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>{{TotalVisa.toFixed(3)}} JOD</span>
+      <el-divider direction="vertical"></el-divider>
+
+      <span>{{$t('CashPool.debt')}}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>{{TotalReceivables.toFixed(3)}} JOD</span>
+      <el-divider direction="vertical"></el-divider>
+
+      <span>{{$t('CashPool.Amount')}}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>{{(TotalCash + TotalReceivables + TotalVisa).toFixed(3)}} JOD</span>
+      <el-divider direction="vertical"></el-divider>
+    </el-card>
+    <el-card class="box-card">
+      <span>{{$t('CashPool.Note')}}</span>
+      <el-table height="250" :data="ItemsMovements" fit border highlight-current-row>
+        <el-table-column prop="name" label="الصنف" align="center"></el-table-column>
+        <el-table-column prop="TotalCount" label="العدد المباع" align="center"></el-table-column>
+        <el-table-column prop="AvgPrice" label="سعر البيع" align="center"></el-table-column>
+        <el-table-column align="center">
+          <template slot="header" slot-scope="{}">
+            المجموع
+            {{(TotalCash + TotalReceivables + TotalVisa).toFixed(3)}}
+            <el-button
+              :disabled="EnableSave"
+              style="float: left;"
+              icon="el-icon-printer"
+              type="success"
+              @click="printAllItemSale(ItemsMovements)"
+            ></el-button>
+          </template>
+          <template slot-scope="scope">{{(scope.row.AvgPrice*scope.row.TotalCount).toFixed(3) }}</template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+    <el-card class="box-card">
+      <el-table
+        height="250"
+        v-loading="loading"
+        :data="tableData"
+        fit
+        border
+        highlight-current-row
+        ref="multipleTable"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column label="#" prop="id" width="120" align="center">
+          <template slot="header" slot-scope="{}">
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="FakeDate"
+          v-bind:label="$t('CashPool.Date')"
+          width="120"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="name" v-bind:label="$t('CashPool.Customer')" align="center"></el-table-column>
+        <el-table-column
+          prop="PaymentMethod"
+          v-bind:label="$t('CashPool.Pay')"
+          width="150"
+          align="center"
+        ></el-table-column>
+        <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
+          <template slot-scope="scope">{{(scope.row.Discount).toFixed(3) }}</template>
+        </el-table-column>
+        <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
+          <template slot-scope="scope">
+            {{scope.row.InventoryMovements.reduce(
+            function(prev, cur) {return prev + cur.Qty * cur.SellingPrice;},0).toFixed(3) }} JOD
+          </template>
+        </el-table-column>
+        <el-table-column width="60" align="center">
+          <template slot="header" slot-scope="{}">
+            <el-button icon="el-icon-printer" type="success" @click="printAllInvoice(tableData)"></el-button>
+          </template>
+          <template slot-scope="scope">
+            <el-button
+              icon="el-icon-printer"
+              type="primary"
+              @click="printInvoice(scope.row.InventoryMovements)"
+            ></el-button>
+          </template>
+        </el-table-column>
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-table :data="props.row.InventoryMovements">
+              <el-table-column
+                prop="name"
+                v-bind:label="$t('CashPool.Items')"
+                width="130"
+                align="center"
+              ></el-table-column>
+              <el-table-column prop="Qty" v-bind:label="$t('CashPool.quantity')" align="center"></el-table-column>
+              <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
+                <template slot-scope="scope">{{(scope.row.SellingPrice).toFixed(3) }}</template>
+              </el-table-column>
+              <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
+                <template
+                  slot-scope="scope"
+                >{{(scope.row.SellingPrice * scope.row.Qty).toFixed(3) }} JOD</template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+  </div>
+</template>
+<script>
+import { GetSaleInvoiceByStatus } from "@/api/SaleInvoice";
+import { GetActiveCash } from "@/api/Cash";
+import { GetInComeAccounts } from "@/api/Account";
+import { CreateEntry } from "@/api/EntryAccounting";
+import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
+import printJS from "print-js";
+
+export default {
+  name: "SaleInvoice",
+  data() {
+    return {
+      loading: true,
+      EnableSave: true,
+
+      tableData: [],
+      Selection: [],
+      CashAccounts: [],
+      InComeAccounts: [],
+      CashAccount: undefined,
+      InComeAccount: undefined,
+      TotalCash: 0,
+      TotalReceivables: 0,
+      TotalVisa: 0,
+      ItemsMovements: []
+    };
+  },
+  created() {
+    this.getdata();
+  },
+  methods: {
+    handleSelectionChange(val) {
+      this.Selection = val;
+      this.EnableSave = false;
+
+      this.TotalReceivables = this.Selection.reduce(
+        (a, b) =>
+          a +
+          (b["PaymentMethod"] == "Receivables"
+            ? b.InventoryMovements.reduce(function(prev, cur) {
+                return prev + cur.Qty * cur.SellingPrice;
+              }, 0)
+            : 0),
+        0
+      );
+      this.TotalCash = this.Selection.reduce(
+        (a, b) =>
+          a +
+          (b["PaymentMethod"] == "Cash"
+            ? b.InventoryMovements.reduce(function(prev, cur) {
+                return prev + cur.Qty * cur.SellingPrice;
+              }, 0)
+            : 0),
+        0
+      );
+      this.TotalVisa = this.Selection.reduce(
+        (a, b) =>
+          a +
+          (b["PaymentMethod"] == "Visa"
+            ? b.InventoryMovements.reduce(function(prev, cur) {
+                return prev + cur.Qty * cur.SellingPrice;
+              }, 0)
+            : 0),
+        0
+      );
+    },
+    getdata() {
+      this.loading = true;
+      GetActiveCash().then(response => {
+        // handle success
+        //   console.log(response);
+        this.CashAccounts = response;
+        this.CashAccount = this.CashAccounts[0].value;
+        GetInComeAccounts().then(response => {
+          // handle success
+          //   console.log(response);
+          this.InComeAccounts = response;
+          this.InComeAccount = this.InComeAccounts[0].value;
+        });
+      });
+      GetSaleInvoiceByStatus({ Status: 0 })
+        .then(response => {
+          // handle success
+          console.log(response);
+          this.tableData = response;
+          this.ItemsMovements = [];
+          this.tableData.map(a => {
+            return a.InventoryMovements.map(m => {
+              var find = this.ItemsMovements.findIndex(
+                value => value.name == m.name
+              );
+              if (find != -1) this.ItemsMovements[find].TotalCount += m.Qty;
+              else {
+                this.ItemsMovements.push({
+                  Name: m.name,
+                  TotalCount: m.Qty,
+                  AvgPrice: m.SellingPrice.toFixed(2)
+                });
+              }
+            });
+          });
+          this.loading = false;
+        })
+        .catch(error => {
+          // handle error
+          console.log(error);
+        });
+    },
+    printInvoice(data) {
+      data = data.map(Item => ({
+        Name: Item.name,
+        Qty: Item.Qty,
+        SellingPrice: Item.SellingPrice,
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
+      }));
+      printJS({
+        printable: data,
+        properties: ["Name", "Qty", "SellingPrice", "Total"],
+        type: "json",
+        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
+      });
+    },
+    printAllInvoice(data) {
+      data = data.map(Item => ({
+        المجموع: Item.InventoryMovements.reduce(function(prev, cur) {
+          return prev + cur.Qty * cur.SellingPrice;
+        }, 0).toFixed(3),
+        الخصم: Item.Discount,
+        "طريقة الدفع ": Item.PaymentMethod,
+        التاريخ: Item.FakeDate,
+        الحساب: Item.name,
+        الرقم: Item.id
+      }));
+      printJS({
+        printable: data,
+        properties: [
+          "المجموع",
+          "الخصم",
+          "طريقة الدفع ",
+          "التاريخ",
+          "الحساب",
+          "الرقم"
+        ],
+        type: "json",
+        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
+      });
+    },
+    printAllItemSale(data) {
+      data = data.map(Item => ({
+        المجموع: (Item.TotalCount * Item.AvgPrice).toFixed(3),
+        السعر: Item.AvgPrice,
+        العدد: Item.TotalCount,
+        الصنف: Item.name
+      }));
+      printJS({
+        printable: data,
+        properties: ["المجموع", "السعر", "العدد", "الصنف"],
+        type: "json",
+        header:
+          "<center> <h2>" +
+          this.InComeAccounts.find(obj => {
+            return obj.value == this.InComeAccount;
+          }).label +
+          "</h2></center><h3 style='float:right'> الاجمالي النقدي " +
+          this.TotalCash.toFixed(3) +
+          " - الاجمالي الفيزا : " +
+          this.TotalVisa.toFixed(3) +
+          " - الاجمالي الاجل : " +
+          this.TotalReceivables.toFixed(3) +
+          " - الاجمالي :  " +
+          (this.TotalCash + this.TotalReceivables + this.TotalVisa).toFixed(3) +
+          "</h3><h3 style='float:right'>  التاريخ  : " +
+          this.formatDate(new Date()) +
+          "</h3>",
+
+        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
+      });
+    },
+    createData(formName) {
+      this.EnableSave = true;
+
+      var tempForm = {
+        ID: undefined,
+        FakeDate: new Date(),
+        Description: "قيد اغلاق مبيعات",
+        Type: "CloseChash",
+        EntryMovements: [
+          {
+            ID: undefined,
+            AccountID: this.InComeAccount,
+            Debit: this.TotalCash + this.TotalReceivables + this.TotalVisa,
+            Credit: 0.0,
+            Description:
+              "قيد اغلاق  (" +
+              this.CashAccounts.find(obj => {
+                return obj.value == this.CashAccount;
+              }).label,
+            EntryID: undefined
+          },
+          {
+            ID: undefined,
+            AccountID: this.CashAccount,
+            Debit: 0.0,
+            Credit: this.TotalCash,
+            Description:
+              "قيد إغلاق  " +
+              this.CashAccounts.find(obj => {
+                return obj.value == this.CashAccount;
+              }).label +
+              " لمجموعة فواتير نقدية ",
+            EntryID: undefined
+          }
+        ]
+      };
+
+      this.Selection.forEach(i => {
+        if (i.PaymentMethod == "Receivables"){
+          tempForm.EntryMovements.push({
+            ID: undefined,
+            AccountID: i.AccountID,
+            Debit: 0.0,
+            Credit: i.InventoryMovements.reduce(function(prev, cur) {
+              return prev + cur.Qty * cur.SellingPrice;
+            }, 0),
+            Description: "فاتورة مبيعات رقم " + i.id + " ",
+            EntryID: undefined
+          });
+        }
+        /// Visa
+     
+      });
+            this.Selection.forEach(i => {
+       if (i.PaymentMethod == "Visa")
+        {
+          tempForm.EntryMovements.push({
+            ID: undefined,
+            AccountID: this.CashAccount,
+            Debit: 0.0,
+            Credit: this.TotalVisa,
+            Description:
+              "قيد إغلاق  " +
+              this.CashAccounts.find(obj => {
+                return obj.value == this.CashAccount;
+              }).label +
+              " لمجموعة فواتير فيزا ",
+            EntryID: undefined
+          });}
+        /// Visa
+     
+      });
+       
+
+      console.log(tempForm);
+      CreateEntry(tempForm)
+        .then(response => {
+          console.log(response);
+          let IDS = this.Selection.map(a => {
+            ChangeObjStatusByTableName({
+              ObjID: a.id,
+              TableName: "SalesInvoice",
+              Status: 1,
+              Description: "فاتورة مؤكدة"
+            }).then(response => {
+              console.log(response);
+            });
+          });
+          console.log(IDS);
+          this.EnableSave = false;
+
+          this.$notify({
+            title: "تم الإضافة بنجاح",
+            message: "تم الإضافة بنجاح",
+            type: "success",
+            position: "top-left",
+            duration: 1000,
+            showClose: false,
+            onClose: () => {
+              Object.assign(this.$data, this.$options.data());
+              this.getdata();
+            }
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    formatDate(date) {
+      let d = new Date(date),
+        day = "" + d.getDate(),
+        month = "" + (d.getMonth() + 1),
+        year = d.getFullYear();
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [day, month, year].join("/");
+    }
+  }
+};
+</script>
