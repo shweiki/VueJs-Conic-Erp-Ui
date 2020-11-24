@@ -12,12 +12,7 @@
     </el-card>
     <el-table
       v-loading="loading"
-      :data="
-        tableData.filter(
-          (data) =>
-            !search || data.name.toLowerCase().includes(search.toLowerCase())
-        )
-      "
+      :data="tableData"
       fit
       max-height="700"
       highlight-current-row
@@ -61,7 +56,7 @@ export default {
     return {
       loading: false,
       tableData: [],
-      search:""
+      search: "",
     };
   },
   created() {
@@ -74,7 +69,7 @@ export default {
         .then((response) => {
           // handle success
           console.log(response);
-          this.tableData = response;
+          this.tableData = response.reverse();
           this.loading = false;
         })
         .catch((error) => {
@@ -102,6 +97,7 @@ export default {
             type: "success",
             duration: 2000,
           });
+        this.getdata();
       });
     },
   },
