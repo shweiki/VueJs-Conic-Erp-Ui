@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'x'
+const TokenKey = 'xsss'
 
 export function getToken() {
   return Cookies.get(TokenKey)

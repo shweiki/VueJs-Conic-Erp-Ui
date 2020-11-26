@@ -18,7 +18,7 @@ if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
 
   app.use(
     publicPath,
-    serveStatic('../Publish', {
+    serveStatic('../AspCore-Conic-Erp-RestApi/AspCore-Conic-Erp-RestApi/wwwroot', {
       index: ['index.html', '/']
     })
   )

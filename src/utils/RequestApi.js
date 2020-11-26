@@ -6,26 +6,32 @@ import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
 
-  baseURL: 'https://localhost', // url = base url + request url
+//  baseURL: 'http://192.168.1.106', // url = base url + request url
+  baseURL: 'https://localhost:44376', // url = base url + request url
 
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  //baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
 
 timeout: 20000000 ,// request timeout
 withCredentials: true,
+
 })
 
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // do something before request is sent
+    // do something before request is sent    "Content-Type": "application/json"
+  //  console.log("config" , config);
+
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-//    config.headers['set-cookie'] = ""
+   // config.headers['Cache-Control'] ='no-cache'
+
+  // config.['withCredentials'] = true
 
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['Authorization'] = getToken()
+  //  config.headers['Authorization'] = getToken()
       
     }
     return config
@@ -51,14 +57,14 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-  //  console.log(response.headers["set-cookie"]);
+ //  console.log(response);
 
     // if the custom code is not 20000, it is judged as an error.
   //  console.log("x",response)
       return res
   },
   error => {
-    console.log('err' + error) // for debug
+    console.log('err --  ' + error) // for debug
     Message({
       message: error.message,
       type: 'error',

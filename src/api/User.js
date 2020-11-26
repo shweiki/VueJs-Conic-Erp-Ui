@@ -12,7 +12,7 @@ export function login(data) {
 export function getInfo() {
   return request({
     url: '/User/Info',
-    method: 'get',
+    method: 'post',
   })
 }
 

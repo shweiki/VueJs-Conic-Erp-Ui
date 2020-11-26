@@ -25,7 +25,7 @@ module.exports = {
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
   publicPath: '/',
-  outputDir: '../Publish',
+  outputDir: '../AspCore-Conic-Erp-RestApi/AspCore-Conic-Erp-RestApi/wwwroot',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
@@ -36,17 +36,7 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    proxy: {
-      // change xxx-api/login => mock/login
-      // detail: https://cli.vuejs.org/config/#devserver-proxy
-      [process.env.VUE_APP_BASE_API]: {
-        target: `http://127.0.0.1:${port}`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      }
-    },
+
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
