@@ -153,61 +153,61 @@ export default {
       Items: [],
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: "",
-      search: "",
+      dialogFormStatus: '',
+      search: '',
       textMapForm: {
         update: "تعديل",
         create: "إضافة"
       },
       textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
       tempForm: {
         ID: undefined,
-        Name: "",
+        Name: '',
         Qty: 0,
         ItemID: undefined,
         SellingPrice: 0,
         Type: "OneByOne",
         IsPrime: false,
         Status: 0,
-        Description: ""
+        Description: ''
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال اسم ",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال اسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -229,9 +229,9 @@ export default {
       GetService()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error
@@ -240,9 +240,9 @@ export default {
       GetActiveItem()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.Items = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error
@@ -252,14 +252,14 @@ export default {
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: "",
+        Name: '',
         Qty: 0,
         ItemID: undefined,
         SellingPrice: 0,
         Type: "OneByOne",
         IsPrime: false,
         Status: 0,
-        Description: ""
+        Description: ''
       };
     },
     handleCreate() {
@@ -330,7 +330,7 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000
               })

@@ -184,14 +184,14 @@ export default {
       Qty: 1,
       NewItemVisible: false,
       EnterQTYVisible: false,
-      Barcode: "",
-      Name: "",
-      Text: "",
-      ValidateNote: "",
+      Barcode: '',
+      Name: '',
+      Text: '',
+      ValidateNote: '',
       tempForm: {
         ID: undefined,
         FakeDate: new Date(),
-        Description: "",
+        Description: '',
         StockMovements: []
       },
       rules: {
@@ -223,7 +223,7 @@ export default {
           Qty: this.Qty,
           SellingPrice: 0,
           Tax: 0.0,
-          Description: "",
+          Description: '',
           InventoryItemID: 1,
           Itemx: Item,
           StocktakingInventoryID: undefined
@@ -262,11 +262,11 @@ export default {
     },
     getdata() {
       GetActiveInventory().then(response => {
-        console.log(response);
+        console.log(response)
         this.InventoryItems = response;
       })
       GetActiveItem().then(response => {
-        console.log(response);
+        console.log(response)
         this.Items = response;
       })
     },
@@ -300,7 +300,7 @@ export default {
     NewItem() {
       CreateItem({
         ID: undefined,
-        Name: ""+this.Name+"",
+        Name: ''+this.Name+'',
         CostPrice: 0.0,
         SellingPrice: 0.0,
         OtherPrice: 0.0,
@@ -309,7 +309,7 @@ export default {
         Tax: 0.0,
         Rate: 0,
         Barcode: this.Barcode,
-        Description: "",
+        Description: '',
       })
         .then(response => {
           this.Barcode = "";

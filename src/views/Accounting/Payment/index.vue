@@ -157,7 +157,7 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: "",
+      dialogFormStatus: '',
       date: [],
       TotalCash: 0,
       TotalCheque: 0,
@@ -210,9 +210,9 @@ export default {
   },
   created() {
     GetOprationByTable({ Name: "Payment" }).then((response) => {
-      console.log(response);
+      console.log(response)
 
-      this.Oprations = response;
+      this.Oprations = response
           const end = new Date();
     const start = new Date();
     start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
@@ -232,7 +232,7 @@ export default {
         DateTo: dateto,
         Status: status,
       }).then((response) => {
-        console.log(response);
+        console.log(response)
         this.tableData = response;
         this.TotalCheque = this.tableData.reduce(
           (a, b) => a + (b["PaymentMethod"] == "Cheque" ? b.TotalAmmount : 0),
@@ -249,7 +249,7 @@ export default {
 
         this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
 
-        this.loading = false;
+        this.loading = false
       })
     },
     changeDate() {

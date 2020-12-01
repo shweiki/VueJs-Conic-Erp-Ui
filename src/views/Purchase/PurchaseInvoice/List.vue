@@ -206,7 +206,7 @@ export default {
       tableData: [],
       loading: true,
       date: [],
-      search: "",
+      search: '',
 
 
     };
@@ -228,9 +228,9 @@ export default {
       })
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error

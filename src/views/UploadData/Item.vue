@@ -42,7 +42,7 @@ export default {
           if (this.data.length != 0) {
             this.AddItem();
           } else {
-            this.loading = false;
+            this.loading = false
             this.tableData = [];
             this.$notify({
               title: "تم ",
@@ -92,7 +92,7 @@ export default {
         };
       })
       this.tableHeader = header;
-      this.loading = false;
+      this.loading = false
       this.isDisabled = false;
     },
     ExcelDateToJSDate(serial) {

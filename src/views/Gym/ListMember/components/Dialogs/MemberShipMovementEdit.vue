@@ -152,15 +152,15 @@ export default {
     getdata() {
       GetMembershipMovementByID({ ID: this.MembershipMovementID })
         .then(response => {
-          console.log(response);
+          console.log(response)
           this.tempForm = response;
           GetActiveMembership()
             .then(response => {
-              console.log(response);
+              console.log(response)
               this.Memberships = response;
               GetActiveDiscount()
                 .then(response => {
-                  console.log(response);
+                  console.log(response)
                   this.DiscountOptions = response;
                   this.Discount = this.DiscountOptions[0];
                   this.calc();

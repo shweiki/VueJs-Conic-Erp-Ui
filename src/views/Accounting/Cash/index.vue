@@ -154,44 +154,44 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: "",
-      search: "",
+      dialogFormStatus: '',
+      search: '',
       textMapForm: {
         update: "تعديل",
         create: "إضافة"
       },
       textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
       tempForm: {
         ID: undefined,
-        Name: "",
-        PCIP: "",
-        Description: "",
-        BTCash: "",
+        Name: '',
+        PCIP: '',
+        Description: '',
+        BTCash: '',
         IsPrime: false
       },
       rulesForm: {},
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 احرف و لا يزيد عن 150 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -206,9 +206,9 @@ export default {
       GetCash()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error
@@ -218,10 +218,10 @@ export default {
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: "",
-        PCIP: "",
-        Description: "",
-        BTCash: "",
+        Name: '',
+        PCIP: '',
+        Description: '',
+        BTCash: '',
         IsPrime: false
       };
     },
@@ -291,7 +291,7 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000
               })

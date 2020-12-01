@@ -137,7 +137,7 @@ export default {
       Movements: [],
       loading: true,
       date: [],
-      search: "",
+      search: '',
       dialogOprationVisible: false,
       pickerOptions: {
         shortcuts: [
@@ -180,28 +180,28 @@ export default {
         ]
       },
       textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -241,8 +241,8 @@ export default {
       const tempForm = {
         ID: undefined,
         FakeDate: JSON.parse(JSON.stringify(new Date())),
-        OrderType: "إدخال ناتج عن جرد رقم " + StockInventory.Id + "",
-        Description: "" + StockInventory.Description + "",
+        OrderType: "إدخال ناتج عن جرد رقم " + StockInventory.Id + '',
+        Description: '' + StockInventory.Description + '',
         InventoryMovements: []
       };
       StockInventory.StockMovements.forEach(i => {
@@ -269,7 +269,7 @@ export default {
             Status: -1,
             Description: "ترصيد جرد"
           }).then(response => {
-            console.log(response);
+            console.log(response)
           })
 
           this.$notify({
@@ -297,10 +297,10 @@ export default {
         DateFrom: datefrom,
         DateTo: dateto
       }).then(response => {
-        console.log(response);
+        console.log(response)
         this.tableData = response;
         this.Movements = response.StockMovements;
-        this.loading = false;
+        this.loading = false
       })
     },
     changeDate() {

@@ -180,7 +180,7 @@ export default {
       tableData: [],
       loading: true,
       date: [],
-      search: "",
+      search: '',
        TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
@@ -228,28 +228,28 @@ export default {
         ]
       },
       textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -274,7 +274,7 @@ export default {
       })
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
             this.TotalCheque = this.tableData.reduce(
           (a, b) => a + (b["PaymentMethod"] == "Receivables" ? b.InventoryMovements.reduce(
@@ -293,7 +293,7 @@ export default {
         );
 
         this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error

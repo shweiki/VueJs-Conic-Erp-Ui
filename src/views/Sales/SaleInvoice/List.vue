@@ -147,7 +147,7 @@ export default {
       tableData: [],
       loading: true,
       date: [],
-      search: "",
+      search: '',
       dialogOprationVisible: false,
       pickerOptions: {
         shortcuts: [
@@ -190,28 +190,28 @@ export default {
         ]
       },
       textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -236,9 +236,9 @@ export default {
       })
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error

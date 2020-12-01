@@ -62,7 +62,7 @@ export default {
     getdata() {
       GetMemberLogByStatus({ Status: 0 })
         .then(response => {
-          //    console.log(response);
+          //    console.log(response)
           if (response.length > this.activities.length)
             this.activities = response;
         })

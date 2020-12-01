@@ -83,7 +83,7 @@ export default {
     return {
       loading: true,
       tableData: [],
-      search: ""
+      search: ''
     };
   },
   created() {
@@ -95,9 +95,9 @@ export default {
       GetPayablesMember()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error

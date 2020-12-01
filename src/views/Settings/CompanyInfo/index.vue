@@ -158,36 +158,36 @@ export default {
       imagecropperKey: 0,
       tempForm: {
         ID: undefined,
-        Name: "",
-        NickName: "",
-        TaxNumber: "",
-        Logo: "",
-        BusinessDescription: "",
-        RateNumber: "",
-        Address: "",
-        phoneNumber1: "",
-        PhoneNumber2: "",
-        Fax: "",
-        Email: "",
-        Website: "",
-        HeaderReport: "",
-        FooterReport: "",
-        DataBaseName: "",
-        BackUpPath: "",
-        ServerName: "",
+        Name: '',
+        NickName: '',
+        TaxNumber: '',
+        Logo: '',
+        BusinessDescription: '',
+        RateNumber: '',
+        Address: '',
+        phoneNumber1: '',
+        PhoneNumber2: '',
+        Fax: '',
+        Email: '',
+        Website: '',
+        HeaderReport: '',
+        FooterReport: '',
+        DataBaseName: '',
+        BackUpPath: '',
+        ServerName: '',
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur",
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur',
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
+            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
+            trigger: 'blur',
           },
         ],
       },
@@ -213,9 +213,9 @@ export default {
       GetCompanyInfo()
         .then((response) => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tempForm = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch((error) => {
           // handle error
@@ -232,7 +232,7 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000,
               })

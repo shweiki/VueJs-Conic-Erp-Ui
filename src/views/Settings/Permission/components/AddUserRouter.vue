@@ -45,11 +45,11 @@ export default {
   props: {
     UserID: {
       type: String,
-      default: "",
+      default: '',
     },
     Router: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
@@ -190,7 +190,7 @@ export default {
 
       // Show parent if there are no child route to display
       if (showingChildren.length === 0) {
-        onlyOneChild = { ...parent, path: "", noShowingChildren: true };
+        onlyOneChild = { ...parent, path: '', noShowingChildren: true };
         return onlyOneChild;
       }
 

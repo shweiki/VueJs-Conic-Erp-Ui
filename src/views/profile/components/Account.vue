@@ -38,18 +38,18 @@ export default {
     };
     return {
       tempForm: {
-        OldPassword: "",
-        NewPassword: "",
-        ConfirmPassword: ""
+        OldPassword: '',
+        NewPassword: '',
+        ConfirmPassword: ''
       },
       rulesForm: {
         OldPassword: {
           required: true,
           message: "يجب كلمة السر القديمة ",
-          trigger: "blur"
+          trigger: 'blur'
         },
-        NewPassword: [{ validator: validatePass, trigger: "blur" }],
-        ConfirmPassword: [{ validator: validatePass2, trigger: "blur" }]
+        NewPassword: [{ validator: validatePass, trigger: 'blur' }],
+        ConfirmPassword: [{ validator: validatePass2, trigger: 'blur' }]
       }
     };
   },
@@ -78,9 +78,9 @@ export default {
     },
     resetTempForm() {
       this.tempForm = {
-        OldPassword: "",
-        NewPassword: "",
-        ConfirmPassword: ""
+        OldPassword: '',
+        NewPassword: '',
+        ConfirmPassword: ''
       };
     }
   }

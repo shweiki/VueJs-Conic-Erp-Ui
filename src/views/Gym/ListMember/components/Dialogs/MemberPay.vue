@@ -103,17 +103,17 @@ export default {
       OldPayment: null,
       Payment: {
         ID: undefined,
-        Name: "",
+        Name: '',
         FakeDate: new Date(),
         PaymentMethod: "Cash",
         TotalAmmount: 0.0,
-        Description: "",
+        Description: '',
         Status: 0,
         VendorID: undefined,
         IsPrime: true,
         MemberID: undefined,
-        EditorName: "",
-        Type: ""
+        EditorName: '',
+        Type: ''
       },
       Visibles: false
     };

@@ -80,12 +80,12 @@ export default {
         StartDate: new Date(this.EndDate),
         EndDate: new Date(),
         Status: 0,
-        Description: "",
-        EditorName: "",
+        Description: '',
+        EditorName: '',
         MemberShipMovementID: this.MemberShipMovementID
       },
       Extra: 0,
-      Description: "",
+      Description: '',
       Visibles: false,
     };
   },

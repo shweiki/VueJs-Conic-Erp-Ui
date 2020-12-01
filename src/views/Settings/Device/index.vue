@@ -75,7 +75,7 @@ export default {
     return {
       tableData: [],
       loading: true,
-      search: ""
+      search: ''
     };
   },
   created() {
@@ -87,9 +87,9 @@ export default {
       GetDevice()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error
@@ -100,7 +100,7 @@ export default {
       SetAllMembers({ DeviceID: id })
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
         })
         .catch(error => {
           // handle error
@@ -111,7 +111,7 @@ export default {
       GetAllFaceMembers({ DeviceID: id })
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
         })
         .catch(error => {
           // handle error
@@ -122,7 +122,7 @@ export default {
       GetAllLogMembers({ DeviceID: id })
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
         })
         .catch(error => {
           // handle error

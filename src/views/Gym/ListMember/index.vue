@@ -99,7 +99,7 @@ export default {
   },
   methods: {
     getdata() {
-      this.loading = false;
+      this.loading = false
     }
   }
 };
@@ -141,7 +141,7 @@ export default {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  content: "";
+  content: '';
 }
 
 .clearfix:after {

@@ -231,28 +231,28 @@ export default {
         Type: "FullDay",
         VisitsUsed: 0,
         Discount: 0,
-        DiscountDescription: "",
-        Description: "",
+        DiscountDescription: '',
+        Description: '',
         Status: 0,
         MemberID: undefined,
-        EditorName: "",
+        EditorName: '',
         MembershipID: undefined,
       },
       OldPayment: null,
       Payment: {
         ID: undefined,
-        Name: "",
+        Name: '',
         FakeDate: new Date(),
         PaymentMethod: "Cash",
         TotalAmmount: 0.0,
-        Description: "",
+        Description: '',
         Status: 0,
         VendorID: undefined,
         IsPrime: true,
-        EditorName: "",
+        EditorName: '',
 
         MemberID: undefined,
-        Type: "",
+        Type: '',
       },
       EnableSave: false,
       Visibles: false,
@@ -270,12 +270,12 @@ export default {
     getdata() {
       GetActiveMembership()
         .then((response) => {
-          console.log(response);
+          console.log(response)
           this.Memberships = response;
           this.MembershipMovement.MembershipID = response[0].Id;
           GetActiveDiscount()
             .then((response) => {
-              console.log(response);
+              console.log(response)
               this.DiscountOptions = response;
               this.Discount = this.DiscountOptions[0];
               this.calc();

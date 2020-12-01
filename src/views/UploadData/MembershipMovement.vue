@@ -44,7 +44,7 @@ export default {
           if (this.data.length != 0) {
             this.AddMemberShip();
           } else {
-            this.loading = false;
+            this.loading = false
             this.tableData = [];
             this.$notify({
               title: "تم ",
@@ -148,7 +148,7 @@ export default {
           Type: Type,
           VisitsUsed: 0,
           Discount: 0,
-          DiscountDescription: "",
+          DiscountDescription: '',
           Description: element.Note,
           Status: 1,
           MemberID: MemberID,
@@ -156,7 +156,7 @@ export default {
         };
       })
       this.tableHeader = header;
-      this.loading = false;
+      this.loading = false
       this.isDisabled = false;
     },
     FindIDMemberByTag(Tag, arr) {

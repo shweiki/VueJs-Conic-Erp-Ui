@@ -88,9 +88,9 @@ export default {
       SellingPrice: 0.0,
       NewItemVisible: false,
       EnterQTYVisible: false,
-      Barcode: "",
-      Name: "",
-      search: "",
+      Barcode: '',
+      Name: '',
+      search: '',
       options: [],
       searchPool: [],
       fuse: undefined
@@ -194,7 +194,7 @@ export default {
         Tax: 0.0,
         Rate: 0,
         Barcode: this.Barcode,
-        Description: "",
+        Description: '',
         Status: 0
       })
         .then(response => {

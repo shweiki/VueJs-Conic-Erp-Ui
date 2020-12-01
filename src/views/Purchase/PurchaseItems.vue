@@ -77,7 +77,7 @@ export default {
       tableData: [],
       loading: true,
       date: [],
-      search: "",
+      search: '',
       pickerOptions: {
         shortcuts: [
           {
@@ -140,13 +140,13 @@ export default {
       })
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
           GetActiveItem().then(response => {
             // handle success
-            console.log(response);
+            console.log(response)
             this.Items = response;
-            this.loading = false;
+            this.loading = false
           })
         })
         .catch(error => {

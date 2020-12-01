@@ -114,17 +114,17 @@ export default {
       MembershipMovementOrder: {
         ID: undefined,
         Type: "Freeze",
-        StartDate: "",
-        EndDate: "",
+        StartDate: '',
+        EndDate: '',
         Status: 0,
         EditorName:'',
         Description: '',
         MemberShipMovementID: this.MemberShipMovementID
       },
-      FreezeBetween: "",
+      FreezeBetween: '',
       Visibles: false,
       Days: 0,
-      ValidateNote: "",
+      ValidateNote: '',
       pickerOptions: {
         disabledDate(time) {
           console.log(time);

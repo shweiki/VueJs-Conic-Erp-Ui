@@ -63,13 +63,13 @@ export default {
       Visible: false,
       tempForm: {
         ID: undefined,
-        Name: "",
-        Ssn: "",
-        DateofBirth: "",
-        Email: "",
-        phoneNumber1: "",
-        PhoneNumber2: "",
-        Description: "",
+        Name: '',
+        Ssn: '',
+        DateofBirth: '',
+        Email: '',
+        phoneNumber1: '',
+        PhoneNumber2: '',
+        Description: '',
         Type: "New",
         Tag: null
       },
@@ -78,13 +78,13 @@ export default {
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -97,13 +97,13 @@ export default {
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: "",
-        Ssn: "",
-        DateofBirth: "",
-        Email: "",
-        phoneNumber1: "",
-        PhoneNumber2: "",
-        Description: "",
+        Name: '',
+        Ssn: '',
+        DateofBirth: '',
+        Email: '',
+        phoneNumber1: '',
+        PhoneNumber2: '',
+        Description: '',
         Type: "New"
       };
     },
@@ -173,7 +173,7 @@ export default {
             requesttimeout: 5000000
           }
         }).then(response => {
-          console.log(response);
+          console.log(response)
         })
 
     }

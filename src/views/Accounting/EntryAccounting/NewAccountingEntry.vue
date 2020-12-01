@@ -155,14 +155,14 @@ export default {
   data() {
     return {
       Account: [],
-      Text: "",
-      ValidateNote: "",
+      Text: '',
+      ValidateNote: '',
       totalDebit: 0,
       totalCredit: 0,
       tempForm: {
         ID: undefined,
         FakeDate: new Date(),
-        Description: "",
+        Description: '',
         Type : 'Manual',
         EntryMovements: [
           {
@@ -170,7 +170,7 @@ export default {
             AccountID: undefined,
             Debit: 0.0,
             Credit: 0.0,
-            Description: "",
+            Description: '',
             EntryID: undefined
           },
           {
@@ -178,7 +178,7 @@ export default {
             AccountID: undefined,
             Debit: 0.0,
             Credit: 0.0,
-            Description: "",
+            Description: '',
             EntryID: undefined
           }
         ]
@@ -209,7 +209,7 @@ export default {
         AccountID: undefined,
         Debit: 0.0,
         Credit: 0.0,
-        Description: "",
+        Description: '',
         EntryID: undefined
       })
     },
@@ -236,7 +236,7 @@ export default {
       GetActiveAccounts()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.Account = response;
         })
         .catch(error => {
@@ -248,14 +248,14 @@ export default {
       this.tempForm = {
         ID: undefined,
         FakeDate: new Date(),
-        Description: "",
+        Description: '',
         EntryMovements: [
           {
             ID: undefined,
             AccountID: undefined,
             Debit: 0.0,
             Credit: 0.0,
-            Description: "",
+            Description: '',
             EntryID: undefined
           },
           {
@@ -263,7 +263,7 @@ export default {
             AccountID: undefined,
             Debit: 0.0,
             Credit: 0.0,
-            Description: "",
+            Description: '',
             EntryID: undefined
           }
         ]

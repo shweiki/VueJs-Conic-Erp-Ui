@@ -202,7 +202,7 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: "",
+      dialogFormStatus: '',
       tableData: [],
       TypeAccounts: [
         {
@@ -214,57 +214,57 @@ export default {
           value: "Cash"
         }
       ],
-      search: "",
+      search: '',
       textMapForm: {
         update: "تعديل",
         create: "إضافة"
       },
       textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
       tempForm: {
         ID: undefined,
-        AccountName: "",
+        AccountName: '',
         Status: 0,
-        Code: "",
+        Code: '',
         Type: undefined,
-        Description: ""
+        Description: ''
       },
       rulesForm: {
         AccountName: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur"
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur'
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 احرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 أحرف و لا يزيد عن 150 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -317,9 +317,9 @@ export default {
       GetAccount()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response.Accounts;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error
@@ -329,11 +329,11 @@ export default {
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        AccountName: "",
+        AccountName: '',
         Status: 0,
-        Code: "",
+        Code: '',
         Type: undefined,
-        Description: ""
+        Description: ''
       };
     },
     handleCreate() {
@@ -403,7 +403,7 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000
               })

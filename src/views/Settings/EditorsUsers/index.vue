@@ -70,29 +70,29 @@ export default {
     return {
       tableData: [],
       loading: true,
-      search: "",
+      search: '',
       dialogFormVisible: false,
-      dialogFormStatus: "",
+      dialogFormStatus: '',
       textMapForm: {
         update: "تعديل",
         create: "إضافة"
       },
       tempForm: {
         ID: undefined,
-        Name: ""
+        Name: ''
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال اسم ",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال اسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -107,9 +107,9 @@ export default {
       GetEditorsUser()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error
@@ -119,7 +119,7 @@ export default {
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: ""
+        Name: ''
       };
     },
     handleCreate() {
@@ -173,7 +173,7 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000
               })

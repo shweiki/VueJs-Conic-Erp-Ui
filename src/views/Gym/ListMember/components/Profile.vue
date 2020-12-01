@@ -224,7 +224,7 @@ export default {
           this.tempForm = response;
           this.GetImageMember(this.tempForm.Id);
           this.getAge();
-          this.loading = false;
+          this.loading = false
           //this.GetMemberLogFromDevices(val);
           this.setTagsViewTitle();
           // set page title
@@ -291,7 +291,7 @@ export default {
         UserID: MemberID
       }).then(response => {
         if (response) {
-          console.log(response);
+          console.log(response)
           this.$notify({
             title: "تم",
             message:
@@ -299,7 +299,7 @@ export default {
               this.$store.getters.Devices[0].Name +
               "  " +
               response +
-              "",
+              '',
             type: 'success',
             duration: 2000
           })
@@ -308,7 +308,7 @@ export default {
             UserID: MemberID
           }).then(response => {
             if (response) {
-              console.log(response);
+              console.log(response)
               this.$notify({
                 title: "تم",
                 message:
@@ -316,7 +316,7 @@ export default {
                   this.$store.getters.Devices[1].Name +
                   "  " +
                   response +
-                  "",
+                  '',
                 type: 'success',
                 duration: 2000
               })

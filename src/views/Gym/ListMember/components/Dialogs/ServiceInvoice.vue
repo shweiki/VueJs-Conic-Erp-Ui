@@ -82,14 +82,14 @@ export default {
       ServiceID: undefined,
 
       Visible: false,
-      Description: ""
+      Description: ''
     };
   },
   methods: {
     getdata() {
       GetActiveService()
         .then(response => {
-          console.log(response);
+          console.log(response)
           this.Services = response;
         })
         .catch(err => {
@@ -120,7 +120,7 @@ export default {
           Qty: 1.0,
           SellingPrice: ItemSellingPrice,
           Tax: 0.0,
-          Description: "",
+          Description: '',
           InventoryItemID: 1,
           SalesInvoiceID: undefined
         })

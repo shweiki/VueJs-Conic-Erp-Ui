@@ -178,28 +178,28 @@ export default {
       Total: 0,
       dialogOprationVisible: false,
       textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -219,7 +219,7 @@ export default {
       this.loading = true;
       GetActiveCash().then(response => {
         // handle success
-        //   console.log(response);
+        //   console.log(response)
         this.CashAccounts = response;
         this.CashAccount = this.CashAccounts[0].value;
         GetInComeAccounts().then(response => {
@@ -231,9 +231,9 @@ export default {
       GetMembershipMovementByStatus({ Status: 0 })
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error
@@ -277,7 +277,7 @@ export default {
       console.log(tempForm);
       CreateEntry(tempForm)
         .then(response => {
-          console.log(response);
+          console.log(response)
           let IDS = this.Selection.map(a => {
             ChangeObjStatusByTableName({
               ObjID: a.Id,
@@ -285,7 +285,7 @@ export default {
               Status: 1,
               Description: "اشتراك مؤكدة"
             }).then(response => {
-              console.log(response);
+              console.log(response)
             })
           })
           console.log(IDS);

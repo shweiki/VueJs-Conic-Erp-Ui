@@ -156,7 +156,7 @@ export default {
       TotalQty: 0,
       TotalAmmount: 0,
       date: [],
-      search: "",
+      search: '',
       pickerOptions: {
         shortcuts: [
           {
@@ -207,9 +207,9 @@ export default {
     this.getdata(this.ItemID, start, end);
     GetActiveItem().then((response) => {
       // handle success
-      console.log(response);
+      console.log(response)
       this.Items = response;
-      this.loading = false;
+      this.loading = false
     })
   },
   methods: {
@@ -260,7 +260,7 @@ export default {
       })
         .then((response) => {
           // handle success
-          console.log(response);
+          console.log(response)
 
           this.tableData = response.OrderInventoryMove.concat(
             response.SalesInvoiceMove.concat(response.PurchaseInvoiceMove)
@@ -272,7 +272,7 @@ export default {
             (a, b) => a + b.Qty * b.SellingPrice,
             0
           );
-          this.loading = false;
+          this.loading = false
         })
         .catch((error) => {
           // handle error

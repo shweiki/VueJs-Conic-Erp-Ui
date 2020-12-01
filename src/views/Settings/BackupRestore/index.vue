@@ -58,7 +58,7 @@ export default {
     return {
       loading: false,
       tableData: [],
-      search: "",
+      search: '',
     };
   },
   created() {
@@ -70,9 +70,9 @@ export default {
       GetBackUp()
         .then((response) => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response.reverse();
-          this.loading = false;
+          this.loading = false
         })
         .catch((error) => {
           // handle error

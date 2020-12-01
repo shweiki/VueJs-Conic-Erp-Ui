@@ -26,7 +26,7 @@ export default {
   name: "MemberSearch",
   data() {
     return {
-      search: "",
+      search: '',
       options: [],
       searchPool: [],
       fuse: undefined

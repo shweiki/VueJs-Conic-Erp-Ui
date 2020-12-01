@@ -57,7 +57,7 @@ export default {
     },
     getdata() {
       GetActiveItem().then(response => {
-        console.log(response);
+        console.log(response)
         this.ItemsPrime = response.reverse();
       })
     }

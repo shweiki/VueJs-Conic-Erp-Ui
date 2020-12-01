@@ -131,7 +131,7 @@ export default {
       Visibles: false,
       tempForm: {
         Id: undefined,
-        Name: "",
+        Name: '',
         CostPrice: 0.0,
         SellingPrice: 0.0,
         OtherPrice: 0.0,
@@ -139,21 +139,21 @@ export default {
         Tax: 0.0,
         Rate: 0,
         IsPrime: false,
-        Barcode: "",
-        Description: ""
+        Barcode: '',
+        Description: ''
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur"
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur'
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
+            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
+            trigger: 'blur'
           }
         ]
       }
@@ -177,8 +177,8 @@ export default {
               this.Visibles = false
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
-                type: "success",
+                message: 'تم التعديل بنجاح',
+                type: 'success',
                 duration: 2000
               });
             })

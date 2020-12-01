@@ -219,10 +219,10 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogAddRoleVisible: false,
-      dialogFormStatus: "",
-      search: "",
-      RoleName: "",
-      UserName: "",
+      dialogFormStatus: '',
+      search: '',
+      RoleName: '',
+      UserName: '',
       tableData: [],
       Roles: [],
       textMapForm: {
@@ -230,28 +230,28 @@ export default {
         create: "إضافة",
       },
       tempForm: {
-        UserName: "",
-        Email: "",
-        Password: "",
-        PhoneNumber: "",
-        ConfirmPassword: "",
+        UserName: '',
+        Email: '',
+        Password: '',
+        PhoneNumber: '',
+        ConfirmPassword: '',
       },
       rulesForm: {
         UserName: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur",
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur',
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
+            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
+            trigger: 'blur',
           },
         ],
-        Password: [{ validator: validatePass, trigger: "blur" }],
-        ConfirmPassword: [{ validator: validatePass2, trigger: "blur" }],
+        Password: [{ validator: validatePass, trigger: 'blur' }],
+        ConfirmPassword: [{ validator: validatePass2, trigger: 'blur' }],
       },
     };
   },
@@ -264,14 +264,14 @@ export default {
       GetUsers()
         .then((response) => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
           GetRoles()
             .then((response) => {
               // handle success
-              console.log(response);
+              console.log(response)
               this.Roles = response;
-              this.loading = false;
+              this.loading = false
             })
             .catch((error) => {
               // handle error
@@ -288,7 +288,7 @@ export default {
       DeleteRoleUser({ UserName: username, RoleName: rolername })
         .then((response) => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.getdata();
         })
         .catch((error) => {
@@ -300,7 +300,7 @@ export default {
       AddRoleUser({ UserName: this.UserName, RoleName: this.RoleName })
         .then((response) => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.dialogAddRoleVisible = false;
           this.getdata();
         })
@@ -311,11 +311,11 @@ export default {
     },
     resetTempForm() {
       this.tempForm = {
-        UserName: "",
-        Email: "",
-        Password: "",
-        PhoneNumber: "",
-        ConfirmPassword: "",
+        UserName: '',
+        Email: '',
+        Password: '',
+        PhoneNumber: '',
+        ConfirmPassword: '',
       };
     },
     handleCreate() {
@@ -371,7 +371,7 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000,
               })

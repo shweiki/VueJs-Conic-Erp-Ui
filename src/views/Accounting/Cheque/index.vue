@@ -247,8 +247,8 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: "",
-      search: "",
+      dialogFormStatus: '',
+      search: '',
       Vendors: [],
       BanksNames: [
         {
@@ -353,22 +353,22 @@ export default {
         create: "إضافة"
       },
       textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
       tempForm: {
         ID: undefined,
-        BankAddress: "",
-        BankName: "",
-        ChequeAmount: "",
+        BankAddress: '',
+        BankName: '',
+        ChequeAmount: '',
         FakeDate: new Date(),
-        Payee: "",
-        PaymentType: "",
-        ChequeNumber: "",
-        Currency: "",
-        Description: "",
+        Payee: '',
+        PaymentType: '',
+        ChequeNumber: '',
+        Currency: '',
+        Description: '',
         IsPrime: false,
         VendorID: undefined
       },
@@ -376,34 +376,34 @@ export default {
         ChequeNumber: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur"
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur'
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
+            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
+            trigger: 'blur'
           }
         ]
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 احرف و لا يزيد عن 150 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -418,9 +418,9 @@ export default {
       GetCheques()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error
@@ -429,22 +429,22 @@ export default {
 
       GetVendorCheque().then(response => {
         // handle success
-        console.log(response);
+        console.log(response)
         this.Vendors = response;
       })
     },
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        BankAddress: "",
-        BankName: "",
-        ChequeAmount: "",
+        BankAddress: '',
+        BankName: '',
+        ChequeAmount: '',
         FakeDate: new Date(),
-        Payee: "",
-        PaymentType: "",
-        ChequeNumber: "",
-        Currency: "",
-        Description: "",
+        Payee: '',
+        PaymentType: '',
+        ChequeNumber: '',
+        Currency: '',
+        Description: '',
         IsPrime: false,
         VendorID: undefined
       };
@@ -513,7 +513,7 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000
               })

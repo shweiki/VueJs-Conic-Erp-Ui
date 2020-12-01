@@ -8,17 +8,19 @@
               v-for="op in Oprations"
               :key="op.Id"
               v-bind:label="op.Status"
-            >{{op.OprationDescription}}</el-radio-button>
+              >{{ op.OprationDescription }}</el-radio-button
+            >
           </el-radio-group>
         </div>
-        <span>{{ $t('Members.Member') }}</span>
+        <span>{{ $t("Members.Member") }}</span>
       </div>
       <el-button
         style="width: 100px;"
         type="primary"
         icon="el-icon-plus"
         @click="Visibles = true"
-      >تجميد</el-button>
+        >تجميد</el-button
+      >
       <el-table
         v-loading="loading"
         :data="tableData"
@@ -30,31 +32,63 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column
+          type="selection"
+          width="55"
+          align="center"
+        ></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="getdata()"
+            ></el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="MembershipName" label="الاشتراك" align="center"></el-table-column>
+        <el-table-column
+          prop="MembershipName"
+          label="الاشتراك"
+          align="center"
+        ></el-table-column>
 
-        <el-table-column prop="MemberName" label="المشترك" align="center"></el-table-column>
-        <el-table-column prop="Type" label="الفترة" align="center"></el-table-column>
+        <el-table-column
+          prop="MemberName"
+          label="المشترك"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="Type"
+          label="الفترة"
+          align="center"
+        ></el-table-column>
 
         <el-table-column label="تاريخ البدء" align="center">
           <template slot-scope="scope">
-            <el-date-picker format="dd/MM/yyyy" disabled v-model="scope.row.StartDate"></el-date-picker>
+            <el-date-picker
+              format="dd/MM/yyyy"
+              disabled
+              v-model="scope.row.StartDate"
+            ></el-date-picker>
           </template>
         </el-table-column>
         <el-table-column label="تاريخ الانتهاء" align="center">
           <template slot-scope="scope">
-            <el-date-picker format="dd/MM/yyyy" disabled v-model="scope.row.EndDate"></el-date-picker>
+            <el-date-picker
+              format="dd/MM/yyyy"
+              disabled
+              v-model="scope.row.EndDate"
+            ></el-date-picker>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
     <div>
-      <el-dialog style="margin-top: -13vh" title="تسجيل تجميد" :visible.sync="Visibles">
+      <el-dialog
+        style="margin-top: -13vh"
+        title="تسجيل تجميد"
+        :visible.sync="Visibles"
+      >
         <el-form label-position="top" class="demo-form-inline">
           <el-row type="flex">
             <el-col :span="24">
@@ -83,18 +117,26 @@
           </el-row>
           <el-row type="flex">
             <el-col :span="24">
-              مجموع الايام حسب الفترة المطلوبة {{Math.round(
-              Math.abs(
-              (new Date(FreezeBetween[0]) - new Date(FreezeBetween[1])) /
-              (24 * 60 * 60 * 1000) 
-              )
-              ) }} ايام
+              مجموع الايام حسب الفترة المطلوبة
+              {{
+                Math.round(
+                  Math.abs(
+                    (new Date(FreezeBetween[0]) - new Date(FreezeBetween[1])) /
+                      (24 * 60 * 60 * 1000)
+                  )
+                )
+              }}
+              ايام
             </el-col>
           </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="Visibles = false">{{$t('AddVendors.Cancel')}}</el-button>
-          <el-button type="primary" @click="createFreeze()">{{$t('AddVendors.Save')}}</el-button>
+          <el-button @click="Visibles = false">{{
+            $t("AddVendors.Cancel")
+          }}</el-button>
+          <el-button type="primary" @click="createFreeze()">{{
+            $t("AddVendors.Save")
+          }}</el-button>
         </div>
       </el-dialog>
     </div>
@@ -130,17 +172,17 @@ export default {
     getdata() {
       this.loading = true;
       GetMembershipMovementByStatus({ Status: this.Status }).then(response => {
-        //console.log(response);
+        //console.log(response)
         this.tableData = response;
 
         GetOprationByTable({ Name: "MembershipMovement" }).then(response => {
           console.log(response);
 
           this.Oprations = response;
-        })
+        });
 
         this.loading = false;
-      })
+      });
     },
     handleSelectionChange(val) {
       this.Selection = val;
@@ -159,17 +201,17 @@ export default {
         MembershipMovementOrder.MemberShipMovementID = i.Id;
         Create(MembershipMovementOrder).then(response => {
           if (response) {
-            this.Visibles = false
+            this.Visibles = false;
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: 'success',
               duration: 2000
-            })
+            });
           }
-        })
-      })
+        });
+      });
     }
   }
-}
+};
 </script>

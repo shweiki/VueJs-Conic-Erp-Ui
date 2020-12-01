@@ -181,21 +181,21 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: "",
-      search: "",
+      dialogFormStatus: '',
+      search: '',
       textMapForm: {
         update: "تعديل",
         create: "إضافة"
       },
       tempForm: {
         ID: undefined,
-        Name: "",
-        Ssn: "",
-        DateofBirth: "",
-        Email: "",
-        phoneNumber1: "",
-        PhoneNumber2: "",
-        Description: "",
+        Name: '',
+        Ssn: '',
+        DateofBirth: '',
+        Email: '',
+        phoneNumber1: '',
+        PhoneNumber2: '',
+        Description: '',
         IsPrime: false,
         Type: 7
       },
@@ -204,39 +204,39 @@ export default {
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       },
       textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: 'blur'
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
@@ -249,23 +249,23 @@ export default {
     getdata() {
       this.loading = true;
       GetActiveMember().then(response => {
-        //console.log(response);
+        //console.log(response)
         this.tableData = response;
-        this.loading = false;
+        this.loading = false
       })
     },
 
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: "",
-        Ssn: "",
-        DateofBirth: "",
-        Email: "",
-        phoneNumber1: "",
-        PhoneNumber2: "",
+        Name: '',
+        Ssn: '',
+        DateofBirth: '',
+        Email: '',
+        phoneNumber1: '',
+        PhoneNumber2: '',
         Status: 0,
-        Description: ""
+        Description: ''
       };
     },
     handleCreate() {
@@ -323,7 +323,7 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000
               })

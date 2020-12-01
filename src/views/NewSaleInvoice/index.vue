@@ -343,12 +343,12 @@ export default {
       AutoPrint: false,
       tempForm: {
         ID: undefined,
-        Name: "",
+        Name: '',
         Tax: 0.0,
         FakeDate: new Date(),
         PaymentMethod: "Cash",
         Discount: 0,
-        Description: "",
+        Description: '',
         VendorID: 2,
         IsPrime: false,
         InventoryMovements: []
@@ -382,12 +382,12 @@ export default {
     restTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: "",
+        Name: '',
         Tax: 0.0,
         FakeDate: new Date(),
         PaymentMethod: "Cash",
         Discount: 0,
-        Description: "",
+        Description: '',
         VendorID: 2,
         IsPrime: false,
         InventoryMovements: []
@@ -413,7 +413,7 @@ export default {
           Qty: 1.0,
           SellingPrice: SellingPrice,
           Tax: 0.0,
-          Description: "",
+          Description: '',
           InventoryItemID: 1,
           Itemx: Item,
           SalesInvoiceID: undefined
@@ -435,16 +435,16 @@ export default {
         background: "rgba(0, 0, 0, 0.7)"
       })
       GetActiveInventory().then(response => {
-        console.log(response);
+        console.log(response)
         this.InventoryItems = response;
       })
       GetActiveMenuItem().then(response => {
-        console.log(response);
+        console.log(response)
         this.MenuItems = response;
       })
 
       GetActiveVendor().then(response => {
-        console.log(response);
+        console.log(response)
         this.Vendor = response;
         loading.close();
       })
@@ -540,7 +540,7 @@ export default {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  content: "";
+  content: '';
 }
 .clearfix:after {
   clear: both;

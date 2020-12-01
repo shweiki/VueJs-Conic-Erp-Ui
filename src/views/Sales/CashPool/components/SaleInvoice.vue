@@ -257,12 +257,12 @@ export default {
             this.loading = true;
             GetActiveCash().then(response => {
                 // handle success
-                //   console.log(response);
+                //   console.log(response)
                 this.CashAccounts = response;
                 this.CashAccount = this.CashAccounts[0].value;
                 GetInComeAccounts().then(response => {
                     // handle success
-                    //   console.log(response);
+                    //   console.log(response)
                     this.InComeAccounts = response;
                     this.InComeAccount = this.InComeAccounts[0].value;
                 })
@@ -272,7 +272,7 @@ export default {
                 })
                 .then(response => {
                     // handle success
-                    console.log(response);
+                    console.log(response)
                     this.tableData = response;
                     this.ItemsMovements = [];
                     this.tableData.map(a => {
@@ -296,7 +296,7 @@ export default {
                             }
                         })
                     })
-                    this.loading = false;
+                    this.loading = false
                 })
                 .catch(error => {
                     // handle error
@@ -448,7 +448,7 @@ export default {
             console.log(tempForm);
             CreateEntry(tempForm)
                 .then(response => {
-                    console.log(response);
+                    console.log(response)
                     let IDS = this.Selection.map(a => {
                         ChangeObjStatusByTableName({
                             ObjID: a.Id,
@@ -456,7 +456,7 @@ export default {
                             Status: 1,
                             Description: "فاتورة مؤكدة"
                         }).then(response => {
-                            console.log(response);
+                            console.log(response)
                         })
                     })
                     console.log(IDS);

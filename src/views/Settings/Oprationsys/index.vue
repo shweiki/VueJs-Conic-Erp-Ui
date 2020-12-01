@@ -107,8 +107,8 @@ export default {
     return {
       loading: true,
       dialogFormVisible: false,
-      dialogFormStatus: "",
-      search: "",
+      dialogFormStatus: '',
+      search: '',
       tableData: [],
       textMapForm: {
         update: "تعديل",
@@ -116,29 +116,29 @@ export default {
       },
       tempForm: {
         ID: undefined,
-        TableName: "",
-        ControllerName: "",
-        RoleName: "",
-        OprationName: "",
-        OprationDescription: "",
-        ArabicOprationDescription: "",
+        TableName: '',
+        ControllerName: '',
+        RoleName: '',
+        OprationName: '',
+        OprationDescription: '',
+        ArabicOprationDescription: '',
         Status: 0,
         ReferenceStatus: null,
-        IconClass: "",
-        ClassName: ""
+        IconClass: '',
+        ClassName: ''
       },
       rulesForm: {
         TableName: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur"
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur'
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
+            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
+            trigger: 'blur'
           }
         ]
       }
@@ -153,9 +153,9 @@ export default {
       GetOpration()
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
           // handle error
@@ -165,16 +165,16 @@ export default {
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        TableName: "",
-        ControllerName: "",
-        RoleName: "",
-        OprationName: "",
-        OprationDescription: "",
-        ArabicOprationDescription: "",
+        TableName: '',
+        ControllerName: '',
+        RoleName: '',
+        OprationName: '',
+        OprationDescription: '',
+        ArabicOprationDescription: '',
         Status: 0,
         ReferenceStatus: undefined,
-        IconClass: "",
-        ClassName: ""
+        IconClass: '',
+        ClassName: ''
       }
     },
     handleCreate() {
@@ -236,7 +236,7 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000
               })

@@ -64,9 +64,9 @@ import { deepClone } from "@/utils";
 import { getRoutes, GetRoles, AddRole, DeleteRole, Edit } from "@/api/Role";
 
 const defaultRole = {
-  Id: "",
-  Name: "",
-  NormalizedName: "",
+  Id: '',
+  Name: '',
+  NormalizedName: '',
 };
 
 export default {

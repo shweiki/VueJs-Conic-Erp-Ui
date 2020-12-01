@@ -189,12 +189,12 @@ export default {
       }
     };
     return {
-      ValidateNote: "",
+      ValidateNote: '',
       tempForm: {
         ID: undefined,
         FakeDate: new Date(),
         OrderType: "ادخال: بضاعة اول المدة / بونص",
-        Description: "",
+        Description: '',
         InventoryMovements: [],
       },
       rules: {
@@ -218,7 +218,7 @@ export default {
     this.tempRoute = Object.assign({}, this.$route);
 
     GetActiveInventory().then((response) => {
-      console.log(response);
+      console.log(response)
       this.InventoryItems = response;
     })
   },
@@ -232,7 +232,7 @@ export default {
         Qty: 1.0,
         SellingPrice: 0,
         Tax: 0.0,
-        Description: "",
+        Description: '',
         InventoryItemID: 1,
         Itemx: item,
         OrderInventoryID: undefined,
@@ -248,7 +248,7 @@ export default {
     getdata(val) {
       GetOrderInventoryByID({ ID: val })
         .then((response) => {
-          console.log(response);
+          console.log(response)
           this.tempForm = response;
 
           // set tagsview title

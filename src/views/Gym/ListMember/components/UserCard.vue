@@ -152,7 +152,7 @@ export default {
               })
               this.$notify({
                 title: "تم",
-                message: "تم التعديل بنجاح",
+                message: 'تم التعديل بنجاح',
                 type: 'success',
                 duration: 2000
               })
@@ -180,7 +180,7 @@ export default {
         UserID: this.Member.Id
       }).then(response => {
         if (response) {
-          console.log(response);
+          console.log(response)
           this.$notify({
             title: "تم",
             message: "تم ارسال البيانات لاجهاز " + Name +" \ "+ response+" ",

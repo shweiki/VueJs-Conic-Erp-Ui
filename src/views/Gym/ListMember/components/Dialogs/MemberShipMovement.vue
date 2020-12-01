@@ -172,8 +172,8 @@ export default {
         Type: "FullDay",
         VisitsUsed: 0,
         Discount: 0,
-        DiscountDescription: "",
-        Description: "",
+        DiscountDescription: '',
+        Description: '',
         Status: 0,
         EditorName:'',
         MemberID: undefined,
@@ -196,12 +196,12 @@ export default {
     getdata() {
       GetActiveMembership()
         .then(response => {
-          console.log(response);
+          console.log(response)
           this.Memberships = response;
           this.MembershipMovement.MembershipID = response[0].Id;
           GetActiveDiscount()
             .then(response => {
-              console.log(response);
+              console.log(response)
               this.DiscountOptions = response;
               this.Discount = this.DiscountOptions[0];
               this.calc();

@@ -288,7 +288,7 @@ export default {
       TotalQty: 0,
       TotalItems: 0,
       TotalAmmount: 0,
-      ValidateNote: "",
+      ValidateNote: '',
       tempForm: {
         ID: undefined,
         Name: " - ",
@@ -298,7 +298,7 @@ export default {
         PaymentMethod: "Cash",
         Discount: 0,
         VendorID: 2,
-        Description :"",
+        Description :'',
         InventoryMovements: []
       },
       rules: {
@@ -324,12 +324,12 @@ export default {
     this.tempRoute = Object.assign({}, this.$route);
 
     GetActiveInventory().then(response => {
-      console.log(response);
+      console.log(response)
       this.InventoryItems = response;
     })
 
     GetActiveVendor().then(response => {
-      console.log(response);
+      console.log(response)
       this.Vendor = response;
     })
 
@@ -341,7 +341,7 @@ export default {
     getdata(val) {
       GetPurchaseInvoiceByID({ ID: val })
         .then(response => {
-          console.log(response);
+          console.log(response)
           this.tempForm = response;
           this.SumTotalAmmount();
           // set tagsview title
@@ -366,7 +366,7 @@ export default {
         InventoryItemID: 1,
         Itemx: item,
         PurchaseInvoiceID: undefined,
-        Description: ""
+        Description: ''
       })
       this.SumTotalAmmount();
     },

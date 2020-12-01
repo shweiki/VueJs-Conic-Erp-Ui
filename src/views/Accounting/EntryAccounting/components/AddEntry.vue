@@ -69,7 +69,7 @@ export default {
       tempForm: {
         ID: undefined,
         FakeDate: new Date(),
-        Description: "",
+        Description: '',
         Type: "Manual",
         EntryMovements: [
           {
@@ -77,7 +77,7 @@ export default {
             AccountID: undefined,
             Debit: 0.0,
             Credit: 0.0,
-            Description: "",
+            Description: '',
             EntryID: undefined,
           },
           {
@@ -85,7 +85,7 @@ export default {
             AccountID: undefined,
             Debit: 0.0,
             Credit: 0.0,
-            Description: "",
+            Description: '',
             EntryID: undefined,
           },
         ],

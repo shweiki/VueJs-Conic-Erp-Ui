@@ -149,29 +149,29 @@ export default {
       tableData: [],
       Selection: [],
       loading: true,
-      search: "",
+      search: '',
       Oprations: [],
       Status: 0,
-      SmsBody: "",
+      SmsBody: '',
       visible: false,
     };
   },
   mounted() {
     this.getdata();
     GetOprationByTable({ Name: "Member" }).then((response) => {
-      console.log(response);
+      console.log(response)
 
-      this.Oprations = response;
+      this.Oprations = response
     })
   },
   methods: {
     getdata() {
       this.loading = true;
       GetMemberByStatus({ Status: this.Status }).then((response) => {
-        //console.log(response);
+        //console.log(response)
         this.tableData = response;
 
-        this.loading = false;
+        this.loading = false
       })
     },
     handleSelectionChange(val) {
@@ -206,7 +206,7 @@ export default {
               requesttimeout: 5000000,
             },
           }).then((response) => {
-            console.log(response);
+            console.log(response)
           })
         })
 

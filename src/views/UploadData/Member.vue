@@ -43,7 +43,7 @@ export default {
           if (this.data.length != 0) {
             this.AddMember();
           } else {
-            this.loading = false;
+            this.loading = false
             this.tableData = [];
             this.$notify({
               title: "تم ",
@@ -83,7 +83,7 @@ export default {
             element.n1 + " " + element.n2 + " " + element.n3 + " " + element.n4,
           Ssn: element.ssn,
           DateofBirth: this.ExcelDateToJSDate(element.bd),
-          Email: "",
+          Email: '',
           phoneNumber1: element.p1,
           PhoneNumber2: element.p2,
           Description: "From First Data",
@@ -94,7 +94,7 @@ export default {
       })
       this.tableHeader = header;
       this.isDisabled = false;
-      this.loading = false;
+      this.loading = false
     },
     ExcelDateToJSDate(serial) {
       var utc_days = Math.floor(serial - 25569);

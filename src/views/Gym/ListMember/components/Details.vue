@@ -209,7 +209,7 @@ export default {
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: ''
       }
     };
   },
