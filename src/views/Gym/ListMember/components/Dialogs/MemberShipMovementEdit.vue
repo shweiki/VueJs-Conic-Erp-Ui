@@ -22,9 +22,9 @@
           <el-select v-model="tempForm.MembershipID" filterable @change="calc" placeholder="إشتراك">
             <el-option
               v-for="item in Memberships"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+              :key="item.Id"
+              :label="item.Name"
+              :value="item.Id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -73,7 +73,7 @@
         <el-form-item
           :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' } ]"
           v-bind:label="$t('AddVendors.Description')"
-          prop="description"
+          prop="Description"
         >
           <el-radio-group v-model="tempForm.Description">
             <el-radio label="تجديد اشتراك" border>تجديد اشتراك</el-radio>
@@ -96,9 +96,9 @@
               <el-select v-model="tempForm.EditorName" placeholder="محرر السند">
                 <el-option
                   v-for="item in $store.getters.Editors"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  :key="item.Id"
+                  :label="item.Name"
+                  :value="item.Name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -168,15 +168,15 @@ export default {
                 })
                 .catch(err => {
                   console.log(err);
-                });
+                })
             })
             .catch(err => {
               console.log(err);
-            });
+            })
         })
         .catch(err => {
           console.log(err);
-        });
+        })
     },
     createData() {
       this.$refs["dataForm"].validate(valid => {
@@ -188,33 +188,33 @@ export default {
               if (response) {
                 //  if(this.Discount.ValueOfDays >0)
                 // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
-                this.Visibles = false;
+                this.Visibles = false
                 this.$notify({
                   title: "تم ",
                   message: "تم تعديل بنجاح",
-                  type: "success",
+                  type: 'success',
                   duration: 2000,
                   onClose: () => {
                     this.EnableSave = false;
                     this.$nextTick(() => {
                       this.$router.replace({
                         path: "/redirect" + this.$route.fullPath
-                      });
-                    });
+                      })
+                    })
                   }
                 }).catch(error => {
                   console.log(error);
-                });
+                })
               }
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     calc() {
       this.tempForm.StartDate = new Date(this.tempForm.StartDate);
@@ -222,7 +222,7 @@ export default {
 
       this.tempForm.EndDate = new Date(this.tempForm.EndDate);
       let Membership = this.Memberships.find(
-        obj => obj.id == this.tempForm.MembershipID
+        obj => obj.Id == this.tempForm.MembershipID
       );
 
       let Price =
@@ -262,7 +262,7 @@ export default {
       Create(MembershipMovementOrder).then(response => {
         if (response) {
         }
-      });
+      })
     }
   }
 };

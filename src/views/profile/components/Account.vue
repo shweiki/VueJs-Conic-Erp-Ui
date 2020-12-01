@@ -9,7 +9,7 @@
     <el-form-item label="Confirm" prop="ConfirmPassword">
       <el-input type="password" v-model="tempForm.ConfirmPassword" autocomplete="off"></el-input>
     </el-form-item>
-    <el-button type="success" @click="submit()">{{$t('AddVendors.Save')}}</el-button>
+    <el-button type='success' @click="submit()">{{$t('AddVendors.Save')}}</el-button>
   </el-form>
 </template>
 
@@ -63,18 +63,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم تغير كلمة السر بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     resetTempForm() {
       this.tempForm = {

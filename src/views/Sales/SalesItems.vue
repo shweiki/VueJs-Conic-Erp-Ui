@@ -2,9 +2,9 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span class="demonstration">{{ $t('Sales.ByDate') }}</span>
+        <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
         <el-date-picker
-          v-model="date"
+          v-model="$store.getters.Settings.datepickerQuery"
           format="dd/MM/yyyy"
           type="daterange"
           align="left"
@@ -12,42 +12,47 @@
           v-bind:range-separator="$t('Sales.until')"
           v-bind:start-placeholder="$t('Sales.From')"
           v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="['00:00:00', '23:59:59']"
-          :picker-options="pickerOptions"
-          style="width:80%"
-          @change="changeDate"
+          :default-time="$store.getters.Settings.defaulttimeQuery"
+          :picker-options="$store.getters.Settings.pickerOptions"
+          style="width: 80%"
+          @change="getdata"
         ></el-date-picker>
       </div>
       <el-card class="box-card">
-        <span class="demonstration">{{ $t('ItemSales.name') }}</span>
+        <span class="demonstration">{{ $t("ItemSales.Name") }}</span>
         <el-select
           v-model="ItemID"
           filterable
           allow-create
           default-first-option
-          @change="changeDate"
-          v-bind:placeholder="$t('ItemSales.name')"
+          @change="getdata"
+          v-bind:placeholder="$t('ItemSales.Name')"
         >
-          <el-option v-for="item in Items" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          <el-option
+            v-for="item in Items"
+            :key="item.Id"
+            :label="item.Name"
+            :value="item.Id"
+          ></el-option>
         </el-select>
         <el-divider direction="vertical"></el-divider>
         <span>عدد الفواتير</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{tableData.length}}</span>
+        <span>{{ tableData.length }}</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>العدد الكلي</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{TotalQty.toFixed(3)}} JOD</span>
+        <span>{{ TotalQty.toFixed(3) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>القمية الكلية</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{TotalAmmount.toFixed(3)}} JOD</span>
+        <span>{{ TotalAmmount.toFixed(3) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <el-button
-          style="float: left; "
+          style="float: left"
           icon="el-icon-printer"
           type="primary"
           @click="print(tableData)"
@@ -56,16 +61,28 @@
 
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.Account.AccountName.toLowerCase().includes(search.toLowerCase()))"
+        :data="
+          tableData.filter(
+            (data) =>
+              !search ||
+              data.Account.AccountName.toLowerCase().includes(
+                search.toLowerCase()
+              )
+          )
+        "
         fit
         border
         max-height="900"
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column label="#" prop="id" width="120" align="center">
+        <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="changeDate"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="getdata"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -74,9 +91,12 @@
           width="120"
           align="center"
         ></el-table-column>
-        <el-table-column prop="name" align="center">
+        <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('ItemSales.Customer')" />
+            <el-input
+              v-model="search"
+              v-bind:placeholder="$t('ItemSales.Customer')"
+            />
           </template>
         </el-table-column>
         <el-table-column
@@ -85,7 +105,7 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{(scope.row.Qty).toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.Qty.toFixed(3) }}</template>
         </el-table-column>
         <el-table-column
           prop="SellingPrice"
@@ -93,10 +113,21 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{(scope.row.SellingPrice).toFixed(3) }}</template>
+          <template slot-scope="scope">{{
+            scope.row.SellingPrice.toFixed(3)
+          }}</template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('ItemSales.Amountv')" width="120" align="center">
-          <template slot-scope="scope">{{ (scope.row.Qty * scope.row.SellingPrice).toFixed(3) }} JOD</template>
+        <el-table-column
+          v-bind:label="$t('ItemSales.Amountv')"
+          width="120"
+          align="center"
+        >
+          <template slot-scope="scope"
+            >{{
+              (scope.row.Qty * scope.row.SellingPrice).toFixed(3)
+            }}
+            JOD</template
+          >
         </el-table-column>
       </el-table>
     </el-card>
@@ -116,67 +147,24 @@ export default {
       loading: true,
       TotalQty: 0,
       TotalAmmount: 0,
-      date: [],
       search: "",
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "قبل أسبوع",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل شهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 3 أشهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 1 سنة",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
-      },
     };
   },
+
   created() {
-    const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-    this.date = [start, end];
-    this.getdata(this.ItemID, start, end);
+
+    this.getdata();
     GetActiveItem().then((response) => {
       // handle success
-      console.log(response);
+      console.log(this.$store.getters.Settings.datepickerQuery);
       this.Items = response;
       this.loading = false;
-    });
+    })
   },
   methods: {
     print(data) {
       data = data.map((Item) => ({
-        Name: Item.name,
+        Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
         Total: (Item.SellingPrice * Item.Qty).toFixed(3),
@@ -193,8 +181,8 @@ export default {
         header:
           "<center> <h2>مبيعات الصنف " +
           this.Items.find((obj) => {
-            return obj.id == this.ItemID;
-          }).name +
+            return obj.Id == this.ItemID;
+          }).Name +
           "</h2></center> <h3 style='float:left'>   الاجمالي الكمية:  " +
           this.TotalQty.toFixed(3) +
           "</h3><h3 style='float:right'>  الفترة  : " +
@@ -204,12 +192,15 @@ export default {
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      });
+      })
     },
 
-    getdata(itemid, datefrom, dateto) {
+    getdata() {
+      var itemid = this.ItemID, 
+      datefrom = this.$store.getters.Settings.datepickerQuery[0],
+      dateto = this.$store.getters.Settings.datepickerQuery[1]
+
       this.loading = true;
-      datefrom.setHours(0, 0, 0, 0);
       datefrom = JSON.parse(JSON.stringify(datefrom));
       dateto = JSON.parse(JSON.stringify(dateto));
       GetSaleItem({
@@ -231,12 +222,9 @@ export default {
         .catch((error) => {
           // handle error
           console.log(error);
-        });
+        })
     },
-    changeDate() {
-      this.loading = true;
-      this.getdata(this.ItemID, this.date[0], this.date[1]);
-    },
+
     formatDate(date) {
       let d = new Date(date),
         day = "" + d.getDate(),

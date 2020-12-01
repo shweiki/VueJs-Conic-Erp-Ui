@@ -15,41 +15,49 @@
         label-position="top"
         label-width="70px"
       >
-        <el-form-item v-bind:label="$t('Items.ItemName')" prop="name">
-          <el-input type="text" v-model="tempForm.name"></el-input>
+        <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
+          <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
+        <el-checkbox v-model="tempForm.IsPrime"
+          >اظهار على شاشة المبيعات</el-checkbox
+        >
 
         <el-row type="flex">
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
-              <el-input-number
+              <el-input-numbers
                 v-model="tempForm.CostPrice"
                 :precision="2"
                 :step="0.1"
-                :min="0.00"
+                :min="0.0"
                 :max="1500"
-              ></el-input-number>
+              />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Items.PurchaseCost')" prop="OtherPrice">
+            <el-form-item
+              v-bind:label="$t('Items.PurchaseCost')"
+              prop="OtherPrice"
+            >
               <el-input-number
                 v-model="tempForm.OtherPrice"
                 :precision="2"
                 :step="0.1"
-                :min="0.00"
+                :min="0.0"
                 :max="1500"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Items.SellingPrice')" prop="SellingPrice">
+            <el-form-item
+              v-bind:label="$t('Items.SellingPrice')"
+              prop="SellingPrice"
+            >
               <el-input-number
                 v-model="tempForm.SellingPrice"
                 :precision="2"
                 :step="0.1"
-                :min="0.00"
+                :min="0.0"
                 :max="1500"
               ></el-input-number>
             </el-form-item>
@@ -59,7 +67,11 @@
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
-              <el-input-number v-model="tempForm.LowOrder" :min="1" :max="100000000"></el-input-number>
+              <el-input-number
+                v-model="tempForm.LowOrder"
+                :min="1"
+                :max="100000000"
+              ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -70,25 +82,33 @@
                 :step="0.01"
                 :min="0.01"
                 :max="1"
-              ></el-input-number>
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
-              <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode"></el-input>
+              <el-input
+                v-model="tempForm.Barcode"
+                suffix-icon="fa fa-barcode"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Items.Notes')" prop="description">
-              <el-input type="textarea" v-model="tempForm.Description"></el-input>
+            <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
+              <el-input
+                type="textarea"
+                v-model="tempForm.Description"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{ $t('permission.cancel') }}</el-button>
+        <el-button @click="Visibles = false">{{
+          $t("permission.cancel")
+        }}</el-button>
         <el-button type="primary" @click="updateData()">حفظ</el-button>
       </div>
     </el-dialog>
@@ -110,7 +130,7 @@ export default {
     return {
       Visibles: false,
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         Name: "",
         CostPrice: 0.0,
         SellingPrice: 0.0,
@@ -154,7 +174,7 @@ export default {
         if (valid) {
           Edit(this.tempForm)
             .then(response => {
-              this.Visibles = false;
+              this.Visibles = false
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",

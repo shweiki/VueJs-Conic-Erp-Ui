@@ -80,7 +80,7 @@ export default {
       this.$refs.tree.setCheckedKeys(JSON.parse(this.Router));
 
       this.checkStrictly = false;
-    });
+    })
     this.dialogVisible= true
     },
     async getRoutes() {
@@ -98,13 +98,13 @@ export default {
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",
-            type: "success",
+            type: 'success',
             duration: 2000,
-          });
+          })
         })
         .catch((error) => {
           console.log(error);
-        });
+        })
     },
     // Reshape the routes structure so that it looks the same as the sidebar
     generateRoutes(routes, basePath = "/") {
@@ -148,7 +148,7 @@ export default {
             data = [...data, ...temp];
           }
         }
-      });
+      })
       return data;
     },
 

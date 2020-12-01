@@ -5,6 +5,7 @@
         style="margin-left: 10px"
         size="small"
         type="primary"
+        :loading="loading"
         @click="SubmitBackUp"
       >
         BackUp DataBase</el-button
@@ -18,18 +19,18 @@
       highlight-current-row
       style="width: 100%"
     >
-      <el-table-column label="#" prop="id" width="50"></el-table-column>
+      <el-table-column label="#" prop="Id" width="50"></el-table-column>
 
-      <el-table-column prop="name" align="center">
+      <el-table-column prop="Name" align="center">
         <template slot="header" slot-scope="{}">
-          <el-input v-model="search" v-bind:placeholder="$t('Account.name')" />
+          <el-input v-model="search" v-bind:placeholder="$t('Account.Name')" />
         </template>
       </el-table-column>
       <el-table-column
         label="DataBaseName"
-        prop="dataBaseName"
+        prop="DataBaseName"
       ></el-table-column>
-      <el-table-column label="DateTime" prop="dateTime"></el-table-column>
+      <el-table-column label="DateTime" prop="DateTime"></el-table-column>
       <el-table-column label="UserID" prop="userID"></el-table-column>
 
       <el-table-column align="right" width="200">
@@ -37,8 +38,9 @@
           <el-button
             style="margin-left: 10px"
             size="small"
-            type="success"
-            @click="SubmitRestore(scope.row.id)"
+            type='success'
+            :loading="loading"
+            @click="SubmitRestore(scope.row.Id)"
             >Submit Restore to server</el-button
           >
         </template>
@@ -75,30 +77,38 @@ export default {
         .catch((error) => {
           // handle error
           console.log(error);
-        });
+        })
     },
     SubmitRestore(id) {
+      this.loading = true;
+
       Restore({ backUpId: id }).then((response) => {
-        if (response)
+        if (response) {
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",
-            type: "success",
+            type: 'success',
             duration: 2000,
-          });
-      });
+          })
+          this.loading = true;
+          this.getdata();
+        }
+      })
     },
     SubmitBackUp() {
+      this.loading = true;
       BackUp().then((response) => {
-        if (response)
+        if (response) {
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",
-            type: "success",
+            type: 'success',
             duration: 2000,
-          });
-        this.getdata();
-      });
+          })
+          this.loading = true;
+          this.getdata();
+        }
+      })
     },
   },
 };

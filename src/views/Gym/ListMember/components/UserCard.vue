@@ -2,7 +2,7 @@
   <el-form :model="Member" ref="dataForm" label-position="top">
     <el-row type="flex">
       <el-col :span="8">
-        <el-form-item label="ملاحظات" prop="description">
+        <el-form-item label="ملاحظات" prop="Description">
           <el-input
             type="textarea"
             v-model="Member.Description"
@@ -12,7 +12,7 @@
         <el-button
           type="primary"
           icon="el-icon-save"
-          @click="Member.id != null ?updateData():createData()"
+          @click="Member.Id != null ?updateData():createData()"
         >{{$t('AddVendors.Save')}}</el-button>
             <el-button
      
@@ -24,13 +24,13 @@
       <el-col :span="8">
         <el-form-item
           label="رقم الهاتف"
-          prop="phoneNumber1"
+          prop="PhoneNumber1"
           :rules="[{ required: true, message: 'لايمكن ترك رقم الهاتف فارغ', trigger: 'blur' } ]"
         >
           <el-input
             type="text"
-            v-model="Member.phoneNumber1"
-            v-bind:placeholder="$t('AddVendors.phoneNumber1')"
+            v-model="Member.PhoneNumber1"
+            v-bind:placeholder="$t('AddVendors.PhoneNumber1')"
           ></el-input>
         </el-form-item>
         <el-form-item label="رقم الهاتف" prop="PhoneNumber2">
@@ -47,18 +47,18 @@
 
       <el-col :span="8">
         <el-form-item
-          v-bind:label="$t('CashDrawer.name')"
-          prop="name"
+          v-bind:label="$t('CashDrawer.Name')"
+          prop="Name"
           :rules="[{ required: true, message: 'لايمكن ترك الاسم فارغ', trigger: 'blur' } ]"
         >
-          <el-input type="text" v-model="Member.name" v-bind:placeholder="$t('CashDrawer.name')"></el-input>
+          <el-input type="text" v-model="Member.Name" v-bind:placeholder="$t('CashDrawer.Name')"></el-input>
         </el-form-item>
         <el-form-item
           label="الرقم الوطني"
-          prop="SSN"
+          prop="Ssn"
           :rules="[{ required: true, message: 'لايمكن ترك الرقم الوطني فارغ', trigger: 'blur' } ]"
         >
-          <el-input type="text" v-model="Member.SSN" placeholder="الرقم الوطني"></el-input>
+          <el-input type="text" v-model="Member.Ssn" placeholder="الرقم الوطني"></el-input>
         </el-form-item>
         <el-form-item
           label="تاريخ ميلاد"
@@ -96,12 +96,12 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           const data = {
-            ID: this.Member.id,
-            Name: this.Member.name,
-            SSN: this.Member.SSN,
+            ID: this.Member.Id,
+            Name: this.Member.Name,
+            Ssn: this.Member.Ssn,
             DateofBirth: this.Member.DateofBirth,
             Email: this.Member.Email,
-            phoneNumber1: this.Member.phoneNumber1,
+            phoneNumber1: this.Member.PhoneNumber1,
             PhoneNumber2: this.Member.PhoneNumber2,
             Description: this.Member.Description,
             Tag:this.Member.Tag,
@@ -114,30 +114,30 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
-              this.$router.replace({ path: "/redirect" + "/Gym/ListMember" });
+              })
+              this.$router.replace({ path: "/redirect" + "/Gym/ListMember" })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           const data = {
-            ID: this.Member.id,
-            Name: this.Member.name,
-            SSN: this.Member.SSN,
+            ID: this.Member.Id,
+            Name: this.Member.Name,
+            Ssn: this.Member.Ssn,
             DateofBirth: this.Member.DateofBirth,
             Email: this.Member.Email,
-            phoneNumber1: this.Member.phoneNumber1,
+            phoneNumber1: this.Member.PhoneNumber1,
             PhoneNumber2: this.Member.PhoneNumber2,
             Description: this.Member.Description,
             Status: this.Member.Status,
@@ -148,23 +148,23 @@ export default {
             .then(response => {
               this.dialogFormVisible = false;
               this.$store.getters.Devices.forEach(element => {
-                this.SetOnDevice(element.id ,element.name);
-              });
+                this.SetOnDevice(element.Id ,element.Name);
+              })
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
         Print() {
       printJS({
@@ -172,25 +172,25 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true
-      });
+      })
     },
     SetOnDevice(DeviceID ,Name) {
       SetUser({
         DeviceID: DeviceID,
-        UserID: this.Member.id
+        UserID: this.Member.Id
       }).then(response => {
         if (response) {
           console.log(response);
           this.$notify({
             title: "تم",
             message: "تم ارسال البيانات لاجهاز " + Name +" \ "+ response+" ",
-            type: "success",
+            type: 'success',
             duration: 3000,
             position :"top-right"
 
-          });
+          })
         }
-      });
+      })
     }
   }
 };

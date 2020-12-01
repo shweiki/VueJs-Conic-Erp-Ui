@@ -43,7 +43,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="description">
+            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
               <el-input v-model="Payment.Description"></el-input>
             </el-form-item>
           </el-col>
@@ -58,9 +58,9 @@
               <el-select v-model="Payment.EditorName" placeholder="محرر السند">
                 <el-option
                   v-for="item in $store.getters.Editors"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  :key="item.Id"
+                  :label="item.Name"
+                  :value="item.Name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -126,7 +126,7 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true
-      });
+      })
     },
     create() {
       this.$refs["Form"].validate(valid => {
@@ -134,25 +134,25 @@ export default {
           this.Payment.MemberID = this.MemberID;
           CreatePayment(this.Payment)
             .then(response => {
-              this.Payment.name = this.name;
-              this.Visibles = false;
+              this.Payment.Name = this.Name;
+              this.Visibles = false
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000,
                 onClose: () => {
-                  this.Payment.id = response;
+                  this.Payment.Id = response;
                   this.OldPayment = this.Payment;
                   this.Print();
                 }
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         }
-      });
+      })
     }
   }
 };

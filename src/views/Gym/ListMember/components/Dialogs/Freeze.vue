@@ -36,7 +36,7 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item
-              prop="description"
+              prop="Description"
               :rules="[{ required: true, message: 'لايمكن ترك ملاحظات فارغ', trigger: 'blur' } ]"
               v-bind:label="$t('AddVendors.Description')"
             >
@@ -54,9 +54,9 @@
               <el-select v-model="MembershipMovementOrder.EditorName" placeholder="محرر السند">
                 <el-option
                   v-for="item in $store.getters.Editors"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  :key="item.Id"
+                  :label="item.Name"
+                  :value="item.Name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -155,27 +155,27 @@ export default {
             Create(this.MembershipMovementOrder)
               .then(response => {
                 if (response) {
-                  this.Visibles = false;
+                  this.Visibles = false
                   this.EnableSave = false;
 
                   this.$notify({
                     title: "تم ",
                     message: "تم الإضافة بنجاح",
-                    type: "success",
+                    type: 'success',
                     duration: 2000
-                  });
+                  })
                   this.$nextTick(() => {
                     this.$router.replace({
                       path: "/redirect" + this.$route.fullPath
-                    });
-                  });
+                    })
+                  })
                 }
               })
               .catch(error => {
                 console.log(error);
-              });
+              })
           }
-        });
+        })
       } else {
         this.ValidateNote =
           "عدد الايام المطلوب تجميدها غير المسموح بها";

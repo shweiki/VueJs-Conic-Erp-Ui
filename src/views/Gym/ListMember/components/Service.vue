@@ -1,7 +1,7 @@
 <template>
   <div class="app-container" style="direction : rtl ">
     <el-table height="500" :data="ServiceInvoices" fit border highlight-current-row>
-      <el-table-column prop="name" label="الخدمة" align="center"></el-table-column>
+      <el-table-column prop="Name" label="الخدمة" align="center"></el-table-column>
       <el-table-column label="الكلي" align="center">
         <template slot-scope="scope">
           {{
@@ -26,7 +26,7 @@
 
       <el-table-column label="#" align="center">
         <template slot-scope="scope">
-          <el-button type="danger" icon="el-icon-minus" @click="MinusOne(scope.row.id)"></el-button>
+          <el-button type="danger" icon="el-icon-minus" @click="MinusOne(scope.row.Id)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +64,7 @@ export default {
       let InventoryMovement = this.ServiceInvoices.find(
         ({ ID }) => ID == SID
       ).InventoryMovements.filter(obj => obj.Status == 1);
-      this.InventoryMovementID = InventoryMovement[0].id;
+      this.InventoryMovementID = InventoryMovement[0].Id;
     },
     createOprationData() {
       ChangeObjStatusByTableName({
@@ -79,18 +79,18 @@ export default {
           this.$notify({
             title: "تم  ",
             message: "تمت العملية بنجاح",
-            type: "success",
+            type: 'success',
             duration: 2000
-          });
+          })
           this.$nextTick(() => {
             this.$router.replace({
               path: "/redirect" + this.$route.fullPath
-            });
-          });
+            })
+          })
         })
         .catch(error => {
           console.log(error);
-        });
+        })
     }
   }
 };

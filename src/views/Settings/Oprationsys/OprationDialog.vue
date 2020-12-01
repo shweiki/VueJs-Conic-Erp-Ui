@@ -13,7 +13,7 @@
       label-width="70px"
       style="width: 400px margin-left:50px"
     >
-      <el-form-item v-bind:label="$t('Classification.OperationNote')" prop="description">
+      <el-form-item v-bind:label="$t('Classification.OperationNote')" prop="Description">
         <el-input type="textarea" v-model="tempOpration.Description"></el-input>
       </el-form-item>
     </el-form>

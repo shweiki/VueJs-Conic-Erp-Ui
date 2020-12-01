@@ -5,7 +5,7 @@
         <el-button
           style="float: left"
           
-          type="success"
+          type='success'
           icon="el-icon-plus"
           @click="handleCreate()"
         >{{ $t('Classification.Add') }}</el-button>
@@ -18,7 +18,7 @@
         max-height="750"
         v-loading="loading"
       >
-        <el-table-column prop="id" width="100">
+        <el-table-column prop="Id" width="100">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()" ></el-button>
           </template>
@@ -160,7 +160,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     resetTempForm() {
       this.tempForm = {
@@ -183,11 +183,11 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     handleUpdate(row) {
       console.log(row);
-      this.tempForm.id = row.id;
+      this.tempForm.Id = row.Id;
       this.tempForm.TableName = row.TableName;
       this.tempForm.ControllerName = row.ControllerName;
       this.tempForm.RoleName = row.RoleName;
@@ -202,7 +202,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     createData() {
       this.$refs["dataForm"].validate(valid => {
@@ -214,18 +214,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
@@ -237,18 +237,18 @@ export default {
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     }
   }
 }

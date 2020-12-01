@@ -8,7 +8,7 @@
         <el-row type="flex" style="background : #2f3542; color: white;">
           <el-col :span="6">
             <el-button
-              type="success"
+              type='success'
               icon="el-icon-s-shop"
               @click="$router.replace({ path: '/redirect' + '/SalesInvoice' })"
             ></el-button>
@@ -43,37 +43,37 @@
               <el-row type="flex">
                 <el-col :span="24">
                   <member-ship-movement
-                    :MemberID="tempForm.id"
+                    :MemberID="tempForm.Id"
                     :AccountID="tempForm.AccountID"
-                    :Name="tempForm.name"
-                    :Enable="(tempForm.totalCredit - tempForm.totalDebit) >0 ? true : false"
+                    :Name="tempForm.Name"
+                    :Enable="(tempForm.TotalCredit - tempForm.TotalDebit) >0 ? true : false"
                   />
                 </el-col>
               </el-row>
               <el-row type="flex">
                 <el-col :span="24">
-                  <member-pay :MemberID="tempForm.id" :Name="tempForm.name" />
+                  <member-pay :MemberID="tempForm.Id" :Name="tempForm.Name" />
                 </el-col>
               </el-row>
               <el-row type="flex">
                 <el-col :span="24">
                   <member-ship-movement-with-pay
-                    :MemberID="tempForm.id"
+                    :MemberID="tempForm.Id"
                     :AccountID="tempForm.AccountID"
-                    :Name="tempForm.name"
-                    :Enable="(tempForm.totalCredit - tempForm.totalDebit) >0 ? true : false"
+                    :Name="tempForm.Name"
+                    :Enable="(tempForm.TotalCredit - tempForm.TotalDebit) >0 ? true : false"
                   />
                 </el-col>
               </el-row>
               <el-row type="flex">
                 <el-col :span="24">
-                  <service-invoice :MemberID="tempForm.id" />
+                  <service-invoice :MemberID="tempForm.Id" />
                 </el-col>
               </el-row>
               <el-row type="flex">
                 <el-col :span="24">
                   <massage
-                    :NumberPhone1="tempForm.phoneNumber1"
+                    :NumberPhone1="tempForm.PhoneNumber1"
                     :NumberPhone2="tempForm.PhoneNumber2"
                     :Email="tempForm.Email"
                   />
@@ -94,7 +94,7 @@
               <payment :Payments="Payments" />
             </el-tab-pane>
             <el-tab-pane label="زيارات" name="timeline">
-              <timeline :timeline="log" :MemberID="tempForm.id" />
+              <timeline :timeline="log" :MemberID="tempForm.Id" />
             </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
               <account :EntryMovements="EntryMovements" :AccountID="tempForm.AccountID" />
@@ -177,7 +177,7 @@ export default {
         this.$message({
           message: rule.field + "اواي",
           type: "error"
-        });
+        })
         callback(new Error(rule.field + "اي"));
       } else {
         callback();
@@ -191,7 +191,7 @@ export default {
           this.$message({
             message: "اه",
             type: "error"
-          });
+          })
           callback(new Error("اوه"));
         }
       } else {
@@ -222,7 +222,7 @@ export default {
       GetMemberByID({ ID: val })
         .then(response => {
           this.tempForm = response;
-          this.GetImageMember(this.tempForm.id);
+          this.GetImageMember(this.tempForm.Id);
           this.getAge();
           this.loading = false;
           //this.GetMemberLogFromDevices(val);
@@ -232,37 +232,37 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        });
+        })
     },
     tabClick(tab, event) {
       if (tab.label == "زيارات")
         GetMemberLogByID({
-          ID: this.tempForm.id
+          ID: this.tempForm.Id
         }).then(response => {
           console.log("log :", response);
           this.log = response.reverse();
-        });
+        })
       if (tab.label == "اشتراكات")
         GetMembershipMovementByMemberID({
-          MemberID: this.tempForm.id
+          MemberID: this.tempForm.Id
         }).then(response => {
           console.log("log :", response);
           this.MembershipMovements = response.reverse();
-        });
+        })
       if (tab.label == "مقبوضات")
         GetPaymentsByMemberID({
-          MemberID: this.tempForm.id
+          MemberID: this.tempForm.Id
         }).then(response => {
           console.log("log :", response);
           this.Payments = response.reverse();
-        });
+        })
             if (tab.label == "مالية")
         GetEntryMovementsByAccountID({
           AccountID: this.tempForm.AccountID
         }).then(response => {
           console.log("log :", response);
           this.EntryMovements = response;
-        });
+        })
     },
     GetImageMember(ID) {
       GetFileByObjID({ TableName: "Member", ObjID: ID })
@@ -272,7 +272,7 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        });
+        })
     },
     getAge() {
       var today = new Date();
@@ -283,11 +283,11 @@ export default {
         age = age - 1;
       }
 
-      this.tempForm.age = age;
+      this.tempForm.Age = age;
     },
     GetMemberLogFromDevices(MemberID) {
       GetUserLog({
-        DeviceID: this.$store.getters.Devices[0].id,
+        DeviceID: this.$store.getters.Devices[0].Id,
         UserID: MemberID
       }).then(response => {
         if (response) {
@@ -296,15 +296,15 @@ export default {
             title: "تم",
             message:
               "تم سحب البيانات من جهاز " +
-              this.$store.getters.Devices[0].name +
+              this.$store.getters.Devices[0].Name +
               "  " +
               response +
               "",
-            type: "success",
+            type: 'success',
             duration: 2000
-          });
+          })
           GetUserLog({
-            DeviceID: this.$store.getters.Devices[1].id,
+            DeviceID: this.$store.getters.Devices[1].Id,
             UserID: MemberID
           }).then(response => {
             if (response) {
@@ -313,28 +313,28 @@ export default {
                 title: "تم",
                 message:
                   "تم سحب البيانات من جهاز " +
-                  this.$store.getters.Devices[1].name +
+                  this.$store.getters.Devices[1].Name +
                   "  " +
                   response +
                   "",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     setTagsViewTitle() {
       const title = "Member";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.id}`
-      });
+        title: `${title}-${this.tempForm.Id}`
+      })
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Member";
-      document.title = `${title} - ${this.tempForm.id}`;
+      document.title = `${title} - ${this.tempForm.Id}`;
     }
   }
 };

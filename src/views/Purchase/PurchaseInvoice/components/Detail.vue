@@ -110,7 +110,7 @@
           <items-search @add="AddItem" />
         </el-card>
         <el-table :data="tempForm.InventoryMovements" fit border>
-          <el-table-column align="center" prop="Itemx.name">
+          <el-table-column align="center" prop="Itemx.Name">
             <template
               slot="header"
               slot-scope="{}"
@@ -122,7 +122,7 @@
                 :content="tempForm.InventoryMovements[scope.$index].Itemx.SellingPrice.toFixed(2)"
                 placement="top-start"
               >
-                <el-button>{{tempForm.InventoryMovements[scope.$index].Itemx.name}}</el-button>
+                <el-button>{{tempForm.InventoryMovements[scope.$index].Itemx.Name}}</el-button>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -263,7 +263,7 @@ export default {
         this.$message({
           message: rule.field + "اواي",
           type: "error"
-        });
+        })
         callback(new Error(rule.field + "اي"));
       } else {
         callback();
@@ -277,7 +277,7 @@ export default {
           this.$message({
             message: "اه",
             type: "error"
-          });
+          })
           callback(new Error("اوه"));
         }
       } else {
@@ -326,12 +326,12 @@ export default {
     GetActiveInventory().then(response => {
       console.log(response);
       this.InventoryItems = response;
-    });
+    })
 
     GetActiveVendor().then(response => {
       console.log(response);
       this.Vendor = response;
-    });
+    })
 
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
@@ -352,12 +352,12 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        });
+        })
     },
     AddItem(item) {
       this.tempForm.InventoryMovements.push({
         ID: undefined,
-        ItemsID: item != undefined ? item.id : undefined,
+        ItemsID: item != undefined ? item.Id : undefined,
         TypeMove: "In",
         Status: 0,
         Qty: 1.0,
@@ -367,7 +367,7 @@ export default {
         Itemx: item,
         PurchaseInvoiceID: undefined,
         Description: ""
-      });
+      })
       this.SumTotalAmmount();
     },
     RemoveItem(index) {
@@ -406,7 +406,7 @@ export default {
                 this.$notify({
                   title: "تم تعديل  بنجاح",
                   message: "تم تعديل بنجاح",
-                  type: "success",
+                  type: 'success',
                   position: "top-left",
                   duration: 1000,
                   showClose: false,
@@ -415,21 +415,21 @@ export default {
                       this.$nextTick(() => {
                         this.$router.replace({
                           path: "/redirect" + "/Purchase/List"
-                        });
-                      });
+                        })
+                      })
                     }
                   }
-                });
+                })
               })
               .catch(error => {
                 console.log(error);
-              });
+              })
           } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     createData() {
       this.$refs["tempForm"].validate(valid => {
@@ -446,7 +446,7 @@ export default {
                 this.$notify({
                   title: "تم الإضافة بنجاح",
                   message: "تم الإضافة بنجاح",
-                  type: "success",
+                  type: 'success',
                   position: "top-left",
                   duration: 1000,
                   showClose: false,
@@ -455,32 +455,32 @@ export default {
                       this.$nextTick(() => {
                         this.$router.replace({
                           path: "/redirect" + "/Purchase/List"
-                        });
-                      });
+                        })
+                      })
                     }
                   }
-                });
+                })
               })
               .catch(error => {
                 console.log(error);
-              });
+              })
           } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     setTagsViewTitle() {
       const title = "Edit Purchase";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.id}`
-      });
+        title: `${title}-${this.tempForm.Id}`
+      })
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Purchase";
-      document.title = `${title} - ${this.tempForm.id}`;
+      document.title = `${title} - ${this.tempForm.Id}`;
     }
   }
 };

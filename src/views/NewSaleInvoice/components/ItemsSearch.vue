@@ -17,9 +17,9 @@
           placeholder="بحث حسب اسم الصنف"
           @change="change"
         >
-          <el-option v-for="item in options" :key="item.id" :value="item" :label="item.name">
-            <span style=" color: #8492a6; font-size: 12px">( {{ item.id }} )</span>
-            <span style="float: left">{{ item.name }}</span>
+          <el-option v-for="item in options" :key="item.Id" :value="item" :label="item.Name">
+            <span style=" color: #8492a6; font-size: 12px">( {{ item.Id }} )</span>
+            <span style="float: left">{{ item.Name }}</span>
             <span style=" float: right; color: #8492a6; font-size: 13px">{{ item.SellingPrice }}</span>
           </el-option>
         </el-select>
@@ -36,7 +36,7 @@
     >
       <el-row type="flex">
         <el-col :span="3">
-          <el-button type="success" icon="el-plus" @click="NewItem()">حفظ</el-button>
+          <el-button type='success' icon="el-plus" @click="NewItem()">حفظ</el-button>
         </el-col>
         <el-col :span="5">
           <el-form-item label="سعر البيع">
@@ -64,7 +64,7 @@
     <el-dialog style="margin-top: -13vh" title="QTY" :visible.sync="EnterQTYVisible" width="80%">
       <el-row type="flex">
         <el-col :span="3">
-          <el-button type="success" icon="el-plus" @click="AddItemByQty">Add</el-button>
+          <el-button type='success' icon="el-plus" @click="AddItemByQty">Add</el-button>
         </el-col>
 
         <el-col :span="12">
@@ -142,7 +142,7 @@ export default {
             weight: 0.3
           }
         ]
-      });
+      })
     },
     querySearch(query) {
       if (query !== "") {
@@ -186,7 +186,7 @@ export default {
     NewItem() {
       CreateItem({
         ID: undefined,
-        Name: this.name,
+        Name: this.Name,
         CostPrice: 0.0,
         SellingPrice: this.SellingPrice,
         OtherPrice: 0.0,
@@ -199,19 +199,19 @@ export default {
       })
         .then(response => {
           this.Barcode = "";
-          (this.name = ""), (this.NewItemVisible = false);
+          (this.Name = ""), (this.NewItemVisible = false);
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",
-            type: "success",
+            type: 'success',
             duration: 2000
-          });
+          })
           store.dispatch("Items/GetItem");
           this.focusBarcode();
         })
         .catch(error => {
           console.log(error);
-        });
+        })
     }
   },
   created() {

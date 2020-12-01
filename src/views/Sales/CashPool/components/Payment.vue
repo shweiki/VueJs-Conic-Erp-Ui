@@ -5,7 +5,7 @@
         <el-button
           :disabled="EnableSave"
           style="float: left"
-          type="success"
+          type='success'
           icon="fa fa-save"
           @click="createData('tempForm')"
         >{{ $t('CashPool.Save') }}</el-button>
@@ -77,7 +77,7 @@
         :disabled="EnableSave"
         style="float: left;"
         icon="el-icon-printer"
-        type="success"
+        type='success'
         @click="print(tableData)"
       ></el-button>
     </el-card>
@@ -96,17 +96,17 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column label="#" prop="id" width="120" align="center">
+        <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
           </template>
         </el-table-column>
         <el-table-column prop="ObjectID" label="رقم المشترك" align="center"></el-table-column>
 
-        <el-table-column prop="name" label="المشترك" align="center">
+        <el-table-column prop="Name" label="المشترك" align="center">
           <template slot-scope="scope">
             <router-link :to="'/Gym/Edit/'+scope.row.ObjectID">
-              <strong style="font-size: 10px; cursor: pointer;">{{scope.row.name}}</strong>
+              <strong style="font-size: 10px; cursor: pointer;">{{scope.row.Name}}</strong>
             </router-link>
           </template>
         </el-table-column>
@@ -138,7 +138,7 @@
               :key="index"
               :type="NOprations.ClassName"
               round
-              @click="handleOprationsys(scope.row.id , NOprations)"
+              @click="handleOprationsys(scope.row.Id , NOprations)"
             >{{NOprations.OprationDescription}}</el-button>
           </template>
         </el-table-column>
@@ -153,7 +153,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item label="ملاحظات للعملية " prop="description">
+        <el-form-item label="ملاحظات للعملية " prop="Description">
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -260,8 +260,8 @@ export default {
         GetInComeAccounts().then((response) => {
           this.InComeAccounts = response;
           this.InComeAccount = this.InComeAccounts[2].value;
-        });
-      });
+        })
+      })
 
       GetPaymentByStatus({ Status: 0 })
         .then((response) => {
@@ -273,7 +273,7 @@ export default {
         .catch((error) => {
           // handle error
           console.log(error);
-        });
+        })
     },
     createData() {
       this.EnableSave = true;
@@ -304,31 +304,31 @@ export default {
           AccountID: i.AccountID,
           Debit: i.TotalAmmount,
           Credit: 0.0,
-          Description: "سند قبض رقم " + i.id + " ",
+          Description: "سند قبض رقم " + i.Id + " ",
           EntryID: undefined,
-        });
-      });
+        })
+      })
       console.log(tempForm);
       CreateEntry(tempForm)
         .then((response) => {
           console.log(response);
           let IDS = this.Selection.map((a) => {
             ChangeObjStatusByTableName({
-              ObjID: a.id,
+              ObjID: a.Id,
               TableName: "Payment",
               Status: 1,
               Description: "دفعة مؤكدة",
             }).then((response) => {
               console.log(response);
-            });
-          });
+            })
+          })
           console.log(IDS);
           this.EnableSave = false;
 
           this.$notify({
             title: "تم الإضافة بنجاح",
             message: "تم الإضافة بنجاح",
-            type: "success",
+            type: 'success',
             position: "top-left",
             duration: 1000,
             showClose: false,
@@ -336,8 +336,8 @@ export default {
               store.dispatch("Members/GetActiveMember");
               let data = [];
               this.$store.getters.ActiveMembers.forEach((obj) => {
-                if (obj.totalCredit - obj.totalDebit > 0) data.push(obj);
-              });
+                if (obj.TotalCredit - obj.TotalDebit > 0) data.push(obj);
+              })
               console.log(this.$store.getters.ActiveMembers);
               console.log(data);
 
@@ -347,7 +347,7 @@ export default {
                   properties: [
                     { field: "ID", displayName: "رقم المشترك" },
                     { field: "Name", displayName: "اسم المشترك" },
-                    { field: "ActiveMemberShip.name", displayName: "اشتراك" },
+                    { field: "ActiveMemberShip.Name", displayName: "اشتراك" },
                     {
                       field: "ActiveMemberShip.TotalAmmount",
                       displayName: "قيمة الاشتراك",
@@ -360,8 +360,8 @@ export default {
                     this.$store.getters.ActiveMembers.reduce(
                       (a, b) =>
                         a +
-                        (b.totalCredit - b.totalDebit > 0
-                          ? b.totalCredit - b.totalDebit
+                        (b.TotalCredit - b.TotalDebit > 0
+                          ? b.TotalCredit - b.TotalDebit
                           : 0),
                       0
                     ).toFixed(3) +
@@ -370,15 +370,15 @@ export default {
                     "</h3>",
                   gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
                   gridStyle: "border: 2px solid #3971A5; text-align: center;",
-                });
+                })
               }
               this.getdata();
             },
-          });
+          })
         })
         .catch((error) => {
           console.log(error);
-        });
+        })
     },
     print(data) {
       printJS({
@@ -410,7 +410,7 @@ export default {
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      });
+      })
     },
     printPayment(data) {
       printJS({
@@ -418,7 +418,7 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true,
-      });
+      })
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
@@ -430,7 +430,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createOprationData() {
@@ -446,17 +446,17 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000,
-              });
+              })
             })
             .catch((error) => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
         }
-      });
+      })
     },
     formatDate(date) {
       let d = new Date(date),

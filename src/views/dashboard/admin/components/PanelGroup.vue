@@ -137,7 +137,7 @@ export default {
       GetTotal().then(response => {
         console.log(response);
         this.Totals = response;
-      });
+      })
     }
   }
 };

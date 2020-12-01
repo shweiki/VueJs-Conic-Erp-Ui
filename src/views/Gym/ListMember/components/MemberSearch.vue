@@ -10,12 +10,12 @@
     v-bind:placeholder="$t('Vendors.Search')+'/ هاتف / الرقم الوطني /  رقم العضوية'"
     @change="change"
   >
-    <el-option v-for="item in options" :key="item.id" :value="item" :label="item.name">
-      <span style=" color: #8492a6; font-size: 12px">( {{ item.id }} )</span>
-      <span style="float: left">{{ item.name }}</span>
-      <span style=" float: right; color: #8492a6; font-size: 13px">{{ item.ssn }}</span>
-      <span style=" color: #8492a6; font-size: 13px">( 0{{ item.phoneNumber1 }} )</span>
-      <span style=" color: #8492a6; font-size: 13px">( {{ item.tag }} )</span>
+    <el-option v-for="item in options" :key="item.Id" :value="item" :label="item.Name">
+      <span style=" color: #8492a6; font-size: 12px">( {{ item.Id }} )</span>
+      <span style="float: left">{{ item.Name }}</span>
+      <span style=" float: right; color: #8492a6; font-size: 13px">{{ item.Ssn }}</span>
+      <span style=" color: #8492a6; font-size: 13px">( 0{{ item.PhoneNumber1 }} )</span>
+      <span style=" color: #8492a6; font-size: 13px">( {{ item.Tag }} )</span>
     </el-option>
   </el-select>
 </template>
@@ -50,10 +50,10 @@ export default {
   },
   methods: {
     change(val) {
-      this.$router.push("/Gym/Edit/" + val.id + "");
+      this.$router.push("/Gym/Edit/" + val.Id + "");
       this.search = "";
       this.options = [];
-      this.$nextTick(() => {});
+      this.$nextTick(() => {})
     },
     initFuse(list) {
       this.fuse = new Fuse(list, {
@@ -65,27 +65,27 @@ export default {
         minMatchCharLength: 1,
         keys: [
           {
-            name: "id",
+            name: "Id",
             weight: 0.7
           },
           {
-            name: "name",
+            name: "Name",
             weight: 0.3
           },
           {
-            name: "ssn",
+            name: "Ssn",
             weight: 1
           },
           {
-            name: "phoneNumber1",
+            name: "PhoneNumber1",
             weight: 0.3
           },
           {
-            name: "tag",
+            name: "Tag",
             weight: 0.2
           }
         ]
-      });
+      })
     },
 
     querySearch(query) {

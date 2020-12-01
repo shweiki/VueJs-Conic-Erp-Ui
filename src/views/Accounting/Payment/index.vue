@@ -10,7 +10,7 @@
           >
             <el-radio-button
               v-for="op in Oprations"
-              :key="op.id"
+              :key="op.Id"
               v-bind:label="op.Status"
               >{{ op.OprationDescription }}</el-radio-button
             >
@@ -64,7 +64,7 @@
         <el-button
           style="float: left"
           icon="el-icon-printer"
-          type="success"
+          type='success'
           @click="print(tableData)"
         ></el-button>
       </el-card>
@@ -78,7 +78,7 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column label="#" prop="id" width="120" align="center">
+        <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
               type="primary"
@@ -93,11 +93,11 @@
           align="center"
         ></el-table-column>
 
-        <el-table-column prop="name" label="المشترك" align="center">
+        <el-table-column prop="Name" label="المشترك" align="center">
           <template slot-scope="scope">
             <router-link :to="'/Gym/Edit/' + scope.row.accountID">
               <strong style="font-size: 10px; cursor: pointer">{{
-                scope.row.name
+                scope.row.Name
               }}</strong>
             </router-link>
           </template>
@@ -218,7 +218,7 @@ export default {
     start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
     this.date = [start, end];
     this.getdata(start, end, this.Status);
-    });
+    })
 
   },
   methods: {
@@ -250,7 +250,7 @@ export default {
         this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
 
         this.loading = false;
-      });
+      })
     },
     changeDate() {
       this.loading = true;
@@ -284,7 +284,7 @@ export default {
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      });
+      })
     },
     printPayment(data) {
       printJS({
@@ -292,7 +292,7 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true,
-      });
+      })
     },
 
     formatDate(date) {

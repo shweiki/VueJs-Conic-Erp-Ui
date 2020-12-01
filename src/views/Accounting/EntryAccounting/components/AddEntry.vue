@@ -2,7 +2,7 @@
   <div>
     <el-button
       style="width: 100px;"
-      type="success"
+      type='success'
       icon="el-icon-plus"
       @click="Visibles = true"
     >إضافة قيد</el-button>
@@ -30,7 +30,7 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item
-              prop="description"
+              prop="Description"
               :rules="[{ required: true, message: 'لايمكن ترك ملاحظات فارغ', trigger: 'blur' } ]"
               v-bind:label="$t('AddVendors.Description')"
             >
@@ -108,24 +108,24 @@ export default {
 
           CreateEntry(this.tempForm).then((response) => {
             if (response) {
-              this.Visibles = false;
+              this.Visibles = false
               this.EnableSave = false;
 
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000,
-              });
+              })
               this.$nextTick(() => {
                 this.$router.replace({
                   path: "/redirect" + this.$route.fullPath,
-                });
-              });
+                })
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
   },
 };

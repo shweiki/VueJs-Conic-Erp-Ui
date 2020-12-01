@@ -1,25 +1,25 @@
 <template>
   <div class="drawer-container" >
     <div>
-      <h3 class="drawer-title">{{ $t('settings.title') }}</h3>
+      <h3 class="drawer-title">{{ $t('Settings.title') }}</h3>
 
       <div class="drawer-item">
-        <span>{{ $t('settings.theme') }}</span>
+        <span>{{ $t('Settings.theme') }}</span>
         <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
       </div>
 
       <div class="drawer-item">
-        <span>{{ $t('settings.tagsView') }}</span>
+        <span>{{ $t('Settings.tagsView') }}</span>
         <el-switch v-model="tagsView" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>{{ $t('settings.fixedHeader') }}</span>
+        <span>{{ $t('Settings.fixedHeader') }}</span>
         <el-switch v-model="fixedHeader" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>{{ $t('settings.sidebarLogo') }}</span>
+        <span>{{ $t('Settings.sidebarLogo') }}</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
       </div>
       
@@ -42,10 +42,10 @@ export default {
     },
     fixedHeader: {
       get() {
-        return this.$store.state.settings.fixedHeader
+        return this.$store.state.Settings.fixedHeader
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
+        this.$store.dispatch('Settings/changeSetting', {
           key: 'fixedHeader',
           value: val
         })
@@ -53,10 +53,10 @@ export default {
     },
     tagsView: {
       get() {
-        return this.$store.state.settings.tagsView
+        return this.$store.state.Settings.tagsView
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
+        this.$store.dispatch('Settings/changeSetting', {
           key: 'tagsView',
           value: val
         })
@@ -64,10 +64,10 @@ export default {
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.settings.sidebarLogo
+        return this.$store.state.Settings.sidebarLogo
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
+        this.$store.dispatch('Settings/changeSetting', {
           key: 'sidebarLogo',
           value: val
         })
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     themeChange(val) {
-      this.$store.dispatch('settings/changeSetting', {
+      this.$store.dispatch('Settings/changeSetting', {
         key: 'theme',
         value: val
       })

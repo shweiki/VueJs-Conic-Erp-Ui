@@ -24,7 +24,7 @@ export function PaymentMember(temp) {
 
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.text(ComapnyInfo.name, startX + 90, startY += 9);
+  doc.text(ComapnyInfo.Name, startX + 90, startY += 9);
 
   doc.setLineWidth(1);
   doc.line(0, startY+=8, 200, startY);
@@ -34,7 +34,7 @@ export function PaymentMember(temp) {
   doc.text("" + formatDate(timein, "no") + " - " + tConvert(timein), 5, startY);
 
   doc.text(":رقم القبض", 200, startY+=8, {align:'right'});
-  doc.text("" + temp.id + "", 5, startY);
+  doc.text("" + temp.Id + "", 5, startY);
 
 
   doc.text(":رقم المشترك  ", 200, startY+=8, {align:'right'});
@@ -78,7 +78,7 @@ doc.setLineDash([0]);
 
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.text(ComapnyInfo.name, startX + 90, startY += 9);
+  doc.text(ComapnyInfo.Name, startX + 90, startY += 9);
 
   doc.setLineWidth(1);
   doc.line(0, startY+=8, 200, startY);
@@ -88,7 +88,7 @@ doc.setLineDash([0]);
   doc.text("" + formatDate(timein, "no") + " - " + tConvert(timein), 5, startY);
 
   doc.text(":رقم القبض", 200, startY+=8, {align:'right'});
-  doc.text("" + temp.id + "", 5, startY);
+  doc.text("" + temp.Id + "", 5, startY);
 
 
   doc.text(":رقم المشترك  ", 200, startY+=8, {align:'right'});

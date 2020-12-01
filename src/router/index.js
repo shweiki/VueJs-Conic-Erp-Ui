@@ -125,16 +125,14 @@ export const asyncRoutes = [
         component: () => import('@/views/Vendor/index'),
         name: 'Vendors',
         meta: {
-          title: 'Vendors', icon: 'customer-service',
-          roles: ['202']
-
+          title: 'Vendors', icon: 'customer-service'
         },
       }
     ]
   },
   {
-    path: '/SalesInvoice',
-    component: () => import('@/views/NewSaleInvoice/index'),
+    path: '/Sales/Create',
+    component: () => import('@/views/Sales/SaleInvoice/Create'),
     name: 'NewSaleInvoice',
     meta: {
       title: 'NewSaleInvoice', icon: 'bill'

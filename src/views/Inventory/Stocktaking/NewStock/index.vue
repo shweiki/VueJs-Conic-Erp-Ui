@@ -12,7 +12,7 @@
         <div slot="header" class="clearfix">
           <el-button
             style="float: left"
-            type="success"
+            type='success'
             icon="fa fa-save"
             @click="createData('tempForm')"
           >حفظ</el-button>
@@ -68,7 +68,7 @@
                 <i class="fa fa-barcode el-input__icon" slot="suffix"></i>
                 <template slot-scope="{ item }">
                   <div class="ID">{{ item.Barcode }}</div>
-                  <span class="Name">{{ item.name }}</span>
+                  <span class="Name">{{ item.Name }}</span>
                 </template>
               </el-autocomplete>
             </el-col>
@@ -83,7 +83,7 @@
             highlight-current-row
           >
             <el-table-column prop="Itemx.Barcode" label="باركود" align="center"></el-table-column>
-            <el-table-column prop="Itemx.name" label="اسم الصنف" align="center"></el-table-column>
+            <el-table-column prop="Itemx.Name" label="اسم الصنف" align="center"></el-table-column>
 
             <el-table-column width="180" align="center">
               <template slot="header" slot-scope="{}">() الكمية</template>
@@ -147,7 +147,7 @@
       >
         <el-row type="flex">
           <el-col :span="3">
-            <el-button type="success" icon="el-plus" @click="NewItem()">حفظ</el-button>
+            <el-button type='success' icon="el-plus" @click="NewItem()">حفظ</el-button>
           </el-col>
 
           <el-col :span="12">
@@ -161,7 +161,7 @@
       <el-dialog style="margin-top: -13vh" title="QTY" :visible.sync="EnterQTYVisible" width="80%">
         <el-row type="flex">
           <el-col :span="3">
-            <el-button type="success" icon="el-plus" @click="onBarcodeScanned(Barcode)">Add</el-button>
+            <el-button type='success' icon="el-plus" @click="onBarcodeScanned(Barcode)">Add</el-button>
           </el-col>
 
           <el-col :span="12">
@@ -211,14 +211,14 @@ export default {
   methods: {
     AddItem(Item) {
       var find = this.tempForm.StockMovements.findIndex(
-        value => value.ItemsID == Item.id
+        value => value.ItemsID == Item.Id
       );
       //console.log(qty);
       if (find != -1) this.tempForm.StockMovements[find].Qty += this.Qty;
       else {
         this.tempForm.StockMovements.push({
           ID: undefined,
-          ItemsID: Item.id,
+          ItemsID: Item.Id,
           Status: 0,
           Qty: this.Qty,
           SellingPrice: 0,
@@ -227,10 +227,10 @@ export default {
           InventoryItemID: 1,
           Itemx: Item,
           StocktakingInventoryID: undefined
-        });
+        })
       }
       this.Barcode = "";
-      this.name = "";
+      this.Name = "";
     },
     Copy(Text) {
       this.Text = Text;
@@ -257,18 +257,18 @@ export default {
     },
     createFilter(queryString) {
       return Item => {
-        return Item.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
+        return Item.Name.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
       };
     },
     getdata() {
       GetActiveInventory().then(response => {
         console.log(response);
         this.InventoryItems = response;
-      });
+      })
       GetActiveItem().then(response => {
         console.log(response);
         this.Items = response;
-      });
+      })
     },
     createData() {
       this.$refs["tempForm"].validate(valid => {
@@ -278,7 +278,7 @@ export default {
               this.$notify({
                 title: "تم الإضافة بنجاح",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 position: "top-left",
                 duration: 1000,
                 showClose: false,
@@ -286,21 +286,21 @@ export default {
                   Object.assign(this.$data, this.$options.data());
                   this.getdata();
                 }
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     NewItem() {
       CreateItem({
         ID: undefined,
-        Name: ""+this.name+"",
+        Name: ""+this.Name+"",
         CostPrice: 0.0,
         SellingPrice: 0.0,
         OtherPrice: 0.0,
@@ -318,13 +318,13 @@ export default {
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",
-            type: "success",
+            type: 'success',
             duration: 2000
-          });
+          })
         })
         .catch(error => {
           console.log(error);
-        });
+        })
     },
     onBarcodeScanned(barcode) {
       console.log(barcode);

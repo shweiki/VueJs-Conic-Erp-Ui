@@ -2,9 +2,9 @@
   <div class="app-container" style="direction : rtl ">
     <el-table height="500" :data="MembershipMovements" fit border highlight-current-row>
       >
-      <el-table-column prop="id" label="رقم" align="center"></el-table-column>
+      <el-table-column prop="Id" label="رقم" align="center"></el-table-column>
 
-      <el-table-column prop="name" label="الاشتراك" align="center"></el-table-column>
+      <el-table-column prop="Name" label="الاشتراك" align="center"></el-table-column>
       <el-table-column prop="Type" label="الفترة" align="center"></el-table-column>
 
       <el-table-column label="تاريخ البدء" align="center" width="150">
@@ -19,10 +19,10 @@
       </el-table-column>
       <el-table-column label="الحالة" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.Status.ClassName">{{ scope.row.Status.ArabicOprationDescription}}</el-tag>
-          <el-tag type="warning" v-if="scope.row.Status.Status > 0">
+       <!--   <el-tag :type="scope.row.Status.ClassName">{{ scope.row.Status.ArabicOprationDescription}}</el-tag>-->
+          <el-tag type="warning" v-if="scope.row.Status > 0">
             رصيد التجميد : {{ scope.row.MaxFreezeLimitDays - scope.row.MembershipMovementOrders.reduce(
-            (a, b) => a + ((b.Status.Status != 0 && b.Status.Status != -1 &&b.Status.Status !=-2 && b.Type !='Extra') ? Math.round(
+            (a, b) => a + ((b.Status != 0 && b.Status != -1 &&b.Status !=-2 && b.Type !='Extra') ? Math.round(
             Math.abs(
             (new Date(b.StartDate) - new Date(b.EndDate)) /
             (24 * 60 * 60 * 1000)
@@ -35,10 +35,10 @@
       </el-table-column>
       <el-table-column label="#" align="center">
         <template slot-scope="scope">
-          <div v-if="scope.row.Status.Status >= 0">
+          <div v-if="scope.row.Status >= 0">
             <freeze
               v-if="scope.row.MaxFreezeLimitDays - scope.row.MembershipMovementOrders.reduce(
-            (a, b) => a + ((b.Status.Status != 0 && b.Status.Status != -1 &&  b.Status.Status !=-2 && b.Type !='Extra')? Math.round(
+            (a, b) => a + ((b.Status != 0 && b.Status != -1 &&  b.Status !=-2 && b.Type !='Extra')? Math.round(
             Math.abs(
             (new Date(b.StartDate) - new Date(b.EndDate)) /
             (24 * 60 * 60 * 1000)
@@ -46,11 +46,11 @@
             ) : 0),
             0
             ) >= scope.row.MinFreezeLimitDays"
-              :MemberShipMovementID="scope.row.id"
+              :MemberShipMovementID="scope.row.Id"
               :MaxFreezeLimit="scope.row.MaxFreezeLimitDays"
               :MinFreezeLimit="scope.row.MinFreezeLimitDays"
             />
-            <extra :MemberShipMovementID="scope.row.id" :EndDate="scope.row.EndDate" />
+            <extra :MemberShipMovementID="scope.row.Id" :EndDate="scope.row.EndDate" />
           </div>
         </template>
       </el-table-column>
@@ -58,7 +58,7 @@
 
       <el-table-column width="40" v-if="checkPermission(['admin'])">
         <template slot-scope="scope">
-          <member-ship-movement-edit :MembershipMovementID="scope.row.id" />
+          <member-ship-movement-edit :MembershipMovementID="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column type="expand">
@@ -86,7 +86,7 @@
                 ) }}
               </template>
             </el-table-column>
-            <el-table-column label="ملاحظات" align="center" prop="description"></el-table-column>
+            <el-table-column label="ملاحظات" align="center" prop="Description"></el-table-column>
             <el-table-column label="الحالة" align="center">
               <template slot-scope="scope">
                 <el-tag

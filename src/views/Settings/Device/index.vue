@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type="success"
+          type='success'
           icon="el-icon-plus"
           @click="handleCreate()"
         >{{ $t('Classification.Add') }}</el-button>
@@ -13,48 +13,48 @@
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+        :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
         fit
         border
         max-height="900"
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column prop="id" width="80" align="center">
+        <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="name" align="center">
+        <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Classification.name')" />
+            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
         <el-table-column prop="IP" label="IP" align="center"></el-table-column>
         <el-table-column prop="Port" label="Port" align="center"></el-table-column>
         <el-table-column
           v-bind:label="$t('Classification.Notes')"
-          prop="description"
+          prop="Description"
           width="220"
           align="center"
         ></el-table-column>
-        <el-table-column prop="name" align="center">
+        <el-table-column prop="Name" align="center">
           <template slot-scope="scope">
             <el-button
-              @click="GetAllFaceMember(scope.row.id)"
+              @click="GetAllFaceMember(scope.row.Id)"
               size="mini"
               type="info"
-            >{{scope.row.name}} سحب جميع بصمات الوجه المشتركين</el-button>
+            >{{scope.row.Name}} سحب جميع بصمات الوجه المشتركين</el-button>
             <el-button
-              @click="GetAllLogMember(scope.row.id)"
+              @click="GetAllLogMember(scope.row.Id)"
               size="mini"
               type="primary"
-            >{{scope.row.name}} سحب جميع سجلات المشتركين</el-button>
+            >{{scope.row.Name}} سحب جميع سجلات المشتركين</el-button>
             <el-button
-              @click="SetAllMember(scope.row.id)"
+              @click="SetAllMember(scope.row.Id)"
               size="mini"
               type="warning"
-            >{{scope.row.name}} ارسال جميع معلومات المشتركين</el-button>
+            >{{scope.row.Name}} ارسال جميع معلومات المشتركين</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -94,7 +94,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     SetAllMember(id) {
       SetAllMembers({ DeviceID: id })
@@ -105,7 +105,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     GetAllFaceMember(id) {
       GetAllFaceMembers({ DeviceID: id })
@@ -116,7 +116,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     GetAllLogMember(id) {
       GetAllLogMembers({ DeviceID: id })
@@ -127,7 +127,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     }
   }
 };

@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type="success"
+          type='success'
           icon="el-icon-plus"
           @click="handleCreate()"
         >{{ $t('Vendors.Add') }}</el-button>
@@ -12,21 +12,21 @@
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+        :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
         fit
         border
         max-height="900"
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column prop="id" width="80" align="center">
+        <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()" ></el-button>
           </template>
         </el-table-column>
         <el-table-column
           v-bind:label="$t('Inventory.StoreName')"
-          prop="name"
+          prop="Name"
           align="center"
         >
           <template slot="header" slot-scope="{}">
@@ -40,7 +40,7 @@
         ></el-table-column>
         <el-table-column
           v-bind:label="$t('Items.Notes')"
-          prop="description"
+          prop="Description"
           width="220"
           align="center"
         ></el-table-column>
@@ -62,7 +62,7 @@
               :type="NOprations.ClassName"
               
               round
-              @click="handleOprationsys(scope.row.id , NOprations)"
+              @click="handleOprationsys(scope.row.Id , NOprations)"
             >{{NOprations.OprationDescription}}</el-button>
             <el-button  icon="el-icon-printer" type="primary" @click="print(scope.row.Items)"></el-button>
           </template>
@@ -71,7 +71,7 @@
           <template slot-scope="props">
             <el-table :data="props.row.Items">
               <el-table-column prop="Item.Barcode" v-bind:label="$t('Stocks.Barcode')" width="130" align="center"></el-table-column>
-              <el-table-column prop="Item.name" v-bind:label="$t('Stocks.Items')" width="130" align="center"></el-table-column>
+              <el-table-column prop="Item.Name" v-bind:label="$t('Stocks.Items')" width="130" align="center"></el-table-column>
               <el-table-column v-bind:label="$t('Stocks.Quantity')" align="center">
                 <template slot-scope="scope">
                   <el-tag style="font-size: x-large;">{{ scope.row.QtyIn - scope.row.QtyOut }}</el-tag>
@@ -94,10 +94,10 @@
         label-position="top"
         label-width="70px"
       >
-        <el-form-item v-bind:label="$t('Inventory.StoreName')" prop="name">
-          <el-input type="text" v-model="tempForm.name"></el-input>
+        <el-form-item v-bind:label="$t('Inventory.StoreName')" prop="Name">
+          <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('OrderInventories.Notes')" prop="description">
+        <el-form-item v-bind:label="$t('OrderInventories.Notes')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -120,7 +120,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item v-bind:label="$t('Inventory.OperationNote')" prop="description">
+        <el-form-item v-bind:label="$t('Inventory.OperationNote')" prop="Description">
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -207,14 +207,14 @@ export default {
     print(data) {
        data = data.map(Item => ({
         Barcode: Item.Item.Barcode,
-        Name: Item.Item.name,
+        Name: Item.Item.Name,
         Qty: Item.QtyIn - Item.QtyOut
       }));
       printJS({
         printable: data,
         properties: ["Barcode", "Name", "Qty"],
         type: "json"
-      });
+      })
     },
     getdata() {
       this.loading = true;
@@ -229,7 +229,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     resetTempForm() {
       this.tempForm = {
@@ -244,18 +244,18 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     handleUpdate(row) {
       console.log(row);
-      this.tempForm.id = row.id;
-      this.tempForm.name = row.name;
+      this.tempForm.Id = row.Id;
+      this.tempForm.Name = row.Name;
       this.tempForm.Description = row.Description;
       this.dialogFormStatus = "update";
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
@@ -267,7 +267,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createData() {
@@ -281,18 +281,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
@@ -304,18 +304,18 @@ export default {
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     createOprationData() {
       this.$refs["dataOpration"].validate(valid => {
@@ -332,18 +332,18 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     }
   }
 };

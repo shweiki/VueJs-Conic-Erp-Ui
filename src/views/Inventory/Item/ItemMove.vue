@@ -19,20 +19,20 @@
         ></el-date-picker>
       </div>
       <el-card class="box-card">
-        <span class="demonstration">{{ $t("ItemSales.name") }}</span>
+        <span class="demonstration">{{ $t("ItemSales.Name") }}</span>
         <el-select
           v-model="ItemID"
           filterable
           allow-create
           default-first-option
           @change="changeDate"
-          v-bind:placeholder="$t('ItemSales.name')"
+          v-bind:placeholder="$t('ItemSales.Name')"
         >
           <el-option
             v-for="item in Items"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
+            :key="item.Id"
+            :label="item.Name"
+            :value="item.Id"
           ></el-option>
         </el-select>
         <el-divider direction="vertical"></el-divider>
@@ -77,7 +77,7 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column label="#" prop="id" width="120" align="center">
+        <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
               type="primary"
@@ -99,7 +99,7 @@
           width="120"
           align="center"
         ></el-table-column>
-        <el-table-column prop="name" align="center">
+        <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
             <el-input
               v-model="search"
@@ -210,13 +210,13 @@ export default {
       console.log(response);
       this.Items = response;
       this.loading = false;
-    });
+    })
   },
   methods: {
     print(data) {
       data = data.map((Item) => ({
         FakeDate : Item.FakeDate,
-        Name: Item.name,
+        Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
         Total: (Item.SellingPrice * Item.Qty).toFixed(3),
@@ -234,8 +234,8 @@ export default {
         header:
           "<center> <h2>حركة الصنف " +
           this.Items.find((obj) => {
-            return obj.id == this.ItemID;
-          }).name +
+            return obj.Id == this.ItemID;
+          }).Name +
           "</h2></center> <h3 style='float:left'>   الاجمالي الكمية:  " +
           this.TotalQty.toFixed(3) +
           "</h3><h3 style='float:right'>  الفترة  : " +
@@ -245,7 +245,7 @@ export default {
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      });
+      })
     },
 
     getdata(itemid, datefrom, dateto) {
@@ -277,7 +277,7 @@ export default {
         .catch((error) => {
           // handle error
           console.log(error);
-        });
+        })
     },
     changeDate() {
       this.loading = true;

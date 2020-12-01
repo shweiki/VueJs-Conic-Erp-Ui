@@ -24,7 +24,7 @@ export function MemberAgreement(temp) {
 
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.text(ComapnyInfo.name, startX + 90, startY += 9);
+  doc.text(ComapnyInfo.Name, startX + 90, startY += 9);
   doc.setFontSize(14);
 
   doc.text(' : التاريخ', startX + 200, startY, { align: 'right' });
@@ -48,7 +48,7 @@ export function MemberAgreement(temp) {
   doc.text(formatDate(temp.DateofBirth), 43, 40);
 
   doc.text("Mobile : ", 7, 45);
-  doc.text(temp.phoneNumber1, 30, 45);
+  doc.text(temp.PhoneNumber1, 30, 45);
 
 
   doc.text(" : الاسم", 200, 35, { align: 'right' });

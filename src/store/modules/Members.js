@@ -6,7 +6,6 @@ import { CheckMemberLog ,GetMemberLogByStatus} from "@/api/MemberLog";
 const state = {
     AllMembers: [],
     ActiveMembers: [],
-    LogTimer : null
 
 }
 

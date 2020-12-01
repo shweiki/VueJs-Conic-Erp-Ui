@@ -34,13 +34,13 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column align="center" prop="id" width="120">
+        <el-table-column align="center" prop="Id" width="120">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="changeDate"></el-button>
           </template>
           <template slot-scope="scope">
-            <router-link :to="'/OrderInventories/Edit/'+scope.row.id">
-              <strong style="font-size: 10px; cursor: pointer;">{{scope.row.id}}</strong>
+            <router-link :to="'/OrderInventories/Edit/'+scope.row.Id">
+              <strong style="font-size: 10px; cursor: pointer;">{{scope.row.Id}}</strong>
             </router-link>
           </template>
         </el-table-column>
@@ -50,7 +50,7 @@
           v-bind:label="$t('OrderInventories.OrderType')"
           align="center"
         ></el-table-column>
-        <el-table-column prop="description" label="ملاحظات" align="center"></el-table-column>
+        <el-table-column prop="Description" label="ملاحظات" align="center"></el-table-column>
         <el-table-column align="center" v-bind:label="$t('OrderInventories.Status')" width="100">
           <template slot-scope="scope">
             <el-tag
@@ -65,14 +65,14 @@
               :key="index"
               :type="NOprations.ClassName"
               round
-              @click="handleOprationsys(scope.row.id , NOprations)"
+              @click="handleOprationsys(scope.row.Id , NOprations)"
             >{{NOprations.OprationDescription}}</el-button>
           </template>
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-table :data="props.row.InventoryMovements">
-              <el-table-column prop="name" v-bind:label="$t('OrderInventories.Items')" width="130"></el-table-column>
+              <el-table-column prop="Name" v-bind:label="$t('OrderInventories.Items')" width="130"></el-table-column>
               <el-table-column prop="Qty" v-bind:label="$t('OrderInventories.Quantity')"></el-table-column>
               <el-table-column prop="InventoryName" v-bind:label="$t('OrderInventories.Inventory')"></el-table-column>
               <el-table-column property="Description" v-bind:label="$t('OrderInventories.Notes')"></el-table-column>
@@ -95,7 +95,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item label="ملاحظات للعملية " prop="description">
+        <el-form-item label="ملاحظات للعملية " prop="Description">
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -209,7 +209,7 @@ export default {
         console.log(response);
         this.tableData = response;
         this.loading = false;
-      });
+      })
     },
     changeDate() {
       this.getdata(this.date[0], this.date[1]);
@@ -224,7 +224,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createOprationData() {
@@ -241,17 +241,17 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000,
-              });
+              })
             })
             .catch((error) => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
         }
-      });
+      })
     },
   },
 };

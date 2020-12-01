@@ -11,7 +11,7 @@
         <el-row>
           <el-button type="primary" @click="start()">لبدء اضغط 2 مرة</el-button>
 
-          <el-button type="success" @click="capture()">التقاط</el-button>
+          <el-button type='success' @click="capture()">التقاط</el-button>
         <canvas id="canvas" class="canvas" width="640" height="480"></canvas>
         <img :src="img" height="50" />
         </el-row>
@@ -49,7 +49,7 @@ export default {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
           this.stream = stream;
-        });
+        })
         this.video = document.getElementById("video-player");
         this.video.srcObject = this.stream;
 
@@ -76,20 +76,20 @@ export default {
         };
         Create(file).then(response => {
           if (response) {
-            this.Visibles = false;
+            this.Visibles = false
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
-              type: "success",
+              type: 'success',
               duration: 2000
-            });
+            })
             this.$nextTick(() => {
               this.$router.replace({
                 path: "/redirect" + this.$route.fullPath
-              });
-            });
+              })
+            })
           }
-        });
+        })
       }
     }
   }

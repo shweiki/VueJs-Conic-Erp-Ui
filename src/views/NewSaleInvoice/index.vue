@@ -1,4 +1,4 @@
-<template>
+sss<template>
   <div>
     <el-form ref="F-SaleInvoice" :rules="rules" :model="tempForm" label-position="right">
       <div class="components-container" style="direction: rtl; ">
@@ -99,7 +99,7 @@
                           >{{ $t('NewPurchaseInvoice.Items') }} ({{tempForm.InventoryMovements.length.toFixed(2)}} )</template>
                           <template slot-scope="scope">
                             <div class="ItemName">
-                              {{scope.row.Itemx.name}}
+                              {{scope.row.Itemx.Name}}
                               <el-tag
                                 type="primary"
                                 effect="plain"
@@ -197,7 +197,7 @@
                       <el-button
                         style="font-size: 45px;"
                         @click="createData()"
-                        type="success"
+                        type='success'
                         icon="el-icon-check"
                       ></el-button>
                     </el-col>
@@ -232,7 +232,7 @@
                     <el-card style="background: #545454;">
                       <el-row type="flex">
                         <el-col :span="24">
-                          <el-input prop="name" placeholder="اسم المستلم" v-model="tempForm.name"></el-input>
+                          <el-input prop="Name" placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
                         </el-col>
                       </el-row>
                       <el-row type="flex" v-permission="['admin']">
@@ -267,7 +267,7 @@
                       </el-row>
                       <el-row type="flex">
                         <el-col :span="24">
-                          <el-form-item prop="description">
+                          <el-form-item prop="Description">
                             <el-input
                               v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
                               v-model="tempForm.Description"
@@ -397,7 +397,7 @@ export default {
       console.log(Item);
 
       var find = this.tempForm.InventoryMovements.findIndex(
-        value => value.ItemsID == Item.id
+        value => value.ItemsID == Item.Id
       );
       console.log(find);
 
@@ -407,7 +407,7 @@ export default {
         if(this.tempForm.VendorID != 2) SellingPrice = Item.OtherPrice
         this.tempForm.InventoryMovements.push({
           ID: undefined,
-          ItemsID: Item.id,
+          ItemsID: Item.Id,
           TypeMove: "Out",
           Status: 0,
           Qty: 1.0,
@@ -417,10 +417,10 @@ export default {
           InventoryItemID: 1,
           Itemx: Item,
           SalesInvoiceID: undefined
-        });
+        })
       }
       this.Barcode = "";
-      this.name = "";
+      this.Name = "";
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
@@ -433,21 +433,21 @@ export default {
         text: "تحميل",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
-      });
+      })
       GetActiveInventory().then(response => {
         console.log(response);
         this.InventoryItems = response;
-      });
+      })
       GetActiveMenuItem().then(response => {
         console.log(response);
         this.MenuItems = response;
-      });
+      })
 
       GetActiveVendor().then(response => {
         console.log(response);
         this.Vendor = response;
         loading.close();
-      });
+      })
     },
     createData() {
       this.$refs["F-SaleInvoice"].validate(valid => {
@@ -471,21 +471,21 @@ export default {
                 this.$notify({
                   title: "تم الإضافة بنجاح",
                   message: "تم الإضافة بنجاح",
-                  type: "success",
+                  type: 'success',
                   position: "top-left",
                   duration: 1000,
                   showClose: false,
                   onClose: () => {
-                    this.tempForm.id = response;
+                    this.tempForm.Id = response;
                     this.OldInvoice = this.tempForm;
                     this.AutoPrint ? this.Print() : undefined;
                     this.restTempForm();
                   }
-                });
+                })
               })
               .catch(error => {
                 console.log(error);
-              });
+              })
           } else
             this.ValidateDescription =
               "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
@@ -493,7 +493,7 @@ export default {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     Print() {
       printJS({
@@ -501,7 +501,7 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true
-      });
+      })
     }
   },
   mounted() {

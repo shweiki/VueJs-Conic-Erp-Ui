@@ -3,17 +3,26 @@ import Layout from '@/layout'
 const SalesRouter = {
   path: '/Sales',
   component: Layout,
-  redirect: '/Sales/index',
+  redirect: '/Sales/List',
   meta: {
     title: 'Sales', icon: 'income'
   },
   children: [
     {
-      path: 'SalesInvoice',
-      component: () => import('@/views/Sales/index'),
-      name: 'SalesInvoice',
+      path: 'Edit/:id(\\d+)',
+      component: () => import('@/views/Sales/SaleInvoice/Edit'),
+      name: 'EditInvoice',
       meta: {
-        title: 'SalesInvoice', icon: 'research'
+         title: 'EditInvoice', noCache: true, activeMenu: '/Sales/SalesInvoice/List'
+      },
+      hidden: true,
+    },
+    {
+      path: 'List',
+      component: () => import('@/views/Sales/SaleInvoice/List'),
+      name: 'ListSalesInvoice',
+      meta: {
+        title: 'ListSalesInvoice', icon: 'cost'
       },
     },
     {

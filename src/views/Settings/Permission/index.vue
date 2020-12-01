@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type="success"
+          type='success'
           icon="el-icon-plus"
           @click="handleCreate()"
           >إضافة مستخدم</el-button
@@ -17,7 +17,7 @@
           tableData.filter(
             (data) =>
               !search ||
-              data.userName.toLowerCase().includes(search.toLowerCase())
+              data.UserName.toLowerCase().includes(search.toLowerCase())
           )
         "
         style="width: 100%"
@@ -44,7 +44,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="userName" width="120">
+        <el-table-column prop="UserName" width="120">
           <template slot="header" slot-scope="{}">
             <el-input
               v-model="search"
@@ -52,27 +52,27 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="Email" prop="email"></el-table-column>
+        <el-table-column label="Email" prop="Email"></el-table-column>
         <el-table-column
           label="Phone Number"
-          prop="phoneNumber"
+          prop="PhoneNumber"
         ></el-table-column>
 
         <el-table-column align="left">
           <template slot-scope="scope">
-            <add-user-router :UserID="scope.row.id" :Router="scope.row.router" />
+            <add-user-router :UserID="scope.row.Id" :Router="scope.row.router" />
 
             <el-tag
-              :key="role.name"
-              v-for="role in scope.row.roles"
+              :key="role.Name"
+              v-for="role in scope.row.Roles"
               effect="plain"
               closable
               :disable-transitions="false"
-              @close="RemoveRole(scope.row.userName, role.name)"
-              >{{ role.name }}</el-tag
+              @close="RemoveRole(scope.row.UserName, role.Name)"
+              >{{ role.Name }}</el-tag
             >
             <el-button
-              type="success"
+              type='success'
               icon="el-icon-plus"
               size="mini"
               @click="dialogAddRoleVisible = true"
@@ -164,20 +164,20 @@
         <el-option
           v-for="item in tableData"
           :key="item.Id"
-          :label="item.userName"
-          :value="item.userName"
+          :label="item.UserName"
+          :value="item.UserName"
         ></el-option>
       </el-select>
       <el-select v-model="RoleName" placeholder=" صلاحية">
         <el-option
           v-for="item in Roles"
-          :key="item.id"
-          :label="item.name"
-          :value="item.name"
+          :key="item.Id"
+          :label="item.Name"
+          :value="item.Name"
         ></el-option>
       </el-select>
       <div slot="footer" class="dialog-footer">
-        <el-button type="success" @click="AddRole()">Add</el-button>
+        <el-button type='success' @click="AddRole()">Add</el-button>
       </div>
     </el-dialog>
     <role />
@@ -276,12 +276,12 @@ export default {
             .catch((error) => {
               // handle error
               console.log(error);
-            });
+            })
         })
         .catch((error) => {
           // handle error
           console.log(error);
-        });
+        })
     },
     RemoveRole(username, rolername) {
       console.log(username + rolername);
@@ -294,7 +294,7 @@ export default {
         .catch((error) => {
           // handle error
           console.log(error);
-        });
+        })
     },
     AddRole() {
       AddRoleUser({ UserName: this.UserName, RoleName: this.RoleName })
@@ -307,7 +307,7 @@ export default {
         .catch((error) => {
           // handle error
           console.log(error);
-        });
+        })
     },
     resetTempForm() {
       this.tempForm = {
@@ -324,7 +324,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     handleUpdate(row) {
       console.log(row);
@@ -337,7 +337,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     createData() {
       this.$refs["dataForm"].validate((valid) => {
@@ -349,18 +349,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000,
-              });
+              })
             })
             .catch((error) => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     updateData() {
       this.$refs["dataForm"].validate((valid) => {
@@ -372,18 +372,18 @@ export default {
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000,
-              });
+              })
             })
             .catch((error) => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
   },
 };

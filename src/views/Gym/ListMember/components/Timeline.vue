@@ -18,7 +18,7 @@
             color="#00000"
             size="large"
             :timestamp="item.DateTime"
-          >{{item.name}}</el-timeline-item>
+          >{{item.Name}}</el-timeline-item>
         </el-timeline>
       </el-card>
     </el-col>

@@ -14,7 +14,7 @@
           <el-col>
             <img src class="image" />
             <div @click="AddItem(Item)">
-              <span style="font-size: 11px;color: #545454;">{{ Item.name }}</span>
+              <span style="font-size: 11px;color: #545454;">{{ Item.Name }}</span>
               <time class="price">{{ Item.SellingPrice.toFixed(2) }} JOD</time>
             </div>
             <el-col v-permission="['admin']">
@@ -59,7 +59,7 @@ export default {
       GetActiveItem().then(response => {
         console.log(response);
         this.ItemsPrime = response.reverse();
-      });
+      })
     }
   }
 };

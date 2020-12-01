@@ -40,7 +40,7 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column prop="id" width="120" align="center">
+        <el-table-column prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="changeDate"></el-button>
           </template>
@@ -51,7 +51,7 @@
           width="120"
           align="center"
         ></el-table-column>
-        <el-table-column prop="description" v-bind:label="$t('Stocks.BondType')" align="center"></el-table-column>
+        <el-table-column prop="Description" v-bind:label="$t('Stocks.BondType')" align="center"></el-table-column>
         <el-table-column v-bind:label="$t('Stocks.Status')" width="120" align="center">
           <template slot-scope="scope">
             <el-tag
@@ -63,7 +63,7 @@
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.Opration.Status!=-1"
-              type="success"
+              type='success'
               circle
               @click="ConvertToOrderInventory(scope.row)"
             >ترصيد</el-button>
@@ -73,7 +73,7 @@
               :key="index"
               :type="NOprations.ClassName"
               round
-              @click="handleOprationsys(scope.row.id , NOprations)"
+              @click="handleOprationsys(scope.row.Id , NOprations)"
             >{{NOprations.OprationDescription}}</el-button>
 
             <el-button
@@ -87,10 +87,10 @@
           <template slot-scope="props">
             <el-table :data="props.row.StockMovements">
               <el-table-column prop="Barcode" v-bind:label="$t('Stocks.Barcode')" width="130"></el-table-column>
-              <el-table-column prop="name" v-bind:label="$t('Stocks.Items')" width="130"></el-table-column>
+              <el-table-column prop="Name" v-bind:label="$t('Stocks.Items')" width="130"></el-table-column>
               <el-table-column prop="Qty" v-bind:label="$t('Stocks.Quantity')"></el-table-column>
               <el-table-column prop="InventoryName" v-bind:label="$t('Stocks.Store')"></el-table-column>
-              <el-table-column prop="description" v-bind:label="$t('Stocks.Description')"></el-table-column>
+              <el-table-column prop="Description" v-bind:label="$t('Stocks.Description')"></el-table-column>
             </el-table>
           </template>
         </el-table-column>
@@ -110,7 +110,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item label="ملاحظات للعملية " prop="description">
+        <el-form-item label="ملاحظات للعملية " prop="Description">
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -221,12 +221,12 @@ export default {
         printable: data,
         properties: ["Barcode", "Name", "Qty"],
         type: "json"
-      });
+      })
     },
     printAll(data) {
       console.log(data);
       data = data.map(Item => ({
-        Name: Item.name,
+        Name: Item.Name,
         Qty: Item.Qty,
         Barcode: Item.Barcode
       }));
@@ -234,14 +234,14 @@ export default {
         printable: data,
         properties: ["Barcode", "Name", "Qty"],
         type: "json"
-      });
+      })
     },
     ConvertToOrderInventory(StockInventory) {
       console.log(StockInventory);
       const tempForm = {
         ID: undefined,
         FakeDate: JSON.parse(JSON.stringify(new Date())),
-        OrderType: "إدخال ناتج عن جرد رقم " + StockInventory.id + "",
+        OrderType: "إدخال ناتج عن جرد رقم " + StockInventory.Id + "",
         Description: "" + StockInventory.Description + "",
         InventoryMovements: []
       };
@@ -257,36 +257,36 @@ export default {
           Description: i.Description,
           InventoryItemID: i.InventoryItemID,
           OrderInventoryID: undefined
-        });
-      });
+        })
+      })
       console.log(tempForm);
 
       Create(tempForm)
         .then(response => {
           ChangeObjStatusByTableName({
-            ObjID: StockInventory.id,
+            ObjID: StockInventory.Id,
             TableName: "StocktakingInventory",
             Status: -1,
             Description: "ترصيد جرد"
           }).then(response => {
             console.log(response);
-          });
+          })
 
           this.$notify({
             title: "تم الإضافة بنجاح",
             message: "تم الإضافة بنجاح",
-            type: "success",
+            type: 'success',
             position: "top-left",
             duration: 1000,
             showClose: false,
             onClose: () => {
               Object.assign(this.$data, this.$options.data());
             }
-          });
+          })
         })
         .catch(error => {
           console.log(error);
-        });
+        })
     },
     getdata(datefrom, dateto) {
       this.loading = true;
@@ -301,7 +301,7 @@ export default {
         this.tableData = response;
         this.Movements = response.StockMovements;
         this.loading = false;
-      });
+      })
     },
     changeDate() {
       this.getdata(this.date[0], this.date[1]);
@@ -316,7 +316,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createOprationData() {
@@ -333,17 +333,17 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
         }
-      });
+      })
     }
   }
 };

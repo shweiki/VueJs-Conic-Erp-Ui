@@ -5,7 +5,7 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type="success"
+          type='success'
           icon="el-icon-plus"
           @click="handleCreate()"
         >{{ $t('Classification.Add') }}</el-button>
@@ -64,7 +64,7 @@
         <el-form-item v-bind:label="$t('Account.Code')" prop="Code">
           <el-input type="text" v-model="tempForm.Code"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('Account.Notes')" prop="description">
+        <el-form-item v-bind:label="$t('Account.Notes')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -90,7 +90,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item v-bind:label="$t('Classification.OperationNote')" prop="description">
+        <el-form-item v-bind:label="$t('Classification.OperationNote')" prop="Description">
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -285,7 +285,7 @@ export default {
       remove(node, data) {
         const parent = node.parent;
         const children = parent.data.children || parent.data;
-        const index = children.findIndex(d => d.id === data.id);
+        const index = children.findIndex(d => d.Id === data.Id);
         children.splice(index, 1);
       },
 
@@ -324,7 +324,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     resetTempForm() {
       this.tempForm = {
@@ -342,21 +342,21 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     handleUpdate(row) {
       console.log(row);
-      this.tempForm.id = row.id;
+      this.tempForm.Id = row.Id;
       this.tempForm.AccountName = row.AccountName;
       this.tempForm.Status = row.Status;
       this.tempForm.Code = row.Code;
-      this.tempForm.Type = row.Parent.id;
+      this.tempForm.Type = row.Parent.Id;
       this.tempForm.Description = row.Description;
       this.dialogFormStatus = "update";
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
@@ -368,7 +368,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createData() {
@@ -381,18 +381,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
@@ -404,18 +404,18 @@ export default {
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     createOprationData() {
       this.$refs["dataOpration"].validate(valid => {
@@ -432,18 +432,18 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     }
   }
 };

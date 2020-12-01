@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type="success"
+          type='success'
           icon="el-icon-plus"
           @click="handleCreate()"
         >{{ $t('Classification.Add') }}</el-button>
@@ -18,21 +18,21 @@
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+        :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
         fit
         border
         max-height="900"
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column prop="id" width="80" align="center">
+        <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="name" align="center">
+        <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Classification.name')" />
+            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
         <el-table-column prop="Value" label="القيمة" align="center"></el-table-column>
@@ -47,7 +47,7 @@
         ></el-table-column>
         <el-table-column
           v-bind:label="$t('Classification.Notes')"
-          prop="description"
+          prop="Description"
           width="220"
           align="center"
         ></el-table-column>
@@ -71,7 +71,7 @@
               :key="index"
               :type="NOprations.ClassName"
               round
-              @click="handleOprationsys(scope.row.id , NOprations)"
+              @click="handleOprationsys(scope.row.Id , NOprations)"
             >{{NOprations.OprationDescription}}</el-button>
           </template>
         </el-table-column>
@@ -90,8 +90,8 @@
         label-position="top"
         label-width="70px"
       >
-        <el-form-item v-bind:label="$t('Classification.name')" prop="name">
-          <el-input type="text" v-model="tempForm.name"></el-input>
+        <el-form-item v-bind:label="$t('Classification.Name')" prop="Name">
+          <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
         <el-form-item label="القيمة" prop="Value">
           <el-input type="number" v-model="tempForm.Value"></el-input>
@@ -103,7 +103,7 @@
           <el-option label="نسية" value="Percentage"></el-option>
           <el-option label="مقطوع" value="Value"></el-option>
         </el-select>
-        <el-form-item v-bind:label="$t('Classification.Status')" prop="description">
+        <el-form-item v-bind:label="$t('Classification.Status')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -126,7 +126,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item v-bind:label="$t('Classification.OperationNote')" prop="description">
+        <el-form-item v-bind:label="$t('Classification.OperationNote')" prop="Description">
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -220,7 +220,7 @@ export default {
         printable: data,
         properties: ["Name", "Description"],
         type: "json"
-      });
+      })
     },
     getdata() {
       this.loading = true;
@@ -234,7 +234,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     resetTempForm() {
       this.tempForm = {
@@ -252,12 +252,12 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     handleUpdate(row) {
       console.log(row);
-      this.tempForm.id = row.id;
-      this.tempForm.name = row.name;
+      this.tempForm.Id = row.Id;
+      this.tempForm.Name = row.Name;
       this.tempForm.Type = row.Type;
       this.tempForm.Value = row.Value;
       this.tempForm.ValueOfDays = row.ValueOfDays;
@@ -267,7 +267,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
@@ -279,7 +279,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createData() {
@@ -292,18 +292,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
@@ -315,18 +315,18 @@ export default {
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     createOprationData() {
       this.$refs["dataOpration"].validate(valid => {
@@ -343,18 +343,18 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     }
   }
 };

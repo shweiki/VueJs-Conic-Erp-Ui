@@ -1,3 +1,5 @@
+import { Settings } from "@/layout/components"
+
 const getters = {
 
   sidebar: state => state.app.sidebar,
@@ -16,7 +18,7 @@ const getters = {
   ActiveItems: state => state.Items.ActiveItems,
   AllMembers: state => state.Members.AllMembers,
   ActiveMembers: state => state.Members.ActiveMembers,
-  LogTimer: state => state.Members.LogTimer,
+  Settings: state => state.Settings,
 
   CompanyInfo: state => state.CompanyInfo.GetCompanyInfo,
   Devices: state => state.Devices.AllDevices,

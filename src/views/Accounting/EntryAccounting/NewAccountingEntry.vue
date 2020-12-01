@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type="success"
+          type='success'
           icon="fa fa-save"
           @click="createData('tempForm')"
         >{{ $t('Stocks.Save') }}</el-button>
@@ -196,12 +196,12 @@ export default {
       this.tempForm.EntryMovements[Index].Description = this.Text;
     },
     SumCredit(currentValue, oldValue) {
-      this.totalCredit -= oldValue;
-      this.totalCredit += currentValue;
+      this.TotalCredit -= oldValue;
+      this.TotalCredit += currentValue;
     },
     SumDebit(currentValue, oldValue) {
-      this.totalDebit -= oldValue;
-      this.totalDebit += currentValue;
+      this.TotalDebit -= oldValue;
+      this.TotalDebit += currentValue;
     },
     AddEntryMovements() {
       this.tempForm.EntryMovements.push({
@@ -211,7 +211,7 @@ export default {
         Credit: 0.0,
         Description: "",
         EntryID: undefined
-      });
+      })
     },
     RemoveEntryMovements() {
       this.SumCredit(
@@ -242,7 +242,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     resetTempForm() {
       this.tempForm = {
@@ -273,8 +273,8 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (
-            this.totalDebit == this.totalCredit &&
-            this.totalDebit + this.totalCredit != 0
+            this.TotalDebit == this.TotalCredit &&
+            this.TotalDebit + this.TotalCredit != 0
           ) {
             CreateEntry(this.tempForm)
               .then(response => {
@@ -283,13 +283,13 @@ export default {
                 this.$notify({
                   title: "تم ",
                   message: "تم الإضافة بنجاح",
-                  type: "success",
+                  type: 'success',
                   duration: 2000
-                });
+                })
               })
               .catch(error => {
                 console.log(error);
-              });
+              })
           } else
             this.ValidateNote =
               "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
@@ -297,7 +297,7 @@ export default {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     }
   }
 };

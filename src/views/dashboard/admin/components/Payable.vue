@@ -8,20 +8,20 @@
         {{tableData.reduce(
         (a, b) =>
         a +
-        (b.totalCredit - b.totalDebit),
+        (b.TotalCredit - b.TotalDebit),
         0
         ).toFixed(3)}}
       </span>
       <el-button
         style="float: left;"
         icon="el-icon-printer"
-        type="success"
+        type='success'
         @click="print(tableData)"
       ></el-button>
     </el-card>
     <el-table
       v-loading="loading"
-      :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+      :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
       fit
       :default-sort="{prop: 'totalCredit', order: 'descending'}"
       border
@@ -30,24 +30,24 @@
       ref="multipleTable"
     >
       <el-table-column type="selection" width="55" align="center"></el-table-column>
-      <el-table-column label="#" prop="id" width="120" align="center">
+      <el-table-column label="#" prop="Id" width="120" align="center">
         <template slot="header" slot-scope="{}">
           <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="name" align="center">
+      <el-table-column prop="Name" align="center">
         <template slot="header" slot-scope="{}">
           <el-input v-model="search" v-bind:placeholder="$t('Members.Search')">
             <template slot="append">{{tableData.length}}</template>
           </el-input>
         </template>
         <template slot-scope="scope">
-          <router-link :to="'/Gym/Edit/'+scope.row.id">
-            <strong style="font-size: 10px; cursor: pointer;">{{scope.row.name}}</strong>
+          <router-link :to="'/Gym/Edit/'+scope.row.Id">
+            <strong style="font-size: 10px; cursor: pointer;">{{scope.row.Name}}</strong>
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Members.Phone1')" prop="phoneNumber1" width="120"></el-table-column>
+      <el-table-column v-bind:label="$t('Members.Phone1')" prop="PhoneNumber1" width="120"></el-table-column>
 
       <el-table-column
         prop="totalCredit"
@@ -56,7 +56,7 @@
         width="120"
         align="center"
       >
-        <template slot-scope="scope">{{(scope.row.totalCredit).toFixed(3) }}</template>
+        <template slot-scope="scope">{{(scope.row.TotalCredit).toFixed(3) }}</template>
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Account.Debit')"
@@ -65,10 +65,10 @@
         width="120"
         align="center"
       >
-        <template slot-scope="scope">{{(scope.row.totalDebit).toFixed(3) }}</template>
+        <template slot-scope="scope">{{(scope.row.TotalDebit).toFixed(3) }}</template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
-        <template slot-scope="scope">{{ (scope.row.totalCredit - scope.row.totalDebit).toFixed(3) }}</template>
+        <template slot-scope="scope">{{ (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3) }}</template>
       </el-table-column>
     </el-table>
   </div>
@@ -102,15 +102,15 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     print(data) {
       data = data.map(Item => ({
-        الرصيد: (Item.totalCredit - Item.totalDebit).toFixed(3),
-        دائن: Item.totalDebit.toFixed(3),
-        مدين: Item.totalCredit.toFixed(3),
-        الاسم: Item.name,
-        رقم: Item.id
+        الرصيد: (Item.TotalCredit - Item.TotalDebit).toFixed(3),
+        دائن: Item.TotalDebit.toFixed(3),
+        مدين: Item.TotalCredit.toFixed(3),
+        الاسم: Item.Name,
+        رقم: Item.Id
       }));
       printJS({
         printable: data,
@@ -119,7 +119,7 @@ export default {
         header:
           "<center> <h2>" +
           this.tableData
-            .reduce((a, b) => a + (b.totalCredit - b.totalDebit), 0)
+            .reduce((a, b) => a + (b.TotalCredit - b.TotalDebit), 0)
             .toFixed(3) +
           "</h2></center><h3 style='float:right'>  التاريخ  : " +
           this.formatDate(new Date()) +
@@ -127,7 +127,7 @@ export default {
 
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;"
-      });
+      })
     },
     formatDate(date) {
       let d = new Date(date),

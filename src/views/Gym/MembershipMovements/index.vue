@@ -6,7 +6,7 @@
           <el-radio-group v-model="Status" @change="getdata()">
             <el-radio-button
               v-for="op in Oprations"
-              :key="op.id"
+              :key="op.Id"
               v-bind:label="op.Status"
             >{{op.OprationDescription}}</el-radio-button>
           </el-radio-group>
@@ -31,7 +31,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column label="#" prop="id" width="120" align="center">
+        <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
           </template>
@@ -137,10 +137,10 @@ export default {
           console.log(response);
 
           this.Oprations = response;
-        });
+        })
 
         this.loading = false;
-      });
+      })
     },
     handleSelectionChange(val) {
       this.Selection = val;
@@ -156,19 +156,19 @@ export default {
         MemberShipMovementID: undefined
       };
       this.Selection.forEach(i => {
-        MembershipMovementOrder.MemberShipMovementID = i.id;
+        MembershipMovementOrder.MemberShipMovementID = i.Id;
         Create(MembershipMovementOrder).then(response => {
           if (response) {
-            this.Visibles = false;
+            this.Visibles = false
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
-              type: "success",
+              type: 'success',
               duration: 2000
-            });
+            })
           }
-        });
-      });
+        })
+      })
     }
   }
 }

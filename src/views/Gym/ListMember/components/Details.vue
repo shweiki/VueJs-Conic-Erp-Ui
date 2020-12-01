@@ -4,17 +4,17 @@
       <el-col :span="4">
         <div style="float : left">
           <pan-thumb :image="Member.Avatar" :height="'75px'" :width="'75px'" :hoverable="false">
-            <web-cam :ObjectID="Member.id" />
+            <web-cam :ObjectID="Member.Id" />
           </pan-thumb>
           <el-col :span="24">
-            <el-tag v-if="Member.HaveFaceOnDevice == true" type="success">يوجد بصمة وجه</el-tag>
+            <el-tag v-if="Member.HaveFaceOnDevice == true" type='success'>يوجد بصمة وجه</el-tag>
             <el-tag v-if="Member.HaveFaceOnDevice == false" type="danger">لا يوجد بصمة وجه</el-tag>
           </el-col>
           <el-col :span="24" v-if="Member.Status !=-2">
             <el-button @click="dialogOprationVisible = true" type="danger" plain>Black List</el-button>
           </el-col>
           <el-col :span="24" v-if="checkPermission(['admin'])">
-            <el-button @click="dialogOprationVisible2 = true" type="success" plain>الغاء Black List</el-button>
+            <el-button @click="dialogOprationVisible2 = true" type='success' plain>الغاء Black List</el-button>
           </el-col>
         </div>
       </el-col>
@@ -22,7 +22,7 @@
         <el-row type="flex">
           <el-col :span="8">
             <el-col :span="24">
-              <el-input disabled v-model="Member.id"></el-input>
+              <el-input disabled v-model="Member.Id"></el-input>
             </el-col>
             <!--
             <el-col :span="12">
@@ -33,7 +33,7 @@
             <span>رقم العضوية</span>
           </el-col>
           <el-col :span="8">
-            <el-input disabled v-model="Member.name"></el-input>
+            <el-input disabled v-model="Member.Name"></el-input>
           </el-col>
           <el-col :span="4">
             <span>اسم المشترك</span>
@@ -41,7 +41,7 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="8">
-            <el-input disabled v-model="Member.age"></el-input>
+            <el-input disabled v-model="Member.Age"></el-input>
           </el-col>
           <el-col :span="4">
             <span>العمر</span>
@@ -61,7 +61,7 @@
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
-            <el-input disabled v-model="Member.phoneNumber1"></el-input>
+            <el-input disabled v-model="Member.PhoneNumber1"></el-input>
           </el-col>
           <el-col :span="4">
             <span>رقم الهاتف</span>
@@ -106,7 +106,7 @@
           <el-col :span="8">
             <el-tag
               v-if="Member.ActiveMemberShip"
-            >{{ Member.ActiveMemberShip.Type + " - " }}{{Member.ActiveMemberShip.name}}</el-tag>
+            >{{ Member.ActiveMemberShip.Type + " - " }}{{Member.ActiveMemberShip.Name}}</el-tag>
           </el-col>
           <el-col :span="4">
             <span>نوع الاشتراك</span>
@@ -114,7 +114,7 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="8">
-            <span>{{ (Member.totalCredit - Member.totalDebit).toFixed(2) + $t('MemberList.JOD')}}</span>
+            <span>{{ (Member.TotalCredit - Member.TotalDebit).toFixed(2) + $t('MemberList.JOD')}}</span>
           </el-col>
           <el-col :span="4">
             <span>الرصيد</span>
@@ -145,7 +145,7 @@
       >
         <el-form-item
           label="ملاحظات للعملية "
-          prop="description"
+          prop="Description"
           :rules="[{ required: true, message: 'لايمكن ترك السبب فارغ', trigger: 'blur' } ]"
         >
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
@@ -170,14 +170,14 @@
       >
         <el-form-item
           label="ملاحظات للعملية "
-          prop="description"
+          prop="Description"
           :rules="[{ required: true, message: 'لايمكن ترك السبب فارغ', trigger: 'blur' } ]"
         >
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="success" @click="RemoveBlackList()">فك الرفض</el-button>
+        <el-button type='success' @click="RemoveBlackList()">فك الرفض</el-button>
       </div>
     </el-dialog>
   </div>
@@ -219,7 +219,7 @@ export default {
       this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatusByTableName({
-            ObjID: this.Member.id,
+            ObjID: this.Member.Id,
             TableName: "Member",
             Status: -1,
             Description: this.tempOpration.Description
@@ -227,23 +227,23 @@ export default {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
-              type: "success",
+              type: 'success',
               duration: 2000
-            });
+            })
             this.$nextTick(() => {
               this.$router.replace({
                 path: "/redirect" + this.$route.fullPath
-              });
-            });
-          });
+              })
+            })
+          })
         }
-      });
+      })
     },
     BlackList() {
       this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatusByTableName({
-            ObjID: this.Member.id,
+            ObjID: this.Member.Id,
             TableName: "Member",
             Status: -2,
             Description: this.tempOpration.Description
@@ -251,17 +251,17 @@ export default {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
-              type: "success",
+              type: 'success',
               duration: 2000
-            });
+            })
             this.$nextTick(() => {
               this.$router.replace({
                 path: "/redirect" + this.$route.fullPath
-              });
-            });
-          });
+              })
+            })
+          })
         }
-      });
+      })
     }
   }
 };

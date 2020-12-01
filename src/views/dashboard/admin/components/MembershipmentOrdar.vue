@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button style="float: left" type="success" icon="fa fa-save" @click="approval()">موافقة</el-button>
+    <el-button style="float: left" type='success' icon="fa fa-save" @click="approval()">موافقة</el-button>
     <el-table
       v-loading="loading"
       :data="tableData"
@@ -12,20 +12,20 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" align="center"></el-table-column>
-      <el-table-column label="#" prop="id" width="120" align="center">
+      <el-table-column label="#" prop="Id" width="120" align="center">
         <template slot="header" slot-scope="{}">
           <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="الاشتراك" align="center">
+      <el-table-column prop="Name" label="الاشتراك" align="center">
         <template slot-scope="scope">
           <router-link :to="'/Gym/Edit/'+scope.row.memberID">
-            <strong style="font-size: 10px; cursor: pointer;">{{scope.row.name}}</strong>
+            <strong style="font-size: 10px; cursor: pointer;">{{scope.row.Name}}</strong>
           </router-link>
         </template>
       </el-table-column>
       <el-table-column prop="membershipMovementType" label="الفترة" align="center"></el-table-column>
-      <el-table-column prop="type" label="طلب" align="center"></el-table-column>
+      <el-table-column prop="Type" label="طلب" align="center"></el-table-column>
 
       <el-table-column label="تاريخ البدء" align="center">
         <template slot-scope="scope">
@@ -47,7 +47,7 @@
           ) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="ملاحظات" prop="description"></el-table-column>
+      <el-table-column align="center" label="ملاحظات" prop="Description"></el-table-column>
       <el-table-column label="محرر" align="center" prop="editorName"></el-table-column>
 
       <el-table-column width="120" align="center">
@@ -57,7 +57,7 @@
             :key="index"
             :type="NOprations.ClassName"
             round
-            @click="handleOprationsys(scope.row.id , NOprations)"
+            @click="handleOprationsys(scope.row.Id , NOprations)"
           >{{NOprations.OprationDescription}}</el-button>
         </template>
       </el-table-column>
@@ -76,7 +76,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item label="ملاحظات للعملية " prop="description">
+        <el-form-item label="ملاحظات للعملية " prop="Description">
           <el-input type="textarea" v-model="tempOpration.description"></el-input>
         </el-form-item>
       </el-form>
@@ -145,7 +145,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
 
     handleSelectionChange(val) {
@@ -155,7 +155,7 @@ export default {
       if (this.Selection.length > 0)
         this.Selection.map(a => {
           ChangeObjStatusByTableName({
-            ObjID: a.id,
+            ObjID: a.Id,
             TableName: "MembershipMovementOrder",
             Status: 1,
             Description: "طلب تجميد او زيادة موافق عليه"
@@ -163,16 +163,16 @@ export default {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
-              type: "success",
+              type: 'success',
               duration: 2000
-            });
+            })
             this.$nextTick(() => {
               this.$router.replace({
                 path: "/redirect" + this.$route.fullPath
-              });
-            });
-          });
-        });
+              })
+            })
+          })
+        })
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
@@ -184,7 +184,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createOprationData() {
@@ -201,17 +201,17 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
         }
-      });
+      })
     }
   }
 };

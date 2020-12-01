@@ -2,7 +2,7 @@
   <div class="app-container" style="direction : rtl ">
     <add-entry v-if="checkPermission(['admin'])" :AccountID1="3" :AccountID2="AccountID" />
     <el-table :data="EntryMovements" fit border highlight-current-row>
-      <el-table-column prop="id" label="ID" width="120" align="center"></el-table-column>
+      <el-table-column prop="Id" label="ID" width="120" align="center"></el-table-column>
       <el-table-column label="التاريخ" align="center" width="200">
         <template slot-scope="scope">
           <el-date-picker format="dd/MM/yyyy" disabled v-model="scope.row.FakeDate"></el-date-picker>

@@ -18,7 +18,7 @@ const PurchasesRouter = {
     {
       path: 'Edit/:id(\\d+)',
       component: () => import('@/views/Purchase/PurchaseInvoice/Edit'),
-      name: 'EditInvoice',
+      name: 'EditPurchaseInvoice',
       meta: {
          title: 'Edit Invoice', noCache: true, activeMenu: '/Purchase/PurchaseInvoice/List'
       },

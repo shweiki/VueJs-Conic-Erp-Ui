@@ -23,7 +23,7 @@
             to="/OrderInventories/List"
           >{{ $t('route.OrderInventory') }}</router-link>
           <span>{{ $t('OrderInventories.StoreMovement') }}</span>
-          <p style="color: #F56C6Cfont-size: 16pxtext-align: center">{{ ValidateNote }}</p>
+          <p style="color: #F56C6Cfont-size: 16pxtext-align: center">{{ ValidateNote }}</p>ss
         </div>
         <el-row type="flex">
           <el-col :span="6">
@@ -53,7 +53,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="description" v-bind:label="$t('OrderInventories.Statement')">
+            <el-form-item prop="Description" v-bind:label="$t('OrderInventories.Statement')">
               <el-input type="textarea" v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
@@ -75,7 +75,7 @@
                 slot-scope="{}"
               >{{ $t('OrderInventories.Items') }} ({{tempForm.InventoryMovements.length.toFixed(2)}})</template>
               <template slot-scope="scope">
-                {{tempForm.InventoryMovements[scope.$index].Itemx.name}}
+                {{tempForm.InventoryMovements[scope.$index].Itemx.Name}}
                 <edit-item :ItemID="tempForm.InventoryMovements[scope.$index].ItemsID" />
               </template>
             </el-table-column>
@@ -149,7 +149,7 @@
 <script>
 import { Create, Edit, GetOrderInventoryByID } from "@/api/OrderInventory";
 import { GetActiveInventory } from "@/api/InventoryItem";
-import ItemsSearch from "@/views/Sales/SaleInvoice/components/ItemsSearch";
+import ItemsSearch from "@/components/Items/ItemsSearch";
 import EditItem from "@/views/Inventory/Item/EditItem";
 
 export default {
@@ -167,7 +167,7 @@ export default {
         this.$message({
           message: rule.field + "اواي",
           type: "error",
-        });
+        })
         callback(new Error(rule.field + "اي"));
       } else {
         callback();
@@ -181,7 +181,7 @@ export default {
           this.$message({
             message: "اه",
             type: "error",
-          });
+          })
           callback(new Error("اوه"));
         }
       } else {
@@ -220,14 +220,14 @@ export default {
     GetActiveInventory().then((response) => {
       console.log(response);
       this.InventoryItems = response;
-    });
+    })
   },
   methods: {
     AddItem(item) {
       this.tempForm.InventoryMovements.unshift({
         ID: undefined,
         TypeMove: "In",
-        ItemsID: item != undefined ? item.id : undefined,
+        ItemsID: item != undefined ? item.Id : undefined,
         Status: 0,
         Qty: 1.0,
         SellingPrice: 0,
@@ -236,7 +236,7 @@ export default {
         InventoryItemID: 1,
         Itemx: item,
         OrderInventoryID: undefined,
-      });
+      })
     },
 
     Copy(Text) {
@@ -259,7 +259,7 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
@@ -272,7 +272,7 @@ export default {
               this.$notify({
                 title: "تم الإضافة بنجاح",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 position: "top-left",
                 duration: 1000,
                 showClose: false,
@@ -281,20 +281,20 @@ export default {
                     this.$nextTick(() => {
                       this.$router.replace({
                         path: "/redirect" + "/OrderInventories/List",
-                      });
-                    });
+                      })
+                    })
                   }
                 },
-              });
+              })
             })
             .catch((error) => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     updateData() {
       this.$refs["tempForm"].validate((valid) => {
@@ -304,7 +304,7 @@ export default {
               this.$notify({
                 title: "تم تعديل  بنجاح",
                 message: "تم تعديل بنجاح",
-                type: "success",
+                type: 'success',
                 position: "top-left",
                 duration: 1000,
                 showClose: false,
@@ -313,31 +313,31 @@ export default {
                     this.$nextTick(() => {
                       this.$router.replace({
                         path: "/redirect" + "/OrderInventories/List",
-                      });
-                    });
+                      })
+                    })
                   }
                 },
-              });
+              })
             })
             .catch((error) => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     setTagsViewTitle() {
       const title = "Edit Order Inventory";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.id}`,
-      });
+        title: `${title}-${this.tempForm.Id}`,
+      })
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Order Inventory";
-      document.title = `${title} - ${this.tempForm.id}`;
+      document.title = `${title} - ${this.tempForm.Id}`;
     },
   },
 };

@@ -28,9 +28,9 @@
           >
             <el-option
               v-for="item in Memberships"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+              :key="item.Id"
+              :label="item.Name"
+              :value="item.Id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -84,7 +84,7 @@
         <el-form-item
           :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' } ]"
           v-bind:label="$t('AddVendors.Description')"
-          prop="description"
+          prop="Description"
         >
           <el-radio-group v-model="MembershipMovement.Description">
             <el-radio label="تجديد اشتراك" border>تجديد اشتراك</el-radio>
@@ -92,8 +92,7 @@
             <el-radio label border></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="Type" label="
-            "></el-form-item>
+        <el-form-item prop="Type" label=""></el-form-item>
         <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
           <span>JOD {{(MembershipMovement.TotalAmmount).toFixed(2)}}</span>
         </el-form-item>
@@ -107,9 +106,9 @@
               <el-select v-model="MembershipMovement.EditorName" placeholder="محرر السند">
                 <el-option
                   v-for="item in $store.getters.Editors"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  :key="item.Id"
+                  :label="item.Name"
+                  :value="item.Name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -199,7 +198,7 @@ export default {
         .then(response => {
           console.log(response);
           this.Memberships = response;
-          this.MembershipMovement.MembershipID = response[0].id;
+          this.MembershipMovement.MembershipID = response[0].Id;
           GetActiveDiscount()
             .then(response => {
               console.log(response);
@@ -209,11 +208,11 @@ export default {
             })
             .catch(err => {
               console.log(err);
-            });
+            })
         })
         .catch(err => {
           console.log(err);
-        });
+        })
     },
     createData() {
       this.$refs["dataForm"].validate(valid => {
@@ -225,11 +224,11 @@ export default {
                   if (response) {
                     //  if(this.Discount.ValueOfDays >0)
                     // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
-                        this.Visibles = false;
+                        this.Visibles = false
                         this.$notify({
                           title: "تم ",
                           message: "تم الإضافة بنجاح",
-                          type: "success",
+                          type: 'success',
                           duration: 2000,
                           onClose: () => {
                             this.EnableSave = false;
@@ -237,21 +236,21 @@ export default {
                       })
                       .catch(error => {
                         console.log(error);
-                      });
+                      })
                   }
                 })
                 .catch(error => {
                   console.log(error);
-                });
+                })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     calc() {
       let Membership = this.Memberships.find(
-        obj => obj.id == this.MembershipMovement.MembershipID
+        obj => obj.Id == this.MembershipMovement.MembershipID
       );
       // console.log(Membership);
 
@@ -293,7 +292,7 @@ export default {
       Create(MembershipMovementOrder).then(response => {
         if (response) {
         }
-      });
+      })
     }
   }
 };

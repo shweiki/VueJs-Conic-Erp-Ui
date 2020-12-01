@@ -3,12 +3,12 @@
     <el-button
       v-bind:disabled="(OldPayment != null) ? false: true "
       @click="Print()"
-      type="success"
+      type='success'
       icon="el-icon-printer"
     ></el-button>
     <el-button
       :disabled="Enable"
-      type="success"
+      type='success'
       icon="el-icon-plus"
       @click="Visibles = true"
     >اشتراك و قبض</el-button>
@@ -38,9 +38,9 @@
           >
             <el-option
               v-for="item in Memberships"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+              :key="item.Id"
+              :label="item.Name"
+              :value="item.Id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -94,7 +94,7 @@
         <el-form-item
           :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' } ]"
           v-bind:label="$t('AddVendors.Description')"
-          prop="description"
+          prop="Description"
         >
           <el-radio-group v-model="MembershipMovement.Description">
             <el-radio label="تجديد اشتراك" border>تجديد اشتراك</el-radio>
@@ -112,9 +112,9 @@
               <el-select v-model="MembershipMovement.EditorName" placeholder="محرر السند">
                 <el-option
                   v-for="item in $store.getters.Editors"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  :key="item.Id"
+                  :label="item.Name"
+                  :value="item.Name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -145,7 +145,7 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="description">
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input style="width:220px" v-model="Payment.Description"></el-input>
         </el-form-item>
         <el-row type="flex">
@@ -158,9 +158,9 @@
               <el-select v-model="Payment.EditorName" placeholder="محرر السند">
                 <el-option
                   v-for="item in $store.getters.Editors"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
+                  :key="item.Id"
+                  :label="item.Name"
+                  :value="item.Name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -272,7 +272,7 @@ export default {
         .then((response) => {
           console.log(response);
           this.Memberships = response;
-          this.MembershipMovement.MembershipID = response[0].id;
+          this.MembershipMovement.MembershipID = response[0].Id;
           GetActiveDiscount()
             .then((response) => {
               console.log(response);
@@ -282,11 +282,11 @@ export default {
             })
             .catch((err) => {
               console.log(err);
-            });
+            })
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
     },
     createData() {
       this.$refs["dataForm"].validate((valid) => {
@@ -312,40 +312,40 @@ export default {
                       " .";
                     CreatePayment(this.Payment)
                       .then((response) => {
-                        this.Payment.name = this.name;
-                        this.Visibles = false;
+                        this.Payment.Name = this.Name;
+                        this.Visibles = false
                         this.$notify({
                           title: "تم ",
                           message: "تم الإضافة بنجاح",
-                          type: "success",
+                          type: 'success',
                           duration: 2000,
                           onClose: () => {
-                            this.Payment.id = response;
+                            this.Payment.Id = response;
                             this.OldPayment = this.Payment;
                             this.Print();
                             this.EnableSave = false;
                           },
-                        });
+                        })
                       })
                       .catch((error) => {
                         console.log(error);
-                      });
+                      })
                   }
                 })
                 .catch((error) => {
                   console.log(error);
-                });
+                })
             }
-          });
+          })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     calc() {
       let Membership = this.Memberships.find(
-        (obj) => obj.id == this.MembershipMovement.MembershipID
+        (obj) => obj.Id == this.MembershipMovement.MembershipID
       );
       // console.log(Membership);
 
@@ -378,7 +378,7 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true,
-      });
+      })
     },
     AddExtraToMembership(Days, MemberShipMovementID) {
       let MembershipMovementOrder = {
@@ -398,7 +398,7 @@ export default {
       Create(MembershipMovementOrder).then((response) => {
         if (response) {
         }
-      });
+      })
     },
     formatDate(date) {
       let d = new Date(date),

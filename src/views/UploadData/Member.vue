@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
-    <el-button @click="AddMember" plain :disabled="isDisabled" type="success">Push</el-button>
+    <el-button @click="AddMember" plain :disabled="isDisabled" type='success'>Push</el-button>
     <el-table
       height="250"
       v-loading="loading"
@@ -48,15 +48,15 @@ export default {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
-              type: "success",
+              type: 'success',
               duration: 2000
-            });
+            })
           }
         })
         .catch(error => {
           console.log(error);
           //this.AddMember(100), 1000);
-        });
+        })
     },
 
     beforeUpload(file) {
@@ -69,7 +69,7 @@ export default {
       this.$message({
         message: "Please do not upload files larger than 8m in size.",
         type: "warning"
-      });
+      })
       return false;
     },
     handleSuccess({ results, header }) {
@@ -81,7 +81,7 @@ export default {
           ID: undefined,
           Name:
             element.n1 + " " + element.n2 + " " + element.n3 + " " + element.n4,
-          SSN: element.ssn,
+          Ssn: element.ssn,
           DateofBirth: this.ExcelDateToJSDate(element.bd),
           Email: "",
           phoneNumber1: element.p1,
@@ -91,7 +91,7 @@ export default {
           Status: 0,
           Tag: element.tag
         };
-      });
+      })
       this.tableHeader = header;
       this.isDisabled = false;
       this.loading = false;

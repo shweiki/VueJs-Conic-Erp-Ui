@@ -6,7 +6,7 @@
           <el-radio-group v-model="Status" @change="getdata()">
             <el-radio-button
               v-for="op in Oprations"
-              :key="op.id"
+              :key="op.Id"
               v-bind:label="op.status"
               >{{ op.oprationDescription }}</el-radio-button
             >
@@ -52,7 +52,7 @@
         :data="
           tableData.filter(
             (data) =>
-              !search || data.name.toLowerCase().includes(search.toLowerCase())
+              !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -69,7 +69,7 @@
           width="55"
           align="center"
         ></el-table-column>
-        <el-table-column label="#" prop="id" width="120" align="center">
+        <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
               type="primary"
@@ -78,7 +78,7 @@
             ></el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="name" align="center">
+        <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
             {{ tableData.length }}
             <el-input
@@ -87,16 +87,16 @@
             />
           </template>
           <template slot-scope="scope">
-            <router-link :to="'/Gym/Edit/' + scope.row.id">
+            <router-link :to="'/Gym/Edit/' + scope.row.Id">
               <strong style="font-size: 10px; cursor: pointer">{{
-                scope.row.name
+                scope.row.Name
               }}</strong>
             </router-link>
           </template>
         </el-table-column>
         <el-table-column
           v-bind:label="$t('Members.Phone1')"
-          prop="phoneNumber1"
+          prop="PhoneNumber1"
           width="120"
         ></el-table-column>
 
@@ -108,7 +108,7 @@
           align="center"
         >
           <template slot-scope="scope">{{
-            scope.row.totalCredit.toFixed(3)
+            scope.row.TotalCredit.toFixed(3)
           }}</template>
         </el-table-column>
         <el-table-column
@@ -119,7 +119,7 @@
           align="center"
         >
           <template slot-scope="scope">{{
-            scope.row.totalDebit.toFixed(3)
+            scope.row.TotalDebit.toFixed(3)
           }}</template>
         </el-table-column>
         <el-table-column
@@ -128,7 +128,7 @@
           align="center"
         >
           <template slot-scope="scope">{{
-            (scope.row.totalCredit - scope.row.totalDebit).toFixed(3)
+            (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3)
           }}</template>
         </el-table-column>
       </el-table>
@@ -162,7 +162,7 @@ export default {
       console.log(response);
 
       this.Oprations = response;
-    });
+    })
   },
   methods: {
     getdata() {
@@ -172,7 +172,7 @@ export default {
         this.tableData = response;
 
         this.loading = false;
-      });
+      })
     },
     handleSelectionChange(val) {
       this.Selection = val;
@@ -180,9 +180,9 @@ export default {
     SendSms() {
       if (this.Selection.length > 0) {
         let numbers = this.Selection.map((element) => {
-          if (element.phoneNumber1.length == 10) element.phoneNumber1.slice(1);
-          return "962" + element.phoneNumber1;
-        });
+          if (element.PhoneNumber1.length == 10) element.PhoneNumber1.slice(1);
+          return "962" + element.PhoneNumber1;
+        })
         console.log("numbers", numbers);
         let numbers100 = [];
         for (var i = 0; i < numbers.length; i++) {
@@ -207,22 +207,22 @@ export default {
             },
           }).then((response) => {
             console.log(response);
-          });
-        });
+          })
+        })
 
         this.$notify({
           title: "تم ",
           message: "تم ارسال بنجاح",
-          type: "success",
+          type: 'success',
           duration: 2000,
-        });
+        })
       } else {
         this.$notify({
           title: "تم ",
           message: "الرجاء تحديد المشتركين",
           type: "error",
           duration: 2000,
-        });
+        })
       }
     },
   },

@@ -54,7 +54,7 @@
         <el-button
           style="float: left;"
           icon="el-icon-printer"
-          type="success"
+          type='success'
           @click="print(tableData)"
         ></el-button>
       </el-card>
@@ -75,7 +75,7 @@
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-button type="success" icon="el-icon-refresh" @click="changeDate"></el-button>
+            <el-button type='success' icon="el-icon-refresh" @click="changeDate"></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -84,7 +84,7 @@
           prop="ActionLogs[0].PostingDateTime"
           width="120"
         ></el-table-column>
-        <el-table-column v-bind:label="$t('Accounting.Notes')" prop="description" align="center"></el-table-column>
+        <el-table-column v-bind:label="$t('Accounting.Notes')" prop="Description" align="center"></el-table-column>
         <el-table-column label="مدين" prop="Credit" width="100" align="center">
           <template slot-scope="scope">{{(scope.row.Credit).toFixed(3) }}</template>
         </el-table-column>
@@ -107,7 +107,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item v-bind:label="$t('Inventory.OperationNote')" prop="description">
+        <el-form-item v-bind:label="$t('Inventory.OperationNote')" prop="Description">
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -236,8 +236,8 @@ export default {
           console.log(response);
           this.Account = response;
           this.loading = false;
-        });
-      });
+        })
+      })
     },
     changeDate() {
       this.loading = true;
@@ -257,7 +257,7 @@ export default {
           "</h3><h3 style='float:right'>  الفترة  : "+ this.formatDate(this.date[0]) +" - " + this.formatDate(this.date[1])+"</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;"
-      });
+      })
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
@@ -269,7 +269,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createOprationData() {
@@ -286,17 +286,17 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
         }
-      });
+      })
     },
    formatDate(date) {
   let d = new Date(date),

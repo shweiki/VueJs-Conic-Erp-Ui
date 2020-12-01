@@ -11,7 +11,7 @@
     >
       <el-card class="box-card" shadow="always" :body-style="{ padding: '3.5px' }">
         <div @click="AddItem(Item)">
-          <span style="font-size: 11px;color: #545454;">{{ Item.name }}</span>
+          <span style="font-size: 11px;color: #545454;">{{ Item.Name }}</span>
          <time class="price">{{ Item.SellingPrice.toFixed(2) }}</time>
         </div>
         <!--  <el-col v-permission="['admin']"> 
@@ -33,7 +33,7 @@
 </template>
 <script>
 import permission from "@/directive/permission/index.js";
-import { GetActiveItem } from "@/api/Item";
+import { GetIsPrimeItem } from "@/api/Item";
 
 export default {
   name: "ItemsPrime",
@@ -51,11 +51,11 @@ export default {
       this.$emit("add", item, 1);
     },
     getdata() {
-      GetActiveItem().then(response => {
+      GetIsPrimeItem().then(response => {
         console.log(response);
         response.sort(function(a, b) {
-          var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-          var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+          var nameA = a.Name.toUpperCase(); // ignore upper and lowercase
+          var nameB = b.Name.toUpperCase(); // ignore upper and lowercase
           if (nameA < nameB) {
             return -1;
           }

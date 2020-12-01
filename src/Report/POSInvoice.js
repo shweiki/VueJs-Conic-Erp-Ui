@@ -28,13 +28,13 @@ console.log(temp)
 
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.text(ComapnyInfo.name, startX +24, startY +=9);
+  doc.text(ComapnyInfo.Name, startX +24, startY +=9);
   doc.setLineWidth(1);
   doc.line(0, startY +5, 78, startY += 5);
   doc.setFontSize(12);
 
   doc.text(":رقم الفاتورة", 78, startY+=6, {align:'right'});
-  doc.text("" + temp.id + "", 5, startY);
+  doc.text("" + temp.Id + "", 5, startY);
   doc.setLineWidth(1);
   doc.line(0, startY+=5, 80, startY);
   //doc.text(":عدد الاصناف", 50, startY+=6);
@@ -47,7 +47,7 @@ console.log(temp)
 
   
   temp.InventoryMovements.forEach(element => {
-    doc.text(""+element.Itemx.name+"", 78, startY+=6, {align:'right'});
+    doc.text(""+element.Itemx.Name+"", 78, startY+=6, {align:'right'});
     doc.text("" + element.Qty + "", 42, startY);
     doc.text("" + (element.SellingPrice).toFixed(1) + "", 25, startY);
     doc.text("" + (element.SellingPrice*element.Qty).toFixed(2) + "", 6, startY);

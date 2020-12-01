@@ -19,16 +19,16 @@
         ></el-date-picker>
       </div>
       <el-card class="box-card">
-        <span class="demonstration">{{ $t('ItemSales.name') }}</span>
+        <span class="demonstration">{{ $t('ItemSales.Name') }}</span>
         <el-select
           v-model="ItemID"
           filterable
           allow-create
           default-first-option
           @change="changeDate"
-          v-bind:placeholder="$t('ItemSales.name')"
+          v-bind:placeholder="$t('ItemSales.Name')"
         >
-          <el-option v-for="item in Items" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          <el-option v-for="item in Items" :key="item.Id" :label="item.Name" :value="item.Id"></el-option>
         </el-select>
       </el-card>
       <el-table
@@ -40,7 +40,7 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column label="#" prop="id" width="120" align="center">
+        <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button  type="primary" icon="el-icon-refresh" @click="changeDate" ></el-button>
           </template>
@@ -147,12 +147,12 @@ export default {
             console.log(response);
             this.Items = response;
             this.loading = false;
-          });
+          })
         })
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     changeDate() {
       this.loading = true;

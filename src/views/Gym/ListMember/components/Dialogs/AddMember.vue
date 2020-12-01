@@ -10,8 +10,8 @@
         class="demo-form-inline"
         label-position="top"
       >
-        <el-form-item v-bind:label="$t('CashDrawer.name')" prop="name">
-          <el-input type="text" v-model="tempForm.name"></el-input>
+        <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
+          <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
         <el-form-item
           label="تاريخ ميلاد"
@@ -22,17 +22,17 @@
         </el-form-item>
         <el-form-item
           label="الرقم الوطني"
-          prop="SSN"
+          prop="Ssn"
           :rules="[{ required: true, message: 'لايمكن ترك الرقم الوطني فارغ', trigger: 'blur' } ]"
         >
-          <el-input type="text" v-model="tempForm.SSN" placeholder="الرقم الوطني"></el-input>
+          <el-input type="text" v-model="tempForm.Ssn" placeholder="الرقم الوطني"></el-input>
         </el-form-item>
         <el-form-item
-          v-bind:label="$t('AddVendors.phoneNumber1')"
-          prop="phoneNumber1"
+          v-bind:label="$t('AddVendors.PhoneNumber1')"
+          prop="PhoneNumber1"
           :rules="[{ required: true, message: 'لايمكن ترك الرقم الهاتف فارغ', trigger: 'blur' } ]"
         >
-          <el-input type="text" v-model="tempForm.phoneNumber1"></el-input>
+          <el-input type="text" v-model="tempForm.PhoneNumber1"></el-input>
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.PhoneNumber2')" prop="PhoneNumber2">
           <el-input type="text" v-model="tempForm.PhoneNumber2"></el-input>
@@ -40,7 +40,7 @@
         <el-form-item v-bind:label="$t('AddVendors.Email')" prop="Email">
           <el-input type="text" v-model="tempForm.Email"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="description">
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -64,7 +64,7 @@ export default {
       tempForm: {
         ID: undefined,
         Name: "",
-        SSN: "",
+        Ssn: "",
         DateofBirth: "",
         Email: "",
         phoneNumber1: "",
@@ -98,7 +98,7 @@ export default {
       this.tempForm = {
         ID: undefined,
         Name: "",
-        SSN: "",
+        Ssn: "",
         DateofBirth: "",
         Email: "",
         phoneNumber1: "",
@@ -112,8 +112,8 @@ export default {
         if (valid) {
           if (
             this.CheckMemberIsExist(
-              this.tempForm.phoneNumber1,
-              this.tempForm.SSN
+              this.tempForm.PhoneNumber1,
+              this.tempForm.Ssn
             )
           ) {
             Create(this.tempForm)
@@ -123,20 +123,20 @@ export default {
                 this.$notify({
                   title: "تم ",
                   message: "تم الإضافة بنجاح",
-                  type: "success",
+                  type: 'success',
                   duration: 2000
-                });
+                })
                 this.$nextTick(() => {
                   this.$router.replace({
                     path: "/Gym/Edit/" + response
-                  });
-                });
-              this.SendHelloSms(this.tempForm.phoneNumber1 , this.tempForm.name)
+                  })
+                })
+              this.SendHelloSms(this.tempForm.PhoneNumber1 , this.tempForm.Name)
 
               })
               .catch(error => {
                 console.log(error);
-              });
+              })
           } else {
             this.$notify({
               position: "top-left",
@@ -144,17 +144,17 @@ export default {
               message: "يوجد عضو يحمل نفس رقم الهاتف او الرقم الوطني",
               type: "warning",
               duration: 20000
-            });
+            })
           }
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     CheckMemberIsExist(phonenumber, ssn) {
       const found = this.$store.getters.AllMembers.find(
-        element => (element.phoneNumber1 === phonenumber || element.SSN === ssn)
+        element => (element.PhoneNumber1 === phonenumber || element.Ssn === ssn)
       );
       if (found != undefined) return false;
       else return true;
@@ -174,7 +174,7 @@ export default {
           }
         }).then(response => {
           console.log(response);
-        });
+        })
 
     }
   }

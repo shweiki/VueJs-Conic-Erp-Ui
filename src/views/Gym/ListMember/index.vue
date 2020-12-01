@@ -8,7 +8,7 @@
         <el-row type="flex" style="background : #2f3542; color: white;">
           <el-col :span="6">
             <el-button
-              type="success"
+              type='success'
               icon="el-icon-s-shop"
               @click="$router.replace({ path: '/redirect' + '/SalesInvoice' })"
             ></el-button>
@@ -33,23 +33,23 @@
         >
           <el-card :body-style="{ padding: '0px' }" class="box-card" shadow="always">
             <div slot="header" class="clearfix">
-              <router-link :to="'/Gym/Edit/'+member.id">
+              <router-link :to="'/Gym/Edit/'+member.Id">
                 <strong
                   style="font-size: 10px; cursor: pointer;"
-                >{{member.name.split(' ').slice(0, 4).join(' ')}}</strong>
+                >{{member.Name.split(' ').slice(0, 4).join(' ')}}</strong>
               </router-link>
             </div>
             <el-row type="flex">
               <el-col
                 :span="12"
-              >{{ $t('MemberList.MembershipType') }}{{ member.ActiveMemberShip.name}}</el-col>
+              >{{ $t('MemberList.MembershipType') }}{{ member.ActiveMemberShip.Name}}</el-col>
               <!-- <el-col :span="12">
                 <span>اخر زيارة</span>
                 {{member.lastLog }}
               </el-col>-->
             </el-row>
             <el-col :span="24">
-              <el-input disabled v-model="member.phoneNumber1"></el-input>
+              <el-input disabled v-model="member.PhoneNumber1"></el-input>
             </el-col>
           </el-card>
         </el-col>

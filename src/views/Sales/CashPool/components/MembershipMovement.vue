@@ -5,7 +5,7 @@
         <el-button
           :disabled="EnableSave"
           style="float: left"
-          type="success"
+          type='success'
           icon="fa fa-save"
           @click="createData('tempForm')"
         >{{ $t('CashPool.Save') }}</el-button>
@@ -62,7 +62,7 @@
         :disabled="EnableSave"
         style="float: left;"
         icon="el-icon-printer"
-        type="success"
+        type='success'
         @click="print(tableData)"
       ></el-button>
     </el-card>
@@ -81,7 +81,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column label="#" prop="id" width="120" align="center">
+        <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
           </template>
@@ -119,7 +119,7 @@
               :key="index"
               :type="NOprations.ClassName"
               round
-              @click="handleOprationsys(scope.row.id , NOprations)"
+              @click="handleOprationsys(scope.row.Id , NOprations)"
             >{{NOprations.OprationDescription}}</el-button>
           </template>
         </el-table-column>
@@ -139,7 +139,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item label="ملاحظات للعملية " prop="description">
+        <el-form-item label="ملاحظات للعملية " prop="Description">
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -225,8 +225,8 @@ export default {
         GetInComeAccounts().then(response => {
           this.InComeAccounts = response;
           this.InComeAccount = this.InComeAccounts[1].value;
-        });
-      });
+        })
+      })
 
       GetMembershipMovementByStatus({ Status: 0 })
         .then(response => {
@@ -238,7 +238,7 @@ export default {
         .catch(error => {
           // handle error
           console.log(error);
-        });
+        })
     },
     createData() {
       this.EnableSave = true;
@@ -270,31 +270,31 @@ export default {
           Debit: 0.0,
           Credit: i.TotalAmmount,
           Description:
-            "اشتراك " + i.MembershipName + "-" + i.Type + " رقم " + i.id + " ",
+            "اشتراك " + i.MembershipName + "-" + i.Type + " رقم " + i.Id + " ",
           EntryID: undefined
-        });
-      });
+        })
+      })
       console.log(tempForm);
       CreateEntry(tempForm)
         .then(response => {
           console.log(response);
           let IDS = this.Selection.map(a => {
             ChangeObjStatusByTableName({
-              ObjID: a.id,
+              ObjID: a.Id,
               TableName: "MembershipMovement",
               Status: 1,
               Description: "اشتراك مؤكدة"
             }).then(response => {
               console.log(response);
-            });
-          });
+            })
+          })
           console.log(IDS);
           this.EnableSave = false;
 
           this.$notify({
             title: "تم الإضافة بنجاح",
             message: "تم الإضافة بنجاح",
-            type: "success",
+            type: 'success',
             position: "top-left",
             duration: 1000,
             showClose: false,
@@ -302,11 +302,11 @@ export default {
               Object.assign(this.$data, this.$options.data());
               this.getdata();
             }
-          });
+          })
         })
         .catch(error => {
           console.log(error);
-        });
+        })
     },
     print(data) {
       printJS({
@@ -334,7 +334,7 @@ export default {
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;"
-      });
+      })
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
@@ -346,7 +346,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createOprationData() {
@@ -362,17 +362,17 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
         }
-      });
+      })
     },
     formatDate(date) {
       let d = new Date(date),

@@ -19,16 +19,16 @@
               <el-select
                 v-model="ServiceID"
                 @change="(id)=>{ Service = Services.find(
-                  obj => obj.id == id
+                  obj => obj.Id == id
                 )}"
               >
                 <el-option
                   v-for="item in Services"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
+                  :key="item.Id"
+                  :label="item.Name"
+                  :value="item.Id"
                 >
-                  <span style="float: left">{{ item.name }}</span>
+                  <span style="float: left">{{ item.Name }}</span>
                   <span
                     style=" float: right; color: #8492a6; font-size: 13px"
                   >{{ item.SellingPrice.toFixed(2) }}</span>
@@ -45,7 +45,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="description">
+            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
               <el-input v-model="Description"></el-input>
             </el-form-item>
           </el-col>
@@ -94,12 +94,12 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        });
+        })
     },
     createData() {
       let SaleInvoice = {
         ID: undefined,
-        Name: this.Service.name,
+        Name: this.Service.Name,
         Tax: 0.0,
         FakeDate: new Date(),
         PaymentMethod: "Cash",
@@ -123,7 +123,7 @@ export default {
           Description: "",
           InventoryItemID: 1,
           SalesInvoiceID: undefined
-        });
+        })
       }
       console.log(SaleInvoice)
       if (SaleInvoice.InventoryMovements.length > 0) {
@@ -134,19 +134,19 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
               this.$nextTick(() => {
                 this.$router.replace({
                   path: "/redirect" + this.$route.fullPath
-                });
-              });
+                })
+              })
             }
           })
           .catch(error => {
             console.log(error);
-          });
+          })
       }
     }
   }

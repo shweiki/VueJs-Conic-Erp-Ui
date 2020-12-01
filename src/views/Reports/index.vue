@@ -14,9 +14,9 @@
           :span="4"
           class="list-complete-item"
           v-for="item in filteredItems"
-          v-bind:key="item.id"
+          v-bind:key="item.Id"
         >
-          <router-link :class="item.class" icon="el-icon-plus" :to="item.link">{{ item.name }}</router-link>
+          <router-link :class="item.class" icon="el-icon-plus" :to="item.link">{{ item.Name }}</router-link>
         </el-col>
       </transition-group>
     </el-card>
@@ -122,7 +122,7 @@ export default {
       var filter = this.currentTag;
       return this.items.filter(function(item) {
         return item.tags.indexOf(filter) !== -1;
-      });
+      })
     }
   },
   methods: {

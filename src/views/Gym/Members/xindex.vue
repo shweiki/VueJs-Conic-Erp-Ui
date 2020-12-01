@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type="success"
+          type='success'
           icon="el-icon-plus"
           @click="handleCreate()"
         >{{ $t('Members.Add') }}</el-button>
@@ -12,25 +12,25 @@
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+        :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
         fit
         border
         max-height="900"
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column label="#" prop="id" width="120" align="center">
+        <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="name" align="center">
+        <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
             <el-input v-model="search" v-bind:placeholder="$t('Members.Search')" />
           </template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Account.Credit')" width="120" align="center">
-          <template slot-scope="scope">{{(scope.row.totalCredit).toFixed(3) }}</template>
+          <template slot-scope="scope">{{(scope.row.TotalCredit).toFixed(3) }}</template>
         </el-table-column>
         <el-table-column
           v-bind:label="$t('Account.Debit')"
@@ -38,12 +38,12 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{(scope.row.totalDebit).toFixed(3) }}</template>
+          <template slot-scope="scope">{{(scope.row.TotalDebit).toFixed(3) }}</template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
           <template
             slot-scope="scope"
-          >{{ (scope.row.totalCredit - scope.row.totalDebit).toFixed(3) }}</template>
+          >{{ (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3) }}</template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Members.Status')" width="120" align="center">
           <template slot-scope="scope">
@@ -65,7 +65,7 @@
               :key="index"
               :type="NOprations.ClassName"
               round
-              @click="handleOprationsys(scope.row.id , NOprations)"
+              @click="handleOprationsys(scope.row.Id , NOprations)"
             >{{NOprations.OprationDescription}}</el-button>
           </template>
         </el-table-column>
@@ -79,7 +79,7 @@
                 align="center"
               ></el-table-column>
               <el-table-column v-bind:label="$t('Members.Email')" prop="Email" width="140"></el-table-column>
-              <el-table-column v-bind:label="$t('Members.Phone1')" prop="phoneNumber1" width="120"></el-table-column>
+              <el-table-column v-bind:label="$t('Members.Phone1')" prop="PhoneNumber1" width="120"></el-table-column>
               <el-table-column v-bind:label="$t('Members.Phone2')" prop="PhoneNumber2" width="120"></el-table-column>
               <el-table-column
                 v-bind:label="$t('Members.DateofBirth')"
@@ -93,7 +93,7 @@
               ></el-table-column>
               <el-table-column
                 v-bind:label="$t('Members.Description')"
-                prop="description"
+                prop="Description"
                 width="120"
               ></el-table-column>
             </el-table>
@@ -109,8 +109,8 @@
       :visible.sync="dialogFormVisible"
     >
       <el-form :model="tempForm" ref="dataForm" class="demo-form-inline">
-        <el-form-item v-bind:label="$t('CashDrawer.name')" prop="name">
-          <el-input type="text" v-model="tempForm.name"></el-input>
+        <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
+          <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
         <el-form-item
           label="تاريخ ميلاد"
@@ -119,8 +119,8 @@
         >
           <el-date-picker v-model="tempForm.DateofBirth" type="date" placeholder="تاريخ ميلاد"></el-date-picker>
         </el-form-item>
-        <el-form-item v-bind:label="$t('AddVendors.phoneNumber1')" prop="phoneNumber1">
-          <el-input type="text" v-model="tempForm.phoneNumber1"></el-input>
+        <el-form-item v-bind:label="$t('AddVendors.PhoneNumber1')" prop="PhoneNumber1">
+          <el-input type="text" v-model="tempForm.PhoneNumber1"></el-input>
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.PhoneNumber2')" prop="PhoneNumber2">
           <el-input type="text" v-model="tempForm.PhoneNumber2"></el-input>
@@ -128,7 +128,7 @@
         <el-form-item v-bind:label="$t('AddVendors.Email')" prop="Email">
           <el-input type="text" v-model="tempForm.Email"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="description">
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -154,7 +154,7 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item label="ملاحظات للعملية " prop="description">
+        <el-form-item label="ملاحظات للعملية " prop="Description">
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -190,7 +190,7 @@ export default {
       tempForm: {
         ID: undefined,
         Name: "",
-        SSN: "",
+        Ssn: "",
         DateofBirth: "",
         Email: "",
         phoneNumber1: "",
@@ -252,14 +252,14 @@ export default {
         //console.log(response);
         this.tableData = response;
         this.loading = false;
-      });
+      })
     },
 
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
         Name: "",
-        SSN: "",
+        Ssn: "",
         DateofBirth: "",
         Email: "",
         phoneNumber1: "",
@@ -274,13 +274,13 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     handleUpdate(row) {
-      this.tempForm.id = row.id;
-      this.tempForm.name = row.name;
+      this.tempForm.Id = row.Id;
+      this.tempForm.Name = row.Name;
       this.tempForm.Email = row.Email;
-      this.tempForm.phoneNumber1 = row.phoneNumber1;
+      this.tempForm.PhoneNumber1 = row.PhoneNumber1;
       this.tempForm.PhoneNumber2 = row.PhoneNumber2;
       this.tempForm.DateofBirth = row.DateofBirth;
       this.tempForm.Description = row.Description;
@@ -289,7 +289,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      });
+      })
     },
     createData() {
       this.$refs["dataForm"].validate(valid => {
@@ -301,18 +301,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
@@ -324,18 +324,18 @@ export default {
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
@@ -347,7 +347,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.id;
+      this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
     createOprationData() {
@@ -364,17 +364,17 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
         }
-      });
+      })
     }
   }
 };

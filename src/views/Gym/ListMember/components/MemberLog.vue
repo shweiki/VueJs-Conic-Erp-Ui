@@ -25,7 +25,7 @@
           >
             <router-link :to="'/Gym/Edit/'+activity.MemberID" >
               <el-tag  :type="activity.Opration.ClassName"  v-bind:class="{ BlackList: activity.Status == -2 ? true : false }" >
-                <strong  style="font-size: 10px; cursor: pointer;">{{activity.name}}</strong>
+                <strong  style="font-size: 10px; cursor: pointer;">{{activity.Name}}</strong>
               </el-tag>
             </router-link>
             <el-tag
@@ -33,7 +33,7 @@
               v-bind:type="activity.ActiveMemberShip.Type == 'Morning' ? 'warning' :'success'"
             >{{activity.ActiveMemberShip.Type}}</el-tag>
                <el-tag
-              v-if="activity.totalCredit-activity.totalDebit > 0 "
+              v-if="activity.TotalCredit-activity.TotalDebit > 0 "
               type="info"
             >مدين</el-tag>
           </el-timeline-item>
@@ -70,7 +70,7 @@ export default {
           console.log("test");
 
           reject(error);
-        });
+        })
     }
   }
 };

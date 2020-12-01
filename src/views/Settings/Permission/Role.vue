@@ -5,17 +5,17 @@
     <el-table :data="rolesList" style="width: 100%; margin-top: 30px" border>
       <el-table-column align="center" label="Role Id" width="220">
         <template slot-scope="scope">
-          {{ scope.row.id }}
+          {{ scope.row.Id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Role Name" width="220">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.Name }}
         </template>
       </el-table-column>
       <el-table-column align="header-center" label="NormalizedName">
         <template slot-scope="scope">
-          {{ scope.row.normalizedName }}
+          {{ scope.row.NormalizedName }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Operations">
@@ -36,11 +36,11 @@
     >
       <el-form :model="role" label-width="80px" label-position="left">
         <el-form-item label="Name">
-          <el-input v-model="role.name" placeholder="Role Name" />
+          <el-input v-model="role.Name" placeholder="Role Name" />
         </el-form-item>
         <el-form-item label="Desc">
           <el-input
-            v-model="role.normalizedName"
+            v-model="role.NormalizedName"
             :autosize="{ minRows: 2, maxRows: 4 }"
             type="textarea"
             placeholder="Role Description"
@@ -64,9 +64,9 @@ import { deepClone } from "@/utils";
 import { getRoutes, GetRoles, AddRole, DeleteRole, Edit } from "@/api/Role";
 
 const defaultRole = {
-  id: "",
-  name: "",
-  normalizedName: "",
+  Id: "",
+  Name: "",
+  NormalizedName: "",
 };
 
 export default {
@@ -109,7 +109,7 @@ export default {
       this.$nextTick(() => {
   
         this.checkStrictly = false;
-      });
+      })
     },
     handleDelete({ $index, row }) {
       this.$confirm("Confirm to remove the role?", "Warning", {
@@ -121,13 +121,13 @@ export default {
           await DeleteRole(row);
           this.rolesList.splice($index, 1);
           this.$message({
-            type: "success",
+            type: 'success',
             message: "Delete succed!",
-          });
+          })
         })
         .catch((err) => {
           console.error(err);
-        });
+        })
     },
 
     async confirmRole() {
@@ -152,18 +152,18 @@ export default {
         this.rolesList.push(this.role);
       }
 
-      const { description, id, name } = this.role;
+      const { NormalizedName, Id, Name } = this.role;
       this.dialogVisible = false;
       this.$notify({
         title: "Success",
         dangerouslyUseHTMLString: true,
         message: `
             <div>Role Id: ${Id}</div>
-            <div>Role Name: ${name}</div>
-            <div>Description: ${description}</div>
+            <div>Role Name: ${Name}</div>
+            <div>NormalizedName: ${NormalizedName}</div>
           `,
-        type: "success",
-      });
+        type: 'success',
+      })
     },
 
   },

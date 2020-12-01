@@ -36,8 +36,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Company.name')" prop="name">
-              <el-input type="text" v-model="tempForm.name"></el-input>
+            <el-form-item v-bind:label="$t('Company.Name')" prop="Name">
+              <el-input type="text" v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -64,10 +64,10 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              v-bind:label="$t('Company.phoneNumber1')"
-              prop="phoneNumber1"
+              v-bind:label="$t('Company.PhoneNumber1')"
+              prop="PhoneNumber1"
             >
-              <el-input type="text" v-model="tempForm.phoneNumber1"></el-input>
+              <el-input type="text" v-model="tempForm.PhoneNumber1"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -220,7 +220,7 @@ export default {
         .catch((error) => {
           // handle error
           console.log(error);
-        });
+        })
     },
     updateData() {
       this.$refs["dataForm"].validate((valid) => {
@@ -233,18 +233,18 @@ export default {
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
-                type: "success",
+                type: 'success',
                 duration: 2000,
-              });
+              })
             })
             .catch((error) => {
               console.log(error);
-            });
+            })
         } else {
           console.log("error submit!!");
           return false;
         }
-      });
+      })
     },
   },
 };
