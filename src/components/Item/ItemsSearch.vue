@@ -7,7 +7,7 @@
           <i class="fa fa-barcode el-input__icon" slot="suffix"></i>
         </el-input>
       </el-col>
-      <el-col style="margin-right: 10px;" :span="12">
+      <el-col style="margin-right: 10px;" :span="8">
         <el-select
           style="display: unset;"
           ref="headerSearchSelect"
@@ -19,12 +19,15 @@
           placeholder="بحث حسب اسم الصنف"
           @change="change"
         >
-          <el-option v-for="item in options" :key="item.id" :value="item" :label="item.name">
+          <el-option v-for="item in options" :key="item.id" :value="item" :label="item.Name">
             <span style=" color: #8492a6; font-size: 12px">( {{ item.id }} )</span>
-            <span style="float: left">{{ item.name }}</span>
+            <span style="float: left">{{ item.Name }}</span>
             <span style=" float: right; color: #8492a6; font-size: 13px">{{ item.SellingPrice }}</span>
           </el-option>
         </el-select>
+      </el-col>
+            <el-col style="margin-right: 10px;" :span="4">
+        <add-item />
       </el-col>
       <el-col style="margin-right: 10px;" :span="2">
         <el-switch v-model="ByQTY" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
@@ -80,9 +83,11 @@
 import Fuse from "fuse.js";
 import { CreateItem } from "@/api/Item";
 import store from "@/store";
+import AddItem from "./AddItem";
 
 export default {
   name: "ItemsSearch",
+  components :{AddItem ,AddItem},
   data() {
     return {
       ByQTY: false,
@@ -187,8 +192,8 @@ export default {
 
     NewItem() {
       CreateItem({
-        ID: undefined,
-        Name: this.name,
+        Id: undefined,
+        Name: this.Name,
         CostPrice: 0.0,
         SellingPrice: this.SellingPrice,
         OtherPrice: 0.0,
@@ -201,7 +206,7 @@ export default {
       })
         .then(response => {
           this.Barcode = "";
-          (this.name = ""), (this.NewItemVisible = false);
+          (this.Name = ""), (this.NewItemVisible = false);
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",

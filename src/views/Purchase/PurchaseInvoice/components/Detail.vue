@@ -246,7 +246,7 @@ import { Create, Edit, GetPurchaseInvoiceByID } from "@/api/PurchaseInvoice";
 
 import { GetActiveInventory } from "@/api/InventoryItem";
 import { GetActiveVendor } from "@/api/Vendor";
-import ItemsSearch from "@/views/NewSaleInvoice/components/ItemsSearch";
+import ItemsSearch from "@/components/Item/ItemsSearch";
 
 export default {
   name: "NewPurchaseInvoice",

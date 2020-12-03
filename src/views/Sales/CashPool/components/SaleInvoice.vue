@@ -400,7 +400,7 @@ export default {
                             this.CashAccounts.find(obj => {
                                 return obj.value == this.CashAccount;
                             }).label,
-                        EntryID: undefined
+                        EntryId: undefined
                     },
                     {
                         Id: undefined,
@@ -412,7 +412,7 @@ export default {
                                 return obj.value == this.CashAccount;
                             }).label +
                             " لمجموعة فواتير نقدية ",
-                        EntryID: undefined
+                        EntryId: undefined
                     }
                 ]
             };
@@ -427,7 +427,7 @@ export default {
                             return prev + cur.Qty * cur.SellingPrice;
                         }, 0) - i.Discount,
                         Description: "فاتورة مبيعات رقم " + i.Id + " ",
-                        EntryID: undefined
+                        EntryId: undefined
                     })
                 /// Visa
                 if (i.PaymentMethod == "Visa")
@@ -441,7 +441,7 @@ export default {
                                 return obj.value == this.CashAccount;
                             }).label +
                             " لمجموعة فواتير فيزا ",
-                        EntryID: undefined
+                        EntryId: undefined
                     })
             })
 

@@ -259,7 +259,7 @@ export default {
               this.CashAccounts.find(obj => {
                 return obj.value == this.CashAccount;
               }).label,
-            EntryID: undefined
+            EntryId: undefined
           }
         ]
       };
@@ -271,7 +271,7 @@ export default {
           Credit: i.TotalAmmount,
           Description:
             "اشتراك " + i.MembershipName + "-" + i.Type + " رقم " + i.Id + " ",
-          EntryID: undefined
+          EntryId: undefined
         })
       })
       console.log(tempForm);

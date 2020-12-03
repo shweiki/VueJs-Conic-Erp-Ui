@@ -9,7 +9,7 @@
           <div class="card-panel-text">مشتركين</div>
           <count-to
             :start-val="0"
-            :end-val="Totals.membersActive"
+            :end-val="Totals.MembersActive"
             :duration="2600"
             class="card-panel-num"
           />
@@ -27,7 +27,7 @@
 
           <count-to
             :start-val="0"
-            :end-val="parseInt(Totals.msgCredit)"
+            :end-val="parseInt(Totals.MsgCredit)"
             :duration="3000"
             class="card-panel-num"
           />
@@ -43,7 +43,7 @@
           <div class="card-panel-text">اعضاء</div>
           <count-to
             :start-val="0"
-            :end-val="Totals.members"
+            :end-val="Totals.Members"
             :duration="2600"
             class="card-panel-num"
           />
@@ -59,7 +59,7 @@
           <div class="card-panel-text">{{ $t('PanelGroup.Customers') }}</div>
           <count-to
             :start-val="0"
-            :end-val="Totals.clients"
+            :end-val="Totals.Clients"
             :duration="2600"
             class="card-panel-num"
           />
@@ -76,7 +76,7 @@
           <div class="card-panel-text">{{ $t('PanelGroup.Provider') }}</div>
           <count-to
             :start-val="0"
-            :end-val="Totals.suppliers"
+            :end-val="Totals.Suppliers"
             :duration="3000"
             class="card-panel-num"
           />
@@ -92,7 +92,7 @@
           <div class="card-panel-text">{{ $t('PanelGroup.Purchases') }}</div>
           <count-to
             :start-val="0"
-            :end-val="Totals.purchases"
+            :end-val="Totals.Purchases"
             :duration="3200"
             class="card-panel-num"
           />
@@ -106,7 +106,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">{{ $t('PanelGroup.Sales') }}</div>
-          <count-to :start-val="0" :end-val="Totals.sales" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="Totals.Sales" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -126,7 +126,7 @@ export default {
       Totals: {}
     };
   },
-  created() {
+  mounted() {
     this.getdata();
   },
   methods: {

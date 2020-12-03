@@ -20,7 +20,7 @@ withCredentials: true,
 service.interceptors.request.use(
   config => {
     // do something before request is sent    "Content-Type": "application/json"
-  //  console.log("config" , config);
+   // console.log("config" , config);
 
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
    // config.headers['Cache-Control'] ='no-cache'

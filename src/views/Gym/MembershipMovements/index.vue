@@ -44,6 +44,7 @@
               icon="el-icon-refresh"
               @click="getdata()"
             ></el-button>
+            {{tableData.length}}
           </template>
         </el-table-column>
         <el-table-column

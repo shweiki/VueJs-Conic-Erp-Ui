@@ -4,16 +4,24 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type='success'
+          type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
-        >{{ $t('Vendors.Add') }}</el-button>
-        <span>{{ $t('CashPool.Memberships') }}</span>
+          >{{ $t("Vendors.Add") }}</el-button
+        >
+        <span>{{ $t("CashPool.Memberships") }}</span>
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
+        :data="
+          tableData.filter(
+            data =>
+              !search || data.Name.toLowerCase().includes(search.toLowerCase())
+          )
+        "
         fit
+        :summary-method="getSummaries"
+        show-summary
         border
         max-height="900"
         highlight-current-row
@@ -21,46 +29,54 @@
       >
         <el-table-column prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="getdata()"
+            ></el-button>
           </template>
         </el-table-column>
 
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('AddVendors.Name')" />
+            <el-input
+              v-model="search"
+              v-bind:placeholder="$t('AddVendors.Name')"
+            />
           </template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('Members.TotalMembers')" width="220" align="center">
+        <el-table-column
+          v-bind:label="$t('Members.TotalMembers')"
+          width="220"
+          align="center"
+        >
           <template slot-scope="scope">{{ scope.row.TotalMembers }}</template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('Sales.Status')" width="100" align="center">
+        <el-table-column
+          v-bind:label="$t('Sales.Status')"
+          width="100"
+          align="center"
+        >
           <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.Opration.ClassName"
-            >{{ scope.row.Opration.ArabicOprationDescription }}</el-tag>
+            <status-tag :Status="scope.row.Status" TableName="Membership" />
           </template>
         </el-table-column>
         <el-table-column width="120" align="center">
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.Opration.Status!=-1"
               icon="el-icon-edit"
               circle
               @click="handleUpdate(scope.row)"
             ></el-button>
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              round
-              @click="handleOprationsys(scope.row.Id , NOprations)"
-            >{{NOprations.OprationDescription}}</el-button>
           </template>
         </el-table-column>
         <el-table-column type="expand" width="30" align="center">
           <template slot-scope="props">
             <el-table :data="[props.row]">
-              <el-table-column align="center" v-bind:label="$t('Members.NumberDays')">
+              <el-table-column
+                align="center"
+                v-bind:label="$t('Members.NumberDays')"
+              >
                 <template slot-scope="scope">
                   <i class="el-icon-time"></i>
                   {{ scope.row.NumberDays }}
@@ -78,20 +94,34 @@
                   {{ scope.row.MaxFreezeLimitDays }}
                 </template>
               </el-table-column>
-              <el-table-column align="center" v-bind:label="$t('Members.MorningPrice')">
+              <el-table-column
+                align="center"
+                v-bind:label="$t('Members.MorningPrice')"
+              >
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
                   {{ scope.row.MorningPrice.toFixed(2) }}
                 </template>
               </el-table-column>
-              <el-table-column v-bind:label="$t('Members.FullDayPrice')" align="center">
+              <el-table-column
+                v-bind:label="$t('Members.FullDayPrice')"
+                align="center"
+              >
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
                   {{ scope.row.FullDayPrice.toFixed(2) }}
                 </template>
               </el-table-column>
-              <el-table-column v-bind:label="$t('Members.Tax')" align="center" prop="Tax"></el-table-column>
-              <el-table-column v-bind:label="$t('Members.Rate')" align="center" prop="Rate"></el-table-column>
+              <el-table-column
+                v-bind:label="$t('Members.Tax')"
+                align="center"
+                prop="Tax"
+              ></el-table-column>
+              <el-table-column
+                v-bind:label="$t('Members.Rate')"
+                align="center"
+                prop="Rate"
+              ></el-table-column>
               <el-table-column
                 align="center"
                 v-bind:label="$t('Members.Notes')"
@@ -126,28 +156,42 @@
 
         <el-row type="flex">
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Members.NumberDays')" prop="NumberDays">
-              <el-input-number v-model="tempForm.NumberDays" :step="1" :min="1" :max="1000"></el-input-number>
+            <el-form-item
+              v-bind:label="$t('Members.NumberDays')"
+              prop="NumberDays"
+            >
+              <el-input-number
+                v-model="tempForm.NumberDays"
+                :step="1"
+                :min="1"
+                :max="1000"
+              ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Members.MorningPrice')" prop="MorningPrice">
+            <el-form-item
+              v-bind:label="$t('Members.MorningPrice')"
+              prop="MorningPrice"
+            >
               <el-input-number
                 v-model="tempForm.MorningPrice"
                 :precision="2"
                 :step="0.1"
-                :min="0.00"
+                :min="0.0"
                 :max="1500"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Members.FullDayPrice')" prop="FullDayPrice">
+            <el-form-item
+              v-bind:label="$t('Members.FullDayPrice')"
+              prop="FullDayPrice"
+            >
               <el-input-number
                 v-model="tempForm.FullDayPrice"
                 :precision="2"
                 :step="0.1"
-                :min="0.00"
+                :min="0.0"
                 :max="1500"
               ></el-input-number>
             </el-form-item>
@@ -192,14 +236,23 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('Members.Notes')" prop="Description">
-              <el-input type="textarea" v-model="tempForm.Description"></el-input>
+              <el-input
+                type="textarea"
+                v-model="tempForm.Description"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogFormStatus==='create'?createData():updateData()">حفظ</el-button>
+        <el-button @click="dialogFormVisible = false">{{
+          $t("permission.cancel")
+        }}</el-button>
+        <el-button
+          type="primary"
+          @click="dialogFormStatus === 'create' ? createData() : updateData()"
+          >حفظ</el-button
+        >
       </div>
     </el-dialog>
     <el-dialog
@@ -217,23 +270,29 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button
           :type="textOpration.ClassName"
           @click="createOprationData()"
-        >{{textOpration.OprationDescription}}</el-button>
+          >{{ textOpration.OprationDescription }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
 import { GetMembership, Create, Edit } from "@/api/Membership";
+import StatusTag from "@/components/Oprationsys/StatusTag";
 
 import { ChangeObjStatus } from "@/api/Oprationsys";
 export default {
+  components: { StatusTag },
   name: "Membership",
   data() {
     return {
@@ -241,27 +300,27 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: '',
-      search: '',
+      dialogFormStatus: "",
+      search: "",
       textMapForm: {
         update: "تعديل",
         create: "إضافة"
       },
       textOpration: {
-        OprationDescription: '',
-        ArabicOprationDescription: '',
-        IconClass: '',
-        ClassName: ''
+        OprationDescription: "",
+        ArabicOprationDescription: "",
+        IconClass: "",
+        ClassName: ""
       },
       tempForm: {
         ID: undefined,
-        Name: '',
+        Name: "",
         NumberDays: 30,
         MorningPrice: 0.0,
         FullDayPrice: 0.0,
         Tax: 0.0,
         Rate: 0,
-        Description: '',
+        Description: "",
         MinFreezeLimitDays: 3,
         MaxFreezeLimitDays: 0
       },
@@ -269,34 +328,34 @@ export default {
         Name: [
           {
             required: true,
-            message: 'يجب إدخال إسم ',
-            trigger: 'blur'
+            message: "يجب إدخال إسم ",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
-            trigger: 'blur'
+            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
+            trigger: "blur"
           }
         ]
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ''
+        Description: ""
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: 'blur'
+            trigger: "blur"
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 أحرف و لا يزيد عن 150 حرف",
-            trigger: 'blur'
+            trigger: "blur"
           }
         ]
       }
@@ -307,21 +366,21 @@ export default {
       this.loading = true;
       GetMembership().then(response => {
         // handle success
-        console.log(response)
+        console.log(response);
         this.tableData = response;
-        this.loading = false
-      })
+        this.loading = false;
+      });
     },
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: '',
+        Name: "",
         NumberDays: 30,
         MorningPrice: 0.0,
         FullDayPrice: 0.0,
         Tax: 0.0,
         Rate: 0,
-        Description: '',
+        Description: "",
         MinFreezeLimitDays: 3,
         MaxFreezeLimitDays: 0
       };
@@ -332,7 +391,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleUpdate(row) {
       console.log(row);
@@ -350,7 +409,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
@@ -375,18 +434,45 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
+                type: "success",
                 duration: 2000
-              })
+              });
             })
             .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
+    },
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = "Total";
+          return;
+        }
+        const values = data.map(item => Number(item[column.property]));
+        if (!values.every(value => isNaN(value))) {
+          sums[index] =
+            "$ " +
+            values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+        } else {
+          sums[index] = "N/A";
+        }
+      });
+
+      return sums;
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
@@ -397,19 +483,19 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
+                message: "تم التعديل بنجاح",
+                type: "success",
                 duration: 2000
-              })
+              });
             })
             .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     createOprationData() {
       this.$refs["dataOpration"].validate(valid => {
@@ -426,18 +512,18 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: 'success',
+                type: "success",
                 duration: 2000
-              })
+              });
             })
             .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     }
   },
   created() {

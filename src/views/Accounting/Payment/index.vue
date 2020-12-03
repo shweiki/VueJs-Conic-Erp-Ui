@@ -108,7 +108,7 @@
             <el-date-picker
               format="dd/MM/yyyy"
               disabled
-              v-model="scope.row.fakeDate"
+              v-model="scope.row.FakeDate"
             ></el-date-picker>
           </template>
         </el-table-column>

@@ -14,6 +14,14 @@ export function GetOprationByTable(data) {
     params: data
   })
 }
+export function GetOprationByStatusTable(data) {
+  return request({
+    url: '/Oprationsys/GetOprationByStatusTable',
+    method: 'get',
+    params: data
+  })
+}
+
 export function ChangeObjStatusByTableName(data) {
   return request({
     url: '/Oprationsys/ChangeObjStatusByTableName',

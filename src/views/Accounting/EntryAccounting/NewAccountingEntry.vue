@@ -171,7 +171,7 @@ export default {
             Debit: 0.0,
             Credit: 0.0,
             Description: '',
-            EntryID: undefined
+            EntryId: undefined
           },
           {
             ID: undefined,
@@ -179,7 +179,7 @@ export default {
             Debit: 0.0,
             Credit: 0.0,
             Description: '',
-            EntryID: undefined
+            EntryId: undefined
           }
         ]
       }
@@ -210,7 +210,7 @@ export default {
         Debit: 0.0,
         Credit: 0.0,
         Description: '',
-        EntryID: undefined
+        EntryId: undefined
       })
     },
     RemoveEntryMovements() {
@@ -256,7 +256,7 @@ export default {
             Debit: 0.0,
             Credit: 0.0,
             Description: '',
-            EntryID: undefined
+            EntryId: undefined
           },
           {
             ID: undefined,
@@ -264,7 +264,7 @@ export default {
             Debit: 0.0,
             Credit: 0.0,
             Description: '',
-            EntryID: undefined
+            EntryId: undefined
           }
         ]
       };

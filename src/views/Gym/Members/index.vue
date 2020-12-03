@@ -7,8 +7,8 @@
             <el-radio-button
               v-for="op in Oprations"
               :key="op.Id"
-              v-bind:label="op.status"
-              >{{ op.oprationDescription }}</el-radio-button
+              v-bind:label="op.Status"
+              >{{ op.OprationDescription }}</el-radio-button
             >
           </el-radio-group>
         </div>
@@ -153,11 +153,11 @@ export default {
       Oprations: [],
       Status: 0,
       SmsBody: '',
-      visible: false,
-    };
+      visible: false
+    }
   },
   mounted() {
-    this.getdata();
+    this.getdata()
     GetOprationByTable({ Name: "Member" }).then((response) => {
       console.log(response)
 
@@ -195,16 +195,16 @@ export default {
 
         numbers100.forEach((element) => {
           axios({
-            method: "get",
-            url: "http://josmsservice.com/smsonline/msgservicejo.cfm",
+            method: 'get',
+            url: 'http://josmsservice.com/smsonline/msgservicejo.cfm',
             params: {
               numbers: element,
-              senderid: "High Fit",
-              AccName: "highfit",
-              AccPass: "D7!cT5!SgU0",
+              senderid: 'High Fit',
+              AccName: 'highfit',
+              AccPass: 'D7!cT5!SgU0',
               msg: this.SmsBody,
-              requesttimeout: 5000000,
-            },
+              requesttimeout: 5000000
+            }
           }).then((response) => {
             console.log(response)
           })
@@ -224,7 +224,7 @@ export default {
           duration: 2000,
         })
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

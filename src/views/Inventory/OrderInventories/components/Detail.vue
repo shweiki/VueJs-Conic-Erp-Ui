@@ -149,8 +149,8 @@
 <script>
 import { Create, Edit, GetOrderInventoryByID } from "@/api/OrderInventory";
 import { GetActiveInventory } from "@/api/InventoryItem";
-import ItemsSearch from "@/components/Items/ItemsSearch";
-import EditItem from "@/views/Inventory/Item/EditItem";
+import ItemsSearch from "@/components/Item/ItemsSearch";
+import EditItem from "@/components/Item/EditItem";
 
 export default {
   name: "NewOrderInventories",

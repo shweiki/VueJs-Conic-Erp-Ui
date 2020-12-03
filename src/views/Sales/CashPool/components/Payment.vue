@@ -294,7 +294,7 @@ export default {
               this.CashAccounts.find((obj) => {
                 return obj.value == this.CashAccount;
               }).label,
-            EntryID: undefined,
+            EntryId: undefined,
           },
         ],
       };
@@ -305,7 +305,7 @@ export default {
           Debit: i.TotalAmmount,
           Credit: 0.0,
           Description: "سند قبض رقم " + i.Id + " ",
-          EntryID: undefined,
+          EntryId: undefined,
         })
       })
       console.log(tempForm);

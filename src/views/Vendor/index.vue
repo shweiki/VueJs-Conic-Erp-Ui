@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type='success'
+          type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
           >{{ $t("Vendors.Add") }}</el-button
@@ -15,7 +15,7 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            (data) =>
+            data =>
               !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
@@ -76,7 +76,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <el-tag>{{ scope.row.Status }}</el-tag>
+            <status-tag :Status="scope.row.Status" TableName="Vendor" />
           </template>
         </el-table-column>
         <el-table-column width="120">
@@ -219,75 +219,77 @@
 <script>
 import { GetVendor, Create, Edit } from "@/api/Vendor";
 import { ChangeObjStatus } from "@/api/Oprationsys";
+import StatusTag from "@/components/Oprationsys/StatusTag";
 
 export default {
   name: "Vendor",
+  components: { StatusTag },
   data() {
     return {
       tableData: [],
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: '',
-      search: '',
+      dialogFormStatus: "",
+      search: "",
       textMapForm: {
         update: "تعديل",
-        create: "إضافة",
+        create: "إضافة"
       },
       tempForm: {
         Id: undefined,
-        Name: '',
-        Address: '',
-        Email: '',
+        Name: "",
+        Address: "",
+        Email: "",
         PhoneNumber1: "0096278",
         PhoneNumber2: "0096279",
         Fax: "0",
         CreditLimit: 0.0,
-        Description: '',
+        Description: "",
         IsPrime: false,
-        Type: "Customer",
+        Type: "Customer"
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: 'blur',
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: 'blur',
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
       textOpration: {
-        OprationDescription: '',
-        ArabicOprationDescription: '',
-        IconClass: '',
-        ClassName: '',
+        OprationDescription: "",
+        ArabicOprationDescription: "",
+        IconClass: "",
+        ClassName: ""
       },
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: '',
+        Description: ""
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: 'blur',
+            trigger: "blur"
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: 'blur',
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
@@ -296,25 +298,25 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
-      GetVendor().then((response) => {
+      GetVendor().then(response => {
         //console.log(response)
         this.tableData = response;
-        this.loading = false
-      })
+        this.loading = false;
+      });
     },
     resetTempForm() {
       this.tempForm = {
         Id: undefined,
-        Name: '',
-        Address: '',
-        Email: '',
-        PhoneNumber1: '',
-        PhoneNumber2: '',
+        Name: "",
+        Address: "",
+        Email: "",
+        PhoneNumber1: "",
+        PhoneNumber2: "",
         Fax: "0",
         CreditLimit: 0.0,
-        Description: '',
+        Description: "",
         IsPrime: false,
-        Type: "Customer",
+        Type: "Customer"
       };
     },
     handleCreate() {
@@ -323,7 +325,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleUpdate(row) {
       this.tempForm.Id = row.Id;
@@ -340,23 +342,23 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           Create(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
-                duration: 2000,
-              })
+                type: "success",
+                duration: 2000
+              });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             })
         } else {
@@ -366,27 +368,27 @@ export default {
       })
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           Edit(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
-                duration: 2000,
-              })
+                message: "تم التعديل بنجاح",
+                type: "success",
+                duration: 2000
+              });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     handleOprationsys(ObjId, Opration) {
       this.dialogOprationVisible = true;
@@ -402,31 +404,31 @@ export default {
       this.tempOpration.Description = "";
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatus({
             ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationId,
-            Description: this.tempOpration.Description,
+            Description: this.tempOpration.Description
           })
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: 'success',
-                duration: 2000,
-              })
+                type: "success",
+                duration: 2000
+              });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
         }
-      })
-    },
-  },
+      });
+    }
+  }
 };
 </script>

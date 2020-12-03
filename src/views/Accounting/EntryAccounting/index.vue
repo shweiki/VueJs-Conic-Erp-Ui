@@ -69,8 +69,8 @@
         style="width: 100%"
       >
         <el-table-column
-          v-bind:label="$t('Accounting.EntryID')"
-          prop="EntryID"
+          v-bind:label="$t('Accounting.EntryId')"
+          prop="EntryId"
           width="120"
           align="center"
         >
@@ -81,7 +81,7 @@
         <el-table-column
           align="center"
           v-bind:label="$t('Stocks.Date')"
-          prop="ActionLogs[0].PostingDateTime"
+          prop="FakeDate"
           width="120"
         ></el-table-column>
         <el-table-column v-bind:label="$t('Accounting.Notes')" prop="Description" align="center"></el-table-column>

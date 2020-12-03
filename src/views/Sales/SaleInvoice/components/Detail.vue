@@ -421,8 +421,8 @@ import permission from "@/directive/permission/index.js";
 import checkPermission from "@/utils/permission";
 
 // components
-import ItemsSearch from "@/components/Items/ItemsSearch";
-import ItemsPrime from "@/components/Items/ItemsPrime";
+import ItemsSearch from "@/components/Item/ItemsSearch";
+import ItemsPrime from "@/components/Item/ItemsPrime";
 
 import LangSelect from "@/components/LangSelect";
 import Screenfull from "@/components/Screenfull";
