@@ -1,11 +1,11 @@
 <template>
-  <div class="app-container" style="direction: ltr; ">
-    <el-row type="flex">
+  <div class="app-container" >
+    <el-row>
       <el-col :span="6" :xs="24">
         <member-log />
       </el-col>
       <el-col :span="18" :xs="24" v-loading="loading">
-        <el-row type="flex" style="background : #2f3542; color: white;">
+        <el-row  style="background : #2f3542; color: white;">
           <el-col :span="6">
             <el-button
               type='success'
@@ -39,7 +39,7 @@
                 >{{member.Name.split(' ').slice(0, 4).join(' ')}}</strong>
               </router-link>
             </div>
-            <el-row type="flex">
+            <el-row >
               <el-col
                 :span="12"
               >{{ $t('MemberList.MembershipType') }}{{ member.ActiveMemberShip.Name}}</el-col>

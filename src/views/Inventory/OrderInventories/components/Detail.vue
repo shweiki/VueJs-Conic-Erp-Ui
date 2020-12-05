@@ -25,7 +25,7 @@
           <span>{{ $t('OrderInventories.StoreMovement') }}</span>
           <p style="color: #F56C6Cfont-size: 16pxtext-align: center">{{ ValidateNote }}</p>ss
         </div>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="6">
             <el-form-item
               prop="OrderType"

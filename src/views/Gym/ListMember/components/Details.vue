@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row type="flex">
+    <el-row >
       <el-col :span="4">
         <div style="float : left">
           <pan-thumb :image="Member.Avatar" :height="'75px'" :width="'75px'" :hoverable="false">
@@ -19,7 +19,7 @@
         </div>
       </el-col>
       <el-col :span="20">
-        <el-row type="flex">
+        <el-row >
           <el-col :span="8">
             <el-col :span="24">
               <el-input disabled v-model="Member.Id"></el-input>
@@ -39,7 +39,7 @@
             <span>اسم المشترك</span>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="8">
             <el-input disabled v-model="Member.Age"></el-input>
           </el-col>
@@ -53,7 +53,7 @@
             <span>تاريخ الميلاد</span>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="8">
             <el-input disabled v-model="Member.lastLog"></el-input>
           </el-col>
@@ -68,7 +68,7 @@
           </el-col>
         </el-row>
 
-        <el-row type="flex">
+        <el-row >
           <el-col :span="8">
             <el-date-picker
               v-if="Member.ActiveMemberShip"
@@ -94,7 +94,7 @@
             <span>تاريخ البدء</span>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="8">
             <span
               v-if="Member.ActiveMemberShip"
@@ -112,7 +112,7 @@
             <span>نوع الاشتراك</span>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="8">
             <span>{{ (Member.TotalCredit - Member.TotalDebit).toFixed(2) + $t('MemberList.JOD')}}</span>
           </el-col>

@@ -67,6 +67,7 @@ module.exports = {
       .options({
         symbolId: 'icon-[name]'
       })
+      config.module.rules.delete('eslint')
       .end()
 
     // set preserveWhitespace

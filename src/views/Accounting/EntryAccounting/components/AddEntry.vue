@@ -8,7 +8,7 @@
     >إضافة قيد</el-button>
     <el-dialog style="margin-top: -13vh" title="تسجيل قيد محاسبي" :visible.sync="Visibles">
       <el-form label-position="top" :model="tempForm" ref="dataForm" class="demo-form-inline">
-        <el-row type="flex">
+        <el-row >
           <el-col :span="12">
             <el-form-item
               prop="Type"
@@ -27,7 +27,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             <el-form-item
               prop="Description"

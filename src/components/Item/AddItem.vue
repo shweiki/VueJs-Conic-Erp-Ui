@@ -27,7 +27,7 @@
           >اظهار على شاشة المبيعات</el-checkbox
         >
 
-        <el-row type="flex">
+        <el-row >
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
               <el-input-number
@@ -68,7 +68,7 @@
           </el-col>
         </el-row>
 
-        <el-row type="flex">
+        <el-row >
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
               <el-input-number
@@ -90,7 +90,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
               <el-input

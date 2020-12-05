@@ -10,7 +10,7 @@
       :key="index"
     >
       <el-card class="box-card" shadow="always" :body-style="{ padding: '0px' }">
-        <el-row type="flex">
+        <el-row >
           <el-col>
             <img src class="image" />
             <div @click="AddItem(Item)">

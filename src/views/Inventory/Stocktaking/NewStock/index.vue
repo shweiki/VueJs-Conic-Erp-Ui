@@ -24,7 +24,7 @@
         >{{ $t('route.StockItem') }}</router-link>
           <span>جرد مخزن</span>
         </div>
-        <el-row type="flex">
+        <el-row >
 
           <el-col :span="6">
             <el-form-item
@@ -47,7 +47,7 @@
           </el-col>
         </el-row>
         <el-card class="box-card">
-          <el-row type="flex">
+          <el-row >
             <el-col :span="6">
               <el-switch v-model="ByQTY" active-text="ادخال الكمية" inactive-text="عداد"></el-switch>
             </el-col>
@@ -145,7 +145,7 @@
         :visible.sync="NewItemVisible"
         width="80%"
       >
-        <el-row type="flex">
+        <el-row >
           <el-col :span="3">
             <el-button type='success' icon="el-plus" @click="NewItem()">حفظ</el-button>
           </el-col>
@@ -159,7 +159,7 @@
         </el-row>
       </el-dialog>
       <el-dialog style="margin-top: -13vh" title="QTY" :visible.sync="EnterQTYVisible" width="80%">
-        <el-row type="flex">
+        <el-row >
           <el-col :span="3">
             <el-button type='success' icon="el-plus" @click="onBarcodeScanned(Barcode)">Add</el-button>
           </el-col>

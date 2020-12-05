@@ -14,7 +14,7 @@
         class="demo-form-inline"
       >
         عدد الايام المسموحة لتجميد : من {{MinFreezeLimit}} الى {{MaxFreezeLimit}} ايام
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             <el-form-item prop="FreezeBetween" label="الفترة">
               <el-date-picker
@@ -33,7 +33,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             <el-form-item
               prop="Description"
@@ -44,7 +44,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-              <el-row type="flex">
+              <el-row >
           <el-col :span="24">
             <el-form-item
               prop="EditorName"
@@ -62,7 +62,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             مجموع الايام حسب الفترة المطلوبة {{Math.round(
             Math.abs(

@@ -8,7 +8,7 @@
     >خدمة جديد</el-button>
     <el-dialog style="margin-top: -13vh" title="تسجيل خدمة" :visible.sync="Visible">
       <el-form label-position="top" class="demo-form-inline">
-        <el-row type="flex">
+        <el-row >
           <el-col :span="12">
             <el-form-item label="العدد">
               <span>{{Service.Qty}}</span>
@@ -38,7 +38,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="12">
             <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
               <span>JOD {{Service.SellingPrice}}</span>

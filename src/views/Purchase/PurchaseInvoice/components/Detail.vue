@@ -32,7 +32,7 @@
             </el-form-item>
           </el-col>
         </div>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="6">
             <el-form-item
               prop="FakeDate"
@@ -101,7 +101,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col>
             <span style="color: #F56C6C; font-size: 16px; text-align: center;">{{ ValidateNote }}</span>
           </el-col>
@@ -203,7 +203,7 @@
         </el-table>
       </el-card>
 
-      <el-row type="flex">
+      <el-row >
         <el-col :span="24">
           <el-card shadow="hover">
             <el-divider direction="vertical"></el-divider>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row type="flex">
+    <el-row >
       <el-col :span="10">
         <el-input data-barcode v-model="Barcode" id="barcode" placeholder="باركود صنف">
           <i class="fa fa-barcode el-input__icon" slot="suffix"></i>
@@ -34,7 +34,7 @@
       title="صنف جديد"
       :visible.sync="NewItemVisible"
     >
-      <el-row type="flex">
+      <el-row >
         <el-col :span="3">
           <el-button type='success' icon="el-plus" @click="NewItem()">حفظ</el-button>
         </el-col>
@@ -62,7 +62,7 @@
       </el-row>
     </el-dialog>
     <el-dialog style="margin-top: -13vh" title="QTY" :visible.sync="EnterQTYVisible" width="80%">
-      <el-row type="flex">
+      <el-row >
         <el-col :span="3">
           <el-button type='success' icon="el-plus" @click="AddItemByQty">Add</el-button>
         </el-col>

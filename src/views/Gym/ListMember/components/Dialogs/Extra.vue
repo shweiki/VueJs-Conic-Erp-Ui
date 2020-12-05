@@ -13,14 +13,14 @@
         ref="dataForm"
         class="demo-form-inline"
       >
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             <el-form-item prop="Extra" label="عدد الايام">
               <el-input-number v-model="Extra" :min="1" :max="100"></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             <el-form-item
               prop="Description"
@@ -31,7 +31,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             <el-form-item
               prop="EditorName"

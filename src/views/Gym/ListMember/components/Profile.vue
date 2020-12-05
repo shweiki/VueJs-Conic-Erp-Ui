@@ -1,11 +1,11 @@
 <template>
-  <div class="app-container" style="direction: ltr;">
-    <el-row type="flex" v-if="tempForm">
+  <div class="app-container" >
+    <el-row  v-if="tempForm">
       <el-col :span="6" :xs="24">
         <member-log />
       </el-col>
       <el-col :span="18" :xs="24" v-loading="loading">
-        <el-row type="flex" style="background : #2f3542; color: white;">
+        <el-row  style="background : #2f3542; color: white;">
           <el-col :span="6">
             <el-button
               type='success'
@@ -24,12 +24,12 @@
           </el-col>
         </el-row>
         <el-card class="box-card" v-bind:class="{ BlackList: tempForm.Status ==-2 ? true : false }">
-          <el-row type="flex">
+          <el-row >
             <el-col :span="19">
               <Details :Member="tempForm" />
             </el-col>
             <el-col :span="5" v-if="tempForm.Status !=-2">
-              <el-row type="flex">
+              <el-row >
                 <el-col :span="24">
                   <el-button
                     style="width: 100px;"
@@ -40,7 +40,7 @@
                 </el-col>
               </el-row>
 
-              <el-row type="flex">
+              <el-row >
                 <el-col :span="24">
                   <member-ship-movement
                     :MemberID="tempForm.Id"
@@ -50,12 +50,12 @@
                   />
                 </el-col>
               </el-row>
-              <el-row type="flex">
+              <el-row >
                 <el-col :span="24">
                   <member-pay :MemberID="tempForm.Id" :Name="tempForm.Name" />
                 </el-col>
               </el-row>
-              <el-row type="flex">
+              <el-row >
                 <el-col :span="24">
                   <member-ship-movement-with-pay
                     :MemberID="tempForm.Id"
@@ -65,12 +65,12 @@
                   />
                 </el-col>
               </el-row>
-              <el-row type="flex">
+              <el-row >
                 <el-col :span="24">
                   <service-invoice :MemberID="tempForm.Id" />
                 </el-col>
               </el-row>
-              <el-row type="flex">
+              <el-row >
                 <el-col :span="24">
                   <massage
                     :NumberPhone1="tempForm.PhoneNumber1"

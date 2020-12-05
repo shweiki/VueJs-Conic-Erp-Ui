@@ -1,6 +1,6 @@
 <template>
   <el-form :model="Member" ref="dataForm" label-position="top">
-    <el-row type="flex">
+    <el-row >
       <el-col :span="8">
         <el-form-item label="ملاحظات" prop="Description">
           <el-input

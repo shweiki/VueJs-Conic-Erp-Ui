@@ -2,12 +2,20 @@
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
-        <router-view :key="key" @contextmenu.prevent.native="openMenu(key,$event)" id="thisview"></router-view>
+        <router-view
+          :key="key"
+          @contextmenu.prevent.native="openMenu(key, $event)"
+          id="thisview"
+        ></router-view>
       </keep-alive>
     </transition>
-    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag()">{{ $t('tagsView.refresh') }}</li>
-      <li @click="Back()">{{ $t('tagsView.Back') }}</li>
+    <ul
+      v-show="visible"
+      :style="{ left: left + 'px', top: top + 'px' }"
+      class="contextmenu"
+    >
+      <li @click="refreshSelectedTag()">{{ $t("tagsView.refresh") }}</li>
+      <li @click="Back()">{{ $t("tagsView.Back") }}</li>
     </ul>
   </section>
 </template>
@@ -87,7 +95,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-main {
-      text-align: right;
+  text-align: right;
   /* 50= navbar  50  */
   direction: rtl;
   min-height: calc(100vh - 50px);

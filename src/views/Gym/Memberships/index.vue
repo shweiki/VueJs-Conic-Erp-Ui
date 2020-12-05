@@ -146,7 +146,7 @@
         label-position="top"
         label-width="70px"
       >
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             <el-form-item v-bind:label="$t('Members.Name')" prop="Name">
               <el-input type="text" v-model="tempForm.Name"></el-input>
@@ -154,7 +154,7 @@
           </el-col>
         </el-row>
 
-        <el-row type="flex">
+        <el-row >
           <el-col :span="8">
             <el-form-item
               v-bind:label="$t('Members.NumberDays')"
@@ -198,7 +198,7 @@
           </el-col>
         </el-row>
 
-        <el-row type="flex">
+        <el-row >
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Members.Tax')" prop="Tax">
               <el-input-number
@@ -233,7 +233,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             <el-form-item v-bind:label="$t('Members.Notes')" prop="Description">
               <el-input

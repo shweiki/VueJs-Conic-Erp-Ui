@@ -4,7 +4,7 @@ sss<template>
       <div class="components-container" style="direction: rtl; ">
         <split-pane split="horizontal" :min-percent="6" :default-percent="6">
           <template slot="paneL">
-            <el-row type="flex" style=" margin-top: 2px; background : #545454; color: white;">
+            <el-row  style=" margin-top: 2px; background : #545454; color: white;">
               <el-col :span="7">
                 <el-button
                   type="primary"
@@ -230,12 +230,12 @@ sss<template>
                 <split-pane split="horizontal" :min-percent="25" :default-percent="30">
                   <template slot="paneL">
                     <el-card style="background: #545454;">
-                      <el-row type="flex">
+                      <el-row >
                         <el-col :span="24">
                           <el-input prop="Name" placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
                         </el-col>
                       </el-row>
-                      <el-row type="flex" v-permission="['admin']">
+                      <el-row  v-permission="['admin']">
                         <el-col
                           :span="6"
                           class="TotalAmmount"
@@ -265,7 +265,7 @@ sss<template>
                           </el-form-item>
                         </el-col>
                       </el-row>
-                      <el-row type="flex">
+                      <el-row >
                         <el-col :span="24">
                           <el-form-item prop="Description">
                             <el-input
@@ -275,7 +275,7 @@ sss<template>
                           </el-form-item>
                         </el-col>
                       </el-row>
-                      <el-row type="flex">
+                      <el-row >
                         <el-col :span="24" class="TotalAmmount">
                           <span>{{ $t('NewPurchaseInvoice.TotalJD') }}</span>
                           <el-divider direction="vertical"></el-divider>

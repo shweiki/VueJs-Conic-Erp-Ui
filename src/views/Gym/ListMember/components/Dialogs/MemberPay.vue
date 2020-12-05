@@ -10,7 +10,7 @@
 
     <el-dialog style="margin-top: -13vh" title="تسجيل قبض" :visible.sync="Visibles">
       <el-form :model="Payment" ref="Form" label-position="top" class="demo-form-inline">
-        <el-row type="flex">
+        <el-row >
           <el-col :span="12">
             <el-form-item prop="TotalAmmount" label="القيمة المقبوضة">
               <currency-input
@@ -32,7 +32,7 @@
           </el-col>
         </el-row>
 
-        <el-row type="flex">
+        <el-row >
           <el-col :span="12">
             <el-form-item prop="PaymentMethod" label="طريقة الدفع">
               <el-radio-group v-model="Payment.PaymentMethod" text-color="#f78123">
@@ -48,7 +48,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row >
           <el-col :span="24">
             <el-form-item
               prop="EditorName"
