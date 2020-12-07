@@ -1,4 +1,4 @@
-import defaultSettings from '@/settings'
+import defaultSettings from '@/Settings'
 import i18n from '@/lang'
 
 const title = defaultSettings.title || 'Conic System'

@@ -1,5 +1,5 @@
 import variables from '@/styles/element-variables.scss'
-import defaultSettings from '@/settings'
+import defaultSettings from '@/Settings'
 
 const { showSettings, tagsView, fixedHeader, sidebarLogo
   , defaultpickerOptions, defaulttimeQuery, defaultdatepickerQuery } = defaultSettings
