@@ -1,6 +1,6 @@
 <template>
   <div class="app-container" style="direction : rtl ">
-    <add-entry v-if="checkPermission(['admin'])" :AccountID1="3" :AccountID2="AccountID" />
+    <add-entry v-if="checkPermission(['Admin'])" :AccountID1="3" :AccountID2="AccountID" />
     <el-table :data="EntryMovements" fit border highlight-current-row>
       <el-table-column prop="Id" label="ID" width="120" align="center"></el-table-column>
       <el-table-column label="التاريخ" align="center" width="200">

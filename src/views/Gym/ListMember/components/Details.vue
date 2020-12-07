@@ -13,7 +13,7 @@
           <el-col :span="24" v-if="Member.Status !=-2">
             <el-button @click="dialogOprationVisible = true" type="danger" plain>Black List</el-button>
           </el-col>
-          <el-col :span="24" v-if="checkPermission(['admin'])">
+          <el-col :span="24" v-if="checkPermission(['Admin'])">
             <el-button @click="dialogOprationVisible2 = true" type='success' plain>الغاء Black List</el-button>
           </el-col>
         </div>

@@ -56,7 +56,7 @@
       </el-table-column>
       <el-table-column label="محرر" align="center" prop="EditorName"></el-table-column>
 
-      <el-table-column width="40" v-if="checkPermission(['admin'])">
+      <el-table-column width="40" v-if="checkPermission(['Admin'])">
         <template slot-scope="scope">
           <member-ship-movement-edit :MembershipMovementID="scope.row.Id" />
         </template>

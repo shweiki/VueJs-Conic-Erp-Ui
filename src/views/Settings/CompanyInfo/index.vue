@@ -10,7 +10,7 @@
       >
         <el-row :gutter="24">
           <el-col :span="8">
-            <pan-thumb :image="tempForm.logo" :height="'75px'" :width="'75px'">
+            <pan-thumb :image="tempForm.Logo" :height="'75px'" :width="'75px'">
               <el-button
                 type="primary"
                 icon="el-icon-upload"
@@ -43,13 +43,13 @@
         </el-row>
         <el-row :gutter="24">
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Company.Fax')" prop="fax">
-              <el-input type="text" v-model="tempForm.fax"></el-input>
+            <el-form-item v-bind:label="$t('Company.Fax')" prop="Fax">
+              <el-input type="text" v-model="tempForm.Fax"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Company.Address')" prop="address">
-              <el-input type="text" v-model="tempForm.address"></el-input>
+              <el-input type="text" v-model="tempForm.Address"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -57,9 +57,9 @@
           <el-col :span="12">
             <el-form-item
               v-bind:label="$t('Company.PhoneNumber2')"
-              prop="phoneNumber2"
+              prop="PhoneNumber2"
             >
-              <el-input type="text" v-model="tempForm.phoneNumber2"></el-input>
+              <el-input type="text" v-model="tempForm.PhoneNumber2"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -75,46 +75,46 @@
           <el-col :span="12">
             <el-form-item
               v-bind:label="$t('Company.TaxNumber')"
-              prop="taxNumber"
+              prop="TaxNumber"
             >
-              <el-input type="text" v-model="tempForm.taxNumber"></el-input>
+              <el-input type="text" v-model="tempForm.TaxNumber"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item
               v-bind:label="$t('Company.RateNumber')"
-              prop="rateNumber"
+              prop="RateNumber"
             >
-              <el-input type="text" v-model="tempForm.rateNumber"></el-input>
+              <el-input type="text" v-model="tempForm.RateNumber"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="24">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Company.Website')" prop="website">
-              <el-input type="text" v-model="tempForm.website"></el-input>
+              <el-input type="text" v-model="tempForm.Website"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Company.Email')" prop="Email">
-              <el-input type="text" v-model="tempForm.email"></el-input>
+              <el-input type="text" v-model="tempForm.Email"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
             <el-row :gutter="24">
           <el-col :span="8">
             <el-form-item label="BackUpPath" prop="backUpPath">
-              <el-input type="text" v-model="tempForm.backUpPath"></el-input>
+              <el-input type="text" v-model="tempForm.BackUpPath"></el-input>
             </el-form-item>
           </el-col>
            <el-col :span="8">
             <el-form-item label="ServerName" prop="serverName">
-              <el-input type="text" v-model="tempForm.serverName"></el-input>
+              <el-input type="text" v-model="tempForm.ServerName"></el-input>
             </el-form-item>
           </el-col>
              <el-col :span="8">
             <el-form-item label="DataBaseName" prop="dataBaseName">
-              <el-input type="text" v-model="tempForm.dataBaseName"></el-input>
+              <el-input type="text" v-model="tempForm.DataBaseName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -122,7 +122,7 @@
           v-bind:label="$t('Company.FooterReport')"
           prop="FooterReport"
         >
-          <el-input type="textarea" v-model="tempForm.footerReport"></el-input>
+          <el-input type="textarea" v-model="tempForm.FooterReport"></el-input>
         </el-form-item>
         <el-form-item
           v-bind:label="$t('Company.BusinessDescription')"
@@ -130,7 +130,7 @@
         >
           <el-input
             type="textarea"
-            v-model="tempForm.businessDescription"
+            v-model="tempForm.BusinessDescription"
           ></el-input>
         </el-form-item>
       </el-form>
@@ -139,8 +139,8 @@
         $t("AddVendors.Save")
       }}</el-button>
     </el-card>
-    <tinymce v-model="tempForm.headerReport" :height="300" />
-    <div class="editor-content" v-html="tempForm.headerReport" />
+    <tinymce v-model="tempForm.HeaderReport" :height="300" />
+    <div class="editor-content" v-html="tempForm.HeaderReport" />
   </div>
 </template>
 
@@ -165,7 +165,7 @@ export default {
         BusinessDescription: '',
         RateNumber: '',
         Address: '',
-        phoneNumber1: '',
+        PhoneNumber1: '',
         PhoneNumber2: '',
         Fax: '',
         Email: '',

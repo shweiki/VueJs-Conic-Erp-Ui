@@ -159,7 +159,7 @@ sss<template>
                           </template>
                         </el-table-column>
                            <el-table-column
-                         v-if="checkPermission(['admin'])"
+                         v-if="checkPermission(['Admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Price')"
                           width="130"
                           align="center"
@@ -172,7 +172,7 @@ sss<template>
                           </template>
                         </el-table-column>
                           <el-table-column
-                         v-if="checkPermission(['admin'])"
+                         v-if="checkPermission(['Admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Inventory')"
                           width="110"
                           align="center"

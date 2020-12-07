@@ -4,14 +4,14 @@
       type="primary"
       icon="el-icon-plus"
       circle
-      @click="Visibles = true"
+      @click="Open = true"
     ></el-button>
 
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
       title="أضافة صنف"
-      :visible.sync="Visibles"
+      :visible.sync="Open"
     >
       <el-form
         ref="dataForm"
@@ -27,7 +27,7 @@
           >اظهار على شاشة المبيعات</el-checkbox
         >
 
-        <el-row >
+        <el-row>
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
               <el-input-number
@@ -36,7 +36,8 @@
                 :step="0.1"
                 :min="0.0"
                 :max="1500"
-></el-input-number>            </el-form-item>
+              ></el-input-number>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item
@@ -68,7 +69,7 @@
           </el-col>
         </el-row>
 
-        <el-row >
+        <el-row>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
               <el-input-number
@@ -90,7 +91,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row >
+        <el-row>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
               <el-input
@@ -110,7 +111,7 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
+        <el-button @click="Open = false">{{
           $t("permission.cancel")
         }}</el-button>
         <el-button type="primary" @click="createData()">حفظ</el-button>
@@ -126,7 +127,7 @@ import store from "@/store";
 export default {
   data() {
     return {
-      Visibles: false,
+      Open:false,
       tempForm: {
         Id: undefined,
         Name: "",
@@ -138,41 +139,41 @@ export default {
         Rate: 0,
         IsPrime: false,
         Barcode: "",
-        Description: "",
+        Description: ""
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   methods: {
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           CreateItem(this.tempForm)
-            .then((response) => {
-              this.Visibles = false;
+            .then(response => {
+              this.Open = false;
               store.dispatch("Items/GetItem");
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -180,8 +181,8 @@ export default {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

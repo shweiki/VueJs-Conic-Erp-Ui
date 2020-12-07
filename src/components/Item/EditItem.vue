@@ -25,13 +25,13 @@
         <el-row >
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
-              <el-input-numbers
+              <el-input-number
                 v-model="tempForm.CostPrice"
                 :precision="2"
                 :step="0.1"
                 :min="0.0"
                 :max="1500"
-              />
+              ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="8">

@@ -5,24 +5,9 @@
         <member-log />
       </el-col>
       <el-col :span="18" :xs="24" v-loading="loading">
-        <el-row  style="background : #2f3542; color: white;">
-          <el-col :span="6">
-            <el-button
-              type='success'
-              icon="el-icon-s-shop"
-              @click="$router.replace({ path: '/redirect' + '/SalesInvoice' })"
-            ></el-button>
-          </el-col>
-          <el-col :span="2">
-            <el-button type="primary" icon="el-icon-unlock" :disabled="$store.state.ZtkDoor"></el-button>
-          </el-col>
-          <el-col :span="2">
-            <add-member />
-          </el-col>
-          <el-col :span="16">
+
             <member-search />
-          </el-col>
-        </el-row>
+  
         <el-card class="box-card" v-bind:class="{ BlackList: tempForm.Status ==-2 ? true : false }">
           <el-row >
             <el-col :span="19">
@@ -124,7 +109,6 @@ import MemberShipMovement from "./Dialogs/MemberShipMovement";
 
 import MemberPay from "./Dialogs/MemberPay";
 import ServiceInvoice from "./Dialogs/ServiceInvoice";
-import AddMember from "./Dialogs/AddMember";
 import MemberSearch from "./MemberSearch";
 
 import Payment from "./Payment";
@@ -161,7 +145,6 @@ export default {
     ServiceInvoice,
     MemberLog,
     Massage,
-    AddMember,
     MemberSearch
   },
   props: {

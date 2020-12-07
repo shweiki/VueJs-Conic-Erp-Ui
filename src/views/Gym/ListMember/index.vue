@@ -5,24 +5,9 @@
         <member-log />
       </el-col>
       <el-col :span="18" :xs="24" v-loading="loading">
-        <el-row  style="background : #2f3542; color: white;">
-          <el-col :span="6">
-            <el-button
-              type='success'
-              icon="el-icon-s-shop"
-              @click="$router.replace({ path: '/redirect' + '/SalesInvoice' })"
-            ></el-button>
-          </el-col>
-          <el-col :span="2">
-            <el-button type="primary" icon="el-icon-unlock" :disabled="$store.getters.ZtkDoor"></el-button>
-          </el-col>
-          <el-col :span="2">
-            <add-member />
-          </el-col>
-          <el-col :span="16">
+
             <member-search />
-          </el-col>
-        </el-row>
+       
         <el-col
           style="padding: 1.5px;"
           :xs="8"
@@ -60,7 +45,6 @@
 
 <script>
 import permission from "@/directive/permission/index.js";
-import AddMember from "./components/Dialogs/AddMember";
 import MemberLog from "./components/MemberLog";
 import MemberSearch from "./components/MemberSearch";
 import PanThumb from "@/components/PanThumb";
@@ -73,7 +57,7 @@ import { GetMember } from "@/api/Member";
 export default {
   name: "MemberList",
   directives: { permission },
-  components: { AddMember, MemberSearch, MemberLog, PanThumb, WebCam },
+  components: {  MemberSearch, MemberLog, PanThumb, WebCam },
   data() {
     return {
       loading: true,

@@ -15,6 +15,13 @@ export function GetActiveItem(query) {
     params: query
   })
 }
+export function GetItemByID(query) {
+  return request({
+    url: '/Item/GetItemByID',
+    method: 'get',
+    params: query
+  })
+}
 export function GetIsPrimeItem(query) {
   return request({
     url: '/Item/GetIsPrimeItem',

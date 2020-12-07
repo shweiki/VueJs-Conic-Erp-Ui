@@ -14,9 +14,9 @@
           :span="4"
           class="list-complete-item"
           v-for="item in filteredItems"
-          v-bind:key="item.Id"
+          :key="item.id"
         >
-          <router-link :class="item.class" icon="el-icon-plus" :to="item.link">{{ item.Name }}</router-link>
+          <el-button @click="windowopen(item.link ,item.name)" :class="item.class" icon="el-icon-plus" >{{ item.name }}</el-button>
         </el-col>
       </transition-group>
     </el-card>
@@ -39,7 +39,7 @@ export default {
         {
           id: 2,
           name: this.$t('Report.Purchase'),
-          link: "/Purchases/PurchaseInvoice",
+          link: "/Purchase/Create",
           tags: ["all", "S&P"],
           class: "pan-btn yellow-btn"
         },
@@ -126,6 +126,13 @@ export default {
     }
   },
   methods: {
+    windowopen(link ,name){
+     let routeUrl = this.$router.resolve({
+          path: link,
+          //query: {id:96}
+     });
+     window.open(routeUrl .href, name, "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=600,top=" + (screen.height - 50) + ",left=" + (screen.width - 500));
+},
     shuffle: function() {
       this.items = _.shuffle(this.items);
     },

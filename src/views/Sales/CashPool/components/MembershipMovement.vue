@@ -112,7 +112,7 @@
         <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
           <template slot-scope="scope">{{(scope.row.TotalAmmount).toFixed(3) }} JOD</template>
         </el-table-column>
-        <el-table-column width="180" align="center" v-if="checkPermission(['admin'])">
+        <el-table-column width="180" align="center" v-if="checkPermission(['Admin'])">
           <template slot-scope="scope">
             <el-button
               v-for="(NOprations, index) in scope.row.NextOprations"

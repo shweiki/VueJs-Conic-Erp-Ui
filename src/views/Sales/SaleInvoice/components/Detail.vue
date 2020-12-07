@@ -32,7 +32,7 @@
                   @click="getdata()"
                 ></el-button>
               </el-col>
-              <el-col :span="4" v-if="checkPermission(['admin'])">
+              <el-col :span="4" v-if="checkPermission(['Admin'])">
                 <el-form-item>
                   <el-radio-group v-model="PriceMethod" text-color="#f78123">
                     <el-radio label="retail" border>مفرق</el-radio>
@@ -168,6 +168,14 @@
                                   ? scope.row.Itemx.OtherPrice.toFixed(2)
                                   : scope.row.Itemx.SellingPrice.toFixed(2)
                               }}</el-tag>
+                                     <edit-item
+                                v-if="checkPermission(['Admin'])"
+                                style="float: left"
+                                :ItemID="
+                                  tempForm.InventoryMovements[scope.$index]
+                                    .ItemsID
+                                "
+                              />
                             </div>
                           </template>
                         </el-table-column>
@@ -195,7 +203,7 @@
                           </template>
                         </el-table-column>
                         <el-table-column
-                          v-if="checkPermission(['admin'])"
+                          v-if="checkPermission(['Admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Price')"
                           width="130"
                           align="center"
@@ -212,7 +220,7 @@
                           </template>
                         </el-table-column>
                         <el-table-column
-                          v-if="!checkPermission(['admin'])"
+                          v-if="!checkPermission(['Admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Price')"
                           width="130"
                           align="center"
@@ -248,7 +256,7 @@
                           </template>
                         </el-table-column>
                         <el-table-column
-                          v-if="checkPermission(['admin'])"
+                          v-if="checkPermission(['Admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Inventory')"
                           width="110"
                           align="center"
@@ -423,6 +431,7 @@ import checkPermission from "@/utils/permission";
 // components
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import ItemsPrime from "@/components/Item/ItemsPrime";
+import EditItem from "@/components/Item/EditItem";
 
 import LangSelect from "@/components/LangSelect";
 import Screenfull from "@/components/Screenfull";
@@ -453,6 +462,7 @@ export default {
     printJS,
     ItemsSearch,
     ItemsPrime,
+    EditItem
   },
   props: {
     isEdit: {

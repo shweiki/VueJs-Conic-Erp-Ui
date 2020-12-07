@@ -16,9 +16,9 @@ export function Invoice1(temp) {
   //Logo
   //doc.addImage(ComapnyInfo.Logo, "jpeg", startX, startY, 12, 12);
 
-  console.log(temp)
+  console.log(ComapnyInfo)
 
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Vendor.name}}', temp.name)
+  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Vendor.Name}}', temp.Name)
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{PaymentMethod}}', temp.PaymentMethod == 'Cash' ? "ذمم" : "كاش")
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{FakeDate}}', temp.FakeDate)
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Discount}}', temp.Discount)
@@ -35,7 +35,7 @@ export function Invoice1(temp) {
     tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(2) + "</td>";
     tabelInventoryMovements += "<td>" + element.SellingPrice + "</td>";
     tabelInventoryMovements += "<td>" + element.Qty + "</td>";
-    tabelInventoryMovements += "<td>" + element.name + "</td>";
+    tabelInventoryMovements += "<td>" + element.Name + "</td>";
     tabelInventoryMovements += "</tr>"
   });
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace(res, tabelInventoryMovements)
