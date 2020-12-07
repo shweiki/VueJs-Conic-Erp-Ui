@@ -11,8 +11,8 @@ const PurchasesRouter = {
     {
       path: 'Create',
       component: () => import('@/views/Purchase/PurchaseInvoice/Create'),
-      name: 'NewInvoice',
-      meta: { title: 'New Purchase Invoice', icon: 'edit' }
+      name: 'NewPurchaseInvoice',
+      meta: { title: 'NewPurchaseInvoice', icon: 'edit' }
     },
 
     {
@@ -20,16 +20,16 @@ const PurchasesRouter = {
       component: () => import('@/views/Purchase/PurchaseInvoice/Edit'),
       name: 'EditPurchaseInvoice',
       meta: {
-         title: 'Edit Invoice', noCache: true, activeMenu: '/Purchase/PurchaseInvoice/List'
+         title: 'EditInvoice', noCache: true, activeMenu: '/Purchase/PurchaseInvoice/List'
       },
       hidden: true,
     },
     {
       path: 'List',
       component: () => import('@/views/Purchase/PurchaseInvoice/List'),
-      name: 'List',
+      name: 'ListPurchaseInvoice',
       meta: {
-        title: 'List', icon: 'cost'
+        title: 'ListPurchaseInvoice', icon: 'cost'
       },
     },
     {

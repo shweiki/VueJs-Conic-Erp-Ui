@@ -78,21 +78,21 @@ export const constantRoutes = [
     component: () => import('@/views/error-page/401'),
     hidden: true
   },
+
   {
     path: '/',
     component: Layout,
-    redirect: '/profile',
-    hidden: true,
     children: [
       {
-        path: 'profile',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
+        path: 'Reports',
+        component: () => import('@/views/Reports/index'),
+        name: 'Reports',
+        meta: {
+          title: 'Reports', icon: 'report', affix: true
+        },
       }
     ]
-  },
-
+  }
 ]
 
 /**
@@ -148,22 +148,21 @@ export const asyncRoutes = [
   AccountingRouter,
   SettingsRouter,
   UploadData,
-  //Reports
+
   {
-    path: '/Reports',
+    path: '/',
     component: Layout,
+    redirect: '/profile',
+    hidden: true,
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/Reports/index'),
-        name: 'Reports',
-        meta: {
-          title: 'Reports', icon: 'report', affix: true
-        },
+        path: 'profile',
+        component: () => import('@/views/profile/index'),
+        name: 'Profile',
+        meta: { title: 'Profile', icon: 'user', noCache: true }
       }
     ]
   },
-
   //Guide
   {
     path: '/Guide',

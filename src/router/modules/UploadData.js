@@ -12,43 +12,43 @@ const UploadData = {
   },
   children: [
     {
-      path: '/Item',
+      path: 'Upload/Item',
       component: () => import('@/views/UploadData/Item'),
-      name: 'Item',
+      name: 'UploadItem',
       meta: {
-        title: 'Item', icon: 'execution'
+        title: 'UploadItem', icon: 'execution'
       },
     },
     {
-      path: '/Service',
+      path: 'Upload/Service',
       component: () => import('@/views/UploadData/Service'),
-      name: 'Service',
+      name: 'UploadService',
       meta: {
-        title: 'Service', icon: 'execution'
+        title: 'UploadService', icon: 'execution'
       },
     },
     {
-      path: '/MemberShip',
+      path: 'Upload/MemberShip',
       component: () => import('@/views/UploadData/MemberShip'),
-      name: 'Membership',
+      name: 'UploadMembership',
       meta: {
-        title: 'MemberShip', icon: 'execution'
+        title: 'UploadMemberShip', icon: 'execution'
       },
     },
     {
-      path: '/Member',
+      path: 'Upload/Member',
       component: () => import('@/views/UploadData/Member'),
-      name: 'Member',
+      name: 'UploadMember',
       meta: {
-        title: 'Member', icon: 'execution'
+        title: 'UploadMember', icon: 'execution'
       },
     },
     {
-      path: '/MembershipMovement',
+      path: 'Upload/MembershipMovement',
       component: () => import('@/views/UploadData/MembershipMovement'),
-      name: 'MembershipMovement',
+      name: 'UploadMembershipMovement',
       meta: {
-        title: 'MembershipMovement', icon: 'execution'
+        title: 'UploadMembershipMovement', icon: 'execution'
       },
     }
   ]

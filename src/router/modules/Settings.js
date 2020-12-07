@@ -46,9 +46,9 @@ const SettingsRouter = {
     {
       path: '/Device',
       component: () => import('@/views/Settings/Device/index'),
-      name: 'Device',
+      name: 'Devices',
       meta: {
-        title: 'Device', icon: 'company'
+        title: 'Devices', icon: 'company'
       },
     },
     {
@@ -71,9 +71,9 @@ const SettingsRouter = {
     {
       path: '/Role',
       component: () => import('@/views/Settings/Permission/Role'),
-      name: 'Role',
+      name: 'Roles',
       meta: {
-        title: 'Role',
+        title: 'Roles',
         icon: 'key',
       },
     },
