@@ -16,7 +16,7 @@
           v-for="item in filteredItems"
           :key="item.id"
         >
-          <el-button @click="windowopen(item.link ,item.name)" :class="item.class" icon="el-icon-plus" >{{ item.name }}</el-button>
+          <el-button @click="windowopen(item.link ,item.name)" :class="item.class" icon="el-icon-zoom-in" >{{ item.name }}</el-button>
         </el-col>
       </transition-group>
     </el-card>
@@ -129,9 +129,9 @@ export default {
     windowopen(link ,name){
      let routeUrl = this.$router.resolve({
           path: link,
-          //query: {id:96}
+          query: {id:96}
      });
-     window.open(routeUrl .href, name, "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=600,top=" + (screen.height - 50) + ",left=" + (screen.width - 500));
+     window.open(routeUrl .href, name, "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=" + 55 + ",left=" + 500+"");
 },
     shuffle: function() {
       this.items = _.shuffle(this.items);
