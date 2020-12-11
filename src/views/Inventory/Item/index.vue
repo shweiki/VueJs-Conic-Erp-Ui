@@ -23,8 +23,7 @@
         border
         max-height="900"
         highlight-current-row
-        style="width: 100%"
-      >
+        style="width: 100%">
         <el-table-column prop="Id" width="120">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>

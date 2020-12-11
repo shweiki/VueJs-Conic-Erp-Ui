@@ -82,6 +82,7 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
+    redirect: '/Reports',
     children: [
       {
         path: 'Reports',
@@ -102,9 +103,8 @@ export const constantRoutes = [
 export const asyncRoutes = [
 
   {
-    path: '/',
+    path: '/dashboard',
     component: Layout,
-    redirect: '/dashboard',
     children: [
       {
         path: '/dashboard',
@@ -150,9 +150,8 @@ export const asyncRoutes = [
   UploadData,
 
   {
-    path: '/',
+    path: '/profile',
     component: Layout,
-    redirect: '/profile',
     hidden: true,
     children: [
       {

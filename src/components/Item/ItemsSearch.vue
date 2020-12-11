@@ -2,8 +2,11 @@
   <div>
     <img id="barcodeV" style="display : none" />
     <el-row>
-      <el-col :span="4">
+      <el-col :span="2">
         <add-item />
+      </el-col>
+      <el-col :span="2">
+        <search-item @add="AddItem" />
       </el-col>
       <el-col :span="2">
         <el-switch
@@ -82,10 +85,11 @@
 import Fuse from "fuse.js";
 import store from "@/store";
 import AddItem from "./AddItem";
+import SearchItem from "./SearchItem";
 
 export default {
   name: "ItemsSearch",
-  components: { AddItem },
+  components: { AddItem,  SearchItem },
   data() {
     return {
       ByQTY: false,
