@@ -21,17 +21,15 @@
     >
       <el-table-column label="#" prop="Id" width="50"></el-table-column>
 
-      <el-table-column prop="Name" align="center">
-        <template slot="header" slot-scope="{}">
-          <el-input v-model="search" v-bind:placeholder="$t('Account.Name')" />
-        </template>
+      <el-table-column label="Name" prop="Name" align="center">
+
       </el-table-column>
       <el-table-column
         label="DataBaseName"
         prop="DataBaseName"
       ></el-table-column>
       <el-table-column label="DateTime" prop="DateTime"></el-table-column>
-      <el-table-column label="UserID" prop="userID"></el-table-column>
+      <el-table-column label="UserID" prop="UserId"></el-table-column>
 
       <el-table-column align="right" width="200">
         <template slot-scope="scope">

@@ -77,7 +77,7 @@ export default {
     dashboard: 'لوحة التحكم',
     github: 'Github',
     logOut: 'تسجيل الخروج',
-    profile: 'الملف الشخصي',
+    Profile:  'الملف الشخصي',
     theme: 'الشكل',
     size: 'الحجم'
   },

@@ -150,13 +150,14 @@ export const asyncRoutes = [
   UploadData,
 
   {
-    path: '/profile',
+    path: '/Profile',
     component: Layout,
+    redirect: '/Profile/index',
     hidden: true,
     children: [
       {
-        path: 'profile',
-        component: () => import('@/views/profile/index'),
+        path: 'Profile',
+        component: () => import('@/views/Profile/index'),
         name: 'Profile',
         meta: { title: 'Profile', icon: 'user', noCache: true }
       }

@@ -26,9 +26,9 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile">
+          <router-link to="/Profile/Profile">
             <el-dropdown-item>
-              {{ $t('navbar.profile') }}
+              {{ $t('navbar.Profile') }}
             </el-dropdown-item>
           </router-link>
           <router-link to="/dashboard">

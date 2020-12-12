@@ -79,7 +79,7 @@ export default {
     dashboard: 'Dashboard',
     github: 'Github',
     logOut: 'Log Out',
-    profile: 'Profile',
+    Profile: 'Profile',
     theme: 'Theme',
     size: 'Global Size'
   },
