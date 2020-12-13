@@ -26,6 +26,7 @@ module.exports = {
    * @description Whether show the logo in sidebar
    */
   sidebarLogo: true,
+  sidebarOpen: false,
 
   /**
    * @type {string | array} 'production' | ['production', 'development']

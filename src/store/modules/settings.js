@@ -2,7 +2,7 @@ import variables from '@/styles/element-variables.scss'
 import defaultSettings from '@/Settings'
 
 const { showSettings, tagsView, fixedHeader, sidebarLogo
-  , defaultpickerOptions, defaulttimeQuery, defaultdatepickerQuery } = defaultSettings
+  , defaultpickerOptions, defaulttimeQuery, defaultdatepickerQuery ,sidebarOpen } = defaultSettings
 
 const state = {
   theme: variables.theme,
@@ -13,7 +13,8 @@ const state = {
   BusinessType: "GymManagment",
   pickerOptions: defaultpickerOptions,
   timeQuery: defaulttimeQuery,
-  datepickerQuery: defaultdatepickerQuery
+  datepickerQuery: defaultdatepickerQuery,
+  sidebarOpen : sidebarOpen
 }
 
 const mutations = {

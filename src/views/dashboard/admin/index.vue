@@ -1,5 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
+      <router-menu />
+
     <panel-group />
     <el-card class="box-card" style="direction: initial;">
       <el-tabs v-model="activeTab" tab-position="top">
@@ -22,10 +24,12 @@ import PanelGroup from "./components/PanelGroup";
 import MembershipmentOrdar from "./components/MembershipmentOrdar";
 import Receivables from "./components/Receivables";
 import Payable from "./components/Payable";
+import RouterMenu from "@/components/RouterMenu";
 
 export default {
   name: "DashboardAdmin",
   components: {
+    RouterMenu,
     PanelGroup,
     MembershipmentOrdar,
     Receivables,
