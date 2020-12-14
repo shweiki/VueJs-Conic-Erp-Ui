@@ -65,3 +65,10 @@ export function GetAllLogMembers(query) {
     params: query
   })
 }
+export function OpenCashDrawer(query) {
+  return request({
+    url: '/Device/OpenCashDrawer',
+    method: 'get',
+    params: query
+  })
+}

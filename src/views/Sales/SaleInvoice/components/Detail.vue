@@ -1,18 +1,10 @@
 <template>
   <div>
-    <el-form
-      ref="F-SaleInvoice"
-      :rules="rules"
-      :model="tempForm"
-      label-position="right"
-    >
+    <el-form ref="F-SaleInvoice" :rules="rules" :model="tempForm" label-position="right">
       <div class="components-container" style="direction: rtl">
         <split-pane split="horizontal" :min-percent="6" :default-percent="6">
           <template slot="paneL">
-            <el-row
-              
-              style="margin-top: 2px; background: #545454; color: white"
-            >
+            <el-row style="margin-top: 2px; background: #545454; color: white">
               <el-col :span="5">
                 <el-button
                   type="primary"
@@ -22,9 +14,7 @@
                 <el-button
                   type="primary"
                   icon="el-icon-s-claim"
-                  @click="
-                    $router.replace({ path: '/redirect' + '/Sales/CashPool' })
-                  "
+                  @click="$router.replace({ path: '/redirect' + '/Sales/CashPool' })"
                 ></el-button>
                 <el-button
                   type="primary"
@@ -85,64 +75,40 @@
                       :value="item.value"
                     >
                       <span style="float: right">{{ item.label }}</span>
-                      <span
-                        style="float: left color: #8492a6 font-size: 13px"
-                        >{{ item.value }}</span
-                      >
+                      <span style="float: left color: #8492a6 font-size: 13px">{{
+                        item.value
+                      }}</span>
                     </el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
                 <el-form-item prop="PaymentMethod">
-                  <el-radio-group
-                    v-model="tempForm.PaymentMethod"
-                    text-color="#f78123"
-                  >
+                  <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
                     <el-radio label="Cash" border>{{
                       $t("NewPurchaseInvoice.Cash")
                     }}</el-radio>
                     <el-radio label="Visa" border>Visa</el-radio>
 
-                    <el-radio
-                      v-if="tempForm.VendorID != 2"
-                      label="Receivables"
-                      border
-                      >{{ $t("NewPurchaseInvoice.Receivables") }}</el-radio
-                    >
+                    <el-radio v-if="tempForm.VendorID != 2" label="Receivables" border>{{
+                      $t("NewPurchaseInvoice.Receivables")
+                    }}</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
               <el-col :span="3">
-                <size-select
-                  id="size-select"
-                  class="right-menu-item hover-effect"
-                />
-                <screenfull
-                  id="screenfull"
-                  class="right-menu-item hover-effect"
-                />
+                <size-select id="size-select" class="right-menu-item hover-effect" />
+                <screenfull id="screenfull" class="right-menu-item hover-effect" />
                 <lang-select class="right-menu-item hover-effect" />
               </el-col>
             </el-row>
           </template>
           <template slot="paneR">
-            <split-pane
-              split="vertical"
-              :min-percent="65"
-              :default-percent="70"
-            >
+            <split-pane split="vertical" :min-percent="65" :default-percent="70">
               <template slot="paneL">
-                <split-pane
-                  split="horizontal"
-                  :min-percent="88"
-                  :default-percent="88"
-                >
+                <split-pane split="horizontal" :min-percent="88" :default-percent="88">
                   <template slot="paneL">
-                    <el-card
-                      style="background: #545454"
-                      :body-style="{ padding: '1px' }"
-                    >
+                    <el-card style="background: #545454" :body-style="{ padding: '1px' }">
                       <items-search @add="AddItem" />
                     </el-card>
                     <el-form-item prop="InventoryMovements">
@@ -168,12 +134,11 @@
                                   ? scope.row.Itemx.OtherPrice.toFixed(2)
                                   : scope.row.Itemx.SellingPrice.toFixed(2)
                               }}</el-tag>
-                                     <edit-item
+                              <edit-item
                                 v-if="checkPermission(['Admin'])"
                                 style="float: left"
                                 :ItemID="
-                                  tempForm.InventoryMovements[scope.$index]
-                                    .ItemsID
+                                  tempForm.InventoryMovements[scope.$index].ItemsID
                                 "
                               />
                             </div>
@@ -192,9 +157,7 @@
                           <template slot-scope="scope">
                             <el-input-number
                               @change="focusBarcode()"
-                              v-model="
-                                tempForm.InventoryMovements[scope.$index].Qty
-                              "
+                              v-model="tempForm.InventoryMovements[scope.$index].Qty"
                               :precision="2"
                               :step="1"
                               :min="0"
@@ -212,8 +175,7 @@
                             <currency-input
                               class="currency-input"
                               v-model="
-                                tempForm.InventoryMovements[scope.$index]
-                                  .SellingPrice
+                                tempForm.InventoryMovements[scope.$index].SellingPrice
                               "
                               @focus="$event.target.select()"
                             />
@@ -231,8 +193,7 @@
                               class="currency-input"
                               disabled
                               v-model="
-                                tempForm.InventoryMovements[scope.$index]
-                                  .SellingPrice
+                                tempForm.InventoryMovements[scope.$index].SellingPrice
                               "
                             />
                           </template>
@@ -247,8 +208,7 @@
                               JOD
                               {{
                                 (
-                                  tempForm.InventoryMovements[scope.$index]
-                                    .SellingPrice *
+                                  tempForm.InventoryMovements[scope.$index].SellingPrice *
                                   tempForm.InventoryMovements[scope.$index].Qty
                                 ).toFixed(2)
                               }}
@@ -264,8 +224,7 @@
                           <template slot-scope="scope">
                             <el-radio-group
                               v-model="
-                                tempForm.InventoryMovements[scope.$index]
-                                  .InventoryItemID
+                                tempForm.InventoryMovements[scope.$index].InventoryItemID
                               "
                             >
                               <el-radio-button
@@ -295,15 +254,14 @@
                         :disabled="DisabledSave"
                         style="font-size: 45px"
                         @click="isEdit != true ? createData() : updateData()"
-                        type='success'
+                        type="success"
                         icon="el-icon-check"
                       ></el-button>
                     </el-col>
                     <el-col :span="6">
                       <el-button
-                        disabled
                         style="font-size: 45px"
-                        @click="OpenCashDrawer()"
+                        @click="OpenCashDrawer('COM4')"
                         type="warning"
                         icon="el-icon-takeaway-box"
                       ></el-button>
@@ -326,14 +284,10 @@
                 </split-pane>
               </template>
               <template slot="paneR">
-                <split-pane
-                  split="horizontal"
-                  :min-percent="30"
-                  :default-percent="35"
-                >
+                <split-pane split="horizontal" :min-percent="30" :default-percent="35">
                   <template slot="paneL">
                     <el-card style="background: #545454">
-                      <el-row >
+                      <el-row>
                         <el-col :span="24">
                           <el-input
                             prop="Name"
@@ -342,7 +296,7 @@
                           ></el-input>
                         </el-col>
                       </el-row>
-                      <el-row  v-permission="['admin']">
+                      <el-row v-permission="['admin']">
                         <el-col
                           :span="6"
                           class="TotalAmmount"
@@ -376,32 +330,26 @@
                           </el-form-item>
                         </el-col>
                       </el-row>
-                      <el-row >
+                      <el-row>
                         <el-col :span="24">
                           <el-form-item prop="Description">
                             <el-input
-                              v-bind:placeholder="
-                                $t('NewPurchaseInvoice.statement')
-                              "
+                              v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
                               v-model="tempForm.Description"
                             ></el-input>
                           </el-form-item>
                         </el-col>
                       </el-row>
-                      <el-row >
+                      <el-row>
                         <el-col :span="24" class="TotalAmmount">
                           <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
                           <el-divider direction="vertical"></el-divider>
                           <span
                             >{{
                               (
-                                tempForm.InventoryMovements.reduce(function (
-                                  prev,
-                                  cur
-                                ) {
+                                tempForm.InventoryMovements.reduce(function (prev, cur) {
                                   return prev + cur.Qty * cur.SellingPrice;
-                                },
-                                0) - tempForm.Discount
+                                }, 0) - tempForm.Discount
                               ).toFixed(2)
                             }}
                             JOD</span
@@ -449,6 +397,7 @@ import { GetActiveVendor } from "@/api/Vendor";
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
 //import { NumericInput } from "numeric-keyboard";
+import { OpenCashDrawer } from "@/api/Device";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 export default {
@@ -462,7 +411,7 @@ export default {
     printJS,
     ItemsSearch,
     ItemsPrime,
-    EditItem
+    EditItem,
   },
   props: {
     isEdit: {
@@ -476,7 +425,7 @@ export default {
         this.$message({
           message: rule.field + "اواي",
           type: "error",
-        })
+        });
         callback(new Error(rule.field + "اي"));
       } else {
         callback();
@@ -490,7 +439,7 @@ export default {
           this.$message({
             message: "اه",
             type: "error",
-          })
+          });
           callback(new Error("اوه"));
         }
       } else {
@@ -505,12 +454,12 @@ export default {
 
       tempForm: {
         Id: undefined,
-        Name: '',
+        Name: "",
         Tax: 0.0,
         FakeDate: new Date(),
         PaymentMethod: "Cash",
         Discount: 0,
-        Description: '',
+        Description: "",
         VendorID: 2,
         IsPrime: false,
         InventoryMovements: [],
@@ -551,21 +500,21 @@ export default {
       text: "تحميل",
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0, 0.7)",
-    })
+    });
     GetActiveInventory().then((response) => {
-      console.log(response)
+      console.log(response);
       this.InventoryItems = response;
-    })
+    });
     GetActiveMenuItem().then((response) => {
-      console.log(response)
+      console.log(response);
       this.MenuItems = response;
-    })
+    });
 
     GetActiveVendor().then((response) => {
-      console.log(response)
+      console.log(response);
       this.Vendor = response;
       loading.close();
-    })
+    });
 
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
@@ -578,12 +527,12 @@ export default {
     restTempForm() {
       this.tempForm = {
         Id: undefined,
-        Name: '',
+        Name: "",
         Tax: 0.0,
         FakeDate: new Date(),
         PaymentMethod: "Cash",
         Discount: 0,
-        Description: '',
+        Description: "",
         VendorID: 2,
         IsPrime: false,
         InventoryMovements: [],
@@ -607,12 +556,12 @@ export default {
           Qty: 1.0,
           SellingPrice: SellingPrice,
           Tax: 0.0,
-          Description: '',
+          Description: "",
           InventoryItemID: 1,
           Itemx: Item,
           Name: Item.Name,
           SalesInvoiceID: undefined,
-        })
+        });
       }
       this.Barcode = "";
       this.Name = "";
@@ -622,12 +571,20 @@ export default {
       this.tempForm.InventoryMovements.splice(index, 1);
       this.focusBarcode();
     },
-    OpenCashDrawer() {},
+    OpenCashDrawer(COM) {
+      OpenCashDrawer({ Com: COM })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     checkPermission,
     getdata(val) {
       GetSaleInvoiceByID({ Id: val })
         .then((response) => {
-          console.log(response)
+          console.log(response);
           this.tempForm = response;
           this.tempForm.FakeDate = new Date(this.tempForm.FakeDate);
           // set tagsview title
@@ -638,7 +595,7 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        })
+        });
     },
     createData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
@@ -653,17 +610,14 @@ export default {
               this.tempForm.Discount >
               0 &&
             this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce(
-              (a, b) => a + (b["Qty"] || 0),
-              0
-            ) > 0
+            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
             Create(this.tempForm)
               .then((response) => {
                 this.$notify({
                   title: "تم الإضافة بنجاح",
                   message: "تم الإضافة بنجاح",
-                  type: 'success',
+                  type: "success",
                   position: "top-left",
                   duration: 1000,
                   showClose: false,
@@ -675,19 +629,18 @@ export default {
                     this.DisabledSave = false;
                     this.focusBarcode();
                   },
-                })
+                });
               })
               .catch((error) => {
                 console.log(error);
-              })
+              });
           } else
-            this.ValidateDescription =
-              "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+            this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     updateData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
@@ -701,17 +654,14 @@ export default {
               this.tempForm.Discount >
               0 &&
             this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce(
-              (a, b) => a + (b["Qty"] || 0),
-              0
-            ) > 0
+            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
             Edit(this.tempForm)
               .then((response) => {
                 this.$notify({
                   title: "تم تعديل بنجاح",
                   message: "تم تعديل بنجاح",
-                  type: 'success',
+                  type: "success",
                   position: "top-left",
                   duration: 1000,
                   showClose: false,
@@ -721,21 +671,20 @@ export default {
                     this.AutoPrint ? this.Print() : undefined;
                     this.$nextTick(() => {
                       this.$router.back();
-                    })
+                    });
                   },
-                })
+                });
               })
               .catch((error) => {
                 console.log(error);
-              })
+              });
           } else
-            this.ValidateDescription =
-              "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+            this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     Print() {
       printJS({
@@ -743,14 +692,14 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true,
-      })
+      });
       this.focusBarcode();
     },
     setTagsViewTitle() {
       const title = "Edit Sale";
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
-      })
+      });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
@@ -760,7 +709,7 @@ export default {
   },
 };
 </script>
-    <style scoped>
+<style scoped>
 .ItemName {
   color: #545454;
   font-weight: 600;
@@ -791,7 +740,7 @@ export default {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  content: '';
+  content: "";
 }
 .clearfix:after {
   clear: both;
