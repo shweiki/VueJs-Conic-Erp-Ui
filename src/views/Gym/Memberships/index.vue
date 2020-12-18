@@ -366,7 +366,7 @@ export default {
       this.loading = true;
       GetMembership().then(response => {
         // handle success
-        console.log(response);
+        
         this.tableData = response;
         this.loading = false;
       });

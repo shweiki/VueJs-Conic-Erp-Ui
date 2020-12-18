@@ -52,7 +52,7 @@ export default {
     },
     getdata() {
       GetIsPrimeItem().then(response => {
-        console.log(response);
+        
         response.sort(function(a, b) {
           var nameA = a.Name.toUpperCase(); // ignore upper and lowercase
           var nameB = b.Name.toUpperCase(); // ignore upper and lowercase

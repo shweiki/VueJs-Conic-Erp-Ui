@@ -7,7 +7,7 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
    */
-  showSettings: false,
+  showSettings: true,
 
   /**
    * @type {boolean} true | false
@@ -19,16 +19,16 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether fix the header
    */
-  fixedHeader: true,
+  fixedHeader: false,
   loginBackground: 'https://i.ibb.co/dPSp7dp/ezgif-3-fa3e3985da64-min.jpg',
-
+  showSidebar : true,
   /**
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
   sidebarLogo: true,
-  sidebarOpen: false,
-
+  sidebarOpen: true,
+  showNavbar:true,
   /**
    * @type {string | array} 'production' | ['production', 'development']
    * @description Need show err logs component.

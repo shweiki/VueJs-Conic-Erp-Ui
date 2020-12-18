@@ -1,7 +1,10 @@
 <template>
   <div>
     <el-form ref="F-SaleInvoice" :rules="rules" :model="tempForm" label-position="right">
-      <div class="components-container" style="direction: rtl">
+      <div
+        class="components-container"
+        v-bind:style="this.$i18n.locale == 'ar' ? 'direction: rtl' : 'direction: ltr'"
+      >
         <split-pane split="horizontal" :min-percent="6" :default-percent="6">
           <template slot="paneL">
             <el-row style="margin-top: 2px; background: #545454; color: white">
@@ -502,16 +505,16 @@ export default {
       background: "rgba(0, 0, 0, 0.7)",
     });
     GetActiveInventory().then((response) => {
-      console.log(response);
+      
       this.InventoryItems = response;
     });
     GetActiveMenuItem().then((response) => {
-      console.log(response);
+      
       this.MenuItems = response;
     });
 
     GetActiveVendor().then((response) => {
-      console.log(response);
+      
       this.Vendor = response;
       loading.close();
     });
@@ -574,7 +577,7 @@ export default {
     OpenCashDrawer(COM) {
       OpenCashDrawer({ Com: COM })
         .then((response) => {
-          console.log(response);
+          
         })
         .catch((err) => {
           console.log(err);
@@ -584,7 +587,7 @@ export default {
     getdata(val) {
       GetSaleInvoiceByID({ Id: val })
         .then((response) => {
-          console.log(response);
+          
           this.tempForm = response;
           this.tempForm.FakeDate = new Date(this.tempForm.FakeDate);
           // set tagsview title

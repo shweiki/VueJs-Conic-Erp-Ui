@@ -257,12 +257,12 @@ export default {
       GetUsers()
         .then((response) => {
           // handle success
-          console.log(response);
+          
           this.tableData = response;
           GetRoles()
             .then((response) => {
               // handle success
-              console.log(response);
+              
               this.Roles = response;
               this.loading = false;
             })
@@ -281,7 +281,7 @@ export default {
       DeleteRoleUser({ UserName: username, RoleName: rolername })
         .then((response) => {
           // handle success
-          console.log(response);
+          
           this.getdata();
         })
         .catch((error) => {
@@ -293,7 +293,7 @@ export default {
       AddRoleUser({ UserName: this.UserName, RoleName: this.RoleName })
         .then((response) => {
           // handle success
-          console.log(response);
+          
           this.dialogAddRoleVisible = false;
           this.getdata();
         })

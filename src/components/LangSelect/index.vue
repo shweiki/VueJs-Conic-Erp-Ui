@@ -4,10 +4,10 @@
       <svg-icon class-name="international-icon" icon-class="language" />
     </div>
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item :disabled="language=='ar'" command="ar">
+      <el-dropdown-item :disabled="language == 'ar'" command="ar">
         العربية
       </el-dropdown-item>
-      <el-dropdown-item :disabled="language=='en'" command="en">
+      <el-dropdown-item :disabled="language == 'en'" command="en">
         English
       </el-dropdown-item>
     </el-dropdown-menu>
@@ -18,18 +18,18 @@
 export default {
   computed: {
     language() {
-      return this.$store.getters.language
-    }
+      return this.$store.getters.language;
+    },
   },
   methods: {
     handleSetLanguage(lang) {
-      this.$i18n.locale = lang
-      this.$store.dispatch('app/setLanguage', lang)
+      this.$i18n.locale = lang;
+      this.$store.dispatch("app/setLanguage", lang);
       this.$message({
-        message: 'تم تغير اللغة بنجاح',
-        type: 'success'
-      })
-    }
-  }
-}
+        message: "تم تغير اللغة بنجاح",
+        type: "success",
+      });
+    },
+  },
+};
 </script>

@@ -226,7 +226,7 @@ export default {
           requesttimeout: 5000000
         }
       }).then(response => {
-        console.log(response);
+        
       });
     }
   }

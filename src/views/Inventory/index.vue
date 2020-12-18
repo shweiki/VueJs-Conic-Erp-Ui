@@ -277,7 +277,7 @@ export default {
       GetInventoryItem()
         .then(response => {
           // handle success
-          console.log(response);
+          
           this.tableData = response;
           this.loading = false;
         })

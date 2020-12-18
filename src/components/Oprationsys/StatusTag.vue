@@ -1,7 +1,5 @@
 <template>
-  <el-tag :type="Opration.ClassName">{{
-    Opration.ArabicOprationDescription
-  }}</el-tag>
+  <el-tag :type="Opration.ClassName">{{ Opration.ArabicOprationDescription }}</el-tag>
 </template>
 <script>
 import { GetOprationByStatusTable } from "@/api/Oprationsys";
@@ -11,15 +9,15 @@ export default {
   props: {
     Status: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     TableName: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
-      Opration: {}
+      Opration: {},
     };
   },
   mounted() {
@@ -27,18 +25,14 @@ export default {
   },
   methods: {
     getdata() {
-      console.log(this.Status, this.TableName);
-
       GetOprationByStatusTable({
         TableName: this.TableName,
-        Status: this.Status
-      }).then(response => {
-        console.log(response);
-
+        Status: this.Status,
+      }).then((response) => {
         this.Opration = response;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

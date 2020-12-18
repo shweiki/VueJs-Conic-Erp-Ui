@@ -177,7 +177,7 @@ export default {
         this.tableData = response;
 
         GetOprationByTable({ Name: "MembershipMovement" }).then(response => {
-          console.log(response);
+          
 
           this.Oprations = response;
         });

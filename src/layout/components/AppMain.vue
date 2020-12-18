@@ -1,5 +1,12 @@
 <template>
-  <section class="app-main">
+  <section
+    v-bind:style="
+      this.$i18n.locale == 'ar'
+        ? 'direction: rtl   text-align: right;'
+        : 'direction: ltr   text-align: left;'
+    "
+    class="app-main"
+  >
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view
@@ -34,7 +41,7 @@ export default {
     },
     key() {
       return this.$route.path;
-    }
+    },
   },
   watch: {
     visible(value) {
@@ -43,7 +50,7 @@ export default {
       } else {
         document.body.removeEventListener("click", this.closeMenu);
       }
-    }
+    },
   },
   data() {
     return {
@@ -51,7 +58,7 @@ export default {
       top: 0,
       left: 0,
       FullPath: "",
-      affixTags: []
+      affixTags: [],
     };
   },
   methods: {
@@ -59,7 +66,7 @@ export default {
       const fullPath = this.FullPath;
       this.$nextTick(() => {
         this.$router.replace({
-          path: "/redirect" + fullPath
+          path: "/redirect" + fullPath,
         });
       });
     },
@@ -88,16 +95,14 @@ export default {
     },
     closeMenu() {
       this.visible = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .app-main {
-  text-align: right;
   /* 50= navbar  50  */
-  direction: rtl;
   min-height: calc(100vh - 50px);
   width: 100%;
   position: relative;
@@ -124,7 +129,7 @@ export default {
 // fix css style bug in open el-dialog
 .el-popup-parent--hidden {
   .fixed-header {
-    padding-left: 15px;
+    padding-right: 15px;
   }
 }
 .contextmenu {

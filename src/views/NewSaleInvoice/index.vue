@@ -1,10 +1,14 @@
-sss<template>
+sss
+<template>
   <div>
     <el-form ref="F-SaleInvoice" :rules="rules" :model="tempForm" label-position="right">
-      <div class="components-container" style="direction: rtl; ">
+      <div
+        class="components-container"
+        v-bind:style="this.$i18n.locale == 'ar' ? 'direction: rtl' : 'direction: ltr'"
+      >
         <split-pane split="horizontal" :min-percent="6" :default-percent="6">
           <template slot="paneL">
-            <el-row  style=" margin-top: 2px; background : #545454; color: white;">
+            <el-row style="margin-top: 2px; background: #545454; color: white">
               <el-col :span="7">
                 <el-button
                   type="primary"
@@ -16,12 +20,23 @@ sss<template>
                   icon="el-icon-s-claim"
                   @click="$router.replace({ path: '/redirect' + '/Sales/CashPool' })"
                 ></el-button>
-                <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+                <el-button
+                  type="primary"
+                  icon="el-icon-refresh"
+                  @click="getdata()"
+                ></el-button>
               </el-col>
               <el-col v-permission="['admin']" :span="6">
                 <el-form-item
                   prop="FakeDate"
-                  :rules="[{type: 'date', required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' } ]"
+                  :rules="[
+                    {
+                      type: 'date',
+                      required: true,
+                      message: 'لايمكن ترك التاريخ فارغ',
+                      trigger: 'blur',
+                    },
+                  ]"
                 >
                   <el-date-picker
                     v-model="tempForm.FakeDate"
@@ -34,7 +49,13 @@ sss<template>
               <el-col :span="4">
                 <el-form-item
                   prop="VendorID"
-                  :rules="[{ required: true, message: 'لايمكن ترك حساب فارغ', trigger: 'blur' }, ]"
+                  :rules="[
+                    {
+                      required: true,
+                      message: 'لايمكن ترك حساب فارغ',
+                      trigger: 'blur',
+                    },
+                  ]"
                 >
                   <el-select
                     v-model="tempForm.VendorID"
@@ -50,7 +71,9 @@ sss<template>
                       :value="item.value"
                     >
                       <span style="float: right">{{ item.label }}</span>
-                      <span style="float: left color: #8492a6 font-size: 13px">{{ item.value }}</span>
+                      <span style="float: left color: #8492a6 font-size: 13px">{{
+                        item.value
+                      }}</span>
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -58,14 +81,14 @@ sss<template>
               <el-col :span="6">
                 <el-form-item prop="PaymentMethod">
                   <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
-                    <el-radio label="Cash" border>{{ $t('NewPurchaseInvoice.Cash') }}</el-radio>
+                    <el-radio label="Cash" border>{{
+                      $t("NewPurchaseInvoice.Cash")
+                    }}</el-radio>
                     <el-radio label="Visa" border>Visa</el-radio>
 
-                    <el-radio
-                      v-if="tempForm.VendorID != 2"
-                      label="Receivables"
-                      border
-                    >{{ $t('NewPurchaseInvoice.Receivables') }}</el-radio>
+                    <el-radio v-if="tempForm.VendorID != 2" label="Receivables" border>{{
+                      $t("NewPurchaseInvoice.Receivables")
+                    }}</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -81,7 +104,7 @@ sss<template>
               <template slot="paneL">
                 <split-pane split="horizontal" :min-percent="88" :default-percent="88">
                   <template slot="paneL">
-                    <el-card style="background: #545454;" :body-style="{ padding: '1px',  }">
+                    <el-card style="background: #545454" :body-style="{ padding: '1px' }">
                       <items-search @add="AddItem" />
                     </el-card>
                     <el-form-item prop="InventoryMovements">
@@ -93,25 +116,31 @@ sss<template>
                         width="100%"
                       >
                         <el-table-column prop="ItemsID" align="center">
-                          <template
-                            slot="header"
-                            slot-scope="{}"
-                          >{{ $t('NewPurchaseInvoice.Items') }} ({{tempForm.InventoryMovements.length.toFixed(2)}} )</template>
+                          <template slot="header" slot-scope="{}"
+                            >{{ $t("NewPurchaseInvoice.Items") }} ({{
+                              tempForm.InventoryMovements.length.toFixed(2)
+                            }}
+                            )</template
+                          >
                           <template slot-scope="scope">
                             <div class="ItemName">
-                              {{scope.row.Itemx.Name}}
-                              <el-tag
-                                type="primary"
-                                effect="plain"
-                              >{{scope.row.Itemx.SellingPrice.toFixed(2)}}</el-tag>
+                              {{ scope.row.Itemx.Name }}
+                              <el-tag type="primary" effect="plain">{{
+                                scope.row.Itemx.SellingPrice.toFixed(2)
+                              }}</el-tag>
                             </div>
                           </template>
                         </el-table-column>
                         <el-table-column width="160" align="center">
-                          <template
-                            slot="header"
-                            slot-scope="{}"
-                          >{{ $t('NewPurchaseInvoice.quantity') }} ({{tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0),0 ).toFixed(2)}} )</template>
+                          <template slot="header" slot-scope="{}"
+                            >{{ $t("NewPurchaseInvoice.quantity") }} ({{
+                              tempForm.InventoryMovements.reduce(
+                                (a, b) => a + (b["Qty"] || 0),
+                                0
+                              ).toFixed(2)
+                            }}
+                            )</template
+                          >
                           <template slot-scope="scope">
                             <el-input-number
                               v-model="tempForm.InventoryMovements[scope.$index].Qty"
@@ -122,18 +151,19 @@ sss<template>
                             ></el-input-number>
                           </template>
                         </el-table-column>
-                     
+
                         <el-table-column
-                         
                           v-bind:label="$t('NewPurchaseInvoice.Price')"
                           width="130"
                           align="center"
                         >
                           <template slot-scope="scope">
                             <currency-input
-                          disabled
+                              disabled
                               class="currency-input"
-                              v-model="tempForm.InventoryMovements[scope.$index].SellingPrice"
+                              v-model="
+                                tempForm.InventoryMovements[scope.$index].SellingPrice
+                              "
                             />
                           </template>
                         </el-table-column>
@@ -143,12 +173,18 @@ sss<template>
                           align="center"
                         >
                           <template slot-scope="scope">
-                            <div
-                              class="currency-input"
-                            >JOD {{(tempForm.InventoryMovements[scope.$index].SellingPrice * tempForm.InventoryMovements[scope.$index].Qty).toFixed(2)}}</div>
+                            <div class="currency-input">
+                              JOD
+                              {{
+                                (
+                                  tempForm.InventoryMovements[scope.$index].SellingPrice *
+                                  tempForm.InventoryMovements[scope.$index].Qty
+                                ).toFixed(2)
+                              }}
+                            </div>
                           </template>
                         </el-table-column>
-                      
+
                         <el-table-column label="#" width="75" align="center">
                           <template slot-scope="scope">
                             <el-button
@@ -158,8 +194,8 @@ sss<template>
                             ></el-button>
                           </template>
                         </el-table-column>
-                           <el-table-column
-                         v-if="checkPermission(['Admin'])"
+                        <el-table-column
+                          v-if="checkPermission(['Admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Price')"
                           width="130"
                           align="center"
@@ -167,25 +203,30 @@ sss<template>
                           <template slot-scope="scope">
                             <currency-input
                               class="currency-input"
-                              v-model="tempForm.InventoryMovements[scope.$index].SellingPrice"
+                              v-model="
+                                tempForm.InventoryMovements[scope.$index].SellingPrice
+                              "
                             />
                           </template>
                         </el-table-column>
-                          <el-table-column
-                         v-if="checkPermission(['Admin'])"
+                        <el-table-column
+                          v-if="checkPermission(['Admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Inventory')"
                           width="110"
                           align="center"
                         >
                           <template slot-scope="scope">
                             <el-radio-group
-                              v-model="tempForm.InventoryMovements[scope.$index].InventoryItemID"
+                              v-model="
+                                tempForm.InventoryMovements[scope.$index].InventoryItemID
+                              "
                             >
                               <el-radio-button
-                                v-for="(item , index ) in InventoryItems"
+                                v-for="(item, index) in InventoryItems"
                                 :key="index"
                                 :label="item.value"
-                              >{{item.label}}</el-radio-button>
+                                >{{ item.label }}</el-radio-button
+                              >
                             </el-radio-group>
                           </template>
                         </el-table-column>
@@ -195,15 +236,15 @@ sss<template>
                   <template slot="paneR">
                     <el-col :span="6">
                       <el-button
-                        style="font-size: 45px;"
+                        style="font-size: 45px"
                         @click="createData()"
-                        type='success'
+                        type="success"
                         icon="el-icon-check"
                       ></el-button>
                     </el-col>
                     <el-col :span="6">
                       <el-button
-                        style="font-size: 45px;"
+                        style="font-size: 45px"
                         @click="OpenCashDrawer()"
                         type="warning"
                         icon="el-icon-takeaway-box"
@@ -216,8 +257,8 @@ sss<template>
                         inactive-color="#ff4949"
                       ></el-switch>
                       <el-button
-                        v-bind:disabled="(OldInvoice != null) ? false: true "
-                        style="font-size: 35px;"
+                        v-bind:disabled="OldInvoice != null ? false : true"
+                        style="font-size: 35px"
                         @click="Print()"
                         type="primary"
                         icon="el-icon-printer"
@@ -229,18 +270,23 @@ sss<template>
               <template slot="paneR">
                 <split-pane split="horizontal" :min-percent="25" :default-percent="30">
                   <template slot="paneL">
-                    <el-card style="background: #545454;">
-                      <el-row >
+                    <el-card style="background: #545454">
+                      <el-row>
                         <el-col :span="24">
-                          <el-input prop="Name" placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
+                          <el-input
+                            prop="Name"
+                            placeholder="اسم المستلم"
+                            v-model="tempForm.Name"
+                          ></el-input>
                         </el-col>
                       </el-row>
-                      <el-row  v-permission="['admin']">
+                      <el-row v-permission="['admin']">
                         <el-col
                           :span="6"
                           class="TotalAmmount"
                           style="font-size: medium"
-                        >{{$t('NewPurchaseInvoice.TotalDiscount')}}</el-col>
+                          >{{ $t("NewPurchaseInvoice.TotalDiscount") }}</el-col
+                        >
                         <el-col :span="8">
                           <el-input-number
                             prop="Discount"
@@ -248,13 +294,16 @@ sss<template>
                             controls-position="right"
                             :precision="2"
                             :step="1"
-                            :min="0.00"
+                            :min="0.0"
                             :max="100"
                           ></el-input-number>
                         </el-col>
                         <el-col :span="12">
                           <el-form-item prop="Tax">
-                            <el-select v-model="tempForm.Tax" v-bind:placeholder="$t('Items.Tax')">
+                            <el-select
+                              v-model="tempForm.Tax"
+                              v-bind:placeholder="$t('Items.Tax')"
+                            >
                               <el-option
                                 v-for="tax in TaxOptions"
                                 :key="tax.value"
@@ -265,7 +314,7 @@ sss<template>
                           </el-form-item>
                         </el-col>
                       </el-row>
-                      <el-row >
+                      <el-row>
                         <el-col :span="24">
                           <el-form-item prop="Description">
                             <el-input
@@ -275,11 +324,20 @@ sss<template>
                           </el-form-item>
                         </el-col>
                       </el-row>
-                      <el-row >
+                      <el-row>
                         <el-col :span="24" class="TotalAmmount">
-                          <span>{{ $t('NewPurchaseInvoice.TotalJD') }}</span>
+                          <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
                           <el-divider direction="vertical"></el-divider>
-                          <span>{{(tempForm.InventoryMovements.reduce(function(prev, cur) {return prev + cur.Qty * cur.SellingPrice;}, 0) - tempForm.Discount).toFixed(2)}} JOD</span>
+                          <span
+                            >{{
+                              (
+                                tempForm.InventoryMovements.reduce(function (prev, cur) {
+                                  return prev + cur.Qty * cur.SellingPrice;
+                                }, 0) - tempForm.Discount
+                              ).toFixed(2)
+                            }}
+                            JOD</span
+                          >
                         </el-col>
                       </el-row>
                     </el-card>
@@ -334,7 +392,7 @@ export default {
     SizeSelect,
     printJS,
     ItemsSearch,
-    ItemsPrime
+    ItemsPrime,
   },
 
   data() {
@@ -343,15 +401,15 @@ export default {
       AutoPrint: false,
       tempForm: {
         ID: undefined,
-        Name: '',
+        Name: "",
         Tax: 0.0,
         FakeDate: new Date(),
         PaymentMethod: "Cash",
         Discount: 0,
-        Description: '',
+        Description: "",
         VendorID: 2,
         IsPrime: false,
-        InventoryMovements: []
+        InventoryMovements: [],
       },
       rules: {
         InventoryMovements: [
@@ -359,52 +417,52 @@ export default {
             type: "array",
             required: true,
             message: "لا يمكن إكمال عملية البيع من غير إضافة أصناف",
-            trigger: "change"
-          }
-        ]
+            trigger: "change",
+          },
+        ],
       },
       TaxOptions: [
         {
           value: 0,
-          label: "لا توجد ضريبة"
+          label: "لا توجد ضريبة",
         },
         {
           value: 0.16,
-          label: "ضريبة 16 %"
-        }
+          label: "ضريبة 16 %",
+        },
       ],
       InventoryItems: [],
       MenuItems: [],
-      Vendor: []
+      Vendor: [],
     };
   },
   methods: {
     restTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: '',
+        Name: "",
         Tax: 0.0,
         FakeDate: new Date(),
         PaymentMethod: "Cash",
         Discount: 0,
-        Description: '',
+        Description: "",
         VendorID: 2,
         IsPrime: false,
-        InventoryMovements: []
+        InventoryMovements: [],
       };
     },
     AddItem(Item, Qty) {
       console.log(Item);
 
       var find = this.tempForm.InventoryMovements.findIndex(
-        value => value.ItemsID == Item.Id
+        (value) => value.ItemsID == Item.Id
       );
       console.log(find);
 
       if (find != -1) this.tempForm.InventoryMovements[find].Qty += Qty;
       else {
         let SellingPrice = Item.SellingPrice;
-        if(this.tempForm.VendorID != 2) SellingPrice = Item.OtherPrice
+        if (this.tempForm.VendorID != 2) SellingPrice = Item.OtherPrice;
         this.tempForm.InventoryMovements.push({
           ID: undefined,
           ItemsID: Item.Id,
@@ -413,11 +471,11 @@ export default {
           Qty: 1.0,
           SellingPrice: SellingPrice,
           Tax: 0.0,
-          Description: '',
+          Description: "",
           InventoryItemID: 1,
           Itemx: Item,
-          SalesInvoiceID: undefined
-        })
+          SalesInvoiceID: undefined,
+        });
       }
       this.Barcode = "";
       this.Name = "";
@@ -432,46 +490,43 @@ export default {
         lock: true,
         text: "تحميل",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
-      })
-      GetActiveInventory().then(response => {
-        console.log(response)
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      GetActiveInventory().then((response) => {
+        
         this.InventoryItems = response;
-      })
-      GetActiveMenuItem().then(response => {
-        console.log(response)
+      });
+      GetActiveMenuItem().then((response) => {
+        
         this.MenuItems = response;
-      })
+      });
 
-      GetActiveVendor().then(response => {
-        console.log(response)
+      GetActiveVendor().then((response) => {
+        
         this.Vendor = response;
         loading.close();
-      })
+      });
     },
     createData() {
-      this.$refs["F-SaleInvoice"].validate(valid => {
+      this.$refs["F-SaleInvoice"].validate((valid) => {
         if (valid) {
           this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
           if (
-            this.tempForm.InventoryMovements.reduce(function(prev, cur) {
+            this.tempForm.InventoryMovements.reduce(function (prev, cur) {
               return prev + cur.Qty * cur.SellingPrice;
             }, 0) -
               this.tempForm.Discount >
               0 &&
             this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce(
-              (a, b) => a + (b["Qty"] || 0),
-              0
-            ) > 0
+            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
             Create(this.tempForm)
-              .then(response => {
+              .then((response) => {
                 this.$notify({
                   title: "تم الإضافة بنجاح",
                   message: "تم الإضافة بنجاح",
-                  type: 'success',
+                  type: "success",
                   position: "top-left",
                   duration: 1000,
                   showClose: false,
@@ -480,36 +535,35 @@ export default {
                     this.OldInvoice = this.tempForm;
                     this.AutoPrint ? this.Print() : undefined;
                     this.restTempForm();
-                  }
-                })
+                  },
+                });
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
-              })
+              });
           } else
-            this.ValidateDescription =
-              "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+            this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     Print() {
       printJS({
         printable: Invoice1(this.OldInvoice),
         type: "pdf",
         base64: true,
-        showModal: true
-      })
-    }
+        showModal: true,
+      });
+    },
   },
   mounted() {
     this.getdata();
-  }
+  },
 };
 </script>
-    <style scoped>
+<style scoped>
 .ItemName {
   color: #545454;
   font-weight: 600;
@@ -540,7 +594,7 @@ export default {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  content: '';
+  content: "";
 }
 .clearfix:after {
   clear: both;
