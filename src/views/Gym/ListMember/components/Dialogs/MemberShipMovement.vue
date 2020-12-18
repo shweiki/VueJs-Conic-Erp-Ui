@@ -17,11 +17,11 @@
         </el-form-item>
         <el-form-item
           label="إشتراك"
-          prop="MembershipID"
+          prop="MembershipId"
           :rules="[{ required: true, message: 'الرجاء اختيار نوع اشتراك', trigger: 'blur' } ]"
         >
           <el-select
-            v-model="MembershipMovement.MembershipID"
+            v-model="MembershipMovement.MembershipId"
             filterable
             @change="calc"
             placeholder="إشتراك"
@@ -177,7 +177,7 @@ export default {
         Status: 0,
         EditorName:'',
         MemberID: undefined,
-        MembershipID: undefined
+        MembershipId: undefined
       },
 
       EnableSave: false,
@@ -198,7 +198,7 @@ export default {
         .then(response => {
           console.log(response)
           this.Memberships = response;
-          this.MembershipMovement.MembershipID = response[0].Id;
+          this.MembershipMovement.MembershipId = response[0].Id;
           GetActiveDiscount()
             .then(response => {
               console.log(response)
@@ -250,7 +250,7 @@ export default {
     },
     calc() {
       let Membership = this.Memberships.find(
-        obj => obj.Id == this.MembershipMovement.MembershipID
+        obj => obj.Id == this.MembershipMovement.MembershipId
       );
       // console.log(Membership);
 
@@ -274,7 +274,7 @@ export default {
         )
       );
     },
-    AddExtraToMembership(Days, MemberShipMovementID) {
+    AddExtraToMembership(Days, MemberShipMovementId) {
       let MembershipMovementOrder = {
         ID: undefined,
         Type: "Extra",
@@ -282,7 +282,7 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,
-        MemberShipMovementID: MemberShipMovementID
+        MemberShipMovementId: MemberShipMovementId
       };
       MembershipMovementOrder.EndDate = new Date(
         MembershipMovementOrder.EndDate.setTime(

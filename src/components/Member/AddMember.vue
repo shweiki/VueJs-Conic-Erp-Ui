@@ -117,7 +117,7 @@ export default {
         Ssn: "",
         DateofBirth: "",
         Email: "",
-        phoneNumber1: "",
+        PhoneNumber1: "",
         PhoneNumber2: "",
         Description: "",
         Type: "New",
@@ -151,7 +151,7 @@ export default {
         Ssn: "",
         DateofBirth: "",
         Email: "",
-        phoneNumber1: "",
+        PhoneNumber1: "",
         PhoneNumber2: "",
         Description: "",
         Type: "New"

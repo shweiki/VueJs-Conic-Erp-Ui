@@ -78,67 +78,67 @@ export default {
       this.tableData = results;
       console.log(this.tableData);
       this.data = this.tableData.map(element => {
-        let MemberID, MembershipID, Type;
+        let MemberID, MembershipId, Type;
         if (element.Offers_ID == 10028) {
           // 1 Day
-          MembershipID = 4;
+          MembershipId = 4;
           Type = "OneDay";
         }
         if (element.Offers_ID == 10029) {
           // 1 month Morning
-          MembershipID = 2;
+          MembershipId = 2;
           Type = "Morning";
         }
         if (element.Offers_ID == 10030) {
           // 3 month Morning
-          MembershipID = 3;
+          MembershipId = 3;
           Type = "Morning";
         }
         if (element.Offers_ID == 10031) {
           // 6 month Morning
-          MembershipID = 5;
+          MembershipId = 5;
           Type = "Morning";
         }
         if (element.Offers_ID == 10032) {
           // 12 month Morning
-          MembershipID = 7;
+          MembershipId = 7;
           Type = "Morning";
         }
         if (element.Offers_ID == 10033) {
           // 1 month FullDay
-          MembershipID = 2;
+          MembershipId = 2;
           Type = "FullDay";
         }
         if (element.Offers_ID == 10046) {
           // 3 month FullDay
-          MembershipID = 3;
+          MembershipId = 3;
           Type = "FullDay";
         }
         if (element.Offers_ID == 10047) {
           // 6 month FullDay
-          MembershipID = 5;
+          MembershipId = 5;
           Type = "FullDay";
         }
         if (element.Offers_ID == 10048) {
           // 12 month FullDay
-          MembershipID = 7;
+          MembershipId = 7;
           Type = "FullDay";
         }
         if (element.Offers_ID == 10068) {
           // 12 month FullDay
-          MembershipID = 7;
+          MembershipId = 7;
           Type = "FullDay";
         }
         if (element.Offers_ID == 10069) {
           // 9 month FullDay
-          MembershipID = 6;
+          MembershipId = 6;
           Type = "FullDay";
         }
         MemberID = this.FindIDMemberByTag(
           element.Member_ID,
           this.$store.getters.AllMembers
         );
-        console.log(MembershipID, Type, MemberID);
+        console.log(MembershipId, Type, MemberID);
         return {
           ID: undefined,
           TotalAmmount: element.VALUE,
@@ -152,7 +152,7 @@ export default {
           Description: element.Note,
           Status: 1,
           MemberID: MemberID,
-          MembershipID: MembershipID
+          MembershipId: MembershipId
         };
       })
       this.tableHeader = header;

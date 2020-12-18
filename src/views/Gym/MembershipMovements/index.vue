@@ -196,10 +196,10 @@ export default {
         EndDate: this.FreezeBetween[1],
         Status: 0,
         Description: this.Description,
-        MemberShipMovementID: undefined
+        MemberShipMovementId: undefined
       };
       this.Selection.forEach(i => {
-        MembershipMovementOrder.MemberShipMovementID = i.Id;
+        MembershipMovementOrder.MemberShipMovementId = i.Id;
         Create(MembershipMovementOrder).then(response => {
           if (response) {
             this.Visibles = false;

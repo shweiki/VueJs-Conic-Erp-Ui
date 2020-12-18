@@ -193,7 +193,7 @@ export default {
         Ssn: '',
         DateofBirth: '',
         Email: '',
-        phoneNumber1: '',
+        PhoneNumber1: '',
         PhoneNumber2: '',
         Description: '',
         IsPrime: false,
@@ -262,7 +262,7 @@ export default {
         Ssn: '',
         DateofBirth: '',
         Email: '',
-        phoneNumber1: '',
+        PhoneNumber1: '',
         PhoneNumber2: '',
         Status: 0,
         Description: ''

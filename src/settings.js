@@ -20,6 +20,7 @@ module.exports = {
    * @description Whether fix the header
    */
   fixedHeader: true,
+  loginBackground: 'https://i.ibb.co/dPSp7dp/ezgif-3-fa3e3985da64-min.jpg',
 
   /**
    * @type {boolean} true | false

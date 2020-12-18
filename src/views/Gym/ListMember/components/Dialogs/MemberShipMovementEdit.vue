@@ -16,10 +16,10 @@
         </el-form-item>
         <el-form-item
           label="إشتراك"
-          prop="MembershipID"
+          prop="MembershipId"
           :rules="[{ required: true, message: 'الرجاء اختيار نوع اشتراك', trigger: 'blur' } ]"
         >
-          <el-select v-model="tempForm.MembershipID" filterable @change="calc" placeholder="إشتراك">
+          <el-select v-model="tempForm.MembershipId" filterable @change="calc" placeholder="إشتراك">
             <el-option
               v-for="item in Memberships"
               :key="item.Id"
@@ -222,7 +222,7 @@ export default {
 
       this.tempForm.EndDate = new Date(this.tempForm.EndDate);
       let Membership = this.Memberships.find(
-        obj => obj.Id == this.tempForm.MembershipID
+        obj => obj.Id == this.tempForm.MembershipId
       );
 
       let Price =
@@ -244,7 +244,7 @@ export default {
         )
       );
     },
-    AddExtraToMembership(Days, MemberShipMovementID) {
+    AddExtraToMembership(Days, MemberShipMovementId) {
       let MembershipMovementOrder = {
         ID: undefined,
         Type: "Extra",
@@ -252,7 +252,7 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,
-        MemberShipMovementID: MemberShipMovementID
+        MemberShipMovementId: MemberShipMovementId
       };
       MembershipMovementOrder.EndDate = new Date(
         MembershipMovementOrder.EndDate.setTime(

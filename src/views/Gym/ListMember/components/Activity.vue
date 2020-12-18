@@ -46,11 +46,11 @@
             ) : 0),
             0
             ) >= scope.row.MinFreezeLimitDays"
-              :MemberShipMovementID="scope.row.Id"
+              :MemberShipMovementId="scope.row.Id"
               :MaxFreezeLimit="scope.row.MaxFreezeLimitDays"
               :MinFreezeLimit="scope.row.MinFreezeLimitDays"
             />
-            <extra :MemberShipMovementID="scope.row.Id" :EndDate="scope.row.EndDate" />
+            <extra :MemberShipMovementId="scope.row.Id" :EndDate="scope.row.EndDate" />
           </div>
         </template>
       </el-table-column>

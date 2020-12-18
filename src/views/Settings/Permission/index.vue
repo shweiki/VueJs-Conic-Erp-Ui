@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type='success'
+          type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
           >إضافة مستخدم</el-button
@@ -16,8 +16,7 @@
         :data="
           tableData.filter(
             (data) =>
-              !search ||
-              data.UserName.toLowerCase().includes(search.toLowerCase())
+              !search || data.UserName.toLowerCase().includes(search.toLowerCase())
           )
         "
         style="width: 100%"
@@ -46,17 +45,11 @@
 
         <el-table-column prop="UserName" width="120">
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('Permission.UserName')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('Permission.UserName')" />
           </template>
         </el-table-column>
         <el-table-column label="Email" prop="Email"></el-table-column>
-        <el-table-column
-          label="Phone Number"
-          prop="PhoneNumber"
-        ></el-table-column>
+        <el-table-column label="Phone Number" prop="PhoneNumber"></el-table-column>
 
         <el-table-column align="left">
           <template slot-scope="scope">
@@ -72,7 +65,7 @@
               >{{ role.Name }}</el-tag
             >
             <el-button
-              type='success'
+              type="success"
               icon="el-icon-plus"
               size="mini"
               @click="dialogAddRoleVisible = true"
@@ -177,7 +170,7 @@
         ></el-option>
       </el-select>
       <div slot="footer" class="dialog-footer">
-        <el-button type='success' @click="AddRole()">Add</el-button>
+        <el-button type="success" @click="AddRole()">Add</el-button>
       </div>
     </el-dialog>
     <role />
@@ -189,7 +182,7 @@ import { GetUsers, Register, AddRoleUser, DeleteRoleUser } from "@/api/User";
 import { getRoutes, GetRoles, AddRole, DeleteRole, Edit } from "@/api/Role";
 
 import PanThumb from "@/components/PanThumb";
-import Role from "./Role";
+import Role from "./components/Role";
 import AddUserRouter from "./components/AddUserRouter";
 
 export default {
@@ -219,10 +212,10 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogAddRoleVisible: false,
-      dialogFormStatus: '',
-      search: '',
-      RoleName: '',
-      UserName: '',
+      dialogFormStatus: "",
+      search: "",
+      RoleName: "",
+      UserName: "",
       tableData: [],
       Roles: [],
       textMapForm: {
@@ -230,28 +223,28 @@ export default {
         create: "إضافة",
       },
       tempForm: {
-        UserName: '',
-        Email: '',
-        Password: '',
-        PhoneNumber: '',
-        ConfirmPassword: '',
+        UserName: "",
+        Email: "",
+        Password: "",
+        PhoneNumber: "",
+        ConfirmPassword: "",
       },
       rulesForm: {
         UserName: [
           {
             required: true,
-            message: 'يجب إدخال إسم ',
-            trigger: 'blur',
+            message: "يجب إدخال إسم ",
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
-            trigger: 'blur',
+            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
+            trigger: "blur",
           },
         ],
-        Password: [{ validator: validatePass, trigger: 'blur' }],
-        ConfirmPassword: [{ validator: validatePass2, trigger: 'blur' }],
+        Password: [{ validator: validatePass, trigger: "blur" }],
+        ConfirmPassword: [{ validator: validatePass2, trigger: "blur" }],
       },
     };
   },
@@ -264,58 +257,58 @@ export default {
       GetUsers()
         .then((response) => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.tableData = response;
           GetRoles()
             .then((response) => {
               // handle success
-              console.log(response)
+              console.log(response);
               this.Roles = response;
-              this.loading = false
+              this.loading = false;
             })
             .catch((error) => {
               // handle error
               console.log(error);
-            })
+            });
         })
         .catch((error) => {
           // handle error
           console.log(error);
-        })
+        });
     },
     RemoveRole(username, rolername) {
       console.log(username + rolername);
       DeleteRoleUser({ UserName: username, RoleName: rolername })
         .then((response) => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.getdata();
         })
         .catch((error) => {
           // handle error
           console.log(error);
-        })
+        });
     },
     AddRole() {
       AddRoleUser({ UserName: this.UserName, RoleName: this.RoleName })
         .then((response) => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.dialogAddRoleVisible = false;
           this.getdata();
         })
         .catch((error) => {
           // handle error
           console.log(error);
-        })
+        });
     },
     resetTempForm() {
       this.tempForm = {
-        UserName: '',
-        Email: '',
-        Password: '',
-        PhoneNumber: '',
-        ConfirmPassword: '',
+        UserName: "",
+        Email: "",
+        Password: "",
+        PhoneNumber: "",
+        ConfirmPassword: "",
       };
     },
     handleCreate() {
@@ -324,7 +317,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleUpdate(row) {
       console.log(row);
@@ -337,7 +330,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     createData() {
       this.$refs["dataForm"].validate((valid) => {
@@ -349,18 +342,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
+                type: "success",
                 duration: 2000,
-              })
+              });
             })
             .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     updateData() {
       this.$refs["dataForm"].validate((valid) => {
@@ -371,21 +364,20 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
+                message: "تم التعديل بنجاح",
+                type: "success",
                 duration: 2000,
-              })
+              });
             })
             .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
   },
 };
 </script>
-

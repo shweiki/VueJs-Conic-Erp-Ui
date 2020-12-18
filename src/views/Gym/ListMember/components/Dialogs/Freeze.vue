@@ -89,7 +89,7 @@ import { Create } from "@/api/MembershipMovementOrder";
 
 export default {
   props: {
-    MemberShipMovementID: {
+    MemberShipMovementId: {
       type: Number,
       default: () => {
         return undefined;
@@ -119,7 +119,7 @@ export default {
         Status: 0,
         EditorName:'',
         Description: '',
-        MemberShipMovementID: this.MemberShipMovementID
+        MemberShipMovementId: this.MemberShipMovementId
       },
       FreezeBetween: '',
       Visibles: false,

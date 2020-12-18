@@ -69,15 +69,6 @@ const SettingsRouter = {
       },
     },
     {
-      path: '/Role',
-      component: () => import('@/views/Settings/Permission/Role'),
-      name: 'Roles',
-      meta: {
-        title: 'Roles',
-        icon: 'key',
-      },
-    },
-    {
       path: '/ApplicationSetting',
       component: () => import('@/views/Settings/ApplicationSetting/index'),
       name: 'ApplicationSetting',

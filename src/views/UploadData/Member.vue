@@ -84,7 +84,7 @@ export default {
           Ssn: element.ssn,
           DateofBirth: this.ExcelDateToJSDate(element.bd),
           Email: '',
-          phoneNumber1: element.p1,
+          PhoneNumber1: element.p1,
           PhoneNumber2: element.p2,
           Description: "From First Data",
           Type: "New",
