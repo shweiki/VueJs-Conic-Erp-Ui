@@ -2,7 +2,7 @@ import variables from '@/styles/element-variables.scss'
 import defaultSettings from '@/Settings'
 
 const { showSettings, tagsView, fixedHeader, sidebarLogo
-  , defaultpickerOptions, defaulttimeQuery, defaultdatepickerQuery ,sidebarOpen ,loginBackground ,showSidebar ,showNavbar} = defaultSettings
+  , defaultpickerOptions, defaulttimeQuery, defaultdatepickerQuery ,sidebarOpen ,loginBackground ,showSidebar ,showNavbar ,CashDrawerCOM} = defaultSettings
 
 const state = {
   theme: variables.theme,
@@ -18,7 +18,7 @@ const state = {
   loginBackground : loginBackground,
   showSidebar:showSidebar,
   showNavbar:showNavbar,
-
+  CashDrawerCOM:CashDrawerCOM,
 }
 
 const mutations = {

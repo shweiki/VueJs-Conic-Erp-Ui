@@ -264,7 +264,7 @@
                     <el-col :span="6">
                       <el-button
                         style="font-size: 45px"
-                        @click="OpenCashDrawer('COM4')"
+                        @click="OpenCashDrawer($store.state.Settings.CashDrawerCOM)"
                         type="warning"
                         icon="el-icon-takeaway-box"
                       ></el-button>
@@ -505,16 +505,13 @@ export default {
       background: "rgba(0, 0, 0, 0.7)",
     });
     GetActiveInventory().then((response) => {
-      
       this.InventoryItems = response;
     });
     GetActiveMenuItem().then((response) => {
-      
       this.MenuItems = response;
     });
 
     GetActiveVendor().then((response) => {
-      
       this.Vendor = response;
       loading.close();
     });
@@ -576,9 +573,7 @@ export default {
     },
     OpenCashDrawer(COM) {
       OpenCashDrawer({ Com: COM })
-        .then((response) => {
-          
-        })
+        .then((response) => {})
         .catch((err) => {
           console.log(err);
         });
@@ -587,7 +582,6 @@ export default {
     getdata(val) {
       GetSaleInvoiceByID({ Id: val })
         .then((response) => {
-          
           this.tempForm = response;
           this.tempForm.FakeDate = new Date(this.tempForm.FakeDate);
           // set tagsview title
