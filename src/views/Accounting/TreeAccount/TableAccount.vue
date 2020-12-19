@@ -4,15 +4,20 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type='success'
+          type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
-        >{{ $t('Classification.Add') }}</el-button>
-        <span>{{ $t('Account.Account') }}</span>
+          >{{ $t("Classification.Add") }}</el-button
+        >
+        <span>{{ $t("Account.Account") }}</span>
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
+        :data="
+          tableData.filter(
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+          )
+        "
         fit
         max-height="700"
         highlight-current-row
@@ -21,7 +26,13 @@
         <el-table-column label="#" prop="Id" width="50"></el-table-column>
         <el-table-column prop="Code" width="60">
           <template slot="header" slot-scope="{}">
-            <el-button circle type='success' icon="el-icon-refresh" @click="getdata()" size="small"></el-button>
+            <el-button
+              circle
+              type="success"
+              icon="el-icon-refresh"
+              @click="getdata()"
+              size="small"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column prop="Name" align="center">
@@ -41,7 +52,7 @@
           width="100"
           align="center"
         >
-          <template slot-scope="scope">{{(scope.row.TotalCredit).toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.TotalCredit.toFixed(3) }}</template>
         </el-table-column>
         <el-table-column
           v-bind:label="$t('Account.Debit')"
@@ -49,25 +60,22 @@
           width="100"
           align="center"
         >
-          <template slot-scope="scope">{{(scope.row.TotalDebit).toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.TotalDebit.toFixed(3) }}</template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Account.funds')" width="100" align="center">
-          <template
-            slot-scope="scope"
-          >{{ (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3)}}</template>
+          <template slot-scope="scope">{{
+            (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3)
+          }}</template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Account.Status')" align="center" width="70">
           <template slot-scope="scope">
-            <el-tag
-              size="medium"
-              :type="scope.row.Opration.ClassName"
-            >{{ scope.row.Opration.ArabicOprationDescription }}</el-tag>
+            <status-tag :Status="scope.row.Status" TableName="Account" />
           </template>
         </el-table-column>
         <el-table-column align="right" width="200">
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.Opration.Status!=-1"
+              v-if="scope.row.Opration.Status != -1"
               icon="el-icon-edit"
               size="mini"
               circle
@@ -79,8 +87,9 @@
               :type="NOprations.ClassName"
               size="mini"
               round
-              @click="handleOprationsys(scope.row.Id , NOprations)"
-            >{{NOprations.OprationDescription}}</el-button>
+              @click="handleOprationsys(scope.row.Id, NOprations)"
+              >{{ NOprations.OprationDescription }}</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -119,11 +128,14 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('Account.cancel') }}</el-button>
+        <el-button @click="dialogFormVisible = false">{{
+          $t("Account.cancel")
+        }}</el-button>
         <el-button
           type="primary"
-          @click="dialogFormStatus==='create'?createData():updateData()"
-        >{{ $t('Account.Save') }}</el-button>
+          @click="dialogFormStatus === 'create' ? createData() : updateData()"
+          >{{ $t("Account.Save") }}</el-button
+        >
       </div>
     </el-dialog>
     <el-dialog
@@ -140,15 +152,17 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item v-bind:label="$t('Classification.OperationNote')" prop="Description">
+        <el-form-item
+          v-bind:label="$t('Classification.OperationNote')"
+          prop="Description"
+        >
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-        >{{textOpration.OprationDescription}}</el-button>
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -156,79 +170,82 @@
 <script>
 import { GetAccount, Create, Edit } from "@/api/Account";
 import { ChangeObjStatus } from "@/api/Oprationsys";
+import StatusTag from "@/components/Oprationsys/StatusTag";
+
 export default {
   name: "TableAccount",
+  components: { StatusTag },
   data() {
     return {
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: '',
+      dialogFormStatus: "",
       tableData: [],
       TypeAccounts: [
         {
           label: "حساب",
-          value: "Vendor"
+          value: "Vendor",
         },
-                {
+        {
           label: "خزينة كاش",
-          value: "Cash"
+          value: "Cash",
         },
       ],
-      search: '',
+      search: "",
       textMapForm: {
         update: "تعديل",
-        create: "إضافة"
+        create: "إضافة",
       },
       textOpration: {
-        OprationDescription: '',
-        ArabicOprationDescription: '',
-        IconClass: '',
-        ClassName: ''
+        OprationDescription: "",
+        ArabicOprationDescription: "",
+        IconClass: "",
+        ClassName: "",
       },
       tempForm: {
         ID: undefined,
-        Name: '',
+        Name: "",
         Status: 0,
-        Code: '',
+        Code: "",
         Type: undefined,
-        Description: ''
+        Description: "",
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: 'يجب إدخال إسم ',
-            trigger: 'blur'
+            message: "يجب إدخال إسم ",
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 احرف و لا يزيد عن 50 حرف",
-            trigger: 'blur'
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ''
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: 'blur'
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 أحرف و لا يزيد عن 150 حرف",
-            trigger: 'blur'
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -238,25 +255,25 @@ export default {
     getdata() {
       this.loading = true;
       GetAccount()
-        .then(response => {
+        .then((response) => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.tableData = response.Accounts;
-          this.loading = false
+          this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
-        })
+        });
     },
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: '',
+        Name: "",
         Status: 0,
-        Code: '',
+        Code: "",
         Type: undefined,
-        Description: ''
+        Description: "",
       };
     },
     handleCreate() {
@@ -265,7 +282,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleUpdate(row) {
       console.log(row);
@@ -279,14 +296,13 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -295,79 +311,79 @@ export default {
       this.tempOpration.Description = "";
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
-                duration: 2000
-              })
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
-                duration: 2000
-              })
+                message: "تم التعديل بنجاح",
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: 'success',
-                duration: 2000
-              })
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
-    }
-  }
+      });
+    },
+  },
 };
 </script>

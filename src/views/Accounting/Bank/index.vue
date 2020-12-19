@@ -4,15 +4,20 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type='success'
+          type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
-        >{{ $t('Classification.Add') }}</el-button>
-        <span>{{ $t('Bank.Banks') }}</span>
+          >{{ $t("Classification.Add") }}</el-button
+        >
+        <span>{{ $t("Bank.Banks") }}</span>
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
+        :data="
+          tableData.filter(
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+          )
+        "
         fit
         border
         max-height="900"
@@ -21,7 +26,13 @@
       >
         <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button circle type='success' icon="el-icon-refresh" @click="getdata()" size="small"></el-button>
+            <el-button
+              circle
+              type="success"
+              icon="el-icon-refresh"
+              @click="getdata()"
+              size="small"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -58,7 +69,12 @@
           width="120"
           align="center"
         ></el-table-column>
-        <el-table-column v-bind:label="$t('Bank.IBAN')" prop="IBAN" width="120" align="center"></el-table-column>
+        <el-table-column
+          v-bind:label="$t('Bank.IBAN')"
+          prop="IBAN"
+          width="120"
+          align="center"
+        ></el-table-column>
         <el-table-column
           v-bind:label="$t('Stocks.Description')"
           prop="Description"
@@ -67,16 +83,13 @@
         ></el-table-column>
         <el-table-column v-bind:label="$t('Items.Status')" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag
-              size="medium"
-              :type="scope.row.Opration.ClassName"
-            >{{ scope.row.Opration.ArabicOprationDescription }}</el-tag>
+            <status-tag :Status="scope.row.Status" TableName="Bank" />
           </template>
         </el-table-column>
         <el-table-column width="120" align="center">
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.Opration.Status!=-1"
+              v-if="scope.row.Opration.Status != -1"
               icon="el-icon-edit"
               size="mini"
               circle
@@ -88,8 +101,9 @@
               :type="NOprations.ClassName"
               size="mini"
               round
-              @click="handleOprationsys(scope.row.Id , NOprations)"
-            >{{NOprations.OprationDescription}}</el-button>
+              @click="handleOprationsys(scope.row.Id, NOprations)"
+              >{{ NOprations.OprationDescription }}</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -122,7 +136,11 @@
           </el-col>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Bank.AccountType')" prop="AccountType">
-              <el-select v-model="tempForm.AccountType" filterable placeholder="Account Type">
+              <el-select
+                v-model="tempForm.AccountType"
+                filterable
+                placeholder="Account Type"
+              >
                 <el-option
                   v-for="item in AccountsTypes"
                   :key="item.value"
@@ -150,11 +168,14 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('Classification.cancel') }}</el-button>
+        <el-button @click="dialogFormVisible = false">{{
+          $t("Classification.cancel")
+        }}</el-button>
         <el-button
           type="primary"
-          @click="dialogFormStatus==='create'?createData():updateData()"
-        >{{$t('AddVendors.Save')}}</el-button>
+          @click="dialogFormStatus === 'create' ? createData() : updateData()"
+          >{{ $t("AddVendors.Save") }}</el-button
+        >
       </div>
     </el-dialog>
     <el-dialog
@@ -171,15 +192,17 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item v-bind:label="$t('Classification.OperationNote')" prop="Description">
+        <el-form-item
+          v-bind:label="$t('Classification.OperationNote')"
+          prop="Description"
+        >
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-        >{{textOpration.OprationDescription}}</el-button>
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -187,7 +210,10 @@
 <script>
 import { GetBanks, Create, Edit } from "@/api/Bank";
 import { ChangeObjStatus } from "@/api/Oprationsys";
+import StatusTag from "@/components/Oprationsys/StatusTag";
+
 export default {
+  components: { StatusTag },
   name: "Bank",
   data() {
     return {
@@ -195,206 +221,206 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: '',
-      search: '',
+      dialogFormStatus: "",
+      search: "",
       BanksNames: [
         {
           value: " العربي",
-          label: " العربي"
+          label: " العربي",
         },
         {
           value: "المؤسسة العربية المصرفية",
-          label: "المؤسسة العربية المصرفية "
+          label: "المؤسسة العربية المصرفية ",
         },
         {
           value: " الاردن",
-          label: " الاردن"
+          label: " الاردن",
         },
         {
           value: " القاهرة عمان",
-          label: " القاهرة عمان"
+          label: " القاهرة عمان",
         },
         {
           value: " المال الأردني",
-          label: " المال الأردني"
+          label: " المال الأردني",
         },
         {
           value: " التجاري الأردني",
-          label: " التجاري الأردني"
+          label: " التجاري الأردني",
         },
         {
           value: " الاردني الكويتي",
-          label: " الاردني الكويتي"
+          label: " الاردني الكويتي",
         },
         {
           value: " الاهلي الاردني",
-          label: " الاهلي الاردني"
+          label: " الاهلي الاردني",
         },
         {
           value: " الاسكان للتجارة والتمويل",
-          label: " الاسكان للتجارة والتمويل"
+          label: " الاسكان للتجارة والتمويل",
         },
         {
           value: " الاستثمار العربي الاردني",
-          label: " الاستثمار العربي الاردني"
+          label: " الاستثمار العربي الاردني",
         },
         {
           value: "الاستثماري",
-          label: "الاستثماري"
+          label: "الاستثماري",
         },
         {
           value: "سوسيته جنرال",
-          label: "سوسيته جنرال"
+          label: "سوسيته جنرال",
         },
         {
           value: "الاتحاد",
-          label: "الاتحاد"
+          label: "الاتحاد",
         },
         {
           value: "ستاندرد تشارترد",
-          label: "ستاندرد تشارترد"
+          label: "ستاندرد تشارترد",
         },
         {
           value: " العقاري المصري العربي",
-          label: " العقاري المصري العربي"
+          label: " العقاري المصري العربي",
         },
         {
           value: "سيتي بنك إن . إيه",
-          label: "سيتي بنك إن . إيه"
+          label: "سيتي بنك إن . إيه",
         },
         {
           value: "الرافدين",
-          label: "الرافدين"
+          label: "الرافدين",
         },
         {
           value: " الكويت الوطني",
-          label: " الكويت الوطني"
+          label: " الكويت الوطني",
         },
         {
           value: " لبنان والمهجر",
-          label: " لبنان والمهجر"
+          label: " لبنان والمهجر",
         },
         {
           value: "عوده ش.م.ل",
-          label: "عوده ش.م.ل"
+          label: "عوده ش.م.ل",
         },
         {
           value: " العربي الاسلامي الدولي",
-          label: " العربي الاسلامي الدولي"
+          label: " العربي الاسلامي الدولي",
         },
         {
           value: " الاسلامي الاردني",
-          label: " الاسلامي الاردني"
+          label: " الاسلامي الاردني",
         },
         {
           value: " صفوة الإسلامي",
-          label: " صفوة الإسلامي"
+          label: " صفوة الإسلامي",
         },
         {
           value: "مصرف الراجحي",
-          label: "مصرف الراجحي"
-        }
+          label: "مصرف الراجحي",
+        },
       ],
       AccountsTypes: [
         {
           value: " حساب البنك الأساسي",
-          label: " حساب البنك الأساسي"
+          label: " حساب البنك الأساسي",
         },
         {
           value: " حساب جاري",
-          label: " حساب جاري"
+          label: " حساب جاري",
         },
         {
           value: " حساب توفير",
-          label: " حساب توفير"
+          label: " حساب توفير",
         },
         {
           value: " حساب وديعة",
-          label: " حساب وديعة"
+          label: " حساب وديعة",
         },
         {
           value: " حساب ودائع سوق المال",
-          label: " حساب ودائع سوق المال"
+          label: " حساب ودائع سوق المال",
         },
 
         {
           value: " حساب تحت الطلب",
-          label: " حساب تحت الطلب"
+          label: " حساب تحت الطلب",
         },
         {
           value: " حساب جاري رواتب",
-          label: " حساب جاري رواتب "
+          label: " حساب جاري رواتب ",
         },
         {
           value: " حساب الاستثمار المخصص ",
-          label: " حساب الاستثمار المخصص "
+          label: " حساب الاستثمار المخصص ",
         },
         {
           value: " حساب استثمار ",
-          label: " حساب استثمار "
+          label: " حساب استثمار ",
         },
         {
           value: " حساب نوع اخر ",
-          label: " حساب نوع اخر "
-        }
+          label: " حساب نوع اخر ",
+        },
       ],
       textMapForm: {
         update: "تعديل",
-        create: "إضافة"
+        create: "إضافة",
       },
       textOpration: {
-        OprationDescription: '',
-        ArabicOprationDescription: '',
-        IconClass: '',
-        ClassName: ''
+        OprationDescription: "",
+        ArabicOprationDescription: "",
+        IconClass: "",
+        ClassName: "",
       },
       tempForm: {
         ID: undefined,
-        IBAN: '',
-        AccountID: '',
-        Name: '',
-        Description: '',
-        AccountNumber: '',
-        AccountType: '',
-        Currency: '',
-        BranchName: '',
-        IsPrime: false
+        IBAN: "",
+        AccountID: "",
+        Name: "",
+        Description: "",
+        AccountNumber: "",
+        AccountType: "",
+        Currency: "",
+        BranchName: "",
+        IsPrime: false,
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: 'يجب إدخال إسم ',
-            trigger: 'blur'
+            message: "يجب إدخال إسم ",
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
-            trigger: 'blur'
-          }
-        ]
+            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
+            trigger: "blur",
+          },
+        ],
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ''
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: 'blur'
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 احرف و لا يزيد عن 150 حرف",
-            trigger: 'blur'
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -404,29 +430,29 @@ export default {
     getdata() {
       this.loading = true;
       GetBanks()
-        .then(response => {
+        .then((response) => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.tableData = response;
-          this.loading = false
+          this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
-        })
+        });
     },
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        IBAN: '',
-        AccountID: '',
-        Name: '',
-        Description: '',
-        AccountNumber: '',
-        AccountType: '',
-        Currency: '',
-        BranchName: '',
-        IsPrime: false
+        IBAN: "",
+        AccountID: "",
+        Name: "",
+        Description: "",
+        AccountNumber: "",
+        AccountType: "",
+        Currency: "",
+        BranchName: "",
+        IsPrime: false,
       };
     },
     handleCreate() {
@@ -435,7 +461,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleUpdate(row) {
       console.log(row);
@@ -446,14 +472,13 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -462,80 +487,79 @@ export default {
       this.tempOpration.Description = "";
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
-                duration: 2000
-              })
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
-                duration: 2000
-              })
+                message: "تم التعديل بنجاح",
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: 'success',
-                duration: 2000
-              })
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
-    }
-  }
+      });
+    },
+  },
 };
 </script>
-

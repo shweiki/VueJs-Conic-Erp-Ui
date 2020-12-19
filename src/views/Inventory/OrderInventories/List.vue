@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <label>{{$t('Sales.ByDate')}}</label>
+        <label>{{ $t("Sales.ByDate") }}</label>
 
         <el-date-picker
           v-model="date"
@@ -15,19 +15,25 @@
           v-bind:end-placeholder="$t('Sales.To')"
           :default-time="['00:00:00', '23:59:59']"
           :picker-options="pickerOptions"
-          style="width:80%"
+          style="width: 80%"
           @change="changeDate"
         ></el-date-picker>
         <router-link
           class="pan-btn tiffany-btn"
-          style="float: left ; padding: 10px 15px; border-radius: 6px; "
+          style="float: left; padding: 10px 15px; border-radius: 6px"
           icon="el-icon-plus"
           to="/OrderInventories/Create"
-        >{{ $t('route.NewOrderInventory') }}</router-link>
+          >{{ $t("route.NewOrderInventory") }}</router-link
+        >
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.FakeDate.toLowerCase().includes(search.toLowerCase()))"
+        :data="
+          tableData.filter(
+            (data) =>
+              !search || data.FakeDate.toLowerCase().includes(search.toLowerCase())
+          )
+        "
         fit
         border
         max-height="900"
@@ -36,26 +42,41 @@
       >
         <el-table-column align="center" prop="Id" width="120">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="changeDate"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="changeDate"
+            ></el-button>
           </template>
           <template slot-scope="scope">
-            <router-link :to="'/OrderInventories/Edit/'+scope.row.Id">
-              <strong style="font-size: 10px; cursor: pointer;">{{scope.row.Id}}</strong>
+            <router-link :to="'/OrderInventories/Edit/' + scope.row.Id">
+              <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Id }}</strong>
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="FakeDate" v-bind:label="$t('Sales.Date')" width="100" align="center"></el-table-column>
+        <el-table-column
+          prop="FakeDate"
+          v-bind:label="$t('Sales.Date')"
+          width="100"
+          align="center"
+        ></el-table-column>
         <el-table-column
           prop="OrderType"
           v-bind:label="$t('OrderInventories.OrderType')"
           align="center"
         ></el-table-column>
-        <el-table-column prop="Description" label="ملاحظات" align="center"></el-table-column>
-        <el-table-column align="center" v-bind:label="$t('OrderInventories.Status')" width="100">
+        <el-table-column
+          prop="Description"
+          label="ملاحظات"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          v-bind:label="$t('OrderInventories.Status')"
+          width="100"
+        >
           <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.Opration.ClassName"
-            >{{ scope.row.Opration.ArabicOprationDescription }}</el-tag>
+            <status-tag :Status="scope.row.Status" TableName="OrderInventory" />
           </template>
         </el-table-column>
         <el-table-column width="100" align="center">
@@ -65,17 +86,31 @@
               :key="index"
               :type="NOprations.ClassName"
               round
-              @click="handleOprationsys(scope.row.Id , NOprations)"
-            >{{NOprations.OprationDescription}}</el-button>
+              @click="handleOprationsys(scope.row.Id, NOprations)"
+              >{{ NOprations.OprationDescription }}</el-button
+            >
           </template>
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-table :data="props.row.InventoryMovements">
-              <el-table-column prop="Name" v-bind:label="$t('OrderInventories.Items')" width="130"></el-table-column>
-              <el-table-column prop="Qty" v-bind:label="$t('OrderInventories.Quantity')"></el-table-column>
-              <el-table-column prop="InventoryName" v-bind:label="$t('OrderInventories.Inventory')"></el-table-column>
-              <el-table-column property="Description" v-bind:label="$t('OrderInventories.Notes')"></el-table-column>
+              <el-table-column
+                prop="Name"
+                v-bind:label="$t('OrderInventories.Items')"
+                width="130"
+              ></el-table-column>
+              <el-table-column
+                prop="Qty"
+                v-bind:label="$t('OrderInventories.Quantity')"
+              ></el-table-column>
+              <el-table-column
+                prop="InventoryName"
+                v-bind:label="$t('OrderInventories.Inventory')"
+              ></el-table-column>
+              <el-table-column
+                property="Description"
+                v-bind:label="$t('OrderInventories.Notes')"
+              ></el-table-column>
             </el-table>
           </template>
         </el-table-column>
@@ -100,10 +135,9 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-        >{{textOpration.OprationDescription}}</el-button>
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -111,15 +145,17 @@
 <script>
 import { GetOrderInventory } from "@/api/OrderInventory";
 import { ChangeObjStatus } from "@/api/Oprationsys";
+import StatusTag from "@/components/Oprationsys/StatusTag";
 
 export default {
   name: "OrderInventory",
+  components: { StatusTag },
   data() {
     return {
       tableData: [],
       loading: true,
       date: [],
-      search: '',
+      search: "",
       dialogOprationVisible: false,
       pickerOptions: {
         shortcuts: [
@@ -162,28 +198,28 @@ export default {
         ],
       },
       textOpration: {
-        OprationDescription: '',
-        ArabicOprationDescription: '',
-        IconClass: '',
-        ClassName: '',
+        OprationDescription: "",
+        ArabicOprationDescription: "",
+        IconClass: "",
+        ClassName: "",
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: '',
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: 'blur',
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: 'blur',
+            trigger: "blur",
           },
         ],
       },
@@ -206,10 +242,10 @@ export default {
         DateFrom: datefrom,
         DateTo: dateto,
       }).then((response) => {
-        console.log(response)
+        console.log(response);
         this.tableData = response;
-        this.loading = false
-      })
+        this.loading = false;
+      });
     },
     changeDate() {
       this.getdata(this.date[0], this.date[1]);
@@ -218,8 +254,7 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -241,17 +276,17 @@ export default {
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: 'success',
+                type: "success",
                 duration: 2000,
-              })
+              });
             })
             .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
         }
-      })
+      });
     },
   },
 };

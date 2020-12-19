@@ -1,39 +1,42 @@
 ﻿<template>
-  <div class="drawer-container" >
-  
+  <div class="drawer-container">
     <div>
-      <h3 class="drawer-title">{{ $t('Settings.title') }}</h3>
+      <h3 class="drawer-title">{{ $t("Settings.title") }}</h3>
 
       <div class="drawer-item">
-        <span>{{ $t('Settings.theme') }}</span>
-        <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
+        <span>{{ $t("Settings.theme") }}</span>
+        <theme-picker
+          style="float: right; height: 26px; margin: -3px 8px 0 0"
+          @change="themeChange"
+        />
       </div>
 
       <div class="drawer-item">
-        <span>{{ $t('Settings.tagsView') }}</span>
+        <span>{{ $t("Settings.tagsView") }}</span>
         <el-switch v-model="tagsView" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>{{ $t('Settings.fixedHeader') }}</span>
+        <span>{{ $t("Settings.fixedHeader") }}</span>
         <el-switch v-model="fixedHeader" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>{{ $t('Settings.sidebarLogo') }}</span>
+        <span>{{ $t("Settings.sidebarLogo") }}</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
       </div>
     </div>
-        <el-card class="box-card">
+    <el-card class="box-card">
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type='success'
+          type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
-        >{{ $t('Classification.Add') }}</el-button>
+          >{{ $t("Classification.Add") }}</el-button
+        >
         <el-button
-          style="float: left; "
+          style="float: left"
           icon="el-icon-printer"
           type="primary"
           @click="print(tableData)"
@@ -42,7 +45,11 @@
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
+        :data="
+          tableData.filter(
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+          )
+        "
         fit
         border
         max-height="900"
@@ -51,7 +58,11 @@
       >
         <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="getdata()"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column prop="Name" align="center">
@@ -61,7 +72,11 @@
         </el-table-column>
         <el-table-column prop="ItemName" label="الصنف" align="center"></el-table-column>
         <el-table-column prop="Qty" label="العدد" align="center"></el-table-column>
-        <el-table-column prop="SellingPrice" label="سعر البيع" align="center"></el-table-column>
+        <el-table-column
+          prop="SellingPrice"
+          label="سعر البيع"
+          align="center"
+        ></el-table-column>
 
         <el-table-column prop="Type" label="نوع" align="center"></el-table-column>
         <el-table-column
@@ -76,17 +91,19 @@
           width="220"
           align="center"
         ></el-table-column>
-        <el-table-column v-bind:label="$t('Classification.Status')" width="120" align="center">
+        <el-table-column
+          v-bind:label="$t('Classification.Status')"
+          width="120"
+          align="center"
+        >
           <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.Opration.ClassName"
-            >{{ scope.row.Opration.ArabicOprationDescription }}</el-tag>
+            <status-tag :Status="scope.row.Status" TableName="Membership" />
           </template>
         </el-table-column>
         <el-table-column align="right" width="200">
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.Opration.Status!=-1"
+              v-if="scope.row.Opration.Status != -1"
               icon="el-icon-edit"
               circle
               @click="handleUpdate(scope.row)"
@@ -96,8 +113,9 @@
               :key="index"
               :type="NOprations.ClassName"
               round
-              @click="handleOprationsys(scope.row.Id , NOprations)"
-            >{{NOprations.OprationDescription}}</el-button>
+              @click="handleOprationsys(scope.row.Id, NOprations)"
+              >{{ NOprations.OprationDescription }}</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -106,61 +124,62 @@
 </template>
 
 <script>
-import ThemePicker from '@/components/ThemePicker'
-import { GetSetting, GetActiveSetting , Create ,Edit } from "@/api/Setting";
+import ThemePicker from "@/components/ThemePicker";
+import { GetSetting, GetActiveSetting, Create, Edit } from "@/api/Setting";
+import StatusTag from "@/components/Oprationsys/StatusTag";
 
 export default {
-  components: { ThemePicker },
+  components: { ThemePicker, StatusTag },
   data() {
-    return {}
+    return {};
   },
   computed: {
     isShowJob() {
-      return this.$store.getters.language === 'zh'
+      return this.$store.getters.language === "zh";
     },
     fixedHeader: {
       get() {
-        return this.$store.state.Settings.fixedHeader
+        return this.$store.state.Settings.fixedHeader;
       },
       set(val) {
-        this.$store.dispatch('Settings/changeSetting', {
-          key: 'fixedHeader',
-          value: val
-        })
-      }
+        this.$store.dispatch("Settings/changeSetting", {
+          key: "fixedHeader",
+          value: val,
+        });
+      },
     },
     tagsView: {
       get() {
-        return this.$store.state.Settings.tagsView
+        return this.$store.state.Settings.tagsView;
       },
       set(val) {
-        this.$store.dispatch('Settings/changeSetting', {
-          key: 'tagsView',
-          value: val
-        })
-      }
+        this.$store.dispatch("Settings/changeSetting", {
+          key: "tagsView",
+          value: val,
+        });
+      },
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.Settings.sidebarLogo
+        return this.$store.state.Settings.sidebarLogo;
       },
       set(val) {
-        this.$store.dispatch('Settings/changeSetting', {
-          key: 'sidebarLogo',
-          value: val
-        })
-      }
-    }
+        this.$store.dispatch("Settings/changeSetting", {
+          key: "sidebarLogo",
+          value: val,
+        });
+      },
+    },
   },
   methods: {
     themeChange(val) {
-      this.$store.dispatch('Settings/changeSetting', {
-        key: 'theme',
-        value: val
-      })
-    }
-  }
-}
+      this.$store.dispatch("Settings/changeSetting", {
+        key: "theme",
+        value: val,
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -172,22 +191,22 @@ export default {
 
   .drawer-title {
     margin-bottom: 12px;
-    color: rgba(0, 0, 0, .85);
+    color: rgba(0, 0, 0, 0.85);
     font-size: 14px;
     line-height: 22px;
   }
 
   .drawer-item {
-    color: rgba(0, 0, 0, .65);
+    color: rgba(0, 0, 0, 0.65);
     font-size: 14px;
     padding: 12px 0;
   }
 
   .drawer-switch {
-    float: right
+    float: right;
   }
 
-  .job-link{
+  .job-link {
     display: block;
     position: absolute;
     width: 100%;

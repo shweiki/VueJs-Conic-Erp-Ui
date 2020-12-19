@@ -4,29 +4,39 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type='success'
+          type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
-        >{{ $t('Vendors.Add') }}</el-button>
+          >{{ $t("Vendors.Add") }}</el-button
+        >
         <el-button
-          style="float: left; "
+          style="float: left"
           icon="el-icon-printer"
           type="primary"
           @click="print(tableData)"
         ></el-button>
-        <span>{{ $t('CashPool.Items') }}</span>
+        <span>{{ $t("CashPool.Items") }}</span>
       </div>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
+        :data="
+          tableData.filter(
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+          )
+        "
         fit
         border
         max-height="900"
         highlight-current-row
-        style="width: 100%">
+        style="width: 100%"
+      >
         <el-table-column prop="Id" width="120">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="getdata()"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -41,7 +51,11 @@
             <el-input v-model="search" v-bind:placeholder="$t('Items.Item')" />
           </template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('Items.QuantityInventory')" align="center" width="220">
+        <el-table-column
+          v-bind:label="$t('Items.QuantityInventory')"
+          align="center"
+          width="220"
+        >
           <template slot-scope="scope">
             <el-tooltip
               v-for="(Inventory, index) in scope.row.InventoryQty"
@@ -50,23 +64,23 @@
               effect="light"
             >
               <div slot="content">
-                {{ $t('Items.Incoming') }} {{ Inventory.QtyIn }}
+                {{ $t("Items.Incoming") }} {{ Inventory.QtyIn }}
                 <br />
-                {{ $t('Items.Outbound') }} {{Inventory.QtyOut }}
+                {{ $t("Items.Outbound") }} {{ Inventory.QtyOut }}
                 <br />
-                {{ $t('Items.Credit') }}
+                {{ $t("Items.Credit") }}
                 <el-tag>{{ (Inventory.QtyIn - Inventory.QtyOut).toFixed(2) }}</el-tag>
               </div>
               <el-button>{{ Inventory.InventoryName }}</el-button>
             </el-tooltip>
           </template>
         </el-table-column>
-        <!--  <el-table-column v-bind:label="$t('Items.Status')" align="center" width="100">
+        <el-table-column v-bind:label="$t('Items.Status')" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.Opration.ClassName">{{ scope.row.Opration.ArabicOprationDescription }}</el-tag>
+            <status-tag :Status="scope.row.Status" TableName="Item" />
           </template>
         </el-table-column>
-        <el-table-column width="120" align="center">
+        <!--   <el-table-column width="120" align="center">
           <template slot-scope="scope">
             <el-button v-if="scope.row.Opration.Status!=-1" icon="el-icon-edit" circle @click="handleUpdate(scope.row)">
             </el-button>
@@ -76,7 +90,11 @@
         </el-table-column>-->
         <el-table-column width="40">
           <template slot-scope="scope">
-            <el-button icon="el-icon-edit" circle @click="handleUpdate(scope.row)"></el-button>
+            <el-button
+              icon="el-icon-edit"
+              circle
+              @click="handleUpdate(scope.row)"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column type="expand" width="30">
@@ -106,7 +124,12 @@
                 width="110"
                 align="center"
               ></el-table-column>
-              <el-table-column v-bind:label="$t('Items.Tax')" prop="Tax" width="100" align="center"></el-table-column>
+              <el-table-column
+                v-bind:label="$t('Items.Tax')"
+                prop="Tax"
+                width="100"
+                align="center"
+              ></el-table-column>
               <el-table-column
                 v-bind:label="$t('Items.Rate')"
                 prop="Rate"
@@ -179,16 +202,16 @@
         <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
           <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-  <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
+        <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
 
-        <el-row >
+        <el-row>
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
               <el-input-number
                 v-model="tempForm.CostPrice"
                 :precision="2"
                 :step="0.1"
-                :min="0.00"
+                :min="0.0"
                 :max="1500"
               ></el-input-number>
             </el-form-item>
@@ -199,7 +222,7 @@
                 v-model="tempForm.OtherPrice"
                 :precision="2"
                 :step="0.1"
-                :min="0.00"
+                :min="0.0"
                 :max="1500"
               ></el-input-number>
             </el-form-item>
@@ -210,17 +233,21 @@
                 v-model="tempForm.SellingPrice"
                 :precision="2"
                 :step="0.1"
-                :min="0.00"
+                :min="0.0"
                 :max="1500"
               ></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row >
+        <el-row>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
-              <el-input-number v-model="tempForm.LowOrder" :min="1" :max="100000000"></el-input-number>
+              <el-input-number
+                v-model="tempForm.LowOrder"
+                :min="1"
+                :max="100000000"
+              ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -235,7 +262,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row >
+        <el-row>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
               <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode"></el-input>
@@ -249,8 +276,14 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogFormStatus==='create'?createData():updateData()">حفظ</el-button>
+        <el-button @click="dialogFormVisible = false">{{
+          $t("permission.cancel")
+        }}</el-button>
+        <el-button
+          type="primary"
+          @click="dialogFormStatus === 'create' ? createData() : updateData()"
+          >حفظ</el-button
+        >
       </div>
     </el-dialog>
     <el-dialog
@@ -272,10 +305,9 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-        >{{textOpration.OprationDescription}}</el-button>
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -284,75 +316,78 @@
 import { GetActiveItem, GetItem, CreateItem, Edit } from "@/api/Item";
 import printJS from "print-js";
 import { ChangeObjStatus } from "@/api/Oprationsys";
+import StatusTag from "@/components/Oprationsys/StatusTag";
+
 export default {
   name: "Item",
+  components: { StatusTag },
   data() {
     return {
       tableData: [],
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: '',
-      search: '',
+      dialogFormStatus: "",
+      search: "",
       Items: [],
       textMapForm: {
         update: "تعديل",
-        create: "إضافة"
+        create: "إضافة",
       },
       textOpration: {
-        OprationDescription: '',
-        ArabicOprationDescription: '',
-        IconClass: '',
-        ClassName: ''
+        OprationDescription: "",
+        ArabicOprationDescription: "",
+        IconClass: "",
+        ClassName: "",
       },
       tempForm: {
         ID: undefined,
-        Name: '',
+        Name: "",
         CostPrice: 0.0,
         SellingPrice: 0.0,
         OtherPrice: 0.0,
         LowOrder: 0,
         Tax: 0.0,
         Rate: 0,
-        IsPrime : false,
-        Barcode: '',
-        Description: ''
+        IsPrime: false,
+        Barcode: "",
+        Description: "",
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: 'يجب إدخال إسم ',
-            trigger: 'blur'
+            message: "يجب إدخال إسم ",
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
-            trigger: 'blur'
-          }
-        ]
+            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
+            trigger: "blur",
+          },
+        ],
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ''
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: 'blur'
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 أحرف و لا يزيد عن 150 حرف",
-            trigger: 'blur'
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
@@ -360,32 +395,32 @@ export default {
       printJS({
         printable: data,
         properties: ["Barcode", "Name", "SellingPrice", "Description"],
-        type: "json"
-      })
+        type: "json",
+      });
     },
     getdata() {
       this.loading = true;
-      GetItem().then(response => {
+      GetItem().then((response) => {
         // handle success
-        console.log(response)
+        console.log(response);
         this.tableData = response;
-        this.loading = false
-      })
+        this.loading = false;
+      });
     },
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        Name: '',
+        Name: "",
         CostPrice: 0.0,
         SellingPrice: 0.0,
         OtherPrice: 0.0,
         LowOrder: 0,
         Tax: 0.0,
         Rate: 0,
-        Barcode: '',
-        IsPrime : false,
-        Description: '',
-        Status: 0
+        Barcode: "",
+        IsPrime: false,
+        Description: "",
+        Status: 0,
       };
     },
     handleCreate() {
@@ -394,7 +429,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleUpdate(row) {
       console.log(row);
@@ -414,14 +449,13 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -430,82 +464,82 @@ export default {
       this.tempOpration.Description = "";
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           CreateItem(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
-                duration: 2000
-              })
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
-                duration: 2000
-              })
+                message: "تم التعديل بنجاح",
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: 'success',
-                duration: 2000
-              })
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
-    }
+      });
+    },
   },
   created() {
     this.getdata();
-  }
+  },
 };
 </script>

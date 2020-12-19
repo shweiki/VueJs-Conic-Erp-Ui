@@ -2,19 +2,20 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-                <router-link
+        <router-link
           class="pan-btn tiffany-btn"
-          style="float: left; padding: 10px 15px; border-radius: 6px;"
+          style="float: left; padding: 10px 15px; border-radius: 6px"
           icon="el-icon-plus"
           to="/Accounting/NewAccountingEntry"
-        >{{ $t('Accounting.NewAccountingEntry') }}</router-link>
-            <!-- <el-button
+          >{{ $t("Accounting.NewAccountingEntry") }}</router-link
+        >
+        <!-- <el-button
             style="float: left"
               icon="el-icon-printer"
               type="primary"
               @click="printAll(tableData)"
             ></el-button> -->
-        <span class="demonstration">{{ $t('Sales.ByDate') }}</span>
+        <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
         <el-date-picker
           v-model="date"
           format="dd/MM/yyyy"
@@ -26,46 +27,52 @@
           v-bind:end-placeholder="$t('Sales.To')"
           :default-time="['00:00:00', '23:59:59']"
           :picker-options="pickerOptions"
-          style="width:60%"
+          style="width: 60%"
           @change="changeDate"
         ></el-date-picker>
       </div>
-          <el-card class="box-card">
+      <el-card class="box-card">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الفواتير</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{tableData.length}}</span>
+        <span>{{ tableData.length }}</span>
         <el-divider direction="vertical"></el-divider>
 
-        <span>{{$t('CashPool.Cash')}}</span>
+        <span>{{ $t("CashPool.Cash") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{TotalCash.toFixed(3)}} JOD</span>
+        <span>{{ TotalCash.toFixed(3) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
-        <span>{{$t('CashPool.Visa')}}</span>
+        <span>{{ $t("CashPool.Visa") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{TotalVisa.toFixed(3)}} JOD</span>
+        <span>{{ TotalVisa.toFixed(3) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>الاجل</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{TotalCheque.toFixed(3)}} JOD</span>
+        <span>{{ TotalCheque.toFixed(3) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
-        <span>{{$t('CashPool.Amount')}}</span>
+        <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{Total.toFixed(3)}} JOD</span>
+        <span>{{ Total.toFixed(3) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
         <el-button
-          style="float: left;"
+          style="float: left"
           icon="el-icon-printer"
-          type='success'
+          type="success"
           @click="print(tableData)"
         ></el-button>
       </el-card>
       <el-table
         v-loading="loading"
-        :data="tableData.filter(data => !search || data.Account.AccountName.toLowerCase().includes(search.toLowerCase()))"
+        :data="
+          tableData.filter(
+            (data) =>
+              !search ||
+              data.Account.AccountName.toLowerCase().includes(search.toLowerCase())
+          )
+        "
         fit
         border
         max-height="900"
@@ -74,32 +81,52 @@
       >
         <el-table-column prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="changeDate"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="changeDate"
+            ></el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="FakeDate" v-bind:label="$t('Sales.Date')" width="120" align="center"></el-table-column>
+        <el-table-column
+          prop="FakeDate"
+          v-bind:label="$t('Sales.Date')"
+          width="120"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
             <el-input v-model="search" v-bind:placeholder="$t('Sales.SearchBy')" />
           </template>
         </el-table-column>
-        <el-table-column prop="PaymentMethod"  sortable v-bind:label="$t('CashPool.Pay')" width="150" align="center"></el-table-column>
-        <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
-          <template slot-scope="scope">{{(scope.row.Discount).toFixed(3) }}</template>
+        <el-table-column
+          prop="PaymentMethod"
+          sortable
+          v-bind:label="$t('CashPool.Pay')"
+          width="150"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('CashPool.Discount')"
+          width="120"
+          align="center"
+        >
+          <template slot-scope="scope">{{ scope.row.Discount.toFixed(3) }}</template>
         </el-table-column>
         <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
           <template slot-scope="scope">
-            {{scope.row.InventoryMovements.reduce(
-            function(prev, cur) {return prev + cur.Qty * cur.SellingPrice;},0) }} JOD
+            {{
+              scope.row.InventoryMovements.reduce(function (prev, cur) {
+                return prev + cur.Qty * cur.SellingPrice;
+              }, 0)
+            }}
+            JOD
           </template>
         </el-table-column>
 
         <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
           <template slot-scope="scope">
-            <el-tag
-              
-              :type="scope.row.Opration.ClassName"
-            >{{ scope.row.Opration.ArabicOprationDescription }}</el-tag>
+            <status-tag :Status="scope.row.Status" TableName="Membership" />
           </template>
         </el-table-column>
         <el-table-column width="180" align="center">
@@ -109,8 +136,9 @@
               :key="index"
               :type="NOprations.ClassName"
               round
-              @click="handleOprationsys(scope.row.Id , NOprations)"
-            >{{NOprations.OprationDescription}}</el-button>
+              @click="handleOprationsys(scope.row.Id, NOprations)"
+              >{{ NOprations.OprationDescription }}</el-button
+            >
             <el-button
               icon="el-icon-printer"
               type="primary"
@@ -127,14 +155,20 @@
                 width="130"
                 align="center"
               ></el-table-column>
-              <el-table-column prop="Qty" v-bind:label="$t('CashPool.quantity')" align="center"></el-table-column>
+              <el-table-column
+                prop="Qty"
+                v-bind:label="$t('CashPool.quantity')"
+                align="center"
+              ></el-table-column>
               <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
-                <template slot-scope="scope">{{(scope.row.SellingPrice).toFixed(3) }}</template>
+                <template slot-scope="scope">{{
+                  scope.row.SellingPrice.toFixed(3)
+                }}</template>
               </el-table-column>
               <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-                <template
-                  slot-scope="scope"
-                >{{(scope.row.SellingPrice * scope.row.Qty).toFixed(3) }} JOD</template>
+                <template slot-scope="scope"
+                  >{{ (scope.row.SellingPrice * scope.row.Qty).toFixed(3) }} JOD</template
+                >
               </el-table-column>
             </el-table>
           </template>
@@ -160,10 +194,9 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-        >{{textOpration.OprationDescription}}</el-button>
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -172,19 +205,21 @@
 import { GetSaleInvoice } from "@/api/SaleInvoice";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
+import StatusTag from "@/components/Oprationsys/StatusTag";
 
 export default {
   name: "SalesInvoice",
+  components: { StatusTag },
   data() {
     return {
       tableData: [],
       loading: true,
       date: [],
-      search: '',
-       TotalCash: 0,
+      search: "",
+      TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
-            Total: 0,
+      Total: 0,
 
       dialogOprationVisible: false,
       pickerOptions: {
@@ -196,7 +231,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
               picker.$emit("pick", [start, end]);
-            }
+            },
           },
           {
             text: "قبل شهر",
@@ -205,7 +240,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
               picker.$emit("pick", [start, end]);
-            }
+            },
           },
           {
             text: "قبل 3 أشهر",
@@ -214,7 +249,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
               picker.$emit("pick", [start, end]);
-            }
+            },
           },
           {
             text: "قبل 1 سنة",
@@ -223,36 +258,36 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
               picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       textOpration: {
-        OprationDescription: '',
-        ArabicOprationDescription: '',
-        IconClass: '',
-        ClassName: ''
+        OprationDescription: "",
+        ArabicOprationDescription: "",
+        IconClass: "",
+        ClassName: "",
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ''
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: 'blur'
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: 'blur'
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -270,61 +305,76 @@ export default {
       dateto = JSON.parse(JSON.stringify(dateto));
       GetSaleInvoice({
         DateFrom: datefrom,
-        DateTo: dateto
+        DateTo: dateto,
       })
-        .then(response => {
+        .then((response) => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.tableData = response;
-            this.TotalCheque = this.tableData.reduce(
-          (a, b) => a + (b["PaymentMethod"] == "Receivables" ? b.InventoryMovements.reduce(
-            function(prev, cur) {return prev + cur.Qty * cur.SellingPrice;},0) : 0),
-          0
-        );
-        this.TotalCash = this.tableData.reduce(
-          (a, b) => a + (b["PaymentMethod"] == "Cash" ? b.InventoryMovements.reduce(
-            function(prev, cur) {return prev + cur.Qty * cur.SellingPrice;},0) : 0),
-          0
-        );
-        this.TotalVisa = this.tableData.reduce(
-          (a, b) => a + (b["PaymentMethod"] == "Visa" ? b.InventoryMovements.reduce(
-            function(prev, cur) {return prev + cur.Qty * cur.SellingPrice;},0) : 0),
-          0
-        );
+          this.TotalCheque = this.tableData.reduce(
+            (a, b) =>
+              a +
+              (b["PaymentMethod"] == "Receivables"
+                ? b.InventoryMovements.reduce(function (prev, cur) {
+                    return prev + cur.Qty * cur.SellingPrice;
+                  }, 0)
+                : 0),
+            0
+          );
+          this.TotalCash = this.tableData.reduce(
+            (a, b) =>
+              a +
+              (b["PaymentMethod"] == "Cash"
+                ? b.InventoryMovements.reduce(function (prev, cur) {
+                    return prev + cur.Qty * cur.SellingPrice;
+                  }, 0)
+                : 0),
+            0
+          );
+          this.TotalVisa = this.tableData.reduce(
+            (a, b) =>
+              a +
+              (b["PaymentMethod"] == "Visa"
+                ? b.InventoryMovements.reduce(function (prev, cur) {
+                    return prev + cur.Qty * cur.SellingPrice;
+                  }, 0)
+                : 0),
+            0
+          );
 
-        this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
-          this.loading = false
+          this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
+          this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
-        })
+        });
     },
     print(data) {
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json"
-      })
+        type: "json",
+      });
     },
-          printAll(data) {
-      data = data.map(Item => ({
+    printAll(data) {
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json"
-      })
+        type: "json",
+      });
     },
     changeDate() {
       this.loading = true;
@@ -334,8 +384,7 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -344,31 +393,31 @@ export default {
       this.tempOpration.Description = "";
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata(this.date[0], this.date[1]);
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
-                type: 'success',
-                duration: 2000
-              })
+                type: "success",
+                duration: 2000,
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
         }
-      })
-    }
-  }
+      });
+    },
+  },
 };
 </script>
