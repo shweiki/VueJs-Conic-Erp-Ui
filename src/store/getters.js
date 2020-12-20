@@ -1,4 +1,3 @@
-import { Settings } from "@/layout/components"
 
 const getters = {
 
@@ -20,7 +19,7 @@ const getters = {
   ActiveItems: state => state.Items.ActiveItems,
   AllMembers: state => state.Members.AllMembers,
   ActiveMembers: state => state.Members.ActiveMembers,
-  SettingsApp: state => state.Settings,
+  Settings: state => state.Settings,
 
   CompanyInfo: state => state.CompanyInfo.GetCompanyInfo,
   Devices: state => state.Devices.AllDevices,

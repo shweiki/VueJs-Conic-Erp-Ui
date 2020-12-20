@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
         <el-date-picker
-          v-model="$store.getters.SettingsApp.datepickerQuery"
+          v-model="$store.getters.Settings.datepickerQuery"
           format="dd/MM/yyyy"
           type="daterange"
           align="left"
@@ -12,8 +12,8 @@
           v-bind:range-separator="$t('Sales.until')"
           v-bind:start-placeholder="$t('Sales.From')"
           v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="$store.getters.SettingsApp.defaulttimeQuery"
-          :picker-options="$store.getters.SettingsApp.pickerOptions"
+          :default-time="$store.getters.Settings.defaulttimeQuery"
+          :picker-options="$store.getters.Settings.pickerOptions"
           style="width: 80%"
           @change="getdata"
         ></el-date-picker>
@@ -217,8 +217,8 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
-     var datefrom = this.$store.getters.SettingsApp.datepickerQuery[0],
-        dateto = this.$store.getters.SettingsApp.datepickerQuery[1];
+     var datefrom = this.$store.getters.Settings.datepickerQuery[0],
+        dateto = this.$store.getters.Settings.datepickerQuery[1];
 
       datefrom = JSON.parse(JSON.stringify(datefrom));
       dateto = JSON.parse(JSON.stringify(dateto));

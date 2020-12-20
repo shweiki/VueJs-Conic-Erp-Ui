@@ -1,7 +1,7 @@
 <template>
   <div
     class="login-container"
-    :style="{ backgroundImage: `url(${$store.state.Settings.loginBackground})` }"
+    :style="{ backgroundImage: 'url('+$store.getters.Settings.loginBackground+')' }"
   >
     <el-form
       ref="loginForm"
