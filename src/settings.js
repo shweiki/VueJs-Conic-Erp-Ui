@@ -2,6 +2,7 @@ const start = new Date();
 
 module.exports = {
   title: 'High  Fit',
+  language:'ar',
   showSettings: true,
   tagsView: true,
   CashDrawerCOM : 'COM4',

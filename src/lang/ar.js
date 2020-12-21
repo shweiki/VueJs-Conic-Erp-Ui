@@ -73,6 +73,15 @@ export default {
     Services:"خدمات"
 
   },
+  Settings:{
+    settings : "اعدادات",
+    title : "العنوان",
+    theme : "لون مظهر",
+    tagsView : "اظهار شريط صفحات",
+    fixedHeader : "اصلاح الرأس",
+    sidebarLogo : "اظهار الشعار",
+
+  },
   navbar: {
     dashboard: 'لوحة التحكم',
     github: 'Github',

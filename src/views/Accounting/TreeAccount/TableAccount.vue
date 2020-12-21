@@ -72,6 +72,7 @@
             <status-tag :Status="scope.row.Status" TableName="Account" />
           </template>
         </el-table-column>
+        <!--
         <el-table-column align="right" width="200">
           <template slot-scope="scope">
             <el-button
@@ -92,6 +93,7 @@
             >
           </template>
         </el-table-column>
+        -->
       </el-table>
     </el-card>
     <el-dialog

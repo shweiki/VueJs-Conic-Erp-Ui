@@ -11,7 +11,7 @@
         <el-tab-pane label="ذمم دائنة" name="Payable">
           <payable />
         </el-tab-pane>
-        <el-tab-pane label="طلبات التجميد و اضافي" name="MembershipmentOrdar">
+        <el-tab-pane v-if="$store.state.Settings.BusinessType == 'GymManagment'" label="طلبات التجميد و اضافي" name="MembershipmentOrdar">
           <membershipment-ordar />
         </el-tab-pane>
       </el-tabs>
@@ -45,7 +45,7 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard-editor-container {
-  padding: 32px;
+  padding: 5px;
   position: relative;
 
   .github-corner {

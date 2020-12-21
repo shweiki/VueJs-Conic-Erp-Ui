@@ -75,6 +75,15 @@ export default {
     Services:"Services"
 
   },
+  Settings:{
+    settings : "Settings",
+    title : "Title",
+    theme : "theme",
+    tagsView : "Tags View",
+    fixedHeader : "Fixed Header",
+    sidebarLogo : "Sidebar Logo",
+
+  },
   navbar: {
     dashboard: 'Dashboard',
     github: 'Github',
