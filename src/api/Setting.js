@@ -16,6 +16,7 @@ export function GetActiveSetting(query) {
   })
 }
 
+
 export function Create(data) {
   return request({
     url: '/Setting/Create',

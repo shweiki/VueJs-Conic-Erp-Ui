@@ -4,6 +4,7 @@ module.exports = {
   title: 'High  Fit',
   language:'ar',
   showSettings: true,
+  BusinessType:"SuperMarkit",
   tagsView: true,
   CashDrawerCOM : 'COM4',
   fixedHeader: false,
