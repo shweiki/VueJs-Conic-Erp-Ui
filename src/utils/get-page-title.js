@@ -1,7 +1,7 @@
-import defaultSettings from '@/Settings'
 import i18n from '@/lang'
+import store from '@/store'
 
-const title = defaultSettings.title || 'Conic Erp System'
+const title = store.getters.Settings.title || 'Conic Erp System'
 
 export default function getPageTitle(key) {
   const hasKey = i18n.te(`route.${key}`)

@@ -51,11 +51,11 @@
           <el-col :span="4">
             <el-form-item
               label="الى حساب"
-              prop="VendorID"
+              prop="VendorId"
               :rules="[{ required: true, message: 'لايمكن ترك حساب فارغ', trigger: 'blur' }, ]"
             >
               <el-select
-                v-model="tempForm.VendorID"
+                v-model="tempForm.VendorId"
                 filterable
                 v-bind:placeholder="$t('NewPurchaseInvoice.Acc')"
                 autocomplete="off"
@@ -79,7 +79,7 @@
                 <el-radio label="Cash" border>{{ $t('NewPurchaseInvoice.Cash') }}</el-radio>
 
                 <el-radio
-                  v-if="tempForm.VendorID != 2"
+                  v-if="tempForm.VendorId != 2"
                   label="Receivables"
                   border
                 >{{ $t('NewPurchaseInvoice.Receivables') }}</el-radio>
@@ -297,7 +297,7 @@ export default {
         InvoicePurchaseDate: new Date(),
         PaymentMethod: "Cash",
         Discount: 0,
-        VendorID: 2,
+        VendorId: 2,
         Description :'',
         InventoryMovements: []
       },

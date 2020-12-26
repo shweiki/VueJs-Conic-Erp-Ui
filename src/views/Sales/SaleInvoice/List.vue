@@ -35,10 +35,19 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            (data) =>
+            data =>
               !search ||
-              data.Account.AccountName.toLowerCase().includes(search.toLowerCase())
+              data.Account.AccountName.toLowerCase().includes(
+                search.toLowerCase()
+              )
           )
+        "
+        @row-dblclick="
+          row => {
+            $router.replace({
+              path: '/Sales/Edit/' + row.Id
+            });
+          }
         "
         fit
         border
@@ -63,7 +72,10 @@
         ></el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Sales.SearchBy')" />
+            <el-input
+              v-model="search"
+              v-bind:placeholder="$t('Sales.SearchBy')"
+            />
           </template>
         </el-table-column>
         <el-table-column
@@ -78,12 +90,18 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{ scope.row.Discount.toFixed(3) }}</template>
+          <template slot-scope="scope">{{
+            scope.row.Discount.toFixed(3)
+          }}</template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
+        <el-table-column
+          v-bind:label="$t('CashPool.Amountv')"
+          width="120"
+          align="center"
+        >
           <template slot-scope="scope">
             {{
-              scope.row.InventoryMovements.reduce(function (prev, cur) {
+              scope.row.InventoryMovements.reduce(function(prev, cur) {
                 return prev + cur.Qty * cur.SellingPrice;
               }, 0)
             }}
@@ -91,7 +109,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+        <el-table-column
+          v-bind:label="$t('Sales.Status')"
+          width="120"
+          align="center"
+        >
           <template slot-scope="scope">
             <status-tag :Status="scope.row.Status" TableName="SalesInvoice" />
           </template>
@@ -127,14 +149,23 @@
                 v-bind:label="$t('CashPool.quantity')"
                 align="center"
               ></el-table-column>
-              <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
+              <el-table-column
+                v-bind:label="$t('CashPool.Price')"
+                align="center"
+              >
                 <template slot-scope="scope">{{
                   scope.row.SellingPrice.toFixed(3)
                 }}</template>
               </el-table-column>
-              <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
+              <el-table-column
+                v-bind:label="$t('CashPool.Total')"
+                align="center"
+              >
                 <template slot-scope="scope"
-                  >{{ (scope.row.SellingPrice * scope.row.Qty).toFixed(3) }} JOD</template
+                  >{{
+                    (scope.row.SellingPrice * scope.row.Qty).toFixed(3)
+                  }}
+                  JOD</template
                 >
               </el-table-column>
             </el-table>
@@ -157,13 +188,18 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
+        <el-button
+          :type="textOpration.ClassName"
+          @click="createOprationData()"
+          >{{ textOpration.OprationDescription }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -193,7 +229,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
               picker.$emit("pick", [start, end]);
-            },
+            }
           },
           {
             text: "قبل شهر",
@@ -202,7 +238,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
               picker.$emit("pick", [start, end]);
-            },
+            }
           },
           {
             text: "قبل 3 أشهر",
@@ -211,7 +247,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
               picker.$emit("pick", [start, end]);
-            },
+            }
           },
           {
             text: "قبل 1 سنة",
@@ -220,36 +256,36 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
               picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: "",
+        ClassName: ""
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: "",
+        Description: ""
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
@@ -267,43 +303,43 @@ export default {
       dateto = JSON.parse(JSON.stringify(dateto));
       GetSaleInvoice({
         DateFrom: datefrom,
-        DateTo: dateto,
+        DateTo: dateto
       })
-        .then((response) => {
+        .then(response => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
         });
     },
     print(data) {
-      data = data.map((Item) => ({
+      data = data.map(Item => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json",
+        type: "json"
       });
     },
     printAll(data) {
-      data = data.map((Item) => ({
+      data = data.map(Item => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json",
+        type: "json"
       });
     },
     changeDate() {
@@ -314,7 +350,8 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription =
+        Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -323,31 +360,31 @@ export default {
       this.tempOpration.Description = "";
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description,
+            Description: this.tempOpration.Description
           })
-            .then((response) => {
+            .then(response => {
               this.getdata(this.date[0], this.date[1]);
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
           console.log("error submit!!");
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
