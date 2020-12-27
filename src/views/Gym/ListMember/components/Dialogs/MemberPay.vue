@@ -109,7 +109,7 @@ export default {
         TotalAmmount: 0.0,
         Description: '',
         Status: 0,
-        VendorId: undefined,
+        VendorID: undefined,
         IsPrime: true,
         MemberID: undefined,
         EditorName: '',

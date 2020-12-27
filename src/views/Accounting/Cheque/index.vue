@@ -142,9 +142,9 @@
       >
         <el-row :gutter="24">
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Cheque.From')" prop="VendorId">
+            <el-form-item v-bind:label="$t('Cheque.From')" prop="VendorID">
               <el-select
-                v-model="tempForm.VendorId"
+                v-model="tempForm.VendorID"
                 filterable
                 placeholder="$t('Cheque.From')"
               >
@@ -400,7 +400,7 @@ export default {
         Currency: "",
         Description: "",
         IsPrime: false,
-        VendorId: undefined,
+        VendorID: undefined,
       },
       rulesForm: {
         ChequeNumber: [
@@ -476,7 +476,7 @@ export default {
         Currency: "",
         Description: "",
         IsPrime: false,
-        VendorId: undefined,
+        VendorID: undefined,
       };
     },
     handleCreate() {

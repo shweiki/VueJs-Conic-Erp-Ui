@@ -63,19 +63,12 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
+            (data) =>
               !search ||
               data.Account.AccountName.toLowerCase().includes(
                 search.toLowerCase()
               )
           )
-        "
-        @row-dblclick="
-          row => {
-            $router.replace({
-              path: '/Sales/Edit/' + row.SalesInvoiceId
-            });
-          }
         "
         fit
         border
@@ -154,26 +147,27 @@ export default {
       loading: true,
       TotalQty: 0,
       TotalAmmount: 0,
-      search: ""
+      search: '',
     };
   },
 
   created() {
+
     this.getdata();
-    GetActiveItem().then(response => {
+    GetActiveItem().then((response) => {
       // handle success
       console.log(this.$store.getters.Settings.datepickerQuery);
       this.Items = response;
-      this.loading = false;
-    });
+      this.loading = false
+    })
   },
   methods: {
     print(data) {
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
       }));
       printJS({
         printable: data,
@@ -181,12 +175,12 @@ export default {
           { field: "Name", displayName: "اسم الزبون" },
           { field: "Qty", displayName: "الكمية" },
           { field: "SellingPrice", displayName: "سعر البيع" },
-          { field: "Total", displayName: "القيمة" }
+          { field: "Total", displayName: "القيمة" },
         ],
         type: "json",
         header:
           "<center> <h2>مبيعات الصنف " +
-          this.Items.find(obj => {
+          this.Items.find((obj) => {
             return obj.Id == this.ItemID;
           }).Name +
           "</h2></center> <h3 style='float:left'>   الاجمالي الكمية:  " +
@@ -197,14 +191,14 @@ export default {
           this.formatDate(this.date[1]) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;"
-      });
+        gridStyle: "border: 2px solid #3971A5; text-align: center;",
+      })
     },
 
     getdata() {
-      var itemid = this.ItemID,
-        datefrom = this.$store.getters.Settings.datepickerQuery[0],
-        dateto = this.$store.getters.Settings.datepickerQuery[1];
+      var itemid = this.ItemID, 
+      datefrom = this.$store.getters.Settings.datepickerQuery[0],
+      dateto = this.$store.getters.Settings.datepickerQuery[1]
 
       this.loading = true;
       datefrom = JSON.parse(JSON.stringify(datefrom));
@@ -212,23 +206,23 @@ export default {
       GetSaleItem({
         ItemID: itemid,
         DateFrom: datefrom,
-        DateTo: dateto
+        DateTo: dateto,
       })
-        .then(response => {
+        .then((response) => {
           // handle success
-          console.log(response);
+          console.log(response)
           this.tableData = response;
           this.TotalQty = this.tableData.reduce((a, b) => a + b.Qty, 0);
           this.TotalAmmount = this.tableData.reduce(
             (a, b) => a + b.Qty * b.SellingPrice,
             0
           );
-          this.loading = false;
+          this.loading = false
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
-        });
+        })
     },
 
     formatDate(date) {
@@ -240,7 +234,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    }
-  }
+    },
+  },
 };
 </script>

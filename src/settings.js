@@ -2,23 +2,21 @@ const start = new Date();
 
 module.exports = {
   title: 'High  Fit',
-  language: 'ar',
-  size: "mini",
+  language:'ar',
   showSettings: true,
-  BusinessType: "SuperMarkit",
+  BusinessType:"SuperMarkit",
   tagsView: true,
-  CashDrawerCOM: 'COM4',
+  CashDrawerCOM : 'COM4',
   fixedHeader: false,
-  loginBackground: 'https://i.ibb.co/dPSp7dp/ezgif-3-fa3e3985da64-min.jpg',
-  showSidebar: true,
+  loginBackground:'https://i.ibb.co/dPSp7dp/ezgif-3-fa3e3985da64-min.jpg',
+  showSidebar : true,
   sidebarLogo: true,
   sidebarOpen: true,
-  showNavbar: true,
-  showBarcode: false,
+  showNavbar:true,
   errorLog: 'production',
   defaultdatepickerQuery: [new Date(start.getTime() - 3600 * 1000 * 24 * 7), new Date()],// start , End
-  defaulttimeQuery: ['00:00:00', '23:59:59'],
-  defaultpickerOptions: {
+  defaulttimeQuery : ['00:00:00', '23:59:59'],
+  defaultpickerOptions : {
     shortcuts: [
       {
         text: "قبل أسبوع",

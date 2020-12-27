@@ -31,17 +31,3 @@ export function Create(data) {
     data: qs.stringify(data)
   })
 }
-export function Edit(data) {
-  return request({
-    url: '/SaleInvoice/Edit',
-    method: 'post',
-    data: qs.stringify(data)
-  })
-}
-export function GetSaleInvoiceByID(query) {
-  return request({
-    url: '/SaleInvoice/GetSaleInvoiceByID',
-    method: 'get',
-    params: query
-  })
-}

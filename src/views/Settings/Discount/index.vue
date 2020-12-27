@@ -73,7 +73,7 @@
             <status-tag :Status="scope.row.Status" TableName="Discount" />
           </template>
         </el-table-column>
-      <!--  <el-table-column align="right" width="200">
+        <el-table-column align="right" width="200">
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.Opration.Status != -1"
@@ -90,7 +90,7 @@
               >{{ NOprations.OprationDescription }}</el-button
             >
           </template>
-        </el-table-column>-->
+        </el-table-column>
       </el-table>
     </el-card>
 

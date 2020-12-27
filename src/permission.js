@@ -43,7 +43,6 @@ router.beforeEach(async (to, from, next) => {
 
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)
-          store.dispatch("Settings/GetSetting");
 
           store.dispatch("CompanyInfo/GetCompanyInfo");
           store.dispatch("Devices/GetDevice");
