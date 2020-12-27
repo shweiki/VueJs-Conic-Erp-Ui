@@ -20,7 +20,7 @@
       <el-table
         v-loading="loading"
         :data="
-          tableData.filter(
+          $store.getters.AllItems.filter(
             (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
@@ -57,22 +57,7 @@
           width="220"
         >
           <template slot-scope="scope">
-            <el-tooltip
-              v-for="(Inventory, index) in scope.row.InventoryQty"
-              :key="index"
-              placement="right"
-              effect="light"
-            >
-              <div slot="content">
-                {{ $t("Items.Incoming") }} {{ Inventory.QtyIn }}
-                <br />
-                {{ $t("Items.Outbound") }} {{ Inventory.QtyOut }}
-                <br />
-                {{ $t("Items.Credit") }}
-                <el-tag>{{ (Inventory.QtyIn - Inventory.QtyOut).toFixed(2) }}</el-tag>
-              </div>
-              <el-button>{{ Inventory.InventoryName }}</el-button>
-            </el-tooltip>
+            <item-qty :ItemID="scope.row.Id" />
           </template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Items.Status')" align="center" width="100">
@@ -317,10 +302,11 @@ import { GetActiveItem, GetItem, CreateItem, Edit } from "@/api/Item";
 import printJS from "print-js";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
+import ItemQty from "@/components/Item/ItemQty";
 
 export default {
   name: "Item",
-  components: { StatusTag },
+  components: { StatusTag, ItemQty },
   data() {
     return {
       tableData: [],
@@ -400,12 +386,15 @@ export default {
     },
     getdata() {
       this.loading = true;
+      this.tableData = this.$store.getters.AllItems;
+      this.loading = false;
+      /*
       GetItem().then((response) => {
         // handle success
         console.log(response);
-        this.tableData = response;
+        this.tableData = this.$store.getters.AllItems;
         this.loading = false;
-      });
+      });*/
     },
     resetTempForm() {
       this.tempForm = {

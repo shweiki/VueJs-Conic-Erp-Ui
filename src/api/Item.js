@@ -51,3 +51,11 @@ export function Edit(data) {
     data: qs.stringify(data)
   })
 }
+
+export function CalculateInventoryItemQty(data) {
+  return request({
+    url: '/Item/CalculateInventoryItemQty',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
