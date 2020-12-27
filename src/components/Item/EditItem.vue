@@ -161,8 +161,6 @@ export default {
   },
   methods: {
     getdata() {
-      console.log(this.ItemID);
-
       GetItemByID({ ID: this.ItemID }).then(response => {
         // handle success
         this.tempForm = response;

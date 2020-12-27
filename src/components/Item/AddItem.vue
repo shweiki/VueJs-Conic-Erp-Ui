@@ -161,7 +161,7 @@ export default {
   methods: {
     createData() {
       this.$refs["dataForm"].validate(valid => {
-        if (valid) {
+        if (valid && this.CheckItemIsExist(this.tempForm.Name, this.tempForm.Barcode)) {
           CreateItem(this.tempForm)
             .then(response => {
               this.Open = false;
@@ -181,7 +181,14 @@ export default {
           return false;
         }
       });
-    }
+    },
+        CheckItemIsExist(Name, Barcode) {
+      const found = this.$store.getters.AllItems.find(
+        (element) => element.Name === Name || element.Barcode === Barcode
+      );
+      if (found != undefined) return false;
+      else return true;
+    },
   }
 };
 </script>

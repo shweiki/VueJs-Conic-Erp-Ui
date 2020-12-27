@@ -1,5 +1,7 @@
 <template>
   <div>
+      <el-button icon="el-icon-refresh-right" circle @click="getdata()"></el-button>
+
     <el-tooltip
       v-for="(Inventory, index) in InventoryQty"
       :key="index"
@@ -22,15 +24,11 @@
 import { CalculateInventoryItemQty } from "@/api/Item";
 
 export default {
-  name: "ItemQty",
   props: {
     ItemID: {
       type: Number,
-      default: undefined,
+      default: undefined
     },
-  },
-  created() {
-    this.getdata();
   },
   data() {
     return {
@@ -39,7 +37,6 @@ export default {
   },
   methods: {
     getdata() {
-      console.log(this.ItemID);
 
       CalculateInventoryItemQty({ ID: this.ItemID }).then((response) => {
         // handle success
