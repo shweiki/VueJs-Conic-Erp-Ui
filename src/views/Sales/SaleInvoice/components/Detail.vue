@@ -55,7 +55,7 @@
               </el-col>
               <el-col :span="4">
                 <el-form-item
-                  prop="VendorID"
+                  prop="VendorId"
                   :rules="[
                     {
                       required: true,
@@ -65,7 +65,7 @@
                   ]"
                 >
                   <el-select
-                    v-model="tempForm.VendorID"
+                    v-model="tempForm.VendorId"
                     filterable
                     v-bind:placeholder="$t('NewPurchaseInvoice.Acc')"
                     autocomplete="off"
@@ -93,7 +93,7 @@
                     }}</el-radio>
                     <el-radio label="Visa" border>Visa</el-radio>
 
-                    <el-radio v-if="tempForm.VendorID != 2" label="Receivables" border>{{
+                    <el-radio v-if="tempForm.VendorId != 2" label="Receivables" border>{{
                       $t("NewPurchaseInvoice.Receivables")
                     }}</el-radio>
                   </el-radio-group>
@@ -463,7 +463,7 @@ export default {
         PaymentMethod: "Cash",
         Discount: 0,
         Description: "",
-        VendorID: 2,
+        VendorId: 2,
         IsPrime: false,
         InventoryMovements: [],
       },
@@ -533,7 +533,7 @@ export default {
         PaymentMethod: "Cash",
         Discount: 0,
         Description: "",
-        VendorID: 2,
+        VendorId: 2,
         IsPrime: false,
         InventoryMovements: [],
       };
@@ -560,7 +560,7 @@ export default {
           InventoryItemID: 1,
           Itemx: Item,
           Name: Item.Name,
-          SalesInvoiceID: undefined,
+          SalesInvoiceId: undefined,
         });
       }
       this.Barcode = "";

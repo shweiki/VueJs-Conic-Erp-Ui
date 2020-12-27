@@ -122,7 +122,7 @@ export default {
           Tax: 0.0,
           Description: '',
           InventoryItemID: 1,
-          SalesInvoiceID: undefined
+          SalesInvoiceId: undefined
         })
       }
       console.log(SaleInvoice)

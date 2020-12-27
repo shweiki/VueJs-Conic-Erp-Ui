@@ -101,23 +101,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-            <el-row :gutter="24">
-          <el-col :span="8">
-            <el-form-item label="BackUpPath" prop="backUpPath">
-              <el-input type="text" v-model="tempForm.BackUpPath"></el-input>
-            </el-form-item>
-          </el-col>
-           <el-col :span="8">
-            <el-form-item label="ServerName" prop="serverName">
-              <el-input type="text" v-model="tempForm.ServerName"></el-input>
-            </el-form-item>
-          </el-col>
-             <el-col :span="8">
-            <el-form-item label="DataBaseName" prop="dataBaseName">
-              <el-input type="text" v-model="tempForm.DataBaseName"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
         <el-form-item
           v-bind:label="$t('Company.FooterReport')"
           prop="FooterReport"
@@ -172,9 +155,7 @@ export default {
         Website: '',
         HeaderReport: '',
         FooterReport: '',
-        DataBaseName: '',
-        BackUpPath: '',
-        ServerName: '',
+
       },
       rulesForm: {
         Name: [

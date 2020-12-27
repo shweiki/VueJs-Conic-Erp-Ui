@@ -22,7 +22,6 @@ const messages = {
 
 }
 export function getLanguage() {
-  console.log(defaultSettings)
   const chooseLanguage = Cookies.get('language') || defaultSettings.language
   if (chooseLanguage) return chooseLanguage
 
