@@ -1,30 +1,31 @@
-import variables from '@/styles/element-variables.scss'
 import defaultSettings from '@/Settings'
 import { Edit, GetSetting } from '@/api/Setting'
 import store from '@/store'
 
 let Settings = {}
-const {size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
-  , defaultpickerOptions, defaulttimeQuery, defaultdatepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
+const {errorLog,theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+  , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
   title: title,
-  theme: variables.theme,
+  theme: theme,
+  language: language,
+  size : size,
   showSettings: showSettings,
-  tagsView: tagsView,
-  fixedHeader: fixedHeader,
-  sidebarLogo: sidebarLogo,
   BusinessType: BusinessType,
-  pickerOptions: defaultpickerOptions,
-  timeQuery: defaulttimeQuery,
-  datepickerQuery: defaultdatepickerQuery,
-  sidebarOpen: sidebarOpen,
+  tagsView: tagsView,
+  CashDrawerCOM: CashDrawerCOM,
+  fixedHeader: fixedHeader,
   loginBackground: loginBackground,
   showSidebar: showSidebar,
+  sidebarLogo: sidebarLogo,
+  sidebarOpen: sidebarOpen,
   showNavbar: showNavbar,
-  CashDrawerCOM: CashDrawerCOM,
-  language: language,
-  size : size
+  showBarcode: showBarcode,
+  errorLog: errorLog,
+  datepickerQuery: datepickerQuery,
+  timeQuery: timeQuery,
+  pickerOptions: pickerOptions,
 }
 
 const mutations = {
@@ -38,15 +39,15 @@ const mutations = {
 const actions = {
   GetSetting({ commit }) {
     return new Promise((resolve, reject) => {
+      console.log("ss" , this.state)
       GetSetting().then(response => {
         if (response.length != Object.keys(defaultSettings).length
         ) actions.SetSettingDefault(response)
 
         response.map(x => {
-          commit('CHANGE_SETTING', {
-            key: x.Name,
-            value: (x.Type != "string" ? JSON.parse(x.Value) : x.Value)
-          })
+          var obj = JSON.parse(x.Description);
+
+          commit('CHANGE_SETTING', obj)
         })
 
         resolve(response)

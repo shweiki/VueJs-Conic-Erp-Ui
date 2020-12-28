@@ -36,6 +36,7 @@ let options = {
   sensitivity: 300, requiredAttr: true
 }
 Vue.use(VueBarcodeScanner, options)
+store.dispatch("Settings/GetSetting");
 
 
 

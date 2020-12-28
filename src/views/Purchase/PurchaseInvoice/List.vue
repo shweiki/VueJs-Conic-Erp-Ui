@@ -12,7 +12,7 @@
           v-bind:range-separator="$t('Sales.until')"
           v-bind:start-placeholder="$t('Sales.From')"
           v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="$store.getters.Settings.defaulttimeQuery"
+          :default-time="$store.getters.Settings.timeQuery"
           :picker-options="$store.getters.Settings.pickerOptions"
           style="width: 80%"
           @change="getdata"

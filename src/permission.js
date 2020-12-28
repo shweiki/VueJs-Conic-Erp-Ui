@@ -43,21 +43,23 @@ router.beforeEach(async (to, from, next) => {
 
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)
-          store.dispatch("Settings/GetSetting");
 
           store.dispatch("CompanyInfo/GetCompanyInfo");
-          store.dispatch("Devices/GetDevice");
-          store.dispatch("Editors/GetEditorsUser");
 
 
           store.dispatch("Items/GetItem");
           store.dispatch("Items/GetActiveItem");
 
-          store.dispatch("Members/CheckMembers");
-          store.dispatch("Members/GetActiveMember");
-          store.dispatch("Members/GetMember");
+          if (store.state.Settings.BusinessType == 'GymManagment') {
+            store.dispatch("Editors/GetEditorsUser");
+            store.dispatch("Devices/GetDevice");
+            store.dispatch("Members/CheckMembers");
+            store.dispatch("Members/GetActiveMember");
+            store.dispatch("Members/GetMember");
 
-          store.dispatch("Devices/ConnectZtkDoor");
+            store.dispatch("Devices/ConnectZtkDoor");
+          }
+
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })

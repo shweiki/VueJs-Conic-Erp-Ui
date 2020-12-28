@@ -12,7 +12,7 @@
           v-bind:range-separator="$t('Sales.until')"
           v-bind:start-placeholder="$t('Sales.From')"
           v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="$store.getters.Settings.defaulttimeQuery"
+          :default-time="$store.getters.Settings.timeQuery"
           :picker-options="$store.getters.Settings.pickerOptions"
           style="width: 80%"
           @change="getdata"
@@ -162,7 +162,6 @@ export default {
     this.getdata();
     GetActiveItem().then(response => {
       // handle success
-      console.log(this.$store.getters.Settings.datepickerQuery);
       this.Items = response;
       this.loading = false;
     });
@@ -216,7 +215,7 @@ export default {
       })
         .then(response => {
           // handle success
-          console.log(response);
+          console.log(this.$store.getters.Settings.pickerOptions);
           this.tableData = response;
           this.TotalQty = this.tableData.reduce((a, b) => a + b.Qty, 0);
           this.TotalAmmount = this.tableData.reduce(

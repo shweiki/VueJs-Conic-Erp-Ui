@@ -16,18 +16,18 @@ module.exports = {
   showNavbar: true,
   showBarcode: false,
   errorLog: 'production',
-  defaultdatepickerQuery: [new Date(start.getTime() - 3600 * 1000 * 24 * 7), new Date()],// start , End
-  defaulttimeQuery: ['00:00:00', '23:59:59'],
-  defaultpickerOptions: {
+  datepickerQuery: [new Date(start.getTime() - 3600 * 1000 * 24 * 7), new Date()],// start , End
+  timeQuery: ['00:00:00', '23:59:59'],
+  pickerOptions: {
     shortcuts: [
       {
-        text: "قبل أسبوع",
-        onClick(picker) {
-          const end = new Date();
-          const start = new Date();
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-          picker.$emit("pick", [start, end]);
-        },
+        text: "قبل أسبوع" ,
+        'onClick(picker) {\
+          const end = new Date();\
+          const start = new Date();\
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);\
+          picker.$emit("pick", [start, end]);\
+        }'
       },
       {
         text: "قبل شهر",
