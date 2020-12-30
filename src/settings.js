@@ -1,6 +1,9 @@
 const start = new Date();
+import variables from '@/styles/element-variables.scss'
+import LoginBackGround from '@/assets/Login/GymManagment.jpg'
 
 module.exports = {
+  theme: variables.theme,
   title: 'High  Fit',
   language: 'ar',
   size: "mini",
@@ -9,7 +12,7 @@ module.exports = {
   tagsView: true,
   CashDrawerCOM: 'COM4',
   fixedHeader: false,
-  loginBackground: 'https://i.ibb.co/dPSp7dp/ezgif-3-fa3e3985da64-min.jpg',
+  loginBackground : LoginBackGround ,  
   showSidebar: true,
   sidebarLogo: true,
   sidebarOpen: true,
@@ -21,40 +24,20 @@ module.exports = {
   pickerOptions: {
     shortcuts: [
       {
-        text: "قبل أسبوع" ,
-        onClick(picker) {
-          const end = new Date();
-          const start = new Date();
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-          picker.$emit("pick", [start, end]);
-        }
+        text: "قبل أسبوع",
+        days: 7,
       },
       {
         text: "قبل شهر",
-        onClick(picker) {
-          const end = new Date();
-          const start = new Date();
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-          picker.$emit("pick", [start, end]);
-        },
+        days: 30,
       },
       {
         text: "قبل 3 أشهر",
-        onClick(picker) {
-          const end = new Date();
-          const start = new Date();
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-          picker.$emit("pick", [start, end]);
-        },
+        days: 90,
       },
       {
         text: "قبل 1 سنة",
-        onClick(picker) {
-          const end = new Date();
-          const start = new Date();
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-          picker.$emit("pick", [start, end]);
-        },
+        days: 365,
       },
     ],
   }

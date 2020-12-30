@@ -1,16 +1,15 @@
 import defaultSettings from '@/Settings'
 import { Edit, GetSetting } from '@/api/Setting'
 import store from '@/store'
-
 let Settings = {}
-const {errorLog,theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+const { errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
   , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
   title: title,
   theme: theme,
   language: language,
-  size : size,
+  size: size,
   showSettings: showSettings,
   BusinessType: BusinessType,
   tagsView: tagsView,
@@ -25,7 +24,7 @@ const state = {
   errorLog: errorLog,
   datepickerQuery: datepickerQuery,
   timeQuery: timeQuery,
-  pickerOptions: pickerOptions,
+  pickerOptions: pickerOptions
 }
 
 const mutations = {
@@ -39,14 +38,23 @@ const mutations = {
 const actions = {
   GetSetting({ commit }) {
     return new Promise((resolve, reject) => {
-      console.log("ss" , this.state)
       GetSetting().then(response => {
+      //  console.log(response.length , Object.keys(defaultSettings).length)
         if (response.length != Object.keys(defaultSettings).length
         ) actions.SetSettingDefault(response)
 
         response.map(x => {
           var obj = JSON.parse(x.Description);
-
+          if (obj.key === "pickerOptions") {
+            obj.value.shortcuts.map(OP => {
+              OP.onClick = function (picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * OP.days);
+                picker.$emit("pick", [start, end]);
+              }
+            })
+          }
           commit('CHANGE_SETTING', obj)
         })
 

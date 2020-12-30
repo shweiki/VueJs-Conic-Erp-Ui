@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     windowopen(link) {
+      console.log("link 0" , link)
       let routeUrl = this.$router.resolve({
         path: link
       });

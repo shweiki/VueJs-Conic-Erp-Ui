@@ -10,6 +10,10 @@
           @change="themeChange"
         />
       </div>
+      <div class="drawer-item">
+        <span>{{ $t("Settings.theme") }}</span>
+        <el-switch v-model="theme" class="drawer-switch" />
+      </div>
 
       <div class="drawer-item">
         <span>{{ $t("Settings.tagsView") }}</span>
@@ -28,26 +32,14 @@
     </div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <el-button
-          style="float: left"
-          type="success"
-          icon="el-icon-plus"
-          @click="handleCreate()"
-          >{{ $t("Classification.Add") }}</el-button
-        >
-        <el-button
-          style="float: left"
-          icon="el-icon-printer"
-          type="primary"
-          @click="print(tableData)"
-        ></el-button>
-        <span>جميع الخدمات</span>
+        <span>جميع اعدادات</span>
       </div>
       <el-table
         v-loading="loading"
         :data="
           tableData.filter(
-            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            data =>
+              !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -67,22 +59,21 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
+            <el-input
+              v-model="search"
+              v-bind:placeholder="$t('Classification.Name')"
+            />
           </template>
         </el-table-column>
-        <el-table-column prop="ItemName" label="الصنف" align="center"></el-table-column>
-        <el-table-column prop="Qty" label="العدد" align="center"></el-table-column>
+
         <el-table-column
-          prop="SellingPrice"
-          label="سعر البيع"
+          prop="Value"
+          label="القيمة"
           align="center"
         ></el-table-column>
-
-        <el-table-column prop="Type" label="نوع" align="center"></el-table-column>
         <el-table-column
-          v-bind:label="$t('Classification.Date')"
-          prop="ActionLogs[0].PostingDateTime"
-          width="200"
+          prop="Type"
+          label="نوع"
           align="center"
         ></el-table-column>
         <el-table-column
@@ -97,25 +88,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <status-tag :Status="scope.row.Status" TableName="Membership" />
-          </template>
-        </el-table-column>
-        <el-table-column align="right" width="200">
-          <template slot-scope="scope">
-            <el-button
-              v-if="scope.row.Opration.Status != -1"
-              icon="el-icon-edit"
-              circle
-              @click="handleUpdate(scope.row)"
-            ></el-button>
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              round
-              @click="handleOprationsys(scope.row.Id, NOprations)"
-              >{{ NOprations.OprationDescription }}</el-button
-            >
+            <status-tag :Status="scope.row.Status" TableName="Setting" />
           </template>
         </el-table-column>
       </el-table>
@@ -127,11 +100,15 @@
 import ThemePicker from "@/components/ThemePicker";
 import { GetSetting, GetActiveSetting, Create, Edit } from "@/api/Setting";
 import StatusTag from "@/components/Oprationsys/StatusTag";
+import { toggleClass } from "@/utils";
+import "@/assets/custom-theme/index.css"; // the theme changed version element-ui css
 
 export default {
   components: { ThemePicker, StatusTag },
-  data() {
-    return {};
+  watch: {
+    theme() {
+      toggleClass(document.body, "custom-theme");
+    }
   },
   computed: {
     isShowJob() {
@@ -144,9 +121,9 @@ export default {
       set(val) {
         this.$store.dispatch("Settings/changeSetting", {
           key: "fixedHeader",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     tagsView: {
       get() {
@@ -155,9 +132,9 @@ export default {
       set(val) {
         this.$store.dispatch("Settings/changeSetting", {
           key: "tagsView",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     sidebarLogo: {
       get() {
@@ -166,19 +143,44 @@ export default {
       set(val) {
         this.$store.dispatch("Settings/changeSetting", {
           key: "sidebarLogo",
-          value: val,
+          value: val
         });
-      },
-    },
+      }
+    }
+  },
+  data() {
+    return {
+      tableData: [],
+      loading: true,
+      search: "",
+      theme: false
+    };
+  },
+  created() {
+    this.getdata();
   },
   methods: {
+    getdata() {
+      this.loading = true;
+      GetSetting()
+        .then(response => {
+          // handle success
+          console.log(response);
+          this.tableData = response;
+          this.loading = false;
+        })
+        .catch(error => {
+          // handle error
+          console.log(error);
+        });
+    },
     themeChange(val) {
       this.$store.dispatch("Settings/changeSetting", {
         key: "theme",
-        value: val,
+        value: val
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -200,6 +202,7 @@ export default {
     color: rgba(0, 0, 0, 0.65);
     font-size: 14px;
     padding: 12px 0;
+    display: inline-flex;
   }
 
   .drawer-switch {

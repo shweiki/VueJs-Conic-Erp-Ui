@@ -15,6 +15,7 @@ import * as filters from './filters' // global filters
 import VueCurrencyInput from 'vue-currency-input'
 import VueBarcodeScanner from 'vue-barcode-scanner'
 
+store.dispatch("Settings/GetSetting");
 
 const pluginOptions = {
   /* see config reference */
@@ -36,7 +37,6 @@ let options = {
   sensitivity: 300, requiredAttr: true
 }
 Vue.use(VueBarcodeScanner, options)
-store.dispatch("Settings/GetSetting");
 
 
 
