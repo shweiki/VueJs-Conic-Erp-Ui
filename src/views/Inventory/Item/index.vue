@@ -19,8 +19,7 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            (data) =>
-              !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -63,11 +62,7 @@
             ></el-button>
           </template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('Items.Status')"
-          align="center"
-          width="100"
-        >
+        <el-table-column v-bind:label="$t('Items.Status')" align="center" width="100">
           <template slot-scope="scope">
             <status-tag :Status="scope.row.Status" TableName="Item" />
           </template>
@@ -86,10 +81,7 @@
                   {{ scope.row.CostPrice.toFixed(2) }}
                 </template>
               </el-table-column>
-              <el-table-column
-                v-bind:label="$t('Items.Packeges')"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('Items.Packeges')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
                   {{ scope.row.OtherPrice.toFixed(2) }}
@@ -136,13 +128,13 @@
 import { CreateItem, Edit, GetItemByID } from "@/api/Item";
 import printJS from "print-js";
 import { ChangeObjStatus } from "@/api/Oprationsys";
-import ItemsSearch from "@/components/Item/ItemsSearch";
+import ItemsSearch from "@/components/Item/ItemsSearch.vue";
 import { Label1 } from "@/Report/ItemLabel";
 
-import StatusTag from "@/components/Oprationsys/StatusTag";
-import ItemQty from "@/components/Item/ItemQty";
-import EditItem from "@/components/Item/EditItem";
-import AddItem from "@/components/Item/AddItem";
+import StatusTag from "@/components/Oprationsys/StatusTag.vue";
+import ItemQty from "@/components/Item/ItemQty.vue";
+import EditItem from "@/components/Item/EditItem.vue";
+import AddItem from "@/components/Item/AddItem.vue";
 export default {
   name: "Item",
   components: { ItemsSearch, AddItem, EditItem, ItemQty, StatusTag },
