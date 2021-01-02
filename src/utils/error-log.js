@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import store from '@/store'
 import { isString, isArray } from '@/utils/validate'
-import Settings from '@/Settings'
+import Settings from '@/settings'
 
 // you can set in settings.js
 // errorLog:'production' | ['production', 'development']

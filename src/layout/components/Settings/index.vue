@@ -46,14 +46,14 @@ export default {
   },
   computed: {
     isShowJob() {
-      return this.$store.getters.Settings.language;
+      return this.$store.getters.settings.language;
     },
     fixedHeader: {
       get() {
-        return this.$store.state.Settings.fixedHeader;
+        return this.$store.state.settings.fixedHeader;
       },
       set(val) {
-        this.$store.dispatch("Settings/changeSetting", {
+        this.$store.dispatch("settings/changeSetting", {
           key: "fixedHeader",
           value: val
         });
@@ -61,10 +61,10 @@ export default {
     },
     tagsView: {
       get() {
-        return this.$store.state.Settings.tagsView;
+        return this.$store.state.settings.tagsView;
       },
       set(val) {
-        this.$store.dispatch("Settings/changeSetting", {
+        this.$store.dispatch("settings/changeSetting", {
           key: "tagsView",
           value: val
         });
@@ -72,10 +72,10 @@ export default {
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.Settings.sidebarLogo;
+        return this.$store.state.settings.sidebarLogo;
       },
       set(val) {
-        this.$store.dispatch("Settings/changeSetting", {
+        this.$store.dispatch("settings/changeSetting", {
           key: "sidebarLogo",
           value: val
         });
@@ -83,10 +83,10 @@ export default {
     },
     showSettings: {
       get() {
-        return this.$store.state.Settings.showSettings;
+        return this.$store.state.settings.showSettings;
       },
       set(val) {
-        this.$store.dispatch("Settings/changeSetting", {
+        this.$store.dispatch("settings/changeSetting", {
           key: "showSettings",
           value: val
         });
@@ -94,10 +94,10 @@ export default {
     },
         BusinessType: {
       get() {
-        return this.$store.state.Settings.BusinessType;
+        return this.$store.state.settings.BusinessType;
       },
       set(val) {
-        this.$store.dispatch("Settings/changeSetting", {
+        this.$store.dispatch("settings/changeSetting", {
           key: "BusinessType",
           value: val
         });
@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     themeChange(val) {
-      this.$store.dispatch("Settings/changeSetting", {
+      this.$store.dispatch("settings/changeSetting", {
         key: "theme",
         value: val
       });

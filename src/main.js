@@ -15,7 +15,7 @@ import * as filters from './filters' // global filters
 import VueCurrencyInput from 'vue-currency-input'
 import VueBarcodeScanner from 'vue-barcode-scanner'
 
-store.dispatch("Settings/GetSetting");
+store.dispatch("settings/GetSetting");
 
 const pluginOptions = {
   /* see config reference */
@@ -23,7 +23,7 @@ const pluginOptions = {
 }
 Vue.use(VueCurrencyInput, pluginOptions)
 Vue.use(Element, {
-  size: Cookies.get('size') || 'mini', // store.getters.Settings.size, // set element-ui default size
+  size: Cookies.get('size') || 'mini', // store.getters.settings.size, // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
 // register global utility filters

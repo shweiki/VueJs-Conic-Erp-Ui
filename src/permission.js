@@ -50,7 +50,7 @@ router.beforeEach(async (to, from, next) => {
           store.dispatch("Items/GetItem");
           store.dispatch("Items/GetActiveItem");
 
-          if (store.state.Settings.BusinessType == 'GymManagment') {
+          if (store.state.settings.BusinessType == 'GymManagment') {
             store.dispatch("Editors/GetEditorsUser");
             store.dispatch("Devices/GetDevice");
             store.dispatch("Members/CheckMembers");

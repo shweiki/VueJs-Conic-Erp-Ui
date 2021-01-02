@@ -182,7 +182,7 @@ export default {
       const found = this.$store.getters.AllItems.find(
         (element) => element.Name === Name || element.Barcode === Barcode
       );
-      if (this.$store.getters.Settings.WithOutCheckItemIsExist) return true;
+      if (this.$store.getters.settings.WithOutCheckItemIsExist) return true;
       if (found != undefined) return false;
       else return true;
     },

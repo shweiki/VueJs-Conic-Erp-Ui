@@ -11,7 +11,7 @@
         <el-tab-pane label="ذمم دائنة" name="Payable">
           <payable />
         </el-tab-pane>
-        <el-tab-pane v-if="$store.state.Settings.BusinessType == 'GymManagment'" label="طلبات التجميد و اضافي" name="MembershipmentOrdar">
+        <el-tab-pane v-if="$store.state.settings.BusinessType == 'GymManagment'" label="طلبات التجميد و اضافي" name="MembershipmentOrdar">
           <membershipment-ordar />
         </el-tab-pane>
       </el-tabs>

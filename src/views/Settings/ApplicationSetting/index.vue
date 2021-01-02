@@ -116,10 +116,10 @@ export default {
     },
     fixedHeader: {
       get() {
-        return this.$store.state.Settings.fixedHeader;
+        return this.$store.state.settings.fixedHeader;
       },
       set(val) {
-        this.$store.dispatch("Settings/changeSetting", {
+        this.$store.dispatch("settings/changeSetting", {
           key: "fixedHeader",
           value: val
         });
@@ -127,10 +127,10 @@ export default {
     },
     tagsView: {
       get() {
-        return this.$store.state.Settings.tagsView;
+        return this.$store.state.settings.tagsView;
       },
       set(val) {
-        this.$store.dispatch("Settings/changeSetting", {
+        this.$store.dispatch("settings/changeSetting", {
           key: "tagsView",
           value: val
         });
@@ -138,10 +138,10 @@ export default {
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.Settings.sidebarLogo;
+        return this.$store.state.settings.sidebarLogo;
       },
       set(val) {
-        this.$store.dispatch("Settings/changeSetting", {
+        this.$store.dispatch("settings/changeSetting", {
           key: "sidebarLogo",
           value: val
         });
@@ -175,7 +175,7 @@ export default {
         });
     },
     themeChange(val) {
-      this.$store.dispatch("Settings/changeSetting", {
+      this.$store.dispatch("settings/changeSetting", {
         key: "theme",
         value: val
       });

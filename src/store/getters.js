@@ -19,7 +19,7 @@ const getters = {
   ActiveItems: state => state.Items.ActiveItems,
   AllMembers: state => state.Members.AllMembers,
   ActiveMembers: state => state.Members.ActiveMembers,
-  Settings: state => state.Settings,
+  settings: state => state.settings,
 
   CompanyInfo: state => state.CompanyInfo.GetCompanyInfo,
   Devices: state => state.Devices.AllDevices,

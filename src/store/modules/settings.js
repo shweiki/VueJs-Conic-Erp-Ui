@@ -1,4 +1,4 @@
-import defaultSettings from '@/Settings'
+import defaultSettings from '@/settings'
 import { Edit, GetSetting } from '@/api/Setting'
 import store from '@/store'
 let Settings = {}
@@ -89,7 +89,7 @@ const actions = {
       const found = DBSettings.find(
         element => element.Name == key
       );
-      if (!found) store.dispatch("Settings/changeSetting", {
+      if (!found) store.dispatch("settings/changeSetting", {
         key: key,
         value: defaultSettings['' + key + '']
       });

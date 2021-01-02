@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     defaultTheme() {
-      return this.$store.state.Settings.theme;
+      return this.$store.state.settings.theme;
     },
   },
   watch: {

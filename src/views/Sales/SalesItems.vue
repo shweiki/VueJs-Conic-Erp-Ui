@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
         <el-date-picker
-          v-model="$store.getters.Settings.datepickerQuery"
+          v-model="$store.getters.settings.datepickerQuery"
           format="dd/MM/yyyy"
           type="daterange"
           align="left"
@@ -12,8 +12,8 @@
           v-bind:range-separator="$t('Sales.until')"
           v-bind:start-placeholder="$t('Sales.From')"
           v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="$store.getters.Settings.timeQuery"
-          :picker-options="$store.getters.Settings.pickerOptions"
+          :default-time="$store.getters.settings.timeQuery"
+          :picker-options="$store.getters.settings.pickerOptions"
           style="width: 80%"
           @change="getdata"
         ></el-date-picker>
@@ -202,8 +202,8 @@ export default {
 
     getdata() {
       var itemid = this.ItemID,
-        datefrom = this.$store.getters.Settings.datepickerQuery[0],
-        dateto = this.$store.getters.Settings.datepickerQuery[1];
+        datefrom = this.$store.getters.settings.datepickerQuery[0],
+        dateto = this.$store.getters.settings.datepickerQuery[1];
 
       this.loading = true;
       datefrom = JSON.parse(JSON.stringify(datefrom));
@@ -215,7 +215,7 @@ export default {
       })
         .then(response => {
           // handle success
-          console.log(this.$store.getters.Settings.pickerOptions);
+          console.log(this.$store.getters.settings.pickerOptions);
           this.tableData = response;
           this.TotalQty = this.tableData.reduce((a, b) => a + b.Qty, 0);
           this.TotalAmmount = this.tableData.reduce(

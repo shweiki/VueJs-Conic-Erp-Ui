@@ -272,7 +272,7 @@
                     <el-col :span="6">
                       <el-button
                         style="font-size: 45px"
-                        @click="OpenCashDrawer($store.state.Settings.CashDrawerCOM)"
+                        @click="OpenCashDrawer($store.state.settings.CashDrawerCOM)"
                         type="warning"
                         icon="el-icon-takeaway-box"
                       ></el-button>
