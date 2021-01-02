@@ -39,7 +39,7 @@ const actions = {
   GetSetting({ commit }) {
     return new Promise((resolve, reject) => {
       GetSetting().then(response => {
-      //  console.log(response.length , Object.keys(defaultSettings).length)
+        console.log(response.length , Object.keys(defaultSettings).length)
         if (response.length != Object.keys(defaultSettings).length
         ) actions.SetSettingDefault(response)
 

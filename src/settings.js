@@ -1,9 +1,9 @@
 const start = new Date();
-import variables from '@/styles/element-variables.scss'
-import LoginBackGround from '@/assets/Login/GymManagment.jpg'
+// import LoginBackGround from '@/assets/Login/GymManagment.jpg'
+//import variables from '@/styles/element-variables.scss'
 
 module.exports = {
-  theme: variables.theme,
+  theme:'',// variables.theme,
   title: 'High  Fit',
   language: 'ar',
   size: "mini",
@@ -12,7 +12,7 @@ module.exports = {
   tagsView: true,
   CashDrawerCOM: 'COM4',
   fixedHeader: false,
-  loginBackground : LoginBackGround ,  
+  loginBackground :'',// LoginBackGround ,  
   showSidebar: true,
   sidebarLogo: true,
   sidebarOpen: true,

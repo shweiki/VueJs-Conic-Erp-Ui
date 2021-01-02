@@ -6,7 +6,6 @@ import elementArLocale from 'element-ui/lib/locale/lang/ar'// element-ui lang
 
 import enLocale from './en'
 import arLocale from './ar'
-import defaultSettings from '@/Settings'
 
 Vue.use(VueI18n)
 
@@ -22,7 +21,7 @@ const messages = {
 
 }
 export function getLanguage() {
-  const chooseLanguage = Cookies.get('language') || defaultSettings.language
+  const chooseLanguage = Cookies.get('language') || 'ar'
   if (chooseLanguage) return chooseLanguage
 
   // if has not choose language
