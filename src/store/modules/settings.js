@@ -2,7 +2,7 @@ import defaultSettings from '@/Settings'
 import { Edit, GetSetting } from '@/api/Setting'
 import store from '@/store'
 let Settings = {}
-const { errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+const {WithOutCheckItemIsExist,  errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
   , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
@@ -21,6 +21,7 @@ const state = {
   sidebarOpen: sidebarOpen,
   showNavbar: showNavbar,
   showBarcode: showBarcode,
+  WithOutCheckItemIsExist : WithOutCheckItemIsExist,
   errorLog: errorLog,
   datepickerQuery: datepickerQuery,
   timeQuery: timeQuery,

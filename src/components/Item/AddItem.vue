@@ -1,11 +1,6 @@
 <template>
   <div>
-    <el-button
-      type="primary"
-      icon="el-icon-plus"
-      circle
-      @click="Open = true"
-    ></el-button>
+    <el-button type="primary" icon="el-icon-plus" circle @click="Open = true"></el-button>
 
     <el-dialog
       style="margin-top: -13vh"
@@ -23,9 +18,7 @@
         <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
           <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-checkbox v-model="tempForm.IsPrime"
-          >اظهار على شاشة المبيعات</el-checkbox
-        >
+        <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
 
         <el-row>
           <el-col :span="8">
@@ -40,10 +33,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item
-              v-bind:label="$t('Items.PurchaseCost')"
-              prop="OtherPrice"
-            >
+            <el-form-item v-bind:label="$t('Items.PurchaseCost')" prop="OtherPrice">
               <el-input-number
                 v-model="tempForm.OtherPrice"
                 :precision="2"
@@ -54,10 +44,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item
-              v-bind:label="$t('Items.SellingPrice')"
-              prop="SellingPrice"
-            >
+            <el-form-item v-bind:label="$t('Items.SellingPrice')" prop="SellingPrice">
               <el-input-number
                 v-model="tempForm.SellingPrice"
                 :precision="2"
@@ -94,26 +81,18 @@
         <el-row>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
-              <el-input
-                v-model="tempForm.Barcode"
-                suffix-icon="fa fa-barcode"
-              ></el-input>
+              <el-input v-model="barcode" suffix-icon="fa fa-barcode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
-              <el-input
-                type="textarea"
-                v-model="tempForm.Description"
-              ></el-input>
+              <el-input type="textarea" v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Open = false">{{
-          $t("permission.cancel")
-        }}</el-button>
+        <el-button @click="Open = false">{{ $t("permission.cancel") }}</el-button>
         <el-button type="primary" @click="createData()">حفظ</el-button>
       </div>
     </el-dialog>
@@ -125,9 +104,18 @@ import { CreateItem } from "@/api/Item";
 import store from "@/store";
 
 export default {
+  props: {
+    Open: {
+      type: Boolean,
+      default: false,
+    },
+    barcode: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
-      Open:false,
       tempForm: {
         Id: undefined,
         Name: "",
@@ -139,41 +127,49 @@ export default {
         Rate: 0,
         IsPrime: false,
         Barcode: "",
-        Description: ""
+        Description: "",
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
+    focus() {
+      // console.log("row", row);
+      this.$emit("focus");
+    },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.tempForm.Barcode = this.barcode;
+
+      this.$refs["dataForm"].validate((valid) => {
         if (valid && this.CheckItemIsExist(this.tempForm.Name, this.tempForm.Barcode)) {
+          this.focus();
           CreateItem(this.tempForm)
-            .then(response => {
-              this.Open = false;
+            .then((response) => {
+              this.open = false;
               store.dispatch("Items/GetItem");
+
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -182,14 +178,14 @@ export default {
         }
       });
     },
-        CheckItemIsExist(Name, Barcode) {
+    CheckItemIsExist(Name, Barcode) {
       const found = this.$store.getters.AllItems.find(
         (element) => element.Name === Name || element.Barcode === Barcode
       );
+      if (this.$store.getters.Settings.WithOutCheckItemIsExist) return true;
       if (found != undefined) return false;
       else return true;
     },
-  }
+  },
 };
 </script>
-

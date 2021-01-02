@@ -18,6 +18,7 @@ module.exports = {
   sidebarOpen: true,
   showNavbar: true,
   showBarcode: false,
+  WithOutCheckItemIsExist : true ,
   errorLog: 'production',
   datepickerQuery: [new Date(start.getTime() - 3600 * 1000 * 24 * 7), new Date()],// start , End
   timeQuery: ['00:00:00', '23:59:59'],
