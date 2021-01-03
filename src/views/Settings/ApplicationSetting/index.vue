@@ -1,6 +1,7 @@
 ﻿<template>
   <div class="drawer-container">
     <div>
+      <el-button @click="CheckUpdate" circle>Check UpDate</el-button>
       <h3 class="drawer-title">{{ $t("Settings.title") }}</h3>
 
       <div class="drawer-item">
@@ -38,8 +39,7 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
-              !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -59,23 +59,12 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('Classification.Name')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
 
-        <el-table-column
-          prop="Value"
-          label="القيمة"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="Type"
-          label="نوع"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="Value" label="القيمة" align="center"></el-table-column>
+        <el-table-column prop="Type" label="نوع" align="center"></el-table-column>
         <el-table-column
           v-bind:label="$t('Classification.Notes')"
           prop="Description"
@@ -98,7 +87,7 @@
 
 <script>
 import ThemePicker from "@/components/ThemePicker";
-import { GetSetting, GetActiveSetting, Create, Edit } from "@/api/Setting";
+import { GetSetting, GetActiveSetting, Create, Edit, CheckUpdate } from "@/api/Setting";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import { toggleClass } from "@/utils";
 import "@/assets/custom-theme/index.css"; // the theme changed version element-ui css
@@ -108,7 +97,7 @@ export default {
   watch: {
     theme() {
       toggleClass(document.body, "custom-theme");
-    }
+    },
   },
   computed: {
     isShowJob() {
@@ -121,9 +110,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "fixedHeader",
-          value: val
+          value: val,
         });
-      }
+      },
     },
     tagsView: {
       get() {
@@ -132,9 +121,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "tagsView",
-          value: val
+          value: val,
         });
-      }
+      },
     },
     sidebarLogo: {
       get() {
@@ -143,17 +132,17 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "sidebarLogo",
-          value: val
+          value: val,
         });
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       tableData: [],
       loading: true,
       search: "",
-      theme: false
+      theme: false,
     };
   },
   created() {
@@ -163,13 +152,26 @@ export default {
     getdata() {
       this.loading = true;
       GetSetting()
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
+          // handle error
+          console.log(error);
+        });
+    },
+    CheckUpdate() {
+      this.loading = true;
+      CheckUpdate()
+        .then((response) => {
+          // handle success
+          console.log(response);
+          this.loading = false;
+        })
+        .catch((error) => {
           // handle error
           console.log(error);
         });
@@ -177,10 +179,10 @@ export default {
     themeChange(val) {
       this.$store.dispatch("settings/changeSetting", {
         key: "theme",
-        value: val
+        value: val,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

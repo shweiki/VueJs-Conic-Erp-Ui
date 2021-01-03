@@ -7,6 +7,13 @@ export function GetSetting(query) {
     params: query
   })
 }
+export function CheckUpdate(query) {
+  return request({
+    url: '/Setting/CheckUpdate',
+    method: 'get',
+    params: query
+  })
+}
 
 export function GetActiveSetting(query) {
   return request({
