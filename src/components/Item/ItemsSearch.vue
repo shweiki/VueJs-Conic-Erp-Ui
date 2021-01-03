@@ -3,7 +3,7 @@
     <img id="barcodeV" style="display: none" />
     <el-row>
       <el-col :span="2">
-        <add-item :Open="OpenAddItem" :barcode="Barcode" @focus="focusBarcode" />
+        <add-item :visible="OpenAddItem" :barcode="Barcode" @focus="focusBarcode" />
       </el-col>
       <el-col :span="2">
         <search-item @add="AddItem" />

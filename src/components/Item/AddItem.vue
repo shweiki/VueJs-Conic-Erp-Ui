@@ -105,7 +105,7 @@ import store from "@/store";
 
 export default {
   props: {
-    Open: {
+    visible: {
       type: Boolean,
       default: false,
     },
@@ -115,6 +115,7 @@ export default {
     },
   },
   data() {
+    Open: false;
     return {
       tempForm: {
         Id: undefined,
@@ -146,6 +147,14 @@ export default {
       },
     };
   },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.Open = val;
+        return;
+      }
+    },
+  },
   methods: {
     focus() {
       // console.log("row", row);
@@ -159,7 +168,7 @@ export default {
           this.focus();
           CreateItem(this.tempForm)
             .then((response) => {
-              this.open = false;
+              this.Open = false;
               store.dispatch("Items/GetItem");
 
               this.$notify({
