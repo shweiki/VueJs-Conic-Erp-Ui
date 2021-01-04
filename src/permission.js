@@ -5,6 +5,7 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+import { OpenCashDrawer } from "@/api/Device";
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -48,7 +49,7 @@ router.beforeEach(async (to, from, next) => {
 
 
           store.dispatch("Items/GetItem");
-          store.dispatch("Items/GetActiveItem");
+         // store.dispatch("Items/GetActiveItem");
 
           if (store.state.settings.BusinessType == 'GymManagment') {
             store.dispatch("Editors/GetEditorsUser");
@@ -60,6 +61,23 @@ router.beforeEach(async (to, from, next) => {
             store.dispatch("Devices/ConnectZtkDoor");
           }
 
+
+          document.onkeydown = capturekey;
+          document.onkeypress = capturekey;
+          document.onkeyup = capturekey;
+          
+          function capturekey(e) {
+            e = e || window.event;
+            //debugger
+            if (e.code == 'F4') {
+          
+              OpenCashDrawer({ Com: store.state.settings.CashDrawerCOM })
+                .then(response => { console.log("OpenCashDrawer" , response)})
+                .catch(err => {
+                  console.log(err);
+                });
+            }
+          }
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })

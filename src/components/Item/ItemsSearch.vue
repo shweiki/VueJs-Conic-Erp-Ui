@@ -3,10 +3,10 @@
     <img id="barcodeV" style="display: none" />
     <el-row>
       <el-col :span="2">
-        <add-item :visible="OpenAddItem" :barcode="Barcode" @focus="focusBarcode" />
+        <add-item :visible="OpenAddItem" :barcode="Barcode" @focus="focus" />
       </el-col>
       <el-col :span="2">
-        <search-item @add="AddItem" />
+        <search-item @add="AddItem" @focus="focus" />
       </el-col>
       <el-col :span="2">
         <el-switch
@@ -34,7 +34,9 @@
             :value="item"
             :label="item.Name"
           >
-            <span style="color: #8492a6; font-size: 12px">( {{ item.id }} )</span>
+            <span style="color: #8492a6; font-size: 12px"
+              >( {{ item.id }} )</span
+            >
             <span style="float: left">{{ item.Name }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{
               item.SellingPrice
@@ -43,7 +45,17 @@
         </el-select>
       </el-col>
       <el-col :span="10">
-        <el-input data-barcode v-model="Barcode" id="barcode" placeholder="باركود صنف">
+        <el-input
+          data-barcode
+          v-model="Barcode"
+          id="barcode"
+          placeholder="باركود صنف"
+          @focus="
+            () => {
+              Barcode = '';
+            }
+          "
+        >
           <i class="fa fa-barcode el-input__icon" slot="suffix"></i>
         </el-input>
       </el-col>
@@ -56,7 +68,9 @@
     >
       <el-row>
         <el-col :span="3">
-          <el-button type="success" icon="el-plus" @click="AddItemByQty">Add</el-button>
+          <el-button type="success" icon="el-plus" @click="AddItemByQty"
+            >Add</el-button
+          >
         </el-col>
 
         <el-col :span="12">
@@ -90,17 +104,16 @@ export default {
       NewItemVisible: false,
       EnterQTYVisible: false,
       Barcode: "",
-      Name: "",
       search: "",
       options: [],
       searchPool: [],
-      fuse: undefined,
+      fuse: undefined
     };
   },
   computed: {
     Items() {
       return this.$store.getters.AllItems;
-    },
+    }
   },
   watch: {
     Items() {
@@ -108,24 +121,27 @@ export default {
     },
     searchPool(list) {
       this.initFuse(list);
-    },
+    }
   },
+  created() {
+    // Add barcode scan listener and pass the callback function
+    this.$barcodeScanner.init(this.onBarcodeScanned);
+  },
+
   mounted() {
     this.searchPool = this.Items;
-    this.focusBarcode();
   },
   methods: {
     AddItem(item, Qty) {
-      this.OpenAddItem = false;
+      if (this.ByQTY) {
+        this.EnterQTYVisible = true;
+        return;
+      }
+      this.Barcode = "";
       this.$emit("add", item, Qty);
-      this.focusBarcode();
-
-      this.Qty = 1;
     },
     change(val) {
       this.AddItem(val, 1);
-      this.focusBarcode();
-
       this.search = "";
       this.options = [];
     },
@@ -140,13 +156,13 @@ export default {
         keys: [
           {
             name: "ID",
-            weight: 0.7,
+            weight: 0.7
           },
           {
             name: "Name",
-            weight: 0.3,
-          },
-        ],
+            weight: 0.3
+          }
+        ]
       });
     },
     querySearch(query) {
@@ -156,10 +172,10 @@ export default {
         this.options = [];
       }
     },
-    focusBarcode() {
-      document.getElementById("barcode").focus();
-      this.Barcode = "";
+    focus() {
+      this.$emit("focus");
     },
+
     resetBarcode() {
       //  console.log("10");
       let barcode = this.$barcodeScanner.getPreviousCode();
@@ -167,40 +183,26 @@ export default {
     },
     AddItemByQty() {
       var find = this.Items.findIndex(
-        (value) => value.Barcode == this.Barcode || value.id == this.Barcode
+        value => value.Barcode == this.Barcode || value.id == this.Barcode
       );
       if (find != -1) {
         this.AddItem(this.Items[find], this.Qty);
         this.EnterQTYVisible = false;
       } else {
         this.EnterQTYVisible = false;
-        this.$notify.error({
-          title: "لا يوجد صنف يحمل نفس الباركود",
-          dangerouslyUseHTMLString: true,
-
-          message: "عرف صنف جديد للباركود",
-        });
+        this.OpenAddItem = !this.OpenAddItem;
       }
     },
     onBarcodeScanned(barcode) {
-      this.OpenAddItem = false;
-
       var find = this.Items.findIndex(
-        (value) => value.Barcode == this.Barcode || value.id == this.Barcode
+        value => value.Barcode == barcode || value.id == barcode
       );
       if (find != -1) {
-        if (!this.ByQTY) {
-          this.AddItem(this.Items[find], 1);
-        } else this.EnterQTYVisible = true;
+        this.AddItem(this.Items[find], 1);
       } else {
-        this.OpenAddItem = true;
-
-        this.EnterQTYVisible = false;
+        this.OpenAddItem = !this.OpenAddItem;
       }
-    },
-  },
-  created() {
-    this.$barcodeScanner.init(this.onBarcodeScanned);
-  },
+    }
+  }
 };
 </script>

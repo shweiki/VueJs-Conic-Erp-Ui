@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div
+    style="flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: auto;
+    height: 100%; "
+  >
     <el-col
       :xs="12"
       :sm="10"
@@ -9,10 +14,14 @@
       v-for="(Item, index) in ItemsPrime"
       :key="index"
     >
-      <el-card class="box-card" shadow="always" :body-style="{ padding: '3.5px' }">
+      <el-card
+        class="box-card"
+        shadow="always"
+        :body-style="{ padding: '3.5px' }"
+      >
         <div @click="AddItem(Item)">
-          <span style="font-size: 11px;color: #545454;">{{ Item.Name }}</span>
-         <time class="price">{{ Item.SellingPrice.toFixed(2) }}</time>
+          <span style="font-size: 10px;color: #545454;">{{ Item.Name }}</span>
+          <time class="price">{{ Item.SellingPrice.toFixed(2) }}</time>
         </div>
         <!--  <el-col v-permission="['admin']"> 
               <el-tooltip
@@ -29,6 +38,28 @@
         </el-col>-->
       </el-card>
     </el-col>
+    <!--
+    <el-tabs type="card" :tab-position="tabPosition">
+      <el-tab-pane label="All">
+       </el-tab-pane
+      >
+      <el-tab-pane>
+        <span slot="label">
+          <el-dropdown size="mini" type="primary">
+            <i class="el-icon-more el-icon--right"></i>
+            <el-dropdown-menu slot="dropdown">
+              <el-radio-group v-model="tabPosition">
+                <el-radio-button label="top">top</el-radio-button>
+                <el-radio-button label="right">right</el-radio-button>
+                <el-radio-button label="bottom">bottom</el-radio-button>
+                <el-radio-button label="left">left</el-radio-button>
+              </el-radio-group>
+            </el-dropdown-menu>
+          </el-dropdown></span
+        >
+      </el-tab-pane>
+    </el-tabs>
+    -->
   </div>
 </template>
 <script>
@@ -40,7 +71,8 @@ export default {
   directives: { permission },
   data() {
     return {
-      ItemsPrime: []
+      ItemsPrime: [],
+      tabPosition: "top"
     };
   },
   mounted() {
@@ -52,7 +84,6 @@ export default {
     },
     getdata() {
       GetIsPrimeItem().then(response => {
-        
         response.sort(function(a, b) {
           var nameA = a.Name.toUpperCase(); // ignore upper and lowercase
           var nameB = b.Name.toUpperCase(); // ignore upper and lowercase

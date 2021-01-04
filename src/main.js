@@ -14,6 +14,8 @@ import './utils/error-log' // error log
 import * as filters from './filters' // global filters
 import VueCurrencyInput from 'vue-currency-input'
 import VueBarcodeScanner from 'vue-barcode-scanner'
+import OpenCashSound from '@/assets/Sounds/PointOfSaleOpenCashDrawer.wav'
+import BarCodeSound from '@/assets/Sounds/BarCode.wav'
 
 store.dispatch("settings/GetSetting");
 
@@ -34,7 +36,11 @@ Vue.config.productionTip = false
 
 let options = {
   sound: true, // default is false
-  sensitivity: 300, requiredAttr: true
+  soundSrc: BarCodeSound, // default is blank
+  sensitivity: 300, // default is 100
+  requiredAttr: true, // default is false
+  controlSequenceKeys: ['NumLock', 'Clear'], // default is null
+  callbackAfterTimeout: true // default is false
 }
 Vue.use(VueBarcodeScanner, options)
 

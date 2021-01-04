@@ -2,7 +2,7 @@ import defaultSettings from '@/settings'
 import { Edit, GetSetting } from '@/api/Setting'
 import store from '@/store'
 let Settings = {}
-const {WithOutCheckItemIsExist,  errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+const { WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
   , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
@@ -21,7 +21,7 @@ const state = {
   sidebarOpen: sidebarOpen,
   showNavbar: showNavbar,
   showBarcode: showBarcode,
-  WithOutCheckItemIsExist : WithOutCheckItemIsExist,
+  WithOutCheckItemIsExist: WithOutCheckItemIsExist,
   errorLog: errorLog,
   datepickerQuery: datepickerQuery,
   timeQuery: timeQuery,
@@ -40,25 +40,25 @@ const actions = {
   GetSetting({ commit }) {
     return new Promise((resolve, reject) => {
       GetSetting().then(response => {
-        console.log(response.length , Object.keys(defaultSettings).length)
+        console.log(response.length, Object.keys(defaultSettings).length)
         if (response.length != Object.keys(defaultSettings).length
         ) actions.SetSettingDefault(response)
-
-        response.map(x => {
-          var obj = JSON.parse(x.Description);
-          if (obj.key === "pickerOptions") {
-            obj.value.shortcuts.map(OP => {
-              OP.onClick = function (picker) {
-                const end = new Date();
-                const start = new Date();
-                start.setTime(start.getTime() - 3600 * 1000 * 24 * OP.days);
-                picker.$emit("pick", [start, end]);
-              }
-            })
-          }
-          commit('CHANGE_SETTING', obj)
-        })
-
+        else {
+          response.map(x => {
+            var obj = JSON.parse(x.Description);
+            if (obj.key === "pickerOptions") {
+              obj.value.shortcuts.map(OP => {
+                OP.onClick = function (picker) {
+                  const end = new Date();
+                  const start = new Date();
+                  start.setTime(start.getTime() - 3600 * 1000 * 24 * OP.days);
+                  picker.$emit("pick", [start, end]);
+                }
+              })
+            }
+            commit('CHANGE_SETTING', obj)
+          })
+        }
         resolve(response)
 
       }).catch(error => {

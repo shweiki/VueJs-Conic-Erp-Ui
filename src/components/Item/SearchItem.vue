@@ -8,10 +8,12 @@
     ></el-button>
 
     <el-dialog
+      width="80%"
       style="margin-top: -13vh"
       :show-close="false"
       title="بحث عن صنف"
       :visible.sync="Open"
+      @closed="focus"
     >
       <el-table
         :data="
@@ -23,9 +25,8 @@
         @row-dblclick="AddItem"
         fit
         border
-        max-height="900"
+        max-height="500"
         highlight-current-row
-        style="width: 100%"
       >
         <el-table-column prop="Id" width="120">
           <template slot="header" slot-scope="{}">
@@ -39,7 +40,7 @@
         <el-table-column
           v-bind:label="$t('Items.Barcode')"
           prop="Barcode"
-          width="120"
+          width="160"
           align="center"
         ></el-table-column>
 
@@ -95,13 +96,16 @@ export default {
   data() {
     return {
       Open: false,
-      search: ""
+      search: "",
     };
   },
   methods: {
     AddItem(row) {
-     // console.log("row", row);
+      // console.log("row", row);
       this.$emit("add", row, 1);
+    },
+    focus() {
+      this.$emit("focus");
     }
   }
 };
