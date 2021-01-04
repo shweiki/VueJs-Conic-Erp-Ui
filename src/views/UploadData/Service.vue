@@ -81,7 +81,7 @@ export default {
           ID: undefined,
           Name: element.Name,
           Qty: element.Qty,
-          ItemID: element.ItemID,
+          ItemId: element.ItemId,
           SellingPrice: element.SellingPrice,
           Type: element.Type,
           Status: 0,

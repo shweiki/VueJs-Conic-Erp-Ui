@@ -21,7 +21,7 @@
       <el-card class="box-card">
         <span class="demonstration">{{ $t("ItemSales.Name") }}</span>
         <el-select
-          v-model="ItemID"
+          v-model="ItemId"
           filterable
           allow-create
           default-first-option
@@ -149,7 +149,7 @@ export default {
   name: "SalesItem",
   data() {
     return {
-      ItemID: 2,
+      ItemId: 2,
       Items: [],
       tableData: [],
       loading: true,
@@ -204,7 +204,7 @@ export default {
     const start = new Date();
     start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
     this.date = [start, end];
-    this.getdata(this.ItemID, start, end);
+    this.getdata(this.ItemId, start, end);
     GetActiveItem().then((response) => {
       // handle success
       console.log(response)
@@ -234,7 +234,7 @@ export default {
         header:
           "<center> <h2>حركة الصنف " +
           this.Items.find((obj) => {
-            return obj.Id == this.ItemID;
+            return obj.Id == this.ItemId;
           }).Name +
           "</h2></center> <h3 style='float:left'>   الاجمالي الكمية:  " +
           this.TotalQty.toFixed(3) +
@@ -254,7 +254,7 @@ export default {
       datefrom = JSON.parse(JSON.stringify(datefrom));
       dateto = JSON.parse(JSON.stringify(dateto));
       GetItemMove({
-        ItemID: itemid,
+        ItemId: itemid,
         DateFrom: datefrom,
         DateTo: dateto,
       })
@@ -281,7 +281,7 @@ export default {
     },
     changeDate() {
       this.loading = true;
-      this.getdata(this.ItemID, this.date[0], this.date[1]);
+      this.getdata(this.ItemId, this.date[0], this.date[1]);
     },
     formatDate(date) {
       let d = new Date(date),

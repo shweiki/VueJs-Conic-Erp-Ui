@@ -280,14 +280,14 @@ export default {
       StockInventory.StockMovements.forEach((i) => {
         tempForm.InventoryMovements.push({
           ID: undefined,
-          ItemsID: i.ItemsID,
+          ItemsId: i.ItemsId,
           TypeMove: "In",
           Status: 0,
           Qty: i.Qty,
           SellingPrice: 0,
           Tax: 0.0,
           Description: i.Description,
-          InventoryItemID: i.InventoryItemID,
+          InventoryItemId: i.InventoryItemId,
           OrderInventoryID: undefined,
         });
       });

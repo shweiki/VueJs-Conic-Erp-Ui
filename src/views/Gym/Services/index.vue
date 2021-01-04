@@ -81,9 +81,9 @@
         <el-form-item v-bind:label="$t('Classification.Name')" prop="Name">
           <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-form-item prop="ItemID">
+        <el-form-item prop="ItemId">
           <el-select
-            v-model="tempForm.ItemID"
+            v-model="tempForm.ItemId"
             filterable
             v-bind:placeholder="$t('Items.Item')"
             autocomplete="off"
@@ -169,7 +169,7 @@ export default {
         ID: undefined,
         Name: '',
         Qty: 0,
-        ItemID: undefined,
+        ItemId: undefined,
         SellingPrice: 0,
         Type: "OneByOne",
         IsPrime: false,
@@ -254,7 +254,7 @@ export default {
         ID: undefined,
         Name: '',
         Qty: 0,
-        ItemID: undefined,
+        ItemId: undefined,
         SellingPrice: 0,
         Type: "OneByOne",
         IsPrime: false,
@@ -274,7 +274,7 @@ export default {
       console.log(row);
       this.tempForm.Id = row.Id;
       this.tempForm.Name = row.Name;
-      this.tempForm.ItemID = row.ItemID;
+      this.tempForm.ItemId = row.ItemId;
       this.tempForm.SellingPrice = row.SellingPrice;
       this.tempForm.Type = row.Type;
       this.tempForm.Qty = row.Qty;

@@ -50,7 +50,7 @@
           width="220"
         >
           <template slot-scope="scope">
-            <item-qty :ItemID="scope.row.Id" />
+            <item-qty :ItemId="scope.row.Id" />
           </template>
         </el-table-column>
         <el-table-column label="#" align="center" width="50">
@@ -69,7 +69,7 @@
         </el-table-column>
         <el-table-column width="40">
           <template slot-scope="scope">
-            <edit-item :ItemID="scope.row.Id" />
+            <edit-item :ItemId="scope.row.Id" />
           </template>
         </el-table-column>
         <el-table-column type="expand" width="30">

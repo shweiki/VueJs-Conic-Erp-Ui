@@ -114,14 +114,14 @@ export default {
       for (var i = 0; i < this.Service.Qty; i++) {
         SaleInvoice.InventoryMovements.push({
           ID: undefined,
-          ItemsID: this.Service.ItemID,
+          ItemsId: this.Service.ItemId,
           TypeMove: "Out",
           Status: 1,
           Qty: 1.0,
           SellingPrice: ItemSellingPrice,
           Tax: 0.0,
           Description: '',
-          InventoryItemID: 1,
+          InventoryItemId: 1,
           SalesInvoiceId: undefined
         })
       }

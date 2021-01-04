@@ -120,7 +120,7 @@ import { Edit, GetItemByID } from "@/api/Item";
 
 export default {
   props: {
-    ItemID: {
+    ItemId: {
       type: Number,
       default: undefined
     }
@@ -161,7 +161,7 @@ export default {
   },
   methods: {
     getdata() {
-      GetItemByID({ ID: this.ItemID }).then(response => {
+      GetItemByID({ ID: this.ItemId }).then(response => {
         // handle success
         this.tempForm = response;
         this.Visibles = true;

@@ -76,7 +76,7 @@
               >{{ $t('OrderInventories.Items') }} ({{tempForm.InventoryMovements.length.toFixed(2)}})</template>
               <template slot-scope="scope">
                 {{tempForm.InventoryMovements[scope.$index].Itemx.Name}}
-                <edit-item :ItemID="tempForm.InventoryMovements[scope.$index].ItemsID" />
+                <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
               </template>
             </el-table-column>
 
@@ -108,7 +108,7 @@
             <el-table-column align="center">
               <template slot="header" slot-scope="{}">{{ $t('OrderInventories.Store') }}</template>
               <template slot-scope="scope">
-                <el-radio-group v-model="tempForm.InventoryMovements[scope.$index].InventoryItemID">
+                <el-radio-group v-model="tempForm.InventoryMovements[scope.$index].InventoryItemId">
                   <el-radio-button
                     v-for="(item , index ) in InventoryItems"
                     :key="index"
@@ -227,13 +227,13 @@ export default {
       this.tempForm.InventoryMovements.unshift({
         ID: undefined,
         TypeMove: "In",
-        ItemsID: item != undefined ? item.Id : undefined,
+        ItemsId: item != undefined ? item.Id : undefined,
         Status: 0,
         Qty: 1.0,
         SellingPrice: 0,
         Tax: 0.0,
         Description: '',
-        InventoryItemID: 1,
+        InventoryItemId: 1,
         Itemx: item,
         OrderInventoryID: undefined,
       })

@@ -18,15 +18,10 @@
           >
           <router-link
             class="pan-btn tiffany-btn"
-            style="
-              float: left;
-              margin-left: 20px;
-              padding: 10px 15px;
-              border-radius: 6px;
-            "
+            style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
             icon="el-icon-plus"
             to="/Purchase/List"
-            >{{ $t("route.PurchaseInvoice") }}</router-link
+            >{{ $t("route.ListPurchaseInvoice") }}</router-link
           >
           <span>{{ $t("NewPurchaseInvoice.PurchaseInvoice") }}</span>
           <el-col :span="10">
@@ -37,6 +32,13 @@
                 v-model="tempForm.Description"
               ></el-input>
             </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-input
+              prop="Name"
+              placeholder="اسم المستلم"
+              v-model="tempForm.Name"
+            ></el-input>
           </el-col>
         </div>
         <el-row type="flex">
@@ -64,7 +66,7 @@
           <el-col :span="4">
             <el-form-item
               label="الى حساب"
-              prop="VendorID"
+              prop="VendorId"
               :rules="[
                 {
                   required: true,
@@ -74,7 +76,7 @@
               ]"
             >
               <el-select
-                v-model="tempForm.VendorID"
+                v-model="tempForm.VendorId"
                 filterable
                 v-bind:placeholder="$t('NewPurchaseInvoice.Acc')"
                 autocomplete="off"
@@ -96,20 +98,14 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="طريقة الدفع" prop="PaymentMethod">
-              <el-radio-group
-                v-model="tempForm.PaymentMethod"
-                text-color="#f78123"
-              >
+              <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
                 <el-radio label="Cash" border>{{
                   $t("NewPurchaseInvoice.Cash")
                 }}</el-radio>
 
-                <el-radio
-                  v-if="tempForm.VendorID != 2"
-                  label="Receivables"
-                  border
-                  >{{ $t("NewPurchaseInvoice.Receivables") }}</el-radio
-                >
+                <el-radio v-if="tempForm.VendorId != 2" label="Receivables" border>{{
+                  $t("NewPurchaseInvoice.Receivables")
+                }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -161,9 +157,7 @@
             >
             <template slot-scope="scope">
               {{ tempForm.InventoryMovements[scope.$index].Itemx.Name }}
-              <edit-item
-                :ItemID="tempForm.InventoryMovements[scope.$index].ItemsID"
-              />
+              <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
             </template>
           </el-table-column>
 
@@ -215,9 +209,7 @@
             }}</template>
             <template slot-scope="scope">
               <el-radio-group
-                v-model="
-                  tempForm.InventoryMovements[scope.$index].InventoryItemID
-                "
+                v-model="tempForm.InventoryMovements[scope.$index].InventoryItemId"
               >
                 <el-radio-button
                   v-for="(item, index) in InventoryItems"
@@ -234,13 +226,9 @@
             align="center"
           >
             <template slot-scope="scope">
-              <el-form-item
-                :prop="'InventoryMovements.' + scope.$index + '.Description'"
-              >
+              <el-form-item :prop="'InventoryMovements.' + scope.$index + '.Description'">
                 <el-input
-                  v-model="
-                    tempForm.InventoryMovements[scope.$index].Description
-                  "
+                  v-model="tempForm.InventoryMovements[scope.$index].Description"
                   required
                   class="input-with-select"
                 >
@@ -361,14 +349,15 @@ export default {
       ValidateNote: "",
       tempForm: {
         ID: undefined,
-        Name: "",
+        Name: " ",
         Tax: 0.0,
         AccountInvoiceNumber: "",
         FakeDate: new Date(),
         InvoicePurchaseDate: new Date(),
         PaymentMethod: "Cash",
         Discount: 0,
-        VendorID: 2,
+        VendorId: 2,
+        Status: 0,
         InventoryMovements: [],
       },
       rules: {
@@ -427,15 +416,15 @@ export default {
     AddItem(item) {
       this.tempForm.InventoryMovements.unshift({
         ID: undefined,
-        ItemsID: item != undefined ? item.ID : undefined,
+        ItemsId: item != undefined ? item.Id : undefined,
         TypeMove: "In",
         Status: 0,
         Qty: 1.0,
         SellingPrice: item.CostPrice,
         Tax: 0.0,
-        InventoryItemID: 1,
+        InventoryItemId: 1,
         Itemx: item,
-        PurchaseInvoiceID: undefined,
+        PurchaseInvoiceId: undefined,
         Description: "",
       });
       this.SumTotalAmmount();
@@ -450,13 +439,9 @@ export default {
         (a, b) => a + (b["Qty"] || 0),
         0
       );
-      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function (
-        prev,
-        cur
-      ) {
+      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function (prev, cur) {
         return prev + cur.Qty * cur.SellingPrice;
-      },
-      0);
+      }, 0);
       this.TotalAmmount -= this.tempForm.Discount;
       document.getElementById("barcode").focus();
     },
@@ -466,11 +451,7 @@ export default {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
 
-          if (
-            this.TotalAmmount > 0 &&
-            this.TotalItems > 0 &&
-            this.TotalQty > 0
-          ) {
+          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
             Edit(this.tempForm)
               .then((response) => {
                 this.$notify({
@@ -506,11 +487,7 @@ export default {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
 
-          if (
-            this.TotalAmmount > 0 &&
-            this.TotalItems > 0 &&
-            this.TotalQty > 0
-          ) {
+          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
             Create(this.tempForm)
               .then((response) => {
                 this.$notify({
@@ -544,13 +521,13 @@ export default {
     setTagsViewTitle() {
       const title = "Edit Purchase";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.ID}`,
+        title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Purchase";
-      document.title = `${title} - ${this.tempForm.ID}`;
+      document.title = `${title} - ${this.tempForm.Id}`;
     },
   },
 };

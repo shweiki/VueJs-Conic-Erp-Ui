@@ -101,7 +101,7 @@
               <template slot="header" slot-scope="{}">المخزن</template>
               <template slot-scope="scope">
                 <el-radio-group
-                  v-model="tempForm.StockMovements[scope.$index].InventoryItemID"
+                  v-model="tempForm.StockMovements[scope.$index].InventoryItemId"
                 >
                   <el-radio-button
                     v-for="(item , index ) in InventoryItems"
@@ -211,20 +211,20 @@ export default {
   methods: {
     AddItem(Item) {
       var find = this.tempForm.StockMovements.findIndex(
-        value => value.ItemsID == Item.Id
+        value => value.ItemsId == Item.Id
       );
       //console.log(qty);
       if (find != -1) this.tempForm.StockMovements[find].Qty += this.Qty;
       else {
         this.tempForm.StockMovements.push({
           ID: undefined,
-          ItemsID: Item.Id,
+          ItemsId: Item.Id,
           Status: 0,
           Qty: this.Qty,
           SellingPrice: 0,
           Tax: 0.0,
           Description: '',
-          InventoryItemID: 1,
+          InventoryItemId: 1,
           Itemx: Item,
           StocktakingInventoryID: undefined
         })

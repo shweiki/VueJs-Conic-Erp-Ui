@@ -21,7 +21,7 @@
       <el-card class="box-card">
         <span class="demonstration">{{ $t("ItemSales.Name") }}</span>
         <el-select
-          v-model="ItemID"
+          v-model="ItemId"
           filterable
           allow-create
           default-first-option
@@ -148,7 +148,7 @@ export default {
   name: "SalesItem",
   data() {
     return {
-      ItemID: 2,
+      ItemId: 2,
       Items: [],
       tableData: [],
       loading: true,
@@ -186,7 +186,7 @@ export default {
         header:
           "<center> <h2>مبيعات الصنف " +
           this.Items.find(obj => {
-            return obj.Id == this.ItemID;
+            return obj.Id == this.ItemId;
           }).Name +
           "</h2></center> <h3 style='float:left'>   الاجمالي الكمية:  " +
           this.TotalQty.toFixed(3) +
@@ -201,7 +201,7 @@ export default {
     },
 
     getdata() {
-      var itemid = this.ItemID,
+      var itemid = this.ItemId,
         datefrom = this.$store.getters.settings.datepickerQuery[0],
         dateto = this.$store.getters.settings.datepickerQuery[1];
 
@@ -209,7 +209,7 @@ export default {
       datefrom = JSON.parse(JSON.stringify(datefrom));
       dateto = JSON.parse(JSON.stringify(dateto));
       GetSaleItem({
-        ItemID: itemid,
+        ItemId: itemid,
         DateFrom: datefrom,
         DateTo: dateto
       })
