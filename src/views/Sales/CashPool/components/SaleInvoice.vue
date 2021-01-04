@@ -374,15 +374,12 @@ export default {
           this.tableData.map((a) => {
             console.log("a", a);
             return a.InventoryMovements.map((m) => {
-              var find = this.ItemsMovements.findIndex(
-                (value) => value.ItemsId == m.ItemsId
-              );
+              var find = this.ItemsMovements.findIndex((value) => value.Name == m.Name);
               if (find != -1) this.ItemsMovements[find].TotalCount += m.Qty;
               else {
                 const foundItem = this.$store.getters.AllItems.find(
-                  (value) => value.Id == m.ItemsId
+                  (value) => value.Name == m.Name
                 );
-                console.log("hiii ", foundItem);
                 this.ItemsMovements.push({
                   Name: foundItem.Name,
                   TotalCount: m.Qty,

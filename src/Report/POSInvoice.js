@@ -47,7 +47,7 @@ console.log(temp)
 
   
   temp.InventoryMovements.forEach(element => {
-    doc.text(""+element.Itemx.Name+"", 78, startY+=6, {align:'right'});
+    doc.text(""+element.Name+"", 78, startY+=6, {align:'right'});
     doc.text("" + element.Qty + "", 42, startY);
     doc.text("" + (element.SellingPrice).toFixed(1) + "", 25, startY);
     doc.text("" + (element.SellingPrice*element.Qty).toFixed(2) + "", 6, startY);

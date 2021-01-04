@@ -1,26 +1,20 @@
 <template>
-  <div
-    style="flex-wrap: nowrap;
-    white-space: nowrap;
-    overflow: auto;
-    height: 100%; "
-  >
+  <div style="flex-wrap: nowrap; white-space: nowrap; overflow: auto; height: 100%">
+    <el-input v-model="search" v-bind:placeholder="$t('ItemSales.ItemName')" />
     <el-col
       :xs="12"
       :sm="10"
       :md="8"
       :lg="8"
       :xl="4"
-      v-for="(Item, index) in ItemsPrime"
+      v-for="(Item, index) in ItemsPrime.filter(
+        (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+      )"
       :key="index"
     >
-      <el-card
-        class="box-card"
-        shadow="always"
-        :body-style="{ padding: '3.5px' }"
-      >
+      <el-card class="box-card" shadow="always" :body-style="{ padding: '3.5px' }">
         <div @click="AddItem(Item)">
-          <span style="font-size: 10px;color: #545454;">{{ Item.Name }}</span>
+          <span style="font-size: 10px; color: #545454">{{ Item.Name }}</span>
           <time class="price">{{ Item.SellingPrice.toFixed(2) }}</time>
         </div>
         <!--  <el-col v-permission="['admin']"> 
@@ -71,8 +65,9 @@ export default {
   directives: { permission },
   data() {
     return {
+      search: "",
       ItemsPrime: [],
-      tabPosition: "top"
+      tabPosition: "top",
     };
   },
   mounted() {
@@ -83,8 +78,8 @@ export default {
       this.$emit("add", item, 1);
     },
     getdata() {
-      GetIsPrimeItem().then(response => {
-        response.sort(function(a, b) {
+      GetIsPrimeItem().then((response) => {
+        response.sort(function (a, b) {
           var nameA = a.Name.toUpperCase(); // ignore upper and lowercase
           var nameB = b.Name.toUpperCase(); // ignore upper and lowercase
           if (nameA < nameB) {
@@ -99,8 +94,8 @@ export default {
         });
         this.ItemsPrime = response;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

@@ -21,7 +21,13 @@ export function GetOprationByStatusTable(data) {
     params: data
   })
 }
-
+export function GetNextOprationByStatusTable(data) {
+  return request({
+    url: '/Oprationsys/GetNextOprationByStatusTable',
+    method: 'get',
+    params: data
+  })
+}
 export function ChangeObjStatusByTableName(data) {
   return request({
     url: '/Oprationsys/ChangeObjStatusByTableName',
