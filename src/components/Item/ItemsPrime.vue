@@ -17,7 +17,7 @@
           <span style="font-size: 10px; color: #545454">{{ Item.Name }}</span>
           <time class="price">{{ Item.SellingPrice.toFixed(2) }}</time>
         </div>
-        <!--  <el-col v-permission="['admin']"> 
+        <!--  <el-col v-permission="['Admin']"> 
               <el-tooltip
                 v-for="(Inventory, index) in Item.InventoryQty"
                 :key="index"

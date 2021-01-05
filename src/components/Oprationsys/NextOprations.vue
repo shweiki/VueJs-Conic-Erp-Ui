@@ -27,7 +27,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+        <el-button :type="textOpration.ClassName" @click="Create()">{{
           textOpration.OprationDescription
         }}</el-button>
       </div>
@@ -116,7 +116,7 @@ export default {
         ObjID: this.tempOpration.ObjID,
         TableName: this.TableName,
         Status: this.tempOpration.Status,
-        Description: this.tempOpration.ObjID,
+        Description: this.tempOpration.Description,
       })
         .then((response) => {
           this.dialogOprationVisible = false;
@@ -126,11 +126,7 @@ export default {
             type: "success",
             duration: 2000,
           });
-          this.$nextTick(() => {
-            this.$router.replace({
-              path: "/redirect" + this.$route.fullPath,
-            });
-          });
+   
         })
         .catch((error) => {
           console.log(error);

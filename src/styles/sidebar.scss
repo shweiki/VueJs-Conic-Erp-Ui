@@ -34,7 +34,8 @@
 
     .scrollbar-wrapper {
       overflow-x: hidden !important;
-      background: linear-gradient(0deg, rgba(54,166,179,0.7) 5%, rgba(54,166,179,0.88) 20%);
+      background: linear-gradient(0deg, argb(54 166 179 / 39%) 5%, argb(54 166 179 / 43%) 20%);
+      //  background: linear-gradient(0deg, rgba(54,166,179,0.7) 5%, rgba(54,166,179,0.88) 20%);
     }
 
     .el-scrollbar__bar.is-vertical {
@@ -44,8 +45,7 @@
     //<a href="https://ibb.co/9gT3BM3"><img src="https://i.ibb.co/h9W1rq1/tumblr-lw3xis4yjc1qzu5fbo1-500.png" alt="tumblr-lw3xis4yjc1qzu5fbo1-500" border="0"></a>
 
     .el-scrollbar {
-      background-image: url(https://i.ibb.co/nCBSkMk/Untitled.jpg);
-      background-color: #36a6b3e0;
+   
       height: 100%;
       //background: #529fdd;
     }

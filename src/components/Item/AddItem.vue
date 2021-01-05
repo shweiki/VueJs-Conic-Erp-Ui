@@ -12,6 +12,7 @@
       :show-close="false"
       title="أضافة صنف"
       :visible.sync="Open"
+      @opened="resetTempForm"
       @closed="focus"
     >
       <el-form
@@ -179,6 +180,22 @@ export default {
   methods: {
     focus() {
       this.$emit("focus");
+    },
+       resetTempForm() {
+      this.tempForm = {
+        Id: undefined,
+        Name: "",
+        CostPrice: 0.0,
+        SellingPrice: 0.0,
+        OtherPrice: 0.0,
+        LowOrder: 0,
+        Tax: 0.0,
+        Rate: 0,
+        Barcode: "",
+        IsPrime: false,
+        Description: "",
+        Status: 0,
+      };
     },
     createData() {
       this.$refs["dataForm"].validate(valid => {
