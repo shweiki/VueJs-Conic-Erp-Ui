@@ -91,6 +91,20 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/Profile',
+    component: Layout,
+    redirect: '/Profile/index',
+    hidden: true,
+    children: [
+      {
+        path: 'Profile',
+        component: () => import('@/views/Profile/index'),
+        name: 'Profile',
+        meta: { title: 'Profile', icon: 'user', noCache: true }
+      }
+    ]
+  },
 
 ]
 
@@ -147,20 +161,7 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    path: '/Profile',
-    component: Layout,
-    redirect: '/Profile/index',
-    hidden: true,
-    children: [
-      {
-        path: 'Profile',
-        component: () => import('@/views/Profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
-      }
-    ]
-  },
+
   //Guide
   {
     path: '/Guide',

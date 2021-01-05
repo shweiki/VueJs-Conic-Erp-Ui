@@ -117,7 +117,7 @@ const actions = {
       setToken(token)
 
       const { roles, userrouter } = await dispatch('getInfo')
-      roles[roles.length] = userrouter
+      roles.userrouter = userrouter
       resetRouter()
       // generate accessible routes map based on roles
       const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })

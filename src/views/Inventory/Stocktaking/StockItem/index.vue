@@ -310,7 +310,7 @@ export default {
             type: "success",
             position: "top-left",
             duration: 1000,
-            showClose: false,
+            
             onClose: () => {
               Object.assign(this.$data, this.$options.data());
             },

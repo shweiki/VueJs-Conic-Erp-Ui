@@ -460,7 +460,7 @@ export default {
                   type: "success",
                   position: "top-left",
                   duration: 1000,
-                  showClose: false,
+                  
                   onClose: () => {
                     if (response) {
                       this.$nextTick(() => {
@@ -496,7 +496,7 @@ export default {
                   type: "success",
                   position: "top-left",
                   duration: 1000,
-                  showClose: false,
+                  
                   onClose: () => {
                     if (response) {
                       this.$nextTick(() => {

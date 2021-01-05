@@ -331,7 +331,7 @@ export default {
             type: 'success',
             position: "top-left",
             duration: 1000,
-            showClose: false,
+            
             onClose: () => {
               store.dispatch("Members/GetActiveMember");
               let data = [];

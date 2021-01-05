@@ -38,7 +38,7 @@ router.beforeEach(async (to, from, next) => {
           // roles[0].routes = JSON.parse(roles[0].routes)
           // generate accessible routes map based on roles
           //roles[1].router = router;
-          roles[roles.length] = userrouter
+          roles.userrouter =  userrouter
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           // console.log("here ",accessRoutes)
 
