@@ -44,7 +44,11 @@
         </el-col>
         <el-col :span="5">
           <span>{{ $t("Settings.title") }}</span>
-          <el-input v-model="title" class="drawer-switch" />
+          <el-input v-model="title" />
+        </el-col>
+        <el-col :span="5">
+          <span>{{ $t("Settings.CashDrawerCOM") }}</span>
+          <el-input v-model="CashDrawerCOM" />
         </el-col>
         <el-col :span="4">
           <span>{{ $t("Settings.theme") }}</span>
@@ -106,15 +110,14 @@ export default {
         require("@/assets/Sidebar_images/sidebar-9.jpg"),
         require("@/assets/Sidebar_images/sidebar-10.jpg")
       ],
-            loginImages: [
+      loginImages: [
         require("@/assets/Login_images/Login-0.jpg"),
         require("@/assets/Login_images/Login-1.jpg"),
         require("@/assets/Login_images/Login-2.jpg"),
         require("@/assets/Login_images/Login-3.jpg"),
         require("@/assets/Login_images/Login-4.jpg"),
         require("@/assets/Login_images/Login-5.jpg"),
-        require("@/assets/Login_images/Login-6.jpg"),
-
+        require("@/assets/Login_images/Login-6.jpg")
       ]
     };
   },
@@ -129,6 +132,17 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "title",
+          value: val
+        });
+      }
+    },
+    CashDrawerCOM: {
+      get() {
+        return this.$store.state.settings.CashDrawerCOM;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "fixedHeader",
           value: val
         });
       }
@@ -220,7 +234,7 @@ export default {
         key: "loginBackground",
         value: val
       });
-    },
+    }
   }
 };
 </script>
