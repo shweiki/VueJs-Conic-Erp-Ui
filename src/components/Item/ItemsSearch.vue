@@ -200,7 +200,7 @@ export default {
         value =>
           value.Barcode == barcode ||
           (this.$store.getters.settings.BarcodeIsID == true
-            ? value.id == this.Barcode
+            ? value.id == barcode
             : this.$store.getters.settings.BarcodeIsID)
       );
       if (find != -1) {
@@ -208,6 +208,7 @@ export default {
       } else {
         this.OpenAddItem = true;
       }
+      this.Barcode="";
     }
   }
 };
