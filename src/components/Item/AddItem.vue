@@ -12,7 +12,6 @@
       :show-close="false"
       title="أضافة صنف"
       :visible.sync="Open"
-      @opened="resetTempForm"
       @closed="focus"
     >
       <el-form
@@ -128,10 +127,7 @@ import store from "@/store";
 
 export default {
   props: {
-    visible: {
-      type: Boolean,
-      default: false
-    },
+    visible: Boolean,
     barcode: String
   },
   data() {
@@ -169,9 +165,7 @@ export default {
   },
   watch: {
     visible(val) {
-      if (val) {
-        this.Open = val;
-      }
+      if (val) this.Open = val;
     },
     barcode(val) {
       if (val) this.tempForm.Barcode = val;
@@ -179,9 +173,10 @@ export default {
   },
   methods: {
     focus() {
+      this.resetTempForm();
       this.$emit("focus");
     },
-       resetTempForm() {
+    resetTempForm() {
       this.tempForm = {
         Id: undefined,
         Name: "",
@@ -194,7 +189,7 @@ export default {
         Barcode: "",
         IsPrime: false,
         Description: "",
-        Status: 0,
+        Status: 0
       };
     },
     createData() {

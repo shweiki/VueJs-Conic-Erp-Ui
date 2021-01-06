@@ -1,6 +1,14 @@
 <template>
-  <div style="flex-wrap: nowrap; white-space: nowrap; overflow: auto; height: 100%">
-    <el-input v-model="search" v-bind:placeholder="$t('ItemSales.ItemName')" />
+  <div
+    style="flex-wrap: nowrap; white-space: nowrap; overflow: auto; height: 100%"
+  >
+    <el-input v-model="search" v-bind:placeholder="$t('ItemSales.ItemName')">
+      <el-button
+        slot="append"
+        @click="SortByName"
+        icon="el-icon-sort"
+      ></el-button>
+    </el-input>
     <el-col
       :xs="12"
       :sm="10"
@@ -8,11 +16,16 @@
       :lg="8"
       :xl="4"
       v-for="(Item, index) in ItemsPrime.filter(
-        (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+        data =>
+          !search || data.Name.toLowerCase().includes(search.toLowerCase())
       )"
       :key="index"
     >
-      <el-card class="box-card" shadow="always" :body-style="{ padding: '3.5px' }">
+      <el-card
+        class="box-card"
+        shadow="always"
+        :body-style="{ padding: '3.5px' }"
+      >
         <div @click="AddItem(Item)">
           <span style="font-size: 10px; color: #545454">{{ Item.Name }}</span>
           <time class="price">{{ Item.SellingPrice.toFixed(2) }}</time>
@@ -68,6 +81,7 @@ export default {
       search: "",
       ItemsPrime: [],
       tabPosition: "top",
+      order: false
     };
   },
   mounted() {
@@ -77,25 +91,29 @@ export default {
     AddItem(item) {
       this.$emit("add", item, 1);
     },
-    getdata() {
-      GetIsPrimeItem().then((response) => {
-        response.sort(function (a, b) {
-          var nameA = a.Name.toUpperCase(); // ignore upper and lowercase
-          var nameB = b.Name.toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
 
-          // names must be equal
-          return 0;
-        });
-        this.ItemsPrime = response;
+    SortByName() {
+      this.order = !this.order;
+      this.ItemsPrime.sort((a, b) => {
+        var x = a.Name.toUpperCase(); // ignore upper and lowercase
+        var y = b.Name.toUpperCase(); // ignore upper and lowercase
+        if (this.order ? x > y : x < y) {
+          return -1;
+        }
+        if (!this.order ? x > y : x < y) {
+          return 1;
+        }
+        // names must be equal
+        return 0;
       });
     },
-  },
+    getdata() {
+      GetIsPrimeItem().then(response => {
+        this.ItemsPrime = response;
+        this.SortByName();
+      });
+    }
+  }
 };
 </script>
 <style scoped>

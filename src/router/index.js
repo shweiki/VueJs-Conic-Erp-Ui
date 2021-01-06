@@ -53,7 +53,7 @@ export const constantRoutes = [
     hidden: true,
     children: [
       {
-        path: '/redirect/:path*',
+        path: '/redirect/:path(.*)',
         component: () => import('@/views/redirect/index')
       }
     ]
@@ -78,23 +78,11 @@ export const constantRoutes = [
     component: () => import('@/views/error-page/401'),
     hidden: true
   },
+
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/Profile',
-    component: Layout,
-    redirect: '/Profile/index',
+    redirect: '/Profile',
     hidden: true,
     children: [
       {
@@ -113,7 +101,18 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-
+  {
+    path: '/dashboard',
+    component: Layout,
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        name: 'dashboard',
+        meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
+      }
+    ]
+  },
   {
     path: '/Vendor',
     component: Layout,
@@ -178,8 +177,7 @@ export const asyncRoutes = [
       }
     ]
   },
-    // 404 page must be placed at the end !!!
-    { path: '*', redirect: '/404', hidden: true }
+
 
 ]
 

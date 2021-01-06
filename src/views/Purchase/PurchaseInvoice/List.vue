@@ -91,7 +91,7 @@
           align="center"
         >
           <template slot-scope="scope">{{
-            scope.row.PaymentMethod == "Cash" ? "ذمم" : "كاش"
+            scope.row.PaymentMethod
           }}</template>
         </el-table-column>
         <el-table-column

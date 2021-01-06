@@ -173,6 +173,7 @@ export default {
       }
     },
     focus() {
+      this.OpenAddItem = false;
       this.$emit("focus");
     },
 
@@ -194,13 +195,18 @@ export default {
       }
     },
     onBarcodeScanned(barcode) {
+      this.OpenAddItem = false;
       var find = this.Items.findIndex(
-        value => value.Barcode == barcode || value.id == barcode
+        value =>
+          value.Barcode == barcode ||
+          (this.$store.getters.settings.BarcodeIsID == true
+            ? value.id == this.Barcode
+            : this.$store.getters.settings.BarcodeIsID)
       );
       if (find != -1) {
         this.AddItem(this.Items[find], 1);
       } else {
-        this.OpenAddItem = !this.OpenAddItem;
+        this.OpenAddItem = true;
       }
     }
   }

@@ -16,10 +16,8 @@ router.beforeEach(async (to, from, next) => {
   NProgress.start()
   // set page title
   document.title = getPageTitle(to.meta.title)
-
   // determine whether the user has logged in
   const hasToken = getToken()
-
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
@@ -35,51 +33,42 @@ router.beforeEach(async (to, from, next) => {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const { roles, userrouter } = await store.dispatch('user/getInfo')
-          // roles[0].routes = JSON.parse(roles[0].routes)
           // generate accessible routes map based on roles
-          //roles[1].router = router;
-          roles.userrouter =  userrouter
+          roles.userrouter = userrouter
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
-          // console.log("here ",accessRoutes)
-
-          // dynamically add accessible routes
+          // dynamically add accessible routes  
           router.addRoutes(accessRoutes)
 
+
+          // hack method to ensure that addRoutes is complete
+          // set the replace: true, so the navigation will not leave a history record
           store.dispatch("CompanyInfo/GetCompanyInfo");
-
-
           store.dispatch("Items/GetItem");
-         // store.dispatch("Items/GetActiveItem");
-
+          // store.dispatch("Items/GetActiveItem");
           if (store.state.settings.BusinessType == 'GymManagment') {
             store.dispatch("Editors/GetEditorsUser");
             store.dispatch("Devices/GetDevice");
             store.dispatch("Members/CheckMembers");
             store.dispatch("Members/GetActiveMember");
             store.dispatch("Members/GetMember");
-
             store.dispatch("Devices/ConnectZtkDoor");
           }
-
-
           document.onkeydown = capturekey;
           document.onkeypress = capturekey;
           document.onkeyup = capturekey;
-          
+
           function capturekey(e) {
             e = e || window.event;
             //debugger
             if (e.code == 'F4') {
-          
+
               OpenCashDrawer({ Com: store.state.settings.CashDrawerCOM })
-                .then(response => { console.log("OpenCashDrawer" , response)})
+                .then(response => { console.log("OpenCashDrawer", response) })
                 .catch(err => {
                   console.log(err);
                 });
             }
           }
-          // hack method to ensure that addRoutes is complete
-          // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })
           // run First Project
         } catch (error) {

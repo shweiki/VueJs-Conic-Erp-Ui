@@ -7,8 +7,7 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: [],
-  router: ''
+  roles: [],  
 }
 
 const mutations = {
@@ -18,9 +17,7 @@ const mutations = {
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
   },
-  SET_ROUTER: (state, router) => {
-    state.router = router
-  },
+
   SET_NAME: (state, name) => {
     state.name = name
   },
@@ -39,7 +36,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ Username: username.trim(), Password: password, RememberMe: true }).then(response => {
         const data = response
-        console.log("response", response)
+      //  console.log("response", response)
         commit('SET_TOKEN', data.token_type + " " + data.access_token)
         setToken(data.token_type + " " + data.access_token)
         resolve()
@@ -60,7 +57,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction, router } = data
+        const { roles, name, avatar, introduction } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -71,7 +68,6 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
-        commit('SET_ROUTER', router)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -121,6 +117,7 @@ const actions = {
       resetRouter()
       // generate accessible routes map based on roles
       const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+      console.log("here 2 ",accessRoutes)
 
       // dynamically add accessible routes
       router.addRoutes(accessRoutes)

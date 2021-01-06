@@ -22,7 +22,7 @@
                     <i class="el-icon-caret-bottom" />
                   </div>
                   <el-dropdown-menu slot="dropdown">
-                    <router-link to="/Profile/Profile">
+                    <router-link to="/Profile">
                       <el-dropdown-item>
                         {{ $t("navbar.Profile") }}
                       </el-dropdown-item>

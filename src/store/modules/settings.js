@@ -2,7 +2,7 @@ import defaultSettings from '@/settings'
 import { Edit, GetSetting } from '@/api/Setting'
 import store from '@/store'
 let Settings = {}
-const {SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+const { BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
   , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
@@ -15,13 +15,14 @@ const state = {
   tagsView: tagsView,
   CashDrawerCOM: CashDrawerCOM,
   fixedHeader: fixedHeader,
-  SidebarImage:SidebarImage,
+  SidebarImage: SidebarImage,
   loginBackground: loginBackground,
   showSidebar: showSidebar,
   sidebarLogo: sidebarLogo,
   sidebarOpen: sidebarOpen,
   showNavbar: showNavbar,
   showBarcode: showBarcode,
+  BarcodeIsID: BarcodeIsID,
   WithOutCheckItemIsExist: WithOutCheckItemIsExist,
   errorLog: errorLog,
   datepickerQuery: datepickerQuery,
@@ -41,7 +42,7 @@ const actions = {
   GetSetting({ commit }) {
     return new Promise((resolve, reject) => {
       GetSetting().then(response => {
-      //  console.log(response.length, Object.keys(defaultSettings).length)
+        //  console.log(response.length, Object.keys(defaultSettings).length)
         if (response.length != Object.keys(defaultSettings).length
         ) actions.SetSettingDefault(response)
         else {
@@ -76,7 +77,7 @@ const actions = {
       state: 0,
       Description: JSON.stringify(data)
     }).then(response => {
-    //  console.log(response)
+      //  console.log(response)
       // resolve(response)
     }).catch(error => {
       reject(error)

@@ -6,39 +6,45 @@
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
-          <div>Hello</div>
-          {{ user.role }}
+        <pan-thumb
+          :height="'100px'"
+          :width="'100px'"
+          :image="user.avatar"
+          :hoverable="false"
+        >
+          <web-cam ObjectID="Member.Id"/>
         </pan-thumb>
       </div>
       <div class="box-center">
         <div class="user-name text-center">{{ user.Name }}</div>
-        <div class="user-role text-center text-muted">{{ user.role | uppercaseFirst }}</div>
+        <div class="user-role text-center text-muted">
+          {{ user.role | uppercaseFirst }}
+        </div>
       </div>
     </div>
-
   </el-card>
 </template>
 
 <script>
-import PanThumb from '@/components/PanThumb'
+import PanThumb from "@/components/PanThumb";
+import WebCam from "@/components/WebCam";
 
 export default {
-  components: { PanThumb },
+  components: { PanThumb, WebCam },
   props: {
     user: {
       type: Object,
       default: () => {
         return {
-          name: '',
-          email: '',
-          avatar: '',
-          roles: ''
-        }
+          name: "",
+          email: "",
+          avatar: "",
+          roles: ""
+        };
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
