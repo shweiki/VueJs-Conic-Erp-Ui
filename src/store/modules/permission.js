@@ -8,7 +8,6 @@ import path from "path";
  */
 function hasPermission(roles, route) {
   //console.log(route)
-
   if (route.meta && route.meta.roles) {
     return roles.some(role => route.meta.roles.includes(role))
   } else {
