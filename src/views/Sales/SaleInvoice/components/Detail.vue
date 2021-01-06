@@ -333,7 +333,7 @@
                       <el-button
                         :disabled="DisabledSave"
                         style="font-size: 45px"
-                        @click="RestOfBillDialogVisible = true"
+                        @click="isEdit != true ? createData() : updateData()"
                         type="success"
                         icon="el-icon-check"
                       ></el-button>
