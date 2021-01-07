@@ -2,21 +2,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
-        <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
-        <el-date-picker
-          v-model="date"
-          format="dd/MM/yyyy"
-          type="daterange"
-          align="left"
-          unlink-panels
-          v-bind:range-separator="$t('Sales.until')"
-          v-bind:start-placeholder="$t('Sales.From')"
-          v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="['00:00:00', '23:59:59']"
-          :picker-options="pickerOptions"
-          style="width: 80%"
-          @change="changeDate"
-        ></el-date-picker>
+        <search-by-date @change="getdata" />
       </div>
       <el-card class="box-card">
         <span class="demonstration">{{ $t("ItemSales.Name") }}</span>
@@ -25,7 +11,7 @@
           filterable
           allow-create
           default-first-option
-          @change="changeDate"
+          @change="getdata"
           v-bind:placeholder="$t('ItemSales.Name')"
         >
           <el-option
@@ -64,7 +50,7 @@
         :default-sort="{ prop: 'FakeDate', order: 'ascending' }"
         :data="
           tableData.filter(
-            (data) =>
+            data =>
               !search ||
               data.Account.AccountName.toLowerCase().includes(
                 search.toLowerCase()
@@ -82,7 +68,7 @@
             <el-button
               type="primary"
               icon="el-icon-refresh"
-              @click="changeDate"
+              @click="getdata"
             ></el-button>
           </template>
         </el-table-column>
@@ -107,12 +93,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column
-          prop="Qty"
-          label="الكمية"
-          width="120"
-          align="center"
-        >
+        <el-table-column prop="Qty" label="الكمية" width="120" align="center">
           <template slot-scope="scope">{{ scope.row.Qty.toFixed(3) }}</template>
         </el-table-column>
         <el-table-column
@@ -142,11 +123,15 @@
   </div>
 </template>
 <script>
+import SearchByDate from "@/components/Date/SearchByDate";
+
 import { GetItemMove } from "@/api/Item";
 import { GetActiveItem } from "@/api/Item";
 import printJS from "print-js";
 export default {
   name: "SalesItem",
+  components: { SearchByDate },
+
   data() {
     return {
       ItemId: 2,
@@ -155,71 +140,26 @@ export default {
       loading: true,
       TotalQty: 0,
       TotalAmmount: 0,
-      date: [],
-      search: '',
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "قبل أسبوع",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل شهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 3 أشهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 1 سنة",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
-      },
+      search: "",
     };
   },
   created() {
-    const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-    this.date = [start, end];
-    this.getdata(this.ItemId, start, end);
-    GetActiveItem().then((response) => {
+    this.getdata();
+    GetActiveItem().then(response => {
       // handle success
-      console.log(response)
+      console.log(response);
       this.Items = response;
-      this.loading = false
-    })
+      this.loading = false;
+    });
   },
   methods: {
     print(data) {
-      data = data.map((Item) => ({
-        FakeDate : Item.FakeDate,
+      data = data.map(Item => ({
+        FakeDate: Item.FakeDate,
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
       }));
       printJS({
         printable: data,
@@ -228,12 +168,12 @@ export default {
           { field: "Name", displayName: "اسم الزبون" },
           { field: "Qty", displayName: "الكمية" },
           { field: "SellingPrice", displayName: "سعر" },
-          { field: "Total", displayName: "القيمة" },
+          { field: "Total", displayName: "القيمة" }
         ],
         type: "json",
         header:
           "<center> <h2>حركة الصنف " +
-          this.Items.find((obj) => {
+          this.Items.find(obj => {
             return obj.Id == this.ItemId;
           }).Name +
           "</h2></center> <h3 style='float:left'>   الاجمالي الكمية:  " +
@@ -244,23 +184,21 @@ export default {
           this.formatDate(this.date[1]) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      })
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
+      });
     },
 
-    getdata(itemid, datefrom, dateto) {
+    getdata() {
       this.loading = true;
-      datefrom.setHours(0, 0, 0, 0);
-      datefrom = JSON.parse(JSON.stringify(datefrom));
-      dateto = JSON.parse(JSON.stringify(dateto));
+
       GetItemMove({
-        ItemId: itemid,
-        DateFrom: datefrom,
-        DateTo: dateto,
+        ItemId: this.ItemId,
+        DateFrom: this.$store.state.settings.datepickerQuery[0],
+        DateTo: this.$store.state.settings.datepickerQuery[1]
       })
-        .then((response) => {
+        .then(response => {
           // handle success
-          console.log(response)
+          console.log(response);
 
           this.tableData = response.OrderInventoryMove.concat(
             response.SalesInvoiceMove.concat(response.PurchaseInvoiceMove)
@@ -272,17 +210,14 @@ export default {
             (a, b) => a + b.Qty * b.SellingPrice,
             0
           );
-          this.loading = false
+          this.loading = false;
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
-        })
+        });
     },
-    changeDate() {
-      this.loading = true;
-      this.getdata(this.ItemId, this.date[0], this.date[1]);
-    },
+
     formatDate(date) {
       let d = new Date(date),
         day = "" + d.getDate(),
@@ -292,7 +227,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    },
-  },
+    }
+  }
 };
 </script>

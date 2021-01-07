@@ -13,21 +13,9 @@
       </div>
 
       <div slot="header" class="clearfix">
-        <span class="demonstration">{{ $t('Stocks.SearchBy') }}</span>
-        <el-date-picker
-          v-model="date"
-          format="dd/MM/yyyy"
-          type="daterange"
-          align="left"
-          unlink-panels
-          v-bind:range-separator="$t('Sales.until')"
-          v-bind:start-placeholder="$t('Sales.From')"
-          v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="['00:00:00', '23:59:59']"
-          :picker-options="pickerOptions"
-          style="width:80%"
-          @change="changeDate"
-        ></el-date-picker>
+
+                <search-by-date @change="changeDate" />
+
       </div>
       <el-card class="box-card">
         <span class="demonstration">{{ $t('Accounting.Account') }}</span>
@@ -121,6 +109,8 @@
   </div>
 </template> 
 <script>
+import SearchByDate from "@/components/Date/SearchByDate";
+
 import { GetEntryAccounting } from "@/api/EntryAccounting";
 import { GetActiveAccounts } from "@/api/Account";
 import { ChangeObjStatus } from "@/api/Oprationsys";
@@ -128,6 +118,7 @@ import printJS from "print-js";
 
 export default {
   name: "EntryAccounting",
+  components:{SearchByDate},
   data() {
     return {
       tableData: [],
@@ -137,48 +128,7 @@ export default {
       dialogFormVisible: false,
       dialogOprationVisible: false,
       dialogFormStatus: '',
-      date: [],
       AccountID: 2,
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "قبل أسبوع",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "قبل شهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "قبل 3 أشهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "قبل 1 سنة",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      },
       textOpration: {
         OprationDescription: '',
         ArabicOprationDescription: '',
@@ -208,22 +158,16 @@ export default {
     };
   },
   created() {
-    const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-    this.date = [start, end];
-    this.getdata(this.AccountID, start, end);
+
+    this.getdata();
   },
   methods: {
-    getdata(Accountid, datefrom, dateto) {
+    getdata() {
       this.loading = true;
-      datefrom.setHours(0, 0, 0, 0);
-      datefrom = JSON.parse(JSON.stringify(datefrom));
-      dateto = JSON.parse(JSON.stringify(dateto));
       GetEntryAccounting({
-        AccountID: Accountid,
-        DateFrom: datefrom,
-        DateTo: dateto
+        AccountID: this.AccountID,
+        DateFrom: this.$store.state.settings.datepickerQuery[0],
+        DateTo: this.$store.state.settings.datepickerQuery[1]
       }).then(response => {
         console.log(response)
         this.tableData = response;
@@ -239,10 +183,7 @@ export default {
         })
       })
     },
-    changeDate() {
-      this.loading = true;
-      this.getdata(this.AccountID, this.date[0], this.date[1]);
-    },
+
     print(data) {
       printJS({
         printable: data,
@@ -257,45 +198,6 @@ export default {
           "</h3><h3 style='float:right'>  الفترة  : "+ this.formatDate(this.date[0]) +" - " + this.formatDate(this.date[1])+"</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;"
-      })
-    },
-    handleOprationsys(ObjID, Opration) {
-      this.dialogOprationVisible = true;
-      // text
-      this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
-      this.textOpration.IconClass = Opration.IconClass;
-      this.textOpration.ClassName = Opration.ClassName;
-      /// temp
-      this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.Id;
-      this.tempOpration.Description = "";
-    },
-    createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
-        if (valid) {
-          ChangeObjStatus({
-            ObjID: this.tempOpration.ObjID,
-            OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
-          })
-            .then(response => {
-              this.getdata();
-              this.dialogOprationVisible = false;
-              this.$notify({
-                title: "تم  ",
-                message: "تمت العملية بنجاح",
-                type: 'success',
-                duration: 2000
-              })
-            })
-            .catch(error => {
-              console.log(error);
-            })
-        } else {
-          console.log("error submit!!");
-        }
       })
     },
    formatDate(date) {

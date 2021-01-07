@@ -2,21 +2,8 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
-        <el-date-picker
-          v-model="$store.getters.settings.datepickerQuery"
-          format="dd/MM/yyyy"
-          type="daterange"
-          align="left"
-          unlink-panels
-          v-bind:range-separator="$t('Sales.until')"
-          v-bind:start-placeholder="$t('Sales.From')"
-          v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="$store.getters.settings.timeQuery"
-          :picker-options="$store.getters.settings.pickerOptions"
-          style="width: 80%"
-          @change="getdata"
-        ></el-date-picker>
+        <search-by-date @change="getdata" />
+
       </div>
       <el-card class="box-card">
         <span class="demonstration">{{ $t("ItemSales.Name") }}</span>
@@ -141,11 +128,15 @@
   </div>
 </template>
 <script>
+import SearchByDate from "@/components/Date/SearchByDate";
+
 import { GetSaleItem } from "@/api/SaleInvoice";
 import { GetActiveItem } from "@/api/Item";
 import printJS from "print-js";
 export default {
   name: "SalesItem",
+    components: { SearchByDate },
+
   data() {
     return {
       ItemId: 2,
@@ -201,21 +192,15 @@ export default {
     },
 
     getdata() {
-      var itemid = this.ItemId,
-        datefrom = this.$store.getters.settings.datepickerQuery[0],
-        dateto = this.$store.getters.settings.datepickerQuery[1];
 
       this.loading = true;
-      datefrom = JSON.parse(JSON.stringify(datefrom));
-      dateto = JSON.parse(JSON.stringify(dateto));
       GetSaleItem({
-        ItemId: itemid,
-        DateFrom: datefrom,
-        DateTo: dateto
+        ItemId: this.ItemId,
+        DateFrom: this.$store.state.settings.datepickerQuery[0],
+        DateTo: this.$store.state.settings.datepickerQuery[1]
       })
         .then(response => {
           // handle success
-          console.log(this.$store.getters.settings.pickerOptions);
           this.tableData = response;
           this.TotalQty = this.tableData.reduce((a, b) => a + b.Qty, 0);
           this.TotalAmmount = this.tableData.reduce(

@@ -144,6 +144,7 @@ export default {
       this.AddItem(val, 1);
       this.search = "";
       this.options = [];
+      this.focus();
     },
     initFuse(list) {
       this.fuse = new Fuse(list, {
@@ -195,6 +196,12 @@ export default {
       }
     },
     onBarcodeScanned(barcode) {
+      console.log(barcode);
+      if (barcode == "Enter" || !barcode) {
+        this.focus();
+        this.Barcode = "";
+        return false;
+      }
       this.OpenAddItem = false;
       var find = this.Items.findIndex(
         value =>
@@ -208,7 +215,6 @@ export default {
       } else {
         this.OpenAddItem = true;
       }
-      this.Barcode="";
     }
   }
 };

@@ -19,21 +19,8 @@
       </div>
 
       <div slot="header" class="clearfix">
-        <span class="demonstration">{{ $t("Stocks.SearchBy") }}</span>
-        <el-date-picker
-          v-model="date"
-          format="dd/MM/yyyy"
-          type="daterange"
-          align="left"
-          unlink-panels
-          v-bind:range-separator="$t('Sales.until')"
-          v-bind:start-placeholder="$t('Sales.From')"
-          v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="['00:00:00', '23:59:59']"
-          :picker-options="pickerOptions"
-          style="width: 80%"
-          @change="changeDate"
-        ></el-date-picker>
+        <search-by-date @change="getdata" />
+
       </div>
       <el-card class="box-card">
         <el-divider direction="vertical"></el-divider>
@@ -83,7 +70,7 @@
             <el-button
               type="primary"
               icon="el-icon-refresh"
-              @click="getdata(date[0], date[1], Status)"
+              @click="getdata()"
             ></el-button>
           </template>
         </el-table-column>
@@ -141,6 +128,8 @@
   </div>
 </template> 
 <script>
+import SearchByDate from "@/components/Date/SearchByDate";
+
 import { GetPayment } from "@/api/Payment";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import { PaymentMember } from "@/Report/PayPapar";
@@ -150,6 +139,8 @@ import printJS from "print-js";
 
 export default {
   name: "Payment",
+    components: { SearchByDate },
+
   data() {
     return {
       tableData: [],
@@ -158,79 +149,31 @@ export default {
       dialogFormVisible: false,
       dialogOprationVisible: false,
       dialogFormStatus: '',
-      date: [],
       TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
       Oprations: [],
       Status: 1,
       Total: 0,
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "قبل أسبوع",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل شهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 3 أشهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 1 سنة",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
-      }
+  
 
     };
   },
   created() {
     GetOprationByTable({ Name: "Payment" }).then((response) => {
-      console.log(response)
-
-      this.Oprations = response
-          const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-    this.date = [start, end];
-    this.getdata(start, end, this.Status);
+    this.Oprations = response
+    this.getdata();
     })
 
   },
   methods: {
-    getdata(datefrom, dateto, status) {
+    getdata() {
       this.loading = true;
-      datefrom.setHours(0, 0, 0, 0);
-      datefrom = JSON.parse(JSON.stringify(datefrom));
-      dateto = JSON.parse(JSON.stringify(dateto));
+
       GetPayment({
-        DateFrom: datefrom,
-        DateTo: dateto,
-        Status: status,
+        DateFrom: this.$store.state.settings.datepickerQuery[0],
+        DateTo: this.$store.state.settings.datepickerQuery[1],
+        Status: this.Status,
       }).then((response) => {
         console.log(response)
         this.tableData = response;
@@ -252,10 +195,7 @@ export default {
         this.loading = false
       })
     },
-    changeDate() {
-      this.loading = true;
-      this.getdata(this.date[0], this.date[1], this.Status);
-    },
+
     print(data) {
       printJS({
         printable: data,

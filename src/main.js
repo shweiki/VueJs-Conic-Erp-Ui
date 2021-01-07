@@ -16,6 +16,12 @@ import VueCurrencyInput from 'vue-currency-input'
 import VueBarcodeScanner from 'vue-barcode-scanner'
 import OpenCashSound from '@/assets/Sounds/PointOfSaleOpenCashDrawer.wav'
 import BarCodeSound from '@/assets/Sounds/BarCode.wav'
+import * as moment from 'moment';
+import 'moment/locale/pt-br';
+
+moment.locale('en');
+
+
 
 store.dispatch("settings/GetSetting");
 
@@ -40,7 +46,7 @@ let options = {
   sensitivity: 300, // default is 100
   requiredAttr: true, // default is false
   controlSequenceKeys: ['NumLock', 'Clear'], // default is null
-  callbackAfterTimeout: true // default is false
+  callbackAfterTimeout: false // default is false
 }
 Vue.use(VueBarcodeScanner, options)
 

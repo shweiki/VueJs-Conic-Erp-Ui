@@ -2,22 +2,8 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span class="demonstration">{{ $t("Stocks.SearchBy") }}</span>
+        <search-by-date @change="getdata" />
 
-        <el-date-picker
-          v-model="date"
-          format="dd/MM/yyyy"
-          type="daterange"
-          align="left"
-          unlink-panels
-          v-bind:range-separator="$t('Sales.until')"
-          v-bind:start-placeholder="$t('Sales.From')"
-          v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="['00:00:00', '23:59:59']"
-          :picker-options="pickerOptions"
-          style="width: 70%"
-          @change="changeDate"
-        ></el-date-picker>
         <!-- <el-button 
               style="float: left; "
               icon="el-icon-printer"
@@ -36,8 +22,9 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            (data) =>
-              !search || data.FakeDate.toLowerCase().includes(search.toLowerCase())
+            data =>
+              !search ||
+              data.FakeDate.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -51,7 +38,7 @@
             <el-button
               type="primary"
               icon="el-icon-refresh"
-              @click="changeDate"
+              @click="getdata"
             ></el-button>
           </template>
         </el-table-column>
@@ -66,7 +53,11 @@
           v-bind:label="$t('Stocks.BondType')"
           align="center"
         ></el-table-column>
-        <el-table-column v-bind:label="$t('Stocks.Status')" width="120" align="center">
+        <el-table-column
+          v-bind:label="$t('Stocks.Status')"
+          width="120"
+          align="center"
+        >
           <template slot-scope="scope">
             <status-tag :Status="scope.row.Status" TableName="StockItem" />
           </template>
@@ -142,13 +133,18 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
+        <el-button
+          :type="textOpration.ClassName"
+          @click="createOprationData()"
+          >{{ textOpration.OprationDescription }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -159,84 +155,45 @@ import { Create } from "@/api/OrderInventory";
 import { ChangeObjStatus, ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import printJS from "print-js";
 import StatusTag from "@/components/Oprationsys/StatusTag";
+import SearchByDate from "@/components/Date/SearchByDate";
 
 export default {
   name: "StockItem",
-  components: { StatusTag },
+  components: { StatusTag, SearchByDate },
   data() {
     return {
       tableData: [],
       Movements: [],
       loading: true,
-      date: [],
       search: "",
       dialogOprationVisible: false,
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "قبل أسبوع",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل شهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 3 أشهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 1 سنة",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
-      },
+
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: "",
+        ClassName: ""
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: "",
+        Description: ""
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
@@ -252,20 +209,20 @@ export default {
       printJS({
         printable: data,
         properties: ["Barcode", "Name", "Qty"],
-        type: "json",
+        type: "json"
       });
     },
     printAll(data) {
       console.log(data);
-      data = data.map((Item) => ({
+      data = data.map(Item => ({
         Name: Item.Name,
         Qty: Item.Qty,
-        Barcode: Item.Barcode,
+        Barcode: Item.Barcode
       }));
       printJS({
         printable: data,
         properties: ["Barcode", "Name", "Qty"],
-        type: "json",
+        type: "json"
       });
     },
     ConvertToOrderInventory(StockInventory) {
@@ -275,9 +232,9 @@ export default {
         FakeDate: JSON.parse(JSON.stringify(new Date())),
         OrderType: "إدخال ناتج عن جرد رقم " + StockInventory.Id + "",
         Description: "" + StockInventory.Description + "",
-        InventoryMovements: [],
+        InventoryMovements: []
       };
-      StockInventory.StockMovements.forEach((i) => {
+      StockInventory.StockMovements.forEach(i => {
         tempForm.InventoryMovements.push({
           ID: undefined,
           ItemsId: i.ItemsId,
@@ -288,19 +245,19 @@ export default {
           Tax: 0.0,
           Description: i.Description,
           InventoryItemId: i.InventoryItemId,
-          OrderInventoryID: undefined,
+          OrderInventoryID: undefined
         });
       });
       console.log(tempForm);
 
       Create(tempForm)
-        .then((response) => {
+        .then(response => {
           ChangeObjStatusByTableName({
             ObjID: StockInventory.Id,
             TableName: "StocktakingInventory",
             Status: -1,
-            Description: "ترصيد جرد",
-          }).then((response) => {
+            Description: "ترصيد جرد"
+          }).then(response => {
             console.log(response);
           });
 
@@ -310,39 +267,36 @@ export default {
             type: "success",
             position: "top-left",
             duration: 1000,
-            
+
             onClose: () => {
               Object.assign(this.$data, this.$options.data());
-            },
+            }
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
-    getdata(datefrom, dateto) {
+    getdata() {
       this.loading = true;
-      datefrom.setHours(0, 0, 0, 0);
-      datefrom = JSON.parse(JSON.stringify(datefrom));
-      dateto = JSON.parse(JSON.stringify(dateto));
+
       GetStockInventory({
-        DateFrom: datefrom,
-        DateTo: dateto,
-      }).then((response) => {
+        DateFrom: this.$store.state.settings.datepickerQuery[0],
+        DateTo: this.$store.state.settings.datepickerQuery[1]
+      }).then(response => {
         console.log(response);
         this.tableData = response;
         this.Movements = response.StockMovements;
         this.loading = false;
       });
     },
-    changeDate() {
-      this.getdata(this.date[0], this.date[1]);
-    },
+
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription =
+        Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -351,31 +305,31 @@ export default {
       this.tempOpration.Description = "";
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description,
+            Description: this.tempOpration.Description
           })
-            .then((response) => {
-              this.getdata(this.date[0], this.date[1]);
+            .then(response => {
+              this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
           console.log("error submit!!");
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>

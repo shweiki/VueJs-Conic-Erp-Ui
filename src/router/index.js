@@ -104,11 +104,12 @@ export const asyncRoutes = [
   {
     path: '/dashboard',
     component: Layout,
+    redirect: '/dashboard/index',
     children: [
       {
-        path: 'dashboard',
+        path: 'index',
         component: () => import('@/views/dashboard/index'),
-        name: 'dashboard',
+        name: 'Dashboard',
         meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
       }
     ]

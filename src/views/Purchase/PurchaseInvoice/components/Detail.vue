@@ -138,7 +138,7 @@
           </el-col>
         </el-row>
         <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-          <items-search @add="AddItem" />
+          <items-search @add="AddItem" @focus="focusBarcode"/>
         </el-card>
         <el-table :data="tempForm.InventoryMovements" fit border>
           <el-table-column align="center" prop="Itemx.Name">
@@ -468,7 +468,9 @@ export default {
       this.TotalAmmount -= this.tempForm.Discount;
       document.getElementById("barcode").focus();
     },
-
+    focusBarcode() {
+      document.getElementById("barcode").focus();
+    },
     updateData() {
       this.$refs["tempForm"].validate(valid => {
         if (valid) {

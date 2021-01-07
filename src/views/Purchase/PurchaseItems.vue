@@ -2,21 +2,8 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span class="demonstration">{{ $t('Sales.ByDate') }}</span>
-        <el-date-picker
-          v-model="date"
-          format="dd/MM/yyyy"
-          type="daterange"
-          align="left"
-          unlink-panels
-          v-bind:range-separator="$t('Sales.until')"
-          v-bind:start-placeholder="$t('Sales.From')"
-          v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="['00:00:00', '23:59:59']"
-          :picker-options="pickerOptions"
-          style="width:40%"
-          @change="changeDate"
-        ></el-date-picker>
+        <search-by-date @change="getdata" />
+
       </div>
       <el-card class="box-card">
         <span class="demonstration">{{ $t('ItemSales.Name') }}</span>
@@ -25,7 +12,7 @@
           filterable
           allow-create
           default-first-option
-          @change="changeDate"
+          @change="getdata"
           v-bind:placeholder="$t('ItemSales.Name')"
         >
           <el-option v-for="item in Items" :key="item.Id" :label="item.Name" :value="item.Id"></el-option>
@@ -42,7 +29,7 @@
       >
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button  type="primary" icon="el-icon-refresh" @click="changeDate" ></el-button>
+            <el-button  type="primary" icon="el-icon-refresh" @click="getdata" ></el-button>
           </template>
         </el-table-column>
         <el-table-column prop="FakeDate" v-bind:label="$t('ItemSales.Date')" width="120" align="center"></el-table-column>
@@ -67,76 +54,34 @@
 <script>
 import { GetPurchaseItem } from "@/api/PurchaseInvoice";
 import { GetActiveItem } from "@/api/Item";
+import SearchByDate from "@/components/Date/SearchByDate";
 
 export default {
   name: "PurchaseItems",
+    components: { SearchByDate },
+
   data() {
     return {
       ItemId: 2,
       Items: [],
       tableData: [],
       loading: true,
-      date: [],
       search: '',
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "قبل أسبوع",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "قبل شهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "قبل 3 أشهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "قبل 1 سنة",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      }
+
     };
   },
   created() {
-    const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-    this.date = [start, end];
-    this.getdata(this.ItemId, start, end);
+
+    this.getdata();
   },
   methods: {
-    getdata(itemid, datefrom, dateto) {
+    getdata() {
       this.loading = true;
-      datefrom.setHours(0, 0, 0, 0);
-      datefrom = JSON.parse(JSON.stringify(datefrom));
-      dateto = JSON.parse(JSON.stringify(dateto));
+
       GetPurchaseItem({
-        ItemId: itemid,
-        DateFrom: datefrom,
-        DateTo: dateto
+        ItemId: this.ItemId,
+        DateFrom: this.$store.state.settings.datepickerQuery[0],
+        DateTo: this.$store.state.settings.datepickerQuery[1]
       })
         .then(response => {
           // handle success
@@ -154,10 +99,6 @@ export default {
           console.log(error);
         })
     },
-    changeDate() {
-      this.loading = true;
-      this.getdata(this.ItemId, this.date[0], this.date[1]);
-    }
   }
 };
 </script>

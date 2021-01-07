@@ -201,7 +201,8 @@ export default {
           CreateItem(this.tempForm)
             .then(response => {
               this.Open = false;
-              store.dispatch("Items/GetItem");
+              this.$store.getters.AllItems.push(response)
+          //    store.dispatch("Items/GetItem");
               this.focus();
 
               this.$notify({

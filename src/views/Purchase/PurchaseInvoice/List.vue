@@ -2,21 +2,8 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
-        <el-date-picker
-          v-model="$store.getters.settings.datepickerQuery"
-          format="dd/MM/yyyy"
-          type="daterange"
-          align="left"
-          unlink-panels
-          v-bind:range-separator="$t('Sales.until')"
-          v-bind:start-placeholder="$t('Sales.From')"
-          v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="$store.getters.settings.timeQuery"
-          :picker-options="$store.getters.settings.pickerOptions"
-          style="width: 80%"
-          @change="getdata"
-        ></el-date-picker>
+        <search-by-date @change="getdata" />
+
         <router-link
           class="pan-btn tiffany-btn"
           style="
@@ -46,6 +33,13 @@
         max-height="900"
         highlight-current-row
         style="width: 100%"
+        @row-dblclick="
+          row => {
+            $router.replace({
+              path: '/Purchase/Edit/' + row.Id
+            });
+          }
+        "
       >
         <el-table-column prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
@@ -54,13 +48,6 @@
               icon="el-icon-refresh"
               @click="getdata"
             ></el-button>
-          </template>
-          <template slot-scope="scope">
-            <router-link :to="'/Purchase/Edit/' + scope.row.Id">
-              <strong style="font-size: 10px; cursor: pointer">{{
-                scope.row.Id
-              }}</strong>
-            </router-link>
           </template>
         </el-table-column>
         <el-table-column
@@ -90,9 +77,7 @@
           width="160"
           align="center"
         >
-          <template slot-scope="scope">{{
-            scope.row.PaymentMethod
-          }}</template>
+          <template slot-scope="scope">{{ scope.row.PaymentMethod }}</template>
         </el-table-column>
         <el-table-column
           v-bind:label="$t('CashPool.Discount')"
@@ -117,7 +102,7 @@
             JOD
           </template>
         </el-table-column>
-        <el-table-column vlabel="الصافي" width="120" align="center">
+        <el-table-column label="الصافي" width="120" align="center">
           <template slot-scope="scope">
             {{
               (
@@ -130,24 +115,36 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="Description"
+          label="ملاحظات"
+          width="120"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
           v-bind:label="$t('Sales.Status')"
           width="120"
           align="center"
         >
           <template slot-scope="scope">
-            <el-tag >{{
-              scope.row.Status
-            }}</el-tag>
+            <status-tag
+              :Status="scope.row.Status"
+              TableName="PurchaseInvoice"
+            />
           </template>
         </el-table-column>
         <el-table-column width="150" align="center">
           <template slot-scope="scope">
+            <next-oprations
+              :ObjID="scope.row.Id"
+              :Status="scope.row.Status"
+              TableName="PurchaseInvoice"
+            />
             <el-button
               icon="el-icon-printer"
               type="primary"
               @click="printInvoice(scope.row)"
             ></el-button>
-
           </template>
         </el-table-column>
         <el-table-column type="expand">
@@ -191,24 +188,24 @@
         </el-table-column>
       </el-table>
     </el-card>
-
   </div>
 </template>
 <script>
+import SearchByDate from "@/components/Date/SearchByDate";
+import StatusTag from "@/components/Oprationsys/StatusTag";
+import NextOprations from "@/components/Oprationsys/NextOprations";
 import { GetPurchaseInvoice } from "@/api/PurchaseInvoice";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
 import { Invoice1 } from "@/Report/PurchaseInvoice";
 export default {
   name: "PurchaseInvoice",
+  components: { StatusTag, NextOprations, SearchByDate },
   data() {
     return {
       tableData: [],
       loading: true,
-      date: [],
-      search: '',
-
-
+      search: ""
     };
   },
   created() {
@@ -217,25 +214,20 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
-     var datefrom = this.$store.getters.settings.datepickerQuery[0],
-        dateto = this.$store.getters.settings.datepickerQuery[1];
-
-      datefrom = JSON.parse(JSON.stringify(datefrom));
-      dateto = JSON.parse(JSON.stringify(dateto));
       GetPurchaseInvoice({
-        DateFrom: datefrom,
-        DateTo: dateto
+        DateFrom: this.$store.state.settings.datepickerQuery[0],
+        DateTo: this.$store.state.settings.datepickerQuery[1]
       })
         .then(response => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.tableData = response;
-          this.loading = false
+          this.loading = false;
         })
         .catch(error => {
           // handle error
           console.log(error);
-        })
+        });
     },
 
     printInvoice(data) {

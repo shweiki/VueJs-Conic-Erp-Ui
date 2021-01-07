@@ -15,21 +15,8 @@
               type="primary"
               @click="printAll(tableData)"
             ></el-button> -->
-        <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
-        <el-date-picker
-          v-model="date"
-          format="dd/MM/yyyy"
-          type="daterange"
-          align="left"
-          unlink-panels
-          v-bind:range-separator="$t('Sales.until')"
-          v-bind:start-placeholder="$t('Sales.From')"
-          v-bind:end-placeholder="$t('Sales.To')"
-          :default-time="['00:00:00', '23:59:59']"
-          :picker-options="pickerOptions"
-          style="width: 60%"
-          @change="changeDate"
-        ></el-date-picker>
+        <search-by-date @change="getdata" />
+
       </div>
       <el-card class="box-card">
         <el-divider direction="vertical"></el-divider>
@@ -84,7 +71,7 @@
             <el-button
               type="primary"
               icon="el-icon-refresh"
-              @click="changeDate"
+              @click="getdata"
             ></el-button>
           </template>
         </el-table-column>
@@ -206,62 +193,21 @@ import { GetSaleInvoice } from "@/api/SaleInvoice";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
 import StatusTag from "@/components/Oprationsys/StatusTag";
+import SearchByDate from "@/components/Date/SearchByDate";
 
 export default {
   name: "SalesInvoice",
-  components: { StatusTag },
+  components: { StatusTag ,SearchByDate },
   data() {
     return {
       tableData: [],
       loading: true,
-      date: [],
       search: "",
       TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
       Total: 0,
-
       dialogOprationVisible: false,
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "قبل أسبوع",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل شهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 3 أشهر",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "قبل 1 سنة",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
-      },
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
@@ -291,21 +237,15 @@ export default {
     };
   },
   created() {
-    const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-    this.date = [start, end];
-    this.getdata(start, end);
+    this.getdata();
   },
   methods: {
-    getdata(datefrom, dateto) {
+    getdata() {
       this.loading = true;
-      datefrom.setHours(0, 0, 0, 0);
-      datefrom = JSON.parse(JSON.stringify(datefrom));
-      dateto = JSON.parse(JSON.stringify(dateto));
+
       GetSaleInvoice({
-        DateFrom: datefrom,
-        DateTo: dateto,
+        DateFrom: this.$store.state.settings.datepickerQuery[0],
+        DateTo: this.$store.state.settings.datepickerQuery[1]
       })
         .then((response) => {
           // handle success
@@ -376,10 +316,7 @@ export default {
         type: "json",
       });
     },
-    changeDate() {
-      this.loading = true;
-      this.getdata(this.date[0], this.date[1]);
-    },
+
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
       // text
