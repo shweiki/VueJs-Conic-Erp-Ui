@@ -28,7 +28,6 @@ export function filterAsyncRoutes(routes, basePath, checkedKeys, roles) {
     if (hasPermission(roles, tmp)) {
       // console.log("tmp", tmp)
       const routePath = path.resolve(basePath, tmp.path);
-
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(
           tmp.children,
@@ -37,9 +36,10 @@ export function filterAsyncRoutes(routes, basePath, checkedKeys, roles) {
           roles
         );
       }
-      //  console.log(routePath)
+      console.log(routePath)
 
-      if (checkedKeys.includes(routePath)) {
+      if (checkedKeys.includes(routePath) ||
+        tmp.children) {
         res.push(tmp);
       }
     }
@@ -57,7 +57,7 @@ const state = {
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-      // 404 page must be placed at the end !!!
+    // 404 page must be placed at the end !!!
     routes.push({ path: '*', redirect: '/404', hidden: true })
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
