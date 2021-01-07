@@ -39,7 +39,9 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'Id',
       'name',
+      'phone',
       'avatar',
       'roles'
     ])
@@ -50,7 +52,9 @@ export default {
   methods: {
     getUser() {
       this.user = {
+        Id: this.Id,
         name: this.Name,
+        phone:this.phone,
         role: this.roles.join(' | '),
         email: 'admin@test.com',
         avatar: this.avatar

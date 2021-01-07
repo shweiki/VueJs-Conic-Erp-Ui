@@ -1,6 +1,6 @@
 import { GetMember, GetActiveMember, CheckMembers } from "@/api/Member";
 import { CheckMembershipMovement } from "@/api/MembershipMovement";
-import { CheckMemberLog ,GetMemberLogByStatus} from "@/api/MemberLog";
+import { CheckMemberLog, GetMemberLogByStatus } from "@/api/MemberLog";
 
 
 const state = {

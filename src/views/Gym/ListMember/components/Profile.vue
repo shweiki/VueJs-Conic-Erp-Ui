@@ -1,61 +1,74 @@
 <template>
-  <div class="app-container" >
-    <el-row  v-if="tempForm">
+  <div class="app-container">
+    <el-row v-if="tempForm">
       <el-col :span="6" :xs="24">
         <member-log />
       </el-col>
       <el-col :span="18" :xs="24" v-loading="loading">
+        <member-search />
 
-            <member-search />
-  
-        <el-card class="box-card" v-bind:class="{ BlackList: tempForm.Status ==-2 ? true : false }">
-          <el-row >
+        <el-card
+          class="box-card"
+          v-bind:class="{ BlackList: tempForm.Status == -2 ? true : false }"
+        >
+          <el-row>
             <el-col :span="19">
               <Details :Member="tempForm" />
             </el-col>
-            <el-col :span="5" v-if="tempForm.Status !=-2">
-              <el-row >
+            <el-col :span="5" v-if="tempForm.Status != -2">
+              <el-row>
                 <el-col :span="24">
                   <el-button
                     style="width: 100px;"
                     type="info"
                     icon="el-icon-zoom-in"
-                    @click="$router.replace({ path: '/redirect' + '/Gym/ListMember' })"
-                  >جميع مشتركين</el-button>
+                    @click="
+                      $router.replace({ path: '/redirect' + '/Gym/ListMember' })
+                    "
+                    >جميع مشتركين</el-button
+                  >
                 </el-col>
               </el-row>
 
-              <el-row >
+              <el-row>
                 <el-col :span="24">
                   <member-ship-movement
                     :MemberID="tempForm.Id"
                     :AccountID="tempForm.AccountID"
                     :Name="tempForm.Name"
-                    :Enable="(tempForm.TotalCredit - tempForm.TotalDebit) >0 ? true : false"
+                    :Enable="
+                      tempForm.TotalCredit - tempForm.TotalDebit > 0
+                        ? true
+                        : false
+                    "
                   />
                 </el-col>
               </el-row>
-              <el-row >
+              <el-row>
                 <el-col :span="24">
                   <member-pay :MemberID="tempForm.Id" :Name="tempForm.Name" />
                 </el-col>
               </el-row>
-              <el-row >
+              <el-row>
                 <el-col :span="24">
                   <member-ship-movement-with-pay
                     :MemberID="tempForm.Id"
                     :AccountID="tempForm.AccountID"
                     :Name="tempForm.Name"
-                    :Enable="(tempForm.TotalCredit - tempForm.TotalDebit) >0 ? true : false"
+                    :Enable="
+                      tempForm.TotalCredit - tempForm.TotalDebit > 0
+                        ? true
+                        : false
+                    "
                   />
                 </el-col>
               </el-row>
-              <el-row >
+              <el-row>
                 <el-col :span="24">
                   <service-invoice :MemberID="tempForm.Id" />
                 </el-col>
               </el-row>
-              <el-row >
+              <el-row>
                 <el-col :span="24">
                   <massage
                     :NumberPhone1="tempForm.PhoneNumber1"
@@ -68,7 +81,11 @@
           </el-row>
         </el-card>
         <el-card class="box-card" style="min-height : 700px">
-          <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
+          <el-tabs
+            v-model="activeTab"
+            tab-position="right"
+            @tab-click="tabClick"
+          >
             <el-tab-pane label="بيانات" name="Details">
               <user-card :Member="tempForm" />
             </el-tab-pane>
@@ -82,7 +99,10 @@
               <timeline :timeline="log" :MemberID="tempForm.Id" />
             </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
-              <account :EntryMovements="EntryMovements" :AccountID="tempForm.AccountID" />
+              <account
+                :EntryMovements="EntryMovements"
+                :AccountID="tempForm.AccountID"
+              />
             </el-tab-pane>
             <el-tab-pane label="خدمات" name="Service">
               <service :ServiceInvoices="tempForm.ServiceInvoices" />
@@ -160,7 +180,7 @@ export default {
         this.$message({
           message: rule.field + "اواي",
           type: "error"
-        })
+        });
         callback(new Error(rule.field + "اي"));
       } else {
         callback();
@@ -174,7 +194,7 @@ export default {
           this.$message({
             message: "اه",
             type: "error"
-          })
+          });
           callback(new Error("اوه"));
         }
       } else {
@@ -188,7 +208,7 @@ export default {
       tempForm: null,
       MembershipMovements: [],
       Payments: [],
-      EntryMovements:[],
+      EntryMovements: [],
       log: []
     };
   },
@@ -207,7 +227,7 @@ export default {
           this.tempForm = response;
           this.GetImageMember(this.tempForm.Id);
           this.getAge();
-          this.loading = false
+          this.loading = false;
           //this.GetMemberLogFromDevices(val);
           this.setTagsViewTitle();
           // set page title
@@ -215,7 +235,7 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        })
+        });
     },
     tabClick(tab, event) {
       if (tab.label == "زيارات")
@@ -224,28 +244,28 @@ export default {
         }).then(response => {
           console.log("log :", response);
           this.log = response.reverse();
-        })
+        });
       if (tab.label == "اشتراكات")
         GetMembershipMovementByMemberID({
           MemberID: this.tempForm.Id
         }).then(response => {
           console.log("log :", response);
           this.MembershipMovements = response.reverse();
-        })
+        });
       if (tab.label == "مقبوضات")
         GetPaymentsByMemberID({
           MemberID: this.tempForm.Id
         }).then(response => {
           console.log("log :", response);
           this.Payments = response.reverse();
-        })
-            if (tab.label == "مالية")
+        });
+      if (tab.label == "مالية")
         GetEntryMovementsByAccountID({
           AccountID: this.tempForm.AccountID
         }).then(response => {
           console.log("log :", response);
           this.EntryMovements = response;
-        })
+        });
     },
     GetImageMember(ID) {
       GetFileByObjID({ TableName: "Member", ObjID: ID })
@@ -255,7 +275,7 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        })
+        });
     },
     getAge() {
       var today = new Date();
@@ -274,7 +294,7 @@ export default {
         UserID: MemberID
       }).then(response => {
         if (response) {
-          console.log(response)
+          console.log(response);
           this.$notify({
             title: "تم",
             message:
@@ -282,16 +302,16 @@ export default {
               this.$store.getters.Devices[0].Name +
               "  " +
               response +
-              '',
-            type: 'success',
+              "",
+            type: "success",
             duration: 2000
-          })
+          });
           GetUserLog({
             DeviceID: this.$store.getters.Devices[1].Id,
             UserID: MemberID
           }).then(response => {
             if (response) {
-              console.log(response)
+              console.log(response);
               this.$notify({
                 title: "تم",
                 message:
@@ -299,20 +319,20 @@ export default {
                   this.$store.getters.Devices[1].Name +
                   "  " +
                   response +
-                  '',
-                type: 'success',
+                  "",
+                type: "success",
                 duration: 2000
-              })
+              });
             }
-          })
+          });
         }
-      })
+      });
     },
     setTagsViewTitle() {
       const title = "Member";
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`
-      })
+      });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {

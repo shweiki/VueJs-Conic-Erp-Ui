@@ -1,10 +1,13 @@
 import { login, logout, getInfo } from '@/api/User'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import { GetFileByObjID } from "@/api/File";
 
 const state = {
   token: getToken(),
+  Id:'',
   name: '',
+  phone:'',
   avatar: '',
   introduction: '',
   roles: [],  
@@ -17,9 +20,14 @@ const mutations = {
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
   },
-
+  SET_ID: (state, Id) => {
+    state.Id = Id
+  },
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  SET_PHONE: (state, phone) => {
+    state.phone = phone
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -57,15 +65,17 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
+        const { Id,phone, roles, name, avatar, introduction } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
-
+ 
         commit('SET_ROLES', roles)
+        commit('SET_ID', Id)
         commit('SET_NAME', name)
+        commit('SET_PHONE', phone)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
         resolve(data)

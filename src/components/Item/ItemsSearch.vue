@@ -30,12 +30,12 @@
         >
           <el-option
             v-for="item in options"
-            :key="item.id"
+            :key="item.Id"
             :value="item"
             :label="item.Name"
           >
             <span style="color: #8492a6; font-size: 12px"
-              >( {{ item.id }} )</span
+              >( {{ item.Id }} )</span
             >
             <span style="float: left">{{ item.Name }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{
@@ -88,7 +88,6 @@
 </template>
 <script>
 import Fuse from "fuse.js";
-import store from "@/store";
 import AddItem from "./AddItem";
 import SearchItem from "./SearchItem";
 
@@ -156,7 +155,7 @@ export default {
         minMatchCharLength: 1,
         keys: [
           {
-            name: "ID",
+            name: "Id",
             weight: 0.7
           },
           {

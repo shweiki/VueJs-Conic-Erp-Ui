@@ -6,6 +6,7 @@ module.exports = {
   title: 'High  Fit',
   language: 'ar',
   size: "mini",
+  customtheme :false,
   showSettings: true,
   BusinessType: "SuperMarkit",
   tagsView: true,

@@ -1,7 +1,7 @@
 <template>
   <el-card style="margin-bottom:20px;">
     <div slot="header" class="clearfix">
-      <span>About me</span>
+      <span>About me : {{ user.Id }}</span>
     </div>
 
     <div class="user-profile">
@@ -12,8 +12,24 @@
           :image="user.avatar"
           :hoverable="false"
         >
-          <web-cam ObjectID="Member.Id"/>
+          <el-button
+            type="primary"
+            icon="el-icon-upload"
+            @click="imagecropperShow = true"
+          ></el-button>
+          <web-cam TableName="User" :ObjectID="user.phone" />
         </pan-thumb>
+        <image-cropper
+          v-show="imagecropperShow"
+          :key="imagecropperKey"
+          :width="150"
+          :height="150"
+          lang-type="ar"
+          TableName="User"
+          :ObjectID="user.phone"
+          @close="close"
+          @crop-upload-success="cropSuccess"
+        />
       </div>
       <div class="box-center">
         <div class="user-name text-center">{{ user.Name }}</div>
@@ -28,20 +44,35 @@
 <script>
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
+import ImageCropper from "@/components/ImageCropper";
 
 export default {
-  components: { PanThumb, WebCam },
+  components: { PanThumb, WebCam, ImageCropper },
+  data() {
+    return { imagecropperShow: false, imagecropperKey: 0 };
+  },
   props: {
     user: {
       type: Object,
       default: () => {
         return {
+          Id: "",
           name: "",
+          phone: 0,
           email: "",
           avatar: "",
           roles: ""
         };
       }
+    }
+  },
+  methods: {
+    cropSuccess(resData) {
+      this.imagecropperShow = false;
+      this.imagecropperKey = this.imagecropperKey + 1;
+    },
+    close() {
+      this.imagecropperShow = false;
     }
   }
 };

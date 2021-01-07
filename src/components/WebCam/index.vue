@@ -1,34 +1,54 @@
 <template>
   <div>
-      <el-button icon="el-icon-camera-solid" circle @click="Visible = true"></el-button>
+    <el-button
+      icon="el-icon-camera-solid"
+      circle
+      @click="Visible = true"
+    ></el-button>
 
-      <el-dialog style="margin-top: -13vh" title="تصوير" :visible.sync="Visible">
-        <el-row>
-          <el-col :span="24">
-            <video id="video-player" class="video" width="300" height="300"></video>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-button type="primary" @click="start()">لبدء اضغط 2 مرة</el-button>
+    <el-dialog style="margin-top: -13vh" title="تصوير" :visible.sync="Visible">
+      <el-row>
+        <el-col :span="24">
+          <video
+            id="video-player"
+            class="video"
+            width="300"
+            height="300"
+          ></video>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-button type="primary" @click="start()">لبدء اضغط 2 مرة</el-button>
 
-          <el-button type="success" @click="capture()">التقاط</el-button>
+        <el-button type="success" @click="capture()">التقاط</el-button>
         <canvas id="canvas" class="canvas" width="640" height="480"></canvas>
         <img :src="img" height="50" />
-        </el-row>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="Visible = false">{{$t('AddVendors.Cancel')}}</el-button>
-          <el-button type="primary" @click="createData()">{{$t('AddVendors.Save')}}</el-button>
-        </div>
-      </el-dialog>
+      </el-row>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="Visible = false">{{
+          $t("AddVendors.Cancel")
+        }}</el-button>
+        <el-button type="primary" @click="createData()">{{
+          $t("AddVendors.Save")
+        }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { Create } from "@/api/File";
+import { string } from "clipboard";
 export default {
   name: "WebCam",
   props: {
     ObjectID: {
       type: Number,
+      default: () => {
+        return undefined;
+      }
+    },
+    TableName: {
+      type: String,
       default: () => {
         return undefined;
       }
@@ -71,7 +91,7 @@ export default {
           FileType: "image",
           File: this.img.replace(/^data:image\/(png|jpg);base64,/, ""),
           Status: 0,
-          TableName: "Member",
+          TableName: this.TableName,
           FKTable: this.ObjectID
         };
         Create(file).then(response => {

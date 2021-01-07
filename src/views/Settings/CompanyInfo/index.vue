@@ -10,13 +10,16 @@
       >
         <el-row :gutter="24">
           <el-col :span="8">
-            <pan-thumb :image="tempForm.Logo" :height="'75px'" :width="'75px'">
+            <pan-thumb
+              :image="tempForm.Logo"
+              :height="'100px'"
+              :width="'100px'"
+            >
               <el-button
                 type="primary"
                 icon="el-icon-upload"
                 @click="imagecropperShow = true"
-                >Change</el-button
-              >
+              ></el-button>
             </pan-thumb>
 
             <image-cropper
@@ -25,6 +28,8 @@
               :width="150"
               :height="150"
               lang-type="ar"
+              TableName="CompanyInfo"
+              :ObjectID="1"
               @close="close"
               @crop-upload-success="cropSuccess"
               @SetImage="SetBaseImage"
@@ -141,37 +146,36 @@ export default {
       imagecropperKey: 0,
       tempForm: {
         ID: undefined,
-        Name: '',
-        NickName: '',
-        TaxNumber: '',
-        Logo: '',
-        BusinessDescription: '',
-        RateNumber: '',
-        Address: '',
-        PhoneNumber1: '',
-        PhoneNumber2: '',
-        Fax: '',
-        Email: '',
-        Website: '',
-        HeaderReport: '',
-        FooterReport: '',
-
+        Name: "",
+        NickName: "",
+        TaxNumber: "",
+        Logo: "",
+        BusinessDescription: "",
+        RateNumber: "",
+        Address: "",
+        PhoneNumber1: "",
+        PhoneNumber2: "",
+        Fax: "",
+        Email: "",
+        Website: "",
+        HeaderReport: "",
+        FooterReport: ""
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: 'يجب إدخال إسم ',
-            trigger: 'blur',
+            message: "يجب إدخال إسم ",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
-            trigger: 'blur',
-          },
-        ],
-      },
+            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
@@ -192,42 +196,42 @@ export default {
     },
     getdata() {
       GetCompanyInfo()
-        .then((response) => {
+        .then(response => {
           // handle success
-          console.log(response)
+          if(response)
           this.tempForm = response;
-          this.loading = false
+          this.loading = false;
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
-        })
+        });
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           console.log(this.tempForm.HeaderReport);
           Edit(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
-                duration: 2000,
-              })
+                message: "تم التعديل بنجاح",
+                type: "success",
+                duration: 2000
+              });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
-    },
-  },
+      });
+    }
+  }
 };
 </script>
 

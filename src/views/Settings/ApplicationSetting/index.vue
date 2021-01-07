@@ -1,5 +1,4 @@
-﻿
-<template>
+﻿<template>
   <div>
     <el-col :span="6">
       <settings />
@@ -9,72 +8,64 @@
         <div slot="header" class="clearfix">
           <span>جميع اعدادات</span>
         </div>
-        <el-col :span="3">
-          <el-button type="primary" @click="CheckUpdate"
-            >Check UpDate</el-button
-          >
-        </el-col>
-        <el-col :span="5">
-          <span>{{ $t("Settings.title") }}</span>
-          <el-input v-model="title" />
-        </el-col>
-        <el-col :span="5">
-          <span>{{ $t("Settings.CashDrawerCOM") }}</span>
-          <el-input v-model="CashDrawerCOM" />
-        </el-col>
-        <el-col :span="4">
-          <span>{{ $t("Settings.theme") }}</span>
-          <theme-picker
-            style="float: right;height: 26px;margin: -3px 8px 0 0;"
-            @change="themeChange"
-          />
-        </el-col>
-        <el-col :span="4">
-          <span>{{ $t("Settings.theme") }}</span>
-          <el-switch class="drawer-switch" />
-        </el-col>
-        <el-col :span="4">
-          <span>{{ $t("Settings.tagsView") }}</span>
-          <el-switch v-model="tagsView" class="drawer-switch" />
-        </el-col>
-        <el-col :span="4">
-          <span>{{ $t("Settings.showSettings") }}</span>
-          <el-switch v-model="showSettings" class="drawer-switch" />
-        </el-col>
-        <el-col :span="4">
-          <span>{{ $t("Settings.BusinessType") }}</span>
-          <el-input v-model="BusinessType" class="drawer-switch" />
-        </el-col>
-        <el-col :span="4">
-          <span>{{ $t("Settings.fixedHeader") }}</span>
-          <el-switch v-model="fixedHeader" class="drawer-switch" />
-        </el-col>
+        <el-row>
+          <el-col :span="3">
+            <el-button type="primary" @click="CheckUpdate"
+              >Check UpDate</el-button
+            >
+          </el-col>
+          <el-col :span="6">
+            <span>{{ $t("Settings.title") }}</span>
+            <el-input v-model="title" />
+          </el-col>
+          <el-col :span="6">
+            <span>{{ $t("Settings.CashDrawerCOM") }}</span>
+            <el-input v-model="CashDrawerCOM" />
+          </el-col>
+          <el-col :span="6">
+            <span>{{ $t("Settings.BusinessType") }}</span>
+            <el-select v-model="BusinessType" placeholder="Select">
+              <el-option label="SuperMarkit" value="SuperMarkit"> </el-option>
+              <el-option label="GymManagment" value="GymManagment"> </el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+        <el-row
+          ><el-col :span="6">
+            <span>{{ $t("Settings.tagsView") }}</span>
+            <el-switch v-model="tagsView" class="drawer-switch" />
+          </el-col>
+          <el-col :span="6">
+            <span>{{ $t("Settings.showSettings") }}</span>
+            <el-switch v-model="showSettings" class="drawer-switch" />
+          </el-col>
 
-        <el-col :span="4">
-          <span>{{ $t("Settings.sidebarLogo") }}</span>
-          <el-switch v-model="sidebarLogo" class="drawer-switch" />
-        </el-col>
+          <el-col :span="6">
+            <span>{{ $t("Settings.fixedHeader") }}</span>
+            <el-switch v-model="fixedHeader" class="drawer-switch" />
+          </el-col>
+
+          <el-col :span="6">
+            <span>{{ $t("Settings.sidebarLogo") }}</span>
+            <el-switch v-model="sidebarLogo" class="drawer-switch" /> </el-col
+        ></el-row>
       </el-card>
     </el-col>
   </div>
 </template>
 
 <script>
-import ThemePicker from "@/components/ThemePicker";
 import { CheckUpdate } from "@/api/Setting";
-import { toggleClass } from "@/utils";
-import "@/assets/custom-theme/index.css"; // the theme changed version element-ui css
 import Settings from "@/layout/components/Settings/index";
 
 export default {
-  components: { ThemePicker, Settings },
-  data() {
-    return {};
-  },
+  components: { Settings },
+
   computed: {
     isShowJob() {
       return this.$store.getters.settings.language;
     },
+
     title: {
       get() {
         return this.$store.state.settings.title;
@@ -92,7 +83,7 @@ export default {
       },
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
-          key: "fixedHeader",
+          key: "CashDrawerCOM",
           value: val
         });
       }
@@ -166,12 +157,6 @@ export default {
           // handle error
           console.log(error);
         });
-    },
-    themeChange(val) {
-      this.$store.dispatch("settings/changeSetting", {
-        key: "theme",
-        value: val
-      });
     }
   }
 };

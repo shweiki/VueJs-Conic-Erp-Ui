@@ -6,10 +6,10 @@ const state = {
 
 }
 const mutations = {
-    SET_ALLItem: (state, response) => {
+    SET_ALLITEMS: (state, response) => {
         state.AllItems = response.reverse()
     },
-    SET_ACTIVEItem: (state, response) => {
+    SET_ACTIVEITEMS: (state, response) => {
         state.ActiveItems = response.reverse()
     }
 }
@@ -20,7 +20,7 @@ const actions = {
             GetItem().then(response => {
                 console.log(response)
 
-                commit('SET_ALLItem', response)
+                commit('SET_ALLITEMS', response)
                 resolve(response)
 
             }).catch(error => {
@@ -33,7 +33,7 @@ const actions = {
             GetActiveItem().then(response => {
                 console.log(response)
 
-                commit('SET_ACTIVEItem', response)
+                commit('SET_ACTIVEITEMS', response)
                 resolve(response)
 
             }).catch(error => {

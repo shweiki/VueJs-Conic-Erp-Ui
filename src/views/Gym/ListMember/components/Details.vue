@@ -5,12 +5,28 @@
         <div style="float: left">
           <pan-thumb
             :image="Member.Avatar"
-            :height="'75px'"
-            :width="'75px'"
+            :height="'100px'"
+            :width="'100px'"
             :hoverable="false"
           >
-            <web-cam :ObjectID="Member.Id" />
+            <el-button
+              type="primary"
+              icon="el-icon-upload"
+              @click="imagecropperShow = true"
+            ></el-button>
+            <web-cam TableName="Member" :ObjectID="Member.Id" />
           </pan-thumb>
+          <image-cropper
+            v-show="imagecropperShow"
+            :key="imagecropperKey"
+            :width="150"
+            :height="150"
+            lang-type="ar"
+            TableName="Member"
+            :ObjectID="Member.Id"
+            @close="close"
+            @crop-upload-success="cropSuccess"
+          />
           <el-col :span="24">
             <el-tag v-if="Member.HaveFaceOnDevice == true" type="success"
               >يوجد بصمة وجه</el-tag
@@ -25,7 +41,10 @@
             >
           </el-col>
           <el-col :span="24" v-if="checkPermission(['Admin'])">
-            <el-button @click="dialogOprationVisible2 = true" type="success" plain
+            <el-button
+              @click="dialogOprationVisible2 = true"
+              type="success"
+              plain
               >الغاء Black List</el-button
             >
           </el-col>
@@ -143,7 +162,8 @@
         <el-row>
           <el-col :span="8">
             <span>{{
-              (Member.TotalCredit - Member.TotalDebit).toFixed(2) + $t("MemberList.JOD")
+              (Member.TotalCredit - Member.TotalDebit).toFixed(2) +
+                $t("MemberList.JOD")
             }}</span>
           </el-col>
           <el-col :span="4">
@@ -178,11 +198,14 @@
             {
               required: true,
               message: 'لايمكن ترك السبب فارغ',
-              trigger: 'blur',
-            },
+              trigger: 'blur'
+            }
           ]"
         >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -211,15 +234,20 @@
             {
               required: true,
               message: 'لايمكن ترك السبب فارغ',
-              trigger: 'blur',
-            },
+              trigger: 'blur'
+            }
           ]"
         >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="success" @click="RemoveBlackList()">فك الرفض</el-button>
+        <el-button type="success" @click="RemoveBlackList()"
+          >فك الرفض</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -233,49 +261,51 @@ import WebCam from "@/components/WebCam";
 import { string } from "clipboard";
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
+import ImageCropper from "@/components/ImageCropper";
 
 export default {
-  components: { PanThumb, WebCam, StatusTag },
+  components: { PanThumb, WebCam, StatusTag, ImageCropper },
   props: {
     Member: {
       type: Object,
       default: () => {
         return undefined;
-      },
-    },
+      }
+    }
   },
   data() {
     return {
       dialogOprationVisible: false,
       dialogOprationVisible2: false,
-
+      imagecropperShow: false,
+      imagecropperKey: 0,
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: "",
-      },
+        Description: ""
+      }
     };
   },
   methods: {
     checkPermission,
     RemoveBlackList() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatusByTableName({
             ObjID: this.Member.Id,
             TableName: "Member",
             Status: -1,
-            Description: this.tempOpration.Description,
-          }).then((response) => {
+            Description: this.tempOpration.Description
+          }).then(response => {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: "success",
-              duration: 2000,
+              duration: 2000
             });
             this.$nextTick(() => {
               this.$router.replace({
-                path: "/redirect" + this.$route.fullPath,
+                path: "/redirect" + this.$route.fullPath
               });
             });
           });
@@ -283,29 +313,36 @@ export default {
       });
     },
     BlackList() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatusByTableName({
             ObjID: this.Member.Id,
             TableName: "Member",
             Status: -2,
-            Description: this.tempOpration.Description,
-          }).then((response) => {
+            Description: this.tempOpration.Description
+          }).then(response => {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: "success",
-              duration: 2000,
+              duration: 2000
             });
             this.$nextTick(() => {
               this.$router.replace({
-                path: "/redirect" + this.$route.fullPath,
+                path: "/redirect" + this.$route.fullPath
               });
             });
           });
         }
       });
     },
-  },
+    cropSuccess(resData) {
+      this.imagecropperShow = false;
+      this.imagecropperKey = this.imagecropperKey + 1;
+    },
+    close() {
+      this.imagecropperShow = false;
+    }
+  }
 };
 </script>

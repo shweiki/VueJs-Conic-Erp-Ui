@@ -1,13 +1,16 @@
 import defaultSettings from '@/settings'
 import { Edit, GetSetting } from '@/api/Setting'
 import store from '@/store'
+import { toggleClass } from "@/utils";
+
 let Settings = {}
-const { BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+const { customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
   , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
   title: title,
   theme: theme,
+  customtheme: customtheme,
   language: language,
   size: size,
   showSettings: showSettings,
@@ -57,13 +60,17 @@ const actions = {
                   picker.$emit("pick", [start, end]);
                 }
               })
-            }
+            } if (obj.key === "customtheme" && obj.value){
+              toggleClass(document.body, "custom-theme")
+            } 
             commit('CHANGE_SETTING', obj)
           })
         }
         resolve(response)
 
       }).catch(error => {
+        console.log("response")
+        this.Settings = defaultSettings
         reject(error)
       })
     })
@@ -78,7 +85,7 @@ const actions = {
       Description: JSON.stringify(data)
     }).then(response => {
       //  console.log(response)
-     resolve(response)
+      resolve(response)
     }).catch(error => {
       reject(error)
     })

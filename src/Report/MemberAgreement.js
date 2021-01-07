@@ -42,7 +42,7 @@ export function MemberAgreement(temp) {
   doc.setFontSize(14);
 
   doc.text("Name : ", 7, 35);
-  doc.text(temp.name, 25, 35);
+  doc.text(temp.Name, 25, 35);
 
   doc.text("Date Of Birth : ", 7, 40);
   doc.text(formatDate(temp.DateofBirth), 43, 40);

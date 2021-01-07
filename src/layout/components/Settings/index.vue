@@ -1,42 +1,59 @@
 <template>
   <div>
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>{{ $t("Settings.Images") }}</span>
-        </div>
-        <span>{{ $t("Settings.sidebarImages") }}</span>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>{{ $t("Settings.Images") }}</span>
+      </div>
+      <span>{{ $t("Settings.sidebarImages") }}</span>
 
-        <div class="demo-image" style="display: flex;">
-          <el-image
-            style="padding: 18px 2px; width: 75px;"
-            v-for="item in sidebarImages"
-            :key="item"
-            @click="changeSidebarImage(item)"
-            class="img-holder"
-            :src="item"
-            fit="fill"
-          ></el-image>
-        </div>
-        <span>{{ $t("Settings.loginBackground") }}</span>
+      <div class="demo-image" style="display: flex;">
+        <el-image
+          style="padding: 18px 2px; width: 75px;"
+          v-for="item in sidebarImages"
+          :key="item"
+          @click="changeSidebarImage(item)"
+          class="img-holder"
+          :src="item"
+          fit="fill"
+          :preview-src-list="sidebarImages"
+        ></el-image>
+      </div>
+      <span>{{ $t("Settings.loginBackground") }}</span>
 
-        <div class="demo-image" style="display: flex;">
-          <el-image
-            style="padding: 18px 2px; width: 75px;"
-            v-for="item in loginImages"
-            :key="item"
-            @click="changeloginImage(item)"
-            class="img-holder"
-            :src="item"
-            fit="fill"
-          ></el-image>
-        </div> </el-card
-    >
+      <div class="demo-image" style="display: flex;">
+        <el-image
+          style="padding: 18px 2px; width: 75px;"
+          v-for="item in loginImages"
+          :key="item"
+          @click="changeloginImage(item)"
+          class="img-holder"
+          :src="item"
+          fit="fill"
+          :preview-src-list="loginImages"
+        ></el-image>
+      </div>
+      <span>{{ $t("Settings.theme") }}</span>
+      <el-col :span="4">
+        <theme-picker
+          style="float: right;height: 26px;margin: -3px 8px 0 0;"
+          @change="themeChange"
+        />
+      </el-col>
+      <el-col :span="4">
+        <el-switch v-model="customtheme" class="drawer-switch" />
+      </el-col>
+    </el-card>
   </div>
 </template>
 
 <script>
+import ThemePicker from "@/components/ThemePicker";
+import { toggleClass } from "@/utils";
+import "@/assets/custom-theme/index.css"; // the theme changed version element-ui css
 
 export default {
+  components: { ThemePicker },
+
   data() {
     return {
       sidebarImages: [
@@ -63,11 +80,25 @@ export default {
       ]
     };
   },
+  watch: {
+    customtheme() {
+      toggleClass(document.body, "custom-theme");
+    }
+  },
   computed: {
-
+    customtheme: {
+      get() {
+        return this.$store.state.settings.customtheme;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "customtheme",
+          value: val
+        });
+      }
+    }
   },
   methods: {
-
     changeSidebarImage(val) {
       this.$store.dispatch("settings/changeSetting", {
         key: "SidebarImage",
@@ -77,6 +108,12 @@ export default {
     changeloginImage(val) {
       this.$store.dispatch("settings/changeSetting", {
         key: "loginBackground",
+        value: val
+      });
+    },
+    themeChange(val) {
+      this.$store.dispatch("settings/changeSetting", {
+        key: "theme",
         value: val
       });
     }

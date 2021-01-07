@@ -20,7 +20,7 @@
     <el-col :span="14">
       <el-select
         style="width : 90%"
-        ref="headerSearchSelect"
+        ref="headerSearchSelectMember"
         v-model="search"
         :remote-method="querySearch"
         filterable
@@ -60,8 +60,8 @@ import Fuse from "fuse.js";
 import AddMember from "@/components/Member/AddMember";
 
 export default {
-  components: { AddMember },
   name: "MemberSearch",
+  components: { AddMember },
   data() {
     return {
       search: "",
@@ -71,20 +71,20 @@ export default {
     };
   },
   computed: {
-    routes() {
+    Members() {
       return this.$store.getters.AllMembers;
     }
   },
   watch: {
-    routes() {
-      this.searchPool = this.routes;
+    Members() {
+      this.searchPool = this.Members;
     },
     searchPool(list) {
       this.initFuse(list);
     }
   },
   mounted() {
-    this.searchPool = this.routes;
+    this.searchPool = this.Members;
   },
   methods: {
     change(val) {
@@ -125,7 +125,6 @@ export default {
         ]
       });
     },
-
     querySearch(query) {
       if (query !== "") {
         this.options = this.fuse.search(query);
