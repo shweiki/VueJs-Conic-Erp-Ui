@@ -36,8 +36,6 @@ export function filterAsyncRoutes(routes, basePath, checkedKeys, roles) {
           roles
         );
       }
-      console.log(routePath)
-
       if (checkedKeys.includes(routePath) ||
         tmp.children) {
         res.push(tmp);

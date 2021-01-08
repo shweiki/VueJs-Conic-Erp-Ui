@@ -10,9 +10,7 @@
         </div>
         <el-row>
           <el-col :span="3">
-            <el-button type="primary" @click="CheckUpdate"
-              >Check UpDate</el-button
-            >
+            <el-button type="primary" @click="CheckUpdate">Check UpDate</el-button>
           </el-col>
           <el-col :span="6">
             <span>{{ $t("Settings.title") }}</span>
@@ -49,6 +47,13 @@
             <span>{{ $t("Settings.sidebarLogo") }}</span>
             <el-switch v-model="sidebarLogo" class="drawer-switch" /> </el-col
         ></el-row>
+
+        <el-row
+          ><el-col :span="6">
+            <span>{{ $t("Settings.BarcodeIsID") }}</span>
+            <el-switch v-model="BarcodeIsID" class="drawer-switch" />
+          </el-col>
+        </el-row>
       </el-card>
     </el-col>
   </div>
@@ -73,9 +78,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "title",
-          value: val
+          value: val,
         });
-      }
+      },
     },
     CashDrawerCOM: {
       get() {
@@ -84,9 +89,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "CashDrawerCOM",
-          value: val
+          value: val,
         });
-      }
+      },
     },
     fixedHeader: {
       get() {
@@ -95,9 +100,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "fixedHeader",
-          value: val
+          value: val,
         });
-      }
+      },
     },
     tagsView: {
       get() {
@@ -106,9 +111,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "tagsView",
-          value: val
+          value: val,
         });
-      }
+      },
     },
     sidebarLogo: {
       get() {
@@ -117,9 +122,20 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "sidebarLogo",
-          value: val
+          value: val,
         });
-      }
+      },
+    },
+    BarcodeIsID: {
+      get() {
+        return this.$store.state.settings.BarcodeIsID;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "BarcodeIsID",
+          value: val,
+        });
+      },
     },
     showSettings: {
       get() {
@@ -128,9 +144,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "showSettings",
-          value: val
+          value: val,
         });
-      }
+      },
     },
     BusinessType: {
       get() {
@@ -139,26 +155,26 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "BusinessType",
-          value: val
+          value: val,
         });
-      }
-    }
+      },
+    },
   },
   methods: {
     CheckUpdate() {
       this.loading = true;
       CheckUpdate()
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -167,4 +183,3 @@ export default {
   float: right;
 }
 </style>
-
