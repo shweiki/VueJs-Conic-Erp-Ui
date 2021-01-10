@@ -148,6 +148,7 @@
         highlight-current-row
         ref="multipleTable"
         @selection-change="handleSelectionChange"
+        @expand-change="GetInventoryMovements"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
@@ -210,16 +211,19 @@
             ></el-button>
           </template>
           <template slot-scope="scope">
-            <el-button
-              icon="el-icon-printer"
-              type="primary"
-              @click="printInvoice(scope.row)"
-            ></el-button>
-            <el-button
-              icon="el-icon-printer"
-              type="success"
-              @click="printInvoice1(scope.row)"
-            ></el-button>
+            <el-popover placement="top-start" title="Title" width="200" trigger="hover">
+              <el-button
+                icon="el-icon-printer"
+                type="primary"
+                @click="printInvoice(scope.row)"
+              ></el-button>
+              <el-button
+                icon="el-icon-printer"
+                type="success"
+                @click="printInvoice1(scope.row)"
+              ></el-button>
+              <el-button icon="el-icon-printer" type="info" slot="reference"></el-button>
+            </el-popover>
           </template>
         </el-table-column>
         <el-table-column type="expand">
@@ -256,6 +260,8 @@
 
 <script>
 import { GetSaleInvoiceByStatus } from "@/api/SaleInvoice";
+import { GetInventoryMovementsBySalesInvoiceId } from "@/api/InventoryMovement";
+
 import { GetActiveCash } from "@/api/Cash";
 import { GetInComeAccounts } from "@/api/Account";
 import { CreateEntry } from "@/api/EntryAccounting";
@@ -372,7 +378,6 @@ export default {
           this.tableData = response;
           this.ItemsMovements = [];
           this.tableData.map((a) => {
-            console.log("a", a);
             return a.InventoryMovements.map((m) => {
               var find = this.ItemsMovements.findIndex((value) => value.Name == m.Name);
               if (find != -1) this.ItemsMovements[find].TotalCount += m.Qty;
@@ -389,12 +394,15 @@ export default {
               }
             });
           });
-          this.loading = false;
         })
         .catch((error) => {
           // handle error
           console.log(error);
         });
+      this.loading = false;
+    },
+    GetInventoryMovements(row) {
+      console.trace(row);
     },
     printInvoice(data) {
       printJS({
@@ -563,7 +571,7 @@ export default {
             type: "success",
             position: "top-left",
             duration: 1000,
-            
+
             onClose: () => {
               Object.assign(this.$data, this.$options.data());
               this.getdata();

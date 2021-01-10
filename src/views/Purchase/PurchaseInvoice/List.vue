@@ -6,26 +6,20 @@
 
         <router-link
           class="pan-btn tiffany-btn"
-          style="
-            float: left;
-            margin-left: 20px;
-            padding: 10px 15px;
-            border-radius: 6px;
-          "
+          style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
           icon="el-icon-plus"
           to="/Purchase/Create"
           >{{ $t("route.NewPurchaseInvoice") }}</router-link
         >
       </div>
+
       <el-table
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
+            (data) =>
               !search ||
-              data.Account.AccountName.toLowerCase().includes(
-                search.toLowerCase()
-              )
+              data.Account.AccountName.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -34,22 +28,19 @@
         highlight-current-row
         style="width: 100%"
         @row-dblclick="
-          row => {
+          (row) => {
             $router.replace({
-              path: '/Purchase/Edit/' + row.Id
+              path: '/Purchase/Edit/' + row.Id,
             });
           }
         "
       >
         <el-table-column prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata"></el-button>
           </template>
         </el-table-column>
+
         <el-table-column
           prop="FakeDate"
           v-bind:label="$t('Sales.Date')"
@@ -58,18 +49,27 @@
         ></el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('Purchase.Provider')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('Purchase.Provider')" />
           </template>
           <template slot-scope="scope">
-            <router-link :to="'/Purchase/Edit/' + scope.row.Id">
-              <strong style="font-size: 10px; cursor: pointer">{{
-                scope.row.Name
-              }}</strong>
-            </router-link>
+            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </template>
+        </el-table-column>
+        <el-table-column
+          prop="AccountInvoiceNumber"
+          sortable
+          label="InvoicePurchaseDate"
+          width="160"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="InvoicePurchaseDate"
+          sortable
+          label="InvoicePurchaseDate"
+          width="160"
+          align="center"
+        >
         </el-table-column>
         <el-table-column
           sortable
@@ -84,18 +84,12 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{
-            scope.row.Discount.toFixed(3)
-          }}</template>
+          <template slot-scope="scope">{{ scope.row.Discount.toFixed(3) }}</template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('CashPool.Amountv')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
           <template slot-scope="scope">
             {{
-              scope.row.InventoryMovements.reduce(function(prev, cur) {
+              scope.row.InventoryMovements.reduce(function (prev, cur) {
                 return prev + cur.Qty * cur.SellingPrice;
               }, 0)
             }}
@@ -106,7 +100,7 @@
           <template slot-scope="scope">
             {{
               (
-                scope.row.InventoryMovements.reduce(function(prev, cur) {
+                scope.row.InventoryMovements.reduce(function (prev, cur) {
                   return prev + cur.Qty * cur.SellingPrice;
                 }, 0) - scope.row.Discount
               ).toFixed(3)
@@ -114,23 +108,11 @@
             JOD
           </template>
         </el-table-column>
-        <el-table-column
-          prop="Description"
-          label="ملاحظات"
-          width="120"
-          align="center"
-        >
+        <el-table-column prop="Description" label="ملاحظات" width="120" align="center">
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('Sales.Status')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
           <template slot-scope="scope">
-            <status-tag
-              :Status="scope.row.Status"
-              TableName="PurchaseInvoice"
-            />
+            <status-tag :Status="scope.row.Status" TableName="PurchaseInvoice" />
           </template>
         </el-table-column>
         <el-table-column width="150" align="center">
@@ -167,18 +149,12 @@
                 v-bind:label="$t('CashPool.quantity')"
                 align="center"
               ></el-table-column>
-              <el-table-column
-                v-bind:label="$t('CashPool.Price')"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
                 <template slot-scope="scope">{{
                   scope.row.SellingPrice.toFixed(3)
                 }}</template>
               </el-table-column>
-              <el-table-column
-                v-bind:label="$t('CashPool.Total')"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
                 <template slot-scope="scope">{{
                   (scope.row.SellingPrice * scope.row.Qty).toFixed(3)
                 }}</template>
@@ -198,6 +174,7 @@ import { GetPurchaseInvoice } from "@/api/PurchaseInvoice";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
 import { Invoice1 } from "@/Report/PurchaseInvoice";
+
 export default {
   name: "PurchaseInvoice",
   components: { StatusTag, NextOprations, SearchByDate },
@@ -205,7 +182,7 @@ export default {
     return {
       tableData: [],
       loading: true,
-      search: ""
+      search: "",
     };
   },
   created() {
@@ -216,15 +193,16 @@ export default {
       this.loading = true;
       GetPurchaseInvoice({
         DateFrom: this.$store.state.settings.datepickerQuery[0],
-        DateTo: this.$store.state.settings.datepickerQuery[1]
+        DateTo: this.$store.state.settings.datepickerQuery[1],
       })
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
+          this.formTheadOptions = Object.keys(response[0]);
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
@@ -232,7 +210,7 @@ export default {
 
     printInvoice(data) {
       Invoice1(data);
-    }
-  }
+    },
+  },
 };
 </script>

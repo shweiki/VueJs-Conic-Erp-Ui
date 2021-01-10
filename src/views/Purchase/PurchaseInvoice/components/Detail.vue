@@ -9,11 +9,9 @@
     >
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span>{{ $t("NewPurchaseInvoice.PurchaseInvoice") }}</span>
-
           <el-button
             style="float: left"
-            type=" "
+            type="success"
             icon="fa fa-save"
             @click="isEdit != true ? createData() : updateData()"
             >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
@@ -25,31 +23,39 @@
             to="/Purchase/List"
             >{{ $t("route.ListPurchaseInvoice") }}</router-link
           >
-        </div>
-
-        <el-row>
-          <el-col :span="5">
-            <el-form-item prop="AccountInvoiceNumber" label="رقم فاتورة">
+          <span>{{ $t("NewPurchaseInvoice.PurchaseInvoice") }}</span>
+          <el-col :span="10">
+            <el-form-item>
               <el-input
-                placeholder="رقم فاتورة"
-                v-model="tempForm.AccountInvoiceNumber"
+                v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
+                type="textarea"
+                v-model="tempForm.Description"
               ></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-input
+              prop="Name"
+              placeholder="اسم المستلم"
+              v-model="tempForm.Name"
+            ></el-input>
+          </el-col>
+        </div>
+        <el-row type="flex">
           <el-col :span="4">
             <el-form-item
-              prop="InvoicePurchaseDate"
-              v-bind:label="$t('NewPurchaseInvoice.InvDate')"
+              prop="FakeDate"
+              v-bind:label="$t('NewPurchaseInvoice.ReleaseDate')"
               :rules="[
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-date-picker
-                v-model="tempForm.InvoicePurchaseDate"
+                v-model="tempForm.FakeDate"
                 type="date"
                 v-bind:placeholder="$t('NewPurchaseInvoice.Date')"
                 format="dd/MM/yyyy"
@@ -57,26 +63,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
-            <el-form-item label="طريقة الدفع" prop="PaymentMethod">
-              <el-radio-group
-                v-model="tempForm.PaymentMethod"
-                text-color="#f78123"
-              >
-                <el-radio label="Cash" border>{{
-                  $t("NewPurchaseInvoice.Cash")
-                }}</el-radio>
-
-                <el-radio
-                  v-if="tempForm.VendorId != 2"
-                  label="Receivables"
-                  border
-                  >{{ $t("NewPurchaseInvoice.Receivables") }}</el-radio
-                >
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
+          <el-col :span="4">
             <el-form-item
               label="الى حساب"
               prop="VendorId"
@@ -84,8 +71,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك حساب فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-select
@@ -109,28 +96,49 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="6">
+            <el-form-item label="طريقة الدفع" prop="PaymentMethod">
+              <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
+                <el-radio label="Cash" border>{{
+                  $t("NewPurchaseInvoice.Cash")
+                }}</el-radio>
+
+                <el-radio v-if="tempForm.VendorId != 2" label="Receivables" border>{{
+                  $t("NewPurchaseInvoice.Receivables")
+                }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
           <el-col :span="4">
             <el-form-item
-              prop="FakeDate"
-              v-bind:label="$t('NewPurchaseInvoice.ReleaseDate')"
+              prop="InvoicePurchaseDate"
+              v-bind:label="$t('NewPurchaseInvoice.InvDate')"
               :rules="[
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-date-picker
-                v-model="tempForm.FakeDate"
+                v-model="tempForm.InvoicePurchaseDate"
                 type="date"
                 v-bind:placeholder="$t('NewPurchaseInvoice.Date')"
                 format="dd/MM/yyyy"
               ></el-date-picker>
             </el-form-item>
           </el-col>
+          <el-col :span="4">
+            <el-form-item prop="AccountInvoiceNumber" label="رقم فاتورة">
+              <el-input
+                placeholder="رقم فاتورة"
+                v-model="tempForm.AccountInvoiceNumber"
+              ></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col>
             <span style="color: #f56c6c; font-size: 16px; text-align: center">{{
               ValidateNote
@@ -138,7 +146,7 @@
           </el-col>
         </el-row>
         <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-          <items-search @add="AddItem" @focus="focusBarcode"/>
+          <items-search @add="AddItem" />
         </el-card>
         <el-table :data="tempForm.InventoryMovements" fit border>
           <el-table-column align="center" prop="Itemx.Name">
@@ -149,9 +157,7 @@
             >
             <template slot-scope="scope">
               {{ tempForm.InventoryMovements[scope.$index].Itemx.Name }}
-              <edit-item
-                :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
-              />
+              <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
             </template>
           </el-table-column>
 
@@ -203,9 +209,7 @@
             }}</template>
             <template slot-scope="scope">
               <el-radio-group
-                v-model="
-                  tempForm.InventoryMovements[scope.$index].InventoryItemId
-                "
+                v-model="tempForm.InventoryMovements[scope.$index].InventoryItemId"
               >
                 <el-radio-button
                   v-for="(item, index) in InventoryItems"
@@ -222,13 +226,9 @@
             align="center"
           >
             <template slot-scope="scope">
-              <el-form-item
-                :prop="'InventoryMovements.' + scope.$index + '.Description'"
-              >
+              <el-form-item :prop="'InventoryMovements.' + scope.$index + '.Description'">
                 <el-input
-                  v-model="
-                    tempForm.InventoryMovements[scope.$index].Description
-                  "
+                  v-model="tempForm.InventoryMovements[scope.$index].Description"
                   required
                   class="input-with-select"
                 >
@@ -260,7 +260,7 @@
         </el-table>
       </el-card>
 
-      <el-row>
+      <el-row type="flex">
         <el-col :span="24">
           <el-card shadow="hover">
             <el-divider direction="vertical"></el-divider>
@@ -292,24 +292,6 @@
             <el-divider direction="vertical"></el-divider>
             <span>{{ TotalAmmount.toFixed(2) }} JOD</span>
             <el-divider direction="vertical"></el-divider>
-            <el-divider></el-divider>
-            <el-row>
-              <el-col :span="16">
-                <el-form-item>
-                  <el-input
-                    v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
-                    type="textarea"
-                    v-model="tempForm.Description"
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-input
-                  prop="Name"
-                  placeholder="اسم المستلم"
-                  v-model="tempForm.Name"
-                ></el-input> </el-col
-            ></el-row>
           </el-card>
         </el-col>
       </el-row>
@@ -330,15 +312,15 @@ export default {
   props: {
     isEdit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === "") {
         this.$message({
           message: rule.field + "اواي",
-          type: "error"
+          type: "error",
         });
         callback(new Error(rule.field + "اي"));
       } else {
@@ -352,7 +334,7 @@ export default {
         } else {
           this.$message({
             message: "اه",
-            type: "error"
+            type: "error",
           });
           callback(new Error("اوه"));
         }
@@ -367,7 +349,7 @@ export default {
       ValidateNote: "",
       tempForm: {
         ID: undefined,
-        Name: "- ",
+        Name: " ",
         Tax: 0.0,
         AccountInvoiceNumber: "",
         FakeDate: new Date(),
@@ -376,7 +358,7 @@ export default {
         Discount: 0,
         VendorId: 2,
         Status: 0,
-        InventoryMovements: []
+        InventoryMovements: [],
       },
       rules: {
         InventoryMovements: [
@@ -384,14 +366,14 @@ export default {
             type: "array",
             required: true,
             message: "لا يمكن إستكمال عملية الشراء من غير إضافة أصناف",
-            trigger: "change"
-          }
-        ]
+            trigger: "change",
+          },
+        ],
       },
       InventoryItems: [],
       CashAccounts: [],
       Vendor: [],
-      tempRoute: {}
+      tempRoute: {},
     };
   },
   created() {
@@ -400,12 +382,12 @@ export default {
     }
     this.tempRoute = Object.assign({}, this.$route);
 
-    GetActiveInventory().then(response => {
+    GetActiveInventory().then((response) => {
       console.log(response);
       this.InventoryItems = response;
     });
 
-    GetActiveVendor().then(response => {
+    GetActiveVendor().then((response) => {
       console.log(response);
       this.Vendor = response;
     });
@@ -417,7 +399,7 @@ export default {
   methods: {
     getdata(val) {
       GetPurchaseInvoiceByID({ ID: val })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.tempForm = response;
           this.SumTotalAmmount();
@@ -427,12 +409,11 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     AddItem(item) {
-      console.log("item", item);
       this.tempForm.InventoryMovements.unshift({
         ID: undefined,
         ItemsId: item != undefined ? item.Id : undefined,
@@ -444,7 +425,7 @@ export default {
         InventoryItemId: 1,
         Itemx: item,
         PurchaseInvoiceId: undefined,
-        Description: ""
+        Description: "",
       });
       this.SumTotalAmmount();
     },
@@ -458,50 +439,40 @@ export default {
         (a, b) => a + (b["Qty"] || 0),
         0
       );
-      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function(
-        prev,
-        cur
-      ) {
+      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function (prev, cur) {
         return prev + cur.Qty * cur.SellingPrice;
-      },
-      0);
+      }, 0);
       this.TotalAmmount -= this.tempForm.Discount;
       document.getElementById("barcode").focus();
     },
-    focusBarcode() {
-      document.getElementById("barcode").focus();
-    },
+
     updateData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
 
-          if (
-            this.TotalAmmount > 0 &&
-            this.TotalItems > 0 &&
-            this.TotalQty > 0
-          ) {
+          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
             Edit(this.tempForm)
-              .then(response => {
+              .then((response) => {
                 this.$notify({
                   title: "تم تعديل  بنجاح",
                   message: "تم تعديل بنجاح",
                   type: "success",
                   position: "top-left",
                   duration: 1000,
-
+                  showClose: false,
                   onClose: () => {
                     if (response) {
                       this.$nextTick(() => {
                         this.$router.replace({
-                          path: "/redirect" + "/Purchase/List"
+                          path: "/redirect" + "/Purchase/List",
                         });
                       });
                     }
-                  }
+                  },
                 });
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
               });
           } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
@@ -512,36 +483,32 @@ export default {
       });
     },
     createData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
 
-          if (
-            this.TotalAmmount > 0 &&
-            this.TotalItems > 0 &&
-            this.TotalQty > 0
-          ) {
+          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
             Create(this.tempForm)
-              .then(response => {
+              .then((response) => {
                 this.$notify({
                   title: "تم الإضافة بنجاح",
                   message: "تم الإضافة بنجاح",
                   type: "success",
                   position: "top-left",
                   duration: 1000,
-
+                  showClose: false,
                   onClose: () => {
                     if (response) {
                       this.$nextTick(() => {
                         this.$router.replace({
-                          path: "/redirect" + "/Purchase/List"
+                          path: "/redirect" + "/Purchase/List",
                         });
                       });
                     }
-                  }
+                  },
                 });
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
               });
           } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
@@ -554,20 +521,14 @@ export default {
     setTagsViewTitle() {
       const title = "Edit Purchase";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`
+        title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Purchase";
       document.title = `${title} - ${this.tempForm.Id}`;
-    }
-  }
+    },
+  },
 };
 </script>
-<style scoped>
-.el-date-editor.el-input,
-.el-date-editor.el-input__inner {
-  width: 100%;
-}
-</style>
