@@ -6,7 +6,7 @@ let ComapnyInfo = null;
 GetCompanyInfo().then(response => {
   ComapnyInfo = response;
 })
-export function Invoice1(temp) {
+export function SaleInvoiceLabel(temp) {
   let startX = 1 , startY = 0
   let doc = new jsPDF("p", "mm", "80", { filters: ["ASCIIHexEncode"] });
 console.log(temp)

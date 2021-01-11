@@ -15,8 +15,7 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
-              !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -40,10 +39,7 @@
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('Inventory.StoreName')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('Inventory.StoreName')" />
           </template>
         </el-table-column>
         <el-table-column
@@ -57,11 +53,7 @@
           width="220"
           align="center"
         ></el-table-column>
-        <el-table-column
-          v-bind:label="$t('Items.Status')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('Items.Status')" width="120" align="center">
           <template slot-scope="scope">
             <status-tag :Status="scope.row.Status" TableName="InventoryItem" />
           </template>
@@ -104,12 +96,9 @@
                 width="130"
                 align="center"
               ></el-table-column>
-              <el-table-column
-                v-bind:label="$t('Stocks.Quantity')"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('Stocks.Quantity')" align="center">
                 <template slot-scope="scope">
-                  <el-tag style="font-size: x-large;">{{
+                  <el-tag style="font-size: x-large">{{
                     scope.row.QtyIn - scope.row.QtyOut
                   }}</el-tag>
                 </template>
@@ -135,10 +124,7 @@
         <el-form-item v-bind:label="$t('Inventory.StoreName')" prop="Name">
           <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('OrderInventories.Notes')"
-          prop="Description"
-        >
+        <el-form-item v-bind:label="$t('OrderInventories.Notes')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -165,22 +151,14 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item
-          v-bind:label="$t('Inventory.OperationNote')"
-          prop="Description"
-        >
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+        <el-form-item v-bind:label="$t('Inventory.OperationNote')" prop="Description">
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-          >{{ textOpration.OprationDescription }}</el-button
-        >
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -205,54 +183,54 @@ export default {
       search: "",
       textMapForm: {
         update: "تعديل",
-        create: "إضافة"
+        create: "إضافة",
       },
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: ""
+        ClassName: "",
       },
       tempForm: {
         ID: undefined,
         Name: "",
-        Description: ""
+        Description: "",
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 أحرف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -260,28 +238,39 @@ export default {
   },
   methods: {
     print(data) {
-      data = data.map(Item => ({
-        Barcode: Item.Item.Barcode,
+      console.log(data.Items[0].Item.CostPrice);
+      let Items = data.Items.map((Item) => ({
         Name: Item.Item.Name,
-        Qty: Item.QtyIn - Item.QtyOut
+        Qty: Item.QtyIn - Item.QtyOut,
+        CostPrice: Item.Item.CostPrice,
+        Total: (Item.QtyIn - Item.QtyOut) * Item.Item.CostPrice,
       }));
       printJS({
-        printable: data,
-        properties: ["Barcode", "Name", "Qty"],
-        type: "json"
+        printable: Items,
+        properties: ["Total", "CostPrice", "Qty", "Name"],
+        type: "json",
+        header:
+          "<center> <h2> " +
+          data.Name +
+          "</h2></center><h3 style='float:right'> " +
+          " - الاجمالي لقيمة المخزون :  " +
+          Items.reduce((a, b) => a + b.Qty * b.CostPrice, 0).toFixed(3) +
+          "</h3>",
+        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;",
       });
     },
     getdata() {
       this.loading = true;
 
       GetInventoryItem()
-        .then(response => {
+        .then((response) => {
           // handle success
-          
+
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
@@ -290,7 +279,7 @@ export default {
       this.tempForm = {
         ID: undefined,
         Name: "",
-        Description: ""
+        Description: "",
       };
     },
     handleCreate() {
@@ -316,8 +305,7 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -326,21 +314,21 @@ export default {
       this.tempOpration.Description = "";
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           console.log(this.tempForm);
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -350,20 +338,20 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -373,25 +361,25 @@ export default {
       });
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -399,8 +387,7 @@ export default {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
-

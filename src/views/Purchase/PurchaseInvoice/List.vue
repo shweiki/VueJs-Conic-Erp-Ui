@@ -122,11 +122,7 @@
               :Status="scope.row.Status"
               TableName="PurchaseInvoice"
             />
-            <el-button
-              icon="el-icon-printer"
-              type="primary"
-              @click="printInvoice(scope.row)"
-            ></el-button>
+            <print-button Type="PurchaseInvoice" :Data="scope.row" />
           </template>
         </el-table-column>
         <el-table-column type="expand">
@@ -172,12 +168,11 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import { GetPurchaseInvoice } from "@/api/PurchaseInvoice";
 import { ChangeObjStatus } from "@/api/Oprationsys";
-import printJS from "print-js";
-import { Invoice1 } from "@/Report/PurchaseInvoice";
+import PrintButton from "@/components/PrintRepot/PrintButton.vue";
 
 export default {
   name: "PurchaseInvoice",
-  components: { StatusTag, NextOprations, SearchByDate },
+  components: { StatusTag, NextOprations, SearchByDate, PrintButton },
   data() {
     return {
       tableData: [],
@@ -198,7 +193,7 @@ export default {
         .then((response) => {
           // handle success
           console.log(response);
-          this.formTheadOptions = Object.keys(response[0]);
+          //  this.formTheadOptions = Object.keys(response[0]);
           this.tableData = response;
           this.loading = false;
         })
@@ -206,10 +201,6 @@ export default {
           // handle error
           console.log(error);
         });
-    },
-
-    printInvoice(data) {
-      Invoice1(data);
     },
   },
 };

@@ -4,7 +4,7 @@ let ComapnyInfo = null;
 GetCompanyInfo().then(response => {
   ComapnyInfo = response;
 })
-export function Invoice1(Data) {
+export function PurchaseInvoiceA4(Data) {
   let TotalAmmount = (
     Data.InventoryMovements.reduce((prev, cur) => {
       return prev + cur.Qty * cur.SellingPrice;
@@ -14,7 +14,6 @@ export function Invoice1(Data) {
   //Logo
   //doc.addImage(ComapnyInfo.Logo, "jpeg", startX, startY, 12, 12);
 
-  console.log(ComapnyInfo)
 
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Vendor.Name}}', Data.Name)
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{PaymentMethod}}', Data.PaymentMethod == 'Cash' ? "ذمم" : "كاش")

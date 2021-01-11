@@ -4,7 +4,7 @@ let ComapnyInfo = null;
 GetCompanyInfo().then(response => {
   ComapnyInfo = response;
 })
-export function Invoice1(temp) {
+export function SaleInvoiceA4(temp) {
 
 
   let TotalAmmount = (
@@ -13,7 +13,6 @@ export function Invoice1(temp) {
     }, 0) - temp.Discount
   ).toFixed(2);
 
-  console.log(temp)
 
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Vendor.name}}', temp.name)
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{PaymentMethod}}', temp.PaymentMethod == 'Cash' ? "ذمم" : "كاش")

@@ -358,13 +358,12 @@
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                       ></el-switch>
-                      <el-button
-                        v-bind:disabled="OldInvoice != null ? false : true"
+                      <print-button
+                        v-if="OldInvoice == null ? false : true"
                         style="font-size: 35px"
-                        @click="Print()"
-                        type="primary"
-                        icon="el-icon-printer"
-                      ></el-button>
+                        Type="SaleInvoice"
+                        :Data="OldInvoice"
+                      />
                     </el-col>
                   </template>
                 </split-pane>
@@ -467,10 +466,9 @@ import EditItem from "@/components/Item/EditItem";
 import LangSelect from "@/components/LangSelect";
 import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
+import PrintButton from "@/components/PrintRepot/PrintButton";
 
 // report
-import printJS from "print-js";
-import { Invoice1 } from "@/Report/POSInvoice";
 
 import { Create, Edit, GetSaleInvoiceByID } from "@/api/SaleInvoice";
 import { GetActiveInventory } from "@/api/InventoryItem";
@@ -491,10 +489,10 @@ export default {
     LangSelect,
     Screenfull,
     SizeSelect,
-    printJS,
     ItemsSearch,
     ItemsPrime,
     EditItem,
+    PrintButton,
   },
   props: {
     isEdit: {
@@ -776,15 +774,6 @@ export default {
           return false;
         }
       });
-    },
-    Print() {
-      printJS({
-        printable: Invoice1(this.OldInvoice),
-        type: "pdf",
-        base64: true,
-        showModal: true,
-      });
-      this.focusBarcode();
     },
     setTagsViewTitle() {
       const title = "Edit Sale";

@@ -211,19 +211,7 @@
             ></el-button>
           </template>
           <template slot-scope="scope">
-            <el-popover placement="top-start" title="Title" width="200" trigger="hover">
-              <el-button
-                icon="el-icon-printer"
-                type="primary"
-                @click="printInvoice(scope.row)"
-              ></el-button>
-              <el-button
-                icon="el-icon-printer"
-                type="success"
-                @click="printInvoice1(scope.row)"
-              ></el-button>
-              <el-button icon="el-icon-printer" type="info" slot="reference"></el-button>
-            </el-popover>
+            <print-button Type="SaleInvoice" :Data="scope.row" />
           </template>
         </el-table-column>
         <el-table-column type="expand">
@@ -266,13 +254,13 @@ import { GetActiveCash } from "@/api/Cash";
 import { GetInComeAccounts } from "@/api/Account";
 import { CreateEntry } from "@/api/EntryAccounting";
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
-import { Invoice1 } from "@/Report/POSInvoice";
-import { Invoice } from "@/Report/SaleInvoice";
+import PrintButton from "@/components/PrintRepot/PrintButton";
 
 import printJS from "print-js";
 
 export default {
   name: "SaleInvoice",
+  components: { PrintButton },
   data() {
     return {
       loading: true,
@@ -404,17 +392,7 @@ export default {
     GetInventoryMovements(row) {
       console.trace(row);
     },
-    printInvoice(data) {
-      printJS({
-        printable: Invoice1(data),
-        type: "pdf",
-        base64: true,
-        showModal: true,
-      });
-    },
-    printInvoice1(data) {
-      Invoice(data);
-    },
+
     printAllInvoice(data) {
       data = data.map((Item) => ({
         المجموع:
