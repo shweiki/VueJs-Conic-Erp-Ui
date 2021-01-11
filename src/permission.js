@@ -32,9 +32,10 @@ router.beforeEach(async (to, from, next) => {
         try {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          const { roles, userrouter } = await store.dispatch('user/getInfo')
+          const { roles, userrouter, defulateRedirect } = await store.dispatch('user/getInfo')
           // generate accessible routes map based on roles
           roles.userrouter = userrouter
+          roles.redirect = defulateRedirect
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           // dynamically add accessible routes  
           router.addRoutes(accessRoutes)
@@ -60,15 +61,16 @@ router.beforeEach(async (to, from, next) => {
           function capturekey(e) {
             e = e || window.event;
             //debugger
-            if (e.code == 'F4') {
+            if (e.code == store.state.settings.CashDrawerCOM.OpenKeyBoard) {
 
-              OpenCashDrawer({ Com: store.state.settings.CashDrawerCOM })
+              OpenCashDrawer({ Com: store.state.settings.CashDrawerCOM.COM })
                 .then(response => { console.log("OpenCashDrawer", response) })
                 .catch(err => {
                   console.log(err);
                 });
             }
           }
+        //  to.path = store.settings.defulateRedirect
           next({ ...to, replace: true })
           // run First Project
         } catch (error) {

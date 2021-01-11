@@ -349,9 +349,9 @@ export default {
       ValidateNote: "",
       tempForm: {
         ID: undefined,
-        Name: " ",
+        Name: "-",
         Tax: 0.0,
-        AccountInvoiceNumber: "",
+        AccountInvoiceNumber: "-",
         FakeDate: new Date(),
         InvoicePurchaseDate: new Date(),
         PaymentMethod: "Cash",

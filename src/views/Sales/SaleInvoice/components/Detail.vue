@@ -339,10 +339,14 @@
                       ></el-button>
                     </el-col>
                     <el-col :span="6">
-                      <el-badge value="F4" class="item" type="primary">
+                      <el-badge
+                        :value="$store.state.settings.CashDrawerCOM.OpenKeyBoard"
+                        class="item"
+                        type="primary"
+                      >
                         <el-button
                           style="font-size: 45px"
-                          @click="OpenCashDrawer($store.state.settings.CashDrawerCOM)"
+                          @click="OpenCashDrawer()"
                           type="warning"
                           icon="el-icon-takeaway-box"
                         ></el-button
@@ -662,8 +666,8 @@ export default {
       this.tempForm.InventoryMovements.splice(index, 1);
       this.focusBarcode();
     },
-    OpenCashDrawer(COM) {
-      OpenCashDrawer({ Com: COM })
+    OpenCashDrawer() {
+      OpenCashDrawer({ Com: this.$store.state.settings.CashDrawerCOM.COM })
         .then((response) => {})
         .catch((err) => {
           console.log(err);

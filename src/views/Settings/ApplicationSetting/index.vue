@@ -84,12 +84,12 @@ export default {
     },
     CashDrawerCOM: {
       get() {
-        return this.$store.state.settings.CashDrawerCOM;
+        return JSON.stringify(this.$store.state.settings.CashDrawerCOM);
       },
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "CashDrawerCOM",
-          value: val,
+          value: JSON.parse(val),
         });
       },
     },

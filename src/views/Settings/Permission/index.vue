@@ -53,7 +53,11 @@
 
         <el-table-column align="left">
           <template slot-scope="scope">
-            <add-user-router :UserID="scope.row.Id" :Router="scope.row.router" />
+            <add-user-router
+              :UserID="scope.row.Id"
+              :Router="scope.row.router"
+              :Redirect="scope.row.Redirect"
+            />
 
             <el-tag
               :key="role.Name"
@@ -257,12 +261,12 @@ export default {
       GetUsers()
         .then((response) => {
           // handle success
-          
+
           this.tableData = response;
           GetRoles()
             .then((response) => {
               // handle success
-              
+
               this.Roles = response;
               this.loading = false;
             })
@@ -281,7 +285,7 @@ export default {
       DeleteRoleUser({ UserName: username, RoleName: rolername })
         .then((response) => {
           // handle success
-          
+
           this.getdata();
         })
         .catch((error) => {
@@ -293,7 +297,7 @@ export default {
       AddRoleUser({ UserName: this.UserName, RoleName: this.RoleName })
         .then((response) => {
           // handle success
-          
+
           this.dialogAddRoleVisible = false;
           this.getdata();
         })

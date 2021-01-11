@@ -14,6 +14,9 @@
       :visible.sync="dialogVisible"
     >
       <el-form label-width="80px" label-position="left">
+        <el-form-item label="Redirect">
+          <el-input v-model="Redirect" size="medium" />
+        </el-form-item>
         <el-form-item label="Menus">
           <el-tree
             ref="tree"
@@ -27,9 +30,7 @@
         </el-form-item>
       </el-form>
       <div style="text-align: right">
-        <el-button type="danger" @click="dialogVisible = false"
-          >Cancel</el-button
-        >
+        <el-button type="danger" @click="dialogVisible = false">Cancel</el-button>
         <el-button type="primary" @click="confirmRouter">Confirm</el-button>
       </div>
     </el-dialog>
@@ -45,15 +46,25 @@ export default {
   props: {
     UserID: {
       type: String,
-      default: '',
+      default: "",
     },
     Router: {
       type: String,
-      default: '',
+      default: "",
+    },
+    Redirect: {
+      type: String,
+      default: "/",
+    },
+  },
+  watch: {
+    Redirect(val) {
+      this.redirect = val;
     },
   },
   data() {
     return {
+      redirect: "",
       routes: [],
       dialogVisible: false,
       checkStrictly: false,
@@ -70,18 +81,17 @@ export default {
   },
   created() {
     this.getRoutes();
-
   },
   methods: {
-    OpenDialog(){
-    this.checkStrictly = true;
-    this.$nextTick(() => {
-      console.log(this.Router);
-      this.$refs.tree.setCheckedKeys(JSON.parse(this.Router));
+    OpenDialog() {
+      this.checkStrictly = true;
+      this.$nextTick(() => {
+        console.log(this.Router);
+        this.$refs.tree.setCheckedKeys(JSON.parse(this.Router));
 
-      this.checkStrictly = false;
-    })
-    this.dialogVisible= true
+        this.checkStrictly = false;
+      });
+      this.dialogVisible = true;
     },
     async getRoutes() {
       const res = await getRoutes();
@@ -92,19 +102,20 @@ export default {
       AddUserRouter({
         UserID: this.UserID,
         Router: JSON.stringify(this.$refs.tree.getCheckedKeys()),
+        DefulateRedirect: this.Redirect,
       })
         .then((response) => {
           this.dialogVisible = false;
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",
-            type: 'success',
+            type: "success",
             duration: 2000,
-          })
+          });
         })
         .catch((error) => {
           console.log(error);
-        })
+        });
     },
     // Reshape the routes structure so that it looks the same as the sidebar
     generateRoutes(routes, basePath = "/") {
@@ -116,10 +127,7 @@ export default {
           continue;
         }
 
-        const onlyOneShowingChild = this.onlyOneShowingChild(
-          route.children,
-          route
-        );
+        const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route);
 
         if (route.children && onlyOneShowingChild && !route.alwaysShow) {
           route = onlyOneShowingChild;
@@ -148,7 +156,7 @@ export default {
             data = [...data, ...temp];
           }
         }
-      })
+      });
       return data;
     },
 
@@ -159,11 +167,7 @@ export default {
 
         // recursive child routes
         if (route.children) {
-          route.children = this.generateTree(
-            route.children,
-            routePath,
-            checkedKeys
-          );
+          route.children = this.generateTree(route.children, routePath, checkedKeys);
         }
 
         if (
@@ -190,7 +194,7 @@ export default {
 
       // Show parent if there are no child route to display
       if (showingChildren.length === 0) {
-        onlyOneChild = { ...parent, path: '', noShowingChildren: true };
+        onlyOneChild = { ...parent, path: "", noShowingChildren: true };
         return onlyOneChild;
       }
 

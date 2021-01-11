@@ -50,7 +50,8 @@ export function filterAsyncRoutes(routes, basePath, checkedKeys, roles) {
 
 const state = {
   routes: [],
-  addRoutes: []
+  addRoutes: [],
+  redirect: ''
 }
 
 const mutations = {
@@ -59,12 +60,17 @@ const mutations = {
     routes.push({ path: '*', redirect: '/404', hidden: true })
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
+  },
+  SET_REDIRECT: (state, redirect) => {
+    // defualte redirect for user !!!
+    state.redirect = redirect
   }
 }
 
 const actions = {
   generateRoutes({ commit }, roles) {
     return new Promise(resolve => {
+      console.trace(roles)
       let accessedRoutes
       if (roles.includes('Developer')) {
         accessedRoutes = asyncRoutes || []
@@ -74,6 +80,7 @@ const actions = {
         } else
           accessedRoutes = []
       }
+      if (roles.redirect) commit('SET_REDIRECT',)
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
     })
