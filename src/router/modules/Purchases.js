@@ -22,7 +22,7 @@ const PurchasesRouter = {
       meta: {
          title: 'EditInvoice', noCache: true, activeMenu: '/Purchase/PurchaseInvoice/List'
       },
-     // hidden: true,
+      hidden: true,
     },
     {
       path: 'List',

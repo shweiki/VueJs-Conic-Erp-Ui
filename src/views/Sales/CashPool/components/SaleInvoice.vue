@@ -7,7 +7,7 @@
           style="float: left"
           type="success"
           icon="fa fa-save"
-          @click="createData('tempForm')"
+          @click="createData"
           >{{ $t("CashPool.Save") }}</el-button
         >
         <span class="demonstration">{{ $t("NewPurchaseInvoice.Box") }}</span>
@@ -293,7 +293,7 @@ export default {
         (a, b) =>
           a +
           (b["PaymentMethod"] == "Receivables"
-            ? b.InventoryMovements.reduce(function (prev, cur) {
+            ? b.InventoryMovements.reduce((prev, cur) => {
                 return prev + cur.Qty * cur.SellingPrice;
               }, 0) - b.Discount
             : 0),
@@ -303,7 +303,7 @@ export default {
         (a, b) =>
           a +
           (b["PaymentMethod"] == "Cash"
-            ? b.InventoryMovements.reduce(function (prev, cur) {
+            ? b.InventoryMovements.reduce((prev, cur) => {
                 return prev + cur.Qty * cur.SellingPrice;
               }, 0) - b.Discount
             : 0),
@@ -313,7 +313,7 @@ export default {
         (a, b) =>
           a +
           (b["PaymentMethod"] == "Visa"
-            ? b.InventoryMovements.reduce(function (prev, cur) {
+            ? b.InventoryMovements.reduce((prev, cur) => {
                 return prev + cur.Qty * cur.SellingPrice;
               }, 0) - b.Discount
             : 0),
@@ -459,7 +459,7 @@ export default {
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
       });
     },
-    createData(formName) {
+    createData() {
       this.EnableSave = true;
 
       var tempForm = {
@@ -503,7 +503,7 @@ export default {
             AccountID: i.AccountID,
             Debit: 0.0,
             Credit:
-              i.InventoryMovements.reduce(function (prev, cur) {
+              i.InventoryMovements.reduce((prev, cur) => {
                 return prev + cur.Qty * cur.SellingPrice;
               }, 0) - i.Discount,
             Description: "فاتورة مبيعات رقم " + i.Id + " ",

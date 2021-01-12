@@ -360,9 +360,9 @@
                       ></el-switch>
                       <print-button
                         v-if="OldInvoice == null ? false : true"
-                        style="font-size: 35px"
                         Type="SaleInvoice"
                         :Data="OldInvoice"
+                        Css="font-size: 35px"
                       />
                     </el-col>
                   </template>

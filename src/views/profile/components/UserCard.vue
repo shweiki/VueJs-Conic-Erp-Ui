@@ -1,10 +1,12 @@
 <template>
-  <el-card style="margin-bottom:20px;">
+  <el-card style="margin-bottom: 20px">
     <div slot="header" class="clearfix">
-      <span>About me : {{ user.Id }}</span>
+      <div class="user-name text-center">{{ user.name }}</div>
     </div>
 
     <div class="user-profile">
+      <span>About me : {{ user.Id }}</span>
+
       <div class="box-center">
         <pan-thumb
           :height="'100px'"
@@ -32,7 +34,6 @@
         />
       </div>
       <div class="box-center">
-        <div class="user-name text-center">{{ user.Name }}</div>
         <div class="user-role text-center text-muted">
           {{ user.role | uppercaseFirst }}
         </div>
@@ -61,10 +62,10 @@ export default {
           phone: 0,
           email: "",
           avatar: "",
-          roles: ""
+          roles: "",
         };
-      }
-    }
+      },
+    },
   },
   methods: {
     cropSuccess(resData) {
@@ -73,8 +74,8 @@ export default {
     },
     close() {
       this.imagecropperShow = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

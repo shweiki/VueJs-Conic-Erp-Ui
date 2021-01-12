@@ -96,6 +96,7 @@ export default {
     async getRoutes() {
       const res = await getRoutes();
       this.serviceRoutes = res;
+      console.log(res);
       this.routes = this.generateRoutes(res);
     },
     confirmRouter() {
@@ -123,9 +124,9 @@ export default {
 
       for (let route of routes) {
         // skip some route
-        if (route.hidden) {
+        /*  if (route.hidden) {
           continue;
-        }
+        }*/
 
         const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route);
 

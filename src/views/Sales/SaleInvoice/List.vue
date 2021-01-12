@@ -9,29 +9,27 @@
           to="/Accounting/NewAccountingEntry"
           >{{ $t("Accounting.NewAccountingEntry") }}</router-link
         >
-        <!-- <el-button
-            style="float: left"
-              icon="el-icon-printer"
-              type="primary"
-              @click="printAll(tableData)"
-            ></el-button> -->
+        <el-button
+          style="float: left"
+          icon="el-icon-printer"
+          type="primary"
+          @click="printAll(tableData)"
+        ></el-button>
         <search-by-date @change="getdata" />
       </div>
       <el-table
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
+            (data) =>
               !search ||
-              data.Account.AccountName.toLowerCase().includes(
-                search.toLowerCase()
-              )
+              data.Account.AccountName.toLowerCase().includes(search.toLowerCase())
           )
         "
         @row-dblclick="
-          row => {
+          (row) => {
             $router.replace({
-              path: '/Sales/Edit/' + row.Id
+              path: '/Sales/Edit/' + row.Id,
             });
           }
         "
@@ -43,11 +41,7 @@
       >
         <el-table-column prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata"></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -58,10 +52,7 @@
         ></el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('Sales.SearchBy')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('Sales.SearchBy')" />
           </template>
         </el-table-column>
         <el-table-column
@@ -76,18 +67,12 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{
-            scope.row.Discount.toFixed(3)
-          }}</template>
+          <template slot-scope="scope">{{ scope.row.Discount.toFixed(3) }}</template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('CashPool.Amountv')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
           <template slot-scope="scope">
             {{
-              scope.row.InventoryMovements.reduce(function(prev, cur) {
+              scope.row.InventoryMovements.reduce(function (prev, cur) {
                 return prev + cur.Qty * cur.SellingPrice;
               }, 0)
             }}
@@ -95,11 +80,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column
-          v-bind:label="$t('Sales.Status')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
           <template slot-scope="scope">
             <status-tag :Status="scope.row.Status" TableName="SalesInvoice" />
           </template>
@@ -111,6 +92,8 @@
               :Status="scope.row.Status"
               TableName="SalesInvoice"
             />
+            <print-button Type="SaleInvoice" :Data="scope.row" />
+
             <el-button
               icon="el-icon-printer"
               type="primary"
@@ -132,23 +115,14 @@
                 v-bind:label="$t('CashPool.quantity')"
                 align="center"
               ></el-table-column>
-              <el-table-column
-                v-bind:label="$t('CashPool.Price')"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
                 <template slot-scope="scope">{{
                   scope.row.SellingPrice.toFixed(3)
                 }}</template>
               </el-table-column>
-              <el-table-column
-                v-bind:label="$t('CashPool.Total')"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
                 <template slot-scope="scope"
-                  >{{
-                    (scope.row.SellingPrice * scope.row.Qty).toFixed(3)
-                  }}
-                  JOD</template
+                  >{{ (scope.row.SellingPrice * scope.row.Qty).toFixed(3) }} JOD</template
                 >
               </el-table-column>
             </el-table>
@@ -165,15 +139,16 @@ import printJS from "print-js";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
+import PrintButton from "@/components/PrintRepot/PrintButton";
 
 export default {
   name: "SalesInvoice",
-  components: { StatusTag, NextOprations, SearchByDate },
+  components: { StatusTag, NextOprations, SearchByDate, PrintButton },
   data() {
     return {
       tableData: [],
       loading: true,
-      search: ""
+      search: "",
     };
   },
   created() {
@@ -185,45 +160,45 @@ export default {
 
       GetSaleInvoice({
         DateFrom: this.$store.state.settings.datepickerQuery[0],
-        DateTo: this.$store.state.settings.datepickerQuery[1]
+        DateTo: this.$store.state.settings.datepickerQuery[1],
       })
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
     },
     print(data) {
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json"
+        type: "json",
       });
     },
     printAll(data) {
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json"
+        type: "json",
       });
-    }
-  }
+    },
+  },
 };
 </script>

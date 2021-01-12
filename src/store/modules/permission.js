@@ -36,8 +36,8 @@ export function filterAsyncRoutes(routes, basePath, checkedKeys, roles) {
           roles
         );
       }
-      if (checkedKeys.includes(routePath) ||
-        tmp.children) {
+      if (checkedKeys.includes(routePath) ||(tmp.children &&  tmp.children.length > 0)
+        ) {
         res.push(tmp);
       }
     }

@@ -1,24 +1,31 @@
 <template>
-  <el-popover placement="top-start" title="Title" width="200" trigger="hover">
+  <el-popover placement="top-start" title="نماذج" width="200" trigger="hover">
+    <div class="icon-item">
+      <el-button
+        v-if="Type == 'SaleInvoice'"
+        icon="el-icon-postcard"
+        @click="SaleInvoiceLabel"
+        >Label</el-button
+      >
+      <el-button
+        v-if="Type == 'SaleInvoice'"
+        icon="el-icon-document"
+        @click="SaleInvoiceA4"
+        >A4</el-button
+      >
+      <el-button
+        v-if="Type == 'PurchaseInvoice'"
+        icon="el-icon-document"
+        @click="PurchaseInvoiceA4"
+        >A4</el-button
+      >
+    </div>
     <el-button
-      v-if="Type == 'PurchaseInvoice'"
+      v-bind:style="Css"
       icon="el-icon-printer"
-      type="primary"
-      @click="PurchaseInvoiceA4"
+      type="info"
+      slot="reference"
     ></el-button>
-    <el-button
-      v-if="Type == 'SaleInvoice'"
-      icon="el-icon-printer"
-      type="success"
-      @click="SaleInvoiceLabel"
-    ></el-button>
-    <el-button
-      v-if="Type == 'SaleInvoice'"
-      icon="el-icon-printer"
-      type="success"
-      @click="SaleInvoiceA4"
-    ></el-button>
-    <el-button icon="el-icon-printer" type="info" slot="reference"></el-button>
   </el-popover>
 </template>
 <script>
@@ -33,6 +40,7 @@ export default {
   name: "PrintButton",
   props: {
     Type: string,
+    Css: string,
     Data: {
       type: Object,
       default: {},
@@ -56,3 +64,15 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.icon-item {
+  margin: 20px;
+  height: 85px;
+  text-align: center;
+  width: 100px;
+  float: left;
+  font-size: 30px;
+  color: #24292e;
+  cursor: pointer;
+}
+</style>

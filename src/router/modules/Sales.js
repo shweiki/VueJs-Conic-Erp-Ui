@@ -15,7 +15,7 @@ const SalesRouter = {
       meta: {
          title: 'EditInvoice', noCache: true, activeMenu: '/Sales/SalesInvoice/List'
       },
-     // hidden: true,
+      hidden: true,
     },
     {
       path: 'List',
