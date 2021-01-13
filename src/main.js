@@ -46,7 +46,7 @@ let options = {
   sensitivity: 300, // default is 100
   requiredAttr: true, // default is false
   controlSequenceKeys: ['NumLock', 'Clear'], // default is null
-  callbackAfterTimeout: false // default is false
+  callbackAfterTimeout: true // default is false
 }
 Vue.use(VueBarcodeScanner, options)
 

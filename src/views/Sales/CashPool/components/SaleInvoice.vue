@@ -392,7 +392,7 @@ export default {
       this.loading = false;
     },
     GetInventoryMovements(row) {
-      console.trace(row);
+  //    console.trace(row);
     },
 
     printAllInvoice(data) {

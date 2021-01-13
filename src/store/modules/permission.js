@@ -70,7 +70,7 @@ const mutations = {
 const actions = {
   generateRoutes({ commit }, roles) {
     return new Promise(resolve => {
-      console.trace(roles)
+   //   console.trace(roles)
       let accessedRoutes
       if (roles.includes('Developer')) {
         accessedRoutes = asyncRoutes || []

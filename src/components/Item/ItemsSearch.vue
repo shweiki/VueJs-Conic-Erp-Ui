@@ -191,20 +191,16 @@ export default {
       }
     },
     onBarcodeScanned(barcode) {
-      console.log(barcode);
-      if (barcode == "Enter" || !barcode) {
-        this.focus();
-        this.Barcode = "";
-        return false;
-      }
       this.OpenAddItem = false;
       var find = this.Items.findIndex(
         (value) =>
-          value.Barcode == barcode ||
+          value.Barcode == this.Barcode ||
           (this.$store.getters.settings.BarcodeIsID == true
-            ? value.Id == barcode
+            ? value.Id == this.Barcode
             : this.$store.getters.settings.BarcodeIsID)
       );
+      console.log(this.Barcode, find);
+
       if (find != -1) {
         this.AddItem(this.Items[find], 1);
       } else {

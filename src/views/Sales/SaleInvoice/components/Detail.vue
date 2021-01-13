@@ -278,61 +278,13 @@
                   </template>
                   <template slot="paneR">
                     <el-col :span="6">
-                      <el-dialog
-                        title="تأكيد"
-                        :visible.sync="RestOfBillDialogVisible"
-                        width="40%"
-                        center
-                      >
-                        <div style="text-align: center">
-                          <span style="font-size: large"
-                            >إجمالي مبلغ الفاتورة :
-                            {{
-                              (
-                                tempForm.InventoryMovements.reduce((prev, cur) => {
+                  <rest-of-bill  :Total="  tempForm.InventoryMovements.reduce((prev, cur) => {
                                   return prev + cur.Qty * cur.SellingPrice;
-                                }, 0) - tempForm.Discount
-                              ).toFixed(2)
-                            }}
-                            JOD</span
-                          >
-                          <el-divider></el-divider>
-
-                          <currency-input
-                            class="currency-input"
-                            v-model="RestOfBill"
-                            @focus="$event.target.select()"
-                          />
-                          <el-divider></el-divider>
-
-                          <span style="color: #ff5722; font-size: x-large"
-                            >الباقي :
-                            {{
-                              (
-                                tempForm.InventoryMovements.reduce((prev, cur) => {
-                                  return prev + cur.Qty * cur.SellingPrice;
-                                }, 0) -
-                                tempForm.Discount -
-                                RestOfBill
-                              ).toFixed(2)
-                            }}
-                            JOD</span
-                          >
-                        </div>
-                        <span slot="footer" class="dialog-footer">
-                          <el-button @click="RestOfBillDialogVisible = false"
-                            >الغاء</el-button
-                          >
-                          <el-button
-                            type="primary"
-                            @click="isEdit != true ? createData() : updateData()"
-                            >حفظ</el-button
-                          >
-                        </span>
-                      </el-dialog>
+                                }, 0) - tempForm.Discount"
                       <el-button
                         :disabled="DisabledSave"
                         style="font-size: 45px"
+                        
                         @click="isEdit != true ? createData() : updateData()"
                         type="success"
                         icon="el-icon-check"
@@ -532,7 +484,6 @@ export default {
       AutoPrint: false,
       PriceMethod: "retail",
       DisabledSave: false,
-      RestOfBill: 0,
       RestOfBillDialogVisible: false,
       tempForm: {
         Id: undefined,
@@ -700,7 +651,10 @@ export default {
               this.tempForm.Discount >
               0 &&
             this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
+            this.tempForm.InventoryMovements.reduce(
+              (a, b) => a + (b["Qty"] || 0),
+              0
+            ) > 0
           ) {
             Create(this.tempForm)
               .then((response) => {
@@ -724,7 +678,8 @@ export default {
                 console.log(error);
               });
           } else
-            this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+            this.ValidateDescription =
+              "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
@@ -743,7 +698,10 @@ export default {
               this.tempForm.Discount >
               0 &&
             this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
+            this.tempForm.InventoryMovements.reduce(
+              (a, b) => a + (b["Qty"] || 0),
+              0
+            ) > 0
           ) {
             Edit(this.tempForm)
               .then((response) => {
@@ -768,7 +726,8 @@ export default {
                 console.log(error);
               });
           } else
-            this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+            this.ValidateDescription =
+              "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
