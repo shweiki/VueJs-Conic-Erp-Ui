@@ -694,7 +694,7 @@ export default {
           this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
           if (
-            this.tempForm.InventoryMovements.reduce(function (prev, cur) {
+            this.tempForm.InventoryMovements.reduce((prev, cur) => {
               return prev + cur.Qty * cur.SellingPrice;
             }, 0) -
               this.tempForm.Discount >
@@ -737,7 +737,7 @@ export default {
           this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
           if (
-            this.tempForm.InventoryMovements.reduce(function (prev, cur) {
+            this.tempForm.InventoryMovements.reduce((prev, cur) => {
               return prev + cur.Qty * cur.SellingPrice;
             }, 0) -
               this.tempForm.Discount >

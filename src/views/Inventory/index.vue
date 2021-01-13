@@ -262,7 +262,6 @@ export default {
     },
     getdata() {
       this.loading = true;
-
       GetInventoryItem()
         .then((response) => {
           // handle success

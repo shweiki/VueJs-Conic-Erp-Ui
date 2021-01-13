@@ -14,7 +14,7 @@ export function SaleInvoiceA4(temp) {
   ).toFixed(2);
 
 
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Name}}', temp.name)
+  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Vendor.Name}}', temp.Name)
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{PaymentMethod}}', temp.PaymentMethod == 'Cash' ? "ذمم" : "كاش")
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{FakeDate}}', temp.FakeDate)
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Discount}}', temp.Discount)

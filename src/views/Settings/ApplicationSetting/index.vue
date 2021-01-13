@@ -37,7 +37,10 @@
             <span>{{ $t("Settings.showSettings") }}</span>
             <el-switch v-model="showSettings" class="drawer-switch" />
           </el-col>
-
+          <el-col :span="6">
+            <span>{{ $t("Settings.sidebarOpen") }}</span>
+            <el-switch v-model="sidebarOpen" class="drawer-switch" />
+          </el-col>
           <el-col :span="6">
             <span>{{ $t("Settings.fixedHeader") }}</span>
             <el-switch v-model="fixedHeader" class="drawer-switch" />
@@ -133,6 +136,19 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "BarcodeIsID",
+          value: val,
+        });
+      },
+    },
+    sidebarOpen: {
+      get() {
+        return this.$store.state.settings.sidebarOpen;
+      },
+      set(val) {
+        this.$store.dispatch("app/toggleSideBar");
+
+        this.$store.dispatch("settings/changeSetting", {
+          key: "sidebarOpen",
           value: val,
         });
       },

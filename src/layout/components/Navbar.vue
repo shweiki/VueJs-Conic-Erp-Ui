@@ -57,7 +57,7 @@
     </div>
     <hamburger
       id="hamburger-container"
-      :is-active="sidebar.opened"
+      :is-active="$store.state.settings.sidebarOpen"
       v-bind:style="this.$i18n.locale == 'ar' ? 'float: right;' : 'float: left;'"
       class="hamburger-container"
       @toggleClick="toggleSideBar"

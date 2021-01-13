@@ -147,6 +147,13 @@
         border
         highlight-current-row
         ref="multipleTable"
+        @row-dblclick="
+          (row) => {
+            $router.replace({
+              path: '/Sales/Edit/' + row.Id,
+            });
+          }
+        "
         @selection-change="handleSelectionChange"
         @expand-change="GetInventoryMovements"
       >
@@ -172,11 +179,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <router-link :to="'/Sales/Edit/' + scope.row.Id">
-              <strong style="font-size: 10px; cursor: pointer">{{
-                scope.row.Name
-              }}</strong>
-            </router-link>
+            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </template>
         </el-table-column>
         <el-table-column
@@ -195,7 +198,7 @@
         <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
           <template slot-scope="scope">
             {{
-              scope.row.InventoryMovements.reduce(function (prev, cur) {
+              scope.row.InventoryMovements.reduce((prev, cur) => {
                 return prev + cur.Qty * cur.SellingPrice;
               }, 0).toFixed(3)
             }}
@@ -265,7 +268,6 @@ export default {
     return {
       loading: true,
       EnableSave: true,
-
       tableData: [],
       Selection: [],
       CashAccounts: [],
@@ -396,7 +398,7 @@ export default {
     printAllInvoice(data) {
       data = data.map((Item) => ({
         المجموع:
-          Item.InventoryMovements.reduce(function (prev, cur) {
+          Item.InventoryMovements.reduce((prev, cur) => {
             return prev + cur.Qty * cur.SellingPrice;
           }, 0) - Item.Discount.toFixed(3),
         الخصم: Item.Discount,

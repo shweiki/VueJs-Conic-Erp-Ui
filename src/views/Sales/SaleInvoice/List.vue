@@ -21,9 +21,7 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            (data) =>
-              !search ||
-              data.Account.AccountName.toLowerCase().includes(search.toLowerCase())
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         @row-dblclick="
@@ -93,12 +91,6 @@
               TableName="SalesInvoice"
             />
             <print-button Type="SaleInvoice" :Data="scope.row" />
-
-            <el-button
-              icon="el-icon-printer"
-              type="primary"
-              @click="print(scope.row.InventoryMovements)"
-            ></el-button>
           </template>
         </el-table-column>
         <el-table-column type="expand" align="center">
@@ -172,19 +164,6 @@ export default {
           // handle error
           console.log(error);
         });
-    },
-    print(data) {
-      data = data.map((Item) => ({
-        Name: Item.Name,
-        Qty: Item.Qty,
-        SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
-      }));
-      printJS({
-        printable: data,
-        properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json",
-      });
     },
     printAll(data) {
       data = data.map((Item) => ({
