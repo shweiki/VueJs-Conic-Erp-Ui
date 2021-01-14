@@ -77,13 +77,13 @@
             <el-button
               icon="el-icon-printer"
               type="primary"
-              @click="print(scope.row.Items)"
+              @click="print(scope.row.InventoryQty, scope.row.Name)"
             ></el-button>
           </template>
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="props">
-            <el-table :data="props.row.Items">
+            <el-table :data="props.row.InventoryQty">
               <el-table-column
                 prop="Item.Barcode"
                 v-bind:label="$t('Stocks.Barcode')"
@@ -168,6 +168,7 @@ import { GetInventoryItem, Create, Edit } from "@/api/InventoryItem";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
 import StatusTag from "@/components/Oprationsys/StatusTag";
+import { InventoryQty } from "@/api/InventoryItem";
 
 export default {
   name: "InventoryItem",
@@ -237,9 +238,8 @@ export default {
     this.getdata();
   },
   methods: {
-    print(data) {
-      console.log(data.Items[0].Item.CostPrice);
-      let Items = data.Items.map((Item) => ({
+    print(InventoryQty, name) {
+      let Items = InventoryQty.map((Item) => ({
         Name: Item.Item.Name,
         Qty: Item.QtyIn - Item.QtyOut,
         CostPrice: Item.Item.CostPrice,
@@ -251,7 +251,7 @@ export default {
         type: "json",
         header:
           "<center> <h2> " +
-          data.Name +
+          name +
           "</h2></center><h3 style='float:right'> " +
           " - الاجمالي لقيمة المخزون :  " +
           Items.reduce((a, b) => a + b.Qty * b.CostPrice, 0).toFixed(3) +
@@ -265,8 +265,12 @@ export default {
       GetInventoryItem()
         .then((response) => {
           // handle success
-
           this.tableData = response;
+          this.tableData.forEach((element) => {
+            InventoryQty({ ID: element.Id }).then((response) => {
+              element.InventoryQty = response;
+            });
+          });
           this.loading = false;
         })
         .catch((error) => {

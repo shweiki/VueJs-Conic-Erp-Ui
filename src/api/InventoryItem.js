@@ -31,3 +31,11 @@ export function Edit(data) {
     data: qs.stringify(data)
   })
 }
+
+export function InventoryQty(data) {
+  return request({
+    url: '/InventoryItem/InventoryQty',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
