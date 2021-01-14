@@ -37,7 +37,11 @@
               </el-col>
               <el-col :span="6">
                 <el-form-item prop="PaymentMethod">
-                  <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
+                  <el-radio-group
+                    @change="focusBarcode"
+                    v-model="tempForm.PaymentMethod"
+                    text-color="#f78123"
+                  >
                     <el-radio label="Cash" border>{{
                       $t("NewPurchaseInvoice.Cash")
                     }}</el-radio>
@@ -52,7 +56,11 @@
 
               <el-col :span="4" v-if="checkPermission(['Admin'])">
                 <el-form-item>
-                  <el-radio-group v-model="PriceMethod" text-color="#f78123">
+                  <el-radio-group
+                    @change="focusBarcode"
+                    v-model="PriceMethod"
+                    text-color="#f78123"
+                  >
                     <el-radio label="retail" border>مفرق</el-radio>
                     <el-radio label="wholesale" border>جملة</el-radio>
                   </el-radio-group>
@@ -76,6 +84,7 @@
                     v-bind:placeholder="$t('NewPurchaseInvoice.Acc')"
                     autocomplete="off"
                     default-first-option
+                    @change="focusBarcode"
                   >
                     <el-option
                       v-for="item in Vendor"
@@ -104,6 +113,7 @@
                   ]"
                 >
                   <el-date-picker
+                    @change="focusBarcode"
                     v-model="tempForm.FakeDate"
                     type="date"
                     v-bind:placeholder="$t('CashPool.Date')"
@@ -163,6 +173,7 @@
                                   : scope.row.Itemx.SellingPrice.toFixed(2)
                               }}</el-tag>
                               <edit-item
+                                @focus="focusBarcode"
                                 v-if="checkPermission(['Admin'])"
                                 style="float: left"
                                 :ItemId="
@@ -184,7 +195,7 @@
                           >
                           <template slot-scope="scope">
                             <el-input-number
-                              @change="focusBarcode()"
+                              @change="focusBarcode"
                               v-model="tempForm.InventoryMovements[scope.$index].Qty"
                               :precision="2"
                               :step="1"
@@ -205,6 +216,7 @@
                               v-model="
                                 tempForm.InventoryMovements[scope.$index].SellingPrice
                               "
+                              @change="focusBarcode"
                               @focus="$event.target.select()"
                             />
                           </template>
@@ -217,9 +229,10 @@
                         >
                           <template slot-scope="scope">
                             <currency-input
-                              @change="focusBarcode()"
+                              @change="focusBarcode"
                               class="currency-input"
                               disabled
+                              @focus="$event.target.select()"
                               v-model="
                                 tempForm.InventoryMovements[scope.$index].SellingPrice
                               "
@@ -251,6 +264,7 @@
                         >
                           <template slot-scope="scope">
                             <el-radio-group
+                              @change="focusBarcode"
                               v-model="
                                 tempForm.InventoryMovements[scope.$index].InventoryItemId
                               "
@@ -274,18 +288,37 @@
                           </template>
                         </el-table-column>
                       </el-table>
+                      <div style="color: red">{{ ValidateDescription }}</div>
                     </el-form-item>
                   </template>
                   <template slot="paneR">
                     <el-col :span="6">
-                  <rest-of-bill  :Total="  tempForm.InventoryMovements.reduce((prev, cur) => {
-                                  return prev + cur.Qty * cur.SellingPrice;
-                                }, 0) - tempForm.Discount"
+                      <rest-of-bill
+                        :Total="
+                          tempForm.InventoryMovements.reduce((prev, cur) => {
+                            return prev + cur.Qty * cur.SellingPrice;
+                          }, 0) - tempForm.Discount
+                        "
+                        :Open="OpenRestOfBill"
+                        @Closed="
+                          () => {
+                            OpenRestOfBill = false;
+                            focusBarcode();
+                          }
+                        "
+                        @Done="isEdit != true ? createData() : updateData()"
+                      />
+
                       <el-button
                         :disabled="DisabledSave"
                         style="font-size: 45px"
-                        
-                        @click="isEdit != true ? createData() : updateData()"
+                        @click="
+                          $store.state.settings.showRestOfBill != true
+                            ? isEdit != true
+                              ? createData()
+                              : updateData()
+                            : (OpenRestOfBill = true)
+                        "
                         type="success"
                         icon="el-icon-check"
                       ></el-button>
@@ -306,6 +339,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-switch
+                        @change="focusBarcode"
                         v-model="AutoPrint"
                         active-color="#13ce66"
                         inactive-color="#ff4949"
@@ -315,6 +349,7 @@
                         Type="SaleInvoice"
                         :Data="OldInvoice"
                         Css="font-size: 35px"
+                        @focus="focusBarcode"
                       />
                     </el-col>
                   </template>
@@ -327,6 +362,7 @@
                       <el-row>
                         <el-col :span="24">
                           <el-input
+                            @change="focusBarcode"
                             prop="Name"
                             placeholder="اسم المستلم"
                             v-model="tempForm.Name"
@@ -351,6 +387,7 @@
                         </el-col>
                         <el-col :span="8">
                           <el-input-number
+                            @change="focusBarcode"
                             prop="Discount"
                             v-model="tempForm.Discount"
                             controls-position="right"
@@ -368,6 +405,7 @@
                         <el-col :span="24">
                           <el-form-item prop="Description">
                             <el-input
+                              @change="focusBarcode"
                               v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
                               v-model="tempForm.Description"
                             ></el-input>
@@ -393,7 +431,7 @@
                     </el-card>
                   </template>
                   <template slot="paneR" style="background: #545454">
-                    <items-prime @add="AddItem" />
+                    <items-prime @add="AddItem" @focus="focusBarcode" />
                   </template>
                 </split-pane>
               </template>
@@ -414,6 +452,7 @@ import checkPermission from "@/utils/permission";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import ItemsPrime from "@/components/Item/ItemsPrime";
 import EditItem from "@/components/Item/EditItem";
+import RestOfBill from "@/components/Sales/RestOfBill";
 
 import LangSelect from "@/components/LangSelect";
 import Screenfull from "@/components/Screenfull";
@@ -445,6 +484,7 @@ export default {
     ItemsPrime,
     EditItem,
     PrintButton,
+    RestOfBill,
   },
   props: {
     isEdit: {
@@ -484,7 +524,8 @@ export default {
       AutoPrint: false,
       PriceMethod: "retail",
       DisabledSave: false,
-      RestOfBillDialogVisible: false,
+      OpenRestOfBill: false,
+      ValidateDescription: "",
       tempForm: {
         Id: undefined,
         Name: "",
@@ -616,6 +657,7 @@ export default {
       this.focusBarcode();
     },
     OpenCashDrawer() {
+      this.focusBarcode();
       OpenCashDrawer({ Com: this.$store.state.settings.CashDrawerCOM.COM })
         .then((response) => {})
         .catch((err) => {
@@ -640,48 +682,46 @@ export default {
     },
     createData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
-        if (valid) {
+        this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
+        this.tempForm.Tax = parseInt(this.tempForm.Tax);
+        if (
+          valid &&
+          this.tempForm.InventoryMovements.reduce((prev, cur) => {
+            return prev + cur.Qty * cur.SellingPrice;
+          }, 0) -
+            this.tempForm.Discount >
+            0 &&
+          this.tempForm.InventoryMovements.length > 0 &&
+          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
+        ) {
           this.DisabledSave = true;
-          this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
-          this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          if (
-            this.tempForm.InventoryMovements.reduce((prev, cur) => {
-              return prev + cur.Qty * cur.SellingPrice;
-            }, 0) -
-              this.tempForm.Discount >
-              0 &&
-            this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce(
-              (a, b) => a + (b["Qty"] || 0),
-              0
-            ) > 0
-          ) {
-            Create(this.tempForm)
-              .then((response) => {
-                this.$notify({
-                  title: "تم الإضافة بنجاح",
-                  message: "تم الإضافة بنجاح",
-                  type: "success",
-                  position: "top-left",
-                  duration: 1000,
-                  onClose: () => {
-                    this.tempForm.Id = response;
-                    this.OldInvoice = this.tempForm;
-                    this.AutoPrint ? this.Print() : undefined;
-                    this.restTempForm();
-                    this.DisabledSave = false;
-                    this.focusBarcode();
-                  },
-                });
-              })
-              .catch((error) => {
-                console.log(error);
+          Create(this.tempForm)
+            .then((response) => {
+              this.$notify({
+                title: "تم الإضافة بنجاح",
+                message: "تم الإضافة بنجاح",
+                type: "success",
+                position: "top-left",
+                duration: 1000,
+                onClose: () => {
+                  this.ValidateDescription = "";
+                  this.tempForm.Id = response;
+                  this.OldInvoice = this.tempForm;
+                  this.AutoPrint ? this.Print() : undefined;
+                  this.restTempForm();
+                  this.DisabledSave = false;
+                  this.focusBarcode();
+                  this.OpenRestOfBill = false;
+                },
               });
-          } else
-            this.ValidateDescription =
-              "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         } else {
-          console.log("error submit!!");
+          this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+          this.focusBarcode();
+          this.OpenRestOfBill = false;
           return false;
         }
       });
@@ -698,11 +738,9 @@ export default {
               this.tempForm.Discount >
               0 &&
             this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce(
-              (a, b) => a + (b["Qty"] || 0),
-              0
-            ) > 0
+            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
+            this.DisabledSave = true;
             Edit(this.tempForm)
               .then((response) => {
                 this.$notify({
@@ -713,10 +751,12 @@ export default {
                   duration: 1000,
                   showClose: false,
                   onClose: () => {
+                    this.ValidateDescription = "";
                     this.tempForm.Id = response;
                     this.OldInvoice = this.tempForm;
                     this.AutoPrint ? this.Print() : undefined;
                     this.$nextTick(() => {
+                      this.OpenRestOfBill = false;
                       this.$router.back();
                     });
                   },
@@ -726,10 +766,12 @@ export default {
                 console.log(error);
               });
           } else
-            this.ValidateDescription =
-              "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+            this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+          this.focusBarcode();
+          this.OpenRestOfBill = false;
         } else {
           console.log("error submit!!");
+          this.focusBarcode();
           return false;
         }
       });

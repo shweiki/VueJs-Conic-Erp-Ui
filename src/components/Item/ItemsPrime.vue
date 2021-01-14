@@ -1,13 +1,11 @@
 <template>
-  <div
-    style="flex-wrap: nowrap; white-space: nowrap; overflow: auto; height: 100%"
-  >
-    <el-input v-model="search" v-bind:placeholder="$t('ItemSales.ItemName')">
-      <el-button
-        slot="append"
-        @click="SortByName"
-        icon="el-icon-sort"
-      ></el-button>
+  <div style="flex-wrap: nowrap; white-space: nowrap; overflow: auto; height: 100%">
+    <el-input
+      @change="focus"
+      v-model="search"
+      v-bind:placeholder="$t('ItemSales.ItemName')"
+    >
+      <el-button slot="append" @click="SortByName" icon="el-icon-sort"></el-button>
     </el-input>
     <el-col
       :xs="12"
@@ -16,16 +14,11 @@
       :lg="8"
       :xl="4"
       v-for="(Item, index) in ItemsPrime.filter(
-        data =>
-          !search || data.Name.toLowerCase().includes(search.toLowerCase())
+        (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
       )"
       :key="index"
     >
-      <el-card
-        class="box-card"
-        shadow="always"
-        :body-style="{ padding: '3.5px' }"
-      >
+      <el-card class="box-card" shadow="always" :body-style="{ padding: '3.5px' }">
         <div @click="AddItem(Item)">
           <span style="font-size: 10px; color: #545454">{{ Item.Name }}</span>
           <time class="price">{{ Item.SellingPrice.toFixed(2) }}</time>
@@ -81,7 +74,7 @@ export default {
       search: "",
       ItemsPrime: [],
       tabPosition: "top",
-      order: false
+      order: false,
     };
   },
   mounted() {
@@ -91,7 +84,9 @@ export default {
     AddItem(item) {
       this.$emit("add", item, 1);
     },
-
+    focus() {
+      this.$emit("focus");
+    },
     SortByName() {
       this.order = !this.order;
       this.ItemsPrime.sort((a, b) => {
@@ -106,14 +101,15 @@ export default {
         // names must be equal
         return 0;
       });
+      this.focus();
     },
     getdata() {
-      GetIsPrimeItem().then(response => {
+      GetIsPrimeItem().then((response) => {
         this.ItemsPrime = response;
         this.SortByName();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

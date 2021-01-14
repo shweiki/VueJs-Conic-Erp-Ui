@@ -10,6 +10,7 @@
       </el-col>
       <el-col :span="2">
         <el-switch
+          @change="focus"
           v-model="ByQTY"
           active-color="#13ce66"
           inactive-color="#ff4949"
@@ -45,6 +46,7 @@
       <el-col :span="10">
         <el-input
           data-barcode
+          ref="Barcode"
           v-model="Barcode"
           id="barcode"
           placeholder="باركود صنف"
@@ -132,6 +134,7 @@ export default {
         this.EnterQTYVisible = true;
         return;
       }
+      this.focus();
       this.Barcode = "";
       this.$emit("add", item, Qty);
     },
@@ -192,19 +195,22 @@ export default {
     },
     onBarcodeScanned(barcode) {
       this.OpenAddItem = false;
-      var find = this.Items.findIndex(
-        (value) =>
-          value.Barcode == this.Barcode ||
-          (this.$store.getters.settings.BarcodeIsID == true
-            ? value.Id == this.Barcode
-            : this.$store.getters.settings.BarcodeIsID)
-      );
-      console.log(this.Barcode, find);
 
-      if (find != -1) {
-        this.AddItem(this.Items[find], 1);
-      } else {
-        this.OpenAddItem = true;
+      if (this.Barcode != "" || this.Barcode) {
+        var find = this.Items.findIndex(
+          (value) =>
+            value.Barcode == this.Barcode ||
+            (this.$store.getters.settings.BarcodeIsID == true
+              ? value.Id == this.Barcode
+              : this.$store.getters.settings.BarcodeIsID)
+        );
+        console.log(this.Barcode, find);
+
+        if (find != -1) {
+          this.AddItem(this.Items[find], 1);
+        } else {
+          this.OpenAddItem = true;
+        }
       }
     },
   },

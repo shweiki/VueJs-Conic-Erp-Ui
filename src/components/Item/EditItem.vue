@@ -4,25 +4,30 @@
 
     <el-dialog
       style="margin-top: -13vh"
-      :show-close="false"
-      title="تعديل صنف"
       :visible.sync="Visibles"
+      @opened="$refs['ItemName'].focus()"
+      @closed="focus"
     >
-      <el-form
-        ref="dataForm"
-        :rules="rulesForm"
-        :model="tempForm"
-        label-position="top"
-        label-width="70px"
-      >
+      <div slot="title" class="dialog-footer">
+        <el-col :span="4">
+          <el-button
+            icon="el-icon-finished"
+            style="float: left"
+            type="primary"
+            @click="updateData()"
+          />
+        </el-col>
+        <el-col :span="20">
+          <el-divider> تعديل صنف {{ tempForm.Id }}</el-divider>
+        </el-col>
+      </div>
+      <el-form ref="dataForm" :rules="rulesForm" :model="tempForm">
         <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
-          <el-input type="text" v-model="tempForm.Name"></el-input>
+          <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
+          <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
         </el-form-item>
-        <el-checkbox v-model="tempForm.IsPrime"
-          >اظهار على شاشة المبيعات</el-checkbox
-        >
 
-        <el-row >
+        <el-row>
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
               <el-input-number
@@ -35,10 +40,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item
-              v-bind:label="$t('Items.PurchaseCost')"
-              prop="OtherPrice"
-            >
+            <el-form-item v-bind:label="$t('Items.PurchaseCost')" prop="OtherPrice">
               <el-input-number
                 v-model="tempForm.OtherPrice"
                 :precision="2"
@@ -49,10 +51,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item
-              v-bind:label="$t('Items.SellingPrice')"
-              prop="SellingPrice"
-            >
+            <el-form-item v-bind:label="$t('Items.SellingPrice')" prop="SellingPrice">
               <el-input-number
                 v-model="tempForm.SellingPrice"
                 :precision="2"
@@ -64,7 +63,7 @@
           </el-col>
         </el-row>
 
-        <el-row >
+        <el-row>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
               <el-input-number
@@ -86,101 +85,82 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row >
+        <el-row>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
-              <el-input
-                v-model="tempForm.Barcode"
-                suffix-icon="fa fa-barcode"
-              ></el-input>
+              <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
-              <el-input
-                type="textarea"
-                v-model="tempForm.Description"
-              ></el-input>
+              <el-input type="textarea" v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
+        <inventory-qty :ItemID="tempForm.Id" />
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
-          $t("permission.cancel")
-        }}</el-button>
-        <el-button type="primary" @click="updateData()">حفظ</el-button>
-      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import { Edit, GetItemByID } from "@/api/Item";
+import InventoryQty from "@/components/Item/InventoryQty";
 
 export default {
+  components: { InventoryQty },
   props: {
     ItemId: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
-
   data() {
     return {
       Visibles: false,
-      tempForm: {
-        Id: undefined,
-        Name: '',
-        CostPrice: 0.0,
-        SellingPrice: 0.0,
-        OtherPrice: 0.0,
-        LowOrder: 0,
-        Tax: 0.0,
-        Rate: 0,
-        IsPrime: false,
-        Barcode: '',
-        Description: ''
-      },
+      tempForm: {},
       rulesForm: {
         Name: [
           {
             required: true,
-            message: 'يجب إدخال إسم ',
-            trigger: 'blur'
+            message: "يجب إدخال إسم ",
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
-            trigger: 'blur'
-          }
-        ]
-      }
+            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
     getdata() {
-      GetItemByID({ ID: this.ItemId }).then(response => {
+      GetItemByID({ ID: this.ItemId }).then((response) => {
         // handle success
         this.tempForm = response;
         this.Visibles = true;
       });
     },
+    focus() {
+      this.$emit("focus");
+    },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
-              this.Visibles = false
+            .then((response) => {
+              this.Visibles = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
-                duration: 2000
+                message: "تم التعديل بنجاح",
+                type: "success",
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -188,8 +168,7 @@ export default {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
-

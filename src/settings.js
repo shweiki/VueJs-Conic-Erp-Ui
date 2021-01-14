@@ -19,6 +19,7 @@ module.exports = {
   sidebarOpen: true,
   showNavbar: true,
   showBarcode: false,
+  showRestOfBill :false,
   BarcodeIsID: false,
   WithOutCheckItemIsExist: true,
   errorLog: 'production',

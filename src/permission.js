@@ -62,13 +62,21 @@ router.beforeEach(async (to, from, next) => {
             e = e || window.event;
             //debugger
             if (e.code == store.state.settings.CashDrawerCOM.OpenKeyBoard) {
-
               OpenCashDrawer({ Com: store.state.settings.CashDrawerCOM.COM })
                 .then(response => { console.log("OpenCashDrawer", response) })
                 .catch(err => {
                   console.log(err);
                 });
             }
+            /*
+            if (e.code == store.state.settings.KeyBoard.key) {
+              store.state.settings.KeyBoard.ref
+              OpenCashDrawer({ Com: store.state.settings.CashDrawerCOM.COM })
+                .then(response => { console.log("OpenCashDrawer", response) })
+                .catch(err => {
+                  console.log(err);
+                });
+            }*/
           }
         //  to.path = store.settings.defulateRedirect
           next({ ...to, replace: true })

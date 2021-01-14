@@ -1,6 +1,13 @@
 <template>
   <div>
-    <el-dialog title="تأكيد" :visible.sync="Show" width="40%" center>
+    <el-dialog
+      title="تأكيد"
+      :visible.sync="Show"
+      width="40%"
+      center
+      @closed="$emit('Closed')"
+      @opened="focus"
+    >
       <div style="text-align: center">
         <span style="font-size: large"
           >إجمالي مبلغ الفاتورة :
@@ -11,6 +18,7 @@
 
         <currency-input
           class="currency-input"
+          id="RestOfBill"
           v-model="RestOfBill"
           @focus="$event.target.select()"
         />
@@ -24,9 +32,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="Show = false">الغاء</el-button>
-        <el-button type="primary" @click="isEdit != true ? createData() : updateData()"
-          >حفظ</el-button
-        >
+        <el-button type="primary" @click="$emit('Done')">حفظ</el-button>
       </span>
     </el-dialog>
   </div>
@@ -35,16 +41,20 @@
 export default {
   props: {
     Total: Number,
-    Open : Boolean
+    Open: Boolean,
   },
-  watch(){Open(val){
-if (val) {
-
-}
-  }},
+  watch: {
+    Open(val) {
+      this.Show = val;
+    },
+  },
   data() {
-    return { Show: false,
-    RestOfBill : 0 };
+    return { Show: false, RestOfBill: 0 };
+  },
+  methods: {
+    focus() {
+      document.getElementById("RestOfBill").focus();
+    },
   },
 };
 </script>

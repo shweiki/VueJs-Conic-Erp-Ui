@@ -38,6 +38,10 @@
             <el-switch v-model="showSettings" class="drawer-switch" />
           </el-col>
           <el-col :span="6">
+            <span>{{ $t("Settings.showRestOfBill") }}</span>
+            <el-switch v-model="showRestOfBill" class="drawer-switch" />
+          </el-col>
+          <el-col :span="6">
             <span>{{ $t("Settings.sidebarOpen") }}</span>
             <el-switch v-model="sidebarOpen" class="drawer-switch" />
           </el-col>
@@ -160,6 +164,17 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "showSettings",
+          value: val,
+        });
+      },
+    },
+    showRestOfBill: {
+      get() {
+        return this.$store.state.settings.showRestOfBill;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "showRestOfBill",
           value: val,
         });
       },

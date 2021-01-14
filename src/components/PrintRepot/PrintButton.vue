@@ -1,5 +1,12 @@
 <template>
-  <el-popover placement="top-start" title="نماذج" width="200" trigger="hover">
+  <el-popover
+    @after-enter="focus"
+    @after-leave="focus"
+    placement="top-start"
+    title="نماذج"
+    width="200"
+    trigger="hover"
+  >
     <div class="icon-item">
       <el-button
         v-if="Type == 'SaleInvoice'"
@@ -47,6 +54,9 @@ export default {
     },
   },
   methods: {
+    focus() {
+      this.$emit("focus");
+    },
     PurchaseInvoiceA4() {
       PurchaseInvoiceA4(this.Data);
     },
