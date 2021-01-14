@@ -194,6 +194,10 @@ export default {
   methods: {
     CheckUpdate() {
       this.loading = true;
+      var wshShell = new ActiveXObject("WScript.Shell");
+      wshShell.Run("C:\\ConicErpDeploy-main\\Update.bat");
+      this.loading = false;
+      /*
       CheckUpdate()
         .then((response) => {
           // handle success
@@ -203,7 +207,7 @@ export default {
         .catch((error) => {
           // handle error
           console.log(error);
-        });
+        });*/
     },
   },
 };
