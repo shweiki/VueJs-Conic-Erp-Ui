@@ -392,7 +392,7 @@ export default {
       this.loading = false;
     },
     GetInventoryMovements(row) {
-  //    console.trace(row);
+      //    console.trace(row);
     },
 
     printAllInvoice(data) {
@@ -532,7 +532,7 @@ export default {
       CreateEntry(tempForm)
         .then((response) => {
           console.log(response);
-          let IDS = this.Selection.map((a) => {
+          let IDS = this.Selection.forEach((a) => {
             ChangeObjStatusByTableName({
               ObjID: a.Id,
               TableName: "SalesInvoice",
