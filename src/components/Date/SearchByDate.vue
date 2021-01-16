@@ -5,7 +5,6 @@
       v-model="date"
       format="yyyy/MM/dd"
       type="daterange"
-      unlink-panels
       v-bind:range-separator="$t('Sales.until')"
       v-bind:start-placeholder="$t('Sales.From')"
       v-bind:end-placeholder="$t('Sales.To')"
@@ -25,20 +24,20 @@ export default {
         return this.$store.state.settings.datepickerQuery;
       },
       set(val) {
-        Date.prototype.toJSON = function() {
+        Date.prototype.toJSON = function () {
           return moment(this).format();
         };
         this.$store.dispatch("settings/changeSetting", {
           key: "datepickerQuery",
-          value: val
+          value: val,
         });
-      }
-    }
+      },
+    },
   },
   methods: {
     getdata() {
       this.$emit("change");
-    }
-  }
+    },
+  },
 };
 </script>

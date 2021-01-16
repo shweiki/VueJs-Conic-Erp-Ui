@@ -47,18 +47,15 @@
           width="120"
           align="center"
         ></el-table-column>
-        <el-table-column prop="Name" align="center">
+        <el-table-column width="150" prop="Name" align="center">
           <template slot="header" slot-scope="{}">
             <el-input v-model="search" v-bind:placeholder="$t('Purchase.Provider')" />
-          </template>
-          <template slot-scope="scope">
-            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </template>
         </el-table-column>
         <el-table-column
           prop="AccountInvoiceNumber"
           sortable
-          label="InvoicePurchaseDate"
+          label="AccountInvoiceNumber"
           width="160"
           align="center"
         >
@@ -74,7 +71,7 @@
         <el-table-column
           sortable
           v-bind:label="$t('CashPool.Pay')"
-          width="160"
+          width="120"
           align="center"
         >
           <template slot-scope="scope">{{ scope.row.PaymentMethod }}</template>

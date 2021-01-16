@@ -21,8 +21,6 @@ import 'moment/locale/pt-br';
 
 moment.locale('en');
 
-
-
 store.dispatch("settings/GetSetting");
 
 const pluginOptions = {

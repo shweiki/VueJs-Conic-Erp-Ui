@@ -532,7 +532,7 @@ export default {
       CreateEntry(tempForm)
         .then((response) => {
           console.log(response);
-          let IDS = this.Selection.forEach((a) => {
+          this.Selection.forEach((a) => {
             ChangeObjStatusByTableName({
               ObjID: a.Id,
               TableName: "SalesInvoice",
@@ -542,7 +542,6 @@ export default {
               console.log(response);
             });
           });
-          console.log(IDS);
           this.EnableSave = false;
 
           this.$notify({
@@ -550,7 +549,7 @@ export default {
             message: "تم الإضافة بنجاح",
             type: "success",
             position: "top-left",
-            duration: 1000,
+            duration: 3000,
 
             onClose: () => {
               Object.assign(this.$data, this.$options.data());

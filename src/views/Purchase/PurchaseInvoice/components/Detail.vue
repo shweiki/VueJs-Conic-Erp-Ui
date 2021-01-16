@@ -351,7 +351,7 @@ export default {
         ID: undefined,
         Name: "-",
         Tax: 0.0,
-        AccountInvoiceNumber: "-",
+        AccountInvoiceNumber: "",
         FakeDate: new Date(),
         InvoicePurchaseDate: new Date(),
         PaymentMethod: "Cash",
