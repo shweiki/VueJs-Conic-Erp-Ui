@@ -158,7 +158,7 @@ export default {
           },
           {
             name: "Name",
-            weight: 0.3,
+            weight: 0.2,
           },
         ],
       });
