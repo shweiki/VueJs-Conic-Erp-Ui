@@ -450,7 +450,6 @@ export default {
       this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
-
           if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
             Edit(this.tempForm)
               .then((response) => {

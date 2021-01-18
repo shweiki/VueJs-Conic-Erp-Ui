@@ -28,6 +28,10 @@ module.exports = {
   pickerOptions: {
     shortcuts: [
       {
+        text: "اليوم",
+        days: 0,
+      },
+      {
         text: "قبل أسبوع",
         days: 7,
       },
