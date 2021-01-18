@@ -103,7 +103,7 @@ export default {
         keys: [
           {
             name: "Id",
-            weight: 0.7
+            weight: 0.2
           },
           {
             name: "Name",
@@ -111,15 +111,15 @@ export default {
           },
           {
             name: "Ssn",
-            weight: 1
+            weight: 0.1
           },
           {
             name: "PhoneNumber1",
-            weight: 0.3
+            weight: 0.2
           },
           {
             name: "Tag",
-            weight: 0.2
+            weight: 0.1
           }
         ]
       });
