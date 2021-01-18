@@ -16,10 +16,7 @@ import VueCurrencyInput from 'vue-currency-input'
 import VueBarcodeScanner from 'vue-barcode-scanner'
 import OpenCashSound from '@/assets/Sounds/PointOfSaleOpenCashDrawer.wav'
 import BarCodeSound from '@/assets/Sounds/BarCode.wav'
-import * as moment from 'moment';
-import 'moment/locale/pt-br';
 
-moment.locale('en');
 
 store.dispatch("settings/GetSetting");
 
