@@ -20,7 +20,6 @@
     <el-col :span="14">
       <el-select
         style="width : 90%"
-        ref="headerSearchSelectMember"
         v-model="search"
         :remote-method="querySearch"
         filterable
@@ -72,7 +71,7 @@ export default {
   },
   computed: {
     Members() {
-      return this.$store.getters.AllMembers;
+      return this.$store.getters.Members;
     }
   },
   watch: {

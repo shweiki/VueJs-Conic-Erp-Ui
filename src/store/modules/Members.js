@@ -4,14 +4,14 @@ import { CheckMemberLog, GetMemberLogByStatus } from "@/api/MemberLog";
 
 
 const state = {
-    AllMembers: [],
+    Members: [],
     ActiveMembers: [],
 
 }
 
 const mutations = {
-    SET_ALLMEMBERS: (state, response) => {
-        state.AllMembers = response.reverse()
+    SET_MEMBERS: (state, response) => {
+        state.Members = response.reverse()
     },
     SET_ACTIVEMEMBER: (state, response) => {
         state.ActiveMembers = response.reverse()
@@ -52,7 +52,7 @@ const actions = {
             GetMember().then(response => {
                 console.log(response)
 
-                commit('SET_ALLMEMBERS', response)
+                commit('SET_MEMBERS', response)
                 resolve(response)
 
             }).catch(error => {

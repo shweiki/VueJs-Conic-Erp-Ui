@@ -20,7 +20,6 @@
       <el-col :span="8">
         <el-select
           style="display: unset"
-          ref="headerSearchSelect"
           v-model="search"
           :remote-method="querySearch"
           filterable
