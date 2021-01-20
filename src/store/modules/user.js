@@ -43,6 +43,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ Username: username.trim(), Password: password, RememberMe: rememberme }).then(response => {
         const data = response
+        console.log("login", data)
+
         if (!response || response == 'User account locked out.' || response =='User Name Or PassWord Is Not Correct') {
           reject(response)
         }

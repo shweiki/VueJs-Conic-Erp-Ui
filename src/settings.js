@@ -29,7 +29,7 @@ module.exports = {
     shortcuts: [
       {
         text: "اليوم",
-        days: 0,
+        days: 1,
       },
       {
         text: "قبل أسبوع",
