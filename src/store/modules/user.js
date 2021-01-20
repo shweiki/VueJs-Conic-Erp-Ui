@@ -1,16 +1,15 @@
 import { login, logout, getInfo } from '@/api/User'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
-import { GetFileByObjID } from "@/api/File";
 
 const state = {
   token: getToken(),
-  Id:'',
+  Id: '',
   name: '',
-  phone:'',
+  phone: '',
   avatar: '',
   introduction: '',
-  roles: [],  
+  roles: [],
 }
 
 const mutations = {
@@ -40,15 +39,19 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, rememberme } = userInfo
     return new Promise((resolve, reject) => {
-      login({ Username: username.trim(), Password: password, RememberMe: true }).then(response => {
+      login({ Username: username.trim(), Password: password, RememberMe: rememberme }).then(response => {
         const data = response
-      //  console.log("response", response)
+        if (!response || response == 'User account locked out.' || response =='User Name Or PassWord Is Not Correct') {
+          reject(response)
+        }
         commit('SET_TOKEN', data.token_type + " " + data.access_token)
         setToken(data.token_type + " " + data.access_token)
         resolve()
       }).catch(error => {
+        console.log("login", response)
+
         reject(error)
       })
     })
@@ -65,13 +68,13 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { Id,phone, roles, name, avatar, introduction } = data
+        const { Id, phone, roles, name, avatar, introduction } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
- 
+
         commit('SET_ROLES', roles)
         commit('SET_ID', Id)
         commit('SET_NAME', name)
@@ -127,7 +130,7 @@ const actions = {
       resetRouter()
       // generate accessible routes map based on roles
       const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-      console.log("here 2 ",accessRoutes)
+      console.log("here 2 ", accessRoutes)
 
       // dynamically add accessible routes
       router.addRoutes(accessRoutes)

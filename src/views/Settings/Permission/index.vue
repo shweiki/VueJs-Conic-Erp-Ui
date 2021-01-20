@@ -15,8 +15,9 @@
       <el-table
         :data="
           tableData.filter(
-            (data) =>
-              !search || data.UserName.toLowerCase().includes(search.toLowerCase())
+            data =>
+              !search ||
+              data.UserName.toLowerCase().includes(search.toLowerCase())
           )
         "
         style="width: 100%"
@@ -45,11 +46,17 @@
 
         <el-table-column prop="UserName" width="120">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Permission.UserName')" />
+            <el-input
+              v-model="search"
+              v-bind:placeholder="$t('Permission.UserName')"
+            />
           </template>
         </el-table-column>
         <el-table-column label="Email" prop="Email"></el-table-column>
-        <el-table-column label="Phone Number" prop="PhoneNumber"></el-table-column>
+        <el-table-column
+          label="Phone Number"
+          prop="PhoneNumber"
+        ></el-table-column>
 
         <el-table-column align="left">
           <template slot-scope="scope">
@@ -68,6 +75,12 @@
               @close="RemoveRole(scope.row.UserName, role.Name)"
               >{{ role.Name }}</el-tag
             >
+            <el-button
+              type="danger"
+              icon="el-icon-unlock"
+              size="mini"
+              @click="UnLockOut(scope.row.Id)"
+            ></el-button>
             <el-button
               type="success"
               icon="el-icon-plus"
@@ -101,8 +114,8 @@
             {
               required: true,
               message: 'Please input Number Phone ',
-              trigger: 'blur',
-            },
+              trigger: 'blur'
+            }
           ]"
         >
           <el-input type="text" v-model="tempForm.PhoneNumber"></el-input>
@@ -114,13 +127,13 @@
             {
               required: true,
               message: 'Please input email address',
-              trigger: 'blur',
+              trigger: 'blur'
             },
             {
               type: 'email',
               message: 'Please input correct email address',
-              trigger: ['blur', 'change'],
-            },
+              trigger: ['blur', 'change']
+            }
           ]"
         >
           <el-input v-model="tempForm.Email"></el-input>
@@ -182,7 +195,13 @@
 </template>
 
 <script>
-import { GetUsers, Register, AddRoleUser, DeleteRoleUser } from "@/api/User";
+import {
+  GetUsers,
+  Register,
+  AddRoleUser,
+  DeleteRoleUser,
+  UnLockout
+} from "@/api/User";
 import { getRoutes, GetRoles, AddRole, DeleteRole, Edit } from "@/api/Role";
 
 import PanThumb from "@/components/PanThumb";
@@ -224,32 +243,32 @@ export default {
       Roles: [],
       textMapForm: {
         update: "تعديل",
-        create: "إضافة",
+        create: "إضافة"
       },
       tempForm: {
         UserName: "",
         Email: "",
         Password: "",
         PhoneNumber: "",
-        ConfirmPassword: "",
+        ConfirmPassword: ""
       },
       rulesForm: {
         UserName: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         Password: [{ validator: validatePass, trigger: "blur" }],
-        ConfirmPassword: [{ validator: validatePass2, trigger: "blur" }],
-      },
+        ConfirmPassword: [{ validator: validatePass2, trigger: "blur" }]
+      }
     };
   },
   created() {
@@ -259,23 +278,23 @@ export default {
     getdata() {
       this.loading = true;
       GetUsers()
-        .then((response) => {
+        .then(response => {
           // handle success
 
           this.tableData = response;
           GetRoles()
-            .then((response) => {
+            .then(response => {
               // handle success
 
               this.Roles = response;
               this.loading = false;
             })
-            .catch((error) => {
+            .catch(error => {
               // handle error
               console.log(error);
             });
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
         });
@@ -283,25 +302,42 @@ export default {
     RemoveRole(username, rolername) {
       console.log(username + rolername);
       DeleteRoleUser({ UserName: username, RoleName: rolername })
-        .then((response) => {
+        .then(response => {
           // handle success
 
           this.getdata();
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
         });
     },
     AddRole() {
       AddRoleUser({ UserName: this.UserName, RoleName: this.RoleName })
-        .then((response) => {
+        .then(response => {
           // handle success
 
           this.dialogAddRoleVisible = false;
           this.getdata();
         })
-        .catch((error) => {
+        .catch(error => {
+          // handle error
+          console.log(error);
+        });
+    },
+    UnLockOut(Id) {
+      UnLockout({ UserId: Id })
+        .then(response => {
+          // handle success
+          if (response)
+            this.$notify({
+              title: "Success",
+              message: "This is a success message " + response + ".",
+              type: "success"
+            });
+          this.getdata();
+        })
+        .catch(error => {
           // handle error
           console.log(error);
         });
@@ -312,7 +348,7 @@ export default {
         Email: "",
         Password: "",
         PhoneNumber: "",
-        ConfirmPassword: "",
+        ConfirmPassword: ""
       };
     },
     handleCreate() {
@@ -337,20 +373,20 @@ export default {
       });
     },
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           Register(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -360,20 +396,20 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           Edit(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -381,7 +417,7 @@ export default {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>

@@ -5,7 +5,10 @@
       <el-col :span="2">
         <add-item :visible="OpenAddItem" :barcode="Barcode" @focus="focus" />
       </el-col>
-      <el-col :span="2">
+      <el-col
+        v-if="$store.getters.settings.BusinessType != 'SuperMarkit'"
+        :span="2"
+      >
         <search-item @add="AddItem" @focus="focus" />
       </el-col>
       <el-col :span="2">
@@ -34,7 +37,9 @@
             :value="item"
             :label="item.Name"
           >
-            <span style="color: #8492a6; font-size: 12px">( {{ item.Id }} )</span>
+            <span style="color: #8492a6; font-size: 12px"
+              >( {{ item.Id }} )</span
+            >
             <span style="float: left">{{ item.Name }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{
               item.SellingPrice
@@ -67,7 +72,9 @@
     >
       <el-row>
         <el-col :span="3">
-          <el-button type="success" icon="el-plus" @click="AddItemByQty">Add</el-button>
+          <el-button type="success" icon="el-plus" @click="AddItemByQty"
+            >Add</el-button
+          >
         </el-col>
 
         <el-col :span="12">
@@ -103,13 +110,13 @@ export default {
       search: "",
       options: [],
       searchPool: [],
-      fuse: undefined,
+      fuse: undefined
     };
   },
   computed: {
     Items() {
       return this.$store.getters.AllItems;
-    },
+    }
   },
   watch: {
     Items() {
@@ -117,7 +124,7 @@ export default {
     },
     searchPool(list) {
       this.initFuse(list);
-    },
+    }
   },
   created() {
     // Add barcode scan listener and pass the callback function
@@ -154,13 +161,13 @@ export default {
         keys: [
           {
             name: "Id",
-            weight: 0.7,
+            weight: 0.7
           },
           {
             name: "Name",
-            weight: 0.2,
-          },
-        ],
+            weight: 0.2
+          }
+        ]
       });
     },
     querySearch(query) {
@@ -182,7 +189,7 @@ export default {
     },
     AddItemByQty() {
       var find = this.Items.findIndex(
-        (value) => value.Barcode == this.Barcode || value.id == this.Barcode
+        value => value.Barcode == this.Barcode || value.id == this.Barcode
       );
       if (find != -1) {
         this.AddItem(this.Items[find], this.Qty);
@@ -197,7 +204,7 @@ export default {
 
       if (this.Barcode != "" || this.Barcode) {
         var find = this.Items.findIndex(
-          (value) =>
+          value =>
             value.Barcode == this.Barcode ||
             (this.$store.getters.settings.BarcodeIsID == true
               ? value.Id == this.Barcode
@@ -211,7 +218,7 @@ export default {
           this.OpenAddItem = true;
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>

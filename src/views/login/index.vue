@@ -1,7 +1,9 @@
 <template>
   <div
     class="login-container"
-    :style="{ backgroundImage: 'url('+$store.getters.settings.loginBackground+')' }"
+    :style="{
+      backgroundImage: 'url(' + $store.getters.settings.loginBackground + ')'
+    }"
   >
     <el-form
       ref="loginForm"
@@ -55,7 +57,19 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" @click.native.prevent="handleLogin">Login</el-button>
+      <el-form-item prop="rememberme">
+        <span class="svg-container">
+          <svg-icon icon-class="el-icon-timer" />
+        </span>
+        <el-checkbox v-model="loginForm.rememberme">Remember Me</el-checkbox>
+      </el-form-item>
+      <span v-if="loginFailed != ''" style="color :red;">
+        <svg-icon icon-class="el-icon-error" />
+        {{ loginFailed }}
+      </span>
+      <el-button :loading="loading" @click.native.prevent="handleLogin"
+        >Login</el-button
+      >
     </el-form>
   </div>
 </template>
@@ -80,30 +94,36 @@ export default {
       loginForm: {
         username: "",
         password: "",
+        rememberme: true
       },
       loginRules: {
-        username: [{ required: true, trigger: "blur", validator: validateUsername }],
-        password: [{ required: true, trigger: "blur", validator: validatePassword }],
+        username: [
+          { required: true, trigger: "blur", validator: validateUsername }
+        ],
+        password: [
+          { required: true, trigger: "blur", validator: validatePassword }
+        ]
       },
+      loginFailed: "",
       passwordType: "password",
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {},
+      otherQuery: {}
     };
   },
   watch: {
     $route: {
-      handler: function (route) {
+      handler: function(route) {
         const query = route.query;
         if (query) {
           this.redirect = query.redirect;
           this.otherQuery = this.getOtherQuery(query);
         }
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   created() {
     if (this.loginForm.username === "") {
@@ -142,7 +162,7 @@ export default {
       });
     },
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
           this.$store
@@ -150,11 +170,13 @@ export default {
             .then(() => {
               this.$router.push({
                 path: this.redirect || "/",
-                query: this.otherQuery,
+                query: this.otherQuery
               });
               this.loading = false;
+              this.loginFailed = "";
             })
-            .catch(() => {
+            .catch(err => {
+              this.loginFailed = err;
               this.loading = false;
             });
         } else {
@@ -170,7 +192,7 @@ export default {
         }
         return acc;
       }, {});
-    },
+    }
     // afterQRScan() {
     //   if (e.key === 'x-admin-oauth-code') {
     //     const code = getQueryObject(e.newValue)
@@ -189,7 +211,7 @@ export default {
     //     }
     //   }
     // }
-  },
+  }
 };
 </script>
 
@@ -202,8 +224,6 @@ $bg: #00000049;
 /* reset element-ui css */ //http://cdn.magdeleine.co/wp-content/uploads/2014/05/3jPYgeVCTWCMqjtb7Dqi_IMG_8251-1400x933.jpg
 
 .login-container {
-  //background: url(https://i.ibb.co/dPSp7dp/ezgif-3-fa3e3985da64-min.jpg) no-repeat center center fixed;
-
   .el-input {
     display: inline-block;
     height: 47px;

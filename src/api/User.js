@@ -39,6 +39,13 @@ export function ChangePassword(data) {
     data: qs.stringify(data)
   })
 }
+export function UnLockout(data) {
+  return request({
+    url: '/User/UnLockout',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function GetUsers() {
   return request({
     url: '/User/GetUsers',
