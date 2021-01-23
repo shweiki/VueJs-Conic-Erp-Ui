@@ -1,13 +1,12 @@
 <template>
-  <div class="app-container" >
+  <div class="app-container">
     <el-row>
       <el-col :span="6" :xs="24">
         <member-log />
       </el-col>
       <el-col :span="18" :xs="24" v-loading="loading">
+        <member-search />
 
-            <member-search />
-       
         <el-col
           style="padding: 1.5px;"
           :xs="8"
@@ -16,22 +15,28 @@
           v-for="(member, index) in ActiveMembers"
           :key="index"
         >
-          <el-card :body-style="{ padding: '0px' }" class="box-card" shadow="always">
+          <el-card
+            :body-style="{ padding: '0px' }"
+            class="box-card"
+            shadow="always"
+          >
             <div slot="header" class="clearfix">
-              <router-link :to="'/Gym/Edit/'+member.Id">
-                <strong
-                  style="font-size: 10px; cursor: pointer;"
-                >{{member.Name.split(' ').slice(0, 4).join(' ')}}</strong>
+              <router-link :to="'/Gym/Edit/' + member.Id">
+                <strong style="font-size: 10px; cursor: pointer;">{{
+                  member.Name.split(" ")
+                    .slice(0, 4)
+                    .join(" ")
+                }}</strong>
               </router-link>
             </div>
-            <el-row >
-              <el-col
-                :span="12"
-              >{{ $t('MemberList.MembershipType') }}{{ member.Name}}</el-col>
-              <!-- <el-col :span="12">
+            <el-row>
+              <el-col :span="12"
+                >{{ $t("MemberList.MembershipType") }}{{ member.Name }}</el-col
+              >
+              <el-col :span="12">
                 <span>اخر زيارة</span>
-                {{member.lastLog }}
-              </el-col>-->
+                {{ member.lastLog }}
+              </el-col>
             </el-row>
             <el-col :span="24">
               <el-input disabled v-model="member.PhoneNumber1"></el-input>
@@ -57,7 +62,7 @@ import { GetMember } from "@/api/Member";
 export default {
   name: "MemberList",
   directives: { permission },
-  components: {  MemberSearch, MemberLog, PanThumb, WebCam },
+  components: { MemberSearch, MemberLog, PanThumb, WebCam },
   data() {
     return {
       loading: true,
@@ -83,7 +88,7 @@ export default {
   },
   methods: {
     getdata() {
-      this.loading = false
+      this.loading = false;
     }
   }
 };
@@ -125,7 +130,7 @@ export default {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  content: '';
+  content: "";
 }
 
 .clearfix:after {
