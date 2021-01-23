@@ -32,14 +32,21 @@ export function ChangeObjStatusByTableName(data) {
   return request({
     url: '/Oprationsys/ChangeObjStatusByTableName',
     method: 'post',
-    params: data
+    data: qs.stringify(data)
   })
 }
 export function ChangeObjStatus(data) {
   return request({
     url: '/Oprationsys/ChangeObjStatus',
     method: 'post',
-    params: data
+    data: qs.stringify(data)
+  })
+}
+export function ChangeArrObjStatus(data) {
+  return request({
+    url: '/Oprationsys/ChangeArrObjStatus',
+    method: 'post',
+    data: qs.stringify(data)
   })
 }
 

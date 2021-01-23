@@ -80,7 +80,9 @@
 
       <span>{{ $t("CashPool.Amount") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ (TotalCash + TotalReceivables + TotalVisa).toFixed(3) }} JOD</span>
+      <span
+        >{{ (TotalCash + TotalReceivables + TotalVisa).toFixed(3) }} JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
       <span>إجمالي التكلفة</span>
       <el-divider direction="vertical"></el-divider>
@@ -94,8 +96,18 @@
     </el-card>
     <el-card class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>
-      <el-table height="250" :data="ItemsMovements" fit border highlight-current-row>
-        <el-table-column prop="Name" label="الصنف" align="center"></el-table-column>
+      <el-table
+        height="250"
+        :data="ItemsMovements"
+        fit
+        border
+        highlight-current-row
+      >
+        <el-table-column
+          prop="Name"
+          label="الصنف"
+          align="center"
+        ></el-table-column>
         <el-table-column
           prop="TotalCount"
           label="العدد المباع"
@@ -117,7 +129,10 @@
             {{ TotalCost.toFixed(3) }}
           </template>
           <template slot-scope="scope">{{
-            ((scope.row.AvgPrice - scope.row.CostPrice) * scope.row.TotalCount).toFixed(3)
+            (
+              (scope.row.AvgPrice - scope.row.CostPrice) *
+              scope.row.TotalCount
+            ).toFixed(3)
           }}</template>
         </el-table-column>
         <el-table-column align="center">
@@ -148,16 +163,20 @@
         highlight-current-row
         ref="multipleTable"
         @row-dblclick="
-          (row) => {
+          row => {
             $router.replace({
-              path: '/Sales/Edit/' + row.Id,
+              path: '/Sales/Edit/' + row.Id
             });
           }
         "
         @selection-change="handleSelectionChange"
         @expand-change="GetInventoryMovements"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column
+          type="selection"
+          width="55"
+          align="center"
+        ></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
@@ -179,7 +198,9 @@
           align="center"
         >
           <template slot-scope="scope">
-            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
+            <strong style="font-size: 10px; cursor: pointer">{{
+              scope.row.Name
+            }}</strong>
           </template>
         </el-table-column>
         <el-table-column
@@ -193,9 +214,15 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{ scope.row.Discount.toFixed(3) }}</template>
+          <template slot-scope="scope">{{
+            scope.row.Discount.toFixed(3)
+          }}</template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
+        <el-table-column
+          v-bind:label="$t('CashPool.Amountv')"
+          width="120"
+          align="center"
+        >
           <template slot-scope="scope">
             {{
               scope.row.InventoryMovements.reduce((prev, cur) => {
@@ -231,14 +258,23 @@
                 v-bind:label="$t('CashPool.quantity')"
                 align="center"
               ></el-table-column>
-              <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
+              <el-table-column
+                v-bind:label="$t('CashPool.Price')"
+                align="center"
+              >
                 <template slot-scope="scope">{{
                   scope.row.SellingPrice.toFixed(3)
                 }}</template>
               </el-table-column>
-              <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
+              <el-table-column
+                v-bind:label="$t('CashPool.Total')"
+                align="center"
+              >
                 <template slot-scope="scope"
-                  >{{ (scope.row.SellingPrice * scope.row.Qty).toFixed(3) }} JOD</template
+                  >{{
+                    (scope.row.SellingPrice * scope.row.Qty).toFixed(3)
+                  }}
+                  JOD</template
                 >
               </el-table-column>
             </el-table>
@@ -256,7 +292,7 @@ import { GetInventoryMovementsBySalesInvoiceId } from "@/api/InventoryMovement";
 import { GetActiveCash } from "@/api/Cash";
 import { GetInComeAccounts } from "@/api/Account";
 import { CreateEntry } from "@/api/EntryAccounting";
-import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
+import { ChangeArrObjStatus } from "@/api/Oprationsys";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 
 import printJS from "print-js";
@@ -280,7 +316,7 @@ export default {
       TotalCost: 0,
       TotalItemsCost: 0,
       TotalDiscount: 0,
-      ItemsMovements: [],
+      ItemsMovements: []
     };
   },
   created() {
@@ -343,16 +379,16 @@ export default {
       this.TotalDiscount = this.Selection.reduce((a, b) => a + b.Discount, 0);
     },
     searchItem(Id) {
-      return this.$store.getters.AllItems.find((value) => value.Id == Id);
+      return this.$store.getters.AllItems.find(value => value.Id == Id);
     },
     getdata() {
       this.loading = true;
-      GetActiveCash().then((response) => {
+      GetActiveCash().then(response => {
         // handle success
         //   console.log(response)
         this.CashAccounts = response;
         this.CashAccount = this.CashAccounts[0].value;
-        GetInComeAccounts().then((response) => {
+        GetInComeAccounts().then(response => {
           // handle success
           //   console.log(response)
           this.InComeAccounts = response;
@@ -360,32 +396,34 @@ export default {
         });
       });
       GetSaleInvoiceByStatus({
-        Status: 0,
+        Status: 0
       })
-        .then((response) => {
+        .then(response => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.ItemsMovements = [];
-          this.tableData.map((a) => {
-            return a.InventoryMovements.map((m) => {
-              var find = this.ItemsMovements.findIndex((value) => value.Name == m.Name);
+          this.tableData.map(a => {
+            return a.InventoryMovements.map(m => {
+              var find = this.ItemsMovements.findIndex(
+                value => value.Name == m.Name
+              );
               if (find != -1) this.ItemsMovements[find].TotalCount += m.Qty;
               else {
                 const foundItem = this.$store.getters.AllItems.find(
-                  (value) => value.Name == m.Name
+                  value => value.Name == m.Name
                 );
                 this.ItemsMovements.push({
                   Name: foundItem.Name,
                   TotalCount: m.Qty,
                   AvgPrice: m.SellingPrice.toFixed(2),
-                  CostPrice: foundItem.CostPrice,
+                  CostPrice: foundItem.CostPrice
                 });
               }
             });
           });
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
         });
@@ -396,7 +434,7 @@ export default {
     },
 
     printAllInvoice(data) {
-      data = data.map((Item) => ({
+      data = data.map(Item => ({
         المجموع:
           Item.InventoryMovements.reduce((prev, cur) => {
             return prev + cur.Qty * cur.SellingPrice;
@@ -405,24 +443,31 @@ export default {
         "طريقة الدفع ": Item.PaymentMethod,
         التاريخ: Item.FakeDate,
         الحساب: Item.Name,
-        الرقم: Item.Id,
+        الرقم: Item.Id
       }));
       printJS({
         printable: data,
-        properties: ["المجموع", "الخصم", "طريقة الدفع ", "التاريخ", "الحساب", "الرقم"],
+        properties: [
+          "المجموع",
+          "الخصم",
+          "طريقة الدفع ",
+          "التاريخ",
+          "الحساب",
+          "الرقم"
+        ],
         type: "json",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
       });
     },
     printAllItemSale(data) {
-      data = data.map((Item) => ({
+      data = data.map(Item => ({
         "المجموع البيع": (Item.TotalCount * Item.AvgPrice).toFixed(3),
         "سعر البيع": Item.AvgPrice,
         "المجموع التكلفة": (Item.TotalCount * Item.CostPrice).toFixed(3),
         "سعر التكلفة": Item.CostPrice,
         العدد: Item.TotalCount,
-        الصنف: Item.Name,
+        الصنف: Item.Name
       }));
       printJS({
         printable: data,
@@ -432,12 +477,12 @@ export default {
           "المجموع التكلفة",
           "سعر التكلفة",
           "العدد",
-          "الصنف",
+          "الصنف"
         ],
         type: "json",
         header:
           "<center> <h2>" +
-          this.InComeAccounts.find((obj) => {
+          this.InComeAccounts.find(obj => {
             return obj.value == this.InComeAccount;
           }).label +
           "</h2></center><h3 style='float:right'> الاجمالي النقدي " +
@@ -458,12 +503,11 @@ export default {
           this.formatDate(new Date()) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
       });
     },
     createData() {
       this.EnableSave = true;
-
       var tempForm = {
         Id: undefined,
         FakeDate: new Date(),
@@ -477,10 +521,10 @@ export default {
             Credit: 0.0,
             Description:
               "قيد اغلاق  (" +
-              this.CashAccounts.find((obj) => {
+              this.CashAccounts.find(obj => {
                 return obj.value == this.CashAccount;
               }).label,
-            EntryId: undefined,
+            EntryId: undefined
           },
           {
             Id: undefined,
@@ -489,16 +533,16 @@ export default {
             Credit: this.TotalCash,
             Description:
               "قيد إغلاق  " +
-              this.CashAccounts.find((obj) => {
+              this.CashAccounts.find(obj => {
                 return obj.value == this.CashAccount;
               }).label +
               " لمجموعة فواتير نقدية ",
-            EntryId: undefined,
-          },
-        ],
+            EntryId: undefined
+          }
+        ]
       };
 
-      this.Selection.forEach((i) => {
+      this.Selection.forEach(i => {
         if (i.PaymentMethod == "Receivables")
           tempForm.EntryMovements.push({
             Id: undefined,
@@ -509,7 +553,7 @@ export default {
                 return prev + cur.Qty * cur.SellingPrice;
               }, 0) - i.Discount,
             Description: "فاتورة مبيعات رقم " + i.Id + " ",
-            EntryId: undefined,
+            EntryId: undefined
           });
         /// Visa
         if (i.PaymentMethod == "Visa")
@@ -520,44 +564,44 @@ export default {
             Credit: this.TotalVisa,
             Description:
               "قيد إغلاق  " +
-              this.CashAccounts.find((obj) => {
+              this.CashAccounts.find(obj => {
                 return obj.value == this.CashAccount;
               }).label +
               " لمجموعة فواتير فيزا ",
-            EntryId: undefined,
+            EntryId: undefined
           });
       });
-
       console.log(tempForm);
       CreateEntry(tempForm)
-        .then((response) => {
-          console.log(response);
-          this.Selection.forEach((a) => {
-            ChangeObjStatusByTableName({
-              ObjID: a.Id,
-              TableName: "SalesInvoice",
-              Status: 1,
-              Description: "فاتورة مؤكدة",
-            }).then((response) => {
-              console.log(response);
-            });
-          });
-          this.EnableSave = false;
+        .then(response => {
+          console.log(
+            this.Selection.map(x => x.Id),
+            response
+          );
 
+          ChangeArrObjStatus({
+            ObjsID: this.Selection.map(x => x.Id),
+            TableName: "SalesInvoice",
+            Status: 1,
+            Description: "فاتورة مؤكدة"
+          }).then(response => {
+            console.log(response);
+          });
+
+          this.EnableSave = false;
           this.$notify({
             title: "تم الإضافة بنجاح",
             message: "تم الإضافة بنجاح",
             type: "success",
             position: "top-left",
             duration: 3000,
-
             onClose: () => {
               Object.assign(this.$data, this.$options.data());
               this.getdata();
-            },
+            }
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -570,7 +614,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    },
-  },
+    }
+  }
 };
 </script>

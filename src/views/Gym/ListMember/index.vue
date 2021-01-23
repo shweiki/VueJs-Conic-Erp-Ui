@@ -27,7 +27,7 @@
             <el-row >
               <el-col
                 :span="12"
-              >{{ $t('MemberList.MembershipType') }}{{ member.ActiveMemberShip.Name}}</el-col>
+              >{{ $t('MemberList.MembershipType') }}{{ member.Name}}</el-col>
               <!-- <el-col :span="12">
                 <span>اخر زيارة</span>
                 {{member.lastLog }}
