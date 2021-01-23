@@ -35,12 +35,11 @@ router.beforeEach(async (to, from, next) => {
           const { roles, userrouter, defulateRedirect } = await store.dispatch('user/getInfo')
           // generate accessible routes map based on roles
           roles.userrouter = userrouter
-          roles.redirect = defulateRedirect
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           // dynamically add accessible routes  
           router.addRoutes(accessRoutes)
           if (!store.state.settings.sidebarOpen)
-          store.dispatch('app/closeSideBar', { withoutAnimation: false })
+            store.dispatch('app/closeSideBar', { withoutAnimation: false })
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           store.dispatch("CompanyInfo/GetCompanyInfo");
@@ -78,14 +77,20 @@ router.beforeEach(async (to, from, next) => {
                 });
             }*/
           }
-        //  to.path = store.settings.defulateRedirect
-          next({ ...to, replace: true })
+          console.log("to : ", to)
+          //  to.path = store.settings.defulateRedirect
+          // next({ ...to, replace: true })
+          if (defulateRedirect)
+            next(defulateRedirect);
+          else
+            next({ ...to, replace: true })
           // run First Project
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
-          next(`/login?redirect=${to.path}`)
+          //next(`/login?redirect=${to.path}`)
+          next(`/login`)
           NProgress.done()
         }
       }
@@ -98,7 +103,8 @@ router.beforeEach(async (to, from, next) => {
       next()
     } else {
       // other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`)
+      //next(`/login?redirect=${to.path}`)
+      next(`/login`)
       NProgress.done()
     }
   }

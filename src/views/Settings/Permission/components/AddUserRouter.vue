@@ -57,14 +57,8 @@ export default {
       default: "/",
     },
   },
-  watch: {
-    Redirect(val) {
-      this.redirect = val;
-    },
-  },
   data() {
     return {
-      redirect: "",
       routes: [],
       dialogVisible: false,
       checkStrictly: false,
