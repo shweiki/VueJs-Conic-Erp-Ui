@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+      style="margin-top: -14vh"
       title="تأكيد"
       :visible.sync="Show"
       width="40%"
@@ -16,37 +17,42 @@
         >
         <el-divider></el-divider>
 
-        <currency-input
-          class="currency-input"
-          id="RestOfBill"
-          v-model="RestOfBill"
-          @focus="$event.target.select()"
-        />
-        <el-divider></el-divider>
-
         <span style="color: #ff5722; font-size: x-large"
           >الباقي :
           {{ (Total - RestOfBill).toFixed(2) }}
           JOD</span
         >
+        <el-divider></el-divider>
+
+        <currency-input
+          class="currency-input"
+          id="RestOfBill"
+          v-model="RestOfBill"
+          @focus="$event.target.select()"
+          @input="onInputChange"
+        />
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="Show = false">الغاء</el-button>
-        <el-button type="primary" @click="$emit('Done')">حفظ</el-button>
-      </span>
+      <touch-keyboard
+        @onChange="onChange"
+        @onKeyPress="onKeyPress"
+        :input="RestOfBill"
+      />
     </el-dialog>
   </div>
 </template>
 <script>
+import TouchKeyboard from "@/components/TouchKeyboard";
+
 export default {
+  components: { TouchKeyboard },
   props: {
     Total: Number,
-    Open: Boolean,
+    Open: Boolean
   },
   watch: {
     Open(val) {
       this.Show = val;
-    },
+    }
   },
   data() {
     return { Show: false, RestOfBill: 0 };
@@ -55,6 +61,16 @@ export default {
     focus() {
       document.getElementById("RestOfBill").focus();
     },
-  },
+    onChange(input) {
+      this.RestOfBill = input;
+    },
+    onKeyPress(button) {
+      if (button == "{enter}") this.$emit("Done");
+    },
+    onInputChange(input) {
+    //  console.log(input);
+      this.RestOfBill = input;
+    }
+  }
 };
 </script>

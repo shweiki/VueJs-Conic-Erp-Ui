@@ -17,7 +17,6 @@ import VueBarcodeScanner from 'vue-barcode-scanner'
 import OpenCashSound from '@/assets/Sounds/PointOfSaleOpenCashDrawer.wav'
 import BarCodeSound from '@/assets/Sounds/BarCode.wav'
 
-
 store.dispatch("settings/GetSetting");
 
 const pluginOptions = {
