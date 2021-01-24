@@ -51,32 +51,33 @@
         </div>
       </el-col>
       <el-col :span="20">
-        <el-row>
-          <el-col :span="8">
-            <el-col :span="24">
-              <el-input disabled v-model="Member.Id"></el-input>
-            </el-col>
+        <el-row type="flex">
+          <el-col :span="4">
+            <span>رقم العضوية</span>
+          </el-col>
+          <el-col :span="4">
+            <el-input disabled v-model="Member.Id"></el-input>
             <!--
             <el-col :span="12">
               <el-input disabled v-model="Member.Tag"></el-input>
             </el-col>-->
           </el-col>
           <el-col :span="4">
-            <span>رقم العضوية</span>
-          </el-col>
-          <el-col :span="8">
-            <el-input disabled v-model="Member.Name"></el-input>
-          </el-col>
-          <el-col :span="4">
             <span>اسم المشترك</span>
           </el-col>
+          <el-col :span="12">
+            <el-input disabled v-model="Member.Name"></el-input>
+          </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
+          <el-col :span="4">
+            <span>العمر</span>
+          </el-col>
           <el-col :span="8">
             <el-input disabled v-model="Member.Age"></el-input>
           </el-col>
           <el-col :span="4">
-            <span>العمر</span>
+            <span>تاريخ الميلاد</span>
           </el-col>
           <el-col :span="8">
             <el-date-picker
@@ -86,26 +87,26 @@
               disabled
             ></el-date-picker>
           </el-col>
-          <el-col :span="4">
-            <span>تاريخ الميلاد</span>
-          </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-input disabled v-model="Member.lastLog"></el-input>
-          </el-col>
+        <el-row type="flex">
           <el-col :span="4">
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
-            <el-input disabled v-model="Member.PhoneNumber1"></el-input>
+            <last-log-member :MemberID="Member.Id" />
           </el-col>
           <el-col :span="4">
             <span>رقم الهاتف</span>
           </el-col>
+          <el-col :span="8">
+            <el-input disabled v-model="Member.PhoneNumber1"></el-input>
+          </el-col>
         </el-row>
 
-        <el-row>
+        <el-row type="flex">
+          <el-col :span="4">
+            <span>تاريخ الانتهاء</span>
+          </el-col>
           <el-col :span="8">
             <el-date-picker
               v-if="Member.ActiveMemberShip"
@@ -116,7 +117,7 @@
             ></el-date-picker>
           </el-col>
           <el-col :span="4">
-            <span>تاريخ الانتهاء</span>
+            <span>تاريخ البدء</span>
           </el-col>
           <el-col :span="8">
             <el-date-picker
@@ -127,11 +128,11 @@
               type="date"
             ></el-date-picker>
           </el-col>
-          <el-col :span="4">
-            <span>تاريخ البدء</span>
-          </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
+          <el-col :span="4">
+            <span>الايام المتبقية</span>
+          </el-col>
           <el-col :span="8">
             <span v-if="Member.ActiveMemberShip"
               >(
@@ -147,7 +148,7 @@
             >
           </el-col>
           <el-col :span="4">
-            <span>الايام المتبقية</span>
+            <span>نوع الاشتراك</span>
           </el-col>
           <el-col :span="8">
             <el-tag v-if="Member.ActiveMemberShip"
@@ -155,11 +156,11 @@
               }}{{ Member.ActiveMemberShip.Name }}</el-tag
             >
           </el-col>
-          <el-col :span="4">
-            <span>نوع الاشتراك</span>
-          </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
+          <el-col :span="4">
+            <span>الرصيد</span>
+          </el-col>
           <el-col :span="8">
             <span>{{
               (Member.TotalCredit - Member.TotalDebit).toFixed(2) +
@@ -167,13 +168,10 @@
             }}</span>
           </el-col>
           <el-col :span="4">
-            <span>الرصيد</span>
+            <span>حالة المشترك</span>
           </el-col>
           <el-col :span="8">
             <status-tag :Status="Member.Status" TableName="Member" />
-          </el-col>
-          <el-col :span="4">
-            <span>حالة المشترك</span>
           </el-col>
         </el-row>
       </el-col>
@@ -258,13 +256,14 @@ import checkPermission from "@/utils/permission";
 
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
-import { string } from "clipboard";
+import LastLogMember from "@/components/Gym/LastLogMember";
+
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import ImageCropper from "@/components/ImageCropper";
 
 export default {
-  components: { PanThumb, WebCam, StatusTag, ImageCropper },
+  components: { LastLogMember, PanThumb, WebCam, StatusTag, ImageCropper },
   props: {
     Member: {
       type: Object,

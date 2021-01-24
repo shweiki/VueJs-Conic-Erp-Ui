@@ -18,7 +18,7 @@
         class="demo-form-inline"
         label-position="top"
       >
-        <el-row align="top" >
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
               <el-input type="text" v-model="tempForm.Name"></el-input>
@@ -44,45 +44,79 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item
-          label="الرقم الوطني"
-          prop="Ssn"
-          :rules="[
-            {
-              required: true,
-              message: 'لايمكن ترك الرقم الوطني فارغ',
-              trigger: 'blur'
-            }
-          ]"
-        >
-          <el-input
-            type="text"
-            v-model="tempForm.Ssn"
-            placeholder="الرقم الوطني"
-          ></el-input>
-        </el-form-item>
-        <el-form-item
-          v-bind:label="$t('AddVendors.PhoneNumber1')"
-          prop="PhoneNumber1"
-          :rules="[
-            {
-              required: true,
-              message: 'لايمكن ترك الرقم الهاتف فارغ',
-              trigger: 'blur'
-            }
-          ]"
-        >
-          <el-input type="text" v-model="tempForm.PhoneNumber1"></el-input>
-        </el-form-item>
-        <el-form-item
-          v-bind:label="$t('AddVendors.PhoneNumber2')"
-          prop="PhoneNumber2"
-        >
-          <el-input type="text" v-model="tempForm.PhoneNumber2"></el-input>
-        </el-form-item>
-        <el-form-item v-bind:label="$t('AddVendors.Email')" prop="Email">
-          <el-input type="text" v-model="tempForm.Email"></el-input>
-        </el-form-item>
+        <el-row type="flex">
+          <el-col :span="12">
+            <el-form-item
+              label="الرقم الوطني"
+              prop="Ssn"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك الرقم الوطني فارغ',
+                  trigger: 'blur'
+                }
+              ]"
+            >
+              <el-input
+                type="text"
+                v-model="tempForm.Ssn"
+                placeholder="الرقم الوطني"
+              ></el-input> </el-form-item
+          ></el-col>
+          <el-col :span="12">
+            <el-form-item
+              v-bind:label="$t('AddVendors.Email')"
+              prop="Email"
+              :rules="[
+                {
+                  required: false,
+                  message: 'Please input email address',
+                  trigger: 'blur'
+                },
+                {
+                  type: 'email',
+                  message: 'Please input correct email address',
+                  trigger: ['blur', 'change']
+                }
+              ]"
+            >
+              <el-input
+                type="text"
+                v-model="tempForm.Email"
+              ></el-input> </el-form-item
+          ></el-col>
+        </el-row>
+
+        <el-row type="flex">
+          <el-col :span="12">
+            <el-form-item
+              v-bind:label="$t('AddVendors.PhoneNumber1')"
+              prop="PhoneNumber1"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك الرقم الهاتف فارغ',
+                  trigger: 'blur'
+                }
+              ]"
+            >
+              <VuePhoneNumberInput
+                default-country-code="JO"
+                v-model="tempForm.PhoneNumber1"
+              /> </el-form-item
+          ></el-col>
+          <el-col :span="12">
+            <el-form-item
+              v-bind:label="$t('AddVendors.PhoneNumber2')"
+              prop="PhoneNumber2"
+            >
+              <VuePhoneNumberInput
+                default-country-code="JO"
+                v-model="tempForm.PhoneNumber2"
+              /> </el-form-item
+          ></el-col>
+        </el-row>
+
         <el-form-item
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
@@ -105,9 +139,12 @@
 <script>
 import { Create } from "@/api/Member";
 import store from "@/store";
+import VuePhoneNumberInput from "vue-phone-number-input";
+import "vue-phone-number-input/dist/vue-phone-number-input.css";
 
 export default {
   name: "Member",
+  components: { VuePhoneNumberInput },
   data() {
     return {
       Visible: false,
@@ -205,7 +242,7 @@ export default {
       });
     },
     CheckMemberIsExist(phonenumber, ssn) {
-      const found = this.$store.getters.AllMembers.find(
+      const found = this.$store.getters.Members.find(
         element => element.PhoneNumber1 === phonenumber || element.Ssn === ssn
       );
       if (found != undefined) return false;
@@ -225,9 +262,7 @@ export default {
             "عزيزي " + name + " نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح ",
           requesttimeout: 5000000
         }
-      }).then(response => {
-        
-      });
+      }).then(response => {});
     }
   }
 };

@@ -21,7 +21,7 @@
             shadow="always"
           >
             <div slot="header" class="clearfix">
-              <router-link :to="'/Gym/Edit/' + member.Id">
+              <router-link :to="'/Gym/Edit/' + member.MemberId">
                 <strong style="font-size: 10px; cursor: pointer;">{{
                   member.Name.split(" ")
                     .slice(0, 4)

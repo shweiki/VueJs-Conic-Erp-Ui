@@ -16,7 +16,14 @@ export function GetMemberLogByStatus(query) {
     
   })
 }
-
+export function GetlastLogByMemberId(query) {
+  return request({
+    url: '/MemberLog/GetlastLogByMemberId',
+    method: 'get',
+    params:  query 
+    
+  })
+}
 export function CheckMemberLog(query) {
   return request({
     url: '/MemberLog/CheckMemberLog',

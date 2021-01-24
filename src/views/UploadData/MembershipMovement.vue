@@ -136,7 +136,7 @@ export default {
         }
         MemberID = this.FindIDMemberByTag(
           element.Member_ID,
-          this.$store.getters.AllMembers
+          this.$store.getters.Members
         );
         console.log(MembershipId, Type, MemberID);
         return {
