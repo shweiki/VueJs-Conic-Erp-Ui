@@ -23,12 +23,17 @@ module.exports = {
   BarcodeIsID: false,
   WithOutCheckItemIsExist: true,
   errorLog: 'production',
-  datepickerQuery: [new Date(start.getTime() - 3600 * 1000 * 24 * 7), new Date()],// start , End
+  StatusQuery :0,
+  datepickerQuery: [new Date(), new Date()],// start , End
   timeQuery: ['00:00:00', '23:59:59'],
   pickerOptions: {
     shortcuts: [
       {
         text: "اليوم",
+        days: 0,
+      },
+      {
+        text: "البارحة",
         days: 1,
       },
       {

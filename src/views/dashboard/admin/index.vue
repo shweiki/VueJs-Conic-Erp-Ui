@@ -3,8 +3,8 @@
       <router-menu />
 
     <panel-group />
-    <el-card class="box-card" style="direction: initial;">
-      <el-tabs v-model="activeTab" tab-position="top">
+    <el-card class="box-card" >
+      <el-tabs v-model="activeTab" tab-position="right">
         <el-tab-pane label="ذمم مدينة" name="Receivables">
           <receivables />
         </el-tab-pane>

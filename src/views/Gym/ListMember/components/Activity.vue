@@ -41,7 +41,10 @@
       </el-table-column>
       <el-table-column label="الحالة" align="center">
         <template slot-scope="scope">
-          <!--   <el-tag :type="scope.row.Status.ClassName">{{ scope.row.Status.ArabicOprationDescription}}</el-tag>-->
+          <status-tag
+            :Status="scope.row.Status"
+            TableName="MembershipMovement"
+          />
           <el-tag type="warning" v-if="scope.row.Status > 0">
             رصيد التجميد :
             {{

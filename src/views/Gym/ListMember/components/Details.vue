@@ -40,7 +40,7 @@
               >Black List</el-button
             >
           </el-col>
-          <el-col :span="24" v-if="checkPermission(['Admin'])">
+          <el-col :span="24" v-if="checkPermission(['Admin']) && Member.Status == -2">
             <el-button
               @click="dialogOprationVisible2 = true"
               type="success"

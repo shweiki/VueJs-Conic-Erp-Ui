@@ -242,21 +242,21 @@ export default {
         GetMemberLogByID({
           ID: this.tempForm.Id
         }).then(response => {
-          console.log("log :", response);
+        //  console.log("log :", response);
           this.log = response.reverse();
         });
       if (tab.label == "اشتراكات")
         GetMembershipMovementByMemberID({
           MemberID: this.tempForm.Id
         }).then(response => {
-          console.log("log :", response);
+      //    console.log("log :", response);
           this.MembershipMovements = response.reverse();
         });
       if (tab.label == "مقبوضات")
         GetPaymentsByMemberID({
           MemberID: this.tempForm.Id
         }).then(response => {
-          console.log("log :", response);
+       //   console.log("log :", response);
           this.Payments = response.reverse();
         });
       if (tab.label == "مالية")

@@ -4,7 +4,7 @@ import store from '@/store'
 import { toggleClass } from "@/utils";
 
 let Settings = {}
-const {showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+const { StatusQuery, showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
   , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
@@ -25,10 +25,11 @@ const state = {
   sidebarOpen: sidebarOpen,
   showNavbar: showNavbar,
   showBarcode: showBarcode,
-  showRestOfBill : showRestOfBill,
+  showRestOfBill: showRestOfBill,
   BarcodeIsID: BarcodeIsID,
   WithOutCheckItemIsExist: WithOutCheckItemIsExist,
   errorLog: errorLog,
+  StatusQuery: StatusQuery,
   datepickerQuery: datepickerQuery,
   timeQuery: timeQuery,
   pickerOptions: pickerOptions,
@@ -61,9 +62,9 @@ const actions = {
                   picker.$emit("pick", [start, end]);
                 }
               })
-            } if (obj.key === "customtheme" && obj.value){
+            } if (obj.key === "customtheme" && obj.value) {
               toggleClass(document.body, "custom-theme")
-            } 
+            }
             commit('CHANGE_SETTING', obj)
           })
         }

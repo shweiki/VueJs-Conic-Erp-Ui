@@ -22,6 +22,8 @@
       class="contextmenu"
     >
       <li @click="refreshSelectedTag()">{{ $t("tagsView.refresh") }}</li>
+            <li @click="Forward()">{{ $t("tagsView.Forward") }}</li>
+
       <li @click="Back()">{{ $t("tagsView.Back") }}</li>
     </ul>
   </section>
@@ -72,7 +74,12 @@ export default {
     },
     Back() {
       this.$nextTick(() => {
-        this.$router.back();
+        this.$router.go(-1);
+      });
+    },
+        Forward() {
+      this.$nextTick(() => {
+        this.$router.go(1);
       });
     },
     openMenu(key, e) {

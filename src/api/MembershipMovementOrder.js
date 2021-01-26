@@ -8,6 +8,13 @@ export function Create(data) {
     data: qs.stringify(data)
   })
 }
+export function CreateMulti(data) {
+  return request({
+    url: '/MembershipMovementOrder/CreateMulti',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function GetMembershipMovementOrderByMemberShipID(query) {
   return request({
     url: '/MembershipMovementOrder/GetMembershipMovementOrderByMemberShipID',

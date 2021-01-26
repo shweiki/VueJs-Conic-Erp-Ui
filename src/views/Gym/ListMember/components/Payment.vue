@@ -37,6 +37,10 @@
       </el-table-column>
       <el-table-column label="الحالة" align="center">
         <template slot-scope="scope">
+           <status-tag
+                  :Status="scope.row.Status"
+                  TableName="Payment"
+                />
           <el-tag :type="scope.row.Status.ClassName">{{ scope.row.Status.ArabicOprationDescription}}</el-tag>
         </template>
       </el-table-column>
@@ -48,10 +52,12 @@
 <script>
 import checkPermission from "@/utils/permission";
 import { PaymentMember } from "@/Report/PayPapar";
+import StatusTag from "@/components/Oprationsys/StatusTag";
 
 import printJS from "print-js";
 
 export default {
+  components :{StatusTag},
   props: {
     Payments: {
       type: Array,

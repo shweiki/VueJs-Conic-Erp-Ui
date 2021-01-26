@@ -1,69 +1,34 @@
 <template>
   <el-form :model="Member" ref="dataForm" label-position="top">
-    <el-row>
-      <el-col :span="8">
-        <el-form-item label="ملاحظات" prop="Description">
-          <el-input
-            type="textarea"
-            v-model="Member.Description"
-            v-bind:placeholder="$t('AddVendors.Description')"
-          ></el-input>
-        </el-form-item>
-        <el-button
-          type="primary"
-          icon="el-icon-save"
-          @click="Member.Id != null ? updateData() : createData()"
-          >{{ $t("AddVendors.Save") }}</el-button
-        >
-        <el-button @click="Print()" type="primary" icon="el-icon-printer"></el-button>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item
-          label="رقم الهاتف"
-          prop="PhoneNumber1"
-          :rules="[
-            { required: true, message: 'لايمكن ترك رقم الهاتف فارغ', trigger: 'blur' },
-          ]"
-        >
-          <el-input
-            type="text"
-            v-model="Member.PhoneNumber1"
-            v-bind:placeholder="$t('AddVendors.PhoneNumber1')"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="رقم الهاتف" prop="PhoneNumber2">
-          <el-input
-            type="text"
-            v-model="Member.PhoneNumber2"
-            v-bind:placeholder="$t('AddVendors.PhoneNumber2')"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="البريد الالكتروني" prop="Email">
-          <el-input
-            type="text"
-            v-model="Member.Email"
-            v-bind:placeholder="$t('AddVendors.Email')"
-          ></el-input>
-        </el-form-item>
-      </el-col>
-
+    <el-row type="flex">
       <el-col :span="8">
         <el-form-item
           v-bind:label="$t('CashDrawer.Name')"
           prop="Name"
-          :rules="[{ required: true, message: 'لايمكن ترك الاسم فارغ', trigger: 'blur' }]"
+          :rules="[
+            {
+              required: true,
+              message: 'لايمكن ترك الاسم فارغ',
+              trigger: 'blur'
+            }
+          ]"
         >
           <el-input
             type="text"
             v-model="Member.Name"
             v-bind:placeholder="$t('CashDrawer.Name')"
-          ></el-input>
-        </el-form-item>
+          ></el-input> </el-form-item
+      ></el-col>
+      <el-col :span="8">
         <el-form-item
           label="الرقم الوطني"
           prop="Ssn"
           :rules="[
-            { required: true, message: 'لايمكن ترك الرقم الوطني فارغ', trigger: 'blur' },
+            {
+              required: true,
+              message: 'لايمكن ترك الرقم الوطني فارغ',
+              trigger: 'blur'
+            }
           ]"
         >
           <el-input
@@ -72,11 +37,17 @@
             placeholder="الرقم الوطني"
           ></el-input>
         </el-form-item>
+      </el-col>
+      <el-col :span="8">
         <el-form-item
           label="تاريخ ميلاد"
           prop="DateofBirth"
           :rules="[
-            { required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' },
+            {
+              required: true,
+              message: 'لايمكن ترك التاريخ فارغ',
+              trigger: 'blur'
+            }
           ]"
         >
           <el-date-picker
@@ -88,6 +59,68 @@
         </el-form-item>
       </el-col>
     </el-row>
+    <el-row type="flex">
+      <el-col :span="12">
+        <el-form-item
+          label="رقم الهاتف"
+          prop="PhoneNumber1"
+          :rules="[
+            {
+              required: true,
+              message: 'لايمكن ترك رقم الهاتف فارغ',
+              trigger: 'blur'
+            }
+          ]"
+        >
+          <VuePhoneNumberInput
+            default-country-code="JO"
+            v-model="Member.PhoneNumber1"
+          />
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="رقم الهاتف" prop="PhoneNumber2">
+          <VuePhoneNumberInput
+            default-country-code="JO"
+            v-model="Member.PhoneNumber2"
+          />
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row type="flex">
+      <el-col :span="8">
+        <el-form-item label="البريد الالكتروني" prop="Email">
+          <el-input
+            type="text"
+            v-model="Member.Email"
+            v-bind:placeholder="$t('AddVendors.Email')"
+          ></el-input> </el-form-item
+      ></el-col>
+      <el-col :span="8">
+        <el-form-item label="ملاحظات" prop="Description">
+          <el-input
+            type="textarea"
+            v-model="Member.Description"
+            v-bind:placeholder="$t('AddVendors.Description')"
+          ></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="3">
+        <el-button
+          type="primary"
+          icon="el-icon-save"
+          @click="Member.Id != null ? updateData() : createData()"
+          >{{ $t("AddVendors.Save") }}</el-button
+        >
+      </el-col>
+      <el-col :span="3">
+        <el-button
+          @click="Print()"
+          type="primary"
+          icon="el-icon-printer"
+        ></el-button
+      ></el-col>
+    </el-row>
   </el-form>
 </template>
 
@@ -96,18 +129,21 @@ import { Create, Edit } from "@/api/Member";
 import { SetUser } from "@/api/Device";
 import printJS from "print-js";
 import { MemberAgreement } from "@/Report/MemberAgreement";
+import VuePhoneNumberInput from "vue-phone-number-input";
+import "vue-phone-number-input/dist/vue-phone-number-input.css";
 export default {
+  components: { VuePhoneNumberInput },
   props: {
     Member: {
       type: Object,
       default: () => {
         return {};
-      },
-    },
+      }
+    }
   },
   methods: {
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           const data = {
             ID: this.Member.Id,
@@ -120,20 +156,20 @@ export default {
             Description: this.Member.Description,
             Tag: this.Member.Tag,
             Status: 0,
-            Type: "New",
+            Type: "New"
           };
           Create(data)
-            .then((response) => {
+            .then(response => {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
               this.$router.replace({ path: "/redirect" + "/Gym/ListMember" });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -143,7 +179,7 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           const data = {
             ID: this.Member.Id,
@@ -156,22 +192,22 @@ export default {
             Description: this.Member.Description,
             Status: this.Member.Status,
             Tag: this.Member.Tag,
-            Type: "Edit",
+            Type: "Edit"
           };
           Edit(data)
-            .then((response) => {
+            .then(response => {
               this.dialogFormVisible = false;
-              this.$store.getters.Devices.forEach((element) => {
+              this.$store.getters.Devices.forEach(element => {
                 this.SetOnDevice(element.Id, element.Name);
               });
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -185,26 +221,25 @@ export default {
         printable: MemberAgreement(this.Member),
         type: "pdf",
         base64: true,
-        showModal: true,
+        showModal: true
       });
     },
     SetOnDevice(DeviceID, Name) {
       SetUser({
         DeviceID: DeviceID,
-        UserID: this.Member.Id,
-      }).then((response) => {
+        UserID: this.Member.Id
+      }).then(response => {
         if (response) {
-          
           this.$notify({
             title: "تم",
-            message: "تم ارسال البيانات لاجهاز " + Name + " \ " + response + " ",
+            message: "تم ارسال البيانات لاجهاز " + Name + "  " + response + " ",
             type: "success",
             duration: 3000,
-            position: "top-right",
+            position: "top-right"
           });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>

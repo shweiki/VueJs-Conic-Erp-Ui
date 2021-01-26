@@ -2,7 +2,16 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <radio-oprations TableName="MembershipMovement" @Change="getdata" />
+        <div style="float : left">
+          <el-radio-group v-model="Status" @change="getdata()">
+            <el-radio-button
+              v-for="op in Oprations"
+              :key="op.Id"
+              v-bind:label="op.Status"
+              >{{ op.OprationDescription }}</el-radio-button
+            >
+          </el-radio-group>
+        </div>
         <span>{{ $t("Members.Member") }}</span>
       </div>
       <el-button
@@ -18,7 +27,7 @@
         fit
         border
         highlight-current-row
-        max-height="500"
+        max-height="900"
         style="width: 100%"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
@@ -30,8 +39,12 @@
         ></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            IDs
-            {{ tableData.length }}
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="getdata()"
+            ></el-button>
+            {{tableData.length}}
           </template>
         </el-table-column>
         <el-table-column
@@ -60,23 +73,7 @@
             ></el-date-picker>
           </template>
         </el-table-column>
-        <el-table-column align="center">
-          <template slot="header" slot-scope="{}">
-            <el-popover trigger="hover" placement="top" width="100%">
-              <div style="text-align: right; margin: 0">
-                <el-date-picker
-                  v-model="EndDate"
-                  @change="FilterByEndDate"
-                  type="date"
-                  placeholder="اقل من"
-                >
-                </el-date-picker>
-              </div>
-              <el-button icon="el-icon-sort" slot="reference"></el-button>
-            </el-popover>
-
-            تاريخ الانتهاء
-          </template>
+        <el-table-column label="تاريخ الانتهاء" align="center">
           <template slot-scope="scope">
             <el-date-picker
               format="dd/MM/yyyy"
@@ -94,7 +91,7 @@
         :visible.sync="Visibles"
       >
         <el-form label-position="top" class="demo-form-inline">
-          <el-row>
+          <el-row >
             <el-col :span="24">
               <el-form-item prop="FreezeBetween" label="الفترة">
                 <el-date-picker
@@ -112,14 +109,14 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row >
             <el-col :span="24">
               <el-form-item v-bind:label="$t('AddVendors.Description')">
                 <el-input v-model="Description"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row >
             <el-col :span="24">
               مجموع الايام حسب الفترة المطلوبة
               {{
@@ -149,12 +146,12 @@
 
 <script>
 import { GetMembershipMovementByStatus } from "@/api/MembershipMovement";
-import { CreateMulti } from "@/api/MembershipMovementOrder";
-import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import { Create } from "@/api/MembershipMovementOrder";
+
+import { GetOprationByTable } from "@/api/Oprationsys";
 
 export default {
   name: "Member",
-  components: { RadioOprations },
   data() {
     return {
       tableData: [],
@@ -163,56 +160,57 @@ export default {
       Description: "",
       Visibles: false,
       Days: 0,
-      loading: false,
+      loading: true,
       search: "",
-      EndDate: ""
+      Oprations: [],
+      Status: 1
     };
   },
-
+  mounted() {
+    this.getdata();
+  },
   methods: {
-    getdata(val) {
-      console.log(val);
+    getdata() {
       this.loading = true;
-      GetMembershipMovementByStatus({ Status: val }).then(response => {
+      GetMembershipMovementByStatus({ Status: this.Status }).then(response => {
         //console.log(response)
         this.tableData = response;
+
+        GetOprationByTable({ Name: "MembershipMovement" }).then(response => {
+          
+
+          this.Oprations = response;
+        });
+
         this.loading = false;
       });
-    },
-    FilterByEndDate(val) {
-      var FilterEndDate = new Date(val).getTime();
-      console.log(FilterEndDate);
-      this.tableData = this.tableData.filter(data =>
-        new Date(data.EndDate).getTime() - FilterEndDate > 0 ? true : false
-      );
-      console.log(this.tableData);
     },
     handleSelectionChange(val) {
       this.Selection = val;
     },
     createFreeze() {
-      CreateMulti({
-        collection: this.Selection.map(x => {
-          return {
-            ID: undefined,
-            Type: "Freeze",
-            StartDate: this.FreezeBetween[0],
-            EndDate: this.FreezeBetween[1],
-            Status: 0,
-            Description: this.Description,
-            MemberShipMovementId: x.Id
-          };
-        })
-      }).then(response => {
-        if (response) {
-          this.Visibles = false;
-          this.$notify({
-            title: "تم ",
-            message: "تم الإضافة بنجاح",
-            type: "success",
-            duration: 2000
-          });
-        }
+      let MembershipMovementOrder = {
+        ID: undefined,
+        Type: "Freeze",
+        StartDate: this.FreezeBetween[0],
+        EndDate: this.FreezeBetween[1],
+        Status: 0,
+        Description: this.Description,
+        MemberShipMovementId: undefined
+      };
+      this.Selection.forEach(i => {
+        MembershipMovementOrder.MemberShipMovementId = i.Id;
+        Create(MembershipMovementOrder).then(response => {
+          if (response) {
+            this.Visibles = false;
+            this.$notify({
+              title: "تم ",
+              message: "تم الإضافة بنجاح",
+              type: 'success',
+              duration: 2000
+            });
+          }
+        });
       });
     }
   }

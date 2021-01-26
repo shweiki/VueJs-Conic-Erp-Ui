@@ -23,7 +23,10 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -37,7 +40,7 @@
 <script>
 import {
   GetNextOprationByStatusTable,
-  ChangeObjStatusByTableName,
+  ChangeObjStatusByTableName
 } from "@/api/Oprationsys";
 
 export default {
@@ -45,12 +48,12 @@ export default {
   props: {
     Status: {
       type: Number,
-      default: undefined,
+      default: undefined
     },
     TableName: {
-      type: String,
+      type: String
     },
-    ObjID: Number,
+    ObjID: Number
   },
   data() {
     return {
@@ -61,28 +64,28 @@ export default {
         ArabicOprationDescription: "",
         IconClass: "",
         ClassName: "",
-        Status: 0,
+        Status: 0
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: "",
+        Description: ""
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   mounted() {
@@ -92,8 +95,8 @@ export default {
     getdata() {
       GetNextOprationByStatusTable({
         TableName: this.TableName,
-        Status: this.Status,
-      }).then((response) => {
+        Status: this.Status
+      }).then(response => {
         this.NextOprations = response;
       });
     },
@@ -101,7 +104,8 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription =
+        Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -116,23 +120,23 @@ export default {
         ObjID: this.tempOpration.ObjID,
         TableName: this.TableName,
         Status: this.tempOpration.Status,
-        Description: this.tempOpration.Description,
+        Description: this.tempOpration.Description
       })
-        .then((response) => {
+        .then(response => {
           this.dialogOprationVisible = false;
           this.$notify({
             title: "تم  ",
             message: "تمت العملية بنجاح",
             type: "success",
-            duration: 2000,
+            duration: 2000
           });
-   
+          this.$emit("Done");
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
