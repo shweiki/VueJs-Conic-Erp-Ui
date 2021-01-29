@@ -12,7 +12,7 @@ export function CreateMulti(data) {
   return request({
     url: '/MembershipMovementOrder/CreateMulti',
     method: 'post',
-    data: qs.stringify(data)
+    data:  qs.stringify(data)
   })
 }
 export function GetMembershipMovementOrderByMemberShipID(query) {

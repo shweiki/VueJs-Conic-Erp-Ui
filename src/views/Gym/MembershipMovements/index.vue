@@ -65,8 +65,8 @@
             <el-popover trigger="hover" placement="top" width="100%">
               <div style="text-align: right; margin: 0">
                 <el-date-picker
-                  v-model="EndDate"
-                  @change="FilterByEndDate"
+                  v-model="DateIn"
+                  @change="FilterByDateIn"
                   type="date"
                   placeholder="اقل من"
                 >
@@ -148,7 +148,10 @@
 </template>
 
 <script>
-import { GetMembershipMovementByStatus } from "@/api/MembershipMovement";
+import {
+  GetMembershipMovementByStatus,
+  GetMembershipMovementByDateIn
+} from "@/api/MembershipMovement";
 import { CreateMulti } from "@/api/MembershipMovementOrder";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 
@@ -165,7 +168,7 @@ export default {
       Days: 0,
       loading: false,
       search: "",
-      EndDate: ""
+      DateIn: ""
     };
   },
 
@@ -179,40 +182,51 @@ export default {
         this.loading = false;
       });
     },
-    FilterByEndDate(val) {
-      var FilterEndDate = new Date(val).getTime();
-      console.log(FilterEndDate);
-      this.tableData = this.tableData.filter(data =>
-        new Date(data.EndDate).getTime() - FilterEndDate > 0 ? true : false
-      );
-      console.log(this.tableData);
+    FilterByDateIn(val) {
+      this.loading = true;
+      GetMembershipMovementByDateIn({ DateIn: val }).then(response => {
+        //console.log(response)
+        this.tableData = response;
+        this.loading = false;
+      });
     },
     handleSelectionChange(val) {
       this.Selection = val;
     },
     createFreeze() {
-      CreateMulti({
-        collection: this.Selection.map(x => {
-          return {
-            ID: undefined,
-            Type: "Freeze",
-            StartDate: this.FreezeBetween[0],
-            EndDate: this.FreezeBetween[1],
-            Status: 0,
-            Description: this.Description,
-            MemberShipMovementId: x.Id
-          };
-        })
-      }).then(response => {
-        if (response) {
-          this.Visibles = false;
-          this.$notify({
-            title: "تم ",
-            message: "تم الإضافة بنجاح",
-            type: "success",
-            duration: 2000
-          });
+      let createFreeze100 = [];
+      for (var i = 0; i < this.Selection.length; i++) {
+        if (this.Selection.length > 0) {
+          createFreeze100.push(this.Selection.splice(0, 98));
+        } else {
+          break;
         }
+      }
+
+      createFreeze100.forEach(element => {
+        CreateMulti({
+          collection: element.map(x => {
+            return {
+              ID: undefined,
+              Type: "Freeze",
+              StartDate: this.FreezeBetween[0],
+              EndDate: this.FreezeBetween[1],
+              Status: 0,
+              Description: this.Description,
+              MemberShipMovementId: x.Id
+            };
+          })
+        }).then(response => {
+          if (response) {
+            this.Visibles = false;
+            this.$notify({
+              title: "تم ",
+              message: "تم الإضافة بنجاح",
+              type: "success",
+              duration: 2000
+            });
+          }
+        });
       });
     }
   }
