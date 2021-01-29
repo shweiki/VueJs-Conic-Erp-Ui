@@ -20,12 +20,13 @@ withCredentials: true,
 service.interceptors.request.use(
   config => {
     // do something before request is sent    "Content-Type": "application/json"
-   // console.log("config" , config);
+// console.log("config" , config);
+//   config.headers['X-Requested-With']= 'XMLHttpRequest',
 
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
    // config.headers['Cache-Control'] ='no-cache'
 
-  // config.['withCredentials'] = true
+   config.['withCredentials'] = true
 
     if (store.getters.token) {
       // let each request carry token
