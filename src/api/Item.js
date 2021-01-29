@@ -22,6 +22,13 @@ export function GetItemByID(query) {
     params: query
   })
 }
+export function GetItemByBarcode(query) {
+  return request({
+    url: '/Item/GetItemByBarcode',
+    method: 'get',
+    params: query
+  })
+}
 export function GetIsPrimeItem(query) {
   return request({
     url: '/Item/GetIsPrimeItem',

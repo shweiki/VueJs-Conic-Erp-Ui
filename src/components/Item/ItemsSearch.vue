@@ -94,6 +94,7 @@
 import Fuse from "fuse.js";
 import AddItem from "./AddItem";
 import SearchItem from "./SearchItem";
+import { GetItemByBarcode } from "@/api/Item";
 
 export default {
   name: "ItemsSearch",
@@ -203,7 +204,12 @@ export default {
       this.OpenAddItem = false;
 
       if (this.Barcode != "" || this.Barcode) {
-        var find = this.Items.findIndex(
+        GetItemByBarcode({ BarCode: this.Barcode }).then(res => {
+          if (res) this.AddItem(res, 1);
+          else this.OpenAddItem = true;
+        });
+
+        /*    var find = this.Items.findIndex(
           value =>
             value.Barcode == this.Barcode ||
             (this.$store.getters.settings.BarcodeIsID == true
@@ -216,7 +222,7 @@ export default {
           this.AddItem(this.Items[find], 1);
         } else {
           this.OpenAddItem = true;
-        }
+        } */
       }
     }
   }
