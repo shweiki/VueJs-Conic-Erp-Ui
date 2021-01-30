@@ -63,12 +63,12 @@
         <div class="row">
           <div class="col">
             <el-form-item v-bind:label="$t('OperationSys.Status')" prop="Status">
-              <el-input-number v-model="tempForm.Status" :step="1" :min="-1" :max="15"></el-input-number>
+              <el-input-number v-model="tempForm.Status" :step="1"  :max="15"></el-input-number>
             </el-form-item>
           </div>
           <div class="col">
             <el-form-item v-bind:label="$t('OperationSys.ReferenceStatus')" prop="ReferenceStatus">
-              <el-input-number v-model="tempForm.ReferenceStatus" :step="1" :min="-1" :max="15"></el-input-number>
+              <el-input-number v-model="tempForm.ReferenceStatus" :step="1"  :max="15"></el-input-number>
             </el-form-item>
           </div>
         </div>

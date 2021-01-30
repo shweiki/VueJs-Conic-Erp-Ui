@@ -1,7 +1,13 @@
 <template>
   <div>
     <el-card style="margin-bottom:20px;">
-      <el-button style="float:left" type="primary" icon="el-icon-refresh" size="mini" @click="getdata()"></el-button>
+      <el-button
+        style="float:left"
+        type="primary"
+        icon="el-icon-refresh"
+        size="mini"
+        @click="getdata()"
+      ></el-button>
 
       <div class="radio">
         <el-radio-group v-model="reverse">
@@ -23,19 +29,29 @@
             :size="activity.size"
             :timestamp="activity.DateTime"
           >
-            <router-link :to="'/Gym/Edit/'+activity.MemberID" >
-              <el-tag  :type="activity.Opration.ClassName"  v-bind:class="{ BlackList: activity.Status == -2 ? true : false }" >
-                <strong  style="font-size: 10px; cursor: pointer;">{{activity.Name}}</strong>
-              </el-tag>
+            <router-link :to="'/Gym/Edit/' + activity.MemberID">
+              <status-tag
+                :Status="activity.Status"
+                TableName="Member"
+                v-bind:class="{
+                  BlackList: activity.Status == -2 ? true : false
+                }"
+              />
             </router-link>
             <el-tag
-              v-if="activity.ActiveMemberShip !=null"
-              v-bind:type="activity.ActiveMemberShip.Type == 'Morning' ? 'warning' :'success'"
-            >{{activity.ActiveMemberShip.Type}}</el-tag>
-               <el-tag
-              v-if="activity.TotalCredit-activity.TotalDebit > 0 "
+              v-if="activity.ActiveMemberShip != null"
+              v-bind:type="
+                activity.ActiveMemberShip.Type == 'Morning'
+                  ? 'warning'
+                  : 'success'
+              "
+              >{{ activity.ActiveMemberShip.Type }}</el-tag
+            >
+            <el-tag
+              v-if="activity.TotalCredit - activity.TotalDebit > 0"
               type="info"
-            >مدين</el-tag>
+              >مدين</el-tag
+            >
           </el-timeline-item>
         </el-timeline>
       </div>
@@ -70,12 +86,13 @@ export default {
           console.log("test");
 
           reject(error);
-        })
+        });
     }
   }
 };
 </script>
 <style scoped>
 .BlackList {
-    background-color: #000000;}
+  background-color: #000000;
+}
 </style>

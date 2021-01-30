@@ -2,8 +2,23 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <radio-oprations TableName="MembershipMovement" @Change="getdata" />
-        <span>{{ $t("Members.Member") }}</span>
+        <el-row type="flex">
+          <el-col :span="3">
+            <span>{{ $t("Members.Member") }}</span>
+          </el-col>
+          <el-col :span="9">
+            <el-date-picker
+              v-model="DateIn"
+              @change="FilterByDateIn"
+              type="date"
+              placeholder="بحث حسب تاريخ ما بين البدء و الانتهاء"
+            >
+            </el-date-picker
+          ></el-col>
+          <el-col :span="12">
+            <radio-oprations TableName="MembershipMovement" @Change="getdata" />
+          </el-col>
+        </el-row>
       </div>
       <el-button
         style="width: 100px;"
@@ -51,39 +66,19 @@
           align="center"
         ></el-table-column>
 
-        <el-table-column label="تاريخ البدء" align="center">
-          <template slot-scope="scope">
-            <el-date-picker
-              format="dd/MM/yyyy"
-              disabled
-              v-model="scope.row.StartDate"
-            ></el-date-picker>
-          </template>
+        <el-table-column
+          prop="StartDate"
+          label="تاريخ البدء"
+          align="center"
+          sortable
+        >
         </el-table-column>
-        <el-table-column align="center">
-          <template slot="header" slot-scope="{}">
-            <el-popover trigger="hover" placement="top" width="100%">
-              <div style="text-align: right; margin: 0">
-                <el-date-picker
-                  v-model="DateIn"
-                  @change="FilterByDateIn"
-                  type="date"
-                  placeholder="اقل من"
-                >
-                </el-date-picker>
-              </div>
-              <el-button icon="el-icon-sort" slot="reference"></el-button>
-            </el-popover>
-
-            تاريخ الانتهاء
-          </template>
-          <template slot-scope="scope">
-            <el-date-picker
-              format="dd/MM/yyyy"
-              disabled
-              v-model="scope.row.EndDate"
-            ></el-date-picker>
-          </template>
+        <el-table-column
+          prop="EndDate"
+          label="تاريخ الانتهاء"
+          align="center"
+          sortable
+        >
         </el-table-column>
       </el-table>
     </el-card>
@@ -154,6 +149,7 @@ import {
 } from "@/api/MembershipMovement";
 import { CreateMulti } from "@/api/MembershipMovementOrder";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import moment from "moment";
 
 export default {
   name: "Member",
@@ -184,7 +180,7 @@ export default {
     },
     FilterByDateIn(val) {
       this.loading = true;
-      GetMembershipMovementByDateIn({ DateIn: val }).then(response => {
+      GetMembershipMovementByDateIn({ DateIn: moment(val).format() }).then(response => {
         //console.log(response)
         this.tableData = response;
         this.loading = false;
@@ -209,9 +205,9 @@ export default {
             return {
               ID: undefined,
               Type: "Freeze",
-              StartDate: this.FreezeBetween[0],
-              EndDate: this.FreezeBetween[1],
-              Status: 0,
+              StartDate: moment(this.FreezeBetween[0]).format(),
+              EndDate: moment(this.FreezeBetween[1]).format(),
+              Status: 2,
               Description: this.Description,
               MemberShipMovementId: x.Id
             };
