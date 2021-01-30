@@ -91,6 +91,9 @@ export default {
       this.getdata();
     },
   },
+  created() {
+    this.getdata();
+  },
   methods: {
     getdata() {
       GetNextOprationByStatusTable({
