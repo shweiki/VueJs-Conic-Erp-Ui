@@ -591,7 +591,7 @@ export default {
   },
   mounted() {
     this.focusBarcode();
-
+    /*
     window.addEventListener("keypress", (e) => {
       e = e || window.event;
       if (e.which == "13") {
@@ -608,6 +608,7 @@ export default {
       //debugger
       console.log("key", e.code);
     });
+    */
   },
   methods: {
     OpenNewInvoice() {
