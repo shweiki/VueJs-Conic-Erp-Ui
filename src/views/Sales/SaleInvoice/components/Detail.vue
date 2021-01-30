@@ -472,6 +472,7 @@ import splitPane from "vue-splitpane";
 import { OpenCashDrawer } from "@/api/Device";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
+
 export default {
   Name: "NewSaleInvoice",
   directives: { permission },
@@ -537,6 +538,7 @@ export default {
         VendorId: 2,
         IsPrime: false,
         InventoryMovements: [],
+        enterPressed: false,
       },
       rules: {
         InventoryMovements: [
@@ -589,6 +591,23 @@ export default {
   },
   mounted() {
     this.focusBarcode();
+
+    window.addEventListener("keypress", (e) => {
+      e = e || window.event;
+      if (e.which == "13") {
+        if (!this.enterPressed) {
+          this.isEdit != true ? this.createData() : this.updateData();
+          return;
+        }
+        this.enterPressed = true;
+        setTimeout(function () {
+          this.enterPressed = false;
+        }, 1000);
+      }
+
+      //debugger
+      console.log("key", e.code);
+    });
   },
   methods: {
     OpenNewInvoice() {

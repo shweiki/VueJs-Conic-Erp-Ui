@@ -20,7 +20,13 @@ export default {
       Opration: {},
     };
   },
-  mounted() {
+  watch: {
+    Status(val) {
+      this.Status = val;
+      this.getdata();
+    },
+  },
+  created() {
     this.getdata();
   },
   methods: {
