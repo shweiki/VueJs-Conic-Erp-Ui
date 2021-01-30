@@ -5,13 +5,8 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-
-//  baseURL: 'http://192.168.1.106', // url = base url + request url
-  //baseURL: 'https://localhost:44376', // url = base url + request url
-
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-
-timeout: 20000000 ,// request timeout
+baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+timeout: 200000 ,// request timeout
 withCredentials: true,
 
 })
@@ -26,7 +21,6 @@ service.interceptors.request.use(
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
    // config.headers['Cache-Control'] ='no-cache'
 
-   config.['withCredentials'] = true
 
     if (store.getters.token) {
       // let each request carry token

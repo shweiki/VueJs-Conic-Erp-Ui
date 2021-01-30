@@ -600,9 +600,9 @@ export default {
           return;
         }
         this.enterPressed = true;
-        setTimeout(function () {
+        setTimeout( ()=> {
           this.enterPressed = false;
-        }, 1000);
+        }, 100);
       }
 
       //debugger
