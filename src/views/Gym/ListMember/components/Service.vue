@@ -1,32 +1,50 @@
 <template>
   <div class="app-container" style="direction : rtl ">
-    <el-table height="500" :data="ServiceInvoices" fit border highlight-current-row>
-      <el-table-column prop="Name" label="الخدمة" align="center"></el-table-column>
+    <el-table
+      height="500"
+      :data="ServiceInvoices"
+      fit
+      border
+      highlight-current-row
+    >
+      <el-table-column
+        prop="FakeDate"
+        label="التاريخ"
+        align="center"
+      ></el-table-column>
+
+      <el-table-column
+        prop="Name"
+        label="الخدمة"
+        align="center"
+      ></el-table-column>
       <el-table-column label="الكلي" align="center">
         <template slot-scope="scope">
-          {{
-          scope.row.InventoryMovements.length
-          }}
+          {{ scope.row.InventoryMovements.length }}
         </template>
       </el-table-column>
       <el-table-column label="المسحوب" align="center">
         <template slot-scope="scope">
           {{
-          scope.row.InventoryMovements.filter((obj) => obj.Status == 0).length
+            scope.row.InventoryMovements.filter(obj => obj.Status == 0).length
           }}
         </template>
       </el-table-column>
       <el-table-column label="المتبقي" align="center">
         <template slot-scope="scope">
           {{
-          scope.row.InventoryMovements.filter((obj) => obj.Status == 1).length
+            scope.row.InventoryMovements.filter(obj => obj.Status == 1).length
           }}
         </template>
       </el-table-column>
 
       <el-table-column label="#" align="center">
         <template slot-scope="scope">
-          <el-button type="danger" icon="el-icon-minus" @click="MinusOne(scope.row.Id)"></el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-minus"
+            @click="MinusOne(scope.row.Id)"
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -79,18 +97,18 @@ export default {
           this.$notify({
             title: "تم  ",
             message: "تمت العملية بنجاح",
-            type: 'success',
+            type: "success",
             duration: 2000
-          })
+          });
           this.$nextTick(() => {
             this.$router.replace({
               path: "/redirect" + this.$route.fullPath
-            })
-          })
+            });
+          });
         })
         .catch(error => {
           console.log(error);
-        })
+        });
     }
   }
 };

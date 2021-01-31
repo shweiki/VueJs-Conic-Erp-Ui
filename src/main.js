@@ -16,9 +16,11 @@ import VueCurrencyInput from 'vue-currency-input'
 import VueBarcodeScanner from 'vue-barcode-scanner'
 import OpenCashSound from '@/assets/Sounds/PointOfSaleOpenCashDrawer.wav'
 import BarCodeSound from '@/assets/Sounds/BarCode.wav'
+import moment from 'moment';
+// ...
 
-store.dispatch("settings/GetSetting");
-
+moment.locale('nl');
+Vue.use(moment)
 const pluginOptions = {
   /* see config reference */
   globalOptions: { currency: 'JOD' },
@@ -32,7 +34,10 @@ Vue.use(Element, {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
+store.dispatch("settings/GetSetting");
 Vue.config.productionTip = false
+
 
 let options = {
   sound: true, // default is false

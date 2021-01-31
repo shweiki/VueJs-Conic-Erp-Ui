@@ -12,6 +12,39 @@
         ></el-button>
         <search-by-date @change="getdata" />
       </div>
+         <el-card class="box-card">
+        <el-divider direction="vertical"></el-divider>
+        <span>عدد الفواتير</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ tableData.length }}</span>
+        <el-divider direction="vertical"></el-divider>
+
+        <span>{{ $t("CashPool.Cash") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ TotalCash.toFixed(3) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+
+        <span>{{ $t("CashPool.Visa") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ TotalVisa.toFixed(3) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+
+        <span>الاجل</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ TotalCheque.toFixed(3) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+
+        <span>{{ $t("CashPool.Amount") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Total.toFixed(3) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+        <el-button
+          style="float: left"
+          icon="el-icon-printer"
+          type="success"
+          @click="print(tableData)"
+        ></el-button>
+      </el-card>
       <el-table
         v-loading="loading"
         :data="
@@ -170,7 +203,11 @@ export default {
     return {
       tableData: [],
       loading: true,
-      search: ""
+      search: "",
+        TotalCash: 0,
+      TotalCheque: 0,
+      TotalVisa: 0,
+      Total: 0,
     };
   },
   created() {
@@ -188,6 +225,39 @@ export default {
           // handle success
           console.log(response);
           this.tableData = response;
+              this.TotalCheque = this.tableData.reduce(
+            (a, b) =>
+              a +
+              (b["PaymentMethod"] == "Receivables"
+                ? b.InventoryMovements.reduce(function (prev, cur) {
+                    return prev + cur.Qty * cur.SellingPrice;
+                  }, 0)
+                : 0),
+            0
+          );
+          this.TotalCash = this.tableData.reduce(
+            (a, b) =>
+              a +
+              (b["PaymentMethod"] == "Cash"
+                ? b.InventoryMovements.reduce(function (prev, cur) {
+                    return prev + cur.Qty * cur.SellingPrice;
+                  }, 0)
+                : 0),
+            0
+          );
+          this.TotalVisa = this.tableData.reduce(
+            (a, b) =>
+              a +
+              (b["PaymentMethod"] == "Visa"
+                ? b.InventoryMovements.reduce(function (prev, cur) {
+                    return prev + cur.Qty * cur.SellingPrice;
+                  }, 0)
+                : 0),
+            0
+          );
+
+          this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
+        
           this.loading = false;
         })
         .catch(error => {
@@ -195,19 +265,32 @@ export default {
           console.log(error);
         });
     },
-    printAll(data) {
-      data = data.map(Item => ({
+    print(data) {
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json"
+        type: "json",
       });
-    }
+    },
+    printAll(data) {
+      data = data.map((Item) => ({
+        Name: Item.Name,
+        Qty: Item.Qty,
+        SellingPrice: Item.SellingPrice,
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
+      }));
+      printJS({
+        printable: data,
+        properties: ["Name", "Qty", "SellingPrice", "Total"],
+        type: "json",
+      });
+    },
   }
 };
 </script>
