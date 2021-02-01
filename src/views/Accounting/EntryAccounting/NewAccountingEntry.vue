@@ -49,11 +49,11 @@
           <el-table-column v-bind:label="$t('Accounting.Account')" >
             <template slot-scope="scope">
               <el-form-item
-                :prop="'EntryMovements.'+scope.$index+'.AccountID'"
+                :prop="'EntryMovements.'+scope.$index+'.AccountId'"
                 :rules="[{ required: true, message: 'لا يمكن ترك حساب فارغ', trigger: 'blur' }]"
               >
                 <el-select style="width: 100%;"
-                  v-model="tempForm.EntryMovements[scope.$index].AccountID"
+                  v-model="tempForm.EntryMovements[scope.$index].AccountId"
                   filterable
                   v-bind:placeholder="$t('Accounting.Account')"
                   autocomplete="off"
@@ -167,7 +167,7 @@ export default {
         EntryMovements: [
           {
             ID: undefined,
-            AccountID: undefined,
+            AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
             Description: '',
@@ -175,7 +175,7 @@ export default {
           },
           {
             ID: undefined,
-            AccountID: undefined,
+            AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
             Description: '',
@@ -206,7 +206,7 @@ export default {
     AddEntryMovements() {
       this.tempForm.EntryMovements.push({
         ID: undefined,
-        AccountID: undefined,
+        AccountId: undefined,
         Debit: 0.0,
         Credit: 0.0,
         Description: '',
@@ -252,7 +252,7 @@ export default {
         EntryMovements: [
           {
             ID: undefined,
-            AccountID: undefined,
+            AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
             Description: '',
@@ -260,7 +260,7 @@ export default {
           },
           {
             ID: undefined,
-            AccountID: undefined,
+            AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
             Description: '',

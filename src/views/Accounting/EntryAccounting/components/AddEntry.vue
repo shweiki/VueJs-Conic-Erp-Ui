@@ -52,11 +52,11 @@ import { CreateEntry } from "@/api/EntryAccounting";
 
 export default {
   props: {
-    AccountID1: {
+    AccountId1: {
       type: Number,
       default: 0,
     },
-    AccountID2: {
+    AccountId2: {
       type: Number,
       default: 0,
     },
@@ -74,7 +74,7 @@ export default {
         EntryMovements: [
           {
             ID: undefined,
-            AccountID: undefined,
+            AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
             Description: '',
@@ -82,7 +82,7 @@ export default {
           },
           {
             ID: undefined,
-            AccountID: undefined,
+            AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
             Description: '',
@@ -98,12 +98,12 @@ export default {
       this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           this.EnableSave = true;
-          this.tempForm.EntryMovements[0].AccountID = this.AccountID1;
+          this.tempForm.EntryMovements[0].AccountId = this.AccountId1;
           this.tempForm.EntryMovements[0].Description = this.tempForm.Description;
         this.Type =="Credit" ?  this.tempForm.EntryMovements[0].Debit = this.Value : this.tempForm.EntryMovements[0].Credit = this.Value
         this.Type =="Credit" ?  this.tempForm.EntryMovements[1].Credit = this.Value : this.tempForm.EntryMovements[1].Debit = this.Value
 
-          this.tempForm.EntryMovements[1].AccountID = this.AccountID2;
+          this.tempForm.EntryMovements[1].AccountId = this.AccountId2;
           this.tempForm.EntryMovements[1].Description = this.tempForm.Description;
 
           CreateEntry(this.tempForm).then((response) => {

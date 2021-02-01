@@ -4,44 +4,87 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          
-          type='success'
+          type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
-        >{{ $t('Classification.Add') }}</el-button>
-        <span>{{ $t('OperationSys.Operations') }}</span>
+          >{{ $t("Classification.Add") }}</el-button
+        >
+        <span>{{ $t("OperationSys.Operations") }}</span>
       </div>
 
       <el-table
-        :data="tableData.filter(data => !search || data.TableName.toLowerCase().includes(search.toLowerCase()))"
+        :data="
+          tableData.filter(
+            data =>
+              !search ||
+              data.TableName.toLowerCase().includes(search.toLowerCase())
+          )
+        "
         style="width: 100%"
         max-height="750"
         v-loading="loading"
       >
         <el-table-column prop="Id" width="100">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="getdata()" ></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="getdata()"
+            ></el-button>
           </template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('OperationSys.OprationName')" prop="OprationName"></el-table-column>
+        <el-table-column
+          v-bind:label="$t('OperationSys.OprationName')"
+          prop="OprationName"
+        ></el-table-column>
         <el-table-column prop="TableName" width="120">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('OperationSys.TableName')"
- />
+            <el-input
+              v-model="search"
+              v-bind:placeholder="$t('OperationSys.TableName')"
+            />
           </template>
         </el-table-column>
 
-        <el-table-column v-bind:label="$t('OperationSys.ControllerName')" prop="ControllerName"></el-table-column>
-        <el-table-column v-bind:label="$t('OperationSys.RoleName')" prop="RoleName"></el-table-column>
-        <el-table-column v-bind:label="$t('OperationSys.OprationDescription')" prop="OprationDescription"></el-table-column>
-        <el-table-column v-bind:label="$t('OperationSys.ArabicOprationDescription')" prop="ArabicOprationDescription"></el-table-column>
-        <el-table-column v-bind:label="$t('OperationSys.IconClass')" prop="IconClass"></el-table-column>
-        <el-table-column v-bind:label="$t('OperationSys.ClassName')" prop="ClassName"></el-table-column>
-        <el-table-column v-bind:label="$t('OperationSys.Status')" prop="Status"></el-table-column>
-        <el-table-column v-bind:label="$t('OperationSys.ReferenceStatus')" prop="ReferenceStatus"></el-table-column>
+        <el-table-column
+          v-bind:label="$t('OperationSys.ControllerName')"
+          prop="ControllerName"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('OperationSys.RoleName')"
+          prop="RoleName"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('OperationSys.OprationDescription')"
+          prop="OprationDescription"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('OperationSys.ArabicOprationDescription')"
+          prop="ArabicOprationDescription"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('OperationSys.IconClass')"
+          prop="IconClass"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('OperationSys.ClassName')"
+          prop="ClassName"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('OperationSys.Status')"
+          prop="Status"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('OperationSys.ReferenceStatus')"
+          prop="ReferenceStatus"
+        ></el-table-column>
         <el-table-column width="120" align="left">
           <template slot-scope="scope">
-            <el-button   icon="el-icon-edit"  circle @click="handleUpdate(scope.row)"></el-button>
+            <el-button
+              icon="el-icon-edit"
+              circle
+              @click="handleUpdate(scope.row)"
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -52,48 +95,105 @@
       :title="textMapForm[dialogFormStatus]"
       :visible.sync="dialogFormVisible"
     >
-      <el-form ref="dataForm" :rules="rulesForm" :model="tempForm" label-position="right">
-        <el-form-item v-bind:label="$t('OperationSys.TableName')" prop="TableName">
+      <el-form
+        ref="dataForm"
+        :rules="rulesForm"
+        :model="tempForm"
+        label-position="right"
+      >
+        <el-form-item
+          v-bind:label="$t('OperationSys.TableName')"
+          prop="TableName"
+        >
           <el-input type="text" v-model="tempForm.TableName"></el-input>
         </el-form-item>
-
-        <el-form-item v-bind:label="$t('OperationSys.OprationName')" prop="OprationName">
+        <el-form-item v-bind:label="$t('OperationSys.Color')" prop="Color">
+          <el-color-picker v-model="tempForm.Color"></el-color-picker>
+        </el-form-item>
+        <el-form-item
+          v-bind:label="$t('OperationSys.OprationName')"
+          prop="OprationName"
+        >
           <el-input type="text" v-model="tempForm.OprationName"></el-input>
         </el-form-item>
         <div class="row">
           <div class="col">
-            <el-form-item v-bind:label="$t('OperationSys.Status')" prop="Status">
-              <el-input-number v-model="tempForm.Status" :step="1"  :max="15"></el-input-number>
+            <el-form-item
+              v-bind:label="$t('OperationSys.Status')"
+              prop="Status"
+            >
+              <el-input-number
+                v-model="tempForm.Status"
+                :step="1"
+                :max="15"
+              ></el-input-number>
             </el-form-item>
           </div>
           <div class="col">
-            <el-form-item v-bind:label="$t('OperationSys.ReferenceStatus')" prop="ReferenceStatus">
-              <el-input-number v-model="tempForm.ReferenceStatus" :step="1"  :max="15"></el-input-number>
+            <el-form-item
+              v-bind:label="$t('OperationSys.ReferenceStatus')"
+              prop="ReferenceStatus"
+            >
+              <el-input-number
+                v-model="tempForm.ReferenceStatus"
+                :step="1"
+                :max="15"
+              ></el-input-number>
             </el-form-item>
           </div>
         </div>
-        <el-form-item v-bind:label="$t('OperationSys.IconClass')" prop="IconClass">
+        <el-form-item
+          v-bind:label="$t('OperationSys.IconClass')"
+          prop="IconClass"
+        >
           <el-input type="text" v-model="tempForm.IconClass"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('OperationSys.ClassName')" prop="ClassName">
+        <el-form-item
+          v-bind:label="$t('OperationSys.ClassName')"
+          prop="ClassName"
+        >
           <el-input type="text" v-model="tempForm.ClassName"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('OperationSys.ArabicOprationDescription')" prop="ArabicOprationDescription">
-          <el-input type="text" v-model="tempForm.ArabicOprationDescription"></el-input>
+        <el-form-item
+          v-bind:label="$t('OperationSys.ArabicOprationDescription')"
+          prop="ArabicOprationDescription"
+        >
+          <el-input
+            type="text"
+            v-model="tempForm.ArabicOprationDescription"
+          ></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('OperationSys.OprationDescription')" prop="OprationDescription">
-          <el-input type="text" v-model="tempForm.OprationDescription"></el-input>
+        <el-form-item
+          v-bind:label="$t('OperationSys.OprationDescription')"
+          prop="OprationDescription"
+        >
+          <el-input
+            type="text"
+            v-model="tempForm.OprationDescription"
+          ></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('OperationSys.ControllerName')" prop="ControllerName">
+        <el-form-item
+          v-bind:label="$t('OperationSys.ControllerName')"
+          prop="ControllerName"
+        >
           <el-input type="text" v-model="tempForm.ControllerName"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('OperationSys.RoleName')" prop="RoleName">
+        <el-form-item
+          v-bind:label="$t('OperationSys.RoleName')"
+          prop="RoleName"
+        >
           <el-input type="text" v-model="tempForm.RoleName"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('Account.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogFormStatus==='create'?createData():updateData()">حفظ</el-button>
+        <el-button @click="dialogFormVisible = false">{{
+          $t("Account.cancel")
+        }}</el-button>
+        <el-button
+          type="primary"
+          @click="dialogFormStatus === 'create' ? createData() : updateData()"
+          >حفظ</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -107,8 +207,8 @@ export default {
     return {
       loading: true,
       dialogFormVisible: false,
-      dialogFormStatus: '',
-      search: '',
+      dialogFormStatus: "",
+      search: "",
       tableData: [],
       textMapForm: {
         update: "تعديل",
@@ -116,33 +216,34 @@ export default {
       },
       tempForm: {
         ID: undefined,
-        TableName: '',
-        ControllerName: '',
-        RoleName: '',
-        OprationName: '',
-        OprationDescription: '',
-        ArabicOprationDescription: '',
+        TableName: "",
+        ControllerName: "",
+        RoleName: "",
+        OprationName: "",
+        OprationDescription: "",
+        ArabicOprationDescription: "",
         Status: 0,
         ReferenceStatus: null,
-        IconClass: '',
-        ClassName: ''
+        IconClass: "",
+        ClassName: "",
+        Color: ""
       },
       rulesForm: {
         TableName: [
           {
             required: true,
-            message: 'يجب إدخال إسم ',
-            trigger: 'blur'
+            message: "يجب إدخال إسم ",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
-            trigger: 'blur'
+            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
+            trigger: "blur"
           }
         ]
       }
-    }
+    };
   },
   created() {
     this.getdata();
@@ -153,29 +254,30 @@ export default {
       GetOpration()
         .then(response => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.tableData = response;
-          this.loading = false
+          this.loading = false;
         })
         .catch(error => {
           // handle error
           console.log(error);
-        })
+        });
     },
     resetTempForm() {
       this.tempForm = {
         ID: undefined,
-        TableName: '',
-        ControllerName: '',
-        RoleName: '',
-        OprationName: '',
-        OprationDescription: '',
-        ArabicOprationDescription: '',
+        TableName: "",
+        ControllerName: "",
+        RoleName: "",
+        OprationName: "",
+        OprationDescription: "",
+        ArabicOprationDescription: "",
         Status: 0,
         ReferenceStatus: undefined,
-        IconClass: '',
-        ClassName: ''
-      }
+        IconClass: "",
+        ClassName: "",
+        Color: ""
+      };
     },
     handleCreate() {
       this.resetTempForm();
@@ -183,7 +285,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleUpdate(row) {
       console.log(row);
@@ -198,11 +300,12 @@ export default {
       this.tempForm.ReferenceStatus = row.ReferenceStatus;
       this.tempForm.IconClass = row.IconClass;
       this.tempForm.ClassName = row.ClassName;
+      this.tempForm.Color = row.Color;
       this.dialogFormStatus = "update";
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     createData() {
       this.$refs["dataForm"].validate(valid => {
@@ -214,18 +317,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
+                type: "success",
                 duration: 2000
-              })
+              });
             })
             .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
@@ -236,21 +339,21 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
+                message: "تم التعديل بنجاح",
+                type: "success",
                 duration: 2000
-              })
+              });
             })
             .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 

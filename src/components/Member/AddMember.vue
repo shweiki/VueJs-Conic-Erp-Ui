@@ -10,6 +10,7 @@
       style="margin-top: -13vh"
       title="مشترك جديد"
       :visible.sync="Visible"
+      @opened="$refs['MemberName'].focus()"
     >
       <el-form
         :model="tempForm"
@@ -19,12 +20,18 @@
         label-position="top"
       >
         <el-row type="flex">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input type="text" v-model="tempForm.Name"></el-input>
+              <el-input
+                type="text"
+                ref="MemberName"
+                v-model="tempForm.Name"
+              ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="24">
             <el-form-item
               label="تاريخ ميلاد"
               prop="DateofBirth"
@@ -36,12 +43,20 @@
                 }
               ]"
             >
-              <el-date-picker
+              <birth-datepicker
+                style="width :100%"
+                attachment="bottom right"
+                delimiter="/"
+                selectYear
                 v-model="tempForm.DateofBirth"
-                type="date"
-                placeholder="تاريخ ميلاد"
-              ></el-date-picker>
+              />
+
+              <el-tag type="success" effect="dark">
+                العمر
+                {{ getAge(tempForm.DateofBirth) }}
+              </el-tag>
             </el-form-item>
+
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -101,6 +116,11 @@
               ]"
             >
               <VuePhoneNumberInput
+                :translations="{
+                  countrySelectorLabel: 'رمز البلد',
+                  countrySelectorError: 'تاكد من رقم',
+                  phoneNumberLabel: 'رقم الهاتف'
+                }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber1"
               /> </el-form-item
@@ -111,6 +131,11 @@
               prop="PhoneNumber2"
             >
               <VuePhoneNumberInput
+                :translations="{
+                  countrySelectorLabel: 'رمز البلد',
+                  countrySelectorError: 'تاكد من رقم',
+                  phoneNumberLabel: 'رقم الهاتف'
+                }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber2"
               /> </el-form-item
@@ -141,10 +166,13 @@ import { Create } from "@/api/Member";
 import store from "@/store";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
+import birthDatepicker from "vue-birth-datepicker";
+import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
+import moment from "moment";
 
 export default {
   name: "Member",
-  components: { VuePhoneNumberInput },
+  components: { VuePhoneNumberInput, birthDatepicker },
   data() {
     return {
       Visible: false,
@@ -203,6 +231,7 @@ export default {
               this.tempForm.Ssn
             )
           ) {
+            this.tempForm.DateofBirth =new Date(this.tempForm.DateofBirth)
             Create(this.tempForm)
               .then(response => {
                 this.Visible = false;
@@ -240,6 +269,17 @@ export default {
           return false;
         }
       });
+    },
+    getAge(BD) {
+      var today = new Date();
+      var birthDate = new Date(BD);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age = age - 1;
+      }
+
+      return age;
     },
     CheckMemberIsExist(phonenumber, ssn) {
       const found = this.$store.getters.Members.find(

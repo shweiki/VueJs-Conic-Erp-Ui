@@ -1,5 +1,5 @@
 <template>
-  <el-tag :type="Opration.ClassName">{{ Opration.ArabicOprationDescription }}</el-tag>
+  <el-tag :color="Opration.Color" :type="Opration.ClassName">{{ Opration.ArabicOprationDescription }}</el-tag>
 </template>
 <script>
 import { GetOprationByStatusTable } from "@/api/Oprationsys";

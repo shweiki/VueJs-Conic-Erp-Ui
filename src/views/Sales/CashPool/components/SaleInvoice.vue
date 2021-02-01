@@ -471,7 +471,7 @@ export default {
         EntryMovements: [
           {
             Id: undefined,
-            AccountID: this.InComeAccount,
+            AccountId: this.InComeAccount,
             Debit: this.TotalCash + this.TotalReceivables + this.TotalVisa,
             Credit: 0.0,
             Description:
@@ -483,7 +483,7 @@ export default {
           },
           {
             Id: undefined,
-            AccountID: this.CashAccount,
+            AccountId: this.CashAccount,
             Debit: 0.0,
             Credit: this.TotalCash,
             Description:
@@ -501,7 +501,7 @@ export default {
         if (i.PaymentMethod == "Receivables")
           tempForm.EntryMovements.push({
             Id: undefined,
-            AccountID: i.AccountID,
+            AccountId: i.AccountId,
             Debit: 0.0,
             Credit:
               i.InventoryMovements.reduce((prev, cur) => {
@@ -514,7 +514,7 @@ export default {
         if (i.PaymentMethod == "Visa")
           tempForm.EntryMovements.push({
             Id: undefined,
-            AccountID: this.CashAccount,
+            AccountId: this.CashAccount,
             Debit: 0.0,
             Credit: this.TotalVisa,
             Description:

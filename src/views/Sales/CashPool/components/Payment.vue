@@ -286,7 +286,7 @@ export default {
         EntryMovements: [
           {
             ID: undefined,
-            AccountID: this.InComeAccount,
+            AccountId: this.InComeAccount,
             Debit: 0.0,
             Credit: this.Total,
             Description:
@@ -301,7 +301,7 @@ export default {
       this.Selection.forEach((i) => {
         tempForm.EntryMovements.push({
           ID: undefined,
-          AccountID: i.AccountID,
+          AccountId: i.AccountId,
           Debit: i.TotalAmmount,
           Credit: 0.0,
           Description: "سند قبض رقم " + i.Id + " ",

@@ -204,7 +204,7 @@ export default {
       tableData: [],
       loading: true,
       search: "",
-        TotalCash: 0,
+      TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
       Total: 0,
@@ -216,7 +216,6 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
-
       GetSaleInvoice({
         DateFrom: this.$store.state.settings.datepickerQuery[0],
         DateTo: this.$store.state.settings.datepickerQuery[1]

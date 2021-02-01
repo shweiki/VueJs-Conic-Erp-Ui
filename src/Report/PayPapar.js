@@ -40,7 +40,7 @@ export function PaymentMember(temp) {
   doc.text(":رقم المشترك  ", 200, startY+=8, {align:'right'});
   doc.text("" + temp.ObjectID + "", 5, startY);
  doc.text(":الاسم  ", 200, startY+=8, {align:'right'});
- doc.text("" + temp.name + "", 5, startY);
+ doc.text("" + temp.Name + "", 5, startY);
 
 
  doc.text(":ملاحظات  ", 200, startY+=8, {align:'right'});
@@ -94,7 +94,7 @@ doc.setLineDash([0]);
   doc.text(":رقم المشترك  ", 200, startY+=8, {align:'right'});
   doc.text("" + temp.ObjectID + "", 5, startY);
  doc.text(":الاسم  ", 200, startY+=8, {align:'right'});
- doc.text("" + temp.name + "", 5, startY);
+ doc.text("" + temp.Name + "", 5, startY);
 
 
  doc.text(":ملاحظات  ", 200, startY+=8, {align:'right'});

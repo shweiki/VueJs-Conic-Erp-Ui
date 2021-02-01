@@ -19,7 +19,7 @@
       <el-card class="box-card">
         <span class="demonstration">{{ $t("Accounting.Account") }}</span>
         <el-select
-          v-model="AccountID"
+          v-model="AccountId"
           filterable
           v-bind:placeholder="$t('Accounting.Account')"
           @change="getdata"
@@ -148,7 +148,7 @@ export default {
       dialogFormVisible: false,
       dialogOprationVisible: false,
       dialogFormStatus: "",
-      AccountID: 2,
+      AccountId: 2,
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
@@ -184,7 +184,7 @@ export default {
     getdata() {
       this.loading = true;
       GetEntryAccounting({
-        AccountID: this.AccountID,
+        AccountId: this.AccountId,
         DateFrom: this.$store.state.settings.datepickerQuery[0],
         DateTo: this.$store.state.settings.datepickerQuery[1]
       }).then(response => {
@@ -211,7 +211,7 @@ export default {
         header:
           "<center> <h2>" +
           this.Account.find(obj => {
-            return obj.value == this.AccountID;
+            return obj.value == this.AccountId;
           }).label +
           "</h2></center><h3 style='float:left'>الاجمالي " +
           this.Total.toFixed(3) +

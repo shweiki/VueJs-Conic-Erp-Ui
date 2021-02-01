@@ -22,8 +22,7 @@
       class="contextmenu"
     >
       <li @click="refreshSelectedTag()">{{ $t("tagsView.refresh") }}</li>
-            <li @click="Forward()">{{ $t("tagsView.Forward") }}</li>
-
+      <li @click="Forward()">{{ $t("tagsView.Forward") }}</li>
       <li @click="Back()">{{ $t("tagsView.Back") }}</li>
     </ul>
   </section>
@@ -31,9 +30,11 @@
 <script>
 import { METHODS } from "http";
 import path from "path";
+import Clock from "@/components/Clock";
 
 export default {
   name: "AppMain",
+  components:{Clock},
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews;
@@ -43,7 +44,7 @@ export default {
     },
     key() {
       return this.$route.path;
-    },
+    }
   },
   watch: {
     visible(value) {
@@ -52,7 +53,7 @@ export default {
       } else {
         document.body.removeEventListener("click", this.closeMenu);
       }
-    },
+    }
   },
   data() {
     return {
@@ -60,7 +61,7 @@ export default {
       top: 0,
       left: 0,
       FullPath: "",
-      affixTags: [],
+      affixTags: []
     };
   },
   methods: {
@@ -68,7 +69,7 @@ export default {
       const fullPath = this.FullPath;
       this.$nextTick(() => {
         this.$router.replace({
-          path: "/redirect" + fullPath,
+          path: "/redirect" + fullPath
         });
       });
     },
@@ -77,7 +78,7 @@ export default {
         this.$router.go(-1);
       });
     },
-        Forward() {
+    Forward() {
       this.$nextTick(() => {
         this.$router.go(1);
       });
@@ -102,8 +103,8 @@ export default {
     },
     closeMenu() {
       this.visible = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

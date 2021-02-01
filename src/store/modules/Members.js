@@ -21,7 +21,6 @@ const actions = {
 
     CheckMembers() {
         return new Promise((resolve, reject) => {
-
             CheckMembershipMovement().then(response => {
                 console.log(response)
                 CheckMemberLog().then(response => {
@@ -33,14 +32,14 @@ const actions = {
                     reject(error)
                 })
                 resolve(response)
-                CheckMembers().then(response => {
+               /* CheckMembers().then(response => {
                     console.log(response)
 
                     resolve(response)
 
                 }).catch(error => {
                     reject(error)
-                })
+                })*/
 
             }).catch(error => {
                 reject(error)
@@ -49,6 +48,7 @@ const actions = {
     },
     GetMember({ commit }) {
         return new Promise((resolve, reject) => {
+            console.log("sasd" ,GetMember().then((data)=> data))
             GetMember().then(response => {
                 console.log(response)
 

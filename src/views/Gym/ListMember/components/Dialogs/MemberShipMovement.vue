@@ -108,7 +108,7 @@
         </el-form-item>
         <el-form-item prop="Type" label=""></el-form-item>
         <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
-          <span>JOD {{ MembershipMovement.TotalAmmount.toFixed(2) }}</span>
+          <span>JOD {{ MembershipMovement.TotalAmmount }}</span>
         </el-form-item>
         <el-row>
           <el-col :span="24">
@@ -155,7 +155,7 @@ import { string } from "clipboard";
 
 export default {
   props: {
-    AccountID: {
+    AccountId: {
       type: Number,
       default: () => {
         return undefined;

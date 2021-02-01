@@ -4,7 +4,7 @@ import store from '@/store'
 import { toggleClass } from "@/utils";
 
 let Settings = {}
-const { StatusQuery, showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+const { DateFormat, DateTimeFormat, StatusQuery, showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
   , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
@@ -30,6 +30,8 @@ const state = {
   WithOutCheckItemIsExist: WithOutCheckItemIsExist,
   errorLog: errorLog,
   StatusQuery: StatusQuery,
+  DateTimeFormat: DateTimeFormat,
+  DateFormat: DateFormat,
   datepickerQuery: datepickerQuery,
   timeQuery: timeQuery,
   pickerOptions: pickerOptions,

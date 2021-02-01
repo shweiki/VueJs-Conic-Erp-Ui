@@ -377,7 +377,7 @@ export default {
       tempForm: {
         ID: undefined,
         IBAN: "",
-        AccountID: "",
+        AccountId: "",
         Name: "",
         Description: "",
         AccountNumber: "",
@@ -445,7 +445,7 @@ export default {
       this.tempForm = {
         ID: undefined,
         IBAN: "",
-        AccountID: "",
+        AccountId: "",
         Name: "",
         Description: "",
         AccountNumber: "",

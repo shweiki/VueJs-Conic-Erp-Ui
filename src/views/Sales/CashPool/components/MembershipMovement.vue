@@ -297,7 +297,7 @@ export default {
         EntryMovements: [
           {
             ID: undefined,
-            AccountID: this.InComeAccount,
+            AccountId: this.InComeAccount,
             Debit: this.Total,
             Credit: 0.0,
             Description:
@@ -312,7 +312,7 @@ export default {
       this.Selection.forEach(i => {
         tempForm.EntryMovements.push({
           ID: undefined,
-          AccountID: i.AccountID,
+          AccountId: i.AccountId,
           Debit: 0.0,
           Credit: i.TotalAmmount,
           Description:

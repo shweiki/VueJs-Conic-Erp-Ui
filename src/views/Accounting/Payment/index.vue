@@ -201,7 +201,7 @@ export default {
         printable: data,
         properties: [
           "ID",
-          "AccountID",
+          "AccountId",
           "Name",
           "FakeDate",
           "PaymentMethod",

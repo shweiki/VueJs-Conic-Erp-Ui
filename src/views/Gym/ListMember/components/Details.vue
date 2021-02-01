@@ -40,7 +40,10 @@
               >Black List</el-button
             >
           </el-col>
-          <el-col :span="24" v-if="checkPermission(['Admin']) && Member.Status == -2">
+          <el-col
+            :span="24"
+            v-if="checkPermission(['Admin']) && Member.Status == -2"
+          >
             <el-button
               @click="dialogOprationVisible2 = true"
               type="success"
@@ -90,6 +93,7 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="4">
+
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
@@ -105,18 +109,6 @@
 
         <el-row type="flex">
           <el-col :span="4">
-            <span>تاريخ الانتهاء</span>
-          </el-col>
-          <el-col :span="8">
-            <el-date-picker
-              v-if="Member.ActiveMemberShip"
-              format="dd/MM/yyyy"
-              disabled
-              v-model="Member.ActiveMemberShip.EndDate"
-              type="date"
-            ></el-date-picker>
-          </el-col>
-          <el-col :span="4">
             <span>تاريخ البدء</span>
           </el-col>
           <el-col :span="8">
@@ -125,6 +117,18 @@
               format="dd/MM/yyyy"
               disabled
               v-model="Member.ActiveMemberShip.StartDate"
+              type="date"
+            ></el-date-picker>
+          </el-col>
+          <el-col :span="4">
+            <span>تاريخ الانتهاء</span>
+          </el-col>
+          <el-col :span="8">
+            <el-date-picker
+              v-if="Member.ActiveMemberShip"
+              format="dd/MM/yyyy"
+              disabled
+              v-model="Member.ActiveMemberShip.EndDate"
               type="date"
             ></el-date-picker>
           </el-col>

@@ -23,6 +23,8 @@ module.exports = {
   BarcodeIsID: false,
   WithOutCheckItemIsExist: true,
   errorLog: 'production',
+  DateFormat: 'dd/MM/yyyy',
+  DateTimeFormat: 'dd/MM/yyyy h:mm:ss a',
   StatusQuery :0,
   datepickerQuery: [new Date(), new Date()],// start , End
   timeQuery: ['00:00:00', '23:59:59'],

@@ -655,7 +655,7 @@ export default {
       if (find != -1) this.tempForm.InventoryMovements[find].Qty += Qty;
       else {
         let SellingPrice = Item.SellingPrice;
-        if (this.PriceMethod == "wholesale") SellingPrice = Item.OtherPrice;
+        if (this.PriceMethod == "wholesale" || this.tempForm.VendorID != 2) SellingPrice = Item.OtherPrice;
         this.tempForm.InventoryMovements.push({
           Id: undefined,
           ItemsId: Item.Id,

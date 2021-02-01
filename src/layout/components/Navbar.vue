@@ -2,37 +2,36 @@
   <div class="navbar">
     <div
       v-bind:style="
-        this.$i18n.locale == 'ar' ? 'float: left; direction: rtl' : 'float: right;'
+        this.$i18n.locale == 'ar'
+          ? 'float: left; direction: rtl'
+          : 'float: right;'
       "
       class="right-menu"
     >
       <template v-if="device !== 'mobile'">
-        <span
-          id="txt"
-          style="
-            font-size: 20px;
-            font-family: 'Share Tech Mono', monospace;
-            position: absolute;
-            right: 580px;
-            top: 0px;
-            color: #7f7f7f;
-            letter-spacing: 0.07em;
-          "
-        ></span>
+     <!--  <clock style="width : 270px" class="right-menu-item hover-effect" />-->
+
         <search id="header-search" class="right-menu-item" />
 
         <error-log class="errLog-container right-menu-item hover-effect" />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
+        <el-tooltip
+          :content="$t('navbar.size')"
+          effect="dark"
+          placement="bottom"
+        >
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
         <lang-select class="right-menu-item hover-effect" />
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown
+        class="avatar-container right-menu-item hover-effect"
+        trigger="click"
+      >
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
@@ -50,15 +49,20 @@
           </router-link>
 
           <el-dropdown-item divided>
-            <span style="display: block" @click="logout">{{ $t("navbar.logOut") }}</span>
+            <span style="display: block" @click="logout">{{
+              $t("navbar.logOut")
+            }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+
     <hamburger
       id="hamburger-container"
       :is-active="$store.state.settings.sidebarOpen"
-      v-bind:style="this.$i18n.locale == 'ar' ? 'float: right;' : 'float: left;'"
+      v-bind:style="
+        this.$i18n.locale == 'ar' ? 'float: right;' : 'float: left;'
+      "
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
@@ -76,6 +80,7 @@ import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
 import LangSelect from "@/components/LangSelect";
 import Search from "@/components/HeaderSearch";
+import Clock from "@/components/Clock";
 
 export default {
   components: {
@@ -86,9 +91,10 @@ export default {
     SizeSelect,
     LangSelect,
     Search,
+    Clock
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar", "device"]),
+    ...mapGetters(["sidebar", "avatar", "device"])
   },
   methods: {
     toggleSideBar() {
@@ -99,8 +105,8 @@ export default {
       //  this.$router.push(`/login?redirect=${this.$route.fullPath}`);
 
       this.$router.push(`/login`);
-    },
-  },
+    }
+  }
 };
 </script>
 

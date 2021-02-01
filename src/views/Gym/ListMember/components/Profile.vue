@@ -34,7 +34,7 @@
                 <el-col :span="24">
                   <member-ship-movement
                     :MemberID="tempForm.Id"
-                    :AccountID="tempForm.AccountID"
+                    :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
                     :Enable="
                       tempForm.TotalCredit - tempForm.TotalDebit > 0
@@ -53,7 +53,7 @@
                 <el-col :span="24">
                   <member-ship-movement-with-pay
                     :MemberID="tempForm.Id"
-                    :AccountID="tempForm.AccountID"
+                    :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
                     :Enable="
                       tempForm.TotalCredit - tempForm.TotalDebit > 0
@@ -80,7 +80,7 @@
             </el-col>
           </el-row>
         </el-card>
-        <el-card class="box-card" style="min-height : 700px">
+        <el-card class="box-card" >
           <el-tabs
             v-model="activeTab"
             tab-position="right"
@@ -101,7 +101,7 @@
             <el-tab-pane label="مالية" name="account">
               <account
                 :EntryMovements="EntryMovements"
-                :AccountID="tempForm.AccountID"
+                :AccountId="tempForm.AccountId"
               />
             </el-tab-pane>
             <el-tab-pane label="خدمات" name="Service">
@@ -144,7 +144,7 @@ import { GetMemberLogByID } from "@/api/MemberLog";
 import { GetMembershipMovementByMemberID } from "@/api/MembershipMovement";
 import { GetFileByObjID } from "@/api/File";
 import { GetPaymentsByMemberID } from "@/api/Payment";
-import { GetEntryMovementsByAccountID } from "@/api/EntryMovement";
+import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
 
 import Massage from "@/components/Massage";
 
@@ -260,8 +260,8 @@ export default {
           this.Payments = response.reverse();
         });
       if (tab.label == "مالية")
-        GetEntryMovementsByAccountID({
-          AccountID: this.tempForm.AccountID
+        GetEntryMovementsByAccountId({
+          AccountId: this.tempForm.AccountId
         }).then(response => {
           console.log("log :", response);
           this.EntryMovements = response;

@@ -8,9 +8,9 @@ export function Create(data) {
     data: qs.stringify(data)
   })
 }
-export function GetEntryMovementsByAccountID(query) {
+export function GetEntryMovementsByAccountId(query) {
   return request({
-    url: '/EntryMovement/GetEntryMovementsByAccountID',
+    url: '/EntryMovement/GetEntryMovementsByAccountId',
     method: 'get',
     params: query
   })

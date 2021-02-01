@@ -191,7 +191,7 @@ import { string } from "clipboard";
 
 export default {
   props: {
-    AccountID: {
+    AccountId: {
       type: Number,
       default: () => {
         return undefined;

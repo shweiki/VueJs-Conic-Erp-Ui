@@ -5,7 +5,7 @@
     </div>
 
     <div class="user-profile">
-      <span>About me : {{ user.Id }}</span>
+      <span>About me : {{ user.name }}</span>
 
       <div class="box-center">
         <pan-thumb

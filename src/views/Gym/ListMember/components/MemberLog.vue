@@ -8,45 +8,56 @@
         size="mini"
         @click="getdata()"
       ></el-button>
+      <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
 
-      <div class="radio">
-        <el-radio-group v-model="reverse">
-          <el-radio :label="false">ألاقدم</el-radio>
-          <el-radio :label="true">أحدث</el-radio>
-        </el-radio-group>
-      </div>
       <div style="margin-top: 10px">
         <el-timeline
           :reverse="reverse"
-          style="margin-left: -30px; text-align: start; height: 550px; overflow: scroll"
+          style="margin-left: -25px; margin-top: 15px; margin-right: -45px; height: 550px; overflow: scroll"
         >
           <el-timeline-item
-            v-for="(activity, index) in activities"
+            v-for="(activity, index) in MembersLogs"
             :key="index"
-            :icon="activity.icon"
-            :color="activity.color"
-            :size="activity.size"
+            :icon="activity.IconClass"
+            :color="activity.Color"
+            size="large"
             :timestamp="activity.DateTime"
+            :hide-timestamp="true"
           >
-            <router-link :to="'/Gym/Edit/' + activity.MemberID">
-              <status-tag
-                :Status="activity.Status"
-                TableName="Member"
-                v-bind:class="{
-                  BlackList: activity.Status == -2 ? true : false,
-                }"
-              />
+            <router-link
+              v-bind:class="{
+                BlackList: activity.Status == -2 ? true : false
+              }"
+              :to="'/Gym/Edit/' + activity.MemberId"
+            >
+              <el-tag :color="activity.Color"
+                ><strong style="font-size: 10px; cursor: pointer;">{{
+                  activity.Name
+                }}</strong></el-tag
+              >
+              <status-tag :Status="activity.Status" TableName="Member">
+              </status-tag>
             </router-link>
             <el-tag
               v-if="activity.ActiveMemberShip != null"
               v-bind:type="
-                activity.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'
+                activity.ActiveMemberShip.Type == 'Morning'
+                  ? 'warning'
+                  : 'success'
               "
               >{{ activity.ActiveMemberShip.Type }}</el-tag
             >
-            <el-tag v-if="activity.TotalCredit - activity.TotalDebit > 0" type="info"
+            <el-tag
+              v-if="activity.TotalCredit - activity.TotalDebit > 0"
+              type="info"
               >مدين</el-tag
             >
+            <el-time-picker
+              size="mini"
+              v-model="activity.DateTime"
+              format="hh:mm A"
+              disabled
+            />
           </el-timeline-item>
         </el-timeline>
       </div>
@@ -56,14 +67,17 @@
 
 <script>
 import { GetMemberLogByStatus } from "@/api/MemberLog";
+import StatusTag from "@/components/Oprationsys/StatusTag";
+import moment from "moment";
 
 export default {
   name: "MemberLog",
+  components: { StatusTag },
   props: {},
   data() {
     return {
-      activities: [],
-      reverse: true,
+      MembersLogs: [],
+      reverse: false
     };
   },
   created() {
@@ -72,21 +86,21 @@ export default {
   methods: {
     getdata() {
       GetMemberLogByStatus({ Status: 0 })
-        .then((response) => {
+        .then(response => {
           //    console.log(response)
-          if (response.length > this.activities.length) this.activities = response;
+          if (response.length > this.MembersLogs.length) {
+            this.MembersLogs = response.sort(
+              (a, b) => moment(b.DateTime) - moment(a.DateTime)
+            );
+          }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log("test");
 
           reject(error);
         });
-    },
-  },
+    }
+  }
 };
 </script>
-<style scoped>
-.BlackList {
-  background-color: #000000;
-}
-</style>
+
