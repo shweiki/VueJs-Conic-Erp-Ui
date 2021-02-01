@@ -43,20 +43,23 @@
                 }
               ]"
             >
+              <el-date-picker
+                v-model="tempForm.DateofBirth"
+                type="date"
+                placeholder="تاريخ ميلاد"
+              ></el-date-picker>
+              <!--
               <birth-datepicker
                 style="width :100%"
                 attachment="bottom right"
                 delimiter="/"
-                selectYear
                 v-model="tempForm.DateofBirth"
-              />
-
+              />-->
               <el-tag type="success" effect="dark">
                 العمر
                 {{ getAge(tempForm.DateofBirth) }}
               </el-tag>
             </el-form-item>
-
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -231,7 +234,7 @@ export default {
               this.tempForm.Ssn
             )
           ) {
-            this.tempForm.DateofBirth =new Date(this.tempForm.DateofBirth)
+            this.tempForm.DateofBirth = new Date(this.tempForm.DateofBirth);
             Create(this.tempForm)
               .then(response => {
                 this.Visible = false;
