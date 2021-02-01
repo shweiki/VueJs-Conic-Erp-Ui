@@ -1,14 +1,19 @@
 <template>
   <div>
-
-    <el-button :disabled="Enable" type="primary" icon="el-icon-plus" @click="Visibles = true">اشتراك</el-button>
+    <el-button
+      :disabled="Enable"
+      type="primary"
+      icon="el-icon-plus"
+      @click="Visibles = true"
+      >اشتراك</el-button
+    >
 
     <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك" :visible.sync="Visibles">
       <el-form :model="MembershipMovement" ref="dataForm">
         <el-form-item
           label="الفترة"
           prop="Type"
-          :rules="[{ required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' } ]"
+          :rules="[{ required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }]"
         >
           <el-radio-group v-model="MembershipMovement.Type" @change="calc">
             <el-radio label="Morning" border>Morning</el-radio>
@@ -18,7 +23,9 @@
         <el-form-item
           label="إشتراك"
           prop="MembershipId"
-          :rules="[{ required: true, message: 'الرجاء اختيار نوع اشتراك', trigger: 'blur' } ]"
+          :rules="[
+            { required: true, message: 'الرجاء اختيار نوع اشتراك', trigger: 'blur' },
+          ]"
         >
           <el-select
             v-model="MembershipMovement.MembershipId"
@@ -37,19 +44,23 @@
         <el-form-item
           label="تاريخ بدء"
           prop="StartDate"
-          :rules="[{ required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' } ]"
+          :rules="[
+            { required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' },
+          ]"
         >
           <el-date-picker
-            @change="calc"
             v-model="MembershipMovement.StartDate"
             type="date"
             format="dd/MM/yyyy"
+            @change="calc"
           ></el-date-picker>
         </el-form-item>
         <el-form-item
           label="تاريخ انتهاء"
           prop="EndDate"
-          :rules="[{ required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' } ]"
+          :rules="[
+            { required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' },
+          ]"
         >
           <el-date-picker
             format="dd/MM/yyyy"
@@ -67,22 +78,25 @@
               :value="Discount"
             >
               <span style="float: left">{{ Discount.label }}</span>
-              <span
-                style="float: right; color: #8492a6; font-size: 13px"
-              >{{Discount.value}}{{ (Discount.type == "Percentage") ? '%': '-' }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"
+                >{{ Discount.value }}{{ Discount.type == "Percentage" ? "%" : "-" }}</span
+              >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item
           label="سبب الخصم"
           prop="DiscountDescription"
-          :rules="[{ required: true, message: 'لايمكن ترك الخصم فارغ', trigger: 'blur' } ]"
+          :rules="[{ required: true, message: 'لايمكن ترك الخصم فارغ', trigger: 'blur' }]"
         >
-          <el-input style="width:220px" v-model="MembershipMovement.DiscountDescription"></el-input>
+          <el-input
+            style="width: 220px"
+            v-model="MembershipMovement.DiscountDescription"
+          ></el-input>
         </el-form-item>
 
         <el-form-item
-          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' } ]"
+          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -94,13 +108,19 @@
         </el-form-item>
         <el-form-item prop="Type" label=""></el-form-item>
         <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
-          <span>JOD {{(MembershipMovement.TotalAmmount).toFixed(2)}}</span>
+          <span>JOD {{ MembershipMovement.TotalAmmount.toFixed(2) }}</span>
         </el-form-item>
-          <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item
               prop="EditorName"
-              :rules="[{ required: true, message: 'لايمكن ترك محرر السند فارغ', trigger: 'blur' } ]"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك محرر السند فارغ',
+                  trigger: 'blur',
+                },
+              ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
               <el-select v-model="MembershipMovement.EditorName" placeholder="محرر السند">
@@ -117,12 +137,10 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{$t('AddVendors.Cancel')}}</el-button>
-        <el-button
-          :disabled="EnableSave"
-          type="primary"
-          @click="createData()"
-        >{{$t('AddVendors.Save')}}</el-button>
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button :disabled="EnableSave" type="primary" @click="createData()">{{
+          $t("AddVendors.Save")
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -141,21 +159,21 @@ export default {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
     MemberID: {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
 
     Enable: {
       type: Boolean,
       default: () => {
         return true;
-      }
-    }
+      },
+    },
   },
   created() {
     this.getdata();
@@ -172,12 +190,12 @@ export default {
         Type: "FullDay",
         VisitsUsed: 0,
         Discount: 0,
-        DiscountDescription: '',
-        Description: '',
+        DiscountDescription: "",
+        Description: "",
         Status: 0,
-        EditorName:'',
+        EditorName: "",
         MemberID: undefined,
-        MembershipId: undefined
+        MembershipId: undefined,
       },
 
       EnableSave: false,
@@ -188,71 +206,70 @@ export default {
         disabledDate(time) {
           console.log(time);
           return time.getTime() < Date.now() - 8.64e7;
-        }
-      }
+        },
+      },
     };
   },
   methods: {
     getdata() {
       GetActiveMembership()
-        .then(response => {
-          console.log(response)
+        .then((response) => {
+          console.log(response);
           this.Memberships = response;
           this.MembershipMovement.MembershipId = response[0].Id;
           GetActiveDiscount()
-            .then(response => {
-              console.log(response)
+            .then((response) => {
+              console.log(response);
               this.DiscountOptions = response;
               this.Discount = this.DiscountOptions[0];
               this.calc();
             })
-            .catch(err => {
+            .catch((err) => {
               console.log(err);
-            })
+            });
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
-        })
+        });
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         this.calc();
         if (valid) {
-              this.EnableSave = true;
-              Create(this.MembershipMovement)
-                .then(response => {
-                  if (response) {
-                    //  if(this.Discount.ValueOfDays >0)
-                    // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
-                        this.Visibles = false
-                        this.$notify({
-                          title: "تم ",
-                          message: "تم الإضافة بنجاح",
-                          type: 'success',
-                          duration: 2000,
-                          onClose: () => {
-                            this.EnableSave = false;
-                          }
-                      })
-                      .catch(error => {
-                        console.log(error);
-                      })
-                  }
-                })
-                .catch(error => {
+          this.EnableSave = true;
+          Create(this.MembershipMovement)
+            .then((response) => {
+              if (response) {
+                //  if(this.Discount.ValueOfDays >0)
+                // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
+                this.Visibles = false;
+                this.$notify({
+                  title: "تم ",
+                  message: "تم الإضافة بنجاح",
+                  type: "success",
+                  duration: 2000,
+                  onClose: () => {
+                    this.EnableSave = false;
+                  },
+                }).catch((error) => {
                   console.log(error);
-                })
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     calc() {
       let Membership = this.Memberships.find(
-        obj => obj.Id == this.MembershipMovement.MembershipId
+        (obj) => obj.Id == this.MembershipMovement.MembershipId
       );
-      // console.log(Membership);
+      console.log(Membership);
 
       let Price =
         this.MembershipMovement.Type == "Morning"
@@ -263,8 +280,7 @@ export default {
           ? (this.Discount.value / 100) * Price
           : this.Discount.value;
 
-      this.MembershipMovement.TotalAmmount =
-        Price - this.MembershipMovement.Discount;
+      this.MembershipMovement.TotalAmmount = Price - this.MembershipMovement.Discount;
       this.MembershipMovement.MemberID = this.MemberID;
 
       this.MembershipMovement.EndDate = new Date(
@@ -282,19 +298,19 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,
-        MemberShipMovementId: MemberShipMovementId
+        MemberShipMovementId: MemberShipMovementId,
       };
       MembershipMovementOrder.EndDate = new Date(
         MembershipMovementOrder.EndDate.setTime(
           MembershipMovementOrder.StartDate.getTime() + 3600 * 1000 * 24 * Days
         )
       );
-      Create(MembershipMovementOrder).then(response => {
+      Create(MembershipMovementOrder).then((response) => {
         if (response) {
         }
-      })
-    }
-  }
+      });
+    },
+  },
 };
 </script>
 <style scoped>
