@@ -13,48 +13,45 @@
       <div style="margin-top: 10px">
         <el-timeline
           :reverse="reverse"
-          style="margin-left: -25px; margin-top: 15px; margin-right: -45px; height: 550px; overflow: scroll"
+          style="
+            margin-left: -25px;
+            margin-top: 15px;
+            margin-right: -45px;
+            height: 550px;
+            overflow: scroll;
+          "
         >
           <el-timeline-item
-            v-for="(activity, index) in MembersLogs"
+            v-for="(Log, index) in MembersLogs"
             :key="index"
-            :icon="activity.IconClass"
-            :color="activity.Color"
+            :icon="Log.IconClass"
+            :color="Log.Color"
             size="large"
-            :timestamp="activity.DateTime"
+            :timestamp="Log.DateTime"
             :hide-timestamp="true"
           >
             <router-link
               v-bind:class="{
-                BlackList: activity.Status == -2 ? true : false
+                BlackList: Log.Status == -2 ? true : false,
               }"
-              :to="'/Gym/Edit/' + activity.MemberId"
+              :to="'/Gym/Edit/' + Log.MemberId"
             >
-              <el-tag :color="activity.Color"
-                ><strong style="font-size: 10px; cursor: pointer;">{{
-                  activity.Name
+              <el-tag :color="Log.Color"
+                ><strong style="font-size: 10px; cursor: pointer">{{
+                  Log.Name
                 }}</strong></el-tag
               >
-              <status-tag :Status="activity.Status" TableName="Member">
-              </status-tag>
+              <status-tag :Status="Log.Status" TableName="Member"> </status-tag>
             </router-link>
             <el-tag
-              v-if="activity.ActiveMemberShip != null"
-              v-bind:type="
-                activity.ActiveMemberShip.Type == 'Morning'
-                  ? 'warning'
-                  : 'success'
-              "
-              >{{ activity.ActiveMemberShip.Type }}</el-tag
+              v-if="Log.ActiveMemberShip != null"
+              v-bind:type="Log.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'"
+              >{{ Log.ActiveMemberShip.Type }}</el-tag
             >
-            <el-tag
-              v-if="activity.TotalCredit - activity.TotalDebit > 0"
-              type="info"
-              >مدين</el-tag
-            >
+            <el-tag v-if="Log.TotalCredit - Log.TotalDebit > 0" type="info">مدين</el-tag>
             <el-time-picker
               size="mini"
-              v-model="activity.DateTime"
+              v-model="Log.DateTime"
               format="hh:mm A"
               disabled
             />
@@ -77,7 +74,7 @@ export default {
   data() {
     return {
       MembersLogs: [],
-      reverse: false
+      reverse: false,
     };
   },
   created() {
@@ -86,7 +83,7 @@ export default {
   methods: {
     getdata() {
       GetMemberLogByStatus({ Status: 0 })
-        .then(response => {
+        .then((response) => {
           //    console.log(response)
           if (response.length > this.MembersLogs.length) {
             this.MembersLogs = response.sort(
@@ -94,13 +91,12 @@ export default {
             );
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log("test");
 
           reject(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>
-
