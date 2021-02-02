@@ -1,13 +1,28 @@
 ﻿<template>
-  <detail :is-edit="false" />
+  <div>
+    <layout1
+      v-if="$store.getters.settings.PointOfSaleLayout == 'Layout1'"
+      :is-edit="false"
+    />
+    <layout2
+      v-if="$store.getters.settings.PointOfSaleLayout == 'Layout2'"
+      :is-edit="false"
+    />
+    <layout3
+      v-if="$store.getters.settings.PointOfSaleLayout == 'Layout3'"
+      :is-edit="false"
+    />
+  </div>
 </template>
 
 <script>
-import Detail from './components/Detail'
+import Layout1 from "./components/Layout1";
+import Layout2 from "./components/Layout2";
+import Layout3 from "./components/Layout3";
 
 export default {
-  name: 'CreateInvoice',
-  components: { Detail }
-}
+  name: "CreateInvoice",
+  components: { Layout1, Layout2, Layout3 }
+};
 </script>
 

@@ -3,8 +3,8 @@
     <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
     <el-date-picker
       v-model="date"
-      :format="$store.getters.settings.DateTimeFormat"
-      type="datetimerange"
+      :format="$store.getters.settings.DateFormat"
+      type="daterange"
       align="right"
       v-bind:range-separator="$t('Sales.until')"
       v-bind:start-placeholder="$t('Sales.From')"
@@ -16,17 +16,16 @@
   </div>
 </template>
 <script>
-import moment from "moment";
 
 export default {
   computed: {
     date: {
       get() {
-        return [moment().startOf("day"), moment().endOf("day")]; //this.$store.state.settings.datepickerQuery;
+        return [this.$moment().startOf("day"), this.$moment().endOf("day")]; //this.$store.state.settings.datepickerQuery;
       },
       set(val) {
-        val[0] = moment(val[0]).startOf("day");
-        val[1] = moment(val[1]).endOf("day");
+        val[0] = this.$moment(val[0]).startOf("day");
+        val[1] = this.$moment(val[1]).endOf("day");
 
         this.$store.dispatch("settings/changeSetting", {
           key: "datepickerQuery",

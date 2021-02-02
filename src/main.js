@@ -18,10 +18,14 @@ import OpenCashSound from '@/assets/Sounds/PointOfSaleOpenCashDrawer.wav'
 import BarCodeSound from '@/assets/Sounds/BarCode.wav'
 import VueMoment from 'vue-moment'
 import moment from "moment-timezone";
+
 moment.tz.setDefault('Asia/Amman')
+moment.locale(i18n.locale)
+
 Vue.use(VueMoment, {
   moment,
 })
+
 const pluginOptions = {
   /* see config reference */
   globalOptions: { currency: 'JOD' },

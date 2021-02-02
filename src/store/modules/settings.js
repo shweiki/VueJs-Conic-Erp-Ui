@@ -4,7 +4,7 @@ import store from '@/store'
 import { toggleClass } from "@/utils";
 
 let Settings = {}
-const { DateFormat, DateTimeFormat, StatusQuery, showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+const { PointOfSaleLayout, DateFormat, DateTimeFormat, StatusQuery, showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
   , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
@@ -35,6 +35,7 @@ const state = {
   datepickerQuery: datepickerQuery,
   timeQuery: timeQuery,
   pickerOptions: pickerOptions,
+  PointOfSaleLayout: PointOfSaleLayout
 }
 
 const mutations = {
@@ -80,31 +81,39 @@ const actions = {
     })
   },
   changeSetting({ commit }, data) {
-    Edit({
-      Id: 0,
-      Name: data.key,
-      value: (typeof data.value == 'object' ? JSON.stringify(data.value) : data.value),
-      Type: typeof data.value,
-      state: 0,
-      Description: JSON.stringify(data)
-    }).then(response => {
-      //  console.log(response)
-      resolve(response)
-    }).catch(error => {
-      reject(error)
+    return new Promise((resolve, reject) => {
+      Edit({
+        Id: 0,
+        Name: data.key,
+        value: JSON.stringify(data.value),
+        Type: typeof data.value,
+        state: 0,
+        Description: JSON.stringify(data)
+      }).then(response => {
+        //  console.log(response)
+        commit('CHANGE_SETTING', data)
+
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
     })
-    commit('CHANGE_SETTING', data)
+
   },
   SetSettingDefault(DBSettings) {
     Object.keys(defaultSettings).map(key => {
       const found = DBSettings.find(
         element => element.Name == key
       );
-      if (!found) store.dispatch("settings/changeSetting", {
-        key: key,
-        value: defaultSettings['' + key + '']
-      });
+      if (!found) {
+        store.dispatch("settings/changeSetting", {
+          key: key,
+          value: defaultSettings['' + key + '']
+        });
+        location.reload()
+      }
     })
+
   }
 }
 

@@ -26,6 +26,7 @@ module.exports = {
   DateFormat: 'dd/MM/yyyy',
   DateTimeFormat: 'dd/MM/yyyy h:mm:ss a',
   StatusQuery :0,
+  PointOfSaleLayout :'Layout1',
   datepickerQuery: [new Date(), new Date()],// start , End
   timeQuery: ['00:00:00', '23:59:59'],
   pickerOptions: {

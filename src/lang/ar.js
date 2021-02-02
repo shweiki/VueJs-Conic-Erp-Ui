@@ -90,7 +90,7 @@ export default {
     sidebarOpen: "اظهار القائمة",
     showNavbar: "اظهار شريط العلوي",
     showBarcode: "نظام الباركود",
-    WithOutCheckItemIsExist: "فحص تكرار اسم \ الباركود الصنف",
+    WithOutCheckItemIsExist: "عدم تكرار اسم \ الباركود الصنف",
     errorLog: "سجل اخطاء",
     datepickerQuery: "فترة الزمنية المعتمدة",
     timeQuery: "الوقت المعتمد",

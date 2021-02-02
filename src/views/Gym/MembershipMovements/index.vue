@@ -149,7 +149,6 @@ import {
 } from "@/api/MembershipMovement";
 import { CreateMulti } from "@/api/MembershipMovementOrder";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import moment from "moment";
 
 export default {
   name: "Member",
@@ -180,7 +179,7 @@ export default {
     },
     FilterByDateIn(val) {
       this.loading = true;
-      GetMembershipMovementByDateIn({ DateIn: moment(val).format() }).then(response => {
+      GetMembershipMovementByDateIn({ DateIn: this.$moment(val).format() }).then(response => {
         //console.log(response)
         this.tableData = response;
         this.loading = false;
@@ -205,8 +204,8 @@ export default {
             return {
               ID: undefined,
               Type: "Freeze",
-              StartDate: moment(this.FreezeBetween[0]).format(),
-              EndDate: moment(this.FreezeBetween[1]).format(),
+              StartDate: this.$moment(this.FreezeBetween[0]).format(),
+              EndDate: this.$moment(this.FreezeBetween[1]).format(),
               Status: 2,
               Description: this.Description,
               MemberShipMovementId: x.Id

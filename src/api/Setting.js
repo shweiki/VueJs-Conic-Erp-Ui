@@ -14,6 +14,13 @@ export function CheckUpdate(query) {
     params: query
   })
 }
+export function RestDefualtSetting(query) {
+  return request({
+    url: '/Setting/RestDefualtSetting',
+    method: 'get',
+    params: query
+  })
+}
 
 export function GetActiveSetting(query) {
   return request({

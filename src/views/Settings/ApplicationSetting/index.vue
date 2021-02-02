@@ -7,11 +7,24 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>جميع اعدادات</span>
+          <el-button type="success" @click="CheckUpdate"
+            >Check UpDate</el-button
+          >
+          <el-button type="success" @click="RestSetting"
+            >Rest Defualt Setting</el-button
+          >
         </div>
-        <el-row>
-          <el-col :span="3">
-            <el-button type="primary" @click="CheckUpdate">Check UpDate</el-button>
+        <el-row type="flex">
+          <el-col :span="6">
+            <span>{{ $t("Settings.DateFormat") }}</span>
+            <el-input v-model="DateFormat" />
           </el-col>
+          <el-col :span="6">
+            <span>{{ $t("Settings.DateTimeFormat") }}</span>
+            <el-input v-model="DateTimeFormat" />
+          </el-col>
+        </el-row>
+        <el-row type="flex">
           <el-col :span="6">
             <span>{{ $t("Settings.title") }}</span>
             <el-input v-model="title" />
@@ -21,14 +34,26 @@
             <el-input v-model="CashDrawerCOM" />
           </el-col>
           <el-col :span="6">
+            <span>{{ $t("Settings.PointOfSaleLayout") }}</span>
+            <el-select
+              v-model="PointOfSaleLayout"
+              placeholder="PointOfSaleLayout"
+            >
+              <el-option label="Layout1" value="Layout1"> </el-option>
+              <el-option label="Layout2" value="Layout2"> </el-option>
+              <el-option label="Layout3" value="Layout3"> </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6">
             <span>{{ $t("Settings.BusinessType") }}</span>
             <el-select v-model="BusinessType" placeholder="Select">
               <el-option label="SuperMarkit" value="SuperMarkit"> </el-option>
+              <el-option label="CarsSpare" value="CarsSpare"> </el-option>
               <el-option label="GymManagment" value="GymManagment"> </el-option>
             </el-select>
           </el-col>
         </el-row>
-        <el-row
+        <el-row type="flex"
           ><el-col :span="6">
             <span>{{ $t("Settings.tagsView") }}</span>
             <el-switch v-model="tagsView" class="drawer-switch" />
@@ -45,17 +70,22 @@
             <span>{{ $t("Settings.sidebarOpen") }}</span>
             <el-switch v-model="sidebarOpen" class="drawer-switch" />
           </el-col>
+        </el-row>
+        <el-row type="flex">
           <el-col :span="6">
             <span>{{ $t("Settings.fixedHeader") }}</span>
             <el-switch v-model="fixedHeader" class="drawer-switch" />
           </el-col>
-
+          <el-col :span="6">
+            <span>{{ $t("Settings.WithOutCheckItemIsExist") }}</span>
+            <el-switch
+              v-model="WithOutCheckItemIsExist"
+              class="drawer-switch"
+            />
+          </el-col>
           <el-col :span="6">
             <span>{{ $t("Settings.sidebarLogo") }}</span>
             <el-switch v-model="sidebarLogo" class="drawer-switch" /> </el-col
-        ></el-row>
-
-        <el-row
           ><el-col :span="6">
             <span>{{ $t("Settings.BarcodeIsID") }}</span>
             <el-switch v-model="BarcodeIsID" class="drawer-switch" />
@@ -67,7 +97,7 @@
 </template>
 
 <script>
-import { CheckUpdate } from "@/api/Setting";
+import { CheckUpdate, RestDefualtSetting } from "@/api/Setting";
 import Settings from "@/layout/components/Settings/index";
 
 export default {
@@ -85,10 +115,33 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "title",
-          value: val,
+          value: val
         });
-      },
+      }
     },
+    DateFormat: {
+      get() {
+        return this.$store.state.settings.DateFormat;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "DateFormat",
+          value: val
+        });
+      }
+    },
+    DateTimeFormat: {
+      get() {
+        return this.$store.state.settings.DateTimeFormat;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "DateTimeFormat",
+          value: val
+        });
+      }
+    },
+
     CashDrawerCOM: {
       get() {
         return JSON.stringify(this.$store.state.settings.CashDrawerCOM);
@@ -96,9 +149,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "CashDrawerCOM",
-          value: JSON.parse(val),
+          value: JSON.parse(val)
         });
-      },
+      }
     },
     fixedHeader: {
       get() {
@@ -107,9 +160,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "fixedHeader",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     tagsView: {
       get() {
@@ -118,9 +171,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "tagsView",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     sidebarLogo: {
       get() {
@@ -129,9 +182,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "sidebarLogo",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     BarcodeIsID: {
       get() {
@@ -140,9 +193,20 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "BarcodeIsID",
-          value: val,
+          value: val
         });
+      }
+    },
+    WithOutCheckItemIsExist: {
+      get() {
+        return this.$store.state.settings.WithOutCheckItemIsExist;
       },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "WithOutCheckItemIsExist",
+          value: val
+        });
+      }
     },
     sidebarOpen: {
       get() {
@@ -153,9 +217,9 @@ export default {
 
         this.$store.dispatch("settings/changeSetting", {
           key: "sidebarOpen",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     showSettings: {
       get() {
@@ -164,9 +228,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "showSettings",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     showRestOfBill: {
       get() {
@@ -175,9 +239,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "showRestOfBill",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     BusinessType: {
       get() {
@@ -186,12 +250,28 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "BusinessType",
-          value: val,
+          value: val
         });
-      },
+      }
     },
+    PointOfSaleLayout: {
+      get() {
+        return this.$store.state.settings.PointOfSaleLayout;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "PointOfSaleLayout",
+          value: val
+        });
+      }
+    }
   },
   methods: {
+    RestSetting() {
+      RestDefualtSetting().then(res => {
+        if (res) location.reload();
+      });
+    },
     CheckUpdate() {
       this.loading = true;
       var wshShell = new ActiveXObject("WScript.Shell");
@@ -208,8 +288,8 @@ export default {
           // handle error
           console.log(error);
         });*/
-    },
-  },
+    }
+  }
 };
 </script>
 

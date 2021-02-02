@@ -3,7 +3,6 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <radio-oprations TableName="SalesInvoice" @Change="getdata" />
-
         <el-button
           style="float: left"
           icon="el-icon-printer"

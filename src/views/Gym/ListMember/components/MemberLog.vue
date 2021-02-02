@@ -65,7 +65,6 @@
 <script>
 import { GetMemberLogByStatus } from "@/api/MemberLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import moment from "moment";
 
 export default {
   name: "MemberLog",
@@ -87,7 +86,7 @@ export default {
           //    console.log(response)
           if (response.length > this.MembersLogs.length) {
             this.MembersLogs = response.sort(
-              (a, b) => moment(b.DateTime) - moment(a.DateTime)
+              (a, b) => this.$moment(b.DateTime) - this.$moment(a.DateTime)
             );
           }
         })

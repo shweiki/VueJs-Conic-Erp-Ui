@@ -47,7 +47,7 @@
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="10">
+      <el-col :span="8">
         <el-input
           data-barcode
           ref="Barcode"
@@ -94,7 +94,7 @@
 import Fuse from "fuse.js";
 import AddItem from "./AddItem";
 import SearchItem from "./SearchItem";
-import { GetItemByBarcode } from "@/api/Item";
+import { GetItemByBarcode, GetItemByID } from "@/api/Item";
 
 export default {
   name: "ItemsSearch",
@@ -206,23 +206,15 @@ export default {
       if (this.Barcode != "" || this.Barcode) {
         GetItemByBarcode({ BarCode: this.Barcode }).then(res => {
           if (res) this.AddItem(res, 1);
-          else this.OpenAddItem = true;
+          else {
+            if (this.$store.getters.settings.BarcodeIsID == true) {
+              GetItemByID({ ID: this.Barcode }).then(res => {
+                if (res) this.AddItem(res, 1);
+                else this.OpenAddItem = true;
+              });
+            } else this.OpenAddItem = true;
+          }
         });
-
-        /*    var find = this.Items.findIndex(
-          value =>
-            value.Barcode == this.Barcode ||
-            (this.$store.getters.settings.BarcodeIsID == true
-              ? value.Id == this.Barcode
-              : this.$store.getters.settings.BarcodeIsID)
-        );
-        console.log(this.Barcode, find);
-
-        if (find != -1) {
-          this.AddItem(this.Items[find], 1);
-        } else {
-          this.OpenAddItem = true;
-        } */
       }
     }
   }
