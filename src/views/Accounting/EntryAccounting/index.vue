@@ -14,7 +14,15 @@
       </div>
 
       <div slot="header" class="clearfix">
-        <search-by-date @change="getdata" />
+        <search-by-date
+          :Value="date"
+          @Set="
+            v => {
+              date = v;
+            }
+          "
+          @focus="getdata()"
+        />
       </div>
       <el-card class="box-card">
         <span class="demonstration">{{ $t("Accounting.Account") }}</span>
@@ -144,6 +152,7 @@ export default {
       tableData: [],
       Account: [],
       Total: 0,
+      date: [],
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
@@ -178,15 +187,18 @@ export default {
     };
   },
   created() {
+    console.log(this.date);
     this.getdata();
   },
   methods: {
     getdata() {
+      console.log(this.date);
+
       this.loading = true;
       GetEntryAccounting({
         AccountId: this.AccountId,
-        DateFrom: this.$store.state.settings.datepickerQuery[0],
-        DateTo: this.$store.state.settings.datepickerQuery[1]
+        DateFrom: this.date[0],
+        DateTo: this.date[1]
       }).then(response => {
         console.log(response);
         this.tableData = response;

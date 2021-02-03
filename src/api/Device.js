@@ -64,6 +64,18 @@ export function GetAllLogMembers(query) {
     method: 'get',
     params: query
   })
+} export function ClearUserLog(query) {
+  return request({
+    url: '/Device/ClearUserLog',
+    method: 'get',
+    params: query
+  })
+} export function RestartDevice(query) {
+  return request({
+    url: '/Device/RestartDevice',
+    method: 'get',
+    params: query
+  })
 }
 export function OpenCashDrawer(query) {
   return request({

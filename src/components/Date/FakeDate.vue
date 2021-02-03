@@ -19,9 +19,12 @@ export default {
       FakeDate: this.$moment()
     };
   },
+  created() {
+      this.$emit("Set", this.$moment(this.FakeDate)._d);
+  },
   watch: {
     Value(val) {
-      if (val) this.FakeDate = this.$moment(val)._d
+      if (val) this.FakeDate = this.$moment(val)._d;
     }
   },
   methods: {

@@ -10,34 +10,35 @@
       v-bind:start-placeholder="$t('Sales.From')"
       v-bind:end-placeholder="$t('Sales.To')"
       :picker-options="$store.getters.settings.pickerOptions"
-      :default-time="$store.getters.settings.timeQuery"
-      @change="getdata"
+      @change="SetVal"
     ></el-date-picker>
   </div>
 </template>
 <script>
-
 export default {
-  computed: {
-    date: {
-      get() {
-        return [this.$moment().startOf("day"), this.$moment().endOf("day")]; //this.$store.state.settings.datepickerQuery;
-      },
-      set(val) {
-        val[0] = this.$moment(val[0]).startOf("day");
-        val[1] = this.$moment(val[1]).endOf("day");
-
-        this.$store.dispatch("settings/changeSetting", {
-          key: "datepickerQuery",
-          value: val
-        });
-      }
+  props: {
+    Value: Array
+  },
+  data() {
+    return {
+      date: [this.$moment().startOf("day"), this.$moment().endOf("day")]
+    };
+  },
+  created() {
+     this.$emit("Set",  [this.$moment(this.date[0])._d,this.$moment(this.date[1])._d]);
+  },
+  watch: {
+    Value(val) {
+      console.log('._d' , val)
+      if (val) this.date = [this.$moment(val[0])._d,this.$moment(val[1])._d];
     }
   },
   methods: {
-    getdata() {
-      this.$emit("change");
+    SetVal() {
+      this.$emit("Set",  [this.$moment(this.date[0])._d,this.$moment(this.date[1])._d]);
+      this.$emit("focus");
     }
   }
 };
+
 </script>
