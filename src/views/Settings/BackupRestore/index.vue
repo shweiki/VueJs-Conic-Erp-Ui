@@ -10,6 +10,20 @@
       >
         BackUp DataBase</el-button
       >
+      <el-input
+        v-model="RestoreDirectory"
+        icon="el-icon-files"
+        placeholder="Directory Path"
+      />
+
+      <el-button
+        style="margin-left: 10px"
+        size="small"
+        type="success"
+        :loading="loading"
+        @click="SubmitRestore()"
+        >Submit Restore to server</el-button
+      >
     </el-card>
     <el-table
       v-loading="loading"
@@ -21,28 +35,10 @@
     >
       <el-table-column label="#" prop="Id" width="50"></el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center">
-
-      </el-table-column>
-      <el-table-column
-        label="DataBaseName"
-        prop="DataBaseName"
-      ></el-table-column>
+      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
+      <el-table-column label="DataBaseName" prop="DataBaseName"></el-table-column>
       <el-table-column label="DateTime" prop="DateTime"></el-table-column>
       <el-table-column label="UserID" prop="UserId"></el-table-column>
-
-      <el-table-column align="right" width="200">
-        <template slot-scope="scope">
-          <el-button
-            style="margin-left: 10px"
-            size="small"
-            type='success'
-            :loading="loading"
-            @click="SubmitRestore(scope.row.Id)"
-            >Submit Restore to server</el-button
-          >
-        </template>
-      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -56,7 +52,8 @@ export default {
     return {
       loading: false,
       tableData: [],
-      search: '',
+      search: "",
+      RestoreDirectory: "",
     };
   },
   created() {
@@ -68,30 +65,30 @@ export default {
       GetBackUp()
         .then((response) => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.tableData = response.reverse();
-          this.loading = false
+          this.loading = false;
         })
         .catch((error) => {
           // handle error
           console.log(error);
-        })
+        });
     },
-    SubmitRestore(id) {
+    SubmitRestore() {
       this.loading = true;
 
-      Restore({ backUpId: id }).then((response) => {
+      Restore({ DirectoryBak: this.RestoreDirectory }).then((response) => {
         if (response) {
           this.$notify({
             title: "تم ",
-            message: "تم الإضافة بنجاح",
-            type: 'success',
+            message: "تم استرجاع قاعدة البيانات بنجاح :)",
+            type: "success",
             duration: 2000,
-          })
+          });
           this.loading = true;
           this.getdata();
         }
-      })
+      });
     },
     SubmitBackUp() {
       this.loading = true;
@@ -100,15 +97,14 @@ export default {
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",
-            type: 'success',
+            type: "success",
             duration: 2000,
-          })
+          });
           this.loading = true;
           this.getdata();
         }
-      })
+      });
     },
   },
 };
 </script>
-

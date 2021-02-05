@@ -12,26 +12,27 @@
 <script>
 export default {
   props: {
-    Value: String
+    Value: String,
   },
   data() {
     return {
-      FakeDate: this.$moment()
+      FakeDate: this.$moment(),
     };
   },
   created() {
-      this.$emit("Set", this.$moment(this.FakeDate)._d);
+    this.$emit("Set", this.$moment(this.FakeDate)._d);
   },
   watch: {
     Value(val) {
-      if (val) this.FakeDate = this.$moment(val)._d;
-    }
+      if (val != "") this.FakeDate = this.$moment(val)._d;
+      else this.$emit("Set", this.$moment(this.FakeDate)._d);
+    },
   },
   methods: {
     SetVal() {
       this.$emit("Set", this.$moment(this.FakeDate)._d);
       this.$emit("focus");
-    }
-  }
+    },
+  },
 };
 </script>

@@ -2,8 +2,15 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <search-by-date @change="getdata" />
-
+        <search-by-date
+          :Value="date"
+          @Set="
+            (v) => {
+              date = v;
+            }
+          "
+          @focus="getdata()"
+        />
         <router-link
           class="pan-btn tiffany-btn"
           style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
@@ -175,6 +182,7 @@ export default {
       tableData: [],
       loading: true,
       search: "",
+      date: "",
     };
   },
   created() {
@@ -184,8 +192,8 @@ export default {
     getdata() {
       this.loading = true;
       GetPurchaseInvoice({
-        DateFrom: this.$store.state.settings.datepickerQuery[0],
-        DateTo: this.$store.state.settings.datepickerQuery[1],
+        DateFrom: this.date[0],
+        DateTo: this.date[1],
       })
         .then((response) => {
           // handle success

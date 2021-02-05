@@ -2,8 +2,15 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <search-by-date @change="getdata" />
-
+        <search-by-date
+          :Value="date"
+          @Set="
+            (v) => {
+              date = v;
+            }
+          "
+          @focus="getdata()"
+        />
         <router-link
           class="pan-btn tiffany-btn"
           style="float: left; padding: 10px 15px; border-radius: 6px"
@@ -16,9 +23,8 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
-              !search ||
-              data.FakeDate.toLowerCase().includes(search.toLowerCase())
+            (data) =>
+              !search || data.FakeDate.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -29,17 +35,11 @@
       >
         <el-table-column align="center" prop="Id" width="120">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata"></el-button>
           </template>
           <template slot-scope="scope">
             <router-link :to="'/OrderInventories/Edit/' + scope.row.Id">
-              <strong style="font-size: 10px; cursor: pointer">{{
-                scope.row.Id
-              }}</strong>
+              <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Id }}</strong>
             </router-link>
           </template>
         </el-table-column>
@@ -120,18 +120,13 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-          >{{ textOpration.OprationDescription }}</el-button
-        >
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -144,40 +139,40 @@ import SearchByDate from "@/components/Date/SearchByDate";
 
 export default {
   name: "OrderInventory",
-  components: { StatusTag ,SearchByDate},
+  components: { StatusTag, SearchByDate },
   data() {
     return {
       tableData: [],
       loading: true,
       search: "",
       dialogOprationVisible: false,
-
+      date: "",
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: ""
+        ClassName: "",
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -188,9 +183,9 @@ export default {
       this.loading = true;
 
       GetOrderInventory({
-        DateFrom: this.$store.state.settings.datepickerQuery[0],
-        DateTo: this.$store.state.settings.datepickerQuery[1]
-      }).then(response => {
+        DateFrom: this.date[0],
+        DateTo: this.date[1],
+      }).then((response) => {
         console.log(response);
         this.tableData = response;
         this.loading = false;
@@ -201,8 +196,7 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -211,31 +205,31 @@ export default {
       this.tempOpration.Description = "";
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
           console.log("error submit!!");
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

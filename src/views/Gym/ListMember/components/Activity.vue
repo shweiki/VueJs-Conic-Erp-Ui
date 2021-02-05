@@ -93,7 +93,7 @@
           <el-table :data="props.row.MembershipMovementOrders">
             <el-table-column label="النوع" prop="Type" align="center"></el-table-column>
 
-            <el-table-column width="80" label="تاريخ البدء" align="center">
+            <el-table-column width="160" label="تاريخ البدء" align="center">
               <template slot-scope="scope">
                 <el-date-picker
                   format="dd/MM/yyyy"
@@ -102,7 +102,7 @@
                 ></el-date-picker>
               </template>
             </el-table-column>
-            <el-table-column width="80" label="تاريخ الانتهاء" align="center">
+            <el-table-column width="160" label="تاريخ الانتهاء" align="center">
               <template slot-scope="scope">
                 <el-date-picker
                   format="dd/MM/yyyy"

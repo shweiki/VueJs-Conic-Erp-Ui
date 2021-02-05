@@ -15,8 +15,15 @@
               type="primary"
               @click="printAll(tableData)"
             ></el-button> -->
-        <search-by-date @change="getdata" />
-
+        <search-by-date
+          :Value="date"
+          @Set="
+            (v) => {
+              date = v;
+            }
+          "
+          @focus="getdata()"
+        />
       </div>
       <el-card class="box-card">
         <el-divider direction="vertical"></el-divider>
@@ -68,11 +75,7 @@
       >
         <el-table-column prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata"></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -197,7 +200,7 @@ import SearchByDate from "@/components/Date/SearchByDate";
 
 export default {
   name: "SalesInvoice",
-  components: { StatusTag ,SearchByDate },
+  components: { StatusTag, SearchByDate },
   data() {
     return {
       tableData: [],
@@ -207,6 +210,7 @@ export default {
       TotalCheque: 0,
       TotalVisa: 0,
       Total: 0,
+      date: "",
       dialogOprationVisible: false,
       textOpration: {
         OprationDescription: "",
@@ -244,8 +248,8 @@ export default {
       this.loading = true;
 
       GetSaleInvoice({
-        DateFrom: this.$store.state.settings.datepickerQuery[0],
-        DateTo: this.$store.state.settings.datepickerQuery[1]
+        DateFrom: this.date[0],
+        DateTo: this.date[1],
       })
         .then((response) => {
           // handle success

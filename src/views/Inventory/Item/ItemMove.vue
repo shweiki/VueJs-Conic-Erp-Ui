@@ -2,7 +2,15 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
-        <search-by-date @change="getdata" />
+        <search-by-date
+          :Value="date"
+          @Set="
+            (v) => {
+              date = v;
+            }
+          "
+          @focus="getdata()"
+        />
       </div>
       <el-card class="box-card">
         <span class="demonstration">{{ $t("ItemSales.Name") }}</span>
@@ -50,11 +58,9 @@
         :default-sort="{ prop: 'FakeDate', order: 'ascending' }"
         :data="
           tableData.filter(
-            data =>
+            (data) =>
               !search ||
-              data.Account.AccountName.toLowerCase().includes(
-                search.toLowerCase()
-              )
+              data.Account.AccountName.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -65,11 +71,7 @@
       >
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata"></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -87,24 +89,14 @@
         ></el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('ItemSales.Customer')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('ItemSales.Customer')" />
           </template>
         </el-table-column>
         <el-table-column prop="Qty" label="الكمية" width="120" align="center">
           <template slot-scope="scope">{{ scope.row.Qty.toFixed(3) }}</template>
         </el-table-column>
-        <el-table-column
-          prop="SellingPrice"
-          label="سعر"
-          width="120"
-          align="center"
-        >
-          <template slot-scope="scope">{{
-            scope.row.SellingPrice.toFixed(3)
-          }}</template>
+        <el-table-column prop="SellingPrice" label="سعر" width="120" align="center">
+          <template slot-scope="scope">{{ scope.row.SellingPrice.toFixed(3) }}</template>
         </el-table-column>
         <el-table-column
           v-bind:label="$t('ItemSales.Amountv')"
@@ -112,10 +104,7 @@
           align="center"
         >
           <template slot-scope="scope"
-            >{{
-              (scope.row.Qty * scope.row.SellingPrice).toFixed(3)
-            }}
-            JOD</template
+            >{{ (scope.row.Qty * scope.row.SellingPrice).toFixed(3) }} JOD</template
           >
         </el-table-column>
       </el-table>
@@ -141,11 +130,12 @@ export default {
       TotalQty: 0,
       TotalAmmount: 0,
       search: "",
+      date: "",
     };
   },
   created() {
     this.getdata();
-    GetActiveItem().then(response => {
+    GetActiveItem().then((response) => {
       // handle success
       console.log(response);
       this.Items = response;
@@ -154,12 +144,12 @@ export default {
   },
   methods: {
     print(data) {
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         FakeDate: Item.FakeDate,
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3)
+        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
       }));
       printJS({
         printable: data,
@@ -168,12 +158,12 @@ export default {
           { field: "Name", displayName: "اسم الزبون" },
           { field: "Qty", displayName: "الكمية" },
           { field: "SellingPrice", displayName: "سعر" },
-          { field: "Total", displayName: "القيمة" }
+          { field: "Total", displayName: "القيمة" },
         ],
         type: "json",
         header:
           "<center> <h2>حركة الصنف " +
-          this.Items.find(obj => {
+          this.Items.find((obj) => {
             return obj.Id == this.ItemId;
           }).Name +
           "</h2></center> <h3 style='float:left'>   الاجمالي الكمية:  " +
@@ -184,7 +174,7 @@ export default {
           this.formatDate(this.date[1]) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;"
+        gridStyle: "border: 2px solid #3971A5; text-align: center;",
       });
     },
 
@@ -193,10 +183,10 @@ export default {
 
       GetItemMove({
         ItemId: this.ItemId,
-        DateFrom: this.$store.state.settings.datepickerQuery[0],
-        DateTo: this.$store.state.settings.datepickerQuery[1]
+        DateFrom: this.date[0],
+        DateTo: this.date[1],
       })
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
 
@@ -212,7 +202,7 @@ export default {
           );
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
@@ -227,7 +217,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    }
-  }
+    },
+  },
 };
 </script>

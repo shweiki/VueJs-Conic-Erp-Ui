@@ -4,10 +4,7 @@
       <div slot="header" class="clearfix">
         <span>استعلامات المقبوضات</span>
         <div style="float: left">
-          <el-radio-group
-            v-model="Status"
-            @change="getdata(date[0], date[1], Status)"
-          >
+          <el-radio-group v-model="Status" @change="getdata(date[0], date[1], Status)">
             <el-radio-button
               v-for="op in Oprations"
               :key="op.Id"
@@ -19,8 +16,15 @@
       </div>
 
       <div slot="header" class="clearfix">
-        <search-by-date @change="getdata" />
-
+        <search-by-date
+          :Value="date"
+          @Set="
+            (v) => {
+              date = v;
+            }
+          "
+          @focus="getdata()"
+        />
       </div>
       <el-card class="box-card">
         <el-divider direction="vertical"></el-divider>
@@ -51,7 +55,7 @@
         <el-button
           style="float: left"
           icon="el-icon-printer"
-          type='success'
+          type="success"
           @click="print(tableData)"
         ></el-button>
       </el-card>
@@ -75,7 +79,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="accountID"
+          prop="MemberId"
           label="رقم المشترك"
           align="center"
         ></el-table-column>
@@ -100,17 +104,15 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="paymentMethod"
+          prop="PaymentMethod"
           v-bind:label="$t('CashPool.Pay')"
           width="150"
           align="center"
         ></el-table-column>
         <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-          <template slot-scope="scope"
-            >{{ scope.row.totalAmmount }} JOD</template
-          >
+          <template slot-scope="scope">{{ scope.row.TotalAmmount }} JOD</template>
         </el-table-column>
-        <el-table-column label="المحرر" prop="editorName" align="center">
+        <el-table-column label="المحرر" prop="EditorName" align="center">
         </el-table-column>
         <el-table-column label="#" align="center">
           <template slot-scope="scope">
@@ -121,12 +123,10 @@
             ></el-button>
           </template>
         </el-table-column>
-   
       </el-table>
     </el-card>
-
   </div>
-</template> 
+</template>
 <script>
 import SearchByDate from "@/components/Date/SearchByDate";
 
@@ -139,43 +139,41 @@ import printJS from "print-js";
 
 export default {
   name: "Payment",
-    components: { SearchByDate },
+  components: { SearchByDate },
 
   data() {
     return {
       tableData: [],
       Total: 0,
+      date: "",
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: '',
+      dialogFormStatus: "",
       TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
       Oprations: [],
       Status: 1,
       Total: 0,
-  
-
     };
   },
   created() {
     GetOprationByTable({ Name: "Payment" }).then((response) => {
-    this.Oprations = response
-    this.getdata();
-    })
-
+      this.Oprations = response;
+      this.getdata();
+    });
   },
   methods: {
     getdata() {
       this.loading = true;
 
       GetPayment({
-        DateFrom: this.$store.state.settings.datepickerQuery[0],
-        DateTo: this.$store.state.settings.datepickerQuery[1],
+        DateFrom: this.date[0],
+        DateTo: this.date[1],
         Status: this.Status,
       }).then((response) => {
-        console.log(response)
+        console.log(response);
         this.tableData = response;
         this.TotalCheque = this.tableData.reduce(
           (a, b) => a + (b["PaymentMethod"] == "Cheque" ? b.TotalAmmount : 0),
@@ -192,8 +190,8 @@ export default {
 
         this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
 
-        this.loading = false
-      })
+        this.loading = false;
+      });
     },
 
     print(data) {
@@ -224,7 +222,7 @@ export default {
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      })
+      });
     },
     printPayment(data) {
       printJS({
@@ -232,7 +230,7 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true,
-      })
+      });
     },
 
     formatDate(date) {

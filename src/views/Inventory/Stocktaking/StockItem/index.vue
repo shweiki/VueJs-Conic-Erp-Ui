@@ -2,8 +2,15 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <search-by-date @change="getdata" />
-
+        <search-by-date
+          :Value="date"
+          @Set="
+            (v) => {
+              date = v;
+            }
+          "
+          @focus="getdata()"
+        />
         <!-- <el-button 
               style="float: left; "
               icon="el-icon-printer"
@@ -22,9 +29,8 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
-              !search ||
-              data.FakeDate.toLowerCase().includes(search.toLowerCase())
+            (data) =>
+              !search || data.FakeDate.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -35,11 +41,7 @@
       >
         <el-table-column prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata"></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -53,11 +55,7 @@
           v-bind:label="$t('Stocks.BondType')"
           align="center"
         ></el-table-column>
-        <el-table-column
-          v-bind:label="$t('Stocks.Status')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('Stocks.Status')" width="120" align="center">
           <template slot-scope="scope">
             <status-tag :Status="scope.row.Status" TableName="StockItem" />
           </template>
@@ -133,18 +131,13 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-          >{{ textOpration.OprationDescription }}</el-button
-        >
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -167,33 +160,33 @@ export default {
       loading: true,
       search: "",
       dialogOprationVisible: false,
-
+      date: "",
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: ""
+        ClassName: "",
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -209,20 +202,20 @@ export default {
       printJS({
         printable: data,
         properties: ["Barcode", "Name", "Qty"],
-        type: "json"
+        type: "json",
       });
     },
     printAll(data) {
       console.log(data);
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
-        Barcode: Item.Barcode
+        Barcode: Item.Barcode,
       }));
       printJS({
         printable: data,
         properties: ["Barcode", "Name", "Qty"],
-        type: "json"
+        type: "json",
       });
     },
     ConvertToOrderInventory(StockInventory) {
@@ -232,9 +225,9 @@ export default {
         FakeDate: JSON.parse(JSON.stringify(new Date())),
         OrderType: "إدخال ناتج عن جرد رقم " + StockInventory.Id + "",
         Description: "" + StockInventory.Description + "",
-        InventoryMovements: []
+        InventoryMovements: [],
       };
-      StockInventory.StockMovements.forEach(i => {
+      StockInventory.StockMovements.forEach((i) => {
         tempForm.InventoryMovements.push({
           ID: undefined,
           ItemsId: i.ItemsId,
@@ -245,19 +238,19 @@ export default {
           Tax: 0.0,
           Description: i.Description,
           InventoryItemId: i.InventoryItemId,
-          OrderInventoryID: undefined
+          OrderInventoryID: undefined,
         });
       });
       console.log(tempForm);
 
       Create(tempForm)
-        .then(response => {
+        .then((response) => {
           ChangeObjStatusByTableName({
             ObjID: StockInventory.Id,
             TableName: "StocktakingInventory",
             Status: -1,
-            Description: "ترصيد جرد"
-          }).then(response => {
+            Description: "ترصيد جرد",
+          }).then((response) => {
             console.log(response);
           });
 
@@ -270,10 +263,10 @@ export default {
 
             onClose: () => {
               Object.assign(this.$data, this.$options.data());
-            }
+            },
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -281,9 +274,9 @@ export default {
       this.loading = true;
 
       GetStockInventory({
-        DateFrom: this.$store.state.settings.datepickerQuery[0],
-        DateTo: this.$store.state.settings.datepickerQuery[1]
-      }).then(response => {
+        DateFrom: this.date[0],
+        DateTo: this.date[1],
+      }).then((response) => {
         console.log(response);
         this.tableData = response;
         this.Movements = response.StockMovements;
@@ -295,8 +288,7 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -305,31 +297,31 @@ export default {
       this.tempOpration.Description = "";
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
           console.log("error submit!!");
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

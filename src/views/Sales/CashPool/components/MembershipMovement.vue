@@ -65,7 +65,7 @@
       <el-divider direction="vertical"></el-divider>
       <el-button
         :disabled="EnableSave"
-        style="float: left;"
+        style="float: left"
         icon="el-icon-printer"
         type="success"
         @click="print(tableData)"
@@ -85,11 +85,7 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column
-          type="selection"
-          width="55"
-          align="center"
-        ></el-table-column>
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
@@ -114,17 +110,13 @@
         <el-table-column prop="MemberName" label="المشترك" align="center">
           <template slot-scope="scope">
             <router-link :to="'/Gym/Edit/' + scope.row.MemberID">
-              <strong style="font-size: 10px; cursor: pointer;">{{
+              <strong style="font-size: 10px; cursor: pointer">{{
                 scope.row.MemberName
               }}</strong>
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="Type"
-          label="الفترة"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="Type" label="الفترة" align="center"></el-table-column>
 
         <el-table-column label="تاريخ البدء" align="center">
           <template slot-scope="scope">
@@ -149,11 +141,7 @@
             >{{ scope.row.TotalAmmount.toFixed(3) }} JOD</template
           >
         </el-table-column>
-        <el-table-column
-          width="180"
-          align="center"
-          v-if="checkPermission(['Admin'])"
-        >
+        <el-table-column width="180" align="center" v-if="checkPermission(['Admin'])">
           <template slot-scope="scope">
             <el-button
               v-for="(NOprations, index) in scope.row.NextOprations"
@@ -182,18 +170,13 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-          >{{ textOpration.OprationDescription }}</el-button
-        >
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -227,28 +210,28 @@ export default {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: ""
+        ClassName: "",
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -263,25 +246,25 @@ export default {
     },
     getdata() {
       this.loading = true;
-      GetActiveCash().then(response => {
+      GetActiveCash().then((response) => {
         // handle success
         //   console.log(response)
         this.CashAccounts = response;
         this.CashAccount = this.CashAccounts[0].value;
-        GetInComeAccounts().then(response => {
+        GetInComeAccounts().then((response) => {
           this.InComeAccounts = response;
           this.InComeAccount = this.InComeAccounts[1].value;
         });
       });
 
       GetMembershipMovementByStatus({ Status: 0 })
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
@@ -302,38 +285,36 @@ export default {
             Credit: 0.0,
             Description:
               "قيد اغلاق  (" +
-              this.CashAccounts.find(obj => {
+              this.CashAccounts.find((obj) => {
                 return obj.value == this.CashAccount;
               }).label,
-            EntryId: undefined
-          }
-        ]
+            EntryId: undefined,
+          },
+        ],
       };
-      this.Selection.forEach(i => {
+      this.Selection.forEach((i) => {
         tempForm.EntryMovements.push({
           ID: undefined,
           AccountId: i.AccountId,
           Debit: 0.0,
           Credit: i.TotalAmmount,
-          Description:
-            "اشتراك " + i.MembershipName + "-" + i.Type + " رقم " + i.Id + " ",
-          EntryId: undefined
+          Description: "اشتراك " + i.MembershipName + "-" + i.Type + " رقم " + i.Id + " ",
+          EntryId: undefined,
         });
       });
       console.log(tempForm);
       CreateEntry(tempForm)
-        .then(response => {
+        .then((response) => {
           console.log(response);
           ChangeArrObjStatus({
-            ObjsID: this.Selection.map(x => x.Id),
+            ObjsID: this.Selection.map((x) => x.Id),
             TableName: "MembershipMovement",
             Status: 1,
-            Description: "اشتراك مؤكد"
-          }).then(response => {
+            Description: "اشتراك مؤكد",
+          }).then((response) => {
             console.log(response);
           });
 
-          console.log(IDS);
           this.EnableSave = false;
 
           this.$notify({
@@ -346,10 +327,10 @@ export default {
             onClose: () => {
               Object.assign(this.$data, this.$options.data());
               this.getdata();
-            }
+            },
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -364,12 +345,12 @@ export default {
           "Type",
           "StartDate",
           "EndDate",
-          "TotalAmmount"
+          "TotalAmmount",
         ],
         type: "json",
         header:
           "<center> <h2>" +
-          this.InComeAccounts.find(obj => {
+          this.InComeAccounts.find((obj) => {
             return obj.value == this.InComeAccount;
           }).label +
           "</h2></center><h3 style='float:right'> - الاجمالي :  " +
@@ -378,15 +359,14 @@ export default {
           this.formatDate(new Date()) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;"
+        gridStyle: "border: 2px solid #3971A5; text-align: center;",
       });
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -395,23 +375,23 @@ export default {
       this.tempOpration.Description = "";
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatus({
             ObjID: this.tempOpration.ObjID,
             OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -428,7 +408,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    }
-  }
+    },
+  },
 };
 </script>
