@@ -17,28 +17,27 @@
 <script>
 export default {
   props: {
-    Value: Array
+    Value: Array,
   },
   data() {
     return {
-      date: [this.$moment().startOf("day"), this.$moment().endOf("day")]
+      date: [this.$moment().startOf("day"), this.$moment().endOf("day")],
     };
   },
   created() {
-     this.$emit("Set",  [this.$moment(this.date[0])._d,this.$moment(this.date[1])._d]);
+    this.$emit("Set", [this.$moment(this.date[0])._d, this.$moment(this.date[1])._d]);
   },
   watch: {
     Value(val) {
-      console.log('._d' , val)
-      if (val) this.date = [this.$moment(val[0])._d,this.$moment(val[1])._d];
-    }
+      if (val != []) this.date = [this.$moment(val[0])._d, this.$moment(val[1])._d];
+      else this.SetVal();
+    },
   },
   methods: {
     SetVal() {
-      this.$emit("Set",  [this.$moment(this.date[0])._d,this.$moment(this.date[1])._d]);
+      this.$emit("Set", [this.$moment(this.date[0])._d, this.$moment(this.date[1])._d]);
       this.$emit("focus");
-    }
-  }
+    },
+  },
 };
-
 </script>

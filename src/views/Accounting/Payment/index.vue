@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>استعلامات المقبوضات</span>
         <div style="float: left">
-          <el-radio-group v-model="Status" @change="getdata(date[0], date[1], Status)">
+          <el-radio-group v-model="Status" @change="getdata()">
             <el-radio-button
               v-for="op in Oprations"
               :key="op.Id"
@@ -110,18 +110,33 @@
           align="center"
         ></el-table-column>
         <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-          <template slot-scope="scope">{{ scope.row.TotalAmmount }} JOD</template>
+          <template slot-scope="scope"
+            >{{ scope.row.TotalAmmount }} JOD</template
+          >
         </el-table-column>
         <el-table-column label="المحرر" prop="EditorName" align="center">
         </el-table-column>
+        <el-table-column v-bind:label="$t('Items.Status')" align="center">
+          <template slot-scope="scope">
+            <status-tag :Status="scope.row.Status" TableName="Payment" />
+          </template>
+        </el-table-column>
         <el-table-column label="#" align="center">
           <template slot-scope="scope">
+            <next-oprations
+              :ObjID="scope.row.Id"
+              :Status="scope.row.Status"
+              TableName="Payment"
+              @Done="getdata"
+            />
             <el-button
               icon="el-icon-printer"
               type="primary"
               @click="printPayment(scope.row)"
-            ></el-button>
-          </template>
+            ></el-button> </template></el-table-column></el-table
+    ></el-card>
+  </div>
+</template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -131,25 +146,23 @@
 import SearchByDate from "@/components/Date/SearchByDate";
 
 import { GetPayment } from "@/api/Payment";
-import { ChangeObjStatus } from "@/api/Oprationsys";
 import { PaymentMember } from "@/Report/PayPapar";
 import { GetOprationByTable } from "@/api/Oprationsys";
 
 import printJS from "print-js";
+import NextOprations from "@/components/Oprationsys/NextOprations.vue";
+import StatusTag from "@/components/Oprationsys/StatusTag.vue";
 
 export default {
   name: "Payment",
-  components: { SearchByDate },
+  components: { SearchByDate, NextOprations, StatusTag },
 
   data() {
     return {
       tableData: [],
       Total: 0,
-      date: "",
+      date: [],
       loading: true,
-      dialogFormVisible: false,
-      dialogOprationVisible: false,
-      dialogFormStatus: "",
       TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
