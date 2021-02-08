@@ -211,7 +211,6 @@ export default {
     return {
       loading: true,
       EnableSave: true,
-
       tableData: [],
       Selection: [],
       CashAccounts: [],
@@ -221,7 +220,6 @@ export default {
       TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
-
       Total: 0,
       dialogOprationVisible: false,
       textOpration: {
