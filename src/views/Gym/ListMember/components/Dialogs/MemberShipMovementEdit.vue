@@ -7,7 +7,7 @@
         <el-form-item
           label="الفترة"
           prop="Type"
-          :rules="[{ required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' } ]"
+          :rules="[{ required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }]"
         >
           <el-radio-group v-model="tempForm.Type" @change="calc">
             <el-radio label="Morning" border>Morning</el-radio>
@@ -17,9 +17,16 @@
         <el-form-item
           label="إشتراك"
           prop="MembershipId"
-          :rules="[{ required: true, message: 'الرجاء اختيار نوع اشتراك', trigger: 'blur' } ]"
+          :rules="[
+            { required: true, message: 'الرجاء اختيار نوع اشتراك', trigger: 'blur' },
+          ]"
         >
-          <el-select v-model="tempForm.MembershipId" filterable @change="calc" placeholder="إشتراك">
+          <el-select
+            v-model="tempForm.MembershipId"
+            filterable
+            @change="calc"
+            placeholder="إشتراك"
+          >
             <el-option
               v-for="item in Memberships"
               :key="item.Id"
@@ -31,7 +38,9 @@
         <el-form-item
           label="تاريخ بدء"
           prop="StartDate"
-          :rules="[{ required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' } ]"
+          :rules="[
+            { required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' },
+          ]"
         >
           <el-date-picker
             @change="calc"
@@ -43,9 +52,15 @@
         <el-form-item
           label="تاريخ انتهاء"
           prop="EndDate"
-          :rules="[{ required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' } ]"
+          :rules="[
+            { required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' },
+          ]"
         >
-          <el-date-picker format="dd/MM/yyyy" disabled v-model="tempForm.EndDate" type="date"></el-date-picker>
+          <el-date-picker
+            format="dd/MM/yyyy"
+            v-model="tempForm.EndDate"
+            type="date"
+          ></el-date-picker>
         </el-form-item>
         <el-form-item label="خصم" prop="Discount">
           <el-select v-model="Discount" @change="calc">
@@ -56,22 +71,25 @@
               :value="Discount"
             >
               <span style="float: left">{{ Discount.label }}</span>
-              <span
-                style="float: right; color: #8492a6; font-size: 13px"
-              >{{Discount.value}}{{ (Discount.type == "Percentage") ? '%': '-' }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"
+                >{{ Discount.value }}{{ Discount.type == "Percentage" ? "%" : "-" }}</span
+              >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item
           label="سبب الخصم"
           prop="DiscountDescription"
-          :rules="[{ required: true, message: 'لايمكن ترك الخصم فارغ', trigger: 'blur' } ]"
+          :rules="[{ required: true, message: 'لايمكن ترك الخصم فارغ', trigger: 'blur' }]"
         >
-          <el-input style="width:220px" v-model="tempForm.DiscountDescription"></el-input>
+          <el-input
+            style="width: 220px"
+            v-model="tempForm.DiscountDescription"
+          ></el-input>
         </el-form-item>
 
         <el-form-item
-          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' } ]"
+          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -81,16 +99,25 @@
             <el-radio label border></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="Type" label="
-            "></el-form-item>
+        <el-form-item
+          prop="Type"
+          label="
+            "
+        ></el-form-item>
         <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
-          <span>JOD {{tempForm.TotalAmmount}}</span>
+          <span>JOD {{ tempForm.TotalAmmount }}</span>
         </el-form-item>
-        <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item
               prop="EditorName"
-              :rules="[{ required: true, message: 'لايمكن ترك محرر السند فارغ', trigger: 'blur' } ]"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك محرر السند فارغ',
+                  trigger: 'blur',
+                },
+              ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
               <el-select v-model="tempForm.EditorName" placeholder="محرر السند">
@@ -107,12 +134,10 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{$t('AddVendors.Cancel')}}</el-button>
-        <el-button
-          :disabled="EnableSave"
-          type="primary"
-          @click="createData()"
-        >{{$t('AddVendors.Save')}}</el-button>
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button :disabled="EnableSave" type="primary" @click="createData()">{{
+          $t("AddVendors.Save")
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -128,8 +153,8 @@ export default {
   props: {
     MembershipMovementID: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
 
   data() {
@@ -144,77 +169,77 @@ export default {
         disabledDate(time) {
           console.log(time);
           return time.getTime() < Date.now() - 8.64e7;
-        }
-      }
+        },
+      },
     };
   },
   methods: {
     getdata() {
       GetMembershipMovementByID({ ID: this.MembershipMovementID })
-        .then(response => {
-          console.log(response)
+        .then((response) => {
+          console.log(response);
           this.tempForm = response;
           GetActiveMembership()
-            .then(response => {
-              console.log(response)
+            .then((response) => {
+              console.log(response);
               this.Memberships = response;
               GetActiveDiscount()
-                .then(response => {
-                  console.log(response)
+                .then((response) => {
+                  console.log(response);
                   this.DiscountOptions = response;
                   this.Discount = this.DiscountOptions[0];
                   this.calc();
                   this.Visibles = true;
                 })
-                .catch(err => {
+                .catch((err) => {
                   console.log(err);
-                })
+                });
             })
-            .catch(err => {
+            .catch((err) => {
               console.log(err);
-            })
+            });
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
-        })
+        });
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         this.calc();
         if (valid) {
           this.EnableSave = true;
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               if (response) {
                 //  if(this.Discount.ValueOfDays >0)
                 // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
-                this.Visibles = false
+                this.Visibles = false;
                 this.$notify({
                   title: "تم ",
                   message: "تم تعديل بنجاح",
-                  type: 'success',
+                  type: "success",
                   duration: 2000,
                   onClose: () => {
                     this.EnableSave = false;
                     this.$nextTick(() => {
                       this.$router.replace({
-                        path: "/redirect" + this.$route.fullPath
-                      })
-                    })
-                  }
-                }).catch(error => {
+                        path: "/redirect" + this.$route.fullPath,
+                      });
+                    });
+                  },
+                }).catch((error) => {
                   console.log(error);
-                })
+                });
               }
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     calc() {
       this.tempForm.StartDate = new Date(this.tempForm.StartDate);
@@ -222,7 +247,7 @@ export default {
 
       this.tempForm.EndDate = new Date(this.tempForm.EndDate);
       let Membership = this.Memberships.find(
-        obj => obj.Id == this.tempForm.MembershipId
+        (obj) => obj.Id == this.tempForm.MembershipId
       );
 
       let Price =
@@ -239,8 +264,7 @@ export default {
 
       this.tempForm.EndDate = new Date(
         this.tempForm.EndDate.setTime(
-          this.tempForm.StartDate.getTime() +
-            3600 * 1000 * 24 * Membership.NumberDays
+          this.tempForm.StartDate.getTime() + 3600 * 1000 * 24 * Membership.NumberDays
         )
       );
     },
@@ -252,19 +276,19 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,
-        MemberShipMovementId: MemberShipMovementId
+        MemberShipMovementId: MemberShipMovementId,
       };
       MembershipMovementOrder.EndDate = new Date(
         MembershipMovementOrder.EndDate.setTime(
           MembershipMovementOrder.StartDate.getTime() + 3600 * 1000 * 24 * Days
         )
       );
-      Create(MembershipMovementOrder).then(response => {
+      Create(MembershipMovementOrder).then((response) => {
         if (response) {
         }
-      })
-    }
-  }
+      });
+    },
+  },
 };
 </script>
 <style scoped>
