@@ -196,6 +196,7 @@ export default {
   },
   methods: {
     getdata() {
+      console.log(this.date, new Date());
       this.loading = true;
       GetSaleInvoice({
         DateFrom: this.date[0],
