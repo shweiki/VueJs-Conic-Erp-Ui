@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <router-link
           class="pan-btn tiffany-btn"
-          style="float: left; padding: 10px 15px; border-radius: 6px;"
+          style="float: left; padding: 10px 15px; border-radius: 6px"
           icon="el-icon-plus"
           to="/Accounting/NewAccountingEntry"
           >{{ $t("Accounting.NewAccountingEntry") }}</router-link
@@ -17,7 +17,7 @@
         <search-by-date
           :Value="date"
           @Set="
-            v => {
+            (v) => {
               date = v;
             }
           "
@@ -49,7 +49,7 @@
         <span>{{ Total.toFixed(3) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
         <el-button
-          style="float: left;"
+          style="float: left"
           icon="el-icon-printer"
           type="success"
           @click="print(tableData)"
@@ -72,11 +72,7 @@
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="success"
-              icon="el-icon-refresh"
-              @click="getdata"
-            ></el-button>
+            <el-button type="success" icon="el-icon-refresh" @click="getdata"></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -91,14 +87,10 @@
           align="center"
         ></el-table-column>
         <el-table-column label="مدين" prop="Credit" width="100" align="center">
-          <template slot-scope="scope">{{
-            scope.row.Credit.toFixed(3)
-          }}</template>
+          <template slot-scope="scope">{{ scope.row.Credit.toFixed(3) }}</template>
         </el-table-column>
         <el-table-column label="دائن" prop="Debit" width="100" align="center">
-          <template slot-scope="scope">{{
-            scope.row.Debit.toFixed(3)
-          }}</template>
+          <template slot-scope="scope">{{ scope.row.Debit.toFixed(3) }}</template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -116,26 +108,18 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item
-          v-bind:label="$t('Inventory.OperationNote')"
-          prop="Description"
-        >
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+        <el-form-item v-bind:label="$t('Inventory.OperationNote')" prop="Description">
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-          >{{ textOpration.OprationDescription }}</el-button
-        >
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
-</template> 
+</template>
 <script>
 import SearchByDate from "@/components/Date/SearchByDate";
 
@@ -162,28 +146,28 @@ export default {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: ""
+        ClassName: "",
       },
       tempOpration: {
         ObjID: undefined,
         OprationID: undefined,
-        Description: ""
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -198,15 +182,15 @@ export default {
       GetEntryAccounting({
         AccountId: this.AccountId,
         DateFrom: this.date[0],
-        DateTo: this.date[1]
-      }).then(response => {
+        DateTo: this.date[1],
+      }).then((response) => {
         console.log(response);
         this.tableData = response;
         this.Total =
           this.tableData.reduce((a, b) => a + b.Credit, 0) -
           this.tableData.reduce((a, b) => a + b.Debit, 0);
 
-        GetActiveAccounts().then(response => {
+        GetActiveAccounts().then((response) => {
           // handle success
           console.log(response);
           this.Account = response;
@@ -222,7 +206,7 @@ export default {
         type: "json",
         header:
           "<center> <h2>" +
-          this.Account.find(obj => {
+          this.Account.find((obj) => {
             return obj.value == this.AccountId;
           }).label +
           "</h2></center><h3 style='float:left'>الاجمالي " +
@@ -233,7 +217,7 @@ export default {
           this.formatDate(this.date[1]) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;"
+        gridStyle: "border: 2px solid #3971A5; text-align: center;",
       });
     },
     formatDate(date) {
@@ -245,7 +229,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    }
-  }
+    },
+  },
 };
 </script>

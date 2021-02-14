@@ -11,6 +11,7 @@
       v-bind:end-placeholder="$t('Sales.To')"
       :picker-options="$store.getters.settings.pickerOptions"
       @change="SetVal"
+      :default-time="['00:00:00', '23:59:59']"
     ></el-date-picker>
   </div>
 </template>

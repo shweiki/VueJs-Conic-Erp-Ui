@@ -20,7 +20,7 @@ import VueMoment from 'vue-moment'
 import moment from "moment-timezone";
 
 moment.tz.setDefault('Asia/Amman')
-moment.locale(i18n.locale)
+//moment.locale(i18n.locale)
 
 Vue.use(VueMoment, {
   moment,

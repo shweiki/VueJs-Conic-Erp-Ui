@@ -17,8 +17,7 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
-              !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -38,18 +37,11 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('Classification.Name')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
         <el-table-column prop="Ip" label="IP" align="center"></el-table-column>
-        <el-table-column
-          prop="Port"
-          label="Port"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="Port" label="Port" align="center"></el-table-column>
         <el-table-column
           v-bind:label="$t('Classification.Notes')"
           prop="Description"
@@ -59,35 +51,24 @@
         <el-table-column prop="Name" align="center">
           <template slot-scope="scope">
             <el-button
-              @click="GetAllFaceMember(scope.row.Id)"
-              size="mini"
-              type="info"
-              >سحب جميع بصمات الوجه المشتركين</el-button
-            >
-            <el-button
-              @click="GetAllLogMember(scope.row.Id)"
-              size="mini"
-              type="primary"
-            >
-              سحب جميع سجلات المشتركين</el-button
-            >
-            <el-button
-              @click="SetAllMember(scope.row.Id)"
-              size="mini"
-              type="warning"
-            >
-              ارسال جميع معلومات المشتركين</el-button
-            >
-            <el-button
-              @click="ClearUserLog(scope.row.Id)"
-              size="mini"
-              type="danger"
-              >مسح سجلات المشتركين</el-button
-            >
-            <el-button
-              @click="RestartDevice(scope.row.Id)"
+              @click="ClearAdministrators(scope.row.Id)"
               size="mini"
               type="success"
+              >Clear Administrators</el-button
+            >
+            <el-button @click="GetAllFaceMember(scope.row.Id)" size="mini" type="info"
+              >سحب جميع بصمات الوجه المشتركين</el-button
+            >
+            <el-button @click="GetAllLogMember(scope.row.Id)" size="mini" type="primary">
+              سحب جميع سجلات المشتركين</el-button
+            >
+            <el-button @click="SetAllMember(scope.row.Id)" size="mini" type="warning">
+              ارسال جميع معلومات المشتركين</el-button
+            >
+            <el-button @click="ClearUserLog(scope.row.Id)" size="mini" type="danger"
+              >مسح سجلات المشتركين</el-button
+            >
+            <el-button @click="RestartDevice(scope.row.Id)" size="mini" type="success"
               >اعادة تشغيل الجهاز</el-button
             >
           </template>
@@ -104,7 +85,8 @@ import {
   GetAllLogMembers,
   SetAllMembers,
   ClearUserLog,
-  RestartDevice
+  ClearAdministrators,
+  RestartDevice,
 } from "@/api/Device";
 export default {
   name: "Device",
@@ -113,7 +95,7 @@ export default {
       tableData: [],
       loading: true,
       search: "",
-      response: ""
+      response: "",
     };
   },
   created() {
@@ -123,27 +105,42 @@ export default {
     getdata() {
       this.loading = true;
       GetDevice()
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
           console.log(error);
         });
     },
     SetAllMember(id) {
-      SetAllMembers({ DeviceID: id })
-        .then(response => {
+      SetAllMembers({ DeviceId: id })
+        .then((response) => {
           // handle success
           this.response = response;
 
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
+          // handle error
+          this.response = error;
+
+          console.log(error);
+        });
+    },
+    ClearAdministrators(id) {
+      ClearAdministrators({ DeviceId: id })
+        .then((response) => {
+          // handle success
+          this.response = response;
+
+          console.log(response);
+        })
+        .catch((error) => {
           // handle error
           this.response = error;
 
@@ -151,14 +148,14 @@ export default {
         });
     },
     GetAllFaceMember(id) {
-      GetAllFaceMembers({ DeviceID: id })
-        .then(response => {
+      GetAllFaceMembers({ DeviceId: id })
+        .then((response) => {
           // handle success
           this.response = response;
 
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
@@ -166,14 +163,14 @@ export default {
         });
     },
     GetAllLogMember(id) {
-      GetAllLogMembers({ DeviceID: id })
-        .then(response => {
+      GetAllLogMembers({ DeviceId: id })
+        .then((response) => {
           // handle success
           this.response = response;
 
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
@@ -181,14 +178,14 @@ export default {
         });
     },
     ClearUserLog(id) {
-      ClearUserLog({ DeviceID: id })
-        .then(response => {
+      ClearUserLog({ DeviceId: id })
+        .then((response) => {
           // handle success
           this.response = response;
 
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
@@ -196,20 +193,19 @@ export default {
         });
     },
     RestartDevice(id) {
-      RestartDevice({ DeviceID: id })
-        .then(response => {
+      RestartDevice({ DeviceId: id })
+        .then((response) => {
           // handle success
           this.response = response;
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
           console.log(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>
-

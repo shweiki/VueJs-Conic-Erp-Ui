@@ -299,7 +299,7 @@ export default {
           console.log(error);
         });
     },
-    createData() {
+    async createData() {
       this.EnableSave = true;
 
       var tempForm = {
@@ -322,7 +322,7 @@ export default {
           },
         ],
       };
-      this.Selection.forEach((i) => {
+      await this.Selection.forEach((i) => {
         tempForm.EntryMovements.push({
           ID: undefined,
           AccountId: i.AccountId,
