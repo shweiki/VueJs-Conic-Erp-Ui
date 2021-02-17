@@ -7,7 +7,7 @@
         :active-text-color="variables.menuActiveText"
         :collapse-transition="false"
         mode="horizontal"
-        style="display: flex;padding-inline-start: 0px;"
+        style="display: flex;padding-inline-start: 0px; "
       >
       
         <sidebar-item

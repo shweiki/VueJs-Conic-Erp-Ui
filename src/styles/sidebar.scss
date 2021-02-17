@@ -207,6 +207,7 @@
   &>.el-menu {
     .svg-icon {
       margin-right: 16px;
+      margin-left: 10px;
         }
   }
 
@@ -237,4 +238,19 @@
       border-radius: 20px;
     }
   }
+}
+.el-menu--horizontal{
+  direction: rtl;
+  .svg-icon {
+    margin-left: 10px;
+  }
+  &>.el-menu {
+    
+    .svg-icon {
+      margin-right: 10px;
+      
+     
+        }
+  }
+
 }
