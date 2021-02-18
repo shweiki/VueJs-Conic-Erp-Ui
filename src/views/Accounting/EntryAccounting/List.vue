@@ -6,7 +6,7 @@
           class="pan-btn tiffany-btn"
           style="float: left; padding: 10px 15px; border-radius: 6px"
           icon="el-icon-plus"
-          to="/Accounting/NewAccountingEntry"
+          to="/EntryAccounting/Create"
           >{{ $t("Accounting.NewAccountingEntry") }}</router-link
         >
 
@@ -64,6 +64,13 @@
         max-height="850"
         highlight-current-row
         style="width: 100%"
+        @row-dblclick="
+          (row) => {
+            $router.replace({
+              path: '/EntryAccounting/Edit/' + row.EntryId,
+            });
+          }
+        "
       >
         <el-table-column
           v-bind:label="$t('Accounting.EntryId')"
@@ -94,30 +101,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      :title="textOpration.OprationDescription"
-      :visible.sync="dialogOprationVisible"
-    >
-      <el-form
-        ref="dataOpration"
-        :rules="rulesOpration"
-        :model="tempOpration"
-        label-position="top"
-        label-width="70px"
-        style="width: 400px margin-left:50px"
-      >
-        <el-form-item v-bind:label="$t('Inventory.OperationNote')" prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -125,7 +108,6 @@ import SearchByDate from "@/components/Date/SearchByDate";
 
 import { GetEntryAccounting } from "@/api/EntryAccounting";
 import { GetActiveAccounts } from "@/api/Account";
-import { ChangeObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
 
 export default {
@@ -138,36 +120,7 @@ export default {
       Total: 0,
       date: [],
       loading: true,
-      dialogFormVisible: false,
-      dialogOprationVisible: false,
-      dialogFormStatus: "",
       AccountId: 2,
-      textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: "",
-      },
-      tempOpration: {
-        ObjID: undefined,
-        OprationID: undefined,
-        Description: "",
-      },
-      rulesOpration: {
-        Description: [
-          {
-            required: true,
-            message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
-          },
-          {
-            minlength: 5,
-            maxlength: 150,
-            message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
     };
   },
   created() {
@@ -202,7 +155,7 @@ export default {
     print(data) {
       printJS({
         printable: data,
-        properties: ["ID", "FakeDate", "Description", "Credit", "Debit"],
+        properties: ["Id", "FakeDate", "Description", "Credit", "Debit"],
         type: "json",
         header:
           "<center> <h2>" +

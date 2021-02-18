@@ -32,15 +32,17 @@
         max-height="900"
         highlight-current-row
         style="width: 100%"
+        @row-dblclick="
+          (row) => {
+            $router.replace({
+              path: '/OrderInventories/Edit/' + row.Id,
+            });
+          }
+        "
       >
         <el-table-column align="center" prop="Id" width="120">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata"></el-button>
-          </template>
-          <template slot-scope="scope">
-            <router-link :to="'/OrderInventories/Edit/' + scope.row.Id">
-              <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Id }}</strong>
-            </router-link>
           </template>
         </el-table-column>
         <el-table-column

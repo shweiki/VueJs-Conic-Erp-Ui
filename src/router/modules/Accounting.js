@@ -10,6 +10,38 @@ const AccountingRouter = {
   },
   children: [
     {
+      path: '/EntryAccounting',
+      component: () => import('@/views/Accounting/EntryAccounting/index'),
+      redirect: '/EntryAccounting/List',
+      name: 'EntryAccounting',
+      meta: { title: 'EntryAccounting', icon: 'orderinv' },
+      children: [
+        {
+          path: 'Create',
+          component: () => import('@/views/Accounting/EntryAccounting/Create'),
+          name: 'NewEntryAccounting',
+          meta: { title: 'NewEntryAccounting', icon: 'edit' }
+        },
+        {
+          path: 'Edit/:id(\\d+)',
+          component: () => import('@/views/Accounting/EntryAccounting/Edit'),
+          name: 'EditEntryAccounting',
+          meta: {
+            title: 'EditEntryAccounting', noCache: true, activeMenu: '/Accounting/EntryAccounting/List'
+          },
+          hidden: true,
+        },
+        {
+          path: 'List',
+          component: () => import('@/views/Accounting/EntryAccounting/List'),
+          name: 'ListEntryAccounting',
+          meta: {
+            title: 'ListEntryAccounting', icon: 'cost'
+          },
+        }
+      ]
+    },
+    {
       path: 'TreeAccount',
       component: () => import('@/views/Accounting/TreeAccount/index'),
       name: 'TreeAccount',
@@ -32,30 +64,8 @@ const AccountingRouter = {
         title: 'Payment', icon: 'accounts'
       },
     },
-    {
-      path: 'Create',
-      component: () => import('@/views/Accounting/EntryAccounting/Create'),
-      name: 'NewEntryAccounting',
-      meta: { title: 'NewEntryAccounting', icon: 'edit' }
-    },
 
-    {
-      path: 'Edit/:id(\\d+)',
-      component: () => import('@/views/Accounting/EntryAccounting/Edit'),
-      name: 'EditEntryAccounting',
-      meta: {
-        title: 'EditInvoice', noCache: true, activeMenu: '/Accounting/EntryAccounting/List'
-      },
-      hidden: true,
-    },
-    {
-      path: 'List',
-      component: () => import('@/views/Accounting/EntryAccounting/List'),
-      name: 'ListEntryAccounting',
-      meta: {
-        title: 'ListEntryAccounting', icon: 'cost'
-      },
-    },
+
     {
       path: 'Banks',
       component: () => import('@/views/Accounting/Bank/index'),
