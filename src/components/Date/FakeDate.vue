@@ -1,5 +1,6 @@
 <template>
   <el-date-picker
+    style="width: 80%"
     clear-icon="false"
     :size="$store.getters.size"
     @change="SetVal"

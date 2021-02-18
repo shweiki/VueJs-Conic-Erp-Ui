@@ -85,7 +85,7 @@ const actions = {
       Edit({
         Id: 0,
         Name: data.key,
-        value: JSON.stringify(data.value),
+        value: data.value,
         Type: typeof data.value,
         state: 0,
         Description: JSON.stringify(data)

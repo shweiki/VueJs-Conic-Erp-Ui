@@ -102,14 +102,14 @@
           align="center"
         ></el-table-column>
         <el-table-column
-          prop="MemberID"
+          prop="MemberId"
           label="رقم المشترك"
           align="center"
         ></el-table-column>
 
         <el-table-column prop="MemberName" label="المشترك" align="center">
           <template slot-scope="scope">
-            <router-link :to="'/Gym/Edit/' + scope.row.MemberID">
+            <router-link :to="'/Gym/Edit/' + scope.row.MemberId">
               <strong style="font-size: 10px; cursor: pointer">{{
                 scope.row.MemberName
               }}</strong>
@@ -143,42 +143,16 @@
         </el-table-column>
         <el-table-column width="180" align="center" v-if="checkPermission(['Admin'])">
           <template slot-scope="scope">
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              round
-              @click="handleOprationsys(scope.row.Id, NOprations)"
-              >{{ NOprations.OprationDescription }}</el-button
-            >
+            <next-oprations
+              :ObjID="scope.row.Id"
+              :Status="scope.row.Status"
+              TableName="MembershipMovement"
+              @Done="getdata"
+            />
           </template>
         </el-table-column>
       </el-table>
     </el-card>
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      :title="textOpration.OprationDescription"
-      :visible.sync="dialogOprationVisible"
-    >
-      <el-form
-        ref="dataOpration"
-        :rules="rulesOpration"
-        :model="tempOpration"
-        label-position="top"
-        label-width="70px"
-        style="width: 400px margin-left:50px"
-      >
-        <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -188,12 +162,13 @@ import { GetMembershipMovementByStatus } from "@/api/MembershipMovement";
 import { GetInComeAccounts } from "@/api/Account";
 import { GetActiveCash } from "@/api/Cash";
 import { CreateEntry } from "@/api/EntryAccounting";
-import { ChangeArrObjStatus, ChangeObjStatus } from "@/api/Oprationsys";
+import { ChangeArrObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
+import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 
 export default {
   name: "MembershipMovement",
-
+  components: { NextOprations },
   data() {
     return {
       loading: true,
@@ -202,36 +177,29 @@ export default {
       Selection: [],
       CashAccounts: [],
       InComeAccounts: [],
-      CashAccount: undefined,
-      InComeAccount: undefined,
-      Total: 0,
-      dialogOprationVisible: false,
-      textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: "",
-      },
-      tempOpration: {
-        ObjID: undefined,
-        OprationID: undefined,
-        Description: "",
-      },
-      rulesOpration: {
-        Description: [
+      tempForm: {
+        ID: undefined,
+        FakeDate: new Date(),
+        Description: "قيد اغلاق اشتراكات",
+        Type: "CloseMemberShipMovement",
+        EntryMovements: [
           {
-            required: true,
-            message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
-          },
-          {
-            minlength: 5,
-            maxlength: 150,
-            message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur",
+            ID: undefined,
+            AccountId: this.InComeAccount,
+            Debit: this.Total,
+            Credit: 0.0,
+            Description:
+              "قيد اغلاق  (" +
+              this.CashAccounts.find((obj) => {
+                return obj.value == this.CashAccount;
+              }).label,
+            EntryId: undefined,
           },
         ],
       },
+      CashAccount: undefined,
+      InComeAccount: undefined,
+      Total: 0,
     };
   },
   created() {
@@ -272,26 +240,6 @@ export default {
     createData() {
       this.EnableSave = true;
 
-      var tempForm = {
-        ID: undefined,
-        FakeDate: new Date(),
-        Description: "قيد اغلاق اشتراكات",
-        Type: "CloseMemberShipMovement",
-        EntryMovements: [
-          {
-            ID: undefined,
-            AccountId: this.InComeAccount,
-            Debit: this.Total,
-            Credit: 0.0,
-            Description:
-              "قيد اغلاق  (" +
-              this.CashAccounts.find((obj) => {
-                return obj.value == this.CashAccount;
-              }).label,
-            EntryId: undefined,
-          },
-        ],
-      };
       this.Selection.forEach((i) => {
         tempForm.EntryMovements.push({
           ID: undefined,
@@ -302,7 +250,7 @@ export default {
           EntryId: undefined,
         });
       });
-      console.log(tempForm);
+      //console.log(this.tempForm);
       CreateEntry(tempForm)
         .then((response) => {
           console.log(response);
@@ -315,20 +263,16 @@ export default {
             console.log(response);
           });
 
-          this.EnableSave = false;
-
+          Object.assign(this.$data, this.$options.data());
+          this.getdata();
           this.$notify({
             title: "تم الإضافة بنجاح",
             message: "تم الإضافة بنجاح",
             type: "success",
             position: "top-left",
             duration: 1000,
-
-            onClose: () => {
-              Object.assign(this.$data, this.$options.data());
-              this.getdata();
-            },
           });
+          this.EnableSave = false;
         })
         .catch((error) => {
           console.log(error);
@@ -339,7 +283,7 @@ export default {
         printable: data,
         properties: [
           "ID",
-          "MemberID",
+          "MemberId",
           "MemberName",
           "MembershipName",
           "Type",
@@ -360,43 +304,6 @@ export default {
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      });
-    },
-    handleOprationsys(ObjID, Opration) {
-      this.dialogOprationVisible = true;
-      // text
-      this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
-      this.textOpration.IconClass = Opration.IconClass;
-      this.textOpration.ClassName = Opration.ClassName;
-      /// temp
-      this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.Id;
-      this.tempOpration.Description = "";
-    },
-    createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
-        if (valid) {
-          ChangeObjStatus({
-            ObjID: this.tempOpration.ObjID,
-            OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description,
-          })
-            .then((response) => {
-              this.dialogOprationVisible = false;
-              this.$notify({
-                title: "تم  ",
-                message: "تمت العملية بنجاح",
-                type: "success",
-                duration: 2000,
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-        }
       });
     },
     formatDate(date) {

@@ -77,6 +77,14 @@ export function GetAllLogMembers(query) {
     params: query
   })
 }
+export function ClearAdministrators(query) {
+  return request({
+    url: '/Device/ClearAdministrators',
+    method: 'get',
+    params: query
+  })
+}
+
 export function OpenCashDrawer(query) {
   return request({
     url: '/Device/OpenCashDrawer',

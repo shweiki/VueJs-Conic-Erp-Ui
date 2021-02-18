@@ -211,7 +211,6 @@ export default {
     return {
       loading: true,
       EnableSave: true,
-
       tableData: [],
       Selection: [],
       CashAccounts: [],
@@ -221,7 +220,6 @@ export default {
       TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
-
       Total: 0,
       dialogOprationVisible: false,
       textOpration: {
@@ -301,7 +299,7 @@ export default {
           console.log(error);
         });
     },
-    createData() {
+    async createData() {
       this.EnableSave = true;
 
       var tempForm = {
@@ -311,7 +309,7 @@ export default {
         Type: "ClosePayment",
         EntryMovements: [
           {
-            ID: undefined,
+            Id: undefined,
             AccountId: this.InComeAccount,
             Debit: 0.0,
             Credit: this.Total,
@@ -324,7 +322,7 @@ export default {
           },
         ],
       };
-      this.Selection.forEach((i) => {
+      await this.Selection.forEach((i) => {
         tempForm.EntryMovements.push({
           ID: undefined,
           AccountId: i.AccountId,
@@ -345,57 +343,16 @@ export default {
             Description: "دفعة مؤكدة",
           }).then((response) => {
             this.EnableSave = false;
-
             console.log(response);
+            this.getdata();
           });
+
           this.$notify({
             title: "تم الإضافة بنجاح",
             message: "تم الإضافة بنجاح",
             type: "success",
             position: "top-left",
             duration: 1000,
-
-            onClose: () => {
-              store.dispatch("Members/GetActiveMember");
-              let data = [];
-              this.$store.getters.ActiveMembers.forEach((obj) => {
-                if (obj.TotalCredit - obj.TotalDebit > 0) data.push(obj);
-              });
-              console.log(this.$store.getters.ActiveMembers);
-              console.log(data);
-
-              if (data.length > 0) {
-                printJS({
-                  printable: data,
-                  properties: [
-                    { field: "ID", displayName: "رقم المشترك" },
-                    { field: "Name", displayName: "اسم المشترك" },
-                    { field: "ActiveMemberShip.Name", displayName: "اشتراك" },
-                    {
-                      field: "ActiveMemberShip.TotalAmmount",
-                      displayName: "قيمة الاشتراك",
-                    },
-                  ],
-                  type: "json",
-                  header:
-                    "<center> <h2> اشتراكات الغير مدفوعة</h2></center> <h3 style='float:left'> الاجمالي :  " +
-                    this.$store.getters.ActiveMembers.reduce(
-                      (a, b) =>
-                        a +
-                        (b.TotalCredit - b.TotalDebit > 0
-                          ? b.TotalCredit - b.TotalDebit
-                          : 0),
-                      0
-                    ).toFixed(3) +
-                    "</h3><h3 style='float:right'>  التاريخ  : " +
-                    this.formatDate(new Date()) +
-                    "</h3>",
-                  gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-                  gridStyle: "border: 2px solid #3971A5; text-align: center;",
-                });
-              }
-              this.getdata();
-            },
           });
         })
         .catch((error) => {

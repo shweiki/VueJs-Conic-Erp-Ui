@@ -28,7 +28,6 @@
           <p style="color: #F56C6Cfont-size: 16pxtext-align: center">
             {{ ValidateNote }}
           </p>
-          ss
         </div>
         <el-row>
           <el-col :span="6">
@@ -118,7 +117,7 @@
                   v-model="tempForm.InventoryMovements[scope.$index].TypeMove"
                 >
                   <el-radio-button label="In">إضافة</el-radio-button>
-                  <el-radio-button label="Out">حسب</el-radio-button>
+                  <el-radio-button label="Out">سحب</el-radio-button>
                 </el-radio-group>
               </template>
             </el-table-column>

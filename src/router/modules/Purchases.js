@@ -14,7 +14,6 @@ const PurchasesRouter = {
       name: 'NewPurchaseInvoice',
       meta: { title: 'NewPurchaseInvoice', icon: 'edit' }
     },
-
     {
       path: 'Edit/:id(\\d+)',
       component: () => import('@/views/Purchase/PurchaseInvoice/Edit'),

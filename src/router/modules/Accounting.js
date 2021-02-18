@@ -33,19 +33,27 @@ const AccountingRouter = {
       },
     },
     {
-      path: 'EntryAccounting',
-      component: () => import('@/views/Accounting/EntryAccounting/index'),
-      name: 'EntryAccounting',
+      path: 'Create',
+      component: () => import('@/views/Accounting/EntryAccounting/Create'),
+      name: 'NewEntryAccounting',
+      meta: { title: 'NewEntryAccounting', icon: 'edit' }
+    },
+
+    {
+      path: 'Edit/:id(\\d+)',
+      component: () => import('@/views/Accounting/EntryAccounting/Edit'),
+      name: 'EditEntryAccounting',
       meta: {
-        title: 'EntryAccounting', icon: 'accounts'
+        title: 'EditInvoice', noCache: true, activeMenu: '/Accounting/EntryAccounting/List'
       },
+      hidden: true,
     },
     {
-      path: 'NewAccountingEntry',
-      component: () => import('@/views/Accounting/EntryAccounting/NewAccountingEntry'),
-      name: 'NewAccountingEntry',
+      path: 'List',
+      component: () => import('@/views/Accounting/EntryAccounting/List'),
+      name: 'ListEntryAccounting',
       meta: {
-        title: 'NewAccountingEntry', icon: 'accounting (1)'
+        title: 'ListEntryAccounting', icon: 'cost'
       },
     },
     {

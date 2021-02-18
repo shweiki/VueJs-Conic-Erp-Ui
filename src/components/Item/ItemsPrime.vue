@@ -77,7 +77,7 @@ export default {
       order: false,
     };
   },
-  mounted() {
+  created() {
     this.getdata();
   },
   methods: {

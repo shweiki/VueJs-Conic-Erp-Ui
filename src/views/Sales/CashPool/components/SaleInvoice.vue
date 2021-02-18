@@ -461,7 +461,7 @@ export default {
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
       });
     },
-    createData() {
+    async createData() {
       this.EnableSave = true;
       var tempForm = {
         Id: undefined,
@@ -497,7 +497,7 @@ export default {
         ],
       };
 
-      this.Selection.forEach((i) => {
+      await this.Selection.forEach((i) => {
         if (i.PaymentMethod == "Receivables")
           tempForm.EntryMovements.push({
             Id: undefined,
