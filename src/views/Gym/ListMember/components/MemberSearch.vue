@@ -1,5 +1,5 @@
 <template>
-  <el-row style="background : #2f3542; color: white;">
+  <el-row style="background: #2f3542; color: white">
     <el-col :span="2">
       <el-button
         type="success"
@@ -19,15 +19,13 @@
     </el-col>
     <el-col :span="14">
       <el-select
-        style="width : 90%"
+        style="width: 90%"
         v-model="search"
         :remote-method="querySearch"
         filterable
         default-first-option
         remote
-        v-bind:placeholder="
-          $t('Vendors.Search') + '/ هاتف / الرقم الوطني /  رقم العضوية'
-        "
+        v-bind:placeholder="$t('Vendors.Search') + '/ هاتف / الرقم الوطني /  رقم العضوية'"
         @change="change"
       >
         <el-option
@@ -36,28 +34,21 @@
           :value="item"
           :label="item.Name"
         >
-          <span style=" color: #8492a6; font-size: 12px"
-            >( {{ item.Id }} )</span
-          >
+          <span style="color: #8492a6; font-size: 12px">( {{ item.Id }} )</span>
           <span style="float: left">{{ item.Name }}</span>
-          <span style=" float: right; color: #8492a6; font-size: 13px">{{
+          <span style="float: right; color: #8492a6; font-size: 13px">{{
             item.Ssn
           }}</span>
-          <span style=" color: #8492a6; font-size: 13px"
-            >( 0{{ item.PhoneNumber1 }} )</span
-          >
-          <span style=" color: #8492a6; font-size: 13px"
-            >( {{ item.Tag }} )</span
-          >
+          <span style="color: #8492a6; font-size: 13px">( {{ item.PhoneNumber1 }} )</span>
+          <span style="color: #8492a6; font-size: 13px">( {{ item.Tag }} )</span>
         </el-option>
       </el-select>
     </el-col>
   </el-row>
 </template>
 <script>
-import Fuse from "fuse.js";
 import AddMember from "@/components/Member/AddMember";
-
+import { GetMemberByAny } from "@/api/Member";
 export default {
   name: "MemberSearch",
   components: { AddMember },
@@ -65,25 +56,7 @@ export default {
     return {
       search: "",
       options: [],
-      searchPool: [],
-      fuse: undefined
     };
-  },
-  computed: {
-    Members() {
-      return this.$store.getters.Members;
-    }
-  },
-  watch: {
-    Members() {
-      this.searchPool = this.Members;
-    },
-    searchPool(list) {
-      this.initFuse(list);
-    }
-  },
-  mounted() {
-    this.searchPool = this.Members;
   },
   methods: {
     change(val) {
@@ -92,45 +65,16 @@ export default {
       this.options = [];
       this.$nextTick(() => {});
     },
-    initFuse(list) {
-      this.fuse = new Fuse(list, {
-        shouldSort: true,
-        threshold: 0.4,
-        location: 0,
-        distance: 100,
-        maxPatternLength: 32,
-        minMatchCharLength: 1,
-        keys: [
-          {
-            name: "Id",
-            weight: 0.2
-          },
-          {
-            name: "Name",
-            weight: 0.3
-          },
-          {
-            name: "Ssn",
-            weight: 0.1
-          },
-          {
-            name: "PhoneNumber1",
-            weight: 0.2
-          },
-          {
-            name: "Tag",
-            weight: 0.1
-          }
-        ]
-      });
-    },
+
     querySearch(query) {
       if (query !== "") {
-        this.options = this.fuse.search(query);
+        GetMemberByAny({ Any: query }).then((res) => {
+          this.options = res.reverse();
+        });
       } else {
         this.options = [];
       }
-    }
-  }
+    },
+  },
 };
 </script>
