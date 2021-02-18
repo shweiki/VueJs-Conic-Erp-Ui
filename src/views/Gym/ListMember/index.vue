@@ -8,34 +8,28 @@
         <member-search />
 
         <el-col
-          style="padding: 1.5px;"
+          style="padding: 1.5px"
           :xs="8"
           :sm="8"
           :md="8"
           v-for="(member, index) in ActiveMembers"
           :key="index"
         >
-          <el-card
-            :body-style="{ padding: '0px' }"
-            class="box-card"
-            shadow="always"
-          >
+          <el-card :body-style="{ padding: '0px' }" class="box-card" shadow="always">
             <div slot="header" class="clearfix">
               <router-link :to="'/Gym/Edit/' + member.MemberId">
-                <strong style="font-size: 10px; cursor: pointer;">{{
-                  member.Name.split(" ")
-                    .slice(0, 4)
-                    .join(" ")
+                <strong style="font-size: 10px; cursor: pointer">{{
+                  member.Name.split(" ").slice(0, 4).join(" ")
                 }}</strong>
               </router-link>
             </div>
             <el-row>
               <el-col :span="12"
-                >{{ $t("MemberList.MembershipType") }}{{ member.Name }}</el-col
+                >{{ $t("MemberList.MembershipType") }}{{ member.MembershipName }}</el-col
               >
               <el-col :span="12">
                 <span>اخر زيارة</span>
-                {{ member.lastLog }}
+                <last-log-member :MemberID="Member.Id" />
               </el-col>
             </el-row>
             <el-col :span="24">
@@ -66,18 +60,18 @@ export default {
   data() {
     return {
       loading: true,
-      ActiveMembers: []
+      ActiveMembers: [],
     };
   },
   computed: {
     Members() {
       return this.$store.getters.ActiveMembers;
-    }
+    },
   },
   watch: {
     Members() {
       this.ActiveMembers = this.Members;
-    }
+    },
   },
   mounted() {
     this.ActiveMembers = this.Members;
@@ -89,11 +83,11 @@ export default {
   methods: {
     getdata() {
       this.loading = false;
-    }
-  }
+    },
+  },
 };
 </script>
-    <style scoped>
+<style scoped>
 .ItemName {
   color: #009688;
   font-weight: 600;

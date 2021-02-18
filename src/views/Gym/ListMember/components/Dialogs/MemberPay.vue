@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button
-      v-bind:disabled="(OldPayment != null) ? false: true "
+      v-bind:disabled="OldPayment != null ? false : true"
       @click="Print()"
       type="primary"
       icon="el-icon-printer"
@@ -10,14 +10,20 @@
 
     <el-dialog style="margin-top: -13vh" title="تسجيل قبض" :visible.sync="Visibles">
       <el-form :model="Payment" ref="Form" label-position="top" class="demo-form-inline">
-        <el-row >
+        <el-row>
           <el-col :span="12">
             <el-form-item prop="TotalAmmount" label="القيمة المقبوضة">
               <currency-input
-                :rules="[{ required: true, message: 'لايمكن ترك القيمة فارغ', trigger: 'blur' } ]"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'لايمكن ترك القيمة فارغ',
+                    trigger: 'blur',
+                  },
+                ]"
                 class="currency-input"
                 v-model="Payment.TotalAmmount"
-                :value-range="{min :1 , max :1000}"
+                :value-range="{ min: 1, max: 1000 }"
               />
             </el-form-item>
           </el-col>
@@ -25,18 +31,30 @@
             <el-form-item
               label="تاريخ "
               prop="FakeDate"
-              :rules="[{ required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' } ]"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك التاريخ فارغ',
+                  trigger: 'blur',
+                },
+              ]"
             >
-              <el-date-picker v-model="Payment.FakeDate" type="date" format="dd/MM/yyyy"></el-date-picker>
+              <el-date-picker
+                v-model="Payment.FakeDate"
+                type="date"
+                format="dd/MM/yyyy"
+              ></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row >
+        <el-row>
           <el-col :span="12">
             <el-form-item prop="PaymentMethod" label="طريقة الدفع">
               <el-radio-group v-model="Payment.PaymentMethod" text-color="#f78123">
-                <el-radio label="Cash" border>{{ $t('NewPurchaseInvoice.Cash') }}</el-radio>
+                <el-radio label="Cash" border>{{
+                  $t("NewPurchaseInvoice.Cash")
+                }}</el-radio>
                 <el-radio label="Visa" border>Visa</el-radio>
                 <el-radio label="Cheque" border>Cheque</el-radio>
               </el-radio-group>
@@ -48,11 +66,17 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item
               prop="EditorName"
-              :rules="[{ required: true, message: 'لايمكن ترك محرر السند فارغ', trigger: 'blur' } ]"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك محرر السند فارغ',
+                  trigger: 'blur',
+                },
+              ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
               <el-select v-model="Payment.EditorName" placeholder="محرر السند">
@@ -68,8 +92,10 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{$t('AddVendors.Cancel')}}</el-button>
-        <el-button type="primary" @click="create()">{{$t('AddVendors.Save')}}</el-button>
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button type="primary" @click="create()">{{
+          $t("AddVendors.Save")
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -89,71 +115,69 @@ export default {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
     Name: {
       type: string,
       default: () => {
         return undefined;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       OldPayment: null,
       Payment: {
         ID: undefined,
-        Name: '',
+        Name: "",
         FakeDate: new Date(),
         PaymentMethod: "Cash",
         TotalAmmount: 0.0,
-        Description: '',
+        Description: "",
         Status: 0,
         VendorId: undefined,
         IsPrime: true,
         MemberID: undefined,
-        EditorName: '',
-        Type: ''
+        EditorName: "",
+        Type: "",
       },
-      Visibles: false
+      Visibles: false,
     };
   },
   methods: {
     Print() {
-      this.OldPayment.ObjectID = this.MemberID
+      this.OldPayment.ObjectID = this.MemberID;
       printJS({
         printable: PaymentMember(this.OldPayment),
         type: "pdf",
         base64: true,
-        showModal: true
-      })
+        showModal: true,
+      });
     },
     create() {
-      this.$refs["Form"].validate(valid => {
+      this.$refs["Form"].validate((valid) => {
         if (valid) {
           this.Payment.MemberID = this.MemberID;
           CreatePayment(this.Payment)
-            .then(response => {
+            .then((response) => {
               this.Payment.Name = this.Name;
-              this.Visibles = false
+              this.Visibles = false;
+              this.Payment.Id = response;
+              this.OldPayment = this.Payment;
+              this.Print();
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
+                type: "success",
                 duration: 2000,
-                onClose: () => {
-                  this.Payment.Id = response;
-                  this.OldPayment = this.Payment;
-                  this.Print();
-                }
-              })
+              });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         }
-      })
-    }
-  }
+      });
+    },
+  },
 };
 </script>

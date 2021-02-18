@@ -177,6 +177,26 @@ export default {
       Selection: [],
       CashAccounts: [],
       InComeAccounts: [],
+      tempForm: {
+        ID: undefined,
+        FakeDate: new Date(),
+        Description: "قيد اغلاق اشتراكات",
+        Type: "CloseMemberShipMovement",
+        EntryMovements: [
+          {
+            ID: undefined,
+            AccountId: this.InComeAccount,
+            Debit: this.Total,
+            Credit: 0.0,
+            Description:
+              "قيد اغلاق  (" +
+              this.CashAccounts.find((obj) => {
+                return obj.value == this.CashAccount;
+              }).label,
+            EntryId: undefined,
+          },
+        ],
+      },
       CashAccount: undefined,
       InComeAccount: undefined,
       Total: 0,
@@ -217,30 +237,10 @@ export default {
           console.log(error);
         });
     },
-    async createData() {
+    createData() {
       this.EnableSave = true;
 
-      var tempForm = {
-        ID: undefined,
-        FakeDate: new Date(),
-        Description: "قيد اغلاق اشتراكات",
-        Type: "CloseMemberShipMovement",
-        EntryMovements: [
-          {
-            ID: undefined,
-            AccountId: this.InComeAccount,
-            Debit: this.Total,
-            Credit: 0.0,
-            Description:
-              "قيد اغلاق  (" +
-              this.CashAccounts.find((obj) => {
-                return obj.value == this.CashAccount;
-              }).label,
-            EntryId: undefined,
-          },
-        ],
-      };
-      await this.Selection.forEach((i) => {
+      this.Selection.forEach((i) => {
         tempForm.EntryMovements.push({
           ID: undefined,
           AccountId: i.AccountId,
@@ -250,7 +250,7 @@ export default {
           EntryId: undefined,
         });
       });
-      //console.log(tempForm);
+      //console.log(this.tempForm);
       CreateEntry(tempForm)
         .then((response) => {
           console.log(response);
@@ -263,20 +263,16 @@ export default {
             console.log(response);
           });
 
-          this.EnableSave = false;
-
+          Object.assign(this.$data, this.$options.data());
+          this.getdata();
           this.$notify({
             title: "تم الإضافة بنجاح",
             message: "تم الإضافة بنجاح",
             type: "success",
             position: "top-left",
             duration: 1000,
-
-            onClose: () => {
-              Object.assign(this.$data, this.$options.data());
-              this.getdata();
-            },
           });
+          this.EnableSave = false;
         })
         .catch((error) => {
           console.log(error);
