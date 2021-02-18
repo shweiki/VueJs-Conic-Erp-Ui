@@ -9,10 +9,8 @@
           to="/EntryAccounting/Create"
           >{{ $t("Accounting.NewAccountingEntry") }}</router-link
         >
-
         <span>{{ $t("Accounting.AccountingEntryinquiries") }}</span>
       </div>
-
       <div slot="header" class="clearfix">
         <search-by-date
           :Value="date"
@@ -129,8 +127,6 @@ export default {
   },
   methods: {
     getdata() {
-      console.log(this.date);
-
       this.loading = true;
       GetEntryAccounting({
         AccountId: this.AccountId,
@@ -151,7 +147,6 @@ export default {
         });
       });
     },
-
     print(data) {
       printJS({
         printable: data,
