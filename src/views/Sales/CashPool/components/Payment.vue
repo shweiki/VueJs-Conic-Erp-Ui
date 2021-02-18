@@ -156,63 +156,41 @@
 
         <el-table-column width="180" align="center" v-if="checkPermission(['Admin'])">
           <template slot-scope="scope">
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              round
-              @click="handleOprationsys(scope.row.Id, NOprations)"
-              >{{ NOprations.OprationDescription }}</el-button
-            >
+            <next-oprations
+              :ObjID="scope.row.Id"
+              :Status="scope.row.Status"
+              TableName="Payment"
+              @Done="getdata"
+            />
           </template>
         </el-table-column>
       </el-table>
     </el-card>
-    <el-dialog
-      :title="textOpration.OprationDescription"
-      :visible.sync="dialogOprationVisible"
-    >
-      <el-form
-        ref="dataOpration"
-        :rules="rulesOpration"
-        :model="tempOpration"
-        label-position="top"
-        label-width="70px"
-        style="width: 400px margin-left:50px"
-      >
-        <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
 import checkPermission from "@/utils/permission";
-import store from "@/store";
 
 import { GetPaymentByStatus } from "@/api/Payment";
 import { GetInComeAccounts } from "@/api/Account";
 import { GetActiveCash } from "@/api/Cash";
 import { CreateEntry } from "@/api/EntryAccounting";
 import { PaymentMember } from "@/Report/PayPapar";
+import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 
-import { ChangeArrObjStatus, ChangeObjStatus } from "@/api/Oprationsys";
+import { ChangeArrObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
 
 export default {
   name: "Payment",
+  components: { NextOprations },
   data() {
     return {
       loading: true,
       EnableSave: true,
       tableData: [],
       Selection: [],
+      tempForm: {},
       CashAccounts: [],
       InComeAccounts: [],
       CashAccount: undefined,
@@ -221,33 +199,6 @@ export default {
       TotalCheque: 0,
       TotalVisa: 0,
       Total: 0,
-      dialogOprationVisible: false,
-      textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: "",
-      },
-      tempOpration: {
-        ObjID: undefined,
-        OprationID: undefined,
-        Description: "",
-      },
-      rulesOpration: {
-        Description: [
-          {
-            required: true,
-            message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
-          },
-          {
-            minlength: 5,
-            maxlength: 150,
-            message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
     };
   },
   created() {
@@ -257,52 +208,7 @@ export default {
     checkPermission,
     handleSelectionChange(val) {
       this.Selection = val;
-      this.EnableSave = false;
-
-      this.TotalCheque = this.Selection.reduce(
-        (a, b) => a + (b["PaymentMethod"] == "Cheque" ? b.TotalAmmount : 0),
-        0
-      );
-      this.TotalCash = this.Selection.reduce(
-        (a, b) => a + (b["PaymentMethod"] == "Cash" ? b.TotalAmmount : 0),
-        0
-      );
-      this.TotalVisa = this.Selection.reduce(
-        (a, b) => a + (b["PaymentMethod"] == "Visa" ? b.TotalAmmount : 0),
-        0
-      );
-
-      this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
-    },
-    getdata() {
-      this.loading = true;
-      GetActiveCash().then((response) => {
-        // handle success
-        //   console.log(response)
-        this.CashAccounts = response;
-        this.CashAccount = this.CashAccounts[0].value;
-        GetInComeAccounts().then((response) => {
-          this.InComeAccounts = response;
-          this.InComeAccount = this.InComeAccounts[2].value;
-        });
-      });
-
-      GetPaymentByStatus({ Status: 0 })
-        .then((response) => {
-          // handle success
-          console.log(response);
-          this.tableData = response;
-          this.loading = false;
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error);
-        });
-    },
-    async createData() {
-      this.EnableSave = true;
-
-      var tempForm = {
+      this.tempForm = {
         ID: undefined,
         FakeDate: new Date(),
         Description: "قيد اغلاق مقبوضات",
@@ -322,8 +228,8 @@ export default {
           },
         ],
       };
-      await this.Selection.forEach((i) => {
-        tempForm.EntryMovements.push({
+      this.Selection.forEach((i) => {
+        this.tempForm.EntryMovements.push({
           ID: undefined,
           AccountId: i.AccountId,
           Debit: i.TotalAmmount,
@@ -332,8 +238,51 @@ export default {
           EntryId: undefined,
         });
       });
-      console.log(tempForm);
-      CreateEntry(tempForm)
+
+      this.TotalCheque = this.Selection.reduce(
+        (a, b) => a + (b["PaymentMethod"] == "Cheque" ? b.TotalAmmount : 0),
+        0
+      );
+      this.TotalCash = this.Selection.reduce(
+        (a, b) => a + (b["PaymentMethod"] == "Cash" ? b.TotalAmmount : 0),
+        0
+      );
+      this.TotalVisa = this.Selection.reduce(
+        (a, b) => a + (b["PaymentMethod"] == "Visa" ? b.TotalAmmount : 0),
+        0
+      );
+
+      this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
+      this.EnableSave = false;
+    },
+    getdata() {
+      this.loading = true;
+      GetActiveCash().then((response) => {
+        // handle success
+        //   console.log(response)
+        this.CashAccounts = response;
+        this.CashAccount = this.CashAccounts[0].value;
+        GetInComeAccounts().then((response) => {
+          this.InComeAccounts = response;
+          this.InComeAccount = this.InComeAccounts[2].value;
+        });
+      });
+      GetPaymentByStatus({ Status: 0 })
+        .then((response) => {
+          // handle success
+          console.log(response);
+          this.tableData = response;
+          this.loading = false;
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error);
+        });
+    },
+    createData() {
+      this.EnableSave = true;
+      console.log(this.tempForm);
+      CreateEntry(this.tempForm)
         .then((response) => {
           console.log(response);
           ChangeArrObjStatus({
@@ -344,15 +293,14 @@ export default {
           }).then((response) => {
             this.EnableSave = false;
             console.log(response);
+            this.$notify({
+              title: "تم الإضافة بنجاح",
+              message: "تم الإضافة بنجاح",
+              type: "success",
+              position: "top-left",
+              duration: 1000,
+            });
             this.getdata();
-          });
-
-          this.$notify({
-            title: "تم الإضافة بنجاح",
-            message: "تم الإضافة بنجاح",
-            type: "success",
-            position: "top-left",
-            duration: 1000,
           });
         })
         .catch((error) => {
@@ -397,43 +345,6 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true,
-      });
-    },
-    handleOprationsys(ObjID, Opration) {
-      this.dialogOprationVisible = true;
-      // text
-      this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
-      this.textOpration.IconClass = Opration.IconClass;
-      this.textOpration.ClassName = Opration.ClassName;
-      /// temp
-      this.tempOpration.ObjID = ObjID;
-      this.tempOpration.OprationID = Opration.Id;
-      this.tempOpration.Description = "";
-    },
-    createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
-        if (valid) {
-          ChangeObjStatus({
-            ObjID: this.tempOpration.ObjID,
-            OprationID: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description,
-          })
-            .then((response) => {
-              this.dialogOprationVisible = false;
-              this.$notify({
-                title: "تم  ",
-                message: "تمت العملية بنجاح",
-                type: "success",
-                duration: 2000,
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-        }
       });
     },
     formatDate(date) {
