@@ -37,7 +37,7 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Account.Name')" />
+            <el-input v-model="search" v-bind:placeholder="$t('Account.AccountName')" />
           </template>
         </el-table-column>
         <el-table-column

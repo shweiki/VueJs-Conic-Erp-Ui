@@ -26,6 +26,14 @@ const InventoryRouter = {
       },
     },
     {
+      path: '/Inventory',
+      component: () => import('@/views/Inventory/index'),
+      name: 'Inventory',
+      meta: {
+        title: 'Inventory', icon: 'inventory (1)'
+      },
+    },
+    {
       path: '/OrderInventories',
       component: () => import('@/views/Inventory/OrderInventories/index'),
       redirect: '/OrderInventories/List',
@@ -57,14 +65,6 @@ const InventoryRouter = {
           },
         }
       ]
-    },
-    {
-      path: '/Inventory',
-      component: () => import('@/views/Inventory/index'),
-      name: 'Inventory',
-      meta: {
-        title: 'Inventory', icon: 'inventory (1)'
-      },
     },
     {
       path: '/Classifications',

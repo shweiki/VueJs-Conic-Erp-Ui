@@ -48,7 +48,7 @@
           <template slot="header" slot-scope="{}">
             <el-input
               v-model="search"
-              v-bind:placeholder="$t('Permission.UserName')"
+              v-bind:placeholder="$t('permission.UserName')"
             />
           </template>
         </el-table-column>

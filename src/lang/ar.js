@@ -21,6 +21,9 @@ export default {
     SalesItems: 'مبيعات صنف',
     CashPool: 'اغلاق صندوق',
     NewPurchaseInvoice: 'انشاء فاتورة شراء',
+    NewEntryAccounting: 'انشاء قيد جديد',
+    EditEntryAccounting: 'تعديل القيود',
+    ListEntryAccounting: 'قائمة القيود',
     ListPurchaseInvoice: 'فواتير شراء',
     ListSalesInvoice: 'فواتير البيع',
     PurchaseItems: 'مشتريات صنف',
@@ -118,6 +121,7 @@ export default {
     github: 'Github مستودع'
   },
   permission: {
+    UserName: 'اسم المستخدم',
     addRole: 'وظيفة جديدة',
     editPermission: 'تعديل',
     roles: 'وظائفك',
@@ -200,12 +204,25 @@ export default {
     Forward: 'الى الامام'
 
   },
-  settings: {
+  Settings: {
     title: 'إعداد نمط الصفحة',
     theme: 'لون الشكل',
     tagsView: 'فتح علامات مشاهدة',
     fixedHeader: 'رأس ثابت',
-    sidebarLogo: 'شعار الشريط الجانبي '
+    sidebarLogo: 'شعار الشريط الجانبي ',
+    DateFormat: "صيغة البيانات",
+    DateTimeFormat : "صيغة الوقت والتاريخ",
+    CashDrawerCOM: 'درج الكاش',
+    PointOfSaleLayout:'شكل نظام البيع',
+    BusinessType: "نوع العمل",
+    showSettings: "إظهار الإعدادات",
+    showRestOfBill: "إظهار بقية الفاتورة",
+    sidebarOpen: 'فتح الشريط الجانبي',
+    WithOutCheckItemIsExist: 'دون البحث بالأصناف الموجودة',
+    BarcodeIsID:"الباركود هو رقم المنتج (ID)",
+    loginBackground:"خلفية شاشة تسجيل الدخول",
+    sidebarImages: 'صورة الشريط الجانبي',
+    Images: 'الصور',
   },
   PanelGroup: {
     Sales: 'مبيعات',
@@ -309,9 +326,9 @@ export default {
     PurchaseTotal: 'إجمالي المبيعات',
     SellingPrice: 'سعر البيع',
     TotalAmount: ' القيمة الكلي',
-
   },
   Items: {
+    Id: 'رقم الصنف',
     Cost: 'التكلفة',
     Packeges: 'جملة',
     Retail: 'تجزئة',
@@ -429,6 +446,7 @@ export default {
     Status: 'الحالة',
     ReferenceStatus: 'حالة المرجع ',
     TableName: 'إسم الجدول',
+    Color: 'اللون'
   },
   Members: {
     Member: 'عضو',
