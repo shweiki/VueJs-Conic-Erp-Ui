@@ -7,6 +7,21 @@ export function GetMember(query) {
     params: query
   })
 }
+export function GetMemberByAny(query) {
+  return request({
+    url: '/Member/GetMemberByAny',
+    method: 'get',
+    params: query
+  })
+}
+export function CheckMemberIsExist(query) {
+  return request({
+    url: '/Member/CheckMemberIsExist',
+    method: 'get',
+    params: query
+  })
+}
+
 export function GetReceivablesMember(query) {
   return request({
     url: '/Member/GetReceivablesMember',

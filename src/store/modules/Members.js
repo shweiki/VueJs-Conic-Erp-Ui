@@ -10,9 +10,7 @@ const state = {
 }
 
 const mutations = {
-    SET_MEMBERS: (state, response) => {
-        state.Members = response.reverse()
-    },
+
     SET_ACTIVEMEMBER: (state, response) => {
         state.ActiveMembers = response.reverse()
     }
@@ -46,20 +44,7 @@ const actions = {
             })
         })
     },
-    GetMember({ commit }) {
-        return new Promise((resolve, reject) => {
-            console.log("sasd" ,GetMember().then((data)=> data))
-            GetMember().then(response => {
-                console.log(response)
 
-                commit('SET_MEMBERS', response)
-                resolve(response)
-
-            }).catch(error => {
-                reject(error)
-            })
-        })
-    },
     GetActiveMember({ commit }) {
         return new Promise((resolve, reject) => {
             GetActiveMember().then(response => {

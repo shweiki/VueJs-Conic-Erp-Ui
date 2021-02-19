@@ -13,7 +13,7 @@
           class="pan-btn tiffany-btn"
           style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
           icon="el-icon-plus"
-          to="/Accounting/List"
+          to="/EntryAccounting/List"
           >{{ $t("route.EntryAccounting") }}</router-link
         >
         <span>{{ $t("Accounting.NewAccountingEntry") }}</span>
@@ -96,14 +96,17 @@
           </el-table-column>
           <el-table-column width="230">
             <template slot="header" slot-scope="{}"
-              >{{ $t("Accounting.Credit") }} ({{ totalCredit.toFixed(2) }})</template
+              >{{ $t("Accounting.Credit") }} ({{
+                tempForm.EntryMovements.reduce((prev, cur) => {
+                  return prev + cur.Credit;
+                }, 0).toFixed(2)
+              }})</template
             >
             <template slot-scope="scope">
               <el-input-number
                 v-bind:disabled="
                   tempForm.EntryMovements[scope.$index].Debit != 0 ? true : false
                 "
-                @change="SumCredit"
                 controls-position="right"
                 v-model="tempForm.EntryMovements[scope.$index].Credit"
                 :precision="2"
@@ -115,14 +118,17 @@
           </el-table-column>
           <el-table-column width="230">
             <template slot="header" slot-scope="{}"
-              >{{ $t("Accounting.Debit") }} ({{ totalDebit.toFixed(2) }})</template
+              >{{ $t("Accounting.Debit") }} ({{
+                tempForm.EntryMovements.reduce((prev, cur) => {
+                  return prev + cur.Debit;
+                }, 0).toFixed(2)
+              }})</template
             >
             <template slot-scope="scope">
               <el-input-number
                 v-bind:disabled="
                   tempForm.EntryMovements[scope.$index].Credit != 0 ? true : false
                 "
-                @change="SumDebit"
                 controls-position="right"
                 v-model="tempForm.EntryMovements[scope.$index].Debit"
                 :precision="2"
@@ -229,14 +235,11 @@ export default {
       Account: [],
       Text: "",
       ValidateNote: "",
-      totalDebit: 0,
-      totalCredit: 0,
       tempForm: {
         ID: undefined,
         FakeDate: new Date(),
         Description: "",
         Type: "Manual",
-
         EntryMovements: [
           {
             ID: undefined,
@@ -291,14 +294,7 @@ export default {
     Paste(Index) {
       this.tempForm.EntryMovements[Index].Description = this.Text;
     },
-    SumCredit(currentValue, oldValue) {
-      this.TotalCredit -= oldValue;
-      this.TotalCredit += currentValue;
-    },
-    SumDebit(currentValue, oldValue) {
-      this.TotalDebit -= oldValue;
-      this.TotalDebit += currentValue;
-    },
+
     AddEntryMovements() {
       this.tempForm.EntryMovements.push({
         ID: undefined,
@@ -310,18 +306,10 @@ export default {
       });
     },
     RemoveEntryMovements() {
-      this.SumCredit(
-        0,
-        this.tempForm.EntryMovements[this.tempForm.EntryMovements.length - 1].Credit
-      );
-      this.SumDebit(
-        0,
-        this.tempForm.EntryMovements[this.tempForm.EntryMovements.length - 1].Debit
-      );
       this.tempForm.EntryMovements.splice(this.tempForm.EntryMovements.length - 1, 1);
     },
     getdata(val) {
-      GetEntryByID({ Id: val })
+      GetEntryByID({ ID: val })
         .then((response) => {
           this.tempForm = response;
           // set tagsview title
@@ -363,8 +351,19 @@ export default {
       this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           if (
-            this.TotalDebit == this.TotalCredit &&
-            this.TotalDebit + this.TotalCredit != 0
+            this.tempForm.EntryMovements.reduce((prev, cur) => {
+              return prev + cur.Debit;
+            }, 0) ==
+              this.tempForm.EntryMovements.reduce((prev, cur) => {
+                return prev + cur.Credit;
+              }, 0) &&
+            this.tempForm.EntryMovements.reduce((prev, cur) => {
+              return prev + cur.Debit;
+            }, 0) +
+              this.tempForm.EntryMovements.reduce((prev, cur) => {
+                return prev + cur.Credit;
+              }, 0) !=
+              0
           ) {
             CreateEntry(this.tempForm)
               .then((response) => {
@@ -391,16 +390,23 @@ export default {
       this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           if (
-            this.TotalDebit == this.TotalCredit &&
-            this.TotalDebit + this.TotalCredit != 0
+            this.tempForm.EntryMovements.reduce((prev, cur) => {
+              return prev + cur.Debit;
+            }, 0) ==
+              this.tempForm.EntryMovements.reduce((prev, cur) => {
+                return prev + cur.Credit;
+              }, 0) &&
+            this.tempForm.EntryMovements.reduce((prev, cur) => {
+              return prev + cur.Debit;
+            }, 0) +
+              this.tempForm.EntryMovements.reduce((prev, cur) => {
+                return prev + cur.Credit;
+              }, 0) !=
+              0
           ) {
             Edit(this.tempForm)
               .then((response) => {
-                this.$router.replace({
-                  path: "/Sales/Edit/" + row.Id,
-                });
                 this.getdata();
-                this.resetTempForm();
                 this.$notify({
                   title: "تم ",
                   message: "تم الإضافة بنجاح",

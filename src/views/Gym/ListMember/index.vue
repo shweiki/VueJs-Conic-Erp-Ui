@@ -29,7 +29,7 @@
               >
               <el-col :span="12">
                 <span>اخر زيارة</span>
-                <last-log-member :MemberID="Member.Id" />
+                <last-log-member :MemberID="member.MemberId" />
               </el-col>
             </el-row>
             <el-col :span="24">
@@ -48,7 +48,7 @@ import MemberLog from "./components/MemberLog";
 import MemberSearch from "./components/MemberSearch";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
-
+import LastLogMember from "@/components/Gym/LastLogMember";
 import { GetMember } from "@/api/Member";
 
 //import { GetActiveMember } from "@/api/Member";
@@ -56,7 +56,7 @@ import { GetMember } from "@/api/Member";
 export default {
   name: "MemberList",
   directives: { permission },
-  components: { MemberSearch, MemberLog, PanThumb, WebCam },
+  components: { MemberSearch, MemberLog, PanThumb, WebCam, LastLogMember },
   data() {
     return {
       loading: true,

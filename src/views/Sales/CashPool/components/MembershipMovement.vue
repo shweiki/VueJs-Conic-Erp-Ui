@@ -177,7 +177,20 @@ export default {
       Selection: [],
       CashAccounts: [],
       InComeAccounts: [],
-      tempForm: {
+      tempForm: {},
+      CashAccount: undefined,
+      InComeAccount: undefined,
+      Total: 0,
+    };
+  },
+  created() {
+    this.getdata();
+  },
+  methods: {
+    checkPermission,
+    handleSelectionChange(val) {
+      this.Selection = val;
+      this.tempForm = {
         ID: undefined,
         FakeDate: new Date(),
         Description: "قيد اغلاق اشتراكات",
@@ -196,19 +209,17 @@ export default {
             EntryId: undefined,
           },
         ],
-      },
-      CashAccount: undefined,
-      InComeAccount: undefined,
-      Total: 0,
-    };
-  },
-  created() {
-    this.getdata();
-  },
-  methods: {
-    checkPermission,
-    handleSelectionChange(val) {
-      this.Selection = val;
+      };
+      this.Selection.forEach((i) => {
+        this.tempForm.EntryMovements.push({
+          ID: undefined,
+          AccountId: i.AccountId,
+          Debit: 0.0,
+          Credit: i.TotalAmmount,
+          Description: "اشتراك " + i.MembershipName + "-" + i.Type + " رقم " + i.Id + " ",
+          EntryId: undefined,
+        });
+      });
       this.Total = this.Selection.reduce((a, b) => a + b.TotalAmmount, 0);
       this.EnableSave = false;
     },
@@ -239,19 +250,8 @@ export default {
     },
     createData() {
       this.EnableSave = true;
-
-      this.Selection.forEach((i) => {
-        tempForm.EntryMovements.push({
-          ID: undefined,
-          AccountId: i.AccountId,
-          Debit: 0.0,
-          Credit: i.TotalAmmount,
-          Description: "اشتراك " + i.MembershipName + "-" + i.Type + " رقم " + i.Id + " ",
-          EntryId: undefined,
-        });
-      });
-      //console.log(this.tempForm);
-      CreateEntry(tempForm)
+      console.log(this.tempForm);
+      CreateEntry(this.tempForm)
         .then((response) => {
           console.log(response);
           ChangeArrObjStatus({
@@ -261,18 +261,18 @@ export default {
             Description: "اشتراك مؤكد",
           }).then((response) => {
             console.log(response);
-          });
 
-          Object.assign(this.$data, this.$options.data());
-          this.getdata();
-          this.$notify({
-            title: "تم الإضافة بنجاح",
-            message: "تم الإضافة بنجاح",
-            type: "success",
-            position: "top-left",
-            duration: 1000,
+            Object.assign(this.$data, this.$options.data());
+            this.getdata();
+            this.$notify({
+              title: "تم الإضافة بنجاح",
+              message: "تم الإضافة بنجاح",
+              type: "success",
+              position: "top-left",
+              duration: 1000,
+            });
+            this.EnableSave = false;
           });
-          this.EnableSave = false;
         })
         .catch((error) => {
           console.log(error);

@@ -51,7 +51,6 @@ router.beforeEach(async (to, from, next) => {
             store.dispatch("Devices/GetDevice");
             store.dispatch("Members/CheckMembers");
             store.dispatch("Members/GetActiveMember");
-            store.dispatch("Members/GetMember");
             store.dispatch("Devices/ConnectZtkDoor");
           }
           document.onkeydown = capturekey;

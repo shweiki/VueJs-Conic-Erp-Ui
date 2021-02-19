@@ -251,7 +251,6 @@
 
 <script>
 import { GetSaleInvoiceByStatus } from "@/api/SaleInvoice";
-import { GetInventoryMovementsBySalesInvoiceId } from "@/api/InventoryMovement";
 
 import { GetActiveCash } from "@/api/Cash";
 import { GetInComeAccounts } from "@/api/Account";
@@ -270,6 +269,7 @@ export default {
       EnableSave: true,
       tableData: [],
       Selection: [],
+      tempForm: {},
       CashAccounts: [],
       InComeAccounts: [],
       CashAccount: undefined,
@@ -289,7 +289,68 @@ export default {
   methods: {
     handleSelectionChange(val) {
       this.Selection = val;
-      this.EnableSave = false;
+      this.tempForm = {
+        Id: undefined,
+        FakeDate: new Date(),
+        Description: "قيد اغلاق مبيعات",
+        Type: "CloseChash",
+        EntryMovements: [
+          {
+            Id: undefined,
+            AccountId: this.InComeAccount,
+            Debit: this.TotalCash + this.TotalReceivables + this.TotalVisa,
+            Credit: 0.0,
+            Description:
+              "قيد اغلاق  (" +
+              this.CashAccounts.find((obj) => {
+                return obj.value == this.CashAccount;
+              }).label,
+            EntryId: undefined,
+          },
+          {
+            Id: undefined,
+            AccountId: this.CashAccount,
+            Debit: 0.0,
+            Credit: this.TotalCash,
+            Description:
+              "قيد إغلاق  " +
+              this.CashAccounts.find((obj) => {
+                return obj.value == this.CashAccount;
+              }).label +
+              " لمجموعة فواتير نقدية ",
+            EntryId: undefined,
+          },
+        ],
+      };
+      this.Selection.forEach((i) => {
+        if (i.PaymentMethod == "Receivables")
+          this.tempForm.EntryMovements.push({
+            Id: undefined,
+            AccountId: i.AccountId,
+            Debit: 0.0,
+            Credit:
+              i.InventoryMovements.reduce((prev, cur) => {
+                return prev + cur.Qty * cur.SellingPrice;
+              }, 0) - i.Discount,
+            Description: "فاتورة مبيعات رقم " + i.Id + " ",
+            EntryId: undefined,
+          });
+        /// Visa
+        if (i.PaymentMethod == "Visa")
+          this.tempForm.EntryMovements.push({
+            Id: undefined,
+            AccountId: this.CashAccount,
+            Debit: 0.0,
+            Credit: this.TotalVisa,
+            Description:
+              "قيد إغلاق  " +
+              this.CashAccounts.find((obj) => {
+                return obj.value == this.CashAccount;
+              }).label +
+              " لمجموعة فواتير فيزا ",
+            EntryId: undefined,
+          });
+      });
 
       this.TotalReceivables = this.Selection.reduce(
         (a, b) =>
@@ -341,6 +402,7 @@ export default {
       );
 
       this.TotalDiscount = this.Selection.reduce((a, b) => a + b.Discount, 0);
+      this.EnableSave = false;
     },
     searchItem(Id) {
       return this.$store.getters.AllItems.find((value) => value.Id == Id);
@@ -461,79 +523,12 @@ export default {
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
       });
     },
-    async createData() {
+    createData() {
       this.EnableSave = true;
-      var tempForm = {
-        Id: undefined,
-        FakeDate: new Date(),
-        Description: "قيد اغلاق مبيعات",
-        Type: "CloseChash",
-        EntryMovements: [
-          {
-            Id: undefined,
-            AccountId: this.InComeAccount,
-            Debit: this.TotalCash + this.TotalReceivables + this.TotalVisa,
-            Credit: 0.0,
-            Description:
-              "قيد اغلاق  (" +
-              this.CashAccounts.find((obj) => {
-                return obj.value == this.CashAccount;
-              }).label,
-            EntryId: undefined,
-          },
-          {
-            Id: undefined,
-            AccountId: this.CashAccount,
-            Debit: 0.0,
-            Credit: this.TotalCash,
-            Description:
-              "قيد إغلاق  " +
-              this.CashAccounts.find((obj) => {
-                return obj.value == this.CashAccount;
-              }).label +
-              " لمجموعة فواتير نقدية ",
-            EntryId: undefined,
-          },
-        ],
-      };
 
-      await this.Selection.forEach((i) => {
-        if (i.PaymentMethod == "Receivables")
-          tempForm.EntryMovements.push({
-            Id: undefined,
-            AccountId: i.AccountId,
-            Debit: 0.0,
-            Credit:
-              i.InventoryMovements.reduce((prev, cur) => {
-                return prev + cur.Qty * cur.SellingPrice;
-              }, 0) - i.Discount,
-            Description: "فاتورة مبيعات رقم " + i.Id + " ",
-            EntryId: undefined,
-          });
-        /// Visa
-        if (i.PaymentMethod == "Visa")
-          tempForm.EntryMovements.push({
-            Id: undefined,
-            AccountId: this.CashAccount,
-            Debit: 0.0,
-            Credit: this.TotalVisa,
-            Description:
-              "قيد إغلاق  " +
-              this.CashAccounts.find((obj) => {
-                return obj.value == this.CashAccount;
-              }).label +
-              " لمجموعة فواتير فيزا ",
-            EntryId: undefined,
-          });
-      });
-      console.log(tempForm);
-      CreateEntry(tempForm)
+      console.log(this.tempForm);
+      CreateEntry(this.tempForm)
         .then((response) => {
-          console.log(
-            this.Selection.map((x) => x.Id),
-            response
-          );
-
           ChangeArrObjStatus({
             ObjsID: this.Selection.map((x) => x.Id),
             TableName: "SalesInvoice",
