@@ -71,8 +71,8 @@
         "
       >
         <el-table-column
-          v-bind:label="$t('Accounting.EntryId')"
-          prop="EntryId"
+          v-bind:label="$t('Accounting.EntryID')"
+          prop="EntryID"
           width="120"
           align="center"
         >

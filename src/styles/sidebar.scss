@@ -83,17 +83,17 @@
     .submenu-title-noDropdown,
     .el-submenu__title {
       &:hover {
-        border-right: 2px solid rgb(27, 52, 89);
+        border-right: 4px solid rgb(27, 52, 89);
         background-color: $menuHover !important;
       }
      
     }
     .el-menu-item.is-active {
-      border-right: 2px solid rgb(27, 52, 89);
+      border-right: 4px solid rgb(27, 52, 89);
     }
     .is-active>.el-submenu__title {
       color: $subMenuActiveText !important;
-      border-right: 2px solid rgb(27, 52, 89);
+      border-right: 4px solid rgb(27, 52, 89);
     }
 
     & .nest-menu .el-submenu>.el-submenu__title,
@@ -103,7 +103,7 @@
 
       &:hover {
         background-color: $subMenuHover !important;
-        border-right: 2px solid rgb(27, 52, 89);
+        border-right: 4px solid rgb(27, 52, 89);
       }
     }
   }
