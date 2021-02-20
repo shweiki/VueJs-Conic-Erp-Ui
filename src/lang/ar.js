@@ -361,6 +361,8 @@ export default {
     StoreMovement: 'حركات المستودع',
     Statement: 'بيان الطلب',
     Store: 'المستودع',
+    OrderNumber:'عدد الطلبات',
+    TotalNumber: 'العدد الكلي',
 
   },
 
@@ -529,7 +531,7 @@ export default {
     Contact: "التواصل",
   },
   MemberList: {
-    JOD: "دأ",
+    JOD: "د.أ",
     MembershipType: "نوع الإشتراك :",
     To: "لغاية :",
     remaining: "الأيام المتبقية :",

@@ -30,19 +30,21 @@
           ></el-option>
         </el-select>
         <el-divider direction="vertical"></el-divider>
-        <span>عدد الطلبات</span>
+        <span>{{ $t("OrderInventories.OrderNumber") }}
+        </span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ tableData.length }}</span>
         <el-divider direction="vertical"></el-divider>
 
-        <span>العدد الكلي</span>
+        <span>{{ $t("OrderInventories.TotalNumber") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ TotalQty.toFixed(3) }} JOD</span>
+        <span>{{ TotalQty.toFixed(3) }} {{ $t("MemberList.JOD") }}</span>
         <el-divider direction="vertical"></el-divider>
 
-        <span>القمية الكلية</span>
+        <span>{{ $t("ItemSales.Amountv") }}
+        </span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ TotalAmmount.toFixed(3) }} JOD</span>
+        <span>{{ TotalAmmount.toFixed(3) }} {{ $t("MemberList.JOD") }}</span>
         <el-divider direction="vertical"></el-divider>
 
         <el-button
@@ -76,7 +78,7 @@
         </el-table-column>
         <el-table-column
           prop="Type"
-          label="العملية"
+          v-bind:label="$t('Cheque.Operation')"
           width="120"
           align="center"
         ></el-table-column>
@@ -92,10 +94,10 @@
             <el-input v-model="search" v-bind:placeholder="$t('ItemSales.Customer')" />
           </template>
         </el-table-column>
-        <el-table-column prop="Qty" label="الكمية" width="120" align="center">
+        <el-table-column prop="Qty" v-bind:label="$t('CashPool.quantity')" width="120" align="center">
           <template slot-scope="scope">{{ scope.row.Qty.toFixed(3) }}</template>
         </el-table-column>
-        <el-table-column prop="SellingPrice" label="سعر" width="120" align="center">
+        <el-table-column prop="SellingPrice" v-bind:label="$t('CashPool.Price')" width="120" align="center">
           <template slot-scope="scope">{{ scope.row.SellingPrice.toFixed(3) }}</template>
         </el-table-column>
         <el-table-column
@@ -104,7 +106,7 @@
           align="center"
         >
           <template slot-scope="scope"
-            >{{ (scope.row.Qty * scope.row.SellingPrice).toFixed(3) }} JOD</template
+            >{{ (scope.row.Qty * scope.row.SellingPrice).toFixed(3) }} {{ $t("MemberList.JOD") }}</template
           >
         </el-table-column>
       </el-table>
