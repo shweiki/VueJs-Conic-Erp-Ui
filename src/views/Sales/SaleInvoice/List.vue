@@ -2,13 +2,24 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <radio-oprations TableName="SalesInvoice" @Change="getdata" />
+        <div style="float: left">
+         <el-radio-group v-model="Status" @change="getdata()">
+            <el-radio-button
+              v-for="op in Oprations"
+              :key="op.Id"
+              v-bind:label="op.Status"
+              >{{ op.OprationDescription }}</el-radio-button
+            >
+          </el-radio-group>
         <el-button
           style="float: left"
           icon="el-icon-printer"
           type="primary"
           @click="printAll(tableData)"
         ></el-button>
+        </div>
+      </div>
+      <div slot="header" class="clearfix">
         <search-by-date
           :Value="date"
           @Set="
@@ -54,8 +65,7 @@
       </el-card>
       <el-table
         v-loading="loading"
-        :data="
-          tableData.filter(
+        :data="tableData.filter(
             (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
@@ -161,14 +171,14 @@
   </div>
 </template>
 <script>
-import { GetSaleInvoice } from "@/api/SaleInvoice";
-import { ChangeObjStatus } from "@/api/Oprationsys";
+import { GetSaleInvoiceByStatus } from "@/api/SaleInvoice";
 import printJS from "print-js";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import { GetOprationByTable } from "@/api/Oprationsys";
 
 export default {
   name: "SalesInvoice",
@@ -188,19 +198,25 @@ export default {
       TotalCheque: 0,
       TotalVisa: 0,
       Total: 0,
-      date: "",
+      date: [],
+      Status: 1,
+      Oprations: [],
     };
   },
   created() {
+    GetOprationByTable({ Name: "SalesInvoice" }).then((response) => {
+      this.Oprations = response;
     this.getdata();
+     });
   },
   methods: {
     getdata() {
       //   console.log(this.date, new Date());
       this.loading = true;
-      GetSaleInvoice({
+      GetSaleInvoiceByStatus({
         DateFrom: this.date[0],
         DateTo: this.date[1],
+        Status: this.Status,
       })
         .then((response) => {
           // handle success
