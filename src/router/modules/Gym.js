@@ -3,7 +3,7 @@ import Layout from '@/layout'
 const GymRouter = {
   path: '/Gym',
   component: Layout,
-  redirect: 'Gym/ListMember/index',
+  redirect: '/Gym/ListMember/index',
   name: 'Gym',
   meta: {
     title: 'Gym', icon: 'acc'

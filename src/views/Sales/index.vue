@@ -16,13 +16,12 @@
               @click="printAll(tableData)"
             ></el-button> -->
         <search-by-date
-          :Value="date"
+          :Value="[]"
           @Set="
             (v) => {
               date = v;
             }
           "
-          @focus="getdata()"
         />
       </div>
       <el-card class="box-card">
@@ -210,7 +209,7 @@ export default {
       TotalCheque: 0,
       TotalVisa: 0,
       Total: 0,
-      date: "",
+      date: [],
       dialogOprationVisible: false,
       textOpration: {
         OprationDescription: "",

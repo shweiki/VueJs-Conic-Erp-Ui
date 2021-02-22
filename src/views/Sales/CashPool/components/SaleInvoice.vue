@@ -172,7 +172,11 @@
           v-bind:label="$t('CashPool.Date')"
           width="120"
           align="center"
-        ></el-table-column>
+        >
+          <template slot-scope="{ row }">{{
+            formatDate(row.FakeDate)
+          }}</template></el-table-column
+        >
         <el-table-column
           prop="Name"
           v-bind:label="$t('CashPool.Customer')"
@@ -289,69 +293,6 @@ export default {
   methods: {
     handleSelectionChange(val) {
       this.Selection = val;
-      this.tempForm = {
-        Id: undefined,
-        FakeDate: new Date(),
-        Description: "قيد اغلاق مبيعات",
-        Type: "CloseChash",
-        EntryMovements: [
-          {
-            Id: undefined,
-            AccountId: this.InComeAccount,
-            Debit: this.TotalCash + this.TotalReceivables + this.TotalVisa,
-            Credit: 0.0,
-            Description:
-              "قيد اغلاق  (" +
-              this.CashAccounts.find((obj) => {
-                return obj.value == this.CashAccount;
-              }).label,
-            EntryId: undefined,
-          },
-          {
-            Id: undefined,
-            AccountId: this.CashAccount,
-            Debit: 0.0,
-            Credit: this.TotalCash,
-            Description:
-              "قيد إغلاق  " +
-              this.CashAccounts.find((obj) => {
-                return obj.value == this.CashAccount;
-              }).label +
-              " لمجموعة فواتير نقدية ",
-            EntryId: undefined,
-          },
-        ],
-      };
-      this.Selection.forEach((i) => {
-        if (i.PaymentMethod == "Receivables")
-          this.tempForm.EntryMovements.push({
-            Id: undefined,
-            AccountId: i.AccountId,
-            Debit: 0.0,
-            Credit:
-              i.InventoryMovements.reduce((prev, cur) => {
-                return prev + cur.Qty * cur.SellingPrice;
-              }, 0) - i.Discount,
-            Description: "فاتورة مبيعات رقم " + i.Id + " ",
-            EntryId: undefined,
-          });
-        /// Visa
-        if (i.PaymentMethod == "Visa")
-          this.tempForm.EntryMovements.push({
-            Id: undefined,
-            AccountId: this.CashAccount,
-            Debit: 0.0,
-            Credit: this.TotalVisa,
-            Description:
-              "قيد إغلاق  " +
-              this.CashAccounts.find((obj) => {
-                return obj.value == this.CashAccount;
-              }).label +
-              " لمجموعة فواتير فيزا ",
-            EntryId: undefined,
-          });
-      });
-
       this.TotalReceivables = this.Selection.reduce(
         (a, b) =>
           a +

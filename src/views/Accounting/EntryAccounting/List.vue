@@ -13,7 +13,7 @@
       </div>
       <div slot="header" class="clearfix">
         <search-by-date
-          :Value="date"
+          :Value="[]"
           @Set="
             (v) => {
               date = v;

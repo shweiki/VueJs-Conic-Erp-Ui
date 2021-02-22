@@ -22,9 +22,7 @@
             (v) => {
               date = v;
             }
-          "
-          @focus="getdata()"
-        />
+          "        />
       </div>
       <el-card class="box-card">
         <el-divider direction="vertical"></el-divider>

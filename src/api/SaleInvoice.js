@@ -1,10 +1,18 @@
 import request from '@/utils/RequestApi'
 import qs from 'qs';
+qs
 export function GetSaleInvoice(query) {
   return request({
     url: '/SaleInvoice/GetSaleInvoice',
     method: 'get',
     params: query
+  })
+}
+export function GetByListQ(data) {
+  return request({
+    url: '/SaleInvoice/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
   })
 }
 

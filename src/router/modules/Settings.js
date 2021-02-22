@@ -3,7 +3,7 @@ import Layout from '@/layout'
 const SettingsRouter = {
   path: '/Settings',
   component: Layout,
-  redirect: '/CompanyInfo',
+  redirect: '/Settings/CompanyInfo',
   name: 'Settings',
   meta: {
     title: 'Settings',
@@ -12,7 +12,7 @@ const SettingsRouter = {
   children: [
 
     {
-      path: '/Oprationsys',
+      path: 'Oprationsys',
       component: () => import('@/views/Settings/Oprationsys/index'),
       name: 'Oprationsys',
       meta: {
@@ -20,7 +20,7 @@ const SettingsRouter = {
       },
     },
     {
-      path: '/Discount',
+      path: 'Discount',
       component: () => import('@/views/Settings/Discount/index'),
       name: 'Discount',
       meta: {
@@ -28,7 +28,7 @@ const SettingsRouter = {
       },
     },
     {
-      path: '/Editors',
+      path: 'Editors',
       component: () => import('@/views/Settings/EditorsUsers/index'),
       name: 'Editors',
       meta: {
@@ -36,7 +36,7 @@ const SettingsRouter = {
       },
     },
     {
-      path: '/BackupRestore',
+      path: 'BackupRestore',
       component: () => import('@/views/Settings/BackupRestore/index'),
       name: 'BackupRestore',
       meta: {
@@ -44,7 +44,7 @@ const SettingsRouter = {
       },
     },
     {
-      path: '/Device',
+      path: 'Device',
       component: () => import('@/views/Settings/Device/index'),
       name: 'Devices',
       meta: {
@@ -52,7 +52,7 @@ const SettingsRouter = {
       },
     },
     {
-      path: '/CompanyInfo',
+      path: 'CompanyInfo',
       component: () => import('@/views/Settings/CompanyInfo/index'),
       name: 'CompanyInfo',
       meta: {
@@ -60,7 +60,7 @@ const SettingsRouter = {
       },
     },
     {
-      path: '/Permission',
+      path: 'Permission',
       component: () => import('@/views/Settings/Permission/index'),
       name: 'Permission',
       meta: {
@@ -69,7 +69,7 @@ const SettingsRouter = {
       },
     },
     {
-      path: '/ApplicationSetting',
+      path: 'ApplicationSetting',
       component: () => import('@/views/Settings/ApplicationSetting/index'),
       name: 'ApplicationSetting',
       meta: {

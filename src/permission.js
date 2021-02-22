@@ -30,7 +30,6 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
-
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const { roles, userrouter, defulateRedirect } = await store.dispatch('user/getInfo')
@@ -44,6 +43,7 @@ router.beforeEach(async (to, from, next) => {
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           store.dispatch("CompanyInfo/GetCompanyInfo");
+          store.dispatch("CompanyInfo/GetOpration");
           store.dispatch("Items/GetItem");
           // store.dispatch("Items/GetActiveItem");
           if (store.state.settings.BusinessType == 'GymManagment') {
@@ -80,12 +80,14 @@ router.beforeEach(async (to, from, next) => {
           console.log("to : ", defulateRedirect)
           //  to.path = store.settings.defulateRedirect
           // next({ ...to, replace: true })
-          if (defulateRedirect != null) {
+        /*  if (defulateRedirect != null) {
             next(defulateRedirect);
           }
           else {
             next({ ...to, replace: true })
-          }
+          }*/
+          next({ ...to, replace: true })
+
           // run First Project
         } catch (error) {
           // remove token and go to login page to re-login
@@ -106,7 +108,7 @@ router.beforeEach(async (to, from, next) => {
     } else {
       // other pages that do not have permission to access are redirected to the login page.
       //next(`/login?redirect=${to.path}`)
-      next(`/login`)
+      next(`/login?redirect=${to.path}`)
       NProgress.done()
     }
   }

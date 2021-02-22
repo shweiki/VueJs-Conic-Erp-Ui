@@ -51,7 +51,7 @@ export function filterAsyncRoutes(routes, basePath, checkedKeys, roles) {
 const state = {
   routes: [],
   addRoutes: [],
-  redirect: ''
+  redirect: '/'
 }
 
 const mutations = {
@@ -62,6 +62,7 @@ const mutations = {
     state.routes = constantRoutes.concat(routes)
   },
   SET_REDIRECT: (state, redirect) => {
+    console.log(' ss' ,redirect)
     // defualte redirect for user !!!
     state.redirect = redirect
   }

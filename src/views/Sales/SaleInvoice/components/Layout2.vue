@@ -787,7 +787,7 @@ export default {
                     this.AutoPrint ? this.Print() : undefined;
                     this.$nextTick(() => {
                       this.OpenRestOfBill = false;
-                      this.$router.back();
+                      this.$router.go(-1);
                     });
                   },
                 });

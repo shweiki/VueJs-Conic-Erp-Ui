@@ -3,13 +3,12 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <search-by-date
-          :Value="date"
+          :Value="[]"
           @Set="
             (v) => {
               date = v;
             }
           "
-          @focus="getdata()"
         />
       </div>
       <el-card class="box-card">
@@ -139,7 +138,7 @@ export default {
       TotalQty: 0,
       TotalAmmount: 0,
       search: "",
-      date: "",
+      date: [],
     };
   },
 

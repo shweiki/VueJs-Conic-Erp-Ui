@@ -11,28 +11,37 @@
   ></el-date-picker>
 </template>
 <script>
+import {
+  LocalDateTime,
+  LocalDate,
+  LocalTime,
+  DateTimeFormatter,
+  Instant,
+} from "@js-joda/core";
 export default {
   props: {
     Value: String,
   },
   data() {
     return {
-      FakeDate: this.$moment(),
+      FakeDate: "",
     };
   },
   created() {
-    this.$emit("Set", this.$moment(this.FakeDate)._d);
+    this.SetVal(new Date());
   },
   watch: {
     Value(val) {
-      if (val != "") this.FakeDate = this.$moment(val)._d;
-      else this.$emit("Set", this.$moment(this.FakeDate)._d);
+      if (val != "") this.SetVal(new Date(val));
+      else this.SetVal(new Date());
     },
   },
   methods: {
-    SetVal() {
-      this.$emit("Set", this.$moment(this.FakeDate)._d);
-      this.$emit("focus");
+    SetVal(val) {
+      this.FakeDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
+        DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
+      );
+      this.$emit("Set", this.FakeDate);
     },
   },
 };

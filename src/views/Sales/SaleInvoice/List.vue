@@ -21,13 +21,12 @@
       </div>
       <div slot="header" class="clearfix">
         <search-by-date
-          :Value="date"
+          :Value="[]"
           @Set="
             (v) => {
               date = v;
             }
           "
-          @focus="getdata()"
         />
       </div>
       <el-card class="box-card">
@@ -62,6 +61,14 @@
           type="success"
           @click="print(tableData)"
         ></el-button>
+        <el-button
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          @click="getdata"
+        >
+          Search
+        </el-button>
       </el-card>
       <el-table
         v-loading="loading"

@@ -3,7 +3,7 @@ import Layout from '@/layout'
 const AccountingRouter = {
   path: '/Accounting',
   component: Layout,
-  redirect: 'Accounting/TreeAccount',
+  redirect: '/Accounting/TreeAccount',
   name: 'Accounting',
   meta: {
     title: 'Accounting', icon: 'acc'
