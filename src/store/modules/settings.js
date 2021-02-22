@@ -68,6 +68,7 @@ const actions = {
             } if (obj.key === "customtheme" && obj.value) {
               toggleClass(document.body, "custom-theme")
             }
+
             commit('CHANGE_SETTING', obj)
           })
         }

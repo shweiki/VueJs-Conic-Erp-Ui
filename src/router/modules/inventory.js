@@ -3,14 +3,14 @@ import Layout from '@/layout'
 const InventoryRouter = {
   path: '/Inventorys',
   component: Layout,
-  redirect: '/Inventory',
+  redirect: '/Inventory/index',
   name: 'Inventorys',
   meta: {
     title: 'Inventories', icon: 'inventory'
   },
   children: [
     {
-      path: '/Items',
+      path: 'Items',
       component: () => import('@/views/Inventory/Item/index'),
       name: 'Items',
       meta: {
@@ -18,7 +18,7 @@ const InventoryRouter = {
       },
     },
     {
-      path: '/ItemMove',
+      path: 'ItemMove',
       component: () => import('@/views/Inventory/Item/ItemMove'),
       name: 'ItemMove',
       meta: {
@@ -26,7 +26,7 @@ const InventoryRouter = {
       },
     },
     {
-      path: '/Inventory',
+      path: 'index',
       component: () => import('@/views/Inventory/index'),
       name: 'Inventory',
       meta: {
@@ -73,7 +73,7 @@ const InventoryRouter = {
       meta: { title: 'Classifications', icon: 'technical-support' },
       children: [
         {
-          path: '/MenuItem',
+          path: 'MenuItem',
           component: () => import('@/views/Inventory/Classifications/MenuItem/index'),
           name: 'MenuItem',
           meta: {
@@ -81,7 +81,7 @@ const InventoryRouter = {
           },
         },
         {
-          path: '/OriginItem',
+          path: 'OriginItem',
           component: () => import('@/views/Inventory/Classifications/OriginItem/index'),
           name: 'OriginItem',
           meta: {
@@ -89,7 +89,7 @@ const InventoryRouter = {
           },
         },
         {
-          path: '/UnitItem',
+          path: 'UnitItem',
           component: () => import('@/views/Inventory/Classifications/UnitItem/index'),
           name: 'UnitItem',
           meta: {
@@ -99,7 +99,7 @@ const InventoryRouter = {
       ]
     },
     {
-      path: '/Stocktaking',
+      path: 'Stocktaking',
       redirect: '/StockItem',
       component: () => import('@/views/Inventory/Stocktaking/index'),
       meta: {
@@ -107,7 +107,7 @@ const InventoryRouter = {
       },
       children: [
         {
-          path: '/StockItem',
+          path: 'StockItem',
           component: () => import('@/views/Inventory/Stocktaking/StockItem/index'),
           name: 'StockItem',
           meta: {
@@ -115,7 +115,7 @@ const InventoryRouter = {
           },
         },
         {
-          path: '/NewStock',
+          path: 'NewStock',
           component: () => import('@/views/Inventory/Stocktaking/NewStock/index'),
           name: 'NewStock',
           meta: {

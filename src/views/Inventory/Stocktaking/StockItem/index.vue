@@ -160,7 +160,7 @@ export default {
       loading: true,
       search: "",
       dialogOprationVisible: false,
-      date: "",
+      date: [],
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",

@@ -67,7 +67,7 @@ export default {
     },
 
     querySearch(query) {
-      if (query !== "") {
+      if (query !== "" && query.length > 2) {
         GetMemberByAny({ Any: query }).then((res) => {
           this.options = res.reverse();
         });

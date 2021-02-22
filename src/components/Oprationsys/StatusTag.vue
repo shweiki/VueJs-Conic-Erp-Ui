@@ -1,9 +1,9 @@
 <template>
-  <el-tag :color="Opration.Color" :type="Opration.ClassName">{{ Opration.ArabicOprationDescription }}</el-tag>
+  <el-tag :color="Opration.Color" :type="Opration.ClassName">{{
+    Opration.ArabicOprationDescription
+  }}</el-tag>
 </template>
 <script>
-import { GetOprationByStatusTable } from "@/api/Oprationsys";
-
 export default {
   name: "StatusTag",
   props: {
@@ -23,7 +23,6 @@ export default {
   watch: {
     Status(val) {
       this.Status = val;
-      this.getdata();
     },
   },
   created() {
@@ -31,11 +30,8 @@ export default {
   },
   methods: {
     getdata() {
-      GetOprationByStatusTable({
-        TableName: this.TableName,
-        Status: this.Status,
-      }).then((response) => {
-        this.Opration = response;
+      this.Opration = this.$store.getters.Oprations.find((obj) => {
+        return obj.TableName == this.TableName && obj.Status == this.Status;
       });
     },
   },

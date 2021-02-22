@@ -5,25 +5,24 @@
       <span>المجموع</span>
       <el-divider direction="vertical"></el-divider>
       <span>
-        {{tableData.reduce(
-        (a, b) =>
-        a +
-        (b.TotalCredit - b.TotalDebit),
-        0
-        ).toFixed(3)}}
+        {{ tableData.reduce((a, b) => a + (b.TotalCredit - b.TotalDebit), 0).toFixed(3) }}
       </span>
       <el-button
-        style="float: left;"
+        style="float: left"
         icon="el-icon-printer"
-        type='success'
+        type="success"
         @click="print(tableData)"
       ></el-button>
     </el-card>
     <el-table
       v-loading="loading"
-      :data="tableData.filter(data => !search || data.Name.toLowerCase().includes(search.toLowerCase()))"
+      :data="
+        tableData.filter(
+          (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+        )
+      "
       fit
-      :default-sort="{prop: 'totalCredit', order: 'descending'}"
+      :default-sort="{ prop: 'totalCredit', order: 'descending' }"
       border
       height="500"
       highlight-current-row
@@ -38,16 +37,20 @@
       <el-table-column prop="Name" align="center">
         <template slot="header" slot-scope="{}">
           <el-input v-model="search" v-bind:placeholder="$t('Members.Search')">
-            <template slot="append">{{tableData.length}}</template>
+            <template slot="append">{{ tableData.length }}</template>
           </el-input>
         </template>
         <template slot-scope="scope">
-          <router-link :to="'/Gym/Edit/'+scope.row.Id">
-            <strong style="font-size: 10px; cursor: pointer;">{{scope.row.Name}}</strong>
+          <router-link :to="'/Gym/Edit/' + scope.row.Id">
+            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Members.Phone1')" prop="PhoneNumber1" width="120"></el-table-column>
+      <el-table-column
+        v-bind:label="$t('Members.Phone1')"
+        prop="PhoneNumber1"
+        width="120"
+      ></el-table-column>
 
       <el-table-column
         prop="totalCredit"
@@ -56,7 +59,7 @@
         width="120"
         align="center"
       >
-        <template slot-scope="scope">{{(scope.row.TotalCredit).toFixed(3) }}</template>
+        <template slot-scope="scope">{{ scope.row.TotalCredit.toFixed(3) }}</template>
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Account.Debit')"
@@ -65,10 +68,12 @@
         width="120"
         align="center"
       >
-        <template slot-scope="scope">{{(scope.row.TotalDebit).toFixed(3) }}</template>
+        <template slot-scope="scope">{{ scope.row.TotalDebit.toFixed(3) }}</template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
-        <template slot-scope="scope">{{ (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3) }}</template>
+        <template slot-scope="scope">{{
+          (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3)
+        }}</template>
       </el-table-column>
     </el-table>
   </div>
@@ -83,7 +88,7 @@ export default {
     return {
       loading: true,
       tableData: [],
-      search: ''
+      search: "",
     };
   },
   created() {
@@ -93,24 +98,24 @@ export default {
     getdata() {
       this.loading = true;
       GetPayablesMember()
-        .then(response => {
+        .then((response) => {
           // handle success
-          console.log(response)
+          console.log(response);
           this.tableData = response;
-          this.loading = false
+          this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
-        })
+        });
     },
     print(data) {
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         الرصيد: (Item.TotalCredit - Item.TotalDebit).toFixed(3),
         دائن: Item.TotalDebit.toFixed(3),
         مدين: Item.TotalCredit.toFixed(3),
         الاسم: Item.Name,
-        رقم: Item.Id
+        رقم: Item.Id,
       }));
       printJS({
         printable: data,
@@ -126,8 +131,8 @@ export default {
           "</h3>",
 
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;"
-      })
+        gridStyle: "border: 2px solid #3971A5; text-align: center;",
+      });
     },
     formatDate(date) {
       let d = new Date(date),
@@ -138,8 +143,8 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    }
-  }
+    },
+  },
 };
 </script>
 

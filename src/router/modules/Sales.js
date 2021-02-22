@@ -3,7 +3,7 @@ import Layout from '@/layout'
 const SalesRouter = {
   path: '/Sales',
   component: Layout,
-  redirect: '/Sales/List/',
+  redirect: '/Sales/List',
   meta: {
     title: 'Sales', icon: 'income'
   },
@@ -18,7 +18,7 @@ const SalesRouter = {
       hidden: true,
     },
     {
-      path: 'List/',
+      path: 'List',
       component: () => import('@/views/Sales/SaleInvoice/List'),
       name: 'ListSalesInvoice',
       meta: {
@@ -26,7 +26,16 @@ const SalesRouter = {
       },
     },
     {
-      path: 'SalesItems/',
+      path: 'ListQ',
+      component: () => import('@/views/Sales/SaleInvoice/ListQ'),
+      name: 'ListQ',
+      meta: {
+        title: 'ListQ', icon: 'cost'
+      },
+    },
+    
+    {
+      path: 'SalesItems',
       component: () => import('@/views/Sales/SalesItems'),
       name: 'SalesItems',
       meta: {
@@ -34,7 +43,7 @@ const SalesRouter = {
       },
     },
     {
-      path: 'CashPool/',
+      path: 'CashPool',
       component: () => import('@/views/Sales/CashPool/index'),
       name: 'CashPool',
       meta: {

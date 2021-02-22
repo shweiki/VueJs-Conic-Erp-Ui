@@ -35,10 +35,7 @@
   </div>
 </template>
 <script>
-import {
-  GetNextOprationByStatusTable,
-  ChangeObjStatusByTableName,
-} from "@/api/Oprationsys";
+import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 
 export default {
   name: "NextOprations",
@@ -96,11 +93,8 @@ export default {
   },
   methods: {
     getdata() {
-      GetNextOprationByStatusTable({
-        TableName: this.TableName,
-        Status: this.Status,
-      }).then((response) => {
-        this.NextOprations = response;
+      this.NextOprations = this.$store.getters.Oprations.filter((Item) => {
+        return Item.TableName == this.TableName && Item.ReferenceStatus == this.Status;
       });
     },
     handleOprationsys(ObjID, Opration) {

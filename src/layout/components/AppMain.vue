@@ -34,7 +34,7 @@ import Clock from "@/components/Clock";
 
 export default {
   name: "AppMain",
-  components:{Clock},
+  components: { Clock },
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews;
@@ -44,7 +44,7 @@ export default {
     },
     key() {
       return this.$route.path;
-    }
+    },
   },
   watch: {
     visible(value) {
@@ -53,7 +53,7 @@ export default {
       } else {
         document.body.removeEventListener("click", this.closeMenu);
       }
-    }
+    },
   },
   data() {
     return {
@@ -61,7 +61,7 @@ export default {
       top: 0,
       left: 0,
       FullPath: "",
-      affixTags: []
+      affixTags: [],
     };
   },
   methods: {
@@ -69,19 +69,19 @@ export default {
       const fullPath = this.FullPath;
       this.$nextTick(() => {
         this.$router.replace({
-          path: "/redirect" + fullPath
+          path: "/redirect" + fullPath,
         });
       });
     },
     Back() {
-      this.$nextTick(() => {
+      if (this.$route.query.noGoBack) {
+        this.$router.push({ path: this.$store.getters.defulate_redirect });
+      } else {
         this.$router.go(-1);
-      });
+      }
     },
     Forward() {
-      this.$nextTick(() => {
-        this.$router.go(1);
-      });
+      this.$router.go(1);
     },
     openMenu(key, e) {
       //console.log(key);
@@ -103,8 +103,8 @@ export default {
     },
     closeMenu() {
       this.visible = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

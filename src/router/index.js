@@ -82,11 +82,11 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/Profile',
+    redirect: '/index',
     hidden: true,
     children: [
       {
-        path: 'Profile',
+        path: 'index',
         component: () => import('@/views/Profile/index'),
         name: 'Profile',
         meta: { title: 'Profile', icon: 'user', noCache: true }
@@ -117,6 +117,7 @@ export const asyncRoutes = [
   {
     path: '/Vendor',
     component: Layout,
+    redirect: '/Vendor/index',
     children: [
       {
         path: 'index',

@@ -210,7 +210,7 @@ export default {
       TotalCheque: 0,
       TotalVisa: 0,
       Total: 0,
-      date: "",
+      date: [],
       dialogOprationVisible: false,
       textOpration: {
         OprationDescription: "",

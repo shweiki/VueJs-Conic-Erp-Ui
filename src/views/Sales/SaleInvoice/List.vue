@@ -51,6 +51,15 @@
           type="success"
           @click="print(tableData)"
         ></el-button>
+        <el-button
+          v-waves
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          @click="handleFilter"
+        >
+          Search
+        </el-button>
       </el-card>
       <el-table
         v-loading="loading"
@@ -169,6 +178,7 @@ import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import waves from "@/directive/waves"; // waves directive
 
 export default {
   name: "SalesInvoice",
@@ -179,6 +189,8 @@ export default {
     PrintButton,
     RadioOprations,
   },
+  directives: { waves },
+
   data() {
     return {
       tableData: [],
@@ -188,13 +200,17 @@ export default {
       TotalCheque: 0,
       TotalVisa: 0,
       Total: 0,
-      date: "",
+      date: [],
     };
   },
   created() {
     this.getdata();
   },
   methods: {
+    handleFilter() {
+      //   this.listQuery.Page = 1;
+      this.getdata();
+    },
     getdata() {
       //   console.log(this.date, new Date());
       this.loading = true;

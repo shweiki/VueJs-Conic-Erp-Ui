@@ -3,9 +3,8 @@ import Layout from '@/layout'
 const PurchasesRouter = {
   path: '/Purchase',
   name: 'Purchase',
-
   component: Layout,
-  redirect: '/Purchase/PurchaseInvoice/List',
+  redirect: '/Purchase/List',
   meta: { title: 'Purchases', icon: 'shopping-cart' },
   children: [
     {

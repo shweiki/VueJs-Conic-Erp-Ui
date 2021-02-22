@@ -18,6 +18,7 @@
   "main": "background.js",
   "dependencies": {
     "@dangvanthanh/vue-clock": "^0.2.1",
+    "@js-joda/core": "^3.2.0",
     "axios": "^0.18.1",
     "clipboard": "^2.0.4",
     "codemirror": "^5.45.0",
@@ -34,8 +35,6 @@
     "jsonlint": "^1.6.3",
     "jspdf": "^1.5.3",
     "jszip": "^3.2.1",
-    "moment": "^2.29.1",
-    "moment-timezone": "^0.5.32",
     "normalize.css": "^7.0.0",
     "nprogress": "^0.2.0",
     "numeric-keyboard": "^0.7.0",

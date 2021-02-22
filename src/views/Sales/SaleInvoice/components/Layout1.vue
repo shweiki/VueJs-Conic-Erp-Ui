@@ -23,7 +23,6 @@
                   <fake-date
                     :Value="tempForm.FakeDate.toString()"
                     @Set="(v) => (tempForm.FakeDate = v)"
-                    @focus="focusBarcode"
                   />
                 </el-form-item>
               </el-col>
@@ -763,6 +762,7 @@ export default {
                     this.AutoPrint ? this.Print() : undefined;
                     this.$nextTick(() => {
                       this.OpenRestOfBill = false;
+                      this.$router.go(-1);
                     });
                   },
                 });

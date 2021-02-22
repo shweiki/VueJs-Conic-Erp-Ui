@@ -139,7 +139,7 @@ export default {
       TotalQty: 0,
       TotalAmmount: 0,
       search: "",
-      date: "",
+      date: [],
     };
   },
 

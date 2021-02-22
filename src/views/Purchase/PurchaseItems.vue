@@ -106,7 +106,7 @@ export default {
       tableData: [],
       loading: true,
       search: "",
-      date: "",
+      date: [],
     };
   },
   created() {
