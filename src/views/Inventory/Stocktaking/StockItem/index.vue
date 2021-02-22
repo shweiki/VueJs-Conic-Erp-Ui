@@ -3,13 +3,12 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <search-by-date
-          :Value="date"
+          :Value="[]"
           @Set="
             (v) => {
               date = v;
             }
           "
-          @focus="getdata()"
         />
         <!-- <el-button 
               style="float: left; "

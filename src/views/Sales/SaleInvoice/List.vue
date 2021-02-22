@@ -10,13 +10,12 @@
           @click="printAll(tableData)"
         ></el-button>
         <search-by-date
-          :Value="date"
+          :Value="[]"
           @Set="
             (v) => {
               date = v;
             }
           "
-          @focus="getdata()"
         />
       </div>
       <el-card class="box-card">
@@ -52,11 +51,10 @@
           @click="print(tableData)"
         ></el-button>
         <el-button
-          v-waves
           class="filter-item"
           type="primary"
           icon="el-icon-search"
-          @click="handleFilter"
+          @click="getdata"
         >
           Search
         </el-button>
@@ -171,14 +169,12 @@
 </template>
 <script>
 import { GetSaleInvoice } from "@/api/SaleInvoice";
-import { ChangeObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import waves from "@/directive/waves"; // waves directive
 
 export default {
   name: "SalesInvoice",
@@ -189,8 +185,6 @@ export default {
     PrintButton,
     RadioOprations,
   },
-  directives: { waves },
-
   data() {
     return {
       tableData: [],
@@ -204,13 +198,9 @@ export default {
     };
   },
   created() {
-    this.getdata();
+    //  this.getdata();
   },
   methods: {
-    handleFilter() {
-      //   this.listQuery.Page = 1;
-      this.getdata();
-    },
     getdata() {
       //   console.log(this.date, new Date());
       this.loading = true;

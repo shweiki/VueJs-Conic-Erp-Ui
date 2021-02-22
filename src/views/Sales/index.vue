@@ -16,13 +16,12 @@
               @click="printAll(tableData)"
             ></el-button> -->
         <search-by-date
-          :Value="date"
+          :Value="[]"
           @Set="
             (v) => {
               date = v;
             }
           "
-          @focus="getdata()"
         />
       </div>
       <el-card class="box-card">
