@@ -53,7 +53,6 @@
     "vue-count-to": "^1.0.13",
     "vue-currency-input": "^1.15.1",
     "vue-i18n": "^8.15.1",
-    "vue-moment": "^4.1.0",
     "vue-phone-number-input": "^1.1.10",
     "vue-router": "^3.0.2",
     "vue-splitpane": "^1.0.4",

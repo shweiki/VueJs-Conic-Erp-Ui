@@ -65,7 +65,7 @@
 <script>
 import { GetMemberLogByStatus } from "@/api/MemberLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import { LocalDateTime } from "@js-joda/core";
+import { LocalTime } from "@js-joda/core";
 export default {
   name: "MemberLog",
   components: { StatusTag },
@@ -83,16 +83,13 @@ export default {
     getdata() {
       GetMemberLogByStatus({ Status: 0 })
         .then((response) => {
-          //    console.log(response)
           if (response.length > this.MembersLogs.length) {
             this.MembersLogs = response.sort(
-              (a, b) => LocalDateTime.of(b.DateTime) - LocalDateTime.of(a.DateTime)
+              (a, b) => new Date(b.DateTime) - new Date(a.DateTime)
             );
           }
         })
         .catch((error) => {
-          console.log("test");
-
           reject(error);
         });
     },
