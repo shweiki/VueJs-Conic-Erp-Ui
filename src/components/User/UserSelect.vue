@@ -11,7 +11,7 @@
       v-for="item in UsersNames"
       :key="item.key"
       :label="item.UserName"
-      :value="item.key"
+      :value="item.UserName"
     />
   </el-select>
 </template>
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     SetVal() {
-      console.log(" eee  " + this.Name);
+      //      console.log(" eee  " + this.Name);
       this.$emit("Set", this.Name);
     },
   },
