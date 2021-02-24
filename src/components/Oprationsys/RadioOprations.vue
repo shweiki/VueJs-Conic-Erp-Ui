@@ -1,8 +1,11 @@
 <template>
-  <div style="float : left">
-    <el-radio-group v-model="Status" @change="SetStatus">
+  <div style="float: left">
+    <el-radio-group v-model="Status" @change="SetVal">
+      <el-radio-button label="null">All</el-radio-button>
       <el-radio-button
-        v-for="op in Oprations"
+        v-for="op in $store.getters.Oprations.filter((Item) => {
+          return Item.TableName == TableName;
+        })"
         :key="op.Id"
         v-bind:label="op.Status"
         >{{ op.OprationDescription }}</el-radio-button
@@ -11,31 +14,24 @@
   </div>
 </template>
 <script>
-import { GetOprationByTable } from "@/api/Oprationsys";
-
 export default {
   props: {
-    TableName: String
+    TableName: String,
   },
   data() {
     return {
       Oprations: [],
-      Status: 1
+      Status: 1,
     };
   },
-  mounted() {
-    this.getdata();
-    this.$emit("Change", this.Status);
+  created() {
+    this.SetVal(this.Status);
   },
   methods: {
-    SetStatus() {
-      this.$emit("Change", this.Status);
+    SetVal(val) {
+      this.Status = val;
+      this.$emit("Set", this.Status);
     },
-    getdata() {
-      GetOprationByTable({ Name: this.TableName }).then(response => {
-        this.Oprations = response;
-      });
-    }
-  }
+  },
 };
 </script>

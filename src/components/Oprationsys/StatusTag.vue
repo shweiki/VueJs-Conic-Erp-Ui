@@ -7,13 +7,8 @@
 export default {
   name: "StatusTag",
   props: {
-    Status: {
-      type: Number,
-      default: undefined,
-    },
-    TableName: {
-      type: String,
-    },
+    Status: Number,
+    TableName: String,
   },
   data() {
     return {
@@ -22,7 +17,7 @@ export default {
   },
   watch: {
     Status(val) {
-      this.Status = val;
+      this.getdata();
     },
   },
   created() {

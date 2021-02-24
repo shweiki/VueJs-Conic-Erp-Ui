@@ -52,6 +52,12 @@ export function GetUsers() {
     method: 'post'
   })
 }
+export function GetUsersNames() {
+  return request({
+    url: '/User/GetUsersNames',
+    method: 'post'
+  })
+}GetUsersNames
 export function GetRoles() {
   return request({
     url: '/User/GetRoles',

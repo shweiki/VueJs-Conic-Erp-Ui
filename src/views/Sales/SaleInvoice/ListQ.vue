@@ -17,20 +17,14 @@
           }
         "
       />
-      <el-select
-        v-model="listQuery.User"
-        placeholder="Type"
-        clearable
-        class="filter-item"
-        style="width: 130px"
-      >
-        <el-option
-          v-for="item in calendarTypeOptions"
-          :key="item.key"
-          :label="item.display_name + '(' + item.key + ')'"
-          :value="item.key"
-        />
-      </el-select>
+      <user-select
+        @Set="
+          (v) => {
+            listQuery.User = v;
+          }
+        "
+      />
+
       <el-select
         v-model="listQuery.Sort"
         style="width: 140px"
@@ -195,23 +189,11 @@ import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton";
+import UserSelect from "@/components/User/UserSelect";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-
-const calendarTypeOptions = [
-  { key: "CN", display_name: "China" },
-  { key: "US", display_name: "USA" },
-  { key: "JP", display_name: "Japan" },
-  { key: "EU", display_name: "Eurozone" },
-];
-
-// arr to obj, such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name;
-  return acc;
-}, {});
 
 export default {
   name: "ComplexTable",
@@ -221,21 +203,9 @@ export default {
     SearchByDate,
     PrintButton,
     Pagination,
+    UserSelect,
   },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "info",
-        deleted: "danger",
-      };
-      return statusMap[status];
-    },
-    typeFilter(type) {
-      return calendarTypeKeyValue[type];
-    },
-  },
   data() {
     return {
       tableKey: 0,
@@ -252,7 +222,7 @@ export default {
         DateFrom: "",
         DateTo: "",
       },
-      calendarTypeOptions,
+
       sortOptions: [
         { label: "ID Ascending", key: "+id" },
         { label: "ID Descending", key: "-id" },

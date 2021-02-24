@@ -1,7 +1,6 @@
 <template>
   <div>
     <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
-
     <el-date-picker
       v-model="date"
       :format="$store.getters.settings.DateTimeFormat"
@@ -26,37 +25,30 @@ import {
 } from "@js-joda/core";
 
 export default {
-  props: {
-    Value: Array,
-  },
   data() {
     return {
       date: [],
     };
-  },
-  watch: {
-    Value(val) {
-      if (val.length > 0) this.SetVal([new Date(val[0]), new Date(val[1])]);
-      else this.SetVal([new Date(), new Date()]);
-    },
   },
   created() {
     this.SetVal([new Date(), new Date()]);
   },
   methods: {
     SetVal(val) {
-      this.date = [
-        LocalDate.ofInstant(Instant.ofEpochMilli(val[0]))
-          .atStartOfDay()
-          .format(
-            DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
-          ),
-        LocalDate.ofInstant(Instant.ofEpochMilli(val[1]))
-          .atTime(LocalTime.MAX)
-          .format(
-            DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
-          ),
-      ];
+      if (!val) this.date = [];
+      else
+        this.date = [
+          LocalDate.ofInstant(Instant.ofEpochMilli(val[0]))
+            .atStartOfDay()
+            .format(
+              DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
+            ),
+          LocalDate.ofInstant(Instant.ofEpochMilli(val[1]))
+            .atTime(LocalTime.MAX)
+            .format(
+              DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
+            ),
+        ];
       this.$emit("Set", this.date);
     },
   },
