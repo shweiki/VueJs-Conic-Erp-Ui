@@ -32,7 +32,7 @@
         <i class="el-icon-caret-bottom" />
       </div>
       <el-dropdown-menu slot="dropdown">
-        <router-link to="/Profile">
+        <router-link :to="$store.getters.defulate_redirect">
           <el-dropdown-item>
             {{ $t("navbar.Profile") }}
           </el-dropdown-item>
@@ -42,12 +42,12 @@
             {{ $t("navbar.dashboard") }}
           </el-dropdown-item>
         </router-link>
-        <router-link v-permission="['Developer']" to="/ApplicationSetting">
+        <router-link v-permission="['Developer']" to="/Settings/ApplicationSetting">
           <el-dropdown-item>
             {{ $t("route.ApplicationSetting") }}
           </el-dropdown-item>
         </router-link>
-        <router-link v-permission="['Developer']" to="/Permission">
+        <router-link v-permission="['Developer']" to="/Settings/Permission">
           <el-dropdown-item>
             {{ $t("route.Permissions") }}
           </el-dropdown-item>

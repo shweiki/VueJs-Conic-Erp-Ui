@@ -39,7 +39,7 @@ export default {
     UploadMemberShip: "اشتراكات",
     UploadMember: "مشتركين",
     UploadMembershipMovement: "حركات اشتركات",
-
+    ListQ: "ListQ",
     Inventory: 'مخزون',
     Items: 'اصناف',
     ItemMove: 'حركة الصنف',
