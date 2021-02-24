@@ -1,7 +1,7 @@
 <template>
   <div>
-    <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
-    <el-date-picker
+    <!-- <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
+     --><el-date-picker
       v-model="date"
       :format="$store.getters.settings.DateTimeFormat"
       type="daterange"

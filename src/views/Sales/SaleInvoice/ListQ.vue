@@ -81,48 +81,27 @@
       <el-divider direction="vertical"></el-divider>
       <span>عدد الفواتير</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ list.length }}</span>
+      <span>{{ Totals.Rows }}</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Cash") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          list
-            .reduce((a, b) => a + (b["PaymentMethod"] == "Cash" ? b.Total : 0), 0)
-            .toFixed(3)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.Cash.toFixed(3) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Visa") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          list
-            .reduce((a, b) => a + (b["PaymentMethod"] == "Visa" ? b.Total : 0), 0)
-            .toFixed(3)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.Visa.toFixed(3) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>الاجل</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          list
-            .reduce((a, b) => a + (b["PaymentMethod"] == "Receivables" ? b.Total : 0), 0)
-            .toFixed(3)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.Receivables.toFixed(3) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Amount") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ list.reduce((a, b) => a + b.Total, 0).toFixed(3) }} JOD</span>
+      <span>{{ Totals.Totals.toFixed(3) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
     </el-card>
 
@@ -231,8 +210,8 @@
       </el-table-column>
     </el-table>
     <pagination
-      v-show="total > 0"
-      :total="total"
+      v-show="Totals.Rows > 0"
+      :total="Totals.Rows"
       :page.sync="listQuery.Page"
       :limit.sync="listQuery.limit"
       @pagination="getList"
@@ -279,7 +258,7 @@ export default {
     return {
       tableKey: 0,
       list: [],
-      total: 0,
+      Totals: { Rows: 0, Totals: 0, Cash: 0, Receivables: 0, Visa: 0 },
       listLoading: false,
       date: [],
       listQuery: {
@@ -292,7 +271,6 @@ export default {
         DateTo: "",
         Status: undefined,
       },
-
       sortOptions: [
         { label: "ID Ascending", key: "+id" },
         { label: "ID Descending", key: "-id" },
@@ -313,7 +291,7 @@ export default {
       console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
-        this.total = response.total;
+        this.Totals = response.Totals;
         this.listLoading = false;
       });
     },
