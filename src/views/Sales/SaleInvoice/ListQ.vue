@@ -2,14 +2,6 @@
   <div class="app-container">
     <el-card class="box-card">
       <div class="filter-container">
-        <radio-oprations
-          TableName="SalesInvoice"
-          @Set="
-            (v) => {
-              listQuery.Status = v;
-            }
-          "
-        />
         <el-row type="flex">
           <el-col :span="4">
             <el-input
@@ -27,20 +19,22 @@
                 (v) => {
                   listQuery.DateFrom = v[0];
                   listQuery.DateTo = v[1];
+                  handleFilter();
                 }
               "
             />
           </el-col>
-          <el-col :span="4">
+          <el-col :span="3">
             <user-select
               @Set="
                 (v) => {
                   listQuery.User = v;
+                  handleFilter();
                 }
               "
             />
           </el-col>
-          <el-col :span="4">
+          <el-col :span="3">
             <el-select
               v-model="listQuery.Sort"
               style="width: 140px"
@@ -55,7 +49,16 @@
               />
             </el-select>
           </el-col>
-          <el-col :span="4"
+          <el-col :span="6">
+            <el-button
+              v-waves
+              :loading="downloadLoading"
+              class="filter-item"
+              type="primary"
+              icon="el-icon-download"
+              @click="handleDownload"
+            >
+              Export </el-button
             ><el-button
               v-waves
               class="filter-item"
@@ -65,19 +68,18 @@
             >
               Search
             </el-button>
-            <el-button
-              v-waves
-              :loading="downloadLoading"
-              class="filter-item"
-              type="primary"
-              icon="el-icon-download"
-              @click="handleDownload"
-            >
-              Export
-            </el-button></el-col
-          >
+          </el-col>
         </el-row>
       </div>
+      <radio-oprations
+        TableName="SalesInvoice"
+        @Set="
+          (v) => {
+            listQuery.Status = v;
+            handleFilter();
+          }
+        "
+      />
       <el-divider direction="vertical"></el-divider>
       <span>عدد الفواتير</span>
       <el-divider direction="vertical"></el-divider>
@@ -216,16 +218,6 @@
       :limit.sync="listQuery.limit"
       @pagination="getList"
     />
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -275,10 +267,6 @@ export default {
         { label: "ID Ascending", key: "+id" },
         { label: "ID Descending", key: "-id" },
       ],
-      statusOptions: ["published", "draft", "deleted"],
-      dialogPvVisible: false,
-      pvData: [],
-
       downloadLoading: false,
     };
   },
@@ -312,13 +300,6 @@ export default {
         this.listQuery.sort = "-id";
       }
       this.handleFilter();
-    },
-    handleFetchPv(pv) {
-      console.log("PV", pv);
-      /*  fetchPv(pv).then((response) => {
-        this.pvData = response.data.pvData;
-        this.dialogPvVisible = true;
-      });*/
     },
     handleDownload() {
       this.downloadLoading = true;

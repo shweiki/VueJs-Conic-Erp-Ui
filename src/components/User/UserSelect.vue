@@ -1,7 +1,7 @@
 <template>
   <el-select
     v-model="Name"
-    placeholder="Type"
+    placeholder="Users"
     clearable
     class="filter-item"
     style="width: 130px"
