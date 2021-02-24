@@ -1,63 +1,130 @@
 ﻿<template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-input
-        v-model="listQuery.Any"
-        placeholder="Search By Any Acount Name Or Id"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <search-by-date
-        :Value="[listQuery.DateFrom, listQuery.DateTo]"
-        @Set="
-          (v) => {
-            listQuery.DateFrom = v[0];
-            listQuery.DateTo = v[1];
-          }
-        "
-      />
-      <user-select
-        @Set="
-          (v) => {
-            listQuery.User = v;
-          }
-        "
-      />
-
-      <el-select
-        v-model="listQuery.Sort"
-        style="width: 140px"
-        class="filter-item"
-        @change="handleFilter"
-      >
-        <el-option
-          v-for="item in sortOptions"
-          :key="item.key"
-          :label="item.label"
-          :value="item.key"
+    <el-card class="box-card">
+      <div class="filter-container">
+        <radio-oprations
+          TableName="SalesInvoice"
+          @Set="
+            (v) => {
+              listQuery.Status = v;
+            }
+          "
         />
-      </el-select>
-      <el-button
-        v-waves
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleFilter"
+        <el-row type="flex">
+          <el-col :span="4">
+            <el-input
+              v-model="listQuery.Any"
+              placeholder="Search By Any Acount Name Or Id"
+              style="width: 200px"
+              class="filter-item"
+              @keyup.enter.native="handleFilter"
+            />
+          </el-col>
+          <el-col :span="8">
+            <search-by-date
+              :Value="[listQuery.DateFrom, listQuery.DateTo]"
+              @Set="
+                (v) => {
+                  listQuery.DateFrom = v[0];
+                  listQuery.DateTo = v[1];
+                }
+              "
+            />
+          </el-col>
+          <el-col :span="4">
+            <user-select
+              @Set="
+                (v) => {
+                  listQuery.User = v;
+                }
+              "
+            />
+          </el-col>
+          <el-col :span="4">
+            <el-select
+              v-model="listQuery.Sort"
+              style="width: 140px"
+              class="filter-item"
+              @change="handleFilter"
+            >
+              <el-option
+                v-for="item in sortOptions"
+                :key="item.key"
+                :label="item.label"
+                :value="item.key"
+              />
+            </el-select>
+          </el-col>
+          <el-col :span="4"
+            ><el-button
+              v-waves
+              class="filter-item"
+              type="primary"
+              icon="el-icon-search"
+              @click="handleFilter"
+            >
+              Search
+            </el-button>
+            <el-button
+              v-waves
+              :loading="downloadLoading"
+              class="filter-item"
+              type="primary"
+              icon="el-icon-download"
+              @click="handleDownload"
+            >
+              Export
+            </el-button></el-col
+          >
+        </el-row>
+      </div>
+      <el-divider direction="vertical"></el-divider>
+      <span>عدد الفواتير</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>{{ list.length }}</span>
+      <el-divider direction="vertical"></el-divider>
+
+      <span>{{ $t("CashPool.Cash") }}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span
+        >{{
+          list
+            .reduce((a, b) => a + (b["PaymentMethod"] == "Cash" ? b.Total : 0), 0)
+            .toFixed(3)
+        }}
+        JOD</span
       >
-        Search
-      </el-button>
-      <el-button
-        v-waves
-        :loading="downloadLoading"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-download"
-        @click="handleDownload"
+      <el-divider direction="vertical"></el-divider>
+
+      <span>{{ $t("CashPool.Visa") }}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span
+        >{{
+          list
+            .reduce((a, b) => a + (b["PaymentMethod"] == "Visa" ? b.Total : 0), 0)
+            .toFixed(3)
+        }}
+        JOD</span
       >
-        Export
-      </el-button>
-    </div>
+      <el-divider direction="vertical"></el-divider>
+
+      <span>الاجل</span>
+      <el-divider direction="vertical"></el-divider>
+      <span
+        >{{
+          list
+            .reduce((a, b) => a + (b["PaymentMethod"] == "Receivables" ? b.Total : 0), 0)
+            .toFixed(3)
+        }}
+        JOD</span
+      >
+      <el-divider direction="vertical"></el-divider>
+
+      <span>{{ $t("CashPool.Amount") }}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>{{ list.reduce((a, b) => a + b.Total, 0).toFixed(3) }} JOD</span>
+      <el-divider direction="vertical"></el-divider>
+    </el-card>
 
     <el-table
       v-loading="listLoading"
@@ -190,6 +257,7 @@ import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import UserSelect from "@/components/User/UserSelect";
+import RadioOprations from "@/components/Oprationsys/RadioOprations";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -204,12 +272,13 @@ export default {
     PrintButton,
     Pagination,
     UserSelect,
+    RadioOprations,
   },
   directives: { waves },
   data() {
     return {
       tableKey: 0,
-      list: null,
+      list: [],
       total: 0,
       listLoading: false,
       date: [],
@@ -218,9 +287,10 @@ export default {
         Any: "",
         limit: 10,
         Sort: "+id",
-        User: "Developer",
+        User: undefined,
         DateFrom: "",
         DateTo: "",
+        Status: undefined,
       },
 
       sortOptions: [
@@ -275,8 +345,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true;
       import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = ["timestamp", "title", "type", "importance", "status"];
-        const filterVal = ["timestamp", "title", "type", "importance", "status"];
+        const tHeader = Object.keys(this.list[0]);
+        const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,

@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       Oprations: [],
-      Status: 1,
+      Status: null,
     };
   },
   created() {
