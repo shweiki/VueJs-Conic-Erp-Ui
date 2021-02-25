@@ -146,7 +146,7 @@
         width="120"
         align="center"
       ></el-table-column>
-      <el-table-column prop="Name" align="center"> </el-table-column>
+      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
       <el-table-column
         prop="PaymentMethod"
         sortable
@@ -179,6 +179,7 @@
             :ObjID="scope.row.Id"
             :Status="scope.row.Status"
             TableName="SalesInvoice"
+            @Done="handleFilter"
           />
           <print-button Type="SaleInvoice" :Data="scope.row" />
         </template>
