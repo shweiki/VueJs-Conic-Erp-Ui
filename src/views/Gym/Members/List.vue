@@ -330,7 +330,7 @@ export default {
             break;
           }
         }
-        console.log(this.Selection);
+        //  console.log(this.Selection);
         /*  numbers100.forEach((element) => {
           axios({
             method: "get",
