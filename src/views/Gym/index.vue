@@ -81,13 +81,13 @@
               <el-table-column align="center" v-bind:label="$t('Members.MorningPrice')">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.MorningPrice.toFixed(2) }}
+                  {{ scope.row.MorningPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
               <el-table-column v-bind:label="$t('Members.FullDayPrice')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.FullDayPrice.toFixed(2) }}
+                  {{ scope.row.FullDayPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
               <el-table-column

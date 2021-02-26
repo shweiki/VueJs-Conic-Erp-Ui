@@ -12,14 +12,14 @@
       <div style="text-align: center">
         <span style="font-size: large"
           >إجمالي مبلغ الفاتورة :
-          {{ Total.toFixed(2) }}
+          {{ Total.toFixed($store.getters.settings.ToFixed) }}
           JOD</span
         >
         <el-divider></el-divider>
 
         <span style="color: #ff5722; font-size: x-large"
           >الباقي :
-          {{ (Total - RestOfBill).toFixed(2) }}
+          {{ (Total - RestOfBill).toFixed($store.getters.settings.ToFixed) }}
           JOD</span
         >
         <el-divider></el-divider>

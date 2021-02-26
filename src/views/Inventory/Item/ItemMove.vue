@@ -36,12 +36,12 @@
 
         <span>{{ $t("OrderInventories.TotalNumber") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ TotalQty.toFixed(3) }} {{ $t("MemberList.JOD") }}</span>
+        <span>{{ TotalQty.toFixed($store.getters.settings.ToFixed) }} {{ $t("MemberList.JOD") }}</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>{{ $t("ItemSales.Amountv") }} </span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ TotalAmmount.toFixed(3) }} {{ $t("MemberList.JOD") }}</span>
+        <span>{{ TotalAmmount.toFixed($store.getters.settings.ToFixed) }} {{ $t("MemberList.JOD") }}</span>
         <el-divider direction="vertical"></el-divider>
 
         <el-button
@@ -97,7 +97,7 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{ scope.row.Qty.toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.Qty.toFixed($store.getters.settings.ToFixed) }}</template>
         </el-table-column>
         <el-table-column
           prop="SellingPrice"
@@ -105,7 +105,7 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{ scope.row.SellingPrice.toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}</template>
         </el-table-column>
         <el-table-column
           v-bind:label="$t('ItemSales.Amountv')"
@@ -113,7 +113,7 @@
           align="center"
         >
           <template slot-scope="scope"
-            >{{ (scope.row.Qty * scope.row.SellingPrice).toFixed(3) }}
+            >{{ (scope.row.Qty * scope.row.SellingPrice).toFixed($store.getters.settings.ToFixed) }}
             {{ $t("MemberList.JOD") }}</template
           >
         </el-table-column>
@@ -159,7 +159,7 @@ export default {
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(3),
+        Total: (Item.SellingPrice * Item.Qty).toFixed($store.getters.settings.ToFixed),
       }));
       printJS({
         printable: data,
@@ -177,7 +177,7 @@ export default {
             return obj.Id == this.ItemId;
           }).Name +
           "</h2></center> <h3 style='float:left'>   الاجمالي الكمية:  " +
-          this.TotalQty.toFixed(3) +
+          this.TotalQty.toFixed($store.getters.settings.ToFixed) +
           "</h3><h3 style='float:right'>  الفترة  : " +
           this.formatDate(this.date[0]) +
           " - " +

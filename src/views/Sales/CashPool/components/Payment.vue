@@ -61,22 +61,22 @@
 
       <span>{{ $t("CashPool.Cash") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalCash.toFixed(3) }} JOD</span>
+      <span>{{ TotalCash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Visa") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalVisa.toFixed(3) }} JOD</span>
+      <span>{{ TotalVisa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>شيكات</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalCheque.toFixed(3) }} JOD</span>
+      <span>{{ TotalCheque.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Amount") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Total.toFixed(3) }} JOD</span>
+      <span>{{ Total.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
       <el-button
         :disabled="EnableSave"
@@ -325,13 +325,13 @@ export default {
             return obj.value == this.InComeAccount;
           }).label +
           "</h2></center><h3 style='float:right'> الاجمالي النقدي " +
-          this.TotalCash.toFixed(3) +
+          this.TotalCash.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي الفيزا : " +
-          this.TotalVisa.toFixed(3) +
+          this.TotalVisa.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي الشيكات : " +
-          this.TotalCheque.toFixed(3) +
+          this.TotalCheque.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي :  " +
-          this.Total.toFixed(3) +
+          this.Total.toFixed(this.$store.getters.settings.ToFixed) +
           "</h3><h3 style='float:right'>  التاريخ  : " +
           this.formatDate(new Date()) +
           "</h3>",

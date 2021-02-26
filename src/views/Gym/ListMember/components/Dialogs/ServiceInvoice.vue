@@ -33,7 +33,7 @@
                 >
                   <span style="float: left">{{ item.Name }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{
-                    item.SellingPrice.toFixed(2)
+                    item.SellingPrice.toFixed($store.getters.settings.ToFixed)
                   }}</span>
                   <span style="color: #8492a6; font-size: 13px">( {{ item.Qty }} )</span>
                 </el-option>

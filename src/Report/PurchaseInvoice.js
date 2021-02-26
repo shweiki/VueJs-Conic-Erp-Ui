@@ -9,7 +9,7 @@ export function PurchaseInvoiceA4(Data) {
     Data.InventoryMovements.reduce((prev, cur) => {
       return prev + cur.Qty * cur.SellingPrice;
     }, 0) - Data.Discount
-  ).toFixed(2);
+  ).toFixed(this.$store.getters.settings.ToFixed);
 
   //Logo
   //doc.addImage(ComapnyInfo.Logo, "jpeg", startX, startY, 12, 12);
@@ -29,7 +29,7 @@ export function PurchaseInvoiceA4(Data) {
   let tabelInventoryMovements = "";
   Data.InventoryMovements.reverse().forEach(element => {
     tabelInventoryMovements += "<tr style='text-align: center;'>"
-    tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(2) + "</td>";
+    tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(this.$store.getters.settings.ToFixed) + "</td>";
     tabelInventoryMovements += "<td>" + element.SellingPrice + "</td>";
     tabelInventoryMovements += "<td>" + element.Qty + "</td>";
     tabelInventoryMovements += "<td>" + element.Name + "</td>";
@@ -41,7 +41,7 @@ export function PurchaseInvoiceA4(Data) {
   //  ComapnyInfo.HeaderReport =ComapnyInfo.HeaderReport.replace('{{item.name}}',Data.InventoryMovements[0].name)
   // ComapnyInfo.HeaderReport =ComapnyInfo.HeaderReport.replace('{{item.qty}}',Data.InventoryMovements[0].Qty)
   // ComapnyInfo.HeaderReport =ComapnyInfo.HeaderReport.replace('{{item.SellingPrice}}',Data.InventoryMovements[0].SellingPrice)
-  //ComapnyInfo.HeaderReport =ComapnyInfo.HeaderReport.replace('{{item.total}}',(Data.InventoryMovements[0].SellingPrice*Data.InventoryMovements[0].Qty).toFixed(2))
+  //ComapnyInfo.HeaderReport =ComapnyInfo.HeaderReport.replace('{{item.total}}',(Data.InventoryMovements[0].SellingPrice*Data.InventoryMovements[0].Qty).toFixed(this.$store.getters.settings.ToFixed))
 
   let win = window.open("", "Title", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=600,top=" + (screen.height - 50) + ",left=" + (screen.width - 500));
 

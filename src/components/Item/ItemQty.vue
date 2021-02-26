@@ -14,7 +14,7 @@
         {{ $t("Items.Outbound") }} {{ Inventory.QtyOut }}
         <br />
         {{ $t("Items.Credit") }}
-        <el-tag>{{ (Inventory.QtyIn - Inventory.QtyOut).toFixed(2) }}</el-tag>
+        <el-tag>{{ (Inventory.QtyIn - Inventory.QtyOut).toFixed($store.getters.settings.ToFixed) }}</el-tag>
       </div>
       <el-button>{{ Inventory.InventoryName }}</el-button>
     </el-tooltip>

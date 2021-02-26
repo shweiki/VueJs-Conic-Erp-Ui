@@ -1,9 +1,9 @@
-﻿<template>
+<template>
   <div class="app-container">
     <el-card class="box-card">
       <div class="filter-container">
         <el-row type="flex">
-          <el-col :span="4">
+          <el-col :span="12">
             <el-input
               v-model="listQuery.Any"
               placeholder="Search By Any Acount Name Or Id"
@@ -12,27 +12,40 @@
               @keyup.enter.native="handleFilter"
             />
           </el-col>
-          <el-col :span="8">
-            <search-by-date
-              :Value="[listQuery.DateFrom, listQuery.DateTo]"
-              @Set="
-                (v) => {
-                  listQuery.DateFrom = v[0];
-                  listQuery.DateTo = v[1];
-                  handleFilter();
-                }
-              "
-            />
-          </el-col>
           <el-col :span="3">
-            <user-select
-              @Set="
-                (v) => {
-                  listQuery.User = v;
-                  handleFilter();
-                }
-              "
-            />
+            <el-popover placement="left" width="400" v-model="visible">
+              <p>ارسال عبر</p>
+              <div style="text-align: right; margin: 0">
+                <el-input
+                  type="textarea"
+                  v-model="SmsBody"
+                  :rules="[
+                    {
+                      required: true,
+                      message: 'لايمكن ترك الخصم فارغ',
+                      trigger: 'blur',
+                    },
+                  ]"
+                ></el-input>
+                <el-button
+                  icon="el-icon-circle-plus"
+                  type="primary"
+                  size="mini"
+                  @click="SendSms()"
+                  >SMS</el-button
+                >
+                <el-button
+                  icon="el-icon-circle-plus"
+                  type="primary"
+                  size="mini"
+                  @click="SendEmail()"
+                  >Email</el-button
+                >
+              </div>
+              <el-button icon="el-icon-circle-plus" slot="reference"
+                >ارسال رسالة</el-button
+              >
+            </el-popover>
           </el-col>
           <el-col :span="3">
             <el-select
@@ -72,7 +85,7 @@
         </el-row>
       </div>
       <radio-oprations
-        TableName="SalesInvoice"
+        TableName="Member"
         @Set="
           (v) => {
             listQuery.Status = v;
@@ -81,29 +94,24 @@
         "
       />
       <el-divider direction="vertical"></el-divider>
-      <span>عدد الفواتير</span>
+      <span>عدد المشتركين</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Rows }}</span>
       <el-divider direction="vertical"></el-divider>
 
-      <span>{{ $t("CashPool.Cash") }}</span>
+      <span>مجموع المدين (لك)</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Cash.toFixed(3) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
-
-      <span>{{ $t("CashPool.Visa") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Visa.toFixed(3) }} JOD</span>
+      <span>{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
-      <span>الاجل</span>
+      <span> (عليك) مجموع الدائن </span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Receivables.toFixed(3) }} JOD</span>
+      <span>{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
-      <span>{{ $t("CashPool.Amount") }}</span>
+      <span>الرصيد</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Totals.toFixed(3) }} JOD</span>
+      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
     </el-card>
 
@@ -115,14 +123,15 @@
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
+      ref="multipleTable"
+      @selection-change="handleSelectionChange"
       @row-dblclick="
         (row) => {
-          $router.replace({
-            path: '/Sales/Edit/' + row.Id,
-          });
+          $router.push({ path: `/Gym/Edit/${row.Id}` });
         }
       "
     >
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
         label="ID"
         prop="Id"
@@ -135,42 +144,46 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Date" width="150px" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="FakeDate"
-        v-bind:label="$t('Sales.Date')"
-        width="120"
-        align="center"
-      ></el-table-column>
+
       <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
       <el-table-column
-        prop="PaymentMethod"
-        sortable
-        v-bind:label="$t('CashPool.Pay')"
-        width="150"
-        align="center"
+        v-bind:label="$t('Members.Phone1')"
+        prop="PhoneNumber1"
+        width="120"
       ></el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
-        <template slot-scope="scope">{{ scope.row.Discount.toFixed(3) }}</template>
-      </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
-        <template slot-scope="scope">
-          {{
-            scope.row.InventoryMovements.reduce(function (prev, cur) {
-              return prev + cur.Qty * cur.SellingPrice;
-            }, 0)
-          }}
-          JOD
-        </template>
-      </el-table-column>
 
+      <el-table-column
+        prop="totalCredit"
+        sortable
+        v-bind:label="$t('Account.Credit')"
+        width="120"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.TotalCredit.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Account.Debit')"
+        prop="totalDebit"
+        sortable
+        width="120"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
+        <template slot-scope="scope">{{
+          (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
+            $store.getters.settings.ToFixed
+          )
+        }}</template>
+      </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <status-tag :Status="scope.row.Status" TableName="SalesInvoice" />
+          <status-tag :Status="scope.row.Status" TableName="Member" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
@@ -178,37 +191,10 @@
           <next-oprations
             :ObjID="scope.row.Id"
             :Status="scope.row.Status"
-            TableName="SalesInvoice"
+            TableName="Member"
             @Done="handleFilter"
           />
-          <print-button Type="SaleInvoice" :Data="scope.row" />
-        </template>
-      </el-table-column>
-      <el-table-column type="expand" align="center">
-        <template slot-scope="props">
-          <el-table :data="props.row.InventoryMovements">
-            <el-table-column
-              prop="Name"
-              v-bind:label="$t('CashPool.Items')"
-              width="130"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="Qty"
-              v-bind:label="$t('CashPool.quantity')"
-              align="center"
-            ></el-table-column>
-            <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
-              <template slot-scope="scope">{{
-                scope.row.SellingPrice.toFixed(3)
-              }}</template>
-            </el-table-column>
-            <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-              <template slot-scope="scope"
-                >{{ (scope.row.SellingPrice * scope.row.Qty).toFixed(3) }} JOD</template
-              >
-            </el-table-column>
-          </el-table>
+          <print-button Type="Member" :Data="scope.row" />
         </template>
       </el-table-column>
     </el-table>
@@ -223,13 +209,12 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/SaleInvoice";
+import { GetByListQ } from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations";
-import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton";
-import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import axios from "axios";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -240,28 +225,24 @@ export default {
   components: {
     StatusTag,
     NextOprations,
-    SearchByDate,
     PrintButton,
     Pagination,
-    UserSelect,
     RadioOprations,
   },
   directives: { waves },
   data() {
     return {
-      tableKey: 0,
       list: [],
-      Totals: { Rows: 0, Totals: 0, Cash: 0, Receivables: 0, Visa: 0 },
+      Totals: { Rows: 0, Totals: 0, TotalDebit: 0, TotalCredit: 0 },
       listLoading: false,
-      date: [],
+      Selection: [],
+      SmsBody: "",
+      visible: false,
       listQuery: {
         Page: 1,
         Any: "",
         limit: 10,
-        Sort: "+id",
-        User: undefined,
-        DateFrom: "",
-        DateTo: "",
+        Sort: "-id",
         Status: undefined,
       },
       sortOptions: [
@@ -277,7 +258,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      console.log("sdsad", this.listQuery);
+      //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
@@ -330,6 +311,57 @@ export default {
     getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
+    },
+    handleSelectionChange(val) {
+      this.Selection = val;
+    },
+    SendSms() {
+      if (this.Selection.length > 0) {
+        let numbers = this.Selection.map((element) => {
+          if (element.PhoneNumber1.length == 10) element.PhoneNumber1.slice(1);
+          return "962" + element.PhoneNumber1;
+        });
+        console.log("numbers", numbers);
+        let numbers100 = [];
+        for (var i = 0; i < numbers.length; i++) {
+          if (numbers.length > 0) {
+            numbers100.push(numbers.splice(0, 98));
+          } else {
+            break;
+          }
+        }
+        console.log(this.Selection);
+        /*  numbers100.forEach((element) => {
+          axios({
+            method: "get",
+            url: "http://josmsservice.com/smsonline/msgservicejo.cfm",
+            params: {
+              numbers: element,
+              senderid: "High Fit",
+              AccName: "highfit",
+              AccPass: "D7!cT5!SgU0",
+              msg: this.SmsBody,
+              requesttimeout: 5000000,
+            },
+          }).then((response) => {
+            console.log(response);
+          });
+        });*/
+
+        this.$notify({
+          title: "تم ",
+          message: "تم ارسال بنجاح",
+          type: "success",
+          duration: 2000,
+        });
+      } else {
+        this.$notify({
+          title: "تم ",
+          message: "الرجاء تحديد المشتركين",
+          type: "error",
+          duration: 2000,
+        });
+      }
     },
   },
 };

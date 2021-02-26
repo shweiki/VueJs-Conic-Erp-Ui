@@ -5,7 +5,11 @@
       <span>المجموع</span>
       <el-divider direction="vertical"></el-divider>
       <span>
-        {{ tableData.reduce((a, b) => a + (b.TotalCredit - b.TotalDebit), 0).toFixed(3) }}
+        {{
+          tableData
+            .reduce((a, b) => a + (b.TotalCredit - b.TotalDebit), 0)
+            .toFixed($store.getters.settings.ToFixed)
+        }}
       </span>
       <el-button
         style="float: left"
@@ -59,7 +63,9 @@
         width="120"
         align="center"
       >
-        <template slot-scope="scope">{{ scope.row.TotalCredit.toFixed(3) }}</template>
+        <template slot-scope="scope">{{
+          scope.row.TotalCredit.toFixed($store.getters.settings.ToFixed)
+        }}</template>
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Account.Debit')"
@@ -68,11 +74,15 @@
         width="120"
         align="center"
       >
-        <template slot-scope="scope">{{ scope.row.TotalDebit.toFixed(3) }}</template>
+        <template slot-scope="scope">{{
+          scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
+        }}</template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
         <template slot-scope="scope">{{
-          (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3)
+          (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
+            $store.getters.settings.ToFixed
+          )
         }}</template>
       </el-table-column>
     </el-table>
@@ -111,9 +121,11 @@ export default {
     },
     print(data) {
       data = data.map((Item) => ({
-        الرصيد: (Item.TotalCredit - Item.TotalDebit).toFixed(3),
-        دائن: Item.TotalDebit.toFixed(3),
-        مدين: Item.TotalCredit.toFixed(3),
+        الرصيد: (Item.TotalCredit - Item.TotalDebit).toFixed(
+          this.$store.getters.settings.ToFixed
+        ),
+        دائن: Item.TotalDebit.toFixed(this.$store.getters.settings.ToFixed),
+        مدين: Item.TotalCredit.toFixed(this.$store.getters.settings.ToFixed),
         الاسم: Item.Name,
         رقم: Item.Id,
       }));
@@ -125,7 +137,7 @@ export default {
           "<center> <h2>" +
           this.tableData
             .reduce((a, b) => a + (b.TotalCredit - b.TotalDebit), 0)
-            .toFixed(3) +
+            .toFixed(this.$store.getters.settings.ToFixed) +
           "</h2></center><h3 style='float:right'>  التاريخ  : " +
           this.formatDate(new Date()) +
           "</h3>",

@@ -78,19 +78,19 @@
               <el-table-column v-bind:label="$t('Items.Cost')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.CostPrice.toFixed(2) }}
+                  {{ scope.row.CostPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
               <el-table-column v-bind:label="$t('Items.Packeges')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.OtherPrice.toFixed(2) }}
+                  {{ scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
               <el-table-column v-bind:label="$t('Items.Retail')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.SellingPrice.toFixed(2) }}
+                  {{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
               <el-table-column

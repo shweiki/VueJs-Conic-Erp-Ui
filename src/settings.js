@@ -22,6 +22,7 @@ module.exports = {
   showRestOfBill :false,
   BarcodeIsID: false,
   WithOutCheckItemIsExist: true,
+  ToFixed : 2,
   errorLog: 'production',
   DateFormat: 'dd/MM/yyyy',
   DateTimeFormat: 'dd/MM/yyyy h:mm:ss a',

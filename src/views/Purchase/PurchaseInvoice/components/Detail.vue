@@ -54,12 +54,10 @@
                 },
               ]"
             >
-              <el-date-picker
-                v-model="tempForm.FakeDate"
-                type="date"
-                v-bind:placeholder="$t('NewPurchaseInvoice.Date')"
-                format="dd/MM/yyyy"
-              ></el-date-picker>
+              <fake-date
+                :Value="tempForm.FakeDate"
+                @Set="(v) => (tempForm.FakeDate = v)"
+              />
             </el-form-item>
           </el-col>
 
@@ -121,12 +119,10 @@
                 },
               ]"
             >
-              <el-date-picker
-                v-model="tempForm.InvoicePurchaseDate"
-                type="date"
-                v-bind:placeholder="$t('NewPurchaseInvoice.Date')"
-                format="dd/MM/yyyy"
-              ></el-date-picker>
+              <fake-date
+                :Value="tempForm.InvoicePurchaseDate"
+                @Set="(v) => (tempForm.InvoicePurchaseDate = v)"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -152,7 +148,7 @@
           <el-table-column align="center" prop="Itemx.Name">
             <template slot="header" slot-scope="{}"
               >{{ $t("NewPurchaseInvoice.Items") }} ({{
-                TotalItems.toFixed(2)
+                TotalItems.toFixed($store.getters.settings.ToFixed)
               }})</template
             >
             <template slot-scope="scope">
@@ -164,7 +160,7 @@
           <el-table-column width="130" align="center">
             <template slot="header" slot-scope="{}"
               >{{ $t("NewPurchaseInvoice.quantity") }} ({{
-                TotalQty.toFixed(2)
+                TotalQty.toFixed($store.getters.settings.ToFixed)
               }})</template
             >
             <template slot-scope="scope">
@@ -200,7 +196,7 @@
               (
                 tempForm.InventoryMovements[scope.$index].SellingPrice *
                 tempForm.InventoryMovements[scope.$index].Qty
-              ).toFixed(2)
+              ).toFixed($store.getters.settings.ToFixed)
             }}</template>
           </el-table-column>
           <el-table-column align="center">
@@ -266,12 +262,12 @@
             <el-divider direction="vertical"></el-divider>
             <span>{{ $t("NewPurchaseInvoice.Items") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalItems.toFixed(2) }}</span>
+            <span>{{ TotalItems.toFixed($store.getters.settings.ToFixed) }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.QuantityAmount") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalQty.toFixed(2) }}</span>
+            <span>{{ TotalQty.toFixed($store.getters.settings.ToFixed) }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.TotalDiscount") }}</span>
@@ -290,7 +286,7 @@
 
             <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalAmmount.toFixed(2) }} JOD</span>
+            <span>{{ TotalAmmount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
             <el-divider direction="vertical"></el-divider>
           </el-card>
         </el-col>
@@ -300,6 +296,7 @@
 </template>
 <script>
 import { Create, Edit, GetPurchaseInvoiceByID } from "@/api/PurchaseInvoice";
+import FakeDate from "@/components/Date/FakeDate";
 
 import { GetActiveInventory } from "@/api/InventoryItem";
 import { GetActiveVendor } from "@/api/Vendor";
@@ -308,7 +305,7 @@ import EditItem from "@/components/Item/EditItem";
 
 export default {
   name: "NewPurchaseInvoice",
-  components: { ItemsSearch, EditItem },
+  components: { ItemsSearch, EditItem, FakeDate },
   props: {
     isEdit: {
       type: Boolean,
@@ -352,8 +349,8 @@ export default {
         Name: "-",
         Tax: 0.0,
         AccountInvoiceNumber: "",
-        FakeDate: new Date(),
-        InvoicePurchaseDate: new Date(),
+        FakeDate: "",
+        InvoicePurchaseDate: "",
         PaymentMethod: "Cash",
         Discount: 0,
         VendorId: 2,

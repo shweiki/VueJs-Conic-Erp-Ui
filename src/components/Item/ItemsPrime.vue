@@ -21,7 +21,7 @@
       <el-card class="box-card" shadow="always" :body-style="{ padding: '3.5px' }">
         <div @click="AddItem(Item)">
           <span style="font-size: 10px; color: #545454">{{ Item.Name }}</span>
-          <time class="price">{{ Item.SellingPrice.toFixed(2) }}</time>
+          <time class="price">{{ Item.SellingPrice.toFixed($store.getters.settings.ToFixed) }}</time>
         </div>
         <!--  <el-col v-permission="['Admin']"> 
               <el-tooltip
@@ -33,7 +33,7 @@
                 <div slot="content">
                   <el-tag>رصيد {{ Inventory.InventoryName }}</el-tag>
                 </div>
-                <el-tag>{{ (Inventory.QtyIn - Inventory.QtyOut).toFixed(2) }}</el-tag>
+                <el-tag>{{ (Inventory.QtyIn - Inventory.QtyOut).toFixed($store.getters.settings.ToFixed) }}</el-tag>
               </el-tooltip>
         </el-col>-->
       </el-card>

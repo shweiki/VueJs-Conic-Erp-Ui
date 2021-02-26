@@ -28,7 +28,7 @@
         align="center"
       ></el-table-column>
       <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-        <template slot-scope="scope">{{scope.row.TotalAmmount.toFixed(3) }} JOD</template>
+        <template slot-scope="scope">{{scope.row.TotalAmmount.toFixed($store.getters.settings.ToFixed) }} JOD</template>
       </el-table-column>
       <el-table-column label="#" align="center">
         <template slot-scope="scope">

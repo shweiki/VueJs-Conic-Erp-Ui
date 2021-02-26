@@ -161,7 +161,7 @@ export default {
 
       const clusters = [theme];
       for (let i = 0; i <= 9; i++) {
-        clusters.push(tintColor(theme, Number((i / 10).toFixed(2))));
+        clusters.push(tintColor(theme, Number((i / 10).toFixed($store.getters.settings.ToFixed))));
       }
       clusters.push(shadeColor(theme, 0.1));
       return clusters;

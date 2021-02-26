@@ -5,7 +5,7 @@ import { toggleClass } from "@/utils";
 
 let Settings = {}
 const { PointOfSaleLayout, DateFormat, DateTimeFormat, StatusQuery, showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
-  , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
+  ,ToFixed  , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
   title: title,
@@ -35,7 +35,8 @@ const state = {
   datepickerQuery: datepickerQuery,
   timeQuery: timeQuery,
   pickerOptions: pickerOptions,
-  PointOfSaleLayout: PointOfSaleLayout
+  PointOfSaleLayout: PointOfSaleLayout,
+  ToFixed : ToFixed
 }
 
 const mutations = {

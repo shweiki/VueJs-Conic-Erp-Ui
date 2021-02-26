@@ -254,7 +254,7 @@ export default {
           name +
           "</h2></center><h3 style='float:right'> " +
           " - الاجمالي لقيمة المخزون :  " +
-          Items.reduce((a, b) => a + b.Qty * b.CostPrice, 0).toFixed(3) +
+          Items.reduce((a, b) => a + b.Qty * b.CostPrice, 0).toFixed($store.getters.settings.ToFixed) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;",

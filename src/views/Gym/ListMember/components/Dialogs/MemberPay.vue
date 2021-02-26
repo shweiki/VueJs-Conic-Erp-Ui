@@ -106,7 +106,6 @@ import { CreatePayment } from "@/api/Payment";
 // report
 import printJS from "print-js";
 import { PaymentMember } from "@/Report/PayPapar";
-import { string } from "clipboard";
 
 export default {
   components: { printJS },
@@ -118,7 +117,7 @@ export default {
       },
     },
     Name: {
-      type: string,
+      type: String,
       default: () => {
         return undefined;
       },
@@ -137,7 +136,7 @@ export default {
         Status: 0,
         VendorId: undefined,
         IsPrime: true,
-        MemberID: undefined,
+        MemberId: undefined,
         EditorName: "",
         Type: "",
       },
@@ -157,7 +156,7 @@ export default {
     create() {
       this.$refs["Form"].validate((valid) => {
         if (valid) {
-          this.Payment.MemberID = this.MemberID;
+          this.Payment.MemberId = this.MemberID;
           CreatePayment(this.Payment)
             .then((response) => {
               this.Payment.Name = this.Name;

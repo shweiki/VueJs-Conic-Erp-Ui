@@ -16,6 +16,15 @@ export function GetMemberLogByStatus(query) {
     
   })
 }
+export function RemoveDuplicate(query) {
+  return request({
+    url: '/MemberLog/RemoveDuplicate',
+    method: 'get',
+    params:  query 
+    
+  })
+}
+
 export function GetlastLogByMemberId(query) {
   return request({
     url: '/MemberLog/GetlastLogByMemberId',

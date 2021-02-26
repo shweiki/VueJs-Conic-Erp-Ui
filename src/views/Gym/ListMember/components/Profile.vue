@@ -105,7 +105,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import MemberLog from "./MemberLog";
 import { GetUserLog } from "@/api/Device";
 

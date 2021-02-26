@@ -66,7 +66,7 @@
           width="130"
           align="center"
         >
-          <template slot-scope="scope">{{ scope.row.Qty.toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.Qty.toFixed($store.getters.settings.ToFixed) }}</template>
         </el-table-column>
         <el-table-column
           prop="SellingPrice"
@@ -74,7 +74,7 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{ scope.row.SellingPrice.toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}</template>
         </el-table-column>
         <el-table-column
           v-bind:label="$t('Purchase.TotalAmount')"
@@ -82,7 +82,7 @@
           align="center"
         >
           <template slot-scope="scope">{{
-            (scope.row.Qty * scope.row.SellingPrice).toFixed(3)
+            (scope.row.Qty * scope.row.SellingPrice).toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
       </el-table>

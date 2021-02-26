@@ -14,7 +14,13 @@ export function GetMemberByAny(query) {
     params: query
   })
 }
-export function CheckMemberIsExist(query) {
+export function GetByListQ(data) {
+  return request({
+    url: '/Member/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}export function CheckMemberIsExist(query) {
   return request({
     url: '/Member/CheckMemberIsExist',
     method: 'get',

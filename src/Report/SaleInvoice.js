@@ -11,7 +11,7 @@ export function SaleInvoiceA4(temp) {
     temp.InventoryMovements.reduce((prev, cur) => {
       return prev + cur.Qty * cur.SellingPrice;
     }, 0) - temp.Discount
-  ).toFixed(2);
+  ).toFixed(this.$store.getters.settings.ToFixed);
 
 
   ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Vendor.Name}}', temp.Name)
@@ -28,7 +28,7 @@ export function SaleInvoiceA4(temp) {
   let tabelInventoryMovements = "";
   temp.InventoryMovements.reverse().forEach(element => {
     tabelInventoryMovements += "<tr style='text-align: center;'>"
-    tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(2) + "</td>";
+    tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(this.$store.getters.settings.ToFixed) + "</td>";
     tabelInventoryMovements += "<td>" + element.SellingPrice + "</td>";
     tabelInventoryMovements += "<td>" + element.Qty + "</td>";
     tabelInventoryMovements += "<td>" + element.Name + "</td>";

@@ -12,7 +12,7 @@
         <template slot-scope="scope">{{ scope.row.Description}}</template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Account.Credit')" width="120" align="center">
-        <template slot-scope="scope">{{(scope.row.Credit).toFixed(3) }}</template>
+        <template slot-scope="scope">{{(scope.row.Credit).toFixed($store.getters.settings.ToFixed) }}</template>
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Account.Debit')"
@@ -20,10 +20,10 @@
         width="120"
         align="center"
       >
-        <template slot-scope="scope">{{(scope.row.Debit).toFixed(3) }}</template>
+        <template slot-scope="scope">{{(scope.row.Debit).toFixed(this.$store.getters.settings.ToFixed) }}</template>
       </el-table-column>
       <!--<el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
-        <template slot-scope="scope">{{ (scope.row.Credit - scope.row.Debit).toFixed(3) }}</template>
+        <template slot-scope="scope">{{ (scope.row.Credit - scope.row.Debit).toFixed(this.$store.getters.settings.ToFixed) }}</template>
       </el-table-column>-->
     </el-table>
   </div>

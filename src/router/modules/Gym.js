@@ -29,7 +29,7 @@ const GymRouter = {
 
     {
       path: 'Members',
-      component: () => import('@/views/Gym/Members/index'),
+      component: () => import('@/views/Gym/Members/List'),
       name: 'Members',
       meta: {
         title: 'Members', icon: 'cost'

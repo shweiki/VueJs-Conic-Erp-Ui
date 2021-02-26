@@ -26,11 +26,11 @@ const SalesRouter = {
       },
     },
     {
-      path: 'ListQ',
-      component: () => import('@/views/Sales/SaleInvoice/ListQ'),
-      name: 'ListQ',
+      path: 'OldList',
+      component: () => import('@/views/Sales/SaleInvoice/OldList'),
+      name: 'OldList',
       meta: {
-        title: 'ListQ', icon: 'cost'
+        title: 'OldList', icon: 'cost'
       },
     },
     

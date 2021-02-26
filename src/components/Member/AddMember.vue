@@ -230,11 +230,8 @@ export default {
                     type: "success",
                     duration: 2000,
                   });
-                  this.$nextTick(() => {
-                    this.$router.replace({
-                      path: "/Gym/Edit/" + response,
-                    });
-                  });
+                  $router.push({ path: `/Gym/Edit/${response}` });
+
                   this.SendHelloSms(this.tempForm.PhoneNumber1, this.tempForm.Name);
                 })
                 .catch((error) => {

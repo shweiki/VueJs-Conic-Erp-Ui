@@ -12,7 +12,7 @@ export function PaymentMember(temp) {
   console.log(temp)
 
   let timein = new Date(temp.FakeDate);
-  temp.TotalAmmount =temp.TotalAmmount.toFixed(2)
+  temp.TotalAmmount =temp.TotalAmmount.toFixed($store.getters.settings.ToFixed)
   doc.addFileToVFS('Amiri-Regular-normal.ttf',  AmiriRegular());
   doc.addFont('Amiri-Regular-normal.ttf', 'Amiri-Regular', 'normal');
   doc.setFont("Amiri-Regular");

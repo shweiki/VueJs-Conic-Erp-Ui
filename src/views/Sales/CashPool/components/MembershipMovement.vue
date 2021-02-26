@@ -61,7 +61,7 @@
 
       <span>{{ $t("CashPool.Amount") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Total.toFixed(3) }} JOD</span>
+      <span>{{ Total.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
       <el-button
         :disabled="EnableSave"
@@ -138,7 +138,10 @@
         </el-table-column>
         <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
           <template slot-scope="scope"
-            >{{ scope.row.TotalAmmount.toFixed(3) }} JOD</template
+            >{{
+              scope.row.TotalAmmount.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</template
           >
         </el-table-column>
         <el-table-column width="180" align="center" v-if="checkPermission(['Admin'])">
@@ -298,7 +301,7 @@ export default {
             return obj.value == this.InComeAccount;
           }).label +
           "</h2></center><h3 style='float:right'> - الاجمالي :  " +
-          this.Total.toFixed(3) +
+          this.Total.toFixed($store.getters.settings.ToFixed) +
           "</h3><h3 style='float:right'>  التاريخ  : " +
           this.formatDate(new Date()) +
           "</h3>",

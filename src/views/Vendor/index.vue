@@ -15,8 +15,7 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
-              !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -36,10 +35,7 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('Vendors.Search')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('Vendors.Search')" />
           </template>
         </el-table-column>
         <el-table-column
@@ -48,7 +44,7 @@
           align="center"
         >
           <template slot-scope="scope">{{
-            scope.row.TotalCredit.toFixed(3)
+            scope.row.TotalCredit.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
         <el-table-column
@@ -58,23 +54,17 @@
           align="center"
         >
           <template slot-scope="scope">{{
-            scope.row.TotalDebit.toFixed(3)
+            scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('Accounting.funds')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('Accounting.funds')" width="120" align="center">
           <template slot-scope="scope">{{
-            (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3)
+            (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
+              $store.getters.settings.ToFixed
+            )
           }}</template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('Vendors.Status')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('Vendors.Status')" width="120" align="center">
           <template slot-scope="scope">
             <status-tag :Status="scope.row.Status" TableName="Vendor" />
           </template>
@@ -162,10 +152,7 @@
         <el-form-item v-bind:label="$t('AddVendors.Name')" prop="Name">
           <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('AddVendors.CreditLimit')"
-          prop="CreditLimit"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.CreditLimit')" prop="CreditLimit">
           <el-input-number
             v-model="tempForm.CreditLimit"
             :precision="2"
@@ -177,16 +164,10 @@
         <el-form-item v-bind:label="$t('AddVendors.Fax')" prop="Fax">
           <el-input type="text" v-model="tempForm.Fax"></el-input>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('AddVendors.PhoneNumber1')"
-          prop="PhoneNumber1"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.PhoneNumber1')" prop="PhoneNumber1">
           <el-input type="text" v-model="tempForm.PhoneNumber1"></el-input>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('AddVendors.PhoneNumber2')"
-          prop="PhoneNumber2"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.PhoneNumber2')" prop="PhoneNumber2">
           <el-input type="text" v-model="tempForm.PhoneNumber2"></el-input>
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.Email')" prop="Email">
@@ -195,10 +176,7 @@
         <el-form-item v-bind:label="$t('AddVendors.Address')" prop="Address">
           <el-input type="text" v-model="tempForm.Address"></el-input>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -234,7 +212,7 @@ export default {
       search: "",
       textMapForm: {
         update: "تعديل",
-        create: "إضافة"
+        create: "إضافة",
       },
       tempForm: {
         Id: undefined,
@@ -247,49 +225,49 @@ export default {
         CreditLimit: 0.0,
         Description: "",
         IsPrime: false,
-        Type: "Customer"
+        Type: "Customer",
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: ""
+        ClassName: "",
       },
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: ""
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -298,7 +276,7 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
-      GetVendor().then(response => {
+      GetVendor().then((response) => {
         //console.log(response)
         this.tableData = response;
         this.loading = false;
@@ -316,7 +294,7 @@ export default {
         CreditLimit: 0.0,
         Description: "",
         IsPrime: false,
-        Type: "Customer"
+        Type: "Customer",
       };
     },
     handleCreate() {
@@ -345,43 +323,43 @@ export default {
       });
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -394,8 +372,7 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -404,31 +381,31 @@ export default {
       this.tempOpration.Description = "";
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatus({
             ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationId,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
           console.log("error submit!!");
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -44,7 +44,7 @@
           </el-option>
         </el-select>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Total.toFixed(3) }} JOD</span>
+        <span>{{ Total.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
         <el-button
           style="float: left"
@@ -92,10 +92,10 @@
           align="center"
         ></el-table-column>
         <el-table-column label="مدين" prop="Credit" width="100" align="center">
-          <template slot-scope="scope">{{ scope.row.Credit.toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.Credit.toFixed($store.getters.settings.ToFixed) }}</template>
         </el-table-column>
         <el-table-column label="دائن" prop="Debit" width="100" align="center">
-          <template slot-scope="scope">{{ scope.row.Debit.toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.Debit.toFixed($store.getters.settings.ToFixed) }}</template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -158,7 +158,7 @@ export default {
             return obj.value == this.AccountId;
           }).label +
           "</h2></center><h3 style='float:left'>الاجمالي " +
-          this.Total.toFixed(3) +
+          this.Total.toFixed($store.getters.settings.ToFixed) +
           "</h3><h3 style='float:right'>  الفترة  : " +
           this.formatDate(this.date[0]) +
           " - " +

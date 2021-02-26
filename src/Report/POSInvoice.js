@@ -16,7 +16,7 @@ console.log(temp)
     temp.InventoryMovements.reduce((prev, cur) => {
       return prev + cur.Qty * cur.SellingPrice;
     }, 0) - temp.Discount
-  ).toFixed(2);
+  ).toFixed(this.$store.getters.settings.ToFixed);
   doc.addFileToVFS('Amiri-Regular-normal.ttf',  AmiriRegular());
   doc.addFont('Amiri-Regular-normal.ttf', 'Amiri-Regular', 'normal');
   doc.setFont("Amiri-Regular");
@@ -49,8 +49,8 @@ console.log(temp)
   temp.InventoryMovements.forEach(element => {
     doc.text(""+element.Name+"", 78, startY+=6, {align:'right'});
     doc.text("" + element.Qty + "", 42, startY);
-    doc.text("" + (element.SellingPrice).toFixed(1) + "", 25, startY);
-    doc.text("" + (element.SellingPrice*element.Qty).toFixed(2) + "", 6, startY);
+    doc.text("" + (element.SellingPrice).toFixed(this.$store.getters.settings.ToFixed) + "", 25, startY);
+    doc.text("" + (element.SellingPrice*element.Qty).toFixed(this.$store.getters.settings.ToFixed) + "", 6, startY);
 
     });
     doc.setLineWidth(1);

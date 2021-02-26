@@ -9,6 +9,7 @@
         @click="getdata()"
       ></el-button>
       <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
+      <add-member-log />
 
       <div style="margin-top: 10px">
         <el-timeline
@@ -24,8 +25,8 @@
           <el-timeline-item
             v-for="(Log, index) in MembersLogs"
             :key="index"
-            :icon="Log.IconClass"
-            :color="Log.Color"
+            :icon="Log.Style.IconClass"
+            :color="Log.Style.Color"
             size="large"
             :timestamp="Log.DateTime"
             :hide-timestamp="true"
@@ -36,7 +37,7 @@
               }"
               :to="'/Gym/Edit/' + Log.MemberId"
             >
-              <el-tag :color="Log.Color"
+              <el-tag :color="Log.Style.Color"
                 ><strong style="font-size: 10px; cursor: pointer">{{
                   Log.Name
                 }}</strong></el-tag
@@ -63,12 +64,13 @@
 </template>
 
 <script>
-import { GetMemberLogByStatus } from "@/api/MemberLog";
+import { GetMemberLogByStatus, RemoveDuplicate } from "@/api/MemberLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import { LocalTime } from "@js-joda/core";
+import AddMemberLog from "./Dialogs/AddMemberLog";
+
 export default {
   name: "MemberLog",
-  components: { StatusTag },
+  components: { StatusTag, AddMemberLog },
   props: {},
   data() {
     return {
@@ -83,10 +85,11 @@ export default {
     getdata() {
       GetMemberLogByStatus({ Status: 0 })
         .then((response) => {
-          if (response.length > this.MembersLogs.length) {
+          if (response.length != this.MembersLogs.length) {
             this.MembersLogs = response.sort(
               (a, b) => new Date(b.DateTime) - new Date(a.DateTime)
             );
+            RemoveDuplicate();
           }
         })
         .catch((error) => {

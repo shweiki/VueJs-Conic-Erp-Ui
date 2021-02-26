@@ -140,7 +140,7 @@
                         <el-table-column prop="ItemsId" align="center">
                           <template slot="header" slot-scope="{}"
                             >{{ $t("NewPurchaseInvoice.Items") }} ({{
-                              tempForm.InventoryMovements.length.toFixed(2)
+                              tempForm.InventoryMovements.length.toFixed($store.getters.settings.ToFixed)
                             }}
                             )</template
                           >
@@ -149,8 +149,8 @@
                               {{ scope.row.Itemx.Name }}
                               <el-tag type="primary" effect="plain">{{
                                 PriceMethod == "wholesale"
-                                  ? scope.row.Itemx.OtherPrice.toFixed(2)
-                                  : scope.row.Itemx.SellingPrice.toFixed(2)
+                                  ? scope.row.Itemx.OtherPrice.toFixed($store.getters.settings.ToFixed)
+                                  : scope.row.Itemx.SellingPrice.toFixed($store.getters.settings.ToFixed)
                               }}</el-tag>
                               <edit-item
                                 @focus="focusBarcode"
@@ -169,7 +169,7 @@
                               tempForm.InventoryMovements.reduce(
                                 (a, b) => a + (b["Qty"] || 0),
                                 0
-                              ).toFixed(2)
+                              ).toFixed($store.getters.settings.ToFixed)
                             }}
                             )</template
                           >
@@ -231,7 +231,7 @@
                                 (
                                   tempForm.InventoryMovements[scope.$index].SellingPrice *
                                   tempForm.InventoryMovements[scope.$index].Qty
-                                ).toFixed(2)
+                                ).toFixed($store.getters.settings.ToFixed)
                               }}
                             </div>
                           </template>
@@ -402,7 +402,7 @@
                                 tempForm.InventoryMovements.reduce((prev, cur) => {
                                   return prev + cur.Qty * cur.SellingPrice;
                                 }, 0) - tempForm.Discount
-                              ).toFixed(2)
+                              ).toFixed($store.getters.settings.ToFixed)
                             }}
                             JOD</span
                           >

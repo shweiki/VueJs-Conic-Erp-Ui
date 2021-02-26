@@ -43,7 +43,7 @@ export function Label1(temp) {
 
 
   doc.setFontSize(10);
-  let price = temp.SellingPrice.toFixed(2)
+  let price = temp.SellingPrice.toFixed($store.getters.settings.ToFixed)
   doc.text("" + temp.Name + "", 50, startY + 4 , {align:'right'});
   doc.setFontSize(12);
 

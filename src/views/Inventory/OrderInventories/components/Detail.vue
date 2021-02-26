@@ -81,7 +81,7 @@
             <el-table-column align="center">
               <template slot="header" slot-scope="{}"
                 >{{ $t("OrderInventories.Items") }} ({{
-                  tempForm.InventoryMovements.length.toFixed(2)
+                  tempForm.InventoryMovements.length.toFixed($store.getters.settings.ToFixed)
                 }})</template
               >
               <template slot-scope="scope">
@@ -96,7 +96,7 @@
                   tempForm.InventoryMovements.reduce(
                     (a, b) => a + (b["Qty"] || 0),
                     0
-                  ).toFixed(2)
+                  ).toFixed($store.getters.settings.ToFixed)
                 }})</template
               >
               <template slot-scope="scope">

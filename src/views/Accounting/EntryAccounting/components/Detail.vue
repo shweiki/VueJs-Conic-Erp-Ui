@@ -99,7 +99,7 @@
               >{{ $t("Accounting.Credit") }} ({{
                 tempForm.EntryMovements.reduce((prev, cur) => {
                   return prev + cur.Credit;
-                }, 0).toFixed(2)
+                }, 0).toFixed($store.getters.settings.ToFixed)
               }})</template
             >
             <template slot-scope="scope">
@@ -121,7 +121,7 @@
               >{{ $t("Accounting.Debit") }} ({{
                 tempForm.EntryMovements.reduce((prev, cur) => {
                   return prev + cur.Debit;
-                }, 0).toFixed(2)
+                }, 0).toFixed($store.getters.settings.ToFixed)
               }})</template
             >
             <template slot-scope="scope">

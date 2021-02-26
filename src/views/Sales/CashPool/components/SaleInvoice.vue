@@ -61,35 +61,42 @@
 
       <span>{{ $t("CashPool.Cash") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalCash.toFixed(3) }} JOD</span>
+      <span>{{ TotalCash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Visa") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalVisa.toFixed(3) }} JOD</span>
+      <span>{{ TotalVisa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.debt") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalReceivables.toFixed(3) }} JOD</span>
+      <span>{{ TotalReceivables.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
       <span>مجموع الخصم</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalDiscount.toFixed(3) }} JOD</span>
+      <span>{{ TotalDiscount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Amount") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ (TotalCash + TotalReceivables + TotalVisa).toFixed(3) }} JOD</span>
+      <span
+        >{{
+          (TotalCash + TotalReceivables + TotalVisa).toFixed(
+            $store.getters.settings.ToFixed
+          )
+        }}
+        JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
       <span>إجمالي التكلفة</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalItemsCost.toFixed(3) }} JOD</span>
+      <span>{{ TotalItemsCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>صافي الربح</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalCost.toFixed(3) }} JOD</span>
+      <span>{{ TotalCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
     </el-card>
     <el-card class="box-card">
@@ -114,16 +121,22 @@
         <el-table-column align="center">
           <template slot="header" slot-scope="{}">
             المجموع الربح
-            {{ TotalCost.toFixed(3) }}
+            {{ TotalCost.toFixed($store.getters.settings.ToFixed) }}
           </template>
           <template slot-scope="scope">{{
-            ((scope.row.AvgPrice - scope.row.CostPrice) * scope.row.TotalCount).toFixed(3)
+            ((scope.row.AvgPrice - scope.row.CostPrice) * scope.row.TotalCount).toFixed(
+              $store.getters.settings.ToFixed
+            )
           }}</template>
         </el-table-column>
         <el-table-column align="center">
           <template slot="header" slot-scope="{}">
             المجموع بيع
-            {{ (TotalCash + TotalReceivables + TotalVisa).toFixed(3) }}
+            {{
+              (TotalCash + TotalReceivables + TotalVisa).toFixed(
+                $store.getters.settings.ToFixed
+              )
+            }}
             <el-button
               :disabled="EnableSave"
               style="float: left"
@@ -133,7 +146,9 @@
             ></el-button>
           </template>
           <template slot-scope="scope">{{
-            (scope.row.AvgPrice * scope.row.TotalCount).toFixed(3)
+            (scope.row.AvgPrice * scope.row.TotalCount).toFixed(
+              $store.getters.settings.ToFixed
+            )
           }}</template>
         </el-table-column>
       </el-table>
@@ -197,14 +212,16 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{ scope.row.Discount.toFixed(3) }}</template>
+          <template slot-scope="scope">{{
+            scope.row.Discount.toFixed($store.getters.settings.ToFixed)
+          }}</template>
         </el-table-column>
         <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
           <template slot-scope="scope">
             {{
               scope.row.InventoryMovements.reduce((prev, cur) => {
                 return prev + cur.Qty * cur.SellingPrice;
-              }, 0).toFixed(3)
+              }, 0).toFixed($store.getters.settings.ToFixed)
             }}
             JOD
           </template>
@@ -237,12 +254,17 @@
               ></el-table-column>
               <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
                 <template slot-scope="scope">{{
-                  scope.row.SellingPrice.toFixed(3)
+                  scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
                 }}</template>
               </el-table-column>
               <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
                 <template slot-scope="scope"
-                  >{{ (scope.row.SellingPrice * scope.row.Qty).toFixed(3) }} JOD</template
+                  >{{
+                    (scope.row.SellingPrice * scope.row.Qty).toFixed(
+                      $store.getters.settings.ToFixed
+                    )
+                  }}
+                  JOD</template
                 >
               </el-table-column>
             </el-table>
@@ -381,7 +403,7 @@ export default {
                 this.ItemsMovements.push({
                   Name: foundItem.Name,
                   TotalCount: m.Qty,
-                  AvgPrice: m.SellingPrice.toFixed(2),
+                  AvgPrice: m.SellingPrice.toFixed(this.$store.getters.settings.ToFixed),
                   CostPrice: foundItem.CostPrice,
                 });
               }
@@ -403,7 +425,7 @@ export default {
         المجموع:
           Item.InventoryMovements.reduce((prev, cur) => {
             return prev + cur.Qty * cur.SellingPrice;
-          }, 0) - Item.Discount.toFixed(3),
+          }, 0) - Item.Discount.toFixed(this.$store.getters.settings.ToFixed),
         الخصم: Item.Discount,
         "طريقة الدفع ": Item.PaymentMethod,
         التاريخ: Item.FakeDate,
@@ -420,9 +442,13 @@ export default {
     },
     printAllItemSale(data) {
       data = data.map((Item) => ({
-        "المجموع البيع": (Item.TotalCount * Item.AvgPrice).toFixed(3),
+        "المجموع البيع": (Item.TotalCount * Item.AvgPrice).toFixed(
+          this.$store.getters.settings.ToFixed
+        ),
         "سعر البيع": Item.AvgPrice,
-        "المجموع التكلفة": (Item.TotalCount * Item.CostPrice).toFixed(3),
+        "المجموع التكلفة": (Item.TotalCount * Item.CostPrice).toFixed(
+          this.$store.getters.settings.ToFixed
+        ),
         "سعر التكلفة": Item.CostPrice,
         العدد: Item.TotalCount,
         الصنف: Item.Name,
@@ -444,19 +470,21 @@ export default {
             return obj.value == this.InComeAccount;
           }).label +
           "</h2></center><h3 style='float:right'> الاجمالي النقدي " +
-          this.TotalCash.toFixed(3) +
+          this.TotalCash.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي الفيزا : " +
-          this.TotalVisa.toFixed(3) +
+          this.TotalVisa.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي الاجل : " +
-          this.TotalReceivables.toFixed(3) +
+          this.TotalReceivables.toFixed(this.$store.getters.settings.ToFixed) +
           " - صافي الربح : " +
-          this.TotalCost.toFixed(3) +
+          this.TotalCost.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي خصم : " +
-          this.TotalDiscount.toFixed(3) +
+          this.TotalDiscount.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي التكلفة : " +
-          this.TotalItemsCost.toFixed(3) +
+          this.TotalItemsCost.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي :  " +
-          (this.TotalCash + this.TotalReceivables + this.TotalVisa).toFixed(3) +
+          (this.TotalCash + this.TotalReceivables + this.TotalVisa).toFixed(
+            this.$store.getters.settings.ToFixed
+          ) +
           "</h3><h3 style='float:right'>  التاريخ  : " +
           this.formatDate(new Date()) +
           "</h3>",

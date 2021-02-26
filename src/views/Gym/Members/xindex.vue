@@ -39,7 +39,7 @@
           </template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Account.Credit')" width="120" align="center">
-          <template slot-scope="scope">{{ scope.row.TotalCredit.toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.TotalCredit.toFixed($store.getters.settings.ToFixed) }}</template>
         </el-table-column>
         <el-table-column
           v-bind:label="$t('Account.Debit')"
@@ -47,11 +47,11 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{ scope.row.TotalDebit.toFixed(3) }}</template>
+          <template slot-scope="scope">{{ scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed) }}</template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
           <template slot-scope="scope">{{
-            (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(3)
+            (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(this.$store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Members.Status')" width="120" align="center">

@@ -18,8 +18,7 @@
       <el-table
         :data="
           $store.getters.AllItems.filter(
-            data =>
-              !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         @row-dblclick="AddItem"
@@ -61,22 +60,19 @@
               <el-table-column v-bind:label="$t('Items.Cost')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.CostPrice.toFixed(2) }}
+                  {{ scope.row.CostPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
-              <el-table-column
-                v-bind:label="$t('Items.Packeges')"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('Items.Packeges')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.OtherPrice.toFixed(2) }}
+                  {{ scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
               <el-table-column v-bind:label="$t('Items.Retail')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.SellingPrice.toFixed(2) }}
+                  {{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
             </el-table>
@@ -103,11 +99,11 @@ export default {
     AddItem(row) {
       // console.log("row", row);
       this.$emit("add", row, 1);
+      this.Open = false;
     },
     focus() {
       this.$emit("focus");
-    }
-  }
+    },
+  },
 };
 </script>
-

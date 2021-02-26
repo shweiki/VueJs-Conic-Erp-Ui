@@ -7,6 +7,13 @@ export function GetPurchaseInvoice(query) {
     params: query
   })
 }
+export function GetByListQ(data) {
+  return request({
+    url: '/PurchaseInvoice/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 
 export function GetPurchaseInvoiceByID(query) {
   return request({

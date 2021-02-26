@@ -123,7 +123,7 @@
         <el-form-item prop="Type" label="
             "></el-form-item>
         <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
-          <span>JOD {{(MembershipMovement.TotalAmmount).toFixed(2)}}</span>
+          <span>JOD {{(MembershipMovement.TotalAmmount).toFixed($store.getters.settings.ToFixed)}}</span>
         </el-form-item>
       </el-form>
       <el-form :model="Payment" ref="Form">

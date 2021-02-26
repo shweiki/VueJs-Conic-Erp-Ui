@@ -100,7 +100,7 @@
               >
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.MorningPrice.toFixed(2) }}
+                  {{ scope.row.MorningPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
               <el-table-column
@@ -109,7 +109,7 @@
               >
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.FullDayPrice.toFixed(2) }}
+                  {{ scope.row.FullDayPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
               <el-table-column

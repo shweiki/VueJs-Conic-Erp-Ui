@@ -167,7 +167,7 @@
           </el-col>
           <el-col :span="8">
             <span>{{
-              (Member.TotalCredit - Member.TotalDebit).toFixed(2) +
+              (Member.TotalCredit - Member.TotalDebit).toFixed(this.$store.getters.settings.ToFixed) +
                 $t("MemberList.JOD")
             }}</span>
           </el-col>
