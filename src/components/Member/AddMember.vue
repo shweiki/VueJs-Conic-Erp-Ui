@@ -230,9 +230,9 @@ export default {
                     type: "success",
                     duration: 2000,
                   });
-                  $router.push({ path: `/Gym/Edit/${response}` });
+                  this.$router.push({ path: `/Gym/Edit/${response}` });
 
-                  this.SendHelloSms(this.tempForm.PhoneNumber1, this.tempForm.Name);
+             //     this.SendHelloSms(this.tempForm.PhoneNumber1, this.tempForm.Name);
                 })
                 .catch((error) => {
                   console.log(error);
