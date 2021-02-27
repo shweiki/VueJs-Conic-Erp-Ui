@@ -15,7 +15,7 @@
         class="demo-form-inline"
       >
         <el-row>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item prop="MemberId" label="المشترك">
               <member-search-any
                 @Set="
@@ -29,6 +29,18 @@
         </el-row>
 
         <el-row>
+          <el-col :span="12">
+            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+              <fake-date
+                :Value="Temp.DateTime"
+                @Set="
+                  (v) => {
+                    Temp.DateTime = v;
+                  }
+                "
+              />
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
               <el-input v-model="Temp.Description"></el-input>
@@ -50,9 +62,9 @@
 import { Create } from "@/api/MemberLog";
 import MemberSearchAny from "@/components/Member/MemberSearchAny";
 import permission from "@/directive/permission/index.js";
-
+import FakeDate from "@/components/Date/FakeDate.vue";
 export default {
-  components: { MemberSearchAny },
+  components: { MemberSearchAny, FakeDate },
   directives: { permission },
 
   data() {
@@ -73,7 +85,6 @@ export default {
     create() {
       this.$refs["MemberLogForm"].validate((valid) => {
         if (valid) {
-          this.Temp.DateTime = new Date();
           Create(this.Temp)
             .then((response) => {
               this.Visibles = false;

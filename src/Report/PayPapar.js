@@ -1,30 +1,26 @@
 import jsPDF from "jspdf"
 import {AmiriRegular} from "@/assets/custom-theme/fonts/Amiri-Regular.js";
+import store from '@/store'
 
-import { GetCompanyInfo } from "@/api/CompanyInfo";
-let ComapnyInfo = null;
-GetCompanyInfo().then(response => {
-  ComapnyInfo = response;
-})
 export function PaymentMember(temp) {
   let startX = 1 , startY = 0
   let doc = new jsPDF('p', 'mm', "a4", { filters: ["ASCIIHexEncode"] });
   console.log(temp)
 
   let timein = new Date(temp.FakeDate);
-  temp.TotalAmmount =temp.TotalAmmount.toFixed($store.getters.settings.ToFixed)
+  temp.TotalAmmount =temp.TotalAmmount.toFixed(store.getters.settings.ToFixed)
   doc.addFileToVFS('Amiri-Regular-normal.ttf',  AmiriRegular());
   doc.addFont('Amiri-Regular-normal.ttf', 'Amiri-Regular', 'normal');
   doc.setFont("Amiri-Regular");
 
   //Logo
-  doc.addImage(ComapnyInfo.Logo, "jpeg", startX, startY, 12, 12);
+  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX, startY, 12, 12);
 
   //Name
 
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.text(ComapnyInfo.Name, startX + 90, startY += 9);
+  doc.text(store.getters.CompanyInfo.Name, startX + 90, startY += 9);
 
   doc.setLineWidth(1);
   doc.line(0, startY+=8, 200, startY);
@@ -72,13 +68,13 @@ doc.setLineDash([0]);
 
 /// copy 2 
   //Logo
-  doc.addImage(ComapnyInfo.Logo, "jpeg", startX, startY, 12, 12);
+  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX, startY, 12, 12);
 
   //Name
 
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.text(ComapnyInfo.Name, startX + 90, startY += 9);
+  doc.text(store.getters.CompanyInfo.Name, startX + 90, startY += 9);
 
   doc.setLineWidth(1);
   doc.line(0, startY+=8, 200, startY);

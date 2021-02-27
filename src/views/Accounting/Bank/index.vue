@@ -459,9 +459,7 @@ export default {
       this.resetTempForm();
       this.dialogFormStatus = "create";
       this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+      this.$refs["dataForm"].clearValidate();
     },
     handleUpdate(row) {
       console.log(row);
@@ -470,9 +468,7 @@ export default {
       this.tempForm.Description = row.Description;
       this.dialogFormStatus = "update";
       this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+      this.$refs["dataForm"].clearValidate();
     },
     handleOprationsys(ObjID, Opration) {
       this.dialogOprationVisible = true;

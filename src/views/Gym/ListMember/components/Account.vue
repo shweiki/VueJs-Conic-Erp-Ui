@@ -1,18 +1,28 @@
 <template>
-  <div class="app-container" style="direction : rtl ">
-    <add-entry v-if="checkPermission(['Admin'])" :AccountId1="3" :AccountId2="AccountId" />
+  <div class="app-container" style="direction: rtl">
+    <add-entry
+      v-if="checkPermission(['Admin'])"
+      :AccountId1="3"
+      :AccountId2="AccountId"
+    />
     <el-table :data="EntryMovements" fit border highlight-current-row>
       <el-table-column prop="Id" label="ID" width="120" align="center"></el-table-column>
       <el-table-column label="التاريخ" align="center" width="200">
         <template slot-scope="scope">
-          <el-date-picker format="dd/MM/yyyy" disabled v-model="scope.row.FakeDate"></el-date-picker>
+          <el-date-picker
+            format="dd/MM/yyyy"
+            disabled
+            v-model="scope.row.FakeDate"
+          ></el-date-picker>
         </template>
       </el-table-column>
       <el-table-column label="البيان" align="center">
-        <template slot-scope="scope">{{ scope.row.Description}}</template>
+        <template slot-scope="scope">{{ scope.row.Description }}</template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Account.Credit')" width="120" align="center">
-        <template slot-scope="scope">{{(scope.row.Credit).toFixed($store.getters.settings.ToFixed) }}</template>
+        <template slot-scope="scope">{{
+          scope.row.Credit.toFixed($store.getters.settings.ToFixed)
+        }}</template>
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Account.Debit')"
@@ -20,7 +30,9 @@
         width="120"
         align="center"
       >
-        <template slot-scope="scope">{{(scope.row.Debit).toFixed(this.$store.getters.settings.ToFixed) }}</template>
+        <template slot-scope="scope">{{
+          scope.row.Debit.toFixed($store.getters.settings.ToFixed)
+        }}</template>
       </el-table-column>
       <!--<el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
         <template slot-scope="scope">{{ (scope.row.Credit - scope.row.Debit).toFixed(this.$store.getters.settings.ToFixed) }}</template>

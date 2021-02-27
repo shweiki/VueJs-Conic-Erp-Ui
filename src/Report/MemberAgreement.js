@@ -1,11 +1,8 @@
 import jsPDF from "jspdf"
 import { AmiriRegular } from "@/assets/custom-theme/fonts/Amiri-Regular.js";
 
-import { GetCompanyInfo } from "@/api/CompanyInfo";
-let ComapnyInfo = null;
-GetCompanyInfo().then(response => {
-  ComapnyInfo = response;
-})
+import store from '@/store'
+
 export function MemberAgreement(temp) {
   let startX = 1, startY = 0
   let doc = new jsPDF('p', 'mm', "a4", { filters: ["ASCIIHexEncode"] });
@@ -18,13 +15,13 @@ export function MemberAgreement(temp) {
   doc.setFont("Amiri-Regular");
 
   //Logo
-  doc.addImage(ComapnyInfo.Logo, "jpeg", startX, startY, 12, 12);
+  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX, startY, 12, 12);
 
   //Name
 
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.text(ComapnyInfo.Name, startX + 90, startY += 9);
+  doc.text(store.getters.CompanyInfo.Name, startX + 90, startY += 9);
   doc.setFontSize(14);
 
   doc.text(' : التاريخ', startX + 200, startY, { align: 'right' });

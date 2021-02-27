@@ -1,9 +1,6 @@
 
-import { GetCompanyInfo } from "@/api/CompanyInfo";
-let ComapnyInfo = null;
-GetCompanyInfo().then(response => {
-  ComapnyInfo = response;
-})
+import store from '@/store'
+
 export function SaleInvoiceA4(temp) {
 
 
@@ -11,34 +8,34 @@ export function SaleInvoiceA4(temp) {
     temp.InventoryMovements.reduce((prev, cur) => {
       return prev + cur.Qty * cur.SellingPrice;
     }, 0) - temp.Discount
-  ).toFixed(this.$store.getters.settings.ToFixed);
+  ).toFixed(store.getters.settings.ToFixed);
 
 
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Vendor.Name}}', temp.Name)
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{PaymentMethod}}', temp.PaymentMethod == 'Cash' ? "ذمم" : "كاش")
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{FakeDate}}', temp.FakeDate)
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Discount}}', temp.Discount)
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Tax}}', temp.Tax)
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{Description}}', temp.Description)
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace('{{TotalAmmount}}', TotalAmmount)
+  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{Vendor.Name}}', temp.Name)
+  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{PaymentMethod}}', temp.PaymentMethod == 'Cash' ? "ذمم" : "كاش")
+  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{FakeDate}}', temp.FakeDate)
+  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{Discount}}', temp.Discount)
+  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{Tax}}', temp.Tax)
+  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{Description}}', temp.Description)
+  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{TotalAmmount}}', TotalAmmount)
 
 
-  let res = ComapnyInfo.HeaderReport.slice(ComapnyInfo.HeaderReport.search('<tr id="forach"'), ComapnyInfo.HeaderReport.indexOf("</tr>", ComapnyInfo.HeaderReport.search('<tr id="forach"')) + 5);
+  let res = store.getters.CompanyInfo.HeaderReport.slice(store.getters.CompanyInfo.HeaderReport.search('<tr id="forach"'), store.getters.CompanyInfo.HeaderReport.indexOf("</tr>", store.getters.CompanyInfo.HeaderReport.search('<tr id="forach"')) + 5);
 
   let tabelInventoryMovements = "";
   temp.InventoryMovements.reverse().forEach(element => {
     tabelInventoryMovements += "<tr style='text-align: center;'>"
-    tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(this.$store.getters.settings.ToFixed) + "</td>";
+    tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(store.getters.settings.ToFixed) + "</td>";
     tabelInventoryMovements += "<td>" + element.SellingPrice + "</td>";
     tabelInventoryMovements += "<td>" + element.Qty + "</td>";
     tabelInventoryMovements += "<td>" + element.Name + "</td>";
     tabelInventoryMovements += "</tr>"
   });
-  ComapnyInfo.HeaderReport = ComapnyInfo.HeaderReport.replace(res, tabelInventoryMovements)
+  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace(res, tabelInventoryMovements)
 
   let win = window.open("", "Title", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=600,top=" + (screen.height - 50) + ",left=" + (screen.width - 500));
 
-  win.document.body.innerHTML = ComapnyInfo.HeaderReport;
+  win.document.body.innerHTML = store.getters.CompanyInfo.HeaderReport;
   win.print()
 
 

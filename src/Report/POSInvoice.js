@@ -1,11 +1,7 @@
 import jsPDF from "jspdf"
 import {AmiriRegular} from "@/assets/custom-theme/fonts/Amiri-Regular.js";
+import store from '@/store'
 
-import { GetCompanyInfo } from "@/api/CompanyInfo";
-let ComapnyInfo = null;
-GetCompanyInfo().then(response => {
-  ComapnyInfo = response;
-})
 export function SaleInvoiceLabel(temp) {
   let startX = 1 , startY = 0
   let doc = new jsPDF("p", "mm", "80", { filters: ["ASCIIHexEncode"] });
@@ -16,19 +12,19 @@ console.log(temp)
     temp.InventoryMovements.reduce((prev, cur) => {
       return prev + cur.Qty * cur.SellingPrice;
     }, 0) - temp.Discount
-  ).toFixed(this.$store.getters.settings.ToFixed);
+  ).toFixed(store.getters.settings.ToFixed);
   doc.addFileToVFS('Amiri-Regular-normal.ttf',  AmiriRegular());
   doc.addFont('Amiri-Regular-normal.ttf', 'Amiri-Regular', 'normal');
   doc.setFont("Amiri-Regular");
 
   //Logo
-  doc.addImage(ComapnyInfo.Logo, "jpeg", startX, startY, 12, 12);
+  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX, startY, 12, 12);
 
   //Name
 
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.text(ComapnyInfo.Name, startX +24, startY +=9);
+  doc.text(store.getters.CompanyInfo.Name, startX +24, startY +=9);
   doc.setLineWidth(1);
   doc.line(0, startY +5, 78, startY += 5);
   doc.setFontSize(12);
@@ -49,8 +45,8 @@ console.log(temp)
   temp.InventoryMovements.forEach(element => {
     doc.text(""+element.Name+"", 78, startY+=6, {align:'right'});
     doc.text("" + element.Qty + "", 42, startY);
-    doc.text("" + (element.SellingPrice).toFixed(this.$store.getters.settings.ToFixed) + "", 25, startY);
-    doc.text("" + (element.SellingPrice*element.Qty).toFixed(this.$store.getters.settings.ToFixed) + "", 6, startY);
+    doc.text("" + (element.SellingPrice).toFixed(store.getters.settings.ToFixed) + "", 25, startY);
+    doc.text("" + (element.SellingPrice*element.Qty).toFixed(store.getters.settings.ToFixed) + "", 6, startY);
 
     });
     doc.setLineWidth(1);

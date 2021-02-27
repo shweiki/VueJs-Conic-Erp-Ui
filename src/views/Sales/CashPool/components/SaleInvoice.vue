@@ -397,14 +397,11 @@ export default {
               var find = this.ItemsMovements.findIndex((value) => value.Name == m.Name);
               if (find != -1) this.ItemsMovements[find].TotalCount += m.Qty;
               else {
-                const foundItem = this.$store.getters.AllItems.find(
-                  (value) => value.Name == m.Name
-                );
                 this.ItemsMovements.push({
-                  Name: foundItem.Name,
+                  Name: m.Name,
                   TotalCount: m.Qty,
                   AvgPrice: m.SellingPrice.toFixed(this.$store.getters.settings.ToFixed),
-                  CostPrice: foundItem.CostPrice,
+                  CostPrice: m.CostPrice,
                 });
               }
             });

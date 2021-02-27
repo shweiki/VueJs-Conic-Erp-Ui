@@ -1,12 +1,7 @@
 import jsPDF from "jspdf"
-
 import { AmiriRegular } from "@/assets/custom-theme/fonts/Amiri-Regular.js";
+import store from '@/store'
 
-import { GetCompanyInfo } from "@/api/CompanyInfo";
-let ComapnyInfo = null;
-GetCompanyInfo().then(response => {
-  ComapnyInfo = response;
-})
 var JsBarcode = require('jsbarcode');
 
 export function Label1(temp) {
@@ -32,25 +27,25 @@ export function Label1(temp) {
   //doc.setFontSize(10);
   doc.rect(1, 1, 50, 25);
 
-  doc.addImage(ComapnyInfo.Logo, "jpeg", startX, startY , 20, 6);
+  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX, startY, 20, 6);
   doc.setFontSize(8);
 
-  doc.text("" + ComapnyInfo.Name + "", startX+3, startY + 9);
+  doc.text("" + store.getters.CompanyInfo.Name + "", startX + 3, startY + 9);
 
-  doc.text("" + ComapnyInfo.NickName + "", startX+3, startY + 12);
+  doc.text("" + store.getters.CompanyInfo.NickName + "", startX + 3, startY + 12);
 
-  doc.text("" + ComapnyInfo.PhoneNumber1 + "", startX+3, startY + 15);
+  doc.text("" + store.getters.CompanyInfo.PhoneNumber1 + "", startX + 3, startY + 15);
 
 
   doc.setFontSize(10);
-  let price = temp.SellingPrice.toFixed($store.getters.settings.ToFixed)
-  doc.text("" + temp.Name + "", 50, startY + 4 , {align:'right'});
+  let price = temp.SellingPrice.toFixed(store.getters.settings.ToFixed)
+  doc.text("" + temp.Name + "", 50, startY + 4, { align: 'right' });
   doc.setFontSize(12);
 
   doc.text("" + price + "", 30, startY + 13);
-  console.log("img.src " +img.src)
+  console.log("img.src " + img.src)
 
-  doc.addImage(img.src, "jpeg", startX, startY +15, 50, 10);
+  doc.addImage(img.src, "jpeg", startX, startY + 15, 50, 10);
 
   //doc.setLineWidth(1);
   //doc.line(0, startY += 5, 5, startY);

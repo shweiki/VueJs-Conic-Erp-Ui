@@ -7,6 +7,13 @@ export function GetPayment(query) {
     params: query
   })
 }
+export function GetByListQ(data) {
+  return request({
+    url: '/Payment/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 
 export function GetPaymentsByMemberID(query) {
   return request({

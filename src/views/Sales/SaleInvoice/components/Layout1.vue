@@ -21,7 +21,7 @@
                   ]"
                 >
                   <fake-date
-                    :Value="tempForm.FakeDate.toString()"
+                    :Value="tempForm.FakeDate"
                     @Set="(v) => (tempForm.FakeDate = v)"
                   />
                 </el-form-item>
@@ -140,7 +140,9 @@
                         <el-table-column prop="ItemsId" align="center">
                           <template slot="header" slot-scope="{}"
                             >{{ $t("NewPurchaseInvoice.Items") }} ({{
-                              tempForm.InventoryMovements.length.toFixed($store.getters.settings.ToFixed)
+                              tempForm.InventoryMovements.length.toFixed(
+                                $store.getters.settings.ToFixed
+                              )
                             }}
                             )</template
                           >
@@ -149,8 +151,12 @@
                               {{ scope.row.Itemx.Name }}
                               <el-tag type="primary" effect="plain">{{
                                 PriceMethod == "wholesale"
-                                  ? scope.row.Itemx.OtherPrice.toFixed($store.getters.settings.ToFixed)
-                                  : scope.row.Itemx.SellingPrice.toFixed($store.getters.settings.ToFixed)
+                                  ? scope.row.Itemx.OtherPrice.toFixed(
+                                      $store.getters.settings.ToFixed
+                                    )
+                                  : scope.row.Itemx.SellingPrice.toFixed(
+                                      $store.getters.settings.ToFixed
+                                    )
                               }}</el-tag>
                               <edit-item
                                 @focus="focusBarcode"
@@ -760,10 +766,8 @@ export default {
                     this.tempForm.Id = response;
                     this.OldInvoice = this.tempForm;
                     this.AutoPrint ? this.Print() : undefined;
-                    this.$nextTick(() => {
-                      this.OpenRestOfBill = false;
-                      this.$router.go(-1);
-                    });
+                    this.OpenRestOfBill = false;
+                    this.$router.go(-1);
                   },
                 });
               })

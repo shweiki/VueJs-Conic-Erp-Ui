@@ -58,7 +58,7 @@ const AccountingRouter = {
     },
     {
       path: 'Payment',
-      component: () => import('@/views/Accounting/Payment/index'),
+      component: () => import('@/views/Accounting/Payment/List'),
       name: 'Payment',
       meta: {
         title: 'Payment', icon: 'accounts'

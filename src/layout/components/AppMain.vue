@@ -67,10 +67,9 @@ export default {
   methods: {
     refreshSelectedTag() {
       const fullPath = this.FullPath;
-      this.$nextTick(() => {
-        this.$router.replace({
-          path: "/redirect" + fullPath,
-        });
+
+      this.$router.replace({
+        path: "/redirect" + fullPath,
       });
     },
     Back() {
