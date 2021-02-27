@@ -24,8 +24,8 @@ module.exports = {
   WithOutCheckItemIsExist: true,
   ToFixed : 2,
   errorLog: 'production',
-  DateFormat: 'dd/MM/yyyy',
-  DateTimeFormat: 'dd/MM/yyyy h:mm:ss a',
+  DateFormat: 'yyyy-MM-dd',
+  DateTimeFormat: 'yyyy-MM-dd HH:mm',
   StatusQuery :0,
   PointOfSaleLayout :'Layout1',
   datepickerQuery: [new Date(), new Date()],// start , End
