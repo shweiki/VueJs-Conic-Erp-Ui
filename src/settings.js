@@ -23,6 +23,7 @@ module.exports = {
   BarcodeIsID: false,
   WithOutCheckItemIsExist: true,
   ToFixed : 2,
+  LimitQurey : 20,
   errorLog: 'production',
   DateFormat: 'yyyy-MM-dd',
   DateTimeFormat: 'yyyy-MM-dd HH:mm',

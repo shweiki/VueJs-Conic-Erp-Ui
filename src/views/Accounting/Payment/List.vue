@@ -257,7 +257,7 @@ export default {
       listQuery: {
         Page: 1,
         Any: "",
-        limit: 100,
+        limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
         User: undefined,
         DateFrom: "",

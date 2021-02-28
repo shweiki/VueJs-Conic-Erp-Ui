@@ -276,7 +276,7 @@
 </template>
 
 <script>
-import { GetSaleInvoiceByStatus } from "@/api/SaleInvoice";
+import { GetSaleInvoiceByStatus ,GetByListQ } from "@/api/SaleInvoice";
 
 import { GetActiveCash } from "@/api/Cash";
 import { GetInComeAccounts } from "@/api/Account";
@@ -384,13 +384,17 @@ export default {
           this.InComeAccount = this.InComeAccounts[0].value;
         });
       });
-      GetSaleInvoiceByStatus({
+      GetByListQ({
+         Page: 1,
+        Any: "",
+        limit: this.$store.getters.settings.LimitQurey,
+        Sort: "-id",
         Status: 0,
       })
         .then((response) => {
           // handle success
           console.log(response);
-          this.tableData = response;
+          this.tableData = response.items;
           this.ItemsMovements = [];
           this.tableData.map((a) => {
             return a.InventoryMovements.map((m) => {

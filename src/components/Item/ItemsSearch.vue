@@ -9,7 +9,7 @@
         v-if="$store.getters.settings.BusinessType != 'SuperMarkit'"
         :span="2"
       >
-        <search-item @add="AddItem" @focus="focus" />
+        <dialog-search-item @add="AddItem" @focus="focus" />
       </el-col>
       <el-col :span="2">
         <el-switch
@@ -93,12 +93,12 @@
 <script>
 import Fuse from "fuse.js";
 import AddItem from "./AddItem";
-import SearchItem from "./SearchItem";
+import DialogSearchItem from "./DialogSearchItem";
 import { GetItemByBarcode, GetItemByID } from "@/api/Item";
 
 export default {
   name: "ItemsSearch",
-  components: { AddItem, SearchItem },
+  components: { AddItem, DialogSearchItem },
   data() {
     return {
       ByQTY: false,
