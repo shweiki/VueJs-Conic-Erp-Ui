@@ -15,7 +15,7 @@
         <search-by-date
           :Value="[]"
           @Set="
-            (v) => {
+            v => {
               date = v;
             }
           "
@@ -63,10 +63,8 @@
         highlight-current-row
         style="width: 100%"
         @row-dblclick="
-          (row) => {
-            $router.replace({
-              path: '/EntryAccounting/Edit/' + row.EntryId,
-            });
+          row => {
+            $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
           }
         "
       >
@@ -77,7 +75,11 @@
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-button type="success" icon="el-icon-refresh" @click="getdata"></el-button>
+            <el-button
+              type="success"
+              icon="el-icon-refresh"
+              @click="getdata"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -92,10 +94,14 @@
           align="center"
         ></el-table-column>
         <el-table-column label="مدين" prop="Credit" width="100" align="center">
-          <template slot-scope="scope">{{ scope.row.Credit.toFixed($store.getters.settings.ToFixed) }}</template>
+          <template slot-scope="scope">{{
+            scope.row.Credit.toFixed($store.getters.settings.ToFixed)
+          }}</template>
         </el-table-column>
         <el-table-column label="دائن" prop="Debit" width="100" align="center">
-          <template slot-scope="scope">{{ scope.row.Debit.toFixed($store.getters.settings.ToFixed) }}</template>
+          <template slot-scope="scope">{{
+            scope.row.Debit.toFixed($store.getters.settings.ToFixed)
+          }}</template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -118,7 +124,7 @@ export default {
       Total: 0,
       date: [],
       loading: true,
-      AccountId: 2,
+      AccountId: 2
     };
   },
   created() {
@@ -131,15 +137,15 @@ export default {
       GetEntryAccounting({
         AccountId: this.AccountId,
         DateFrom: this.date[0],
-        DateTo: this.date[1],
-      }).then((response) => {
+        DateTo: this.date[1]
+      }).then(response => {
         console.log(response);
         this.tableData = response;
         this.Total =
           this.tableData.reduce((a, b) => a + b.Credit, 0) -
           this.tableData.reduce((a, b) => a + b.Debit, 0);
 
-        GetActiveAccounts().then((response) => {
+        GetActiveAccounts().then(response => {
           // handle success
           console.log(response);
           this.Account = response;
@@ -154,7 +160,7 @@ export default {
         type: "json",
         header:
           "<center> <h2>" +
-          this.Account.find((obj) => {
+          this.Account.find(obj => {
             return obj.value == this.AccountId;
           }).label +
           "</h2></center><h3 style='float:left'>الاجمالي " +
@@ -165,7 +171,7 @@ export default {
           this.formatDate(this.date[1]) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
       });
     },
     formatDate(date) {
@@ -177,7 +183,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    },
-  },
+    }
+  }
 };
 </script>

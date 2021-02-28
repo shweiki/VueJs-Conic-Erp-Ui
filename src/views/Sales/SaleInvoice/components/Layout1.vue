@@ -440,9 +440,7 @@ import ItemsPrime from "@/components/Item/ItemsPrime";
 import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill";
 
-import LangSelect from "@/components/LangSelect";
-import Screenfull from "@/components/Screenfull";
-import SizeSelect from "@/components/SizeSelect";
+
 import PrintButton from "@/components/PrintRepot/PrintButton";
 
 // report

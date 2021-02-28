@@ -105,6 +105,12 @@
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
+       <el-button
+        style="float: left"
+        icon="el-icon-printer"
+        type="success"
+        @click="print(list)"
+      ></el-button>
     </el-card>
 
     <el-table
@@ -251,7 +257,7 @@ export default {
       listQuery: {
         Page: 1,
         Any: "",
-        limit: 10,
+        limit: 100,
         Sort: "-id",
         User: undefined,
         DateFrom: "",
@@ -324,6 +330,19 @@ export default {
     getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
+    },
+        print(data) {
+      data = data.map((Item) => ({
+        Name: Item.Name,
+        Qty: Item.Qty,
+        SellingPrice: Item.SellingPrice,
+        Total: (Item.SellingPrice * Item.Qty).toFixed(this.$store.getters.settings.ToFixed),
+      }));
+      printJS({
+        printable: data,
+        properties: ["Name", "Qty", "SellingPrice", "Total"],
+        type: "json",
+      });
     },
   },
 };

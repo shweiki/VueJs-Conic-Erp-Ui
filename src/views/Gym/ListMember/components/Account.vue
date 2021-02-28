@@ -5,8 +5,23 @@
       :AccountId1="3"
       :AccountId2="AccountId"
     />
-    <el-table :data="EntryMovements" fit border highlight-current-row>
-      <el-table-column prop="Id" label="ID" width="120" align="center"></el-table-column>
+    <el-table
+      @row-dblclick="
+        row => {
+          $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
+        }
+      "
+      :data="EntryMovements"
+      fit
+      border
+      highlight-current-row
+    >
+      <el-table-column
+        prop="Id"
+        label="ID"
+        width="120"
+        align="center"
+      ></el-table-column>
       <el-table-column label="التاريخ" align="center" width="200">
         <template slot-scope="scope">
           <el-date-picker
@@ -19,7 +34,11 @@
       <el-table-column label="البيان" align="center">
         <template slot-scope="scope">{{ scope.row.Description }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.Credit')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Account.Credit')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{
           scope.row.Credit.toFixed($store.getters.settings.ToFixed)
         }}</template>
@@ -52,13 +71,13 @@ export default {
       type: Array,
       default: () => {
         return null;
-      },
+      }
     },
     AccountId: {
       type: Number,
-      default: undefined,
-    },
+      default: undefined
+    }
   },
-  methods: { checkPermission },
+  methods: { checkPermission }
 };
 </script>
