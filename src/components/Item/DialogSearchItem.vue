@@ -15,12 +15,9 @@
       :visible.sync="Open"
       @closed="focus"
     >
+      <item-view />
       <el-table
-        :data="
-          $store.getters.AllItems.filter(
-            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
-          )
-        "
+        :data="[]"
         @row-dblclick="AddItem"
         fit
         border
@@ -60,19 +57,32 @@
               <el-table-column v-bind:label="$t('Items.Cost')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.CostPrice.toFixed($store.getters.settings.ToFixed) }}
+                  {{
+                    scope.row.CostPrice.toFixed($store.getters.settings.ToFixed)
+                  }}
                 </template>
               </el-table-column>
-              <el-table-column v-bind:label="$t('Items.Packeges')" align="center">
+              <el-table-column
+                v-bind:label="$t('Items.Packeges')"
+                align="center"
+              >
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed) }}
+                  {{
+                    scope.row.OtherPrice.toFixed(
+                      $store.getters.settings.ToFixed
+                    )
+                  }}
                 </template>
               </el-table-column>
               <el-table-column v-bind:label="$t('Items.Retail')" align="center">
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
+                  {{
+                    scope.row.SellingPrice.toFixed(
+                      $store.getters.settings.ToFixed
+                    )
+                  }}
                 </template>
               </el-table-column>
             </el-table>
@@ -84,15 +94,14 @@
 </template>
 
 <script>
-import store from "@/store";
 import EditItem from "./EditItem";
-
+import ItemView from "@/views/Inventory/Item/index";
 export default {
-  components: { EditItem },
+  components: { EditItem, ItemView },
   data() {
     return {
       Open: false,
-      search: "",
+      search: ""
     };
   },
   methods: {
@@ -103,7 +112,7 @@ export default {
     },
     focus() {
       this.$emit("focus");
-    },
-  },
+    }
+  }
 };
 </script>

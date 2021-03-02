@@ -20,7 +20,8 @@ export function GetByListQ(data) {
     method: 'post',
     data: qs.stringify(data)
   })
-}export function CheckMemberIsExist(query) {
+}
+export function CheckMemberIsExist(query) {
   return request({
     url: '/Member/CheckMemberIsExist',
     method: 'get',

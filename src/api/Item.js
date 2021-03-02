@@ -7,7 +7,20 @@ export function GetItem(query) {
     params: query
   })
 }
-
+export function GetItemByAny(query) {
+  return request({
+    url: '/Item/GetItemByAny',
+    method: 'get',
+    params: query
+  })
+}
+export function CheckItemIsExist(query) {
+  return request({
+    url: '/Item/CheckItemIsExist',
+    method: 'get',
+    params: query
+  })
+}
 export function GetActiveItem(query) {
   return request({
     url: '/Item/GetActiveItem',

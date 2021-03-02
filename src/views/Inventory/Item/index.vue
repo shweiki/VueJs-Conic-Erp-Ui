@@ -125,9 +125,8 @@
   </div>
 </template>
 <script>
-import { CreateItem, Edit, GetItemByID } from "@/api/Item";
+import {  GetItemByID } from "@/api/Item";
 import printJS from "print-js";
-import { ChangeObjStatus } from "@/api/Oprationsys";
 import ItemsSearch from "@/components/Item/ItemsSearch.vue";
 import { Label1 } from "@/Report/ItemLabel";
 

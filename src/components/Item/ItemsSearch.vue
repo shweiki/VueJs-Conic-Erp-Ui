@@ -21,31 +21,7 @@
       </el-col>
 
       <el-col :span="8">
-        <el-select
-          style="display: unset"
-          v-model="search"
-          :remote-method="querySearch"
-          filterable
-          default-first-option
-          remote
-          placeholder="بحث حسب اسم الصنف"
-          @change="change"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.Id"
-            :value="item"
-            :label="item.Name"
-          >
-            <span style="color: #8492a6; font-size: 12px"
-              >( {{ item.Id }} )</span
-            >
-            <span style="float: left">{{ item.Name }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px">{{
-              item.SellingPrice
-            }}</span>
-          </el-option>
-        </el-select>
+        <item-search-any @Set="v => AddItem(v, 1)" />
       </el-col>
       <el-col :span="8">
         <el-input
@@ -95,10 +71,11 @@ import Fuse from "fuse.js";
 import AddItem from "./AddItem";
 import DialogSearchItem from "./DialogSearchItem";
 import { GetItemByBarcode, GetItemByID } from "@/api/Item";
+import ItemSearchAny from "./ItemSearchAny";
 
 export default {
   name: "ItemsSearch",
-  components: { AddItem, DialogSearchItem },
+  components: { AddItem, DialogSearchItem, ItemSearchAny },
   data() {
     return {
       ByQTY: false,
@@ -108,76 +85,28 @@ export default {
       NewItemVisible: false,
       EnterQTYVisible: false,
       Barcode: "",
-      search: "",
-      options: [],
+
       searchPool: [],
       fuse: undefined
     };
-  },
-  computed: {
-    Items() {
-      return this.$store.getters.AllItems;
-    }
-  },
-  watch: {
-    Items() {
-      this.searchPool = this.Items;
-    },
-    searchPool(list) {
-      this.initFuse(list);
-    }
   },
   created() {
     // Add barcode scan listener and pass the callback function
     this.$barcodeScanner.init(this.onBarcodeScanned);
   },
 
-  mounted() {
-    this.searchPool = this.Items;
-  },
+
   methods: {
     AddItem(item, Qty) {
       if (this.ByQTY) {
         this.EnterQTYVisible = true;
         return;
       }
-      this.focus();
       this.Barcode = "";
       this.$emit("add", item, Qty);
-    },
-    change(val) {
-      this.AddItem(val, 1);
-      this.search = "";
-      this.options = [];
       this.focus();
     },
-    initFuse(list) {
-      this.fuse = new Fuse(list, {
-        shouldSort: true,
-        threshold: 0.4,
-        location: 0,
-        distance: 100,
-        maxPatternLength: 32,
-        minMatchCharLength: 1,
-        keys: [
-          {
-            name: "Id",
-            weight: 0.7
-          },
-          {
-            name: "Name",
-            weight: 0.2
-          }
-        ]
-      });
-    },
-    querySearch(query) {
-      if (query !== "") {
-        this.options = this.fuse.search(query);
-      } else {
-        this.options = [];
-      }
-    },
+
     focus() {
       this.OpenAddItem = false;
       this.$emit("focus");

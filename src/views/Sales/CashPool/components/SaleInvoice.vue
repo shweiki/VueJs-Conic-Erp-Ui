@@ -349,8 +349,7 @@ export default {
         (a, b) =>
           a +
           b.InventoryMovements.reduce((prev, cur) => {
-            const foundItem = this.searchItem(cur.ItemsId);
-            return prev + (cur.SellingPrice - foundItem.CostPrice) * cur.Qty;
+            return prev + (cur.SellingPrice - cur.CostPrice) * cur.Qty;
           }, 0),
         0
       );
@@ -358,8 +357,7 @@ export default {
         (a, b) =>
           a +
           b.InventoryMovements.reduce((prev, cur) => {
-            const foundItem = this.searchItem(cur.ItemsId);
-            return prev + foundItem.CostPrice * cur.Qty;
+            return prev + cur.CostPrice * cur.Qty;
           }, 0),
         0
       );
@@ -367,9 +365,7 @@ export default {
       this.TotalDiscount = this.Selection.reduce((a, b) => a + b.Discount, 0);
       this.EnableSave = false;
     },
-    searchItem(Id) {
-      return this.$store.getters.AllItems.find((value) => value.Id == Id);
-    },
+   
     getdata() {
       this.loading = true;
       GetActiveCash().then((response) => {
@@ -387,7 +383,7 @@ export default {
       GetByListQ({
          Page: 1,
         Any: "",
-        limit: this.$store.getters.settings.LimitQurey,
+        limit: 100,
         Sort: "-id",
         Status: 0,
       })

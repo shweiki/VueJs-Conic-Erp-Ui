@@ -743,7 +743,6 @@ export default {
           ) > 0
         ) {
           this.DisabledSave = true;
-          console.log(this.tempForm);
           Create(this.tempForm)
             .then(response => {
               this.$notify({
@@ -766,6 +765,7 @@ export default {
             })
             .catch(error => {
               console.log(error);
+              this.DisabledSave = false;
             });
         } else {
           this.ValidateDescription =

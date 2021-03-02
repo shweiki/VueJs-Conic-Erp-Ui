@@ -10,6 +10,7 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <el-button
+            :disabled="DisabledSave"
             style="float: left"
             type="success"
             icon="fa fa-save"
@@ -50,13 +51,13 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             >
               <fake-date
                 :Value="tempForm.FakeDate"
-                @Set="(v) => (tempForm.FakeDate = v)"
+                @Set="v => (tempForm.FakeDate = v)"
               />
             </el-form-item>
           </el-col>
@@ -69,8 +70,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك حساب فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             >
               <el-select
@@ -96,14 +97,20 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="طريقة الدفع" prop="PaymentMethod">
-              <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
+              <el-radio-group
+                v-model="tempForm.PaymentMethod"
+                text-color="#f78123"
+              >
                 <el-radio label="Cash" border>{{
                   $t("NewPurchaseInvoice.Cash")
                 }}</el-radio>
 
-                <el-radio v-if="tempForm.VendorId != 2" label="Receivables" border>{{
-                  $t("NewPurchaseInvoice.Receivables")
-                }}</el-radio>
+                <el-radio
+                  v-if="tempForm.VendorId != 2"
+                  label="Receivables"
+                  border
+                  >{{ $t("NewPurchaseInvoice.Receivables") }}</el-radio
+                >
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -115,13 +122,13 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             >
               <fake-date
                 :Value="tempForm.InvoicePurchaseDate"
-                @Set="(v) => (tempForm.InvoicePurchaseDate = v)"
+                @Set="v => (tempForm.InvoicePurchaseDate = v)"
               />
             </el-form-item>
           </el-col>
@@ -153,7 +160,9 @@
             >
             <template slot-scope="scope">
               {{ tempForm.InventoryMovements[scope.$index].Itemx.Name }}
-              <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
+              <edit-item
+                :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
+              />
             </template>
           </el-table-column>
 
@@ -205,7 +214,9 @@
             }}</template>
             <template slot-scope="scope">
               <el-radio-group
-                v-model="tempForm.InventoryMovements[scope.$index].InventoryItemId"
+                v-model="
+                  tempForm.InventoryMovements[scope.$index].InventoryItemId
+                "
               >
                 <el-radio-button
                   v-for="(item, index) in InventoryItems"
@@ -222,9 +233,13 @@
             align="center"
           >
             <template slot-scope="scope">
-              <el-form-item :prop="'InventoryMovements.' + scope.$index + '.Description'">
+              <el-form-item
+                :prop="'InventoryMovements.' + scope.$index + '.Description'"
+              >
                 <el-input
-                  v-model="tempForm.InventoryMovements[scope.$index].Description"
+                  v-model="
+                    tempForm.InventoryMovements[scope.$index].Description
+                  "
                   required
                   class="input-with-select"
                 >
@@ -262,7 +277,9 @@
             <el-divider direction="vertical"></el-divider>
             <span>{{ $t("NewPurchaseInvoice.Items") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalItems.toFixed($store.getters.settings.ToFixed) }}</span>
+            <span>{{
+              TotalItems.toFixed($store.getters.settings.ToFixed)
+            }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.QuantityAmount") }}</span>
@@ -286,7 +303,12 @@
 
             <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalAmmount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+            <span
+              >{{
+                TotalAmmount.toFixed($store.getters.settings.ToFixed)
+              }}
+              JOD</span
+            >
             <el-divider direction="vertical"></el-divider>
           </el-card>
         </el-col>
@@ -309,15 +331,15 @@ export default {
   props: {
     isEdit: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === "") {
         this.$message({
           message: rule.field + "اواي",
-          type: "error",
+          type: "error"
         });
         callback(new Error(rule.field + "اي"));
       } else {
@@ -331,7 +353,7 @@ export default {
         } else {
           this.$message({
             message: "اه",
-            type: "error",
+            type: "error"
           });
           callback(new Error("اوه"));
         }
@@ -344,6 +366,7 @@ export default {
       TotalItems: 0,
       TotalAmmount: 0,
       ValidateNote: "",
+      DisabledSave: false,
       tempForm: {
         ID: undefined,
         Name: "-",
@@ -355,7 +378,7 @@ export default {
         Discount: 0,
         VendorId: 2,
         Status: 0,
-        InventoryMovements: [],
+        InventoryMovements: []
       },
       rules: {
         InventoryMovements: [
@@ -363,14 +386,14 @@ export default {
             type: "array",
             required: true,
             message: "لا يمكن إستكمال عملية الشراء من غير إضافة أصناف",
-            trigger: "change",
-          },
-        ],
+            trigger: "change"
+          }
+        ]
       },
       InventoryItems: [],
       CashAccounts: [],
       Vendor: [],
-      tempRoute: {},
+      tempRoute: {}
     };
   },
   created() {
@@ -379,12 +402,12 @@ export default {
     }
     this.tempRoute = Object.assign({}, this.$route);
 
-    GetActiveInventory().then((response) => {
+    GetActiveInventory().then(response => {
       console.log(response);
       this.InventoryItems = response;
     });
 
-    GetActiveVendor().then((response) => {
+    GetActiveVendor().then(response => {
       console.log(response);
       this.Vendor = response;
     });
@@ -396,7 +419,7 @@ export default {
   methods: {
     getdata(val) {
       GetPurchaseInvoiceByID({ ID: val })
-        .then((response) => {
+        .then(response => {
           console.log(response);
           this.tempForm = response;
           this.SumTotalAmmount();
@@ -406,7 +429,7 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
@@ -422,7 +445,7 @@ export default {
         InventoryItemId: 1,
         Itemx: item,
         PurchaseInvoiceId: undefined,
-        Description: "",
+        Description: ""
       });
       this.SumTotalAmmount();
     },
@@ -436,20 +459,28 @@ export default {
         (a, b) => a + (b["Qty"] || 0),
         0
       );
-      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function (prev, cur) {
+      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function(
+        prev,
+        cur
+      ) {
         return prev + cur.Qty * cur.SellingPrice;
-      }, 0);
+      },
+      0);
       this.TotalAmmount -= this.tempForm.Discount;
       document.getElementById("barcode").focus();
     },
 
     updateData() {
-      this.$refs["tempForm"].validate((valid) => {
+      this.$refs["tempForm"].validate(valid => {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
+          if (
+            this.TotalAmmount > 0 &&
+            this.TotalItems > 0 &&
+            this.TotalQty > 0
+          ) {
             Edit(this.tempForm)
-              .then((response) => {
+              .then(response => {
                 this.$notify({
                   title: "تم تعديل  بنجاح",
                   message: "تم تعديل بنجاح",
@@ -461,14 +492,14 @@ export default {
                     if (response) {
                       this.$nextTick(() => {
                         this.$router.replace({
-                          path: "/redirect" + "/Purchase/List",
+                          path: "/redirect" + "/Purchase/List"
                         });
                       });
                     }
-                  },
+                  }
                 });
               })
-              .catch((error) => {
+              .catch(error => {
                 console.log(error);
               });
           } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
@@ -479,33 +510,33 @@ export default {
       });
     },
     createData() {
-      this.$refs["tempForm"].validate((valid) => {
+      this.$refs["tempForm"].validate(valid => {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
 
-          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
+          if (
+            this.TotalAmmount > 0 &&
+            this.TotalItems > 0 &&
+            this.TotalQty > 0
+          ) {
+            this.DisabledSave = true;
+
             Create(this.tempForm)
-              .then((response) => {
+              .then(response => {
+                this.$router.push({ path: `/Purchase/List` });
+
                 this.$notify({
                   title: "تم الإضافة بنجاح",
                   message: "تم الإضافة بنجاح",
                   type: "success",
                   position: "top-left",
                   duration: 1000,
-                  showClose: false,
-                  onClose: () => {
-                    if (response) {
-                      this.$nextTick(() => {
-                        this.$router.replace({
-                          path: "/redirect" + "/Purchase/List",
-                        });
-                      });
-                    }
-                  },
+                  showClose: false
                 });
               })
-              .catch((error) => {
+              .catch(error => {
                 console.log(error);
+                this.DisabledSave = false;
               });
           } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
         } else {
@@ -517,14 +548,14 @@ export default {
     setTagsViewTitle() {
       const title = "Edit Purchase";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`,
+        title: `${title}-${this.tempForm.Id}`
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Purchase";
       document.title = `${title} - ${this.tempForm.Id}`;
-    },
-  },
+    }
+  }
 };
 </script>
