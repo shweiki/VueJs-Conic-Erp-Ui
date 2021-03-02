@@ -44,13 +44,20 @@ router.beforeEach(async (to, from, next) => {
           // set the replace: true, so the navigation will not leave a history record
           store.dispatch("CompanyInfo/GetCompanyInfo");
           store.dispatch("CompanyInfo/GetOpration");
-          store.dispatch("Items/GetItem");
+          var now = new Date();
+          var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0, 0) - now;
+          console.log("millisTill10" , millisTill10 , new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0, 0))
+
+          if (millisTill10 < 0) {
+            millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
+          }
+          console.log("millisTill10" , millisTill10 , new Date(50594176))
+          setTimeout(function () { alert("It's 10am!") }, millisTill10);
           // store.dispatch("Items/GetActiveItem");
           if (store.state.settings.BusinessType == 'GymManagment') {
             store.dispatch("Editors/GetEditorsUser");
             store.dispatch("Devices/GetDevice");
             store.dispatch("Members/CheckMembers");
-            store.dispatch("Members/GetActiveMember");
             store.dispatch("Devices/ConnectZtkDoor");
           }
           document.onkeydown = capturekey;
@@ -80,12 +87,12 @@ router.beforeEach(async (to, from, next) => {
           console.log("to : ", defulateRedirect)
           //  to.path = store.settings.defulateRedirect
           // next({ ...to, replace: true })
-        /*  if (defulateRedirect != null) {
-            next(defulateRedirect);
-          }
-          else {
-            next({ ...to, replace: true })
-          }*/
+          /*  if (defulateRedirect != null) {
+              next(defulateRedirect);
+            }
+            else {
+              next({ ...to, replace: true })
+            }*/
           next({ ...to, replace: true })
 
           // run First Project
