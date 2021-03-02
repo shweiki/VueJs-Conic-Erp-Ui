@@ -19,18 +19,27 @@ module.exports = {
   sidebarOpen: true,
   showNavbar: true,
   showBarcode: false,
-  showRestOfBill :false,
+  showRestOfBill: false,
   BarcodeIsID: false,
   WithOutCheckItemIsExist: true,
-  ToFixed : 2,
-  LimitQurey : 20,
+  ToFixed: 2,
+  LimitQurey: 20,
   errorLog: 'production',
   DateFormat: 'yyyy-MM-dd',
   DateTimeFormat: 'yyyy-MM-dd HH:mm',
-  StatusQuery :0,
-  PointOfSaleLayout :'Layout1',
-  datepickerQuery: [new Date(), new Date()],// start , End
+  StatusQuery: 0,
+  PointOfSaleLayout: 'Layout1',
+  datepickerQuery: [Date(), Date()],// start , End
   timeQuery: ['00:00:00', '23:59:59'],
+  triger: {
+    "CheckMembers":
+    {
+      lock: false,
+      LastRun: "July 21, 1983 01:15:00",
+      OnClock: 7 /// 24 base
+    }
+
+  },
   pickerOptions: {
     shortcuts: [
       {

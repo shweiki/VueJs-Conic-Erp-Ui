@@ -4,8 +4,8 @@ import store from '@/store'
 import { toggleClass } from "@/utils";
 
 let Settings = {}
-const {LimitQurey, PointOfSaleLayout, DateFormat, DateTimeFormat, StatusQuery, showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
-  ,ToFixed  , showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
+const { triger, LimitQurey, PointOfSaleLayout, DateFormat, DateTimeFormat, StatusQuery, showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
+  , ToFixed, showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
   title: title,
@@ -36,8 +36,9 @@ const state = {
   timeQuery: timeQuery,
   pickerOptions: pickerOptions,
   PointOfSaleLayout: PointOfSaleLayout,
-  ToFixed : ToFixed,
-  LimitQurey:LimitQurey
+  ToFixed: ToFixed,
+  LimitQurey: LimitQurey,
+  triger: triger
 }
 
 const mutations = {
@@ -104,7 +105,7 @@ const actions = {
 
   },
   SetSettingDefault(DBSettings) {
-    Object.keys(defaultSettings).map(key => {
+    Object.keys(defaultSettings).forEach(key => {
       const found = DBSettings.find(
         element => element.Name == key
       );

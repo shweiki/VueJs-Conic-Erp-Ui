@@ -45,19 +45,17 @@ router.beforeEach(async (to, from, next) => {
           store.dispatch("CompanyInfo/GetCompanyInfo");
           store.dispatch("CompanyInfo/GetOpration");
           var now = new Date();
-          var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0, 0) - now;
-          console.log("millisTill10" , millisTill10 , new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0, 0))
-
-          if (millisTill10 < 0) {
-            millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
+          var d = new Date(store.state.settings.triger.CheckMembers.LastRun)
+          d.setTime(d.getTime() + (store.state.settings.triger.CheckMembers.OnClock * 60 * 60 * 1000))
+          if (d.getTime() < now.getTime()) {
+            store.dispatch("Members/CheckMembers")
+            
           }
-          console.log("millisTill10" , millisTill10 , new Date(50594176))
-          setTimeout(function () { alert("It's 10am!") }, millisTill10);
           // store.dispatch("Items/GetActiveItem");
           if (store.state.settings.BusinessType == 'GymManagment') {
             store.dispatch("Editors/GetEditorsUser");
             store.dispatch("Devices/GetDevice");
-            store.dispatch("Members/CheckMembers");
+            //   store.dispatch("Members/CheckMembers");
             store.dispatch("Devices/ConnectZtkDoor");
           }
           document.onkeydown = capturekey;

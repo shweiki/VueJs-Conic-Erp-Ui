@@ -1,6 +1,7 @@
 import { GetMember, GetActiveMember, CheckMembers } from "@/api/Member";
 import { CheckMembershipMovement } from "@/api/MembershipMovement";
 import { CheckMemberLog, GetMemberLogByStatus } from "@/api/MemberLog";
+import store from '@/store'
 
 
 const state = {
@@ -23,21 +24,23 @@ const actions = {
                 console.log(response)
                 CheckMemberLog().then(response => {
                     console.log(response)
+                    CheckMembers().then(response => {
+                     //   console.log("new Date()" + new Date())
+                        store.state.settings.triger.CheckMembers.LastRun = "" +  Date() + ""
+                        store.dispatch("settings/changeSetting", {
+                            key: "triger",
+                            value: store.getters.settings.triger,
+                        });
+                        resolve(response)
 
-                    resolve(response)
+                    }).catch(error => {
+                        reject(error)
+                    })
 
                 }).catch(error => {
                     reject(error)
                 })
-                resolve(response)
-               /* CheckMembers().then(response => {
-                    console.log(response)
 
-                    resolve(response)
-
-                }).catch(error => {
-                    reject(error)
-                })*/
 
             }).catch(error => {
                 reject(error)
