@@ -19,6 +19,13 @@
             <radio-oprations TableName="MembershipMovement" @Change="getdata" />
           </el-col>
         </el-row>
+        <el-button
+          icon="el-icon-setting"
+          type="primary"
+          size="mini"
+          @click="$store.dispatch('Members/CheckMembers')"
+          >CheckMemberShips</el-button
+        >
       </div>
       <el-button
         style="width: 100px;"
@@ -179,7 +186,9 @@ export default {
     },
     FilterByDateIn(val) {
       this.loading = true;
-      GetMembershipMovementByDateIn({ DateIn: this.$moment(val).format() }).then(response => {
+      GetMembershipMovementByDateIn({
+        DateIn: this.$moment(val).format()
+      }).then(response => {
         //console.log(response)
         this.tableData = response;
         this.loading = false;
