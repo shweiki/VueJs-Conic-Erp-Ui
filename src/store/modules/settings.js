@@ -4,41 +4,40 @@ import store from '@/store'
 import { toggleClass } from "@/utils";
 
 let Settings = {}
-const { triger, LimitQurey, PointOfSaleLayout, DateFormat, DateTimeFormat, StatusQuery, showRestOfBill, customtheme, BarcodeIsID, SidebarImage, WithOutCheckItemIsExist, errorLog, theme, size, title, BusinessType, language, showSettings, tagsView, fixedHeader, sidebarLogo
-  , ToFixed, showBarcode, pickerOptions, timeQuery, datepickerQuery, sidebarOpen, loginBackground, showSidebar, showNavbar, CashDrawerCOM } = Settings
 
 const state = {
-  title: title,
-  theme: theme,
-  customtheme: customtheme,
-  language: language,
-  size: size,
-  showSettings: showSettings,
-  BusinessType: BusinessType,
-  tagsView: tagsView,
-  CashDrawerCOM: CashDrawerCOM,
-  fixedHeader: fixedHeader,
-  SidebarImage: SidebarImage,
-  loginBackground: loginBackground,
-  showSidebar: showSidebar,
-  sidebarLogo: sidebarLogo,
-  sidebarOpen: sidebarOpen,
-  showNavbar: showNavbar,
-  showBarcode: showBarcode,
-  showRestOfBill: showRestOfBill,
-  BarcodeIsID: BarcodeIsID,
-  WithOutCheckItemIsExist: WithOutCheckItemIsExist,
-  errorLog: errorLog,
-  StatusQuery: StatusQuery,
-  DateTimeFormat: DateTimeFormat,
-  DateFormat: DateFormat,
-  datepickerQuery: datepickerQuery,
-  timeQuery: timeQuery,
-  pickerOptions: pickerOptions,
-  PointOfSaleLayout: PointOfSaleLayout,
-  ToFixed: ToFixed,
-  LimitQurey: LimitQurey,
-  triger: triger
+  title: defaultSettings.title,
+  theme: defaultSettings.theme,
+  customtheme: defaultSettings.customtheme,
+  language: defaultSettings.language,
+  size: defaultSettings.size,
+  showSettings: defaultSettings.showSettings,
+  BusinessType: defaultSettings.BusinessType,
+  tagsView: defaultSettings.tagsView,
+  CashDrawerCOM: defaultSettings.CashDrawerCOM,
+  fixedHeader: defaultSettings.fixedHeader,
+  SidebarImage: defaultSettings.SidebarImage,
+  loginBackground: defaultSettings.loginBackground,
+  showSidebar: defaultSettings.showSidebar,
+  sidebarLogo: defaultSettings.sidebarLogo,
+  sidebarOpen: defaultSettings.sidebarOpen,
+  showNavbar: defaultSettings.showNavbar,
+  showBarcode: defaultSettings.showBarcode,
+  showRestOfBill: defaultSettings.showRestOfBill,
+  BarcodeIsID: defaultSettings.BarcodeIsID,
+  WithOutCheckItemIsExist: defaultSettings.WithOutCheckItemIsExist,
+  errorLog: defaultSettings.errorLog,
+  StatusQuery: defaultSettings.StatusQuery,
+  DateTimeFormat: defaultSettings.DateTimeFormat,
+  DateFormat: defaultSettings.DateFormat,
+  datepickerQuery: defaultSettings.datepickerQuery,
+  timeQuery: defaultSettings.timeQuery,
+  pickerOptions: defaultSettings.pickerOptions,
+  PointOfSaleLayout: defaultSettings.PointOfSaleLayout,
+  ToFixed: defaultSettings.ToFixed,
+  LimitQurey: defaultSettings.LimitQurey,
+  triger: defaultSettings.triger,
+  windowStyle: defaultSettings.windowStyle
 }
 
 const mutations = {
@@ -79,7 +78,6 @@ const actions = {
 
       }).catch(error => {
         console.log("response")
-        this.Settings = defaultSettings
         reject(error)
       })
     })

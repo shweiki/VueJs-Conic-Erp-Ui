@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <el-button
         style="margin-left: 10px"
-        size="small"
+        :size="$store.getters.size"
         type="primary"
         :loading="loading"
         @click="SubmitBackUp"
@@ -18,7 +18,7 @@
 
       <el-button
         style="margin-left: 10px"
-        size="small"
+        :size="$store.getters.size"
         type="success"
         :loading="loading"
         @click="SubmitRestore()"

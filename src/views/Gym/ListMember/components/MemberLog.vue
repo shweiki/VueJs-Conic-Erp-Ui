@@ -5,7 +5,7 @@
         style="float: left"
         type="primary"
         icon="el-icon-refresh"
-        size="mini"
+        :size="$store.getters.size"
         @click="getdata()"
       ></el-button>
       <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
@@ -31,27 +31,37 @@
             :timestamp="Log.DateTime"
             :hide-timestamp="true"
           >
-            <router-link
-              v-bind:class="{
-                BlackList: Log.Status == -2 ? true : false,
-              }"
-              :to="'/Gym/Edit/' + Log.MemberId"
+            <el-tag
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Gym/Edit/' + Log.MemberId
+                  });
+                  window.open(
+                    r.href,
+                    r.route.name,
+                    $store.getters.settings.windowStyle
+                  );
+                }
+              "
+              :color="Log.Style.Color"
+              ><strong style="font-size: 10px; cursor: pointer">{{
+                Log.Name
+              }}</strong></el-tag
             >
-              <el-tag :color="Log.Style.Color"
-                ><strong style="font-size: 10px; cursor: pointer">{{
-                  Log.Name
-                }}</strong></el-tag
-              >
-              <status-tag :Status="Log.Status" TableName="Member"> </status-tag>
-            </router-link>
+            <status-tag :Status="Log.Status" TableName="Member"> </status-tag>
             <el-tag
               v-if="Log.ActiveMemberShip != null"
-              v-bind:type="Log.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'"
+              v-bind:type="
+                Log.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'
+              "
               >{{ Log.ActiveMemberShip.Type }}</el-tag
             >
-            <el-tag v-if="Log.TotalCredit - Log.TotalDebit > 0" type="info">مدين</el-tag>
+            <el-tag v-if="Log.TotalCredit - Log.TotalDebit > 0" type="info"
+              >مدين</el-tag
+            >
             <el-time-picker
-              size="mini"
+              :size="$store.getters.size"
               v-model="Log.DateTime"
               format="hh:mm A"
               disabled
@@ -75,7 +85,7 @@ export default {
   data() {
     return {
       MembersLogs: [],
-      reverse: false,
+      reverse: false
     };
   },
   created() {
@@ -84,7 +94,7 @@ export default {
   methods: {
     getdata() {
       GetMemberLogByStatus({ Status: 0 })
-        .then((response) => {
+        .then(response => {
           if (response.length != this.MembersLogs.length) {
             this.MembersLogs = response.sort(
               (a, b) => new Date(b.DateTime) - new Date(a.DateTime)
@@ -92,10 +102,10 @@ export default {
             RemoveDuplicate();
           }
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
         });
-    },
-  },
+    }
+  }
 };
 </script>

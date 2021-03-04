@@ -45,7 +45,7 @@
       >
       <el-tab-pane>
         <span slot="label">
-          <el-dropdown size="mini" type="primary">
+          <el-dropdown :size="$store.getters.size" type="primary">
             <i class="el-icon-more el-icon--right"></i>
             <el-dropdown-menu slot="dropdown">
               <el-radio-group v-model="tabPosition">

@@ -30,14 +30,14 @@
             <el-button
               icon="el-icon-circle-plus"
               type="primary"
-              size="mini"
+              :size="$store.getters.size"
               @click="SendSms()"
               >SMS</el-button
             >
             <el-button
               icon="el-icon-circle-plus"
               type="primary"
-              size="mini"
+              :size="$store.getters.size"
               @click="SendEmail()"
               >Email</el-button
             >

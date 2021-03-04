@@ -14,6 +14,13 @@ export function GetItemByAny(query) {
     params: query
   })
 }
+export function GetByListQ(data) {
+  return request({
+    url: '/Item/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function CheckItemIsExist(query) {
   return request({
     url: '/Item/CheckItemIsExist',

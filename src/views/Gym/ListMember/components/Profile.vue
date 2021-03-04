@@ -257,7 +257,7 @@ export default {
       GetFileByObjID({ TableName: "Member", ObjID: ID })
         .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
-          // else this.tempForm.Avatar = this.$store.getters.avatar;
+           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
         })
         .catch((err) => {
           console.log(err);

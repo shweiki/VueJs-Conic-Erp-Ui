@@ -15,7 +15,7 @@
     >
       <el-form label-width="80px" label-position="left">
         <el-form-item label="Redirect">
-          <el-input v-model="Redirect" size="medium" />
+          <el-input v-model="Redirect" :size="$store.getters.size" />
         </el-form-item>
         <el-form-item label="Menus">
           <el-tree

@@ -46,6 +46,7 @@ let options = {
   callbackAfterTimeout: true // default is false
 }
 Vue.use(VueBarcodeScanner, options)
+Vue.prototype.window = window;
 
 
 

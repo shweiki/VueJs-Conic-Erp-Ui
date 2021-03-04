@@ -40,6 +40,8 @@ module.exports = {
     }
 
   },
+  windowStyle:
+    'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=55,left=500',
   pickerOptions: {
     shortcuts: [
       {

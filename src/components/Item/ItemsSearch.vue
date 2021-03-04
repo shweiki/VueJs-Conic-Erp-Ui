@@ -1,6 +1,5 @@
 <template>
   <div>
-    <img id="barcodeV" style="display: none" />
     <el-row>
       <el-col :span="2">
         <add-item :visible="OpenAddItem" :barcode="Barcode" @focus="focus" />

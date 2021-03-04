@@ -21,11 +21,47 @@
           <el-divider> تعديل صنف {{ tempForm.Id }}</el-divider>
         </el-col>
       </div>
+
       <el-form ref="dataForm" :rules="rulesForm" :model="tempForm">
-        <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
-          <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
-          <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
-        </el-form-item>
+        <el-row>
+          <el-col :span="16">
+            <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
+              <el-input
+                ref="ItemName"
+                type="text"
+                v-model="tempForm.Name"
+              ></el-input>
+              <el-checkbox v-model="tempForm.IsPrime"
+                >اظهار على شاشة المبيعات</el-checkbox
+              >
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <pan-thumb
+              :image="tempForm.Avatar"
+              :height="'100px'"
+              :width="'100px'"
+              :hoverable="false"
+            >
+              <el-button
+                type="primary"
+                icon="el-icon-upload"
+                @click="imagecropperShow = true"
+              ></el-button>
+              <web-cam TableName="Item" :ObjectID="tempForm.Id" />
+            </pan-thumb>
+            <image-cropper
+              v-show="imagecropperShow"
+              :key="imagecropperKey"
+              :width="150"
+              :height="150"
+              lang-type="ar"
+              TableName="Item"
+              :ObjectID="tempForm.Id"
+              @close="close"
+              @crop-upload-success="cropSuccess"
+            /> </el-col
+        ></el-row>
 
         <el-row>
           <el-col :span="8">
@@ -40,7 +76,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Items.PurchaseCost')" prop="OtherPrice">
+            <el-form-item
+              v-bind:label="$t('Items.PurchaseCost')"
+              prop="OtherPrice"
+            >
               <el-input-number
                 v-model="tempForm.OtherPrice"
                 :precision="2"
@@ -51,7 +90,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Items.SellingPrice')" prop="SellingPrice">
+            <el-form-item
+              v-bind:label="$t('Items.SellingPrice')"
+              prop="SellingPrice"
+            >
               <el-input-number
                 v-model="tempForm.SellingPrice"
                 :precision="2"
@@ -88,12 +130,18 @@
         <el-row>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
-              <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode"></el-input>
+              <el-input
+                v-model="tempForm.Barcode"
+                suffix-icon="fa fa-barcode"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
-              <el-input type="textarea" v-model="tempForm.Description"></el-input>
+              <el-input
+                type="textarea"
+                v-model="tempForm.Description"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -106,41 +154,54 @@
 <script>
 import { Edit, GetItemByID } from "@/api/Item";
 import InventoryQty from "@/components/Item/InventoryQty";
+import PanThumb from "@/components/PanThumb";
+import WebCam from "@/components/WebCam";
+import ImageCropper from "@/components/ImageCropper";
+import { GetFileByObjID } from "@/api/File";
 
 export default {
-  components: { InventoryQty },
+  components: { InventoryQty, PanThumb, WebCam, ImageCropper },
   props: {
     ItemId: {
       type: Number,
-      default: undefined,
-    },
+      default: undefined
+    }
   },
   data() {
     return {
       Visibles: false,
       tempForm: {},
+      imagecropperShow: false,
+      imagecropperKey: 0,
+      tempOpration: {
+        ObjID: undefined,
+        OprationID: undefined,
+        Description: ""
+      },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   methods: {
     getdata() {
-      GetItemByID({ ID: this.ItemId }).then((response) => {
+      GetItemByID({ ID: this.ItemId }).then(response => {
         // handle success
         this.tempForm = response;
+        this.GetImageItem(this.tempForm.Id);
+
         this.Visibles = true;
       });
     },
@@ -148,19 +209,19 @@ export default {
       this.$emit("focus");
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           Edit(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.Visibles = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -169,6 +230,23 @@ export default {
         }
       });
     },
-  },
+    GetImageItem(ID) {
+      GetFileByObjID({ TableName: "Item", ObjID: ID })
+        .then(response => {
+          if (response) this.tempForm.Avatar = response.File;
+          else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    cropSuccess(resData) {
+      this.imagecropperShow = false;
+      this.imagecropperKey = this.imagecropperKey + 1;
+    },
+    close() {
+      this.imagecropperShow = false;
+    }
+  }
 };
 </script>

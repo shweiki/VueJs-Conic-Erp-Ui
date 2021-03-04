@@ -78,13 +78,13 @@
             <el-button
               type="danger"
               icon="el-icon-unlock"
-              size="mini"
+              :size="$store.getters.size"
               @click="UnLockOut(scope.row.Id)"
             ></el-button>
             <el-button
               type="success"
               icon="el-icon-plus"
-              size="mini"
+              :size="$store.getters.size"
               @click="dialogAddRoleVisible = true"
             ></el-button>
           </template>

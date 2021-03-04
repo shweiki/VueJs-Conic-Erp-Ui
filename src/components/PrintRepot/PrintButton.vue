@@ -26,7 +26,15 @@
         @click="PurchaseInvoiceA4"
         >A4</el-button
       >
+      <el-button
+        v-if="Type == 'Item'"
+        icon="el-icon-s-management"
+        @click="ItemLabel"
+        >Label</el-button
+      >
     </div>
+    <img id="barcodeV" style="display: none" />
+
     <el-button
       v-bind:style="Css"
       icon="el-icon-printer"
@@ -34,24 +42,25 @@
       slot="reference"
     ></el-button>
   </el-popover>
+  
 </template>
 <script>
 import { SaleInvoiceLabel } from "@/Report/POSInvoice";
 import { SaleInvoiceA4 } from "@/Report/SaleInvoice";
 import { PurchaseInvoiceA4 } from "@/Report/PurchaseInvoice";
+import { Label1 } from "@/Report/ItemLabel";
 
 import printJS from "print-js";
-import { string } from "clipboard";
 
 export default {
   name: "PrintButton",
   props: {
-    Type: string,
-    Css: string,
+    Type: String,
+    Css: String,
     Data: {
       type: Object,
-      default: {},
-    },
+      default: {}
+    }
   },
   methods: {
     focus() {
@@ -68,10 +77,19 @@ export default {
         printable: SaleInvoiceLabel(this.Data),
         type: "pdf",
         base64: true,
-        showModal: true,
+        showModal: true
       });
     },
-  },
+    ItemLabel() {
+      console.log(this.Data);
+      printJS({
+        printable: Label1(this.Data),
+        type: "pdf",
+        base64: true,
+        showModal: true
+      });
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

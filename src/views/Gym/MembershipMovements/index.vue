@@ -22,7 +22,7 @@
         <el-button
           icon="el-icon-setting"
           type="primary"
-          size="mini"
+          :size="$store.getters.size"
           @click="$store.dispatch('Members/CheckMembers')"
           >CheckMemberShips</el-button
         >

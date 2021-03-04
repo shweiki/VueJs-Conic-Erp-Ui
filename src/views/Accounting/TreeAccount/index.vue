@@ -22,8 +22,8 @@
             :expand-on-click-node="false"
           >
                                 <span>
-                <el-button type="text" size="mini" @click="() => append(data)">إضافة</el-button>
-                <el-button type="text" size="mini" @click="() => remove(node, data)">حذف</el-button>
+                <el-button type="text" :size="$store.getters.size" @click="() => append(data)">إضافة</el-button>
+                <el-button type="text" :size="$store.getters.size" @click="() => remove(node, data)">حذف</el-button>
               </span>
             <span class="custom-tree-node" slot-scope="{ node }">
 
@@ -295,14 +295,14 @@ export default {
             <span>{node.label}</span>
             <span>
               <el-button
-                size="mini"
+                size={this.$store.getters.size}
                 type="text"
                 on-click={() => this.append(data)}
               >
                 إضافة
               </el-button>
               <el-button
-                size="mini"
+                size={$store.getters.size}
                 type="text"
                 on-click={() => this.remove(node, data)}
               >

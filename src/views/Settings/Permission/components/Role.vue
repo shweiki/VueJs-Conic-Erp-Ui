@@ -20,10 +20,10 @@
       </el-table-column>
       <el-table-column align="center" label="Operations">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)"
+          <el-button type="primary" :size="$store.getters.size" @click="handleEdit(scope)"
             >Edit</el-button
           >
-          <el-button type="danger" size="small" @click="handleDelete(scope)"
+          <el-button type="danger" :size="$store.getters.size" @click="handleDelete(scope)"
             >Delete</el-button
           >
         </template>

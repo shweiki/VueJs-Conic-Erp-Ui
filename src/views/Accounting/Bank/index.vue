@@ -31,7 +31,7 @@
               type="success"
               icon="el-icon-refresh"
               @click="getdata()"
-              size="small"
+              :size="$store.getters.size"
             ></el-button>
           </template>
         </el-table-column>
@@ -91,7 +91,7 @@
             <el-button
               v-if="scope.row.Opration.Status != -1"
               icon="el-icon-edit"
-              size="mini"
+              :size="$store.getters.size"
               circle
               @click="handleUpdate(scope.row)"
             ></el-button>
@@ -99,7 +99,7 @@
               v-for="(NOprations, index) in scope.row.NextOprations"
               :key="index"
               :type="NOprations.ClassName"
-              size="mini"
+              :size="$store.getters.size"
               round
               @click="handleOprationsys(scope.row.Id, NOprations)"
               >{{ NOprations.OprationDescription }}</el-button

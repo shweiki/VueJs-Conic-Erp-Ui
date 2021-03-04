@@ -52,23 +52,23 @@
           <template slot-scope="scope">
             <el-button
               @click="ClearAdministrators(scope.row.Id)"
-              size="mini"
+              :size="$store.getters.size"
               type="success"
               >Clear Administrators</el-button
             >
-            <el-button @click="GetAllFaceMember(scope.row.Id)" size="mini" type="info"
+            <el-button @click="GetAllFaceMember(scope.row.Id)" :size="$store.getters.size" type="info"
               >سحب جميع بصمات الوجه المشتركين</el-button
             >
-            <el-button @click="GetAllLogMember(scope.row.Id)" size="mini" type="primary">
+            <el-button @click="GetAllLogMember(scope.row.Id)" :size="$store.getters.size" type="primary">
               سحب جميع سجلات المشتركين</el-button
             >
-            <el-button @click="SetAllMember(scope.row.Id)" size="mini" type="warning">
+            <el-button @click="SetAllMember(scope.row.Id)" :size="$store.getters.size" type="warning">
               ارسال جميع معلومات المشتركين</el-button
             >
-            <el-button @click="ClearUserLog(scope.row.Id)" size="mini" type="danger"
+            <el-button @click="ClearUserLog(scope.row.Id)" :size="$store.getters.size" type="danger"
               >مسح سجلات المشتركين</el-button
             >
-            <el-button @click="RestartDevice(scope.row.Id)" size="mini" type="success"
+            <el-button @click="RestartDevice(scope.row.Id)" :size="$store.getters.size" type="success"
               >اعادة تشغيل الجهاز</el-button
             >
           </template>

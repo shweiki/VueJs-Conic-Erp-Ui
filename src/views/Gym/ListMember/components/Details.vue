@@ -260,11 +260,12 @@ import checkPermission from "@/utils/permission";
 
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
+import ImageCropper from "@/components/ImageCropper";
+
 import LastLogMember from "@/components/Gym/LastLogMember";
 
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import ImageCropper from "@/components/ImageCropper";
 
 export default {
   components: { LastLogMember, PanThumb, WebCam, StatusTag, ImageCropper },

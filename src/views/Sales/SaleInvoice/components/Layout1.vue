@@ -52,7 +52,18 @@
                   :size="$store.getters.size"
                   type="primary"
                   icon="el-icon-plus"
-                  @click="OpenNewInvoice"
+                  @click="
+                    () => {
+                      let r = $router.resolve({
+                        path: '/Sales/Create'
+                      });
+                      window.open(
+                        r.href,
+                        r.route.name,
+                        $store.getters.settings.windowStyle
+                      );
+                    }
+                  "
                 ></el-button>
               </el-col>
 
@@ -637,23 +648,6 @@ export default {
     */
   },
   methods: {
-    OpenNewInvoice() {
-      window.open(
-        this.$router.resolve({
-          path: "/Sales/Create"
-        }).href,
-        name,
-        "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=" +
-          screen.availWidth +
-          ",height=" +
-          screen.availHeight +
-          ",top=" +
-          55 +
-          ",left=" +
-          500 +
-          ""
-      );
-    },
     focusBarcode() {
       document.getElementById("barcode").focus();
     },

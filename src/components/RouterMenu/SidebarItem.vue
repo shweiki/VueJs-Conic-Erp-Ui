@@ -7,7 +7,10 @@
           !item.alwaysShow
       "
     >
-      <span v-if="onlyOneChild.meta" @click="windowopen(resolvePath(onlyOneChild.path))" >
+      <span
+        v-if="onlyOneChild.meta"
+        @click="windowopen(resolvePath(onlyOneChild.path))"
+      >
         <el-menu-item
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
@@ -80,13 +83,14 @@ export default {
   },
   methods: {
     windowopen(link) {
-      console.log("link 0" , link)
       let routeUrl = this.$router.resolve({
         path: link
       });
+      console.log("link 0", routeUrl);
+
       window.open(
         routeUrl.href,
-        name,
+        routeUrl.route.name,
         "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=" +
           55 +
           ",left=" +

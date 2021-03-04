@@ -7,8 +7,8 @@
         v-model="Description"
         :rules="[{ required: true, message: 'لايمكن ترك الخصم فارغ', trigger: 'blur' } ]"
       ></el-input>
-      <el-button icon="el-icon-circle-plus" type="primary" size="mini" @click="SendSms()">SMS</el-button>
-      <el-button icon="el-icon-circle-plus" type="primary" size="mini" @click="SendEmail()">Email</el-button>
+      <el-button icon="el-icon-circle-plus" type="primary" :size="$store.getters.size" @click="SendSms()">SMS</el-button>
+      <el-button icon="el-icon-circle-plus" type="primary" :size="$store.getters.size" @click="SendEmail()">Email</el-button>
     </div>
     <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
   </el-popover>

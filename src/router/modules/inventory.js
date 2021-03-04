@@ -11,7 +11,7 @@ const InventoryRouter = {
   children: [
     {
       path: 'Items',
-      component: () => import('@/views/Inventory/Item/index'),
+      component: () => import('@/views/Inventory/Item/List'),
       name: 'Items',
       meta: {
         title: 'Items', icon: 'item'
