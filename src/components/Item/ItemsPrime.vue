@@ -1,27 +1,43 @@
 <template>
-  <div style="flex-wrap: nowrap; white-space: nowrap; overflow: auto; height: 100%">
+  <div
+    style="flex-wrap: nowrap; white-space: nowrap; overflow: auto; height: 100%"
+  >
     <el-input
       @change="focus"
       v-model="search"
       v-bind:placeholder="$t('ItemSales.ItemName')"
     >
-      <el-button slot="append" @click="SortByName" icon="el-icon-sort"></el-button>
+      <el-button
+        slot="append"
+        @click="SortByName"
+        icon="el-icon-sort"
+      ></el-button>
     </el-input>
     <el-col
       :xs="12"
       :sm="10"
       :md="8"
-      :lg="8"
+      :lg="6"
       :xl="4"
       v-for="(Item, index) in ItemsPrime.filter(
-        (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+        data =>
+          !search || data.Name.toLowerCase().includes(search.toLowerCase())
+        //||data.Category.includes(search.toLowerCase())
       )"
       :key="index"
     >
-      <el-card class="box-card" shadow="always" :body-style="{ padding: '3.5px' }">
+      <el-card
+        class="box-card"
+        shadow="always"
+        :body-style="{ padding: '3.5px' }"
+      >
         <div @click="AddItem(Item)">
+          <img v-if="WithImage" :src="Item.Avatar" class="image" />
+
           <span style="font-size: 10px; color: #545454">{{ Item.Name }}</span>
-          <time class="price">{{ Item.SellingPrice.toFixed($store.getters.settings.ToFixed) }}</time>
+          <time class="price">{{
+            Item.SellingPrice.toFixed($store.getters.settings.ToFixed)
+          }}</time>
         </div>
         <!--  <el-col v-permission="['Admin']"> 
               <el-tooltip
@@ -65,16 +81,18 @@
 <script>
 import permission from "@/directive/permission/index.js";
 import { GetIsPrimeItem } from "@/api/Item";
+import { GetFileByObjID } from "@/api/File";
 
 export default {
   name: "ItemsPrime",
   directives: { permission },
+  props: ["WithImage"],
   data() {
     return {
       search: "",
       ItemsPrime: [],
       tabPosition: "top",
-      order: false,
+      order: false
     };
   },
   created() {
@@ -104,17 +122,40 @@ export default {
       this.focus();
     },
     getdata() {
-      GetIsPrimeItem().then((response) => {
+      GetIsPrimeItem().then(response => {
         this.ItemsPrime = response;
         this.SortByName();
+
+        if (this.WithImage) this.ItemsPrime.map(item => this.GetImageItem(item.Id));
       });
     },
-  },
+
+    GetImageItem(ID) {
+      GetFileByObjID({ TableName: "Item", ObjID: ID })
+        .then(response => {
+          if (response) {
+            this.ItemsPrime.find(element => element.Id == ID).Avatar =
+              response.File;
+          } else
+            this.ItemsPrime.find(
+              element => element.Id == ID
+            ).Avatar = this.$store.getters.CompanyInfo.Logo;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
 };
 </script>
 <style scoped>
 .price {
   font-size: 9px;
   color: #f78123;
+}
+.image {
+  width: 100%;
+  height: 55px;
+  display: block;
 }
 </style>

@@ -11,24 +11,11 @@
         <split-pane split="horizontal" :min-percent="6" :default-percent="6">
           <template slot="paneL">
             <el-row style="margin-top: 2px; background: #f5f7fa; color: white">
-              <el-col :span="4">
+              <el-col :span="8">
                 <right-menu />
               </el-col>
 
               <el-col :span="4">
-                <el-form-item>
-                  <el-radio-group
-                    @change="focusBarcode"
-                    v-model="PriceMethod"
-                    text-color="#f78123"
-                  >
-                    <el-radio label="retail" border>مفرق</el-radio>
-                    <el-radio label="wholesale" border>جملة</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </el-col>
-
-              <el-col :span="3">
                 <el-form-item
                   prop="VendorId"
                   :rules="[
@@ -84,7 +71,7 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="3">
+              <el-col :span="4">
                 <el-button
                   type="primary"
                   icon="el-icon-s-home"
@@ -124,7 +111,11 @@
                     >
                       <items-search @add="AddItem" @focus="focusBarcode" />
                     </el-card>
-                    <items-prime @add="AddItem" @focus="focusBarcode" />
+                    <items-prime
+                      :WithImage="true"
+                      @add="AddItem"
+                      @focus="focusBarcode"
+                    />
                   </template>
                   <template slot="paneR">
                     <el-col :span="6">
@@ -200,29 +191,49 @@
                 >
                   <template slot="paneR">
                     <el-card style="background: #f5f7fa">
-                      <el-form-item prop="PaymentMethod">
-                        <el-radio-group
-                          @change="focusBarcode"
-                          v-model="tempForm.PaymentMethod"
-                          text-color="#f78123"
-                        >
-                          <el-radio label="Cash" border
-                            ><i class="el-icon-money"></i
-                          ></el-radio>
-                          <el-radio label="Visa" border
-                            ><i class="el-icon-bank-card"></i>
-                          </el-radio>
-
-                          <el-radio
-                            v-if="tempForm.VendorId != 2"
-                            label="Receivables"
-                            border
-                            ><i class="el-icon-s-custom"></i
-                          ></el-radio>
-                        </el-radio-group>
-                      </el-form-item>
                       <el-row>
-                        <el-col :span="24">
+                        <el-col :span="12">
+                          <el-form-item prop="PaymentMethod">
+                            <el-radio-group
+                              @change="focusBarcode"
+                              v-model="tempForm.PaymentMethod"
+                              text-color="#f78123"
+                            >
+                              <el-radio label="Cash" border
+                                ><i class="el-icon-money"></i>نقد</el-radio
+                              >
+                              <el-radio label="Visa" border
+                                ><i class="el-icon-bank-card"></i>بطاقة
+                              </el-radio>
+
+                              <el-radio
+                                v-if="tempForm.VendorId != 2"
+                                label="Receivables"
+                                border
+                                ><i class="el-icon-s-custom"></i
+                              ></el-radio>
+                            </el-radio-group>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                          <el-form-item>
+                            <el-radio-group
+                              @change="focusBarcode"
+                              v-model="tempForm.Type"
+                              text-color="#f78123"
+                            >
+                              <el-radio label="takeaway" border
+                                ><i class="el-icon-sell"></i>سفري</el-radio
+                              >
+                              <el-radio label="delivery" border
+                                ><i class="el-icon-truck"></i> توصيل</el-radio
+                              >
+                            </el-radio-group>
+                          </el-form-item>
+                        </el-col></el-row
+                      >
+                      <el-row>
+                        <el-col :span="18">
                           <el-input
                             @change="focusBarcode"
                             prop="Name"
@@ -230,6 +241,26 @@
                             v-model="tempForm.Name"
                           ></el-input>
                         </el-col>
+                        <el-col :span="6">
+                          <el-popover
+                            placement="right"
+                            width="400"
+                            trigger="click"
+                          >
+                            <el-form-item prop="Description">
+                              <el-input
+                                @change="focusBarcode"
+                                v-bind:placeholder="
+                                  $t('NewPurchaseInvoice.statement')
+                                "
+                                v-model="tempForm.Description"
+                              ></el-input>
+                            </el-form-item>
+                            <el-button type="primary" slot="reference"><i class="el-icon-notebook-1"></i> {{
+                               $t("NewPurchaseInvoice.statement")
+                            }}</el-button>
+                          </el-popover></el-col
+                        >
                       </el-row>
                       <el-row v-permission="['Admin']">
                         <el-col :span="10">
@@ -266,19 +297,7 @@
                           >{{ $t("NewPurchaseInvoice.TotalDiscount") }}</el-col
                         >
                       </el-row>
-                      <el-row>
-                        <el-col :span="24">
-                          <el-form-item prop="Description">
-                            <el-input
-                              @change="focusBarcode"
-                              v-bind:placeholder="
-                                $t('NewPurchaseInvoice.statement')
-                              "
-                              v-model="tempForm.Description"
-                            ></el-input>
-                          </el-form-item>
-                        </el-col>
-                      </el-row>
+
                       <el-row>
                         <el-col :span="24" class="TotalAmmount">
                           <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
@@ -311,7 +330,7 @@
                       >
                         <el-table-column
                           prop="ItemsId"
-                          width="230"
+                          width="310"
                           align="center"
                         >
                           <template slot="header" slot-scope="{}"
@@ -508,6 +527,7 @@ export default {
         Description: "",
         VendorId: 2,
         IsPrime: false,
+        Type: "takeaway",
         InventoryMovements: [],
         enterPressed: false
       },
@@ -790,7 +810,6 @@ export default {
 };
 </script>
 <style scoped>
-
 .ItemName {
   font-weight: 600;
   font-size: 12px;
