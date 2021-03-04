@@ -10,61 +10,9 @@
       >
         <split-pane split="horizontal" :min-percent="6" :default-percent="6">
           <template slot="paneL">
-            <el-row style="margin-top: 2px; background: #545454; color: white">
+            <el-row style="margin-top: 2px; background: #f5f7fa; color: white">
               <el-col :span="4">
-                <size-select
-                  id="size-select"
-                  class="right-menu-item hover-effect"
-                />
-                <screenfull
-                  id="screenfull"
-                  class="right-menu-item hover-effect"
-                />
-                <lang-select class="right-menu-item hover-effect" />
-                <el-dropdown
-                  class="avatar-container right-menu-item hover-effect"
-                  trigger="click"
-                >
-                  <div class="avatar-wrapper">
-                    <span style="font-size: small">{{
-                      $store.getters.name
-                    }}</span>
-                    <i class="el-icon-caret-bottom" />
-                  </div>
-                  <el-dropdown-menu slot="dropdown">
-                    <router-link to="/Profile">
-                      <el-dropdown-item>
-                        {{ $t("navbar.Profile") }}
-                      </el-dropdown-item>
-                    </router-link>
-                    <router-link to="/dashboard">
-                      <el-dropdown-item>
-                        {{ $t("navbar.dashboard") }}
-                      </el-dropdown-item>
-                    </router-link>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item prop="PaymentMethod">
-                  <el-radio-group
-                    @change="focusBarcode"
-                    v-model="tempForm.PaymentMethod"
-                    text-color="#f78123"
-                  >
-                    <el-radio label="Cash" border>{{
-                      $t("NewPurchaseInvoice.Cash")
-                    }}</el-radio>
-                    <el-radio label="Visa" border>Visa</el-radio>
-
-                    <el-radio
-                      v-if="tempForm.VendorId != 2"
-                      label="Receivables"
-                      border
-                      >{{ $t("NewPurchaseInvoice.Receivables") }}</el-radio
-                    >
-                  </el-radio-group>
-                </el-form-item>
+                <right-menu />
               </el-col>
 
               <el-col :span="4">
@@ -160,8 +108,8 @@
           <template slot="paneR">
             <split-pane
               split="vertical"
-              :min-percent="65"
-              :default-percent="70"
+              :min-percent="60"
+              :default-percent="60"
             >
               <template slot="paneL">
                 <split-pane
@@ -171,7 +119,7 @@
                 >
                   <template slot="paneL">
                     <el-card
-                      style="background: #545454"
+                      style="background: #f5f7fa"
                       :body-style="{ padding: '1px' }"
                     >
                       <items-search @add="AddItem" @focus="focusBarcode" />
@@ -247,11 +195,32 @@
               <template slot="paneR">
                 <split-pane
                   split="horizontal"
-                  :min-percent="27"
-                  :default-percent="30"
+                  :min-percent="57"
+                  :default-percent="60"
                 >
                   <template slot="paneR">
-                    <el-card style="background: #545454">
+                    <el-card style="background: #f5f7fa">
+                      <el-form-item prop="PaymentMethod">
+                        <el-radio-group
+                          @change="focusBarcode"
+                          v-model="tempForm.PaymentMethod"
+                          text-color="#f78123"
+                        >
+                          <el-radio label="Cash" border
+                            ><i class="el-icon-money"></i
+                          ></el-radio>
+                          <el-radio label="Visa" border
+                            ><i class="el-icon-bank-card"></i>
+                          </el-radio>
+
+                          <el-radio
+                            v-if="tempForm.VendorId != 2"
+                            label="Receivables"
+                            border
+                            ><i class="el-icon-s-custom"></i
+                          ></el-radio>
+                        </el-radio-group>
+                      </el-form-item>
                       <el-row>
                         <el-col :span="24">
                           <el-input
@@ -331,51 +300,27 @@
                       </el-row>
                     </el-card>
                   </template>
-                  <template slot="paneL" style="background: #545454">
+                  <template slot="paneL" style="background: #f5f7fa">
                     <el-form-item prop="InventoryMovements">
                       <el-table
                         highlight-current-row
                         border
-                        max-height="500"
+                        max-height="375"
                         :data="tempForm.InventoryMovements"
                         width="100%"
                       >
-                        <el-table-column prop="ItemsId" align="center">
+                        <el-table-column
+                          prop="ItemsId"
+                          width="230"
+                          align="center"
+                        >
                           <template slot="header" slot-scope="{}"
                             >{{ $t("NewPurchaseInvoice.Items") }} ({{
                               tempForm.InventoryMovements.length.toFixed(
                                 $store.getters.settings.ToFixed
                               )
                             }}
-                            )</template
-                          >
-                          <template slot-scope="scope">
-                            <div class="ItemName">
-                              {{ scope.row.Itemx.Name }}
-                              <el-tag type="primary" effect="plain">{{
-                                PriceMethod == "wholesale"
-                                  ? scope.row.Itemx.OtherPrice.toFixed(
-                                      $store.getters.settings.ToFixed
-                                    )
-                                  : scope.row.Itemx.SellingPrice.toFixed(
-                                      $store.getters.settings.ToFixed
-                                    )
-                              }}</el-tag>
-                              <edit-item
-                                @focus="focusBarcode"
-                                v-if="checkPermission(['Admin'])"
-                                style="float: left"
-                                :ItemId="
-                                  tempForm.InventoryMovements[scope.$index]
-                                    .ItemsId
-                                "
-                              />
-                            </div>
-                          </template>
-                        </el-table-column>
-                        <el-table-column width="160" align="center">
-                          <template slot="header" slot-scope="{}"
-                            >{{ $t("NewPurchaseInvoice.quantity") }} ({{
+                            ) {{ $t("NewPurchaseInvoice.quantity") }} ({{
                               tempForm.InventoryMovements.reduce(
                                 (a, b) => a + (b["Qty"] || 0),
                                 0
@@ -384,36 +329,29 @@
                             )</template
                           >
                           <template slot-scope="scope">
-                            <el-input-number
-                              @change="focusBarcode"
-                              v-model="
-                                tempForm.InventoryMovements[scope.$index].Qty
-                              "
-                              :precision="2"
-                              :step="1"
-                              :min="0"
-                              :max="1000000"
-                            ></el-input-number>
-                          </template>
-                        </el-table-column>
-                        <el-table-column
-                          v-if="checkPermission(['Admin'])"
-                          v-bind:label="$t('NewPurchaseInvoice.Price')"
-                          width="130"
-                          align="center"
-                        >
-                          <template slot-scope="scope">
-                            <currency-input
-                              class="currency-input"
-                              v-model="
+                            <div class="ItemName">
+                              {{ scope.row.Itemx.Name }}
+
+                              {{
                                 tempForm.InventoryMovements[scope.$index]
                                   .SellingPrice
-                              "
-                              @change="focusBarcode"
-                              @focus="$event.target.select()"
-                            />
+                              }}
+                              X
+                              <el-input-number
+                                style="    width: 50%;"
+                                @change="focusBarcode"
+                                v-model="
+                                  tempForm.InventoryMovements[scope.$index].Qty
+                                "
+                                :precision="2"
+                                :step="1"
+                                :min="0"
+                                :max="1000000"
+                              ></el-input-number>
+                            </div>
                           </template>
                         </el-table-column>
+
                         <el-table-column
                           v-if="!checkPermission(['Admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Price')"
@@ -435,7 +373,6 @@
                         </el-table-column>
                         <el-table-column
                           v-bind:label="$t('CashPool.Total')"
-                          width="130"
                           align="center"
                         >
                           <template slot-scope="scope">
@@ -451,30 +388,8 @@
                             </div>
                           </template>
                         </el-table-column>
-                        <el-table-column
-                          v-if="checkPermission(['Admin'])"
-                          v-bind:label="$t('NewPurchaseInvoice.Inventory')"
-                          width="110"
-                          align="center"
-                        >
-                          <template slot-scope="scope">
-                            <el-radio-group
-                              @change="focusBarcode"
-                              v-model="
-                                tempForm.InventoryMovements[scope.$index]
-                                  .InventoryItemId
-                              "
-                            >
-                              <el-radio-button
-                                v-for="(item, index) in InventoryItems"
-                                :key="index"
-                                :label="item.value"
-                                >{{ item.label }}</el-radio-button
-                              >
-                            </el-radio-group>
-                          </template>
-                        </el-table-column>
-                        <el-table-column label="#" width="75" align="center">
+
+                        <el-table-column label="#" align="center">
                           <template slot-scope="scope">
                             <el-button
                               type="danger"
@@ -507,6 +422,7 @@ import ItemsSearch from "@/components/Item/ItemsSearch";
 import ItemsPrime from "@/components/Item/ItemsPrime";
 import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill";
+import RightMenu from "@/components/RightMenu";
 
 import LangSelect from "@/components/LangSelect";
 import Screenfull from "@/components/Screenfull";
@@ -539,7 +455,8 @@ export default {
     ItemsPrime,
     EditItem,
     PrintButton,
-    RestOfBill
+    RestOfBill,
+    RightMenu
   },
   props: {
     isEdit: {
@@ -873,8 +790,8 @@ export default {
 };
 </script>
 <style scoped>
+
 .ItemName {
-  color: #545454;
   font-weight: 600;
   font-size: 12px;
 }
@@ -916,7 +833,6 @@ export default {
   color: mediumseagreen;
 }
 .right-menu-item {
-  color: #ffffff;
   display: inline-block;
   padding: 0 8px;
   font-size: 18px;
@@ -925,10 +841,6 @@ export default {
 .TotalAmmount {
   font-size: x-large;
   font-weight: 600;
-  color: white;
   margin-bottom: 10px;
-}
-.el-form-item__label {
-  color: white;
 }
 </style>
