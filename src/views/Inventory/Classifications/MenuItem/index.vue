@@ -45,7 +45,7 @@
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
+            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')"/>
           </template>
         </el-table-column>
 

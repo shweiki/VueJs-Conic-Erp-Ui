@@ -72,6 +72,9 @@
                   },
                 ]"
               >
+            <account-search-any
+            @focus="focusAccount"
+            />
                 <el-select
                   style="width: 100%"
                   v-model="tempForm.EntryMovements[scope.$index].AccountId"
@@ -91,6 +94,7 @@
                     }}</span>
                   </el-option>
                 </el-select>
+
               </el-form-item>
             </template>
           </el-table-column>
@@ -193,44 +197,17 @@
 import { CreateEntry, GetEntryByID, Edit } from "@/api/EntryAccounting";
 import { GetActiveAccounts } from "@/api/Account";
 import FakeDate from "@/components/Date/FakeDate";
-
+import AccountSearchAny from '@/components/TreeAccount/AccountSearchAny.vue';
 export default {
   name: "NewAccountingEntry",
-  components: { FakeDate },
+  components: { FakeDate ,AccountSearchAny },
   props: {
     isEdit: {
       type: Boolean,
       default: false,
     },
   },
-
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === "") {
-        this.$message({
-          message: rule.field + "اواي",
-          type: "error",
-        });
-        callback(new Error(rule.field + "اي"));
-      } else {
-        callback();
-      }
-    };
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback();
-        } else {
-          this.$message({
-            message: "اه",
-            type: "error",
-          });
-          callback(new Error("اوه"));
-        }
-      } else {
-        callback();
-      }
-    };
     return {
       Account: [],
       Text: "",
@@ -266,14 +243,12 @@ export default {
       this.getdata(this.$route.params && this.$route.params.id);
     }
     this.tempRoute = Object.assign({}, this.$route);
-
     const loading = this.$loading({
       lock: true,
       text: "تحميل",
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0, 0.7)",
     });
-
     GetActiveAccounts()
       .then((response) => {
         // handle success
@@ -287,14 +262,16 @@ export default {
         loading.close();
       });
   },
+  mounted() {
+    this.focusAccount();},
   methods: {
+
     Copy(Text) {
       this.Text = Text;
     },
     Paste(Index) {
       this.tempForm.EntryMovements[Index].Description = this.Text;
     },
-
     AddEntryMovements() {
       this.tempForm.EntryMovements.push({
         ID: undefined,
@@ -314,7 +291,6 @@ export default {
           this.tempForm = response;
           // set tagsview title
           this.setTagsViewTitle();
-
           // set page title
           this.setPageTitle();
         })

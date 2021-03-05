@@ -149,7 +149,7 @@
         <el-row >
           <el-col :span="24">
             <el-form-item v-bind:label="$t('Members.Name')" prop="Name">
-              <el-input type="text" v-model="tempForm.Name"></el-input>
+              <el-input type="text" v-model="tempForm.Name" autofocus></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -211,7 +211,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="الحد الادنى لتجميد" prop="MinFreezeLimitDays">
+            <el-form-item label="الحد الادنى للتجميد" prop="MinFreezeLimitDays">
               <el-input-number
                 v-model="tempForm.MinFreezeLimitDays"
                 :precision="2"
@@ -222,7 +222,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="الحد الاعلى لتجميد" prop="MaxFreezeLimitDays">
+            <el-form-item label="الحد الاعلى للتجميد" prop="MaxFreezeLimitDays">
               <el-input-number
                 v-model="tempForm.MaxFreezeLimitDays"
                 :precision="2"

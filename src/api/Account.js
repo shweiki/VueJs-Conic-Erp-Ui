@@ -15,6 +15,14 @@ export function GetActiveAccounts(query) {
     params: query
   })
 }
+export function GetAccountByAny(query) {
+  return request({
+    url: '/Account/GetAccountByAny',
+    method: 'get',
+    params: query
+  })
+}
+
 
 export function GetInComeAccounts() {
   return request({
