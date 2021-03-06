@@ -73,26 +73,26 @@ export default {
   data() {
     return {
       Visible: false,
-      InventoryMovementID: undefined
+      InventoryMovementId: undefined
     };
   },
   methods: {
     MinusOne(SID) {
       this.Visible = true;
       let InventoryMovement = this.ServiceInvoices.find(
-        ({ ID }) => ID == SID
+        ({ Id }) => Id == SID
       ).InventoryMovements.filter(obj => obj.Status == 1);
-      this.InventoryMovementID = InventoryMovement[0].Id;
+      this.InventoryMovementId = InventoryMovement[0].Id;
     },
     createOprationData() {
       ChangeObjStatusByTableName({
-        ObjID: this.InventoryMovementID,
+        ObjID: this.InventoryMovementId,
         TableName: "InventoryMovement",
         Status: 0,
         Description: "تم استلام حركة من المستودع"
       })
         .then(response => {
-          this.InventoryMovementID = undefined;
+          this.InventoryMovementId = undefined;
           this.Visible = false;
           this.$notify({
             title: "تم  ",

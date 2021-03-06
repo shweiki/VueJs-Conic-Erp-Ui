@@ -25,7 +25,7 @@ const pluginOptions = {
 
 Vue.use(VueCurrencyInput, pluginOptions)
 Vue.use(Element, {
-  size: Cookies.get('size') || 'mini', // store.getters.settings.size, // set element-ui default size
+  size:  'mini', // ||Cookies.get('size') || // store.getters.settings.size, // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
 // register global utility filters
