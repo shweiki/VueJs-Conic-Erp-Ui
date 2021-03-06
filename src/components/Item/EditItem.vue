@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-button icon="el-icon-edit" circle @click="getdata()"></el-button>
+    <el-button icon="el-icon-edit"       v-permission="['Admin']"
+ circle @click="getdata()"></el-button>
 
     <el-dialog
       style="margin-top: -13vh"

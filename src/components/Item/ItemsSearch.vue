@@ -5,7 +5,7 @@
         <add-item :visible="OpenAddItem" :barcode="Barcode" @focus="focus" />
       </el-col>
       <el-col
-        v-if="$store.getters.settings.BusinessType != 'SuperMarkit'"
+      v-permission="['Admin']"
         :span="2"
       >
         <dialog-search-item @add="AddItem" @focus="focus" />
