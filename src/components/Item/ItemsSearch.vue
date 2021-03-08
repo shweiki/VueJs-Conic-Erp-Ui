@@ -73,8 +73,7 @@ import permission from "@/directive/permission/index.js";
 export default {
   name: "ItemsSearch",
   components: { AddItem, DialogSearchItem, ItemSearchAny },
-    directives: { permission },
-
+  directives: { permission },
   data() {
     return {
       ByQTY: false,

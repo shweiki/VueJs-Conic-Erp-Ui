@@ -7,7 +7,12 @@
       @click="Visible = true"
       >خدمة جديد</el-button
     >
-    <el-dialog style="margin-top: -13vh" title="تسجيل خدمة" :visible.sync="Visible">
+    <el-dialog
+      style="margin-top: -13vh"
+      title="تسجيل خدمة"
+      :visible.sync="Visible"
+      @opened="getdata"
+    >
       <el-form label-position="top" class="demo-form-inline">
         <el-row>
           <el-col :span="12">
@@ -20,8 +25,8 @@
               <el-select
                 v-model="ServiceID"
                 @change="
-                  (id) => {
-                    Service = Services.find((obj) => obj.Id == id);
+                  id => {
+                    Service = Services.find(obj => obj.Id == id);
                   }
                 "
               >
@@ -35,7 +40,9 @@
                   <span style="float: right; color: #8492a6; font-size: 13px">{{
                     item.SellingPrice.toFixed($store.getters.settings.ToFixed)
                   }}</span>
-                  <span style="color: #8492a6; font-size: 13px">( {{ item.Qty }} )</span>
+                  <span style="color: #8492a6; font-size: 13px"
+                    >( {{ item.Qty }} )</span
+                  >
                 </el-option>
               </el-select>
             </el-form-item>
@@ -54,9 +61,10 @@
               :rules="[
                 {
                   required: true,
-                  message: 'الرجاء كتابة وصف لخدمة مثل طريقة الدفع  / تاريخ التسديد',
-                  trigger: 'blur',
-                },
+                  message:
+                    'الرجاء كتابة وصف لخدمة مثل طريقة الدفع  / تاريخ التسديد',
+                  trigger: 'blur'
+                }
               ]"
             >
               <el-input v-model="Description"></el-input>
@@ -65,7 +73,9 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button @click="Visible = false">{{
+          $t("AddVendors.Cancel")
+        }}</el-button>
         <el-button type="primary" @click="createData()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -84,12 +94,10 @@ export default {
       type: Number,
       default: () => {
         return undefined;
-      },
-    },
+      }
+    }
   },
-  created() {
-    this.getdata();
-  },
+
   data() {
     return {
       Services: [],
@@ -97,17 +105,17 @@ export default {
       ServiceID: undefined,
 
       Visible: false,
-      Description: "",
+      Description: ""
     };
   },
   methods: {
     getdata() {
       GetActiveService()
-        .then((response) => {
+        .then(response => {
           console.log(response);
           this.Services = response;
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
@@ -121,9 +129,9 @@ export default {
         Discount: 0,
         Status: 0,
         Description: this.Description,
-        MemberID: this.MemberID,
+        MemberId: this.MemberID,
         IsPrime: true,
-        InventoryMovements: [],
+        InventoryMovements: []
       };
       let ItemSellingPrice = this.Service.SellingPrice / this.Service.Qty;
       for (var i = 0; i < this.Service.Qty; i++) {
@@ -137,33 +145,28 @@ export default {
           Tax: 0.0,
           Description: "",
           InventoryItemId: 1,
-          SalesInvoiceId: undefined,
+          SalesInvoiceId: undefined
         });
       }
       console.log(SaleInvoice);
       if (SaleInvoice.InventoryMovements.length > 0) {
         Create(SaleInvoice)
-          .then((response) => {
+          .then(response => {
             if (response) {
               this.Visible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000,
-              });
-              this.$nextTick(() => {
-                this.$router.replace({
-                  path: "/redirect" + this.$route.fullPath,
-                });
+                duration: 2000
               });
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error);
           });
       }
-    },
-  },
+    }
+  }
 };
 </script>

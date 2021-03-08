@@ -8,7 +8,7 @@
       >اشتراك</el-button
     >
 
-    <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك" :visible.sync="Visibles">
+    <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك"  @opened="getdata" :visible.sync="Visibles">
       <el-form :model="tempForm" ref="dataForm">
         <el-form-item
           label="الفترة"
@@ -159,9 +159,7 @@ import { GetActiveDiscount } from "@/api/Discount";
 import FakeDate from "@/components/Date/FakeDate.vue";
 import {
   LocalDateTime,
-  LocalDate,
-  LocalTime,
-  DateTimeFormatter,
+
   Instant,
 } from "@js-joda/core";
 export default {
@@ -188,9 +186,7 @@ export default {
       },
     },
   },
-  created() {
-    this.getdata();
-  },
+
   data() {
     return {
       Memberships: [],

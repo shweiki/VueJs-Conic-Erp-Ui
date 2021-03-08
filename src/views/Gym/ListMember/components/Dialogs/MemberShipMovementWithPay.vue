@@ -13,7 +13,7 @@
       @click="Visibles = true"
     >اشتراك و قبض</el-button>
 
-    <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك" :visible.sync="Visibles">
+    <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك" @opened="getdata"  :visible.sync="Visibles">
       <el-form :model="MembershipMovement" ref="dataForm">
         <el-form-item
           label="الفترة"
@@ -216,9 +216,7 @@ export default {
       },
     },
   },
-  created() {
-    this.getdata();
-  },
+
   data() {
     return {
       Memberships: [],

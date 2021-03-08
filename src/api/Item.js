@@ -14,6 +14,14 @@ export function GetItemByAny(query) {
     params: query
   })
 }
+export function CalculateCostPrice(query) {
+  return request({
+    url: '/Item/CalculateCostPrice',
+    method: 'get',
+    params: query
+  })
+}
+
 export function GetByListQ(data) {
   return request({
     url: '/Item/GetByListQ',

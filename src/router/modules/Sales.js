@@ -25,14 +25,6 @@ const SalesRouter = {
         title: 'ListSalesInvoice', icon: 'cost'
       },
     },
-    {
-      path: 'OldList',
-      component: () => import('@/views/Sales/SaleInvoice/OldList'),
-      name: 'OldList',
-      meta: {
-        title: 'OldList', icon: 'cost'
-      },
-    },
     
     {
       path: 'SalesItems',

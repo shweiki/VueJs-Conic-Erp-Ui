@@ -2,6 +2,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div class="filter-container">
+      <el-button @click="CalculateCostPrice">CalculateCostPrice</el-button>
         <el-row type="flex">
           <el-col :span="12">
             <el-input
@@ -234,7 +235,7 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/Item";
+import { GetByListQ ,CalculateCostPrice} from "@/api/Item";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton.vue";
@@ -282,6 +283,7 @@ export default {
     // this.getList();
   },
   methods: {
+    CalculateCostPrice,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);

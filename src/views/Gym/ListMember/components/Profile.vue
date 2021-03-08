@@ -125,7 +125,7 @@ import Account from "./Account";
 import Service from "./Service";
 import Communication from "./Communication";
 
-import { GetMember, Edit, GetMemberByID } from "@/api/Member";
+import {  GetMemberByID } from "@/api/Member";
 import { GetMemberLogByID } from "@/api/MemberLog";
 import { GetMembershipMovementByMemberID } from "@/api/MembershipMovement";
 import { GetFileByObjID } from "@/api/File";
@@ -250,7 +250,7 @@ export default {
           AccountId: this.tempForm.AccountId,
         }).then((response) => {
           console.log("log :", response);
-          this.EntryMovements = response;
+          this.EntryMovements = response.reverse();
         });
     },
     GetImageMember(ID) {

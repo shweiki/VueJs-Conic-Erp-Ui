@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-button icon="el-icon-edit" circle @click="getdata"></el-button>
+    <el-button icon="el-icon-edit" circle ></el-button>
 
-    <el-dialog style="margin-top: -13vh" title="تعديل اشتراك" :visible.sync="Visibles">
+    <el-dialog style="margin-top: -13vh" title="تعديل اشتراك" @opened="getdata" :visible.sync="Visibles">
       <el-form :model="tempForm" ref="dataForm">
         <el-form-item
           label="الفترة"

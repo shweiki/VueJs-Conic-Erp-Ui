@@ -1,7 +1,11 @@
 <template>
   <div>
-    <el-button icon="el-icon-edit"       v-permission="['Admin']"
- circle @click="getdata()"></el-button>
+    <el-button
+      icon="el-icon-edit"
+      v-permission="['Admin']"
+      circle
+      @click="getdata()"
+    ></el-button>
 
     <el-dialog
       style="margin-top: -13vh"
@@ -159,6 +163,7 @@ import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
 import { GetFileByObjID } from "@/api/File";
+import permission from "@/directive/permission/index.js";
 
 export default {
   components: { InventoryQty, PanThumb, WebCam, ImageCropper },
@@ -168,6 +173,7 @@ export default {
       default: undefined
     }
   },
+  directives: { permission },
   data() {
     return {
       Visibles: false,
