@@ -283,6 +283,7 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import { SaleInvoicesList } from "@/Report/SaleInvoice";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -326,6 +327,8 @@ export default {
     // this.getList();
   },
   methods: {
+        SaleInvoicesList,
+
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);

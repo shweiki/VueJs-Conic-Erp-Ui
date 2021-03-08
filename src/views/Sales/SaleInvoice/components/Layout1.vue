@@ -364,12 +364,12 @@
                       ></el-badge>
                     </el-col>
                     <el-col :span="6">
-                      <el-switch
+                   <!--   <el-switch
                         @change="focusBarcode"
                         v-model="AutoPrint"
                         active-color="#13ce66"
                         inactive-color="#ff4949"
-                      ></el-switch>
+                      ></el-switch> -->
                       <print-button
                         v-if="OldInvoice == null ? false : true"
                         Type="SaleInvoice"

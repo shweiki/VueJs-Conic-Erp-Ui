@@ -61,48 +61,74 @@
 
       <span>{{ $t("CashPool.Cash") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalCash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Visa") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalVisa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.debt") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalReceivables.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{
+          Totals.Receivables.toFixed($store.getters.settings.ToFixed)
+        }}
+        JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
       <span>مجموع الخصم</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalDiscount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{
+          Totals.Discount.toFixed($store.getters.settings.ToFixed)
+        }}
+        JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Amount") }}</span>
       <el-divider direction="vertical"></el-divider>
       <span
-        >{{
-          (TotalCash + TotalReceivables + TotalVisa).toFixed(
-            $store.getters.settings.ToFixed
-          )
-        }}
-        JOD</span
+        >{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span
       >
       <el-divider direction="vertical"></el-divider>
       <span>إجمالي التكلفة</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalItemsCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{
+          Totals.TotalCost.toFixed($store.getters.settings.ToFixed)
+        }}
+        JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
       <span>صافي الربح</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
     </el-card>
     <el-card class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>
-      <el-table height="250" :data="ItemsMovements" fit border highlight-current-row>
-        <el-table-column prop="Name" label="الصنف" align="center"></el-table-column>
+      <el-table
+        height="250"
+        :data="ItemsMovements"
+        fit
+        border
+        highlight-current-row
+      >
+        <el-table-column
+          prop="Name"
+          label="الصنف"
+          align="center"
+        ></el-table-column>
         <el-table-column
           prop="TotalCount"
           label="العدد المباع"
@@ -121,19 +147,20 @@
         <el-table-column align="center">
           <template slot="header" slot-scope="{}">
             المجموع الربح
-            {{ TotalCost.toFixed($store.getters.settings.ToFixed) }}
+            {{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }}
           </template>
           <template slot-scope="scope">{{
-            ((scope.row.AvgPrice - scope.row.CostPrice) * scope.row.TotalCount).toFixed(
-              $store.getters.settings.ToFixed
-            )
+            (
+              (scope.row.AvgPrice - scope.row.CostPrice) *
+              scope.row.TotalCount
+            ).toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
         <el-table-column align="center">
           <template slot="header" slot-scope="{}">
             المجموع بيع
             {{
-              (TotalCash + TotalReceivables + TotalVisa).toFixed(
+              (Totals.Cash + Totals.Receivables + Totals.Visa).toFixed(
                 $store.getters.settings.ToFixed
               )
             }}
@@ -163,16 +190,19 @@
         highlight-current-row
         ref="multipleTable"
         @row-dblclick="
-          (row) => {
+          row => {
             $router.replace({
-              path: '/Sales/Edit/' + row.Id,
+              path: '/Sales/Edit/' + row.Id
             });
           }
         "
         @selection-change="handleSelectionChange"
-        @expand-change="GetInventoryMovements"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column
+          type="selection"
+          width="55"
+          align="center"
+        ></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
@@ -198,7 +228,9 @@
           align="center"
         >
           <template slot-scope="scope">
-            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
+            <strong style="font-size: 10px; cursor: pointer">{{
+              scope.row.Name
+            }}</strong>
           </template>
         </el-table-column>
         <el-table-column
@@ -216,7 +248,11 @@
             scope.row.Discount.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
+        <el-table-column
+          v-bind:label="$t('CashPool.Amountv')"
+          width="120"
+          align="center"
+        >
           <template slot-scope="scope">
             {{
               scope.row.InventoryMovements.reduce((prev, cur) => {
@@ -231,7 +267,7 @@
             <el-button
               icon="el-icon-printer"
               type="success"
-              @click="printAllInvoice(tableData)"
+              @click="SaleInvoicesList({ Totals: Totals, Items: Selection })"
             ></el-button>
           </template>
           <template slot-scope="scope">
@@ -252,12 +288,20 @@
                 v-bind:label="$t('CashPool.quantity')"
                 align="center"
               ></el-table-column>
-              <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
+              <el-table-column
+                v-bind:label="$t('CashPool.Price')"
+                align="center"
+              >
                 <template slot-scope="scope">{{
-                  scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
+                  scope.row.SellingPrice.toFixed(
+                    $store.getters.settings.ToFixed
+                  )
                 }}</template>
               </el-table-column>
-              <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
+              <el-table-column
+                v-bind:label="$t('CashPool.Total')"
+                align="center"
+              >
                 <template slot-scope="scope"
                   >{{
                     (scope.row.SellingPrice * scope.row.Qty).toFixed(
@@ -276,13 +320,14 @@
 </template>
 
 <script>
-import { GetSaleInvoiceByStatus ,GetByListQ } from "@/api/SaleInvoice";
+import { GetByListQ } from "@/api/SaleInvoice";
 
 import { GetActiveCash } from "@/api/Cash";
 import { GetInComeAccounts } from "@/api/Account";
 import { CreateEntry } from "@/api/EntryAccounting";
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
 import PrintButton from "@/components/PrintRepot/PrintButton";
+import { SaleInvoicesList } from "@/Report/SaleInvoice";
 
 import printJS from "print-js";
 
@@ -300,22 +345,27 @@ export default {
       InComeAccounts: [],
       CashAccount: undefined,
       InComeAccount: undefined,
-      TotalCash: 0,
-      TotalReceivables: 0,
-      TotalVisa: 0,
-      TotalCost: 0,
-      TotalItemsCost: 0,
-      TotalDiscount: 0,
-      ItemsMovements: [],
+      Totals: {
+        Rows: 0,
+        Totals: 0,
+        Cash: 0,
+        Receivables: 0,
+        Visa: 0,
+        Profit: 0,
+        TotalCost: 0,
+        Discount: 0
+      },
+      ItemsMovements: []
     };
   },
   created() {
     this.getdata();
   },
   methods: {
+    SaleInvoicesList,
     handleSelectionChange(val) {
       this.Selection = val;
-      this.TotalReceivables = this.Selection.reduce(
+      this.Totals.Receivables = this.Selection.reduce(
         (a, b) =>
           a +
           (b["PaymentMethod"] == "Receivables"
@@ -325,7 +375,7 @@ export default {
             : 0),
         0
       );
-      this.TotalCash = this.Selection.reduce(
+      this.Totals.Cash = this.Selection.reduce(
         (a, b) =>
           a +
           (b["PaymentMethod"] == "Cash"
@@ -335,7 +385,7 @@ export default {
             : 0),
         0
       );
-      this.TotalVisa = this.Selection.reduce(
+      this.Totals.Visa = this.Selection.reduce(
         (a, b) =>
           a +
           (b["PaymentMethod"] == "Visa"
@@ -345,15 +395,7 @@ export default {
             : 0),
         0
       );
-      this.TotalCost = this.Selection.reduce(
-        (a, b) =>
-          a +
-          b.InventoryMovements.reduce((prev, cur) => {
-            return prev + (cur.SellingPrice - cur.CostPrice) * cur.Qty;
-          }, 0),
-        0
-      );
-      this.TotalItemsCost = this.Selection.reduce(
+      this.Totals.TotalCost = this.Selection.reduce(
         (a, b) =>
           a +
           b.InventoryMovements.reduce((prev, cur) => {
@@ -362,18 +404,22 @@ export default {
         0
       );
 
-      this.TotalDiscount = this.Selection.reduce((a, b) => a + b.Discount, 0);
+      this.Totals.Discount = this.Selection.reduce((a, b) => a + b.Discount, 0);
+      this.Totals.Totals =
+        this.Totals.Cash + this.Totals.Receivables + this.Totals.Visa;
+           this.Totals.Profit = this.Totals.Totals - this.Totals.TotalCost
+
       this.EnableSave = false;
     },
-   
+
     getdata() {
       this.loading = true;
-      GetActiveCash().then((response) => {
+      GetActiveCash().then(response => {
         // handle success
         //   console.log(response)
         this.CashAccounts = response;
         this.CashAccount = this.CashAccounts[0].value;
-        GetInComeAccounts().then((response) => {
+        GetInComeAccounts().then(response => {
           // handle success
           //   console.log(response)
           this.InComeAccounts = response;
@@ -381,64 +427,45 @@ export default {
         });
       });
       GetByListQ({
-         Page: 1,
+        Page: 1,
         Any: "",
         limit: 100,
         Sort: "-id",
-        Status: 0,
+        Status: 0
       })
-        .then((response) => {
+        .then(response => {
           // handle success
           console.log(response);
           this.tableData = response.items;
           this.ItemsMovements = [];
-          this.tableData.map((a) => {
-            return a.InventoryMovements.map((m) => {
-              var find = this.ItemsMovements.findIndex((value) => value.Name == m.Name);
+          this.tableData.map(a => {
+            return a.InventoryMovements.map(m => {
+              var find = this.ItemsMovements.findIndex(
+                value => value.Name == m.Name
+              );
               if (find != -1) this.ItemsMovements[find].TotalCount += m.Qty;
               else {
                 this.ItemsMovements.push({
                   Name: m.Name,
                   TotalCount: m.Qty,
-                  AvgPrice: m.SellingPrice.toFixed(this.$store.getters.settings.ToFixed),
-                  CostPrice: m.CostPrice,
+                  AvgPrice: m.SellingPrice.toFixed(
+                    this.$store.getters.settings.ToFixed
+                  ),
+                  CostPrice: m.CostPrice
                 });
               }
             });
           });
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
         });
       this.loading = false;
     },
-    GetInventoryMovements(row) {
-      //    console.trace(row);
-    },
 
-    printAllInvoice(data) {
-      data = data.map((Item) => ({
-        المجموع:
-          Item.InventoryMovements.reduce((prev, cur) => {
-            return prev + cur.Qty * cur.SellingPrice;
-          }, 0) - Item.Discount.toFixed(this.$store.getters.settings.ToFixed),
-        الخصم: Item.Discount,
-        "طريقة الدفع ": Item.PaymentMethod,
-        التاريخ: Item.FakeDate,
-        الحساب: Item.Name,
-        الرقم: Item.Id,
-      }));
-      printJS({
-        printable: data,
-        properties: ["المجموع", "الخصم", "طريقة الدفع ", "التاريخ", "الحساب", "الرقم"],
-        type: "json",
-        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      });
-    },
     printAllItemSale(data) {
-      data = data.map((Item) => ({
+      data = data.map(Item => ({
         "المجموع البيع": (Item.TotalCount * Item.AvgPrice).toFixed(
           this.$store.getters.settings.ToFixed
         ),
@@ -448,7 +475,7 @@ export default {
         ),
         "سعر التكلفة": Item.CostPrice,
         العدد: Item.TotalCount,
-        الصنف: Item.Name,
+        الصنف: Item.Name
       }));
       printJS({
         printable: data,
@@ -458,35 +485,39 @@ export default {
           "المجموع التكلفة",
           "سعر التكلفة",
           "العدد",
-          "الصنف",
+          "الصنف"
         ],
         type: "json",
         header:
           "<center> <h2>" +
-          this.InComeAccounts.find((obj) => {
+          this.InComeAccounts.find(obj => {
             return obj.value == this.InComeAccount;
           }).label +
           "</h2></center><h3 style='float:right'> الاجمالي النقدي " +
-          this.TotalCash.toFixed(this.$store.getters.settings.ToFixed) +
+          this.Totals.Cash.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي الفيزا : " +
-          this.TotalVisa.toFixed(this.$store.getters.settings.ToFixed) +
+          this.Totals.Visa.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي الاجل : " +
-          this.TotalReceivables.toFixed(this.$store.getters.settings.ToFixed) +
-          " - صافي الربح : " +
-          this.TotalCost.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي خصم : " +
-          this.TotalDiscount.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي التكلفة : " +
-          this.TotalItemsCost.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي :  " +
-          (this.TotalCash + this.TotalReceivables + this.TotalVisa).toFixed(
+          this.Totals.Receivables.toFixed(
             this.$store.getters.settings.ToFixed
           ) +
+          " - صافي الربح : " +
+          this.Totals.Profit.toFixed(this.$store.getters.settings.ToFixed) +
+          " - الاجمالي خصم : " +
+          this.Totals.Discount.toFixed(this.$store.getters.settings.ToFixed) +
+          " - الاجمالي التكلفة : " +
+          this.Totals.TotalCost.toFixed(this.$store.getters.settings.ToFixed) +
+          " - الاجمالي :  " +
+          (
+            this.Totals.Cash +
+            this.Totals.Receivables +
+            this.Totals.Visa
+          ).toFixed(this.$store.getters.settings.ToFixed) +
           "</h3><h3 style='float:right'>  التاريخ  : " +
           this.formatDate(new Date()) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
       });
     },
     createData() {
@@ -494,13 +525,13 @@ export default {
 
       console.log(this.tempForm);
       CreateEntry(this.tempForm)
-        .then((response) => {
+        .then(response => {
           ChangeArrObjStatus({
-            ObjsID: this.Selection.map((x) => x.Id),
+            ObjsID: this.Selection.map(x => x.Id),
             TableName: "SalesInvoice",
             Status: 1,
-            Description: "فاتورة مؤكدة",
-          }).then((response) => {
+            Description: "فاتورة مؤكدة"
+          }).then(response => {
             console.log(response);
             this.EnableSave = false;
             this.$notify({
@@ -512,11 +543,11 @@ export default {
               onClose: () => {
                 Object.assign(this.$data, this.$options.data());
                 this.getdata();
-              },
+              }
             });
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -529,7 +560,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    },
-  },
+    }
+  }
 };
 </script>

@@ -1,143 +1,133 @@
 ﻿<template>
   <div class="app-container">
-    <el-card class="box-card">
-      <div class="filter-container">
-        <el-row type="flex">
-          <el-col :span="4">
-            <el-input
-              v-model="listQuery.Any"
-              placeholder="Search By Any Acount Name Or Id"
-              style="width: 200px"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
-          </el-col>
-          <el-col :span="8">
-            <search-by-date
-              :Value="[listQuery.DateFrom, listQuery.DateTo]"
-              @Set="
-                v => {
-                  listQuery.DateFrom = v[0];
-                  listQuery.DateTo = v[1];
-                  handleFilter();
-                }
-              "
-            />
-          </el-col>
-          <el-col :span="3">
-            <user-select
-              @Set="
-                v => {
-                  listQuery.User = v;
-                  handleFilter();
-                }
-              "
-            />
-          </el-col>
-          <el-col :span="3">
-            <el-select
-              v-model="listQuery.Sort"
-              style="width: 140px"
-              class="filter-item"
-              @change="handleFilter"
-            >
-              <el-option
-                v-for="item in sortOptions"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              />
-            </el-select>
-          </el-col>
-          <el-col :span="6">
-            <el-button
-              v-waves
-              class="filter-item"
-              icon="el-icon-printer"
-              type="primary"
-              @click="print(list)"
-            ></el-button>
-            <el-button
-              v-waves
-              :loading="downloadLoading"
-              class="filter-item"
-              type="primary"
-              icon="el-icon-download"
-              @click="handleDownload"
-            >
-            </el-button
-            ><el-button
-              v-waves
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleFilter"
-            >
-            </el-button>
-          </el-col>
-        </el-row>
-      </div>
+    <el-row type="flex">
+      <el-col :span="4">
+        <el-input
+          v-model="listQuery.Any"
+          placeholder="Search By Any Acount Name Or Id"
+          style="width: 200px"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+      </el-col>
+      <el-col :span="8">
+        <search-by-date
+          :Value="[listQuery.DateFrom, listQuery.DateTo]"
+          @Set="
+            v => {
+              listQuery.DateFrom = v[0];
+              listQuery.DateTo = v[1];
+              handleFilter();
+            }
+          "
+        />
+      </el-col>
+      <el-col :span="3">
+        <user-select
+          @Set="
+            v => {
+              listQuery.User = v;
+              handleFilter();
+            }
+          "
+        />
+      </el-col>
+      <el-col :span="3">
+        <el-select
+          v-model="listQuery.Sort"
+          style="width: 140px"
+          class="filter-item"
+          @change="handleFilter"
+        >
+          <el-option
+            v-for="item in sortOptions"
+            :key="item.key"
+            :label="item.label"
+            :value="item.key"
+          />
+        </el-select>
+      </el-col>
+      <el-col :span="6">
+        <el-button
+          v-waves
+          class="filter-item"
+          icon="el-icon-printer"
+          type="primary"
+          @click="SaleInvoicesList({ Totals: Totals, Items: list })"
+        ></el-button>
+        <el-button
+          v-waves
+          :loading="downloadLoading"
+          class="filter-item"
+          type="primary"
+          icon="el-icon-download"
+          @click="handleDownload"
+        >
+        </el-button
+        ><el-button
+          v-waves
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          @click="handleFilter"
+        >
+        </el-button>
+      </el-col>
+    </el-row>
 
-      <el-row type="flex">
-        <el-col :span="6">
-          <radio-oprations
-            TableName="SalesInvoice"
-            @Set="
-              v => {
-                listQuery.Status = v;
-                handleFilter();
-              }
-            "
-        /></el-col>
-        <el-col :span="18">
-          <el-divider direction="vertical"></el-divider>
-          <span>عدد الفواتير</span>
-          <el-divider direction="vertical"></el-divider>
-          <span>{{ Totals.Rows }}</span>
-          <el-divider direction="vertical"></el-divider>
+    <el-row type="flex">
+      <el-col :span="6">
+        <radio-oprations
+          TableName="SalesInvoice"
+          @Set="
+            v => {
+              listQuery.Status = v;
+              handleFilter();
+            }
+          "
+      /></el-col>
+      <el-col :span="18">
+        <el-divider direction="vertical"></el-divider>
+        <span>عدد الفواتير</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Rows }}</span>
+        <el-divider direction="vertical"></el-divider>
 
-          <span>{{ $t("CashPool.Cash") }}</span>
-          <el-divider direction="vertical"></el-divider>
-          <span
-            >{{
-              Totals.Cash.toFixed($store.getters.settings.ToFixed)
-            }}
-            JOD</span
-          >
-          <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.Cash") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span
+          >{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span
+        >
+        <el-divider direction="vertical"></el-divider>
 
-          <span>{{ $t("CashPool.Visa") }}</span>
-          <el-divider direction="vertical"></el-divider>
-          <span
-            >{{
-              Totals.Visa.toFixed($store.getters.settings.ToFixed)
-            }}
-            JOD</span
-          >
-          <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.Visa") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span
+          >{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span
+        >
+        <el-divider direction="vertical"></el-divider>
 
-          <span>الاجل</span>
-          <el-divider direction="vertical"></el-divider>
-          <span
-            >{{
-              Totals.Receivables.toFixed($store.getters.settings.ToFixed)
-            }}
-            JOD</span
-          >
-          <el-divider direction="vertical"></el-divider>
+        <span>الاجل</span>
+        <el-divider direction="vertical"></el-divider>
+        <span
+          >{{
+            Totals.Receivables.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
+        <el-divider direction="vertical"></el-divider>
 
-          <span>{{ $t("CashPool.Amount") }}</span>
-          <el-divider direction="vertical"></el-divider>
-          <span
-            >{{
-              Totals.Totals.toFixed($store.getters.settings.ToFixed)
-            }}
-            JOD</span
-          >
-          <el-divider direction="vertical"></el-divider>
-        </el-col>
-      </el-row>
-    </el-card>
+        <span>{{ $t("CashPool.Amount") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span
+          >{{
+            Totals.Totals.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
+        <el-divider direction="vertical"></el-divider>
+      </el-col>
+    </el-row>
 
     <el-table
       v-loading="listLoading"
@@ -275,6 +265,7 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import { SaleInvoicesList } from "@/Report/SaleInvoice";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -295,7 +286,16 @@ export default {
   data() {
     return {
       list: [],
-      Totals: { Rows: 0, Totals: 0, Cash: 0, Receivables: 0, Visa: 0 },
+      Totals: {
+        Rows: 0,
+        Totals: 0,
+        Cash: 0,
+        Receivables: 0,
+        Visa: 0,
+        Profit: 0,
+        TotalCost: 0,
+        Discount: 0
+      },
       listLoading: false,
       listQuery: {
         Page: 1,
@@ -318,6 +318,7 @@ export default {
     // this.getList();
   },
   methods: {
+    SaleInvoicesList,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);

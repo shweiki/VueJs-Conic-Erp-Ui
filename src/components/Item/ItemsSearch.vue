@@ -4,10 +4,7 @@
       <el-col :span="2">
         <add-item :visible="OpenAddItem" :barcode="Barcode" @focus="focus" />
       </el-col>
-      <el-col
-      v-permission="['Admin']"
-        :span="2"
-      >
+      <el-col v-permission="['Admin']" :span="2">
         <dialog-search-item @add="AddItem" @focus="focus" />
       </el-col>
       <el-col :span="2">
@@ -71,10 +68,13 @@ import AddItem from "./AddItem";
 import DialogSearchItem from "./DialogSearchItem";
 import { GetItemByBarcode, GetItemByID } from "@/api/Item";
 import ItemSearchAny from "./ItemSearchAny";
+import permission from "@/directive/permission/index.js";
 
 export default {
   name: "ItemsSearch",
   components: { AddItem, DialogSearchItem, ItemSearchAny },
+    directives: { permission },
+
   data() {
     return {
       ByQTY: false,
@@ -93,7 +93,6 @@ export default {
     // Add barcode scan listener and pass the callback function
     this.$barcodeScanner.init(this.onBarcodeScanned);
   },
-
 
   methods: {
     AddItem(item, Qty) {
