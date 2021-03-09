@@ -2,7 +2,7 @@ import request from '@/utils/RequestApi'
 import qs from 'qs';
 export function GetEditorsUser(query) {
   return request({
-    url: '/EditorsUser/GetEditorsUser',
+    url: '/EditorsUser/Get',
     method: 'get',
     params: query
   })

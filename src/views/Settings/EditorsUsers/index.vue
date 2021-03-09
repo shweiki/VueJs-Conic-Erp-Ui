@@ -9,7 +9,7 @@
           @click="handleCreate()"
         >{{ $t('Classification.Add') }}</el-button>
 
-        <span>جميع الاجهزة</span>
+        <span>محررو السندات</span>
       </div>
       <el-table
         v-loading="loading"

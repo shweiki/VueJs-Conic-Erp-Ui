@@ -2,57 +2,79 @@
   <div>
     <el-button
       style="width: 100px;"
-      type='success'
+      type="success"
       icon="el-icon-plus"
       @click="Visibles = true"
-    >ايام إضافية</el-button>
-    <el-dialog style="margin-top: -13vh" title="تسجيل ايام اضافية" :visible.sync="Visibles">
+      >ايام إضافية</el-button
+    >
+    <el-dialog
+      style="margin-top: -13vh"
+      title="تسجيل ايام اضافية"
+      :visible.sync="Visibles"
+    >
       <el-form
         label-position="top"
         :model="MembershipMovementOrder"
         ref="dataForm"
         class="demo-form-inline"
       >
-        <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item prop="Extra" label="عدد الايام">
-              <el-input-number v-model="Extra" :min="1" :max="100"></el-input-number>
+              <el-input-number
+                v-model="Extra"
+                :min="1"
+                :max="100"
+              ></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item
               prop="Description"
-              :rules="[{ required: true, message: 'لايمكن ترك ملاحظات فارغ', trigger: 'blur' } ]"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك ملاحظات فارغ',
+                  trigger: 'blur'
+                }
+              ]"
               v-bind:label="$t('AddVendors.Description')"
             >
-              <el-input v-model="MembershipMovementOrder.Description"></el-input>
+              <el-input
+                v-model="MembershipMovementOrder.Description"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item
               prop="EditorName"
-              :rules="[{ required: true, message: 'لايمكن ترك محرر السند فارغ', trigger: 'blur' } ]"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك محرر السند فارغ',
+                  trigger: 'blur'
+                }
+              ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <el-select v-model="MembershipMovementOrder.EditorName" placeholder="محرر السند">
-                <el-option
-                  v-for="item in $store.getters.Editors"
-                  :key="item.Id"
-                  :label="item.Name"
-                  :value="item.Name"
-                ></el-option>
-              </el-select>
+              <editors-user
+                @Set="v => (MembershipMovementOrder.EditorName = v)"
+              />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{$t('AddVendors.Cancel')}}</el-button>
-        <el-button :disabled="EnableSave" type="primary" @click="create()">{{$t('AddVendors.Save')}}</el-button>
+        <el-button @click="Visibles = false">{{
+          $t("AddVendors.Cancel")
+        }}</el-button>
+        <el-button :disabled="EnableSave" type="primary" @click="create()">{{
+          $t("AddVendors.Save")
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -60,8 +82,9 @@
 
 <script>
 import { Create } from "@/api/MembershipMovementOrder";
-
+import EditorsUser from "@/components/Gym/EditorsUser"
 export default {
+  components :{EditorsUser},
   props: {
     MemberShipMovementId: {
       type: Number,
@@ -80,13 +103,13 @@ export default {
         StartDate: new Date(this.EndDate),
         EndDate: new Date(),
         Status: 0,
-        Description: '',
-        EditorName: '',
+        Description: "",
+        EditorName: "",
         MemberShipMovementId: this.MemberShipMovementId
       },
       Extra: 0,
-      Description: '',
-      Visibles: false,
+      Description: "",
+      Visibles: false
     };
   },
   methods: {
@@ -104,24 +127,24 @@ export default {
           );
           Create(this.MembershipMovementOrder).then(response => {
             if (response) {
-              this.Visibles = false
+              this.Visibles = false;
               this.EnableSave = false;
 
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
+                type: "success",
                 duration: 2000
-              })
+              });
               this.$nextTick(() => {
                 this.$router.replace({
                   path: "/redirect" + this.$route.fullPath
-                })
-              })
+                });
+              });
             }
-          })
+          });
         }
-      })
+      });
     }
   }
 };

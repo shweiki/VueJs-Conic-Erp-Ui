@@ -5,16 +5,22 @@
       type="primary"
       icon="el-icon-plus"
       @click="Visibles = true"
-    >تجميد</el-button>
-    <el-dialog style="margin-top: -13vh" title="تسجيل تجميد" :visible.sync="Visibles">
+      >تجميد</el-button
+    >
+    <el-dialog
+      style="margin-top: -13vh"
+      title="تسجيل تجميد"
+      :visible.sync="Visibles"
+    >
       <el-form
         :model="MembershipMovementOrder"
         ref="dataForm"
         label-position="top"
         class="demo-form-inline"
       >
-        عدد الايام المسموحة لتجميد : من {{MinFreezeLimit}} الى {{MaxFreezeLimit}} ايام
-        <el-row >
+        عدد الايام المسموحة لتجميد : من {{ MinFreezeLimit }} الى
+        {{ MaxFreezeLimit }} ايام
+        <el-row>
           <el-col :span="24">
             <el-form-item prop="FreezeBetween" label="الفترة">
               <el-date-picker
@@ -33,52 +39,71 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item
               prop="Description"
-              :rules="[{ required: true, message: 'لايمكن ترك ملاحظات فارغ', trigger: 'blur' } ]"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك ملاحظات فارغ',
+                  trigger: 'blur'
+                }
+              ]"
               v-bind:label="$t('AddVendors.Description')"
             >
-              <el-input v-model="MembershipMovementOrder.Description"></el-input>
+              <el-input
+                v-model="MembershipMovementOrder.Description"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-              <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item
               prop="EditorName"
-              :rules="[{ required: true, message: 'لايمكن ترك محرر السند فارغ', trigger: 'blur' } ]"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك محرر السند فارغ',
+                  trigger: 'blur'
+                }
+              ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <el-select v-model="MembershipMovementOrder.EditorName" placeholder="محرر السند">
-                <el-option
-                  v-for="item in $store.getters.Editors"
-                  :key="item.Id"
-                  :label="item.Name"
-                  :value="item.Name"
-                ></el-option>
-              </el-select>
+              <editors-user
+                @Set="v => (MembershipMovementOrder.EditorName = v)"
+              />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row >
+        <el-row>
           <el-col :span="24">
-            مجموع الايام حسب الفترة المطلوبة {{Math.round(
-            Math.abs(
-            (new Date(FreezeBetween[0]) - new Date(FreezeBetween[1])) /
-            (24 * 60 * 60 * 1000)
-            )
-            ) }} ايام
+            مجموع الايام حسب الفترة المطلوبة
+            {{
+              Math.round(
+                Math.abs(
+                  (new Date(FreezeBetween[0]) - new Date(FreezeBetween[1])) /
+                    (24 * 60 * 60 * 1000)
+                )
+              )
+            }}
+            ايام
           </el-col>
         </el-row>
         <el-col>
-          <span style="color: #F56C6C; font-size: 16px; text-align: center;">{{ ValidateNote }}</span>
+          <span style="color: #F56C6C; font-size: 16px; text-align: center;">{{
+            ValidateNote
+          }}</span>
         </el-col>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{$t('AddVendors.Cancel')}}</el-button>
-        <el-button :disabled="EnableSave" type="primary" @click="create()">{{$t('AddVendors.Save')}}</el-button>
+        <el-button @click="Visibles = false">{{
+          $t("AddVendors.Cancel")
+        }}</el-button>
+        <el-button :disabled="EnableSave" type="primary" @click="create()">{{
+          $t("AddVendors.Save")
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -86,8 +111,11 @@
 
 <script>
 import { Create } from "@/api/MembershipMovementOrder";
+import EditorsUser from "@/components/Gym/EditorsUser";
 
 export default {
+  components: { EditorsUser },
+
   props: {
     MemberShipMovementId: {
       type: Number,
@@ -114,17 +142,17 @@ export default {
       MembershipMovementOrder: {
         ID: undefined,
         Type: "Freeze",
-        StartDate: '',
-        EndDate: '',
+        StartDate: "",
+        EndDate: "",
         Status: 0,
-        EditorName:'',
-        Description: '',
+        EditorName: "",
+        Description: "",
         MemberShipMovementId: this.MemberShipMovementId
       },
-      FreezeBetween: '',
+      FreezeBetween: "",
       Visibles: false,
       Days: 0,
-      ValidateNote: '',
+      ValidateNote: "",
       pickerOptions: {
         disabledDate(time) {
           console.log(time);
@@ -155,30 +183,29 @@ export default {
             Create(this.MembershipMovementOrder)
               .then(response => {
                 if (response) {
-                  this.Visibles = false
+                  this.Visibles = false;
                   this.EnableSave = false;
 
                   this.$notify({
                     title: "تم ",
                     message: "تم الإضافة بنجاح",
-                    type: 'success',
+                    type: "success",
                     duration: 2000
-                  })
+                  });
                   this.$nextTick(() => {
                     this.$router.replace({
                       path: "/redirect" + this.$route.fullPath
-                    })
-                  })
+                    });
+                  });
                 }
               })
               .catch(error => {
                 console.log(error);
-              })
+              });
           }
-        })
+        });
       } else {
-        this.ValidateNote =
-          "عدد الايام المطلوب تجميدها غير المسموح بها";
+        this.ValidateNote = "عدد الايام المطلوب تجميدها غير المسموح بها";
       }
     }
   }

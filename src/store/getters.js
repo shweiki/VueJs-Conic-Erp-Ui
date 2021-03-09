@@ -21,7 +21,6 @@ const getters = {
   CompanyInfo: state => state.CompanyInfo.CompanyInfo,
   Oprations: state => state.CompanyInfo.Oprations,
   Devices: state => state.Devices.AllDevices,
-  Editors: state => state.Editors.Editors,
   ZtkDoor: state => state.Devices.ZtkDoor,
 
 }

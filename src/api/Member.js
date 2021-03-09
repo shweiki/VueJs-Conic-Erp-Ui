@@ -14,6 +14,13 @@ export function GetMemberByAny(query) {
     params: query
   })
 }
+export function FixPhoneNumber(query) {
+  return request({
+    url: '/Member/FixPhoneNumber',
+    method: 'get',
+    params: query
+  })
+}
 export function GetByListQ(data) {
   return request({
     url: '/Member/GetByListQ',

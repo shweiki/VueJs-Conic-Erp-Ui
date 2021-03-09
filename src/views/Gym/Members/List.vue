@@ -1,7 +1,42 @@
 <template>
   <div class="app-container">
+
     <el-card class="box-card">
       <div class="filter-container">
+        <el-button @click="FixPhoneNumber">FixPhoneNumber</el-button>
+        <el-popover placement="left" width="400" >
+          <p>ارسال عبر</p>
+          <div style="text-align: right; margin: 0">
+            <el-input
+              type="textarea"
+              v-model="SmsBody"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك الخصم فارغ',
+                  trigger: 'blur'
+                }
+              ]"
+            ></el-input>
+            <el-button
+              icon="el-icon-circle-plus"
+              type="primary"
+              :size="$store.getters.size"
+              @click="SendSms()"
+              >SMS</el-button
+            >
+            <el-button
+              icon="el-icon-circle-plus"
+              type="primary"
+              :size="$store.getters.size"
+              @click="SendEmail()"
+              >Email</el-button
+            >
+          </div>
+          <el-button icon="el-icon-circle-plus" slot="reference"
+            >ارسال رسالة</el-button
+          >
+        </el-popover>
         <el-row type="flex">
           <el-col :span="12">
             <el-input
@@ -12,43 +47,7 @@
               @keyup.enter.native="handleFilter"
             />
           </el-col>
-          <el-col :span="3">
-            <el-popover placement="left" width="400" v-model="visible">
-              <p>ارسال عبر</p>
-              <div style="text-align: right; margin: 0">
-                <el-input
-                  type="textarea"
-                  v-model="SmsBody"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'لايمكن ترك الخصم فارغ',
-                      trigger: 'blur',
-                    },
-                  ]"
-                ></el-input>
-                <el-button
-                  icon="el-icon-circle-plus"
-                  type="primary"
-                  :size="$store.getters.size"
-                  @click="SendSms()"
-                  >SMS</el-button
-                >
-                <el-button
-                  icon="el-icon-circle-plus"
-                  type="primary"
-                  :size="$store.getters.size"
-                  @click="SendEmail()"
-                  >Email</el-button
-                >
-              </div>
-              <el-button icon="el-icon-circle-plus" slot="reference"
-                >ارسال رسالة</el-button
-              >
-            </el-popover>
-        
-            
-          </el-col>
+
           <el-col :span="3">
             <el-select
               v-model="listQuery.Sort"
@@ -89,7 +88,7 @@
       <radio-oprations
         TableName="Member"
         @Set="
-          (v) => {
+          v => {
             listQuery.Status = v;
             handleFilter();
           }
@@ -103,17 +102,29 @@
 
       <span>مجموع المدين (لك)</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{
+          Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
+        }}
+        JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
       <span> (عليك) مجموع الدائن </span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{
+          Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
+        }}
+        JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
       <span>الرصيد</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
     </el-card>
 
@@ -122,13 +133,14 @@
       :data="list"
       border
       fit
+       height="400"
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
       ref="multipleTable"
       @selection-change="handleSelectionChange"
       @row-dblclick="
-      row => {
+        row => {
           let r = $router.resolve({
             path: '/Gym/Edit/' + row.Id
           });
@@ -138,10 +150,13 @@
             $store.getters.settings.windowStyle
           );
         }
-       
       "
     >
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      ></el-table-column>
       <el-table-column
         label="ID"
         prop="Id"
@@ -155,7 +170,8 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
+      <el-table-column label="Name" prop="Name" align="center">
+      </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
         prop="PhoneNumber1"
@@ -184,14 +200,22 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Account.funds')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
           )
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Sales.Status')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">
           <status-tag :Status="scope.row.Status" TableName="Member" />
         </template>
@@ -208,7 +232,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination
+        <pagination
       v-show="Totals.Rows > 0"
       :total="Totals.Rows"
       :page.sync="listQuery.Page"
@@ -219,12 +243,12 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/Member";
+import { GetByListQ, FixPhoneNumber } from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import axios from "axios";
+import permission from "@/directive/permission/index.js";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -237,9 +261,9 @@ export default {
     NextOprations,
     PrintButton,
     Pagination,
-    RadioOprations,
+    RadioOprations
   },
-  directives: { waves },
+  directives: { waves, permission },
   data() {
     return {
       list: [],
@@ -247,29 +271,29 @@ export default {
       listLoading: false,
       Selection: [],
       SmsBody: "",
-      visible: false,
       listQuery: {
         Page: 1,
         Any: "",
-        limit: 10,
+        limit: 50,
         Sort: "-id",
-        Status: undefined,
+        Status: undefined
       },
       sortOptions: [
         { label: "ID Ascending", key: "+id" },
-        { label: "ID Descending", key: "-id" },
+        { label: "ID Descending", key: "-id" }
       ],
-      downloadLoading: false,
+      downloadLoading: false
     };
   },
   created() {
     // this.getList();
   },
   methods: {
+    FixPhoneNumber,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then((response) => {
+      GetByListQ(this.listQuery).then(response => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -295,21 +319,21 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
+      import("@/Report/Excel/Export2Excel").then(excel => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list",
+          filename: "table-list"
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
+      return this.list.map(v =>
+        filterVal.map(j => {
           if (j === "timestamp") {
             return parseTime(v[j]);
           } else {
@@ -318,7 +342,7 @@ export default {
         })
       );
     },
-    getSortClass: function (key) {
+    getSortClass: function(key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
@@ -327,21 +351,20 @@ export default {
     },
     SendSms() {
       if (this.Selection.length > 0) {
-        let numbers = this.Selection.map((element) => {
-          if (element.PhoneNumber1.length == 10) element.PhoneNumber1.slice(1);
+        let numbers = this.Selection.map(element => {
           return "962" + element.PhoneNumber1;
         });
         console.log("numbers", numbers);
         let numbers100 = [];
         for (var i = 0; i < numbers.length; i++) {
           if (numbers.length > 0) {
-            numbers100.push(numbers.splice(0, 98));
+            numbers100.push(numbers.splice(0, 100));
           } else {
             break;
           }
         }
         //  console.log(this.Selection);
-        /*  numbers100.forEach((element) => {
+          numbers100.forEach((element) => {
           axios({
             method: "get",
             url: "http://josmsservice.com/smsonline/msgservicejo.cfm",
@@ -356,23 +379,22 @@ export default {
           }).then((response) => {
             console.log(response);
           });
-        });*/
-
+        });
         this.$notify({
           title: "تم ",
           message: "تم ارسال بنجاح",
           type: "success",
-          duration: 2000,
+          duration: 2000
         });
       } else {
         this.$notify({
           title: "تم ",
           message: "الرجاء تحديد المشتركين",
           type: "error",
-          duration: 2000,
+          duration: 2000
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>

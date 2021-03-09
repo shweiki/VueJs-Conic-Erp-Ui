@@ -1,13 +1,13 @@
 
 import store from '@/store'
 import printJS from "print-js";
-
+let toFixed = store.getters.settings.ToFixed;
 export function SaleInvoiceA4(temp) {
   let TotalAmmount = (
     temp.InventoryMovements.reduce((prev, cur) => {
       return prev + cur.Qty * cur.SellingPrice;
     }, 0) - temp.Discount
-  ).toFixed(store.getters.settings.ToFixed);
+  ).toFixed(toFixed);
   store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{Vendor.Name}}', temp.Name)
   store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{PaymentMethod}}', temp.PaymentMethod == 'Cash' ? "ذمم" : "كاش")
   store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{FakeDate}}', temp.FakeDate)
@@ -19,7 +19,7 @@ export function SaleInvoiceA4(temp) {
   let tabelInventoryMovements = "";
   temp.InventoryMovements.reverse().forEach(element => {
     tabelInventoryMovements += "<tr style='text-align: center;'>"
-    tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(store.getters.settings.ToFixed) + "</td>";
+    tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(toFixed) + "</td>";
     tabelInventoryMovements += "<td>" + element.SellingPrice + "</td>";
     tabelInventoryMovements += "<td>" + element.Qty + "</td>";
     tabelInventoryMovements += "<td>" + element.Name + "</td>";
@@ -34,7 +34,7 @@ export function SaleInvoicesList(data) {
   let { Totals, Items } = data
   printJS({
     printable: Items.map(Item => ({
-      المجموع: Item.Total.toFixed(store.getters.settings.ToFixed),
+      المجموع: Item.Total.toFixed(toFixed),
       الخصم: Item.Discount,
       "طريقة الدفع ": Item.PaymentMethod,
       التاريخ: Item.FakeDate,
@@ -54,20 +54,20 @@ export function SaleInvoicesList(data) {
       "<center> <h2>" +
 
       "</h2></center><h3 style='float:right'> الاجمالي النقدي " +
-      Totals.Cash.toFixed(store.getters.settings.ToFixed) +
+      Totals.Cash.toFixed(toFixed) +
       " - الاجمالي الفيزا : " +
-      Totals.Visa.toFixed(store.getters.settings.ToFixed) +
+      Totals.Visa.toFixed(toFixed) +
       " - الاجمالي الاجل : " +
-      Totals.Receivables.toFixed(store.getters.settings.ToFixed) +
+      Totals.Receivables.toFixed(toFixed) +
       " - صافي الربح : " +
-      Totals.Profit.toFixed(store.getters.settings.ToFixed) +
+      Totals.Profit.toFixed(toFixed) +
       " - الاجمالي خصم : " +
-      Totals.Discount.toFixed(store.getters.settings.ToFixed) +
+      Totals.Discount.toFixed(toFixed) +
       " - الاجمالي التكلفة : " +
-      Totals.TotalCost.toFixed(store.getters.settings.ToFixed) +
+      Totals.TotalCost.toFixed(toFixed) +
       " - الاجمالي :  " +
       (Totals.Totals).toFixed(
-        store.getters.settings.ToFixed
+        toFixed
       ) +
       "</h3><h3 style='float:right'>  التاريخ  : " +
       formatDate(new Date()) +

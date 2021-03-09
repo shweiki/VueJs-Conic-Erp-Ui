@@ -8,12 +8,19 @@
       >اشتراك</el-button
     >
 
-    <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك"  @opened="getdata" :visible.sync="Visibles">
+    <el-dialog
+      style="margin-top: -13vh"
+      title="تسجيل اشتراك"
+      @opened="getdata"
+      :visible.sync="Visibles"
+    >
       <el-form :model="tempForm" ref="dataForm">
         <el-form-item
           label="الفترة"
           prop="Type"
-          :rules="[{ required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }]"
+          :rules="[
+            { required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }
+          ]"
         >
           <el-radio-group v-model="tempForm.Type" @change="calc">
             <el-radio label="Morning" border>Morning</el-radio>
@@ -24,7 +31,11 @@
           label="إشتراك"
           prop="MembershipId"
           :rules="[
-            { required: true, message: 'الرجاء اختيار نوع اشتراك', trigger: 'blur' },
+            {
+              required: true,
+              message: 'الرجاء اختيار نوع اشتراك',
+              trigger: 'blur'
+            }
           ]"
         >
           <el-select
@@ -45,13 +56,17 @@
           label="تاريخ بدء"
           prop="StartDate"
           :rules="[
-            { required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' },
+            {
+              required: true,
+              message: 'لايمكن ترك التاريخ فارغ',
+              trigger: 'blur'
+            }
           ]"
         >
           <fake-date
             :Value="tempForm.StartDate"
             @Set="
-              (v) => {
+              v => {
                 tempForm.StartDate = v;
                 calc();
               }
@@ -62,13 +77,17 @@
           label="تاريخ انتهاء"
           prop="EndDate"
           :rules="[
-            { required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' },
+            {
+              required: true,
+              message: 'لايمكن ترك التاريخ فارغ',
+              trigger: 'blur'
+            }
           ]"
         >
           <fake-date
             :Value="tempForm.EndDate"
             @Set="
-              (v) => {
+              v => {
                 tempForm.EndDate = v;
               }
             "
@@ -84,7 +103,8 @@
             >
               <span style="float: left">{{ Discount.label }}</span>
               <span style="float: right; color: #8492a6; font-size: 13px"
-                >{{ Discount.value }}{{ Discount.type == "Percentage" ? "%" : "-" }}</span
+                >{{ Discount.value
+                }}{{ Discount.type == "Percentage" ? "%" : "-" }}</span
               >
             </el-option>
           </el-select>
@@ -92,7 +112,13 @@
         <el-form-item
           label="سبب الخصم"
           prop="DiscountDescription"
-          :rules="[{ required: true, message: 'لايمكن ترك الخصم فارغ', trigger: 'blur' }]"
+          :rules="[
+            {
+              required: true,
+              message: 'لايمكن ترك الخصم فارغ',
+              trigger: 'blur'
+            }
+          ]"
         >
           <el-input
             style="width: 220px"
@@ -101,7 +127,9 @@
         </el-form-item>
 
         <el-form-item
-          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
+          :rules="[
+            { required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }
+          ]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -123,29 +151,27 @@
                 {
                   required: true,
                   message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <el-select v-model="tempForm.EditorName" placeholder="محرر السند">
-                <el-option
-                  v-for="item in $store.getters.Editors"
-                  :key="item.Id"
-                  :label="item.Name"
-                  :value="item.Name"
-                ></el-option>
-              </el-select>
+              <editors-user @Set="v => (tempForm.EditorName = v)" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button :disabled="EnableSave" type="primary" @click="createData()">{{
-          $t("AddVendors.Save")
+        <el-button @click="Visibles = false">{{
+          $t("AddVendors.Cancel")
         }}</el-button>
+        <el-button
+          :disabled="EnableSave"
+          type="primary"
+          @click="createData()"
+          >{{ $t("AddVendors.Save") }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -153,38 +179,35 @@
 
 <script>
 import { Create } from "@/api/MembershipMovement";
+import EditorsUser from "@/components/Gym/EditorsUser";
 
 import { GetActiveMembership } from "@/api/Membership";
 import { GetActiveDiscount } from "@/api/Discount";
 import FakeDate from "@/components/Date/FakeDate.vue";
-import {
-  LocalDateTime,
-
-  Instant,
-} from "@js-joda/core";
+import { LocalDateTime, Instant } from "@js-joda/core";
 export default {
-  components: { FakeDate },
+  components: { FakeDate, EditorsUser },
 
   props: {
     AccountId: {
       type: Number,
       default: () => {
         return undefined;
-      },
+      }
     },
     MemberID: {
       type: Number,
       default: () => {
         return undefined;
-      },
+      }
     },
 
     Enable: {
       type: Boolean,
       default: () => {
         return true;
-      },
-    },
+      }
+    }
   },
 
   data() {
@@ -204,7 +227,7 @@ export default {
         Status: 0,
         EditorName: "",
         MemberId: undefined,
-        MembershipId: undefined,
+        MembershipId: undefined
       },
 
       EnableSave: false,
@@ -215,35 +238,35 @@ export default {
         disabledDate(time) {
           console.log(time);
           return time.getTime() < Date.now() - 8.64e7;
-        },
-      },
+        }
+      }
     };
   },
   methods: {
     getdata() {
       GetActiveMembership()
-        .then((response) => {
+        .then(response => {
           console.log(response);
           this.Memberships = response;
           this.tempForm.MembershipId = response[0].Id;
-          GetActiveDiscount().then((response) => {
+          GetActiveDiscount().then(response => {
             console.log(response);
             this.DiscountOptions = response;
             this.Discount = this.DiscountOptions[0];
             this.calc();
           });
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         this.calc();
         if (valid) {
           this.EnableSave = true;
           Create(this.tempForm)
-            .then((response) => {
+            .then(response => {
               if (response) {
                 //  if(this.Discount.ValueOfDays >0)
                 // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
@@ -255,13 +278,13 @@ export default {
                   duration: 2000,
                   onClose: () => {
                     this.EnableSave = false;
-                  },
-                }).catch((error) => {
+                  }
+                }).catch(error => {
                   console.log(error);
                 });
               }
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -272,7 +295,7 @@ export default {
     },
     calc() {
       let Membership = this.Memberships.find(
-        (obj) => obj.Id == this.tempForm.MembershipId
+        obj => obj.Id == this.tempForm.MembershipId
       );
       console.log(Membership);
 
@@ -302,19 +325,19 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,
-        MemberShipMovementId: MemberShipMovementId,
+        MemberShipMovementId: MemberShipMovementId
       };
       MembershipMovementOrder.EndDate = new Date(
         MembershipMovementOrder.EndDate.setTime(
           MembershipMovementOrder.StartDate.getTime() + 3600 * 1000 * 24 * Days
         )
       );
-      Create(MembershipMovementOrder).then((response) => {
+      Create(MembershipMovementOrder).then(response => {
         if (response) {
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

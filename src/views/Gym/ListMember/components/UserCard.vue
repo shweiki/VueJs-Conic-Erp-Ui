@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { Create, Edit } from "@/api/Member";
+import {  Edit } from "@/api/Member";
 import { SetUser } from "@/api/Device";
 import printJS from "print-js";
 import { MemberAgreement } from "@/Report/MemberAgreement";
@@ -142,59 +142,12 @@ export default {
     }
   },
   methods: {
-    createData() {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          const data = {
-            ID: this.Member.Id,
-            Name: this.Member.Name,
-            Ssn: this.Member.Ssn,
-            DateofBirth: this.Member.DateofBirth,
-            Email: this.Member.Email,
-            PhoneNumber1: this.Member.PhoneNumber1,
-            PhoneNumber2: this.Member.PhoneNumber2,
-            Description: this.Member.Description,
-            Tag: this.Member.Tag,
-            Status: 0,
-            Type: "New"
-          };
-          Create(data)
-            .then(response => {
-              this.dialogFormVisible = false;
-              this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                duration: 2000
-              });
-              this.$router.replace({ path: "/redirect" + "/Gym/ListMember" });
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
+
     updateData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          const data = {
-            ID: this.Member.Id,
-            Name: this.Member.Name,
-            Ssn: this.Member.Ssn,
-            DateofBirth: this.Member.DateofBirth,
-            Email: this.Member.Email,
-            PhoneNumber1: this.Member.PhoneNumber1,
-            PhoneNumber2: this.Member.PhoneNumber2,
-            Description: this.Member.Description,
-            Status: this.Member.Status,
-            Tag: this.Member.Tag,
-            Type: "Edit"
-          };
-          Edit(data)
+ 
+          Edit(this.Member)
             .then(response => {
               this.dialogFormVisible = false;
               this.$store.getters.Devices.forEach(element => {
