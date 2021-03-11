@@ -34,7 +34,7 @@
         <div @click="AddItem(Item)">
           <img v-if="WithImage" :src="Item.Avatar" class="image" />
 
-          <span style="font-size: 10px; color: #545454">{{ Item.Name }}</span>
+          <span style="font-size: 12px; ">{{ Item.Name }}</span>
           <time class="price">{{
             Item.SellingPrice.toFixed($store.getters.settings.ToFixed)
           }}</time>
@@ -91,6 +91,7 @@ export default {
     return {
       search: "",
       ItemsPrime: [],
+      Images: [],
       tabPosition: "top",
       order: false
     };
@@ -126,7 +127,8 @@ export default {
         this.ItemsPrime = response;
         this.SortByName();
 
-        if (this.WithImage) this.ItemsPrime.map(item => this.GetImageItem(item.Id));
+        if (this.WithImage)
+          this.ItemsPrime.map(item => this.GetImageItem(item.Id));
       });
     },
 
@@ -150,8 +152,9 @@ export default {
 </script>
 <style scoped>
 .price {
-  font-size: 9px;
+  font-size: 12px;
   color: #f78123;
+  float: left;
 }
 .image {
   width: 100%;

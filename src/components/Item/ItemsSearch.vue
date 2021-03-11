@@ -19,7 +19,7 @@
       <el-col :span="8">
         <item-search-any @Set="v => AddItem(v, 1)" />
       </el-col>
-      <el-col :span="8">
+      <el-col v-if="WithBarCode" :span="8">
         <el-input
           data-barcode
           ref="Barcode"
@@ -63,7 +63,6 @@
   </div>
 </template>
 <script>
-import Fuse from "fuse.js";
 import AddItem from "./AddItem";
 import DialogSearchItem from "./DialogSearchItem";
 import { GetItemByBarcode, GetItemByID } from "@/api/Item";
@@ -72,6 +71,8 @@ import permission from "@/directive/permission/index.js";
 
 export default {
   name: "ItemsSearch",
+    props: ["WithBarCode"],
+
   components: { AddItem, DialogSearchItem, ItemSearchAny },
   directives: { permission },
   data() {

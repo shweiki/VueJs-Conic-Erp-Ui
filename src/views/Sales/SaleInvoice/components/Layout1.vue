@@ -158,7 +158,7 @@
                       style="background: #545454"
                       :body-style="{ padding: '1px' }"
                     >
-                      <items-search @add="AddItem" @focus="focusBarcode" />
+                      <items-search @add="AddItem" @focus="focusBarcode" :WithBarCode="true" />
                     </el-card>
                     <el-form-item prop="InventoryMovements">
                       <el-table

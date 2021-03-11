@@ -429,7 +429,7 @@ export default {
       GetByListQ({
         Page: 1,
         Any: "",
-        limit: 100,
+        limit: this.$store.getters.settings.LimitGetInvoice,
         Sort: "-id",
         Status: 0
       })

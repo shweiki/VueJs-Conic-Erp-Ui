@@ -24,6 +24,7 @@ module.exports = {
   WithOutCheckItemIsExist: true,
   ToFixed: 2,
   LimitQurey: 20,
+  LimitGetInvoice: 200 ,
   errorLog: 'production',
   DateFormat: 'yyyy-MM-dd',
   DateTimeFormat: 'yyyy-MM-dd HH:mm',

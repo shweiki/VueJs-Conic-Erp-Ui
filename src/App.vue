@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+  <div id="progressBar"></div>
+<div id="progressBarContainer"></div>
     <router-view />
   </div>
 </template>
@@ -10,6 +12,30 @@ export default {
 };
 </script>
 <style>
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+#progressBarContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+#progressBar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 10px;
+  background: linear-gradient(to top, violet, red);
+  height: 0;
+  opacity: 0;
+}
 .el-row--flex {
   padding: 3.5px;
 }

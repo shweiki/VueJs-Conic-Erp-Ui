@@ -50,11 +50,8 @@ router.beforeEach(async (to, from, next) => {
             store.dispatch("Members/CheckMembers")
             
           }
-          // store.dispatch("Items/GetActiveItem");
           if (store.state.settings.BusinessType == 'GymManagment') {
-            store.dispatch("Editors/GetEditorsUser");
             store.dispatch("Devices/GetDevice");
-            //   store.dispatch("Members/CheckMembers");
             store.dispatch("Devices/ConnectZtkDoor");
           }
           document.onkeydown = capturekey;

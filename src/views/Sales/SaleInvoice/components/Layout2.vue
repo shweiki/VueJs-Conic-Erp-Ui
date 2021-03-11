@@ -128,7 +128,7 @@
                 <split-pane split="horizontal" :min-percent="88" :default-percent="88">
                   <template slot="paneL">
                     <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-                      <items-search @add="AddItem" @focus="focusBarcode" />
+                      <items-search :WithBarCode="true" @add="AddItem" @focus="focusBarcode" />
                     </el-card>
                     <el-form-item prop="InventoryMovements">
                       <el-table
