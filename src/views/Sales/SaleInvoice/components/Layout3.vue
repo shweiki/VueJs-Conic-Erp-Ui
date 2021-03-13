@@ -318,11 +318,19 @@
                                 :min="0"
                                 :max="1000000"
                               ></el-input-number>
+                              <description
+                                @Set="
+                                  v => {
+                                    tempForm.InventoryMovements[
+                                      scope.$index
+                                    ].Description = v;
+                                  }
+                                "
+                              />
                             </div>
                           </template>
                         </el-table-column>
 
-                     
                         <el-table-column
                           v-bind:label="$t('CashPool.Total')"
                           align="center"
@@ -391,6 +399,7 @@ import { GetActiveMenuItem } from "@/api/MenuItem";
 import splitPane from "vue-splitpane";
 //import { NumericInput } from "numeric-keyboard";
 import { OpenCashDrawer } from "@/api/Device";
+import Description from '@/components/Item/Description.vue';
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 
@@ -409,7 +418,8 @@ export default {
     RestOfBill,
     RightMenu,
     FakeDate,
-    VendorSelect
+    VendorSelect,
+    Description,
   },
   props: {
     isEdit: {

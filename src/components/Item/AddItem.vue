@@ -128,8 +128,10 @@
 
 <script>
 import { CreateItem, CheckItemIsExist } from "@/api/Item";
+import Category from './Category.vue';
 
 export default {
+  components: { Category },
   props: {
     visible: Boolean,
     barcode: String

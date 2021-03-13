@@ -8,7 +8,7 @@
     ></el-button>
 
     <el-dialog
-      style="margin-top: -13vh"
+      v-el-drag-dialog
       :visible.sync="Visibles"
       @opened="$refs['ItemName'].focus()"
       @closed="focus"
@@ -26,7 +26,6 @@
           <el-divider> تعديل صنف {{ tempForm.Id }}</el-divider>
         </el-col>
       </div>
-
       <el-form ref="dataForm" :rules="rulesForm" :model="tempForm">
         <el-row>
           <el-col :span="16">
@@ -152,6 +151,8 @@
         </el-row>
         <inventory-qty :ItemID="tempForm.Id" />
       </el-form>
+
+      <!--   <category :ItemId="tempForm.Id" /> -->
     </el-dialog>
   </div>
 </template>
@@ -164,16 +165,18 @@ import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
 import { GetFileByObjID } from "@/api/File";
 import permission from "@/directive/permission/index.js";
+import Category from "./Category";
+import elDragDialog from "@/directive/el-drag-dialog"; // base on element-ui
 
 export default {
-  components: { InventoryQty, PanThumb, WebCam, ImageCropper },
+  components: { InventoryQty, PanThumb, WebCam, ImageCropper, Category },
   props: {
     ItemId: {
       type: Number,
       default: undefined
     }
   },
-  directives: { permission },
+  directives: { permission, elDragDialog },
   data() {
     return {
       Visibles: false,
@@ -253,7 +256,8 @@ export default {
     },
     close() {
       this.imagecropperShow = false;
-    }
+    },
+
   }
 };
 </script>
