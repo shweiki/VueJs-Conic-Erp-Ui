@@ -52,6 +52,7 @@
                 <el-option label="CarsSpare" value="CarsSpare"> </el-option>
                 <el-option label="GymManagment" value="GymManagment">
                 </el-option>
+                <el-option label="Restaurant" value="Restaurant"> </el-option>
               </el-select>
             </el-col>
           </el-row>
@@ -112,7 +113,7 @@ export default {
   components: { Settings, JsonEditor },
   data() {
     return {
-      JsonSettings: this.$store.state.settings,
+      JsonSettings: this.$store.state.settings
     };
   },
   computed: {
@@ -127,9 +128,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "title",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     DateFormat: {
       get() {
@@ -138,9 +139,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "DateFormat",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     DateTimeFormat: {
       get() {
@@ -149,9 +150,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "DateTimeFormat",
-          value: val,
+          value: val
         });
-      },
+      }
     },
 
     CashDrawerCOM: {
@@ -161,9 +162,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "CashDrawerCOM",
-          value: JSON.parse(val),
+          value: JSON.parse(val)
         });
-      },
+      }
     },
     fixedHeader: {
       get() {
@@ -172,9 +173,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "fixedHeader",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     tagsView: {
       get() {
@@ -183,9 +184,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "tagsView",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     sidebarLogo: {
       get() {
@@ -194,9 +195,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "sidebarLogo",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     BarcodeIsID: {
       get() {
@@ -205,9 +206,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "BarcodeIsID",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     WithOutCheckItemIsExist: {
       get() {
@@ -216,9 +217,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "WithOutCheckItemIsExist",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     sidebarOpen: {
       get() {
@@ -229,9 +230,9 @@ export default {
 
         this.$store.dispatch("settings/changeSetting", {
           key: "sidebarOpen",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     showSettings: {
       get() {
@@ -240,9 +241,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "showSettings",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     showRestOfBill: {
       get() {
@@ -251,9 +252,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "showRestOfBill",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     BusinessType: {
       get() {
@@ -262,9 +263,9 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "BusinessType",
-          value: val,
+          value: val
         });
-      },
+      }
     },
     PointOfSaleLayout: {
       get() {
@@ -273,23 +274,23 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "PointOfSaleLayout",
-          value: val,
+          value: val
         });
-      },
-    },
+      }
+    }
   },
   methods: {
     SaveJson() {
       var JsonSettings = JSON.parse(this.JsonSettings);
-      Object.keys(JsonSettings).forEach((key) => {
+      Object.keys(JsonSettings).forEach(key => {
         this.$store.dispatch("settings/changeSetting", {
           key: key,
-          value: JsonSettings["" + key + ""],
+          value: JsonSettings["" + key + ""]
         });
       });
     },
     RestSetting() {
-      RestDefualtSetting().then((res) => {
+      RestDefualtSetting().then(res => {
         if (res) location.reload();
       });
     },
@@ -309,8 +310,8 @@ export default {
           // handle error
           console.log(error);
         });*/
-    },
-  },
+    }
+  }
 };
 </script>
 

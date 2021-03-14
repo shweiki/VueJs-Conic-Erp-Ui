@@ -2,7 +2,6 @@
   <div class="app-container">
     <el-card class="box-card">
       <div class="filter-container">
-      <el-button @click="CalculateCostPrice">CalculateCostPrice</el-button>
         <el-row type="flex">
           <el-col :span="12">
             <el-input
@@ -49,6 +48,12 @@
               Search
             </el-button>
           </el-col>
+          <el-col :span="3">
+            <el-button @click="CalculateCostPrice"
+              >CalculateCostPrice</el-button
+            >
+            <add-item
+          /></el-col>
         </el-row>
       </div>
       <radio-oprations
@@ -156,15 +161,17 @@
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <next-oprations
-            :ObjID="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="Item"
-            @Done="handleFilter"
-          />
-          <edit-item :ItemId="scope.row.Id" />
-
-          <print-button Type="Item" :Data="scope.row" />
+          <el-col :span="8">
+            <next-oprations
+              :ObjID="scope.row.Id"
+              :Status="scope.row.Status"
+              TableName="Item"
+              @Done="handleFilter"
+          /></el-col>
+          <el-col :span="8"> <edit-item :ItemId="scope.row.Id" /> </el-col>
+          <el-col :span="8">
+            <print-button Type="Item" :Data="scope.row" />
+          </el-col>
         </template>
       </el-table-column>
       <el-table-column type="expand" width="30">
@@ -235,13 +242,14 @@
 </template>
 
 <script>
-import { GetByListQ ,CalculateCostPrice} from "@/api/Item";
+import { GetByListQ, CalculateCostPrice } from "@/api/Item";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import ItemQty from "@/components/Item/ItemQty.vue";
 import EditItem from "@/components/Item/EditItem.vue";
+import AddItem from "@/components/Item/AddItem.vue";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -256,7 +264,8 @@ export default {
     Pagination,
     RadioOprations,
     ItemQty,
-    EditItem
+    EditItem,
+    AddItem
   },
   directives: { waves },
   data() {
@@ -268,7 +277,7 @@ export default {
       listQuery: {
         Page: 1,
         Any: "",
-        limit: 10,
+        limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
         Status: undefined
       },
