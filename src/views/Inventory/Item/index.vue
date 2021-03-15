@@ -13,7 +13,7 @@
         <span>{{ $t("CashPool.Items") }}</span>
       </div>
       <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-        <items-search @add="AddItem" />
+        <items-search :WithBarCode="true" @add="AddItem" />
       </el-card>
       <el-table
         v-loading="loading"

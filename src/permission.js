@@ -68,6 +68,7 @@ router.beforeEach(async (to, from, next) => {
                   console.log(err);
                 });
             }
+
             /*
             if (e.code == store.state.settings.KeyBoard.key) {
               store.state.settings.KeyBoard.ref

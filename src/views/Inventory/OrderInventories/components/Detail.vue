@@ -68,7 +68,7 @@
           </el-col>
         </el-row>
         <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-          <items-search @add="AddItem" />
+          <items-search :WithBarCode="true" @add="AddItem" />
         </el-card>
         <el-form-item prop="InventoryMovements">
           <el-table

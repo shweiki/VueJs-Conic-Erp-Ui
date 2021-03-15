@@ -5,8 +5,10 @@
       :before-upload="beforeUpload"
     />
     <el-button @click="AddItem" plain :disabled="isDisabled" type="success"
-      >Push</el-button
+      >Push
+      <span> {{ counter + "  Of  " + tableData.length }} </span></el-button
     >
+
     <el-table
       height="250"
       v-loading="loading"
@@ -37,6 +39,7 @@ export default {
       isDisabled: true,
       loading: false,
       tableData: [],
+      counter: 0,
       data: [],
       tableHeader: []
     };
@@ -49,6 +52,7 @@ export default {
         .then(response => {
           console.log("tag", response);
           this.data.splice(0, 1);
+          this.counter++;
           if (this.data.length != 0) {
             this.AddItem();
           } else {

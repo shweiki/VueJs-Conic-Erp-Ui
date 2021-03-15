@@ -9,6 +9,7 @@
     "lint": "eslint --ext .js,.vue src",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
+    "build:outside": "vue-cli-service build --mode outside",
     "dev": "vue-cli-service serve",
     "preview": "node build/index.js --preview",
     "report": "preview -- --report",
