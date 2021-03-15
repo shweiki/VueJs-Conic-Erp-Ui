@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button icon="el-icon-refresh-right" circle @click="getdata()"></el-button>
+    <el-button icon="el-icon-view" circle @click="getdata()"></el-button>
 
     <el-tooltip
       v-for="(Inventory, index) in InventoryQty"
@@ -14,7 +14,11 @@
         {{ $t("Items.Outbound") }} {{ Inventory.QtyOut }}
         <br />
         {{ $t("Items.Credit") }}
-        <el-tag>{{ (Inventory.QtyIn - Inventory.QtyOut).toFixed($store.getters.settings.ToFixed) }}</el-tag>
+        <el-tag>{{
+          (Inventory.QtyIn - Inventory.QtyOut).toFixed(
+            $store.getters.settings.ToFixed
+          )
+        }}</el-tag>
       </div>
       <el-button>{{ Inventory.InventoryName }}</el-button>
     </el-tooltip>
@@ -27,22 +31,22 @@ export default {
   props: {
     ItemId: {
       type: Number,
-      default: undefined,
-    },
+      default: undefined
+    }
   },
   data() {
     return {
-      InventoryQty: [],
+      InventoryQty: []
     };
   },
   methods: {
     getdata() {
-      CalculateInventoryItemQty({ ID: this.ItemId }).then((response) => {
+      CalculateInventoryItemQty({ ID: this.ItemId }).then(response => {
         // handle success
         this.InventoryQty = response;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 >

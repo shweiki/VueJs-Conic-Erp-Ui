@@ -36,7 +36,6 @@ export default {
     AddMemberShip() {
       this.loading = true;
       this.isDisabled = true;
-
       Create(this.data[0])
         .then(response => {
           console.log("tag", "" + response);

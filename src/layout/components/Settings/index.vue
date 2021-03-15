@@ -76,7 +76,8 @@ export default {
         require("@/assets/Login_images/Login-3.jpg"),
         require("@/assets/Login_images/Login-4.jpg"),
         require("@/assets/Login_images/Login-5.jpg"),
-        require("@/assets/Login_images/Login-6.jpg")
+        require("@/assets/Login_images/Login-6.jpg"),
+        require("@/assets/Login_images/Login-7.jpg")
       ]
     };
   },

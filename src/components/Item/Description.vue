@@ -1,44 +1,67 @@
 <template>
-  <div >
-    <el-drag-select @change="SetVal" v-model="value"  multiple placeholder="ملاحظات">
-      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-    </el-drag-select>
+  <div>
+    <el-popover width="400" trigger="click">
+      <el-drag-select
+        @change="SetVal"
+        v-model="value"
+        multiple
+        placeholder="ملاحظات"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-drag-select>
 
-      <el-tag v-for="item of value" :key="item" >
-        {{ item }}
-      </el-tag>
+      <el-button type="info" icon="el-icon-s-order" slot="reference" />
+    </el-popover>
   </div>
 </template>
 
 <script>
-import ElDragSelect from '@/components/DragSelect' // base on element-ui
+import ElDragSelect from "@/components/DragSelect"; // base on element-ui
 
 export default {
   components: { ElDragSelect },
   data() {
     return {
       value: [],
-      options: [{
-        value: 'Apple',
-        label: 'مع بصل'
-      }, {
-        value: 'Banana',
-        label: 'Banana'
-      }, {
-        value: 'Orange',
-        label: 'Orange'
-      }, {
-        value: 'Pear',
-        label: 'Pear'
-      }, {
-        value: 'Strawberry',
-        label: 'Strawberry'
-      }]
+      options: [
+        {
+          value: "مع بصل",
+          label: "مع بصل"
+        },
+        {
+          value: "Banana",
+          label: "Banana"
+        },
+        {
+          value: "Orange",
+          label: "Orange"
+        },
+        {
+          value: "Pear",
+          label: "Pear"
+        },
+        {
+          value: "Strawberry",
+          label: "Strawberry"
+        }
+      ]
+    };
+  },
+  watch: {
+    Value(val) {
+      if (val) this.SetVal(val);
+      else this.SetVal("");
     }
   },
   methods: {
     SetVal(val) {
       this.$emit("Set", val.toString());
     }
-  }}
+  }
+};
 </script>

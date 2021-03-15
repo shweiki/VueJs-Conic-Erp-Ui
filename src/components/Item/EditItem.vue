@@ -26,133 +26,162 @@
           <el-divider> تعديل صنف {{ tempForm.Id }}</el-divider>
         </el-col>
       </div>
+
       <el-form ref="dataForm" :rules="rulesForm" :model="tempForm">
-        <el-row>
-          <el-col :span="16">
-            <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
-              <el-input
-                ref="ItemName"
-                type="text"
-                v-model="tempForm.Name"
-              ></el-input>
-              <el-checkbox v-model="tempForm.IsPrime"
-                >اظهار على شاشة المبيعات</el-checkbox
-              >
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <pan-thumb
-              :image="tempForm.Avatar"
-              :height="'100px'"
-              :width="'100px'"
-              :hoverable="false"
-            >
-              <el-button
-                type="primary"
-                icon="el-icon-upload"
-                @click="imagecropperShow = true"
-              ></el-button>
-              <web-cam TableName="Item" :ObjectID="tempForm.Id" />
-            </pan-thumb>
-            <image-cropper
-              v-show="imagecropperShow"
-              :key="imagecropperKey"
-              :width="150"
-              :height="150"
-              lang-type="ar"
-              TableName="Item"
-              :ObjectID="tempForm.Id"
-              @close="close"
-              @crop-upload-success="cropSuccess"
-            /> </el-col
-        ></el-row>
+        <el-collapse
+          style="display:  table-row-group;"
+          v-model="activeNames"
+          accordion
+        >
+          <el-collapse-item title="Info" name="Info">
+            <el-row>
+              <el-col :span="16">
+                <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
+                  <el-input
+                    ref="ItemName"
+                    type="text"
+                    v-model="tempForm.Name"
+                  ></el-input>
+                  <el-checkbox v-model="tempForm.IsPrime"
+                    >اظهار على شاشة المبيعات</el-checkbox
+                  >
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <pan-thumb
+                  :image="tempForm.Avatar"
+                  :height="'100px'"
+                  :width="'100px'"
+                  :hoverable="false"
+                >
+                  <el-button
+                    type="primary"
+                    icon="el-icon-upload"
+                    @click="imagecropperShow = true"
+                  ></el-button>
+                  <web-cam TableName="Item" :ObjectID="tempForm.Id" />
+                </pan-thumb>
+                <image-cropper
+                  v-show="imagecropperShow"
+                  :key="imagecropperKey"
+                  :width="150"
+                  :height="150"
+                  lang-type="ar"
+                  TableName="Item"
+                  :ObjectID="tempForm.Id"
+                  @close="close"
+                  @crop-upload-success="cropSuccess"
+                /> </el-col
+            ></el-row>
 
-        <el-row>
-          <el-col :span="8">
-            <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
-              <el-input-number
-                v-model="tempForm.CostPrice"
-                :precision="2"
-                :step="0.1"
-                :min="0.0"
-                :max="1500"
-              ></el-input-number>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item
-              v-bind:label="$t('Items.PurchaseCost')"
-              prop="OtherPrice"
+            <el-row>
+              <el-col :span="8">
+                <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
+                  <el-input-number
+                    v-model="tempForm.CostPrice"
+                    :precision="2"
+                    :step="0.1"
+                    :min="0.0"
+                    :max="1500"
+                  ></el-input-number>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item
+                  v-bind:label="$t('Items.PurchaseCost')"
+                  prop="OtherPrice"
+                >
+                  <el-input-number
+                    v-model="tempForm.OtherPrice"
+                    :precision="2"
+                    :step="0.1"
+                    :min="0.0"
+                    :max="1500"
+                  ></el-input-number>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item
+                  v-bind:label="$t('Items.SellingPrice')"
+                  prop="SellingPrice"
+                >
+                  <el-input-number
+                    v-model="tempForm.SellingPrice"
+                    :precision="2"
+                    :step="0.1"
+                    :min="0.0"
+                    :max="1500"
+                  ></el-input-number>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item
+                  v-bind:label="$t('Items.LowerOrder')"
+                  prop="LowOrder"
+                >
+                  <el-input-number
+                    v-model="tempForm.LowOrder"
+                    :min="1"
+                    :max="100000000"
+                  ></el-input-number>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item v-bind:label="$t('Items.Tax')" prop="Tax">
+                  <el-input-number
+                    v-model="tempForm.Tax"
+                    :precision="2"
+                    :step="0.01"
+                    :min="0.01"
+                    :max="1"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
+                  <el-input
+                    v-model="tempForm.Barcode"
+                    suffix-icon="fa fa-barcode"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item
+                  v-bind:label="$t('Items.Notes')"
+                  prop="Description"
+                >
+                  <el-input
+                    type="textarea"
+                    v-model="tempForm.Description"
+                  ></el-input>
+                </el-form-item>
+              </el-col> </el-row
+          ></el-collapse-item>
+          <el-collapse-item title="Qty" name="Qty">
+            <inventory-qty :ItemID="tempForm.Id" />
+          </el-collapse-item>
+          <el-collapse-item title="Category" name="Category">
+            <category
+              :Value="tempForm.Category"
+              @Set="
+                v => {
+                  tempForm.Category = v;
+                }
+              "
+            />
+            <el-tag
+              v-for="item of Array.from((tempForm.Category || '').split(','))"
+              :key="item"
             >
-              <el-input-number
-                v-model="tempForm.OtherPrice"
-                :precision="2"
-                :step="0.1"
-                :min="0.0"
-                :max="1500"
-              ></el-input-number>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item
-              v-bind:label="$t('Items.SellingPrice')"
-              prop="SellingPrice"
-            >
-              <el-input-number
-                v-model="tempForm.SellingPrice"
-                :precision="2"
-                :step="0.1"
-                :min="0.0"
-                :max="1500"
-              ></el-input-number>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="12">
-            <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
-              <el-input-number
-                v-model="tempForm.LowOrder"
-                :min="1"
-                :max="100000000"
-              ></el-input-number>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-bind:label="$t('Items.Tax')" prop="Tax">
-              <el-input-number
-                v-model="tempForm.Tax"
-                :precision="2"
-                :step="0.01"
-                :min="0.01"
-                :max="1"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
-              <el-input
-                v-model="tempForm.Barcode"
-                suffix-icon="fa fa-barcode"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
-              <el-input
-                type="textarea"
-                v-model="tempForm.Description"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <inventory-qty :ItemID="tempForm.Id" />
+              {{ item }}
+            </el-tag>
+          </el-collapse-item>
+        </el-collapse>
       </el-form>
-
-      <!--   <category :ItemId="tempForm.Id" /> -->
     </el-dialog>
   </div>
 </template>
@@ -180,14 +209,10 @@ export default {
   data() {
     return {
       Visibles: false,
+      activeNames: "Info",
       tempForm: {},
       imagecropperShow: false,
       imagecropperKey: 0,
-      tempOpration: {
-        ObjID: undefined,
-        OprationID: undefined,
-        Description: ""
-      },
       rulesForm: {
         Name: [
           {
@@ -256,8 +281,12 @@ export default {
     },
     close() {
       this.imagecropperShow = false;
-    },
-
+    }
   }
 };
 </script>
+<style scoped>
+.el-collapse-itemx {
+  display: block;
+}
+</style>

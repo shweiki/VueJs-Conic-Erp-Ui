@@ -1,7 +1,12 @@
 <template>
   <div class="app-container">
-    <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
-    <el-button @click="AddItem" plain :disabled="isDisabled" type='success'>Push</el-button>
+    <upload-excel-component
+      :on-success="handleSuccess"
+      :before-upload="beforeUpload"
+    />
+    <el-button @click="AddItem" plain :disabled="isDisabled" type="success"
+      >Push</el-button
+    >
     <el-table
       height="250"
       v-loading="loading"
@@ -10,7 +15,12 @@
       highlight-current-row
       style="width: 100%;margin-top:20px;"
     >
-      <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" />
+      <el-table-column
+        v-for="item of tableHeader"
+        :key="item"
+        :prop="item"
+        :label="item"
+      />
     </el-table>
   </div>
 </template>
@@ -37,25 +47,25 @@ export default {
       this.isDisabled = true;
       CreateItem(this.data[0])
         .then(response => {
-          console.log("tag", "" + response);
+          console.log("tag", response);
           this.data.splice(0, 1);
           if (this.data.length != 0) {
             this.AddItem();
           } else {
-            this.loading = false
+            this.loading = false;
             this.tableData = [];
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
-              type: 'success',
+              type: "success",
               duration: 2000
-            })
+            });
           }
         })
         .catch(error => {
           console.log(error);
           //this.AddItem(100), 1000);
-        })
+        });
     },
 
     beforeUpload(file) {
@@ -68,7 +78,7 @@ export default {
       this.$message({
         message: "Please do not upload files larger than 8m in size.",
         type: "warning"
-      })
+      });
       return false;
     },
     handleSuccess({ results, header }) {
@@ -77,7 +87,7 @@ export default {
       console.log(this.tableData);
       this.data = this.tableData.map(element => {
         return {
-          ID: undefined,
+          Id: undefined,
           Name: element.Name,
           CostPrice: element.CostPrice,
           SellingPrice: element.SellingPrice,
@@ -88,11 +98,12 @@ export default {
           Barcode: element.Barcode,
           Description: element.Description,
           Status: 0,
-          IsPrime : true
+          Category: element.Category,
+          IsPrime: false
         };
-      })
+      });
       this.tableHeader = header;
-      this.loading = false
+      this.loading = false;
       this.isDisabled = false;
     },
     ExcelDateToJSDate(serial) {

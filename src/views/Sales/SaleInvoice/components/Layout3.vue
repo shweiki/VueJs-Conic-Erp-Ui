@@ -81,7 +81,7 @@
                 >
                   <template slot="paneR">
                     <items-search :WithBarCode="false" @add="AddItem" />
-                    <items-prime :WithImage="true" @add="AddItem" />
+                    <items-category :WithImage="true" @add="AddItem" />
                   </template>
                   <template slot="paneL">
                     <el-row class="card">
@@ -280,6 +280,17 @@
                         :data="tempForm.InventoryMovements"
                         width="100%"
                       >
+                        <el-table-column width="50" label="#">
+                          <template slot-scope="scope">
+                            <description
+                              @Set="
+                                v => {
+                                  tempForm.InventoryMovements[
+                                    scope.$index
+                                  ].Description = v;
+                                }
+                              "/></template
+                        ></el-table-column>
                         <el-table-column
                           prop="ItemsId"
                           width="310"
@@ -309,25 +320,27 @@
                               }}
                               X
                               <el-input-number
-                                style="width: 50%;"
+                                style="width: 30%;"
                                 v-model="
                                   tempForm.InventoryMovements[scope.$index].Qty
                                 "
-                                :precision="2"
+                                :precision="0"
                                 :step="1"
-                                :min="0"
+                                :min="1"
                                 :max="1000000"
                               ></el-input-number>
-                              <description
-                                @Set="
-                                  v => {
-                                    tempForm.InventoryMovements[
-                                      scope.$index
-                                    ].Description = v;
-                                  }
-                                "
-                              />
                             </div>
+                            <el-tag
+                              v-for="item of Array.from(
+                                (
+                                  tempForm.InventoryMovements[scope.$index]
+                                    .Description || ''
+                                ).split(',')
+                              )"
+                              :key="item"
+                            >
+                              {{ item }}
+                            </el-tag>
                           </template>
                         </el-table-column>
 
@@ -349,13 +362,13 @@
                           </template>
                         </el-table-column>
 
-                        <el-table-column label="#" align="center">
+                        <el-table-column width="50" label="#" align="center">
                           <template slot-scope="scope">
                             <el-button
                               type="danger"
                               icon="el-icon-delete"
                               @click="RemoveItem(scope.$index)"
-                            ></el-button>
+                            />
                           </template>
                         </el-table-column>
                       </el-table>
@@ -377,7 +390,7 @@ import permission from "@/directive/permission/index.js";
 
 // components
 import ItemsSearch from "@/components/Item/ItemsSearch";
-import ItemsPrime from "@/components/Item/ItemsPrime";
+import ItemsCategory from "@/components/Item/ItemsCategory";
 import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill";
 import RightMenu from "@/components/RightMenu";
@@ -399,7 +412,7 @@ import { GetActiveMenuItem } from "@/api/MenuItem";
 import splitPane from "vue-splitpane";
 //import { NumericInput } from "numeric-keyboard";
 import { OpenCashDrawer } from "@/api/Device";
-import Description from '@/components/Item/Description.vue';
+import Description from "@/components/Item/Description.vue";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 
@@ -412,14 +425,14 @@ export default {
     Screenfull,
     SizeSelect,
     ItemsSearch,
-    ItemsPrime,
+    ItemsCategory,
     EditItem,
     PrintButton,
     RestOfBill,
     RightMenu,
     FakeDate,
     VendorSelect,
-    Description,
+    Description
   },
   props: {
     isEdit: {
@@ -615,7 +628,6 @@ export default {
               console.log(error);
             });
         } else {
-      
           this.OpenRestOfBill = false;
           return false;
         }

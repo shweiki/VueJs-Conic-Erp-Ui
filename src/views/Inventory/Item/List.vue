@@ -1,95 +1,86 @@
 <template>
   <div class="app-container">
-    <el-card class="box-card">
-      <div class="filter-container">
-        <el-row type="flex">
-          <el-col :span="12">
-            <el-input
-              v-model="listQuery.Any"
-              placeholder="البحث بحسب رقم / الاسم / الباركود  / التصنيف"
-              style="width: 200px"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
+    <div class="filter-container">
+      <el-row type="flex">
+        <el-col :span="12">
+          <el-input
+            v-model="listQuery.Any"
+            placeholder="البحث بحسب رقم / الاسم / الباركود  / التصنيف"
+            style="width: 200px"
+            class="filter-item"
+            @keyup.enter.native="handleFilter"
+          />
+        </el-col>
+        <el-col :span="3">
+          <el-select
+            v-model="listQuery.Sort"
+            style="width: 140px"
+            class="filter-item"
+            @change="handleFilter"
+          >
+            <el-option
+              v-for="item in sortOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
             />
-          </el-col>
+          </el-select>
+        </el-col>
+        <el-col :span="6">
+          <el-button
+            v-waves
+            :loading="downloadLoading"
+            class="filter-item"
+            type="primary"
+            icon="el-icon-download"
+            @click="handleDownload"
+          >
+            Export </el-button
+          ><el-button
+            v-waves
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            @click="handleFilter"
+          >
+            Search
+          </el-button>
+        </el-col>
+        <el-col :span="3">
+          <el-button @click="CalculateCostPrice">CalculateCostPrice</el-button>
+          <add-item
+        /></el-col>
+      </el-row>
+    </div>
+    <radio-oprations
+      TableName="Item"
+      @Set="
+        v => {
+          listQuery.Status = v;
+          handleFilter();
+        }
+      "
+    />
+    <el-divider direction="vertical"></el-divider>
+    <span>عدد </span>
+    <el-divider direction="vertical"></el-divider>
+    <span>{{ Totals.Rows }}</span>
+    <el-divider direction="vertical"></el-divider>
 
-          <el-col :span="3">
-            <el-select
-              v-model="listQuery.Sort"
-              style="width: 140px"
-              class="filter-item"
-              @change="handleFilter"
-            >
-              <el-option
-                v-for="item in sortOptions"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              />
-            </el-select>
-          </el-col>
-          <el-col :span="6">
-            <el-button
-              v-waves
-              :loading="downloadLoading"
-              class="filter-item"
-              type="primary"
-              icon="el-icon-download"
-              @click="handleDownload"
-            >
-              Export </el-button
-            ><el-button
-              v-waves
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleFilter"
-            >
-              Search
-            </el-button>
-          </el-col>
-          <el-col :span="3">
-            <el-button @click="CalculateCostPrice"
-              >CalculateCostPrice</el-button
-            >
-            <add-item
-          /></el-col>
-        </el-row>
-      </div>
-      <radio-oprations
-        TableName="Item"
-        @Set="
-          v => {
-            listQuery.Status = v;
-            handleFilter();
-          }
-        "
-      />
-      <el-divider direction="vertical"></el-divider>
-      <span>عدد </span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Rows }}</span>
-      <el-divider direction="vertical"></el-divider>
+    <span>مجموع الموادر ()</span>
+    <el-divider direction="vertical"></el-divider>
+    <span>{{ Totals.TotalIn.toFixed($store.getters.settings.ToFixed) }} </span>
+    <el-divider direction="vertical"></el-divider>
 
-      <span>مجموع الموادر ()</span>
-      <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.TotalIn.toFixed($store.getters.settings.ToFixed) }}
-      </span>
-      <el-divider direction="vertical"></el-divider>
+    <span> مجموع الصادر </span>
+    <el-divider direction="vertical"></el-divider>
+    <span>{{ Totals.TotalOut.toFixed($store.getters.settings.ToFixed) }} </span>
+    <el-divider direction="vertical"></el-divider>
 
-      <span> مجموع الصادر </span>
-      <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.TotalOut.toFixed($store.getters.settings.ToFixed) }}
-      </span>
-      <el-divider direction="vertical"></el-divider>
-
-      <span>الرصيد</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} </span>
-      <el-divider direction="vertical"></el-divider>
-    </el-card>
+    <span>الرصيد</span>
+    <el-divider direction="vertical"></el-divider>
+    <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} </span>
+    <el-divider direction="vertical"></el-divider>
 
     <el-table
       v-loading="listLoading"
@@ -143,13 +134,26 @@
       <el-table-column
         v-bind:label="$t('Items.QuantityInventory')"
         align="center"
-        width="220"
+        width="120"
       >
         <template slot-scope="scope">
           <item-qty :ItemId="scope.row.Id" />
         </template>
       </el-table-column>
-
+      <el-table-column
+        v-bind:label="$t('Items.Category')"
+        align="center"
+        width="120"
+      >
+        <template slot-scope="scope">
+          <el-tag
+            v-for="item of Array.from((scope.row.Category || '').split(','))"
+            :key="item"
+          >
+            {{ item }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column
         v-bind:label="$t('Sales.Status')"
         width="120"

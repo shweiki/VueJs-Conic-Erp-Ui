@@ -1,37 +1,57 @@
 <template>
-  <el-transfer
-    filterable
-    :filter-method="filterMethod"
-    filter-placeholder="State Abbreviations"
-    v-model="value"
-    :data="data">
-  </el-transfer>
+  <div>
+    <el-drag-select
+      @change="SetVal"
+      v-model="value"
+      multiple
+      placeholder="تصنيفات"
+    >
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-drag-select>
+  </div>
 </template>
 
 <script>
-  export default {
-      props :['ItemId'],
-    data() {
-      const generateData = _ => {
-        const data = [];
-        const states = ['California', 'Illinois', 'Maryland', 'Texas', 'Florida', 'Colorado', 'Connecticut '];
-        const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
-        states.forEach((city, index) => {
-          data.push({
-            label: city,
-            key: index,
-            initial: initials[index]
-          });
-        });
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: [],
-        filterMethod(query, item) {
-          return item.initial.toLowerCase().indexOf(query.toLowerCase()) > -1;
+import ElDragSelect from "@/components/DragSelect"; // base on element-ui
+
+export default {
+  props: ["Value"],
+  components: { ElDragSelect },
+  data() {
+    return {
+      value: [],
+      options: [
+        {
+          value: "ساندويش",
+          label: "ساندويش"
+        },
+        {
+          value: "وجبات",
+          label: "وجبات"
+        },
+        {
+          value: "مشروبات",
+          label: "مشروبات"
+        },
+        {
+          value: "إضافات",
+          label: "إضافات"
         }
-      };
+      ]
+    };
+  },
+  created() {
+    if (this.Value) this.value = Array.from(this.Value.split(","));
+  },
+  methods: {
+    SetVal(val) {
+      this.$emit("Set", val.toString());
     }
-  };
+  }
+};
 </script>

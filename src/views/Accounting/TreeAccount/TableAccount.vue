@@ -64,7 +64,7 @@
         </el-table-column>
         <el-table-column v-bind:label="$t('Account.funds')" width="100" align="center">
           <template slot-scope="scope">{{
-            (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(this.$store.getters.settings.ToFixed)
+            (scope.row.TotalCredit - scope.row.TotalDebit).toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Account.Status')" align="center" width="70">
