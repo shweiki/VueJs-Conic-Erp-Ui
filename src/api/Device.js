@@ -14,6 +14,7 @@ export function CheckDevice(query) {
     params: query
   })
 }
+
 export function SetUser(query) {
   return request({
     url: '/Device/SetUser',

@@ -1,6 +1,5 @@
 <template>
-  <div
-  >
+  <div>
     <el-radio-group v-model="query" @change="getdata">
       <el-radio-button label="ساندويش">ساندويش </el-radio-button>
       <el-radio-button label="وجبات"> وجبات </el-radio-button>
@@ -97,8 +96,7 @@ export default {
       query: "وجبات",
       search: "",
       List: [],
-      Images: [],
-      tabPosition: "top",
+     tabPosition: "top",
       order: false
     };
   },
@@ -130,26 +128,25 @@ export default {
     },
     getdata() {
       GetItemByAny({ Any: this.query }).then(response => {
-        this.List = response;
-        this.SortByName();
-
-        if (this.WithImage) this.List.map(item => this.GetImageItem(item.Id));
+        if (this.WithImage) {
+          Promise.all(response.map(item => this.GetImageItem(item))).then(
+            responses => (this.List = responses)
+          );
+        } else this.List = response;
       });
     },
-
-    GetImageItem(ID) {
-      GetFileByObjID({ TableName: "Item", ObjID: ID })
-        .then(response => {
-          if (response) {
-            this.List.find(element => element.Id == ID).Avatar = response.File;
-          } else
-            this.List.find(
-              element => element.Id == ID
-            ).Avatar = this.$store.getters.CompanyInfo.Logo;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    GetImageItem(item) {
+      let defImg = this.$store.getters.CompanyInfo.Logo;
+      return new Promise(function(resolve, reject) {
+        GetFileByObjID({ TableName: "Item", ObjID: item.Id })
+          .then(response => {
+            response ? (item.Avatar = response.File) : (item.Avatar = defImg);
+            resolve(item);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
     }
   }
 };

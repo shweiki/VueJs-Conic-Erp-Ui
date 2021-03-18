@@ -30,6 +30,8 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
+          store.dispatch("CompanyInfo/GetOpration");
+
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const { roles, userrouter, defulateRedirect } = await store.dispatch('user/getInfo')
@@ -42,7 +44,6 @@ router.beforeEach(async (to, from, next) => {
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           store.dispatch("CompanyInfo/GetCompanyInfo");
-          store.dispatch("CompanyInfo/GetOpration");
           var now = new Date();
           var d = new Date(store.state.settings.triger.CheckMembers.LastRun)
           d.setTime(d.getTime() + (store.state.settings.triger.CheckMembers.OnClock * 60 * 60 * 1000))

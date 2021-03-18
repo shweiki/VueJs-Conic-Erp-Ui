@@ -15,7 +15,13 @@
       :visible.sync="Open"
       @closed="focus"
     >
-      <item-list />
+      <item-list
+        @dblclick="
+          v => {
+            AddItem(v);
+          }
+        "
+      />
     </el-dialog>
   </div>
 </template>
@@ -32,7 +38,6 @@ export default {
   },
   methods: {
     AddItem(row) {
-      // console.log("row", row);
       this.$emit("add", row, 1);
       this.Open = false;
     },

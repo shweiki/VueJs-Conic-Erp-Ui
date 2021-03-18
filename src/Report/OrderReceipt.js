@@ -1,8 +1,9 @@
 import jsPDF from "jspdf"
 import {AmiriRegular} from "@/assets/custom-theme/fonts/Amiri-Regular.js";
 import store from '@/store'
+import JSPM from "jsprintmanager";
 
-export function SaleInvoiceLabel(temp) {
+export function OrderReceipt(temp ,printer) {
   let startX = 1 , startY = 0
   let doc = new jsPDF("p", "mm", "80", { filters: ["ASCIIHexEncode"] });
 console.log(temp)
@@ -20,7 +21,6 @@ console.log(temp)
   doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX, startY, 12, 12);
 
   //Name
-
   doc.setFontSize(24);
   doc.setFontType("normal");
   doc.text(store.getters.CompanyInfo.Name, startX +24, startY +=9);
@@ -39,8 +39,6 @@ console.log(temp)
   doc.text("عدد" , 40, startY);
   doc.text("سعر" , 27, startY);
   doc.text("الاجمالي" , 5, startY);
-
-  
   temp.InventoryMovements.forEach(element => {
     doc.text(""+element.Name+"", 78, startY+=6, {align:'right'});
     doc.text("" + element.Qty + "", 42, startY);
@@ -61,10 +59,16 @@ console.log(temp)
   doc.setLineWidth(1);
   doc.line(0, startY+=5, 80, startY);
 
-
-  return doc.output('datauristring').replace(/^data:application\/pdf;filename=generated.pdf;base64,/, '')
-
-
+  let cpj = new JSPM.ClientPrintJob();
+  cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
+  var my_file = new JSPM.PrintFilePDF(
+    doc.output('blob'),
+    JSPM.FileSourceType.BLOB,
+    temp.Id + ".pdf",
+    1
+  );
+  cpj.files.push(my_file);
+  cpj.sendToClient();
 }
 
 export function tConvert(date) {
