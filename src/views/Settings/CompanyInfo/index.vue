@@ -128,7 +128,6 @@
       }}</el-button>
     </el-card>
     <tinymce :width="900" :height="300" id="02s" v-model="tempForm.HeaderReport"  />
-    <div class="editor-content" v-html="tempForm.HeaderReport" />
   </div>
 </template>
 

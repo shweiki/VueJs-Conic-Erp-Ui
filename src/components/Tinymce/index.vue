@@ -11,7 +11,6 @@
         class="editor-upload-btn"
         @successCBK="imageSuccessCBK"
       />
-      
     </div>
   </div>
 </template>
@@ -81,7 +80,6 @@ export default {
         es: "es_MX",
         ja: "ja",
         ar: "ar",
-        ar_SA: "ar_SA"
       }
     };
   },

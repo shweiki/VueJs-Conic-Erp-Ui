@@ -22,9 +22,9 @@
             style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
             icon="el-icon-plus"
             to="/Report/List"
-            >{{ $t("route.ListReportInvoice") }}</router-link
+            >{{ $t("route.ListReport") }}</router-link
           >
-          <span>{{ $t("NewReportInvoice.ReportInvoice") }}</span>
+          <span>{{ $t("NewReport.Report") }}</span>
         </div>
         <tinymce
           :width="900"
