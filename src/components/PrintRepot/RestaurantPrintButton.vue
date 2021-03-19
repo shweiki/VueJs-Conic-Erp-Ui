@@ -4,47 +4,42 @@
     @after-leave="focus"
     placement="top-start"
     title="نماذج"
-    width="200"
+    width="300"
     trigger="hover"
   >
+    <el-checkbox-group v-model="checkList">
+      <el-checkbox label="Option A">
+        <printers
+          selected="XP-80C2"
+          :printer_list="$store.getters.printers"
+          @change="onPrinterChange"
+        /><el-button icon="el-icon-postcard" @click="SaleInvoiceLabel"
+          >Receipt</el-button
+        ></el-checkbox
+      >
+      <el-checkbox label="Option B">
+        <printers
+          selected="XP-80C2"
+          :printer_list="$store.getters.printers"
+          @change="onPrinterChange"
+        /><el-button icon="el-icon-s-management" @click="DirectlyPrint"
+          >OrderReceipt
+        </el-button></el-checkbox
+      >
+      <el-checkbox label="Option C">
+        <printers
+          selected="XP-80C2"
+          :printer_list="$store.getters.printers"
+          @change="onPrinterChange"
+      /></el-checkbox>
+    </el-checkbox-group>
     <printers
       selected="XP-80C2"
       :printer_list="$store.getters.printers"
       @change="onPrinterChange"
     />
-
-    <div class="icon-item">
-      <el-button
-        v-if="Type == 'SaleInvoice'"
-        icon="el-icon-postcard"
-        @click="SaleInvoiceLabel"
-        >Receipt</el-button
-      >
-      <el-button
-        v-if="Type == 'SaleInvoice'"
-        icon="el-icon-document"
-        @click="SaleInvoiceA4"
-        >A4</el-button
-      >
-      <el-button
-        v-if="Type == 'PurchaseInvoice'"
-        icon="el-icon-document"
-        @click="PurchaseInvoiceA4"
-        >A4</el-button
-      >
-      <el-button
-        v-if="Type == 'Item'"
-        icon="el-icon-s-management"
-        @click="ItemLabel"
-        >Label</el-button
-      >
-      <el-button icon="el-icon-s-management" @click="DirectlyPrint"
-        >OrderReceipt
-      </el-button>
-    </div>
-    <img id="barcodeV" style="display: none" />
-
     <el-button
+      v-bind:disabled="Data != null ? false : true"
       v-bind:style="Css"
       icon="el-icon-printer"
       type="info"
@@ -54,11 +49,7 @@
 </template>
 <script>
 import { OrderReceipt } from "@/Report/OrderReceipt";
-
 import { SaleInvoiceLabel } from "@/Report/POSInvoice";
-import { SaleInvoiceA4 } from "@/Report/SaleInvoice";
-import { PurchaseInvoiceA4 } from "@/Report/PurchaseInvoice";
-import { Label1 } from "@/Report/ItemLabel";
 import JSPM from "jsprintmanager";
 import printJS from "print-js";
 import Printers from "./Printers";
@@ -73,11 +64,15 @@ export default {
     Css: String,
     Data: {
       type: Object,
-      default: {}
+      default: null
     }
   },
   data() {
-    return { print2default: false, selected_printer: "" };
+    return {
+      print2default: false,
+      selected_printer: "",
+      checkList: ["selected and disabled", "Option A"]
+    };
   },
   mounted() {
     this.onInit();
@@ -95,16 +90,10 @@ export default {
       };
     },
     DirectlyPrint() {
-      OrderReceipt(this.Data,'XP-80C2');
+      OrderReceipt(this.Data, "XP-80C2");
     },
     focus() {
       this.$emit("focus");
-    },
-    PurchaseInvoiceA4() {
-      PurchaseInvoiceA4(this.Data);
-    },
-    SaleInvoiceA4() {
-      SaleInvoiceA4(this.Data);
     },
     SaleInvoiceLabel() {
       printJS({
@@ -114,14 +103,7 @@ export default {
         showModal: true
       });
     },
-    ItemLabel() {
-      printJS({
-        printable: Label1(this.Data),
-        type: "pdf",
-        base64: true,
-        showModal: true
-      });
-    },
+
     getPrinters() {
       return new Promise((ok, err) => {
         let printers = [];

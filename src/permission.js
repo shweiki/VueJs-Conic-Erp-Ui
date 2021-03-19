@@ -49,7 +49,6 @@ router.beforeEach(async (to, from, next) => {
           d.setTime(d.getTime() + (store.state.settings.triger.CheckMembers.OnClock * 60 * 60 * 1000))
           if (d.getTime() < now.getTime()) {
             store.dispatch("Members/CheckMembers")
-            
           }
           if (store.state.settings.BusinessType == 'GymManagment') {
             store.dispatch("Devices/GetDevice");

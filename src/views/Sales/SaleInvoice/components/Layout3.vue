@@ -135,9 +135,7 @@
                           active-color="#13ce66"
                           inactive-color="#ff4949"
                         ></el-switch>
-                        <print-button
-                          v-if="OldInvoice == null ? false : true"
-                          Type="SaleInvoice"
+                        <restaurant-print-button
                           :Data="OldInvoice"
                           Css="font-size: 12px"
                         />
@@ -330,17 +328,25 @@
                                 :max="1000000"
                               ></el-input-number>
                             </div>
-                            <el-tag
-                              v-for="item of Array.from(
-                                (
-                                  tempForm.InventoryMovements[scope.$index]
-                                    .Description || ''
-                                ).split(',')
-                              )"
-                              :key="item"
+                            <el-col
+                              v-if="
+                                tempForm.InventoryMovements[scope.$index]
+                                  .Description != ''
+                              "
+                              :span="24"
                             >
-                              {{ item }}
-                            </el-tag>
+                              <el-tag
+                                v-for="item of Array.from(
+                                  (
+                                    tempForm.InventoryMovements[scope.$index]
+                                      .Description || ''
+                                  ).split(',')
+                                )"
+                                :key="item"
+                              >
+                                {{ item }}
+                              </el-tag>
+                            </el-col>
                           </template>
                         </el-table-column>
 
@@ -398,7 +404,7 @@ import RightMenu from "@/components/RightMenu";
 import LangSelect from "@/components/LangSelect";
 import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import RestaurantPrintButton from "@/components/PrintRepot/RestaurantPrintButton.vue";
 
 // report
 import VendorSelect from "@/components/Vendor/VendorSelect";
@@ -427,7 +433,7 @@ export default {
     ItemsSearch,
     ItemsCategory,
     EditItem,
-    PrintButton,
+    RestaurantPrintButton,
     RestOfBill,
     RightMenu,
     FakeDate,
@@ -458,8 +464,7 @@ export default {
         VendorId: 2,
         IsPrime: false,
         Type: "takeaway",
-        InventoryMovements: [],
-        enterPressed: false
+        InventoryMovements: []
       },
       rules: {
         InventoryMovements: [
