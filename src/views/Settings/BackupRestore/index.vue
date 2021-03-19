@@ -53,7 +53,7 @@ export default {
       loading: false,
       tableData: [],
       search: "",
-      RestoreDirectory: "",
+      RestoreDirectory: "C:\\BackUp\\",
     };
   },
   created() {

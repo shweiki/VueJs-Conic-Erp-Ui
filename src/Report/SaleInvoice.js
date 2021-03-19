@@ -2,20 +2,20 @@
 import store from '@/store'
 import printJS from "print-js";
 let toFixed = store.getters.settings.ToFixed;
-export function SaleInvoiceA4(temp) {
+export function SaleInvoiceA4(temp ,ReportTemp ) {
   let TotalAmmount = (
     temp.InventoryMovements.reduce((prev, cur) => {
       return prev + cur.Qty * cur.SellingPrice;
     }, 0) - temp.Discount
   ).toFixed(toFixed);
-  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{Vendor.Name}}', temp.Name)
-  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{PaymentMethod}}', temp.PaymentMethod == 'Cash' ? "ذمم" : "كاش")
-  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{FakeDate}}', temp.FakeDate)
-  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{Discount}}', temp.Discount)
-  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{Tax}}', temp.Tax)
-  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{Description}}', temp.Description)
-  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace('{{TotalAmmount}}', TotalAmmount)
-  let res = store.getters.CompanyInfo.HeaderReport.slice(store.getters.CompanyInfo.HeaderReport.search('<tr id="forach"'), store.getters.CompanyInfo.HeaderReport.indexOf("</tr>", store.getters.CompanyInfo.HeaderReport.search('<tr id="forach"')) + 5);
+  ReportTemp = ReportTemp.replace('{{Vendor.Name}}', temp.Name)
+  ReportTemp = ReportTemp.replace('{{PaymentMethod}}', temp.PaymentMethod == 'Cash' ? "ذمم" : "كاش")
+  ReportTemp = ReportTemp.replace('{{FakeDate}}', temp.FakeDate)
+  ReportTemp = ReportTemp.replace('{{Discount}}', temp.Discount)
+  ReportTemp = ReportTemp.replace('{{Tax}}', temp.Tax)
+  ReportTemp = ReportTemp.replace('{{Description}}', temp.Description)
+  ReportTemp = ReportTemp.replace('{{TotalAmmount}}', TotalAmmount)
+  let res = ReportTemp.slice(ReportTemp.search('<tr id="forach"'), ReportTemp.indexOf("</tr>", ReportTemp.search('<tr id="forach"')) + 5);
   let tabelInventoryMovements = "";
   temp.InventoryMovements.reverse().forEach(element => {
     tabelInventoryMovements += "<tr style='text-align: center;'>"
@@ -25,9 +25,9 @@ export function SaleInvoiceA4(temp) {
     tabelInventoryMovements += "<td>" + element.Name + "</td>";
     tabelInventoryMovements += "</tr>"
   });
-  store.getters.CompanyInfo.HeaderReport = store.getters.CompanyInfo.HeaderReport.replace(res, tabelInventoryMovements)
+  ReportTemp = ReportTemp.replace(res, tabelInventoryMovements)
   let win = window.open("", "Title", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=600,top=" + (screen.height - 50) + ",left=" + (screen.width - 500));
-  win.document.body.innerHTML = store.getters.CompanyInfo.HeaderReport;
+  win.document.body.innerHTML = ReportTemp;
   win.print()
 }
 export function SaleInvoicesList(data) {

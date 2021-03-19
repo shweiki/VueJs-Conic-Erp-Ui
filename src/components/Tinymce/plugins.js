@@ -2,6 +2,6 @@
 // Detail plugins list see https://www.tinymce.com/docs/plugins/
 // Custom builds see https://www.tinymce.com/download/custom-builds/
 
-const plugins = ['advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount']
+const plugins = ['print preview paste importcss searchreplace colorpicker autolink contextmenu autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc spellchecker insertdatetime textcolor advlist lists wordcount tabfocus imagetools textpattern noneditable help charmap quickbars emoticons']
 
 export default plugins

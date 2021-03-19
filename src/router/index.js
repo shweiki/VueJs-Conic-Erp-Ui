@@ -151,13 +151,31 @@ export const asyncRoutes = [
     path: '/Reports',
     component: Layout,
     redirect: '/Reports',
+    meta: {
+      title: 'Reports', icon: 'report', affix: true
+    },
     children: [
       {
-        path: 'Reports',
-        component: () => import('@/views/Reports/index'),
-        name: 'Reports',
+        path: 'Create',
+        component: () => import('@/views/Reports/Create'),
+        name: 'NewReport',
+        meta: { title: 'NewReport', icon: 'edit' }
+      },
+      {
+        path: 'Edit/:id(\\d+)',
+        component: () => import('@/views/Reports/Edit'),
+        name: 'EditReport',
         meta: {
-          title: 'Reports', icon: 'report', affix: true
+           title: 'EditInvoice', noCache: true, activeMenu: '/Reports/List'
+        },
+        hidden: true,
+      },
+      {
+        path: 'List',
+        component: () => import('@/views/Reports/List'),
+        name: 'ListReport',
+        meta: {
+          title: 'ListReport', icon: 'cost'
         },
       }
     ]

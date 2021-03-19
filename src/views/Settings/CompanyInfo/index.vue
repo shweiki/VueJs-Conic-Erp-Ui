@@ -127,7 +127,7 @@
         $t("AddVendors.Save")
       }}</el-button>
     </el-card>
-    <tinymce v-model="tempForm.HeaderReport" :height="300" />
+    <tinymce :width="900" :height="300" id="02s" v-model="tempForm.HeaderReport"  />
     <div class="editor-content" v-html="tempForm.HeaderReport" />
   </div>
 </template>

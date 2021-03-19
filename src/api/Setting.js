@@ -29,7 +29,13 @@ export function GetActiveSetting(query) {
     params: query
   })
 }
-
+export function GetProperties(query) {
+  return request({
+    url: '/Setting/GetProperties',
+    method: 'get',
+    params: query
+  })
+}
 
 export function Create(data) {
   return request({

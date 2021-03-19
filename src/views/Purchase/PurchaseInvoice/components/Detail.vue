@@ -490,11 +490,7 @@ export default {
                   showClose: false,
                   onClose: () => {
                     if (response) {
-                      this.$nextTick(() => {
-                        this.$router.replace({
-                          path: "/redirect" + "/Purchase/List"
-                        });
-                      });
+                      this.$router.push({ path: `/Report/List` });
                     }
                   }
                 });
