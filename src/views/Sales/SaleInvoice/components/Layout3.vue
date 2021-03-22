@@ -46,7 +46,7 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="4">
+              <el-col :span="8">
                 <el-button
                   type="primary"
                   icon="el-icon-s-home"
@@ -80,8 +80,8 @@
                   :default-percent="5"
                 >
                   <template slot="paneR">
-                    <items-search :WithBarCode="false" @add="AddItem" />
-                    <items-category :WithImage="true" @add="AddItem" />
+                   <items-search :WithBarCode="false" @add="AddItem" /> 
+                    <items-category :WithImage="false" @add="AddItem" />
                   </template>
                   <template slot="paneL">
                     <el-row class="card">
@@ -129,13 +129,16 @@
                           ></el-button
                         ></el-badge>
                       </el-col>
-                      <el-col :span="6">
+                      <el-col :span="3">
                         <el-switch
                           v-model="AutoPrint"
                           active-color="#13ce66"
                           inactive-color="#ff4949"
                         ></el-switch>
+                      </el-col>
+                      <el-col :span="3">
                         <restaurant-print-button
+                          :AutoPrint="AutoPrint"
                           :Data="OldInvoice"
                           Css="font-size: 12px"
                         />
@@ -151,42 +154,42 @@
                   :default-percent="60"
                 >
                   <template slot="paneR">
-                    <el-card class="card">
-                      <el-row>
-                        <el-col :span="12">
-                          <el-form-item prop="PaymentMethod">
-                            <el-radio-group v-model="tempForm.PaymentMethod">
-                              <el-radio label="Cash" border
-                                ><i class="el-icon-money"></i>نقد</el-radio
-                              >
-                              <el-radio label="Visa" border
-                                ><i class="el-icon-bank-card"></i>بطاقة
-                              </el-radio>
+                    <el-row type="flex" class="card">
+                      <el-col :span="14">
+                        <el-form-item prop="PaymentMethod">
+                          <el-radio-group v-model="tempForm.PaymentMethod">
+                            <el-radio-button label="Cash" border
+                              ><i class="el-icon-money"></i>نقد</el-radio-button
+                            >
+                            <el-radio-button label="Visa" border
+                              ><i class="el-icon-bank-card"></i>بطاقة
+                            </el-radio-button>
 
-                              <el-radio
-                                v-if="tempForm.VendorId != 2"
-                                label="Receivables"
-                                border
-                                ><i class="el-icon-s-custom"></i
-                              ></el-radio>
-                            </el-radio-group>
-                          </el-form-item>
-                        </el-col>
-                        <el-col :span="12">
-                          <el-form-item>
-                            <el-radio-group v-model="tempForm.Type">
-                              <el-radio label="takeaway" border
-                                ><i class="el-icon-sell"></i>سفري</el-radio
-                              >
-                              <el-radio label="delivery" border
-                                ><i class="el-icon-truck"></i> توصيل</el-radio
-                              >
-                            </el-radio-group>
-                          </el-form-item>
-                        </el-col></el-row
-                      >
-                      <el-row>
-                        <el-col :span="18">
+                            <el-radio
+                              v-if="tempForm.VendorId != 2"
+                              label="Receivables"
+                              border
+                              ><i class="el-icon-s-custom"></i
+                            ></el-radio>
+                          </el-radio-group>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="10">
+                        <el-form-item>
+                          <el-radio-group v-model="tempForm.Type">
+                            <el-radio-button label="takeaway" border
+                              ><i class="el-icon-sell"></i>سفري</el-radio-button
+                            >
+                            <el-radio-button label="delivery" border
+                              ><i class="el-icon-truck"></i>
+                              توصيل</el-radio-button
+                            >
+                          </el-radio-group>
+                        </el-form-item>
+                      </el-col></el-row
+                    >
+                      <el-row type="flex" class="card">
+                        <el-col :span="16">
                           <el-input
                             prop="Name"
                             placeholder="اسم المستلم"
@@ -216,7 +219,7 @@
                           </el-popover></el-col
                         >
                       </el-row>
-                      <el-row v-permission="['Admin']">
+                      <el-row type="flex" class="card" v-permission="['Admin']">
                         <el-col :span="10">
                           <el-form-item prop="Tax">
                             <el-select
@@ -243,12 +246,12 @@
                             :max="100"
                           ></el-input-number>
                         </el-col>
-                        <el-col :span="6">{{
+                    <!--    <el-col :span="6">{{
                           $t("NewPurchaseInvoice.TotalDiscount")
-                        }}</el-col>
+                        }}</el-col> -->
                       </el-row>
 
-                      <el-row>
+                      <el-row type="flex" class="card">
                         <el-col :span="24" class="TotalAmmount">
                           <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
                           <el-divider direction="vertical"></el-divider>
@@ -267,7 +270,6 @@
                           >
                         </el-col>
                       </el-row>
-                    </el-card>
                   </template>
                   <template slot="paneL" class="card">
                     <el-form-item prop="InventoryMovements">
@@ -291,7 +293,7 @@
                         ></el-table-column>
                         <el-table-column
                           prop="ItemsId"
-                          width="310"
+                          width="290"
                           align="center"
                         >
                           <template slot="header" slot-scope="{}"
@@ -310,7 +312,7 @@
                           >
                           <template slot-scope="scope">
                             <div class="ItemName">
-                              {{ scope.row.Itemx.Name }}
+                              {{ scope.row.Name }}
 
                               {{
                                 tempForm.InventoryMovements[scope.$index]
@@ -449,9 +451,9 @@ export default {
   data() {
     return {
       OldInvoice: null,
-      AutoPrint: false,
       PriceMethod: "retail",
       DisabledSave: false,
+      AutoPrint: true,
       OpenRestOfBill: false,
       tempForm: {
         Id: undefined,
@@ -563,7 +565,6 @@ export default {
           Tax: 0.0,
           Description: "",
           InventoryItemId: 1,
-          Itemx: Item,
           Name: Item.Name,
           SalesInvoiceId: undefined
         });
@@ -622,7 +623,6 @@ export default {
                 onClose: () => {
                   this.tempForm.Id = response;
                   this.OldInvoice = this.tempForm;
-                  this.AutoPrint ? this.Print() : undefined;
                   this.restTempForm();
                   this.DisabledSave = false;
                   this.OpenRestOfBill = false;
@@ -669,7 +669,6 @@ export default {
                     this.ValidateDescription = "";
                     this.tempForm.Id = response;
                     this.OldInvoice = this.tempForm;
-                    this.AutoPrint ? this.Print() : undefined;
                     this.$nextTick(() => {
                       this.OpenRestOfBill = false;
                       this.$router.go(-1);
@@ -713,9 +712,7 @@ export default {
   font-weight: 600;
   font-size: 12px;
 }
-.el-card__body {
-  padding: 3px;
-}
+
 .components-container {
   position: relative;
   height: 100vh;

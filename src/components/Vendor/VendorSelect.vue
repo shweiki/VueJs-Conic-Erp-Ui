@@ -4,7 +4,6 @@
     filterable
     v-bind:placeholder="$t('NewPurchaseInvoice.Acc')"
     autocomplete="off"
-    default-first-option
     @change="SetVal">
     <el-option
       v-for="item in Vendors"

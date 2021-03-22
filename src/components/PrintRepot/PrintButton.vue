@@ -9,7 +9,6 @@
   >
     <printers
       selected="XP-80C2"
-      :printer_list="$store.getters.printers"
       @change="onPrinterChange"
     />
     <el-button

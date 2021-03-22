@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import AddEntry from "@/views/Accounting/EntryAccounting/components/AddEntry";
+import AddEntry from "@/views/Accounting/EntryAccounting/components/AddEntry.vue";
 import checkPermission from "@/utils/permission";
 
 export default {

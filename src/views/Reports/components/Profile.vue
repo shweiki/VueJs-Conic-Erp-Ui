@@ -38,7 +38,7 @@
 </template>
 <script>
 import { Create, Edit, GetReportByID } from "@/api/Report";
-import Tinymce from "@/components/Tinymce";
+import Tinymce from "@/components/Tinymce/index.vue";
 
 export default {
   name: "Report",

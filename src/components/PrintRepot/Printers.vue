@@ -1,25 +1,40 @@
 <template>
-  <el-select name="printer" id="printer" v-model="selected_printer">
-    <el-option v-for="printer in printer_list" :key="printer">{{
-      printer
-    }}</el-option>
+  <el-select v-model="Printer" autocomplete="off" @change="SetVal">
+    <el-option
+      v-for="printer in printers"
+      :key="printer"
+      :label="printer"
+      :value="printer"
+    ></el-option>
   </el-select>
 </template>
 <script>
 export default {
   name: "Printers",
-  props: ["printer_list", "selected"],
+  props: {
+    Value: String
+  },
   data: () => {
     return {
-      selected_printer: ""
+      printers: [],
+      Printer: ""
     };
   },
+  mounted() {
+    this.printers = this.$store.getters.printers;
+  },
+  created() {
+    this.Printer = this.Value;
+  },
   watch: {
-    selected(v) {
-      console.log(v)
-      this.selected_printer = v;
-    },
-    selected_printer(value) {
+    Value(v) {
+      console.log(v);
+      this.SetVal(v);
+    }
+  },
+  methods: {
+    SetVal(value) {
+      this.Printer = value;
       this.$emit("change", value);
     }
   }

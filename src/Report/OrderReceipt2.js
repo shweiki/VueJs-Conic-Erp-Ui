@@ -4,7 +4,7 @@ import store from '@/store'
 import JSPM from "jsprintmanager";
 import printJS from "print-js";
 
-export function OrderReceipt(temp, printer = undefined) {
+export function OrderReceipt2(temp, printer = undefined) {
   let startX = 1, startY = 0
   let doc = new jsPDF("p", "mm", "80", { filters: ["ASCIIHexEncode"] });
   console.log(temp)

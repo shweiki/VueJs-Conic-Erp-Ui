@@ -17,33 +17,34 @@
         icon="el-icon-sort"
       ></el-button>
     </el-input>
-    <el-col
-      :xs="12"
-      :sm="8"
-      :md="8"
-      :lg="6"
-      :xl="4"
-      v-for="(Item, index) in List.filter(
-        data =>
-          !search || data.Name.toLowerCase().includes(search.toLowerCase())
-        //||data.Category.includes(search.toLowerCase())
-      )"
-      :key="index"
-    >
-      <el-card
-        class="box-card"
-        shadow="always"
-        :body-style="{ padding: '3.5px' }"
+    <el-col :span="24">
+      <el-col
+        :xs="12"
+        :sm="8"
+        :md="6"
+        :lg="6"
+        :xl="4"
+        v-for="(Item, index) in List.filter(
+          data =>
+            !search || data.Name.toLowerCase().includes(search.toLowerCase())
+          //||data.Category.includes(search.toLowerCase())
+        )"
+        :key="index"
       >
-        <div @click="AddItem(Item)">
-          <img v-if="WithImage" :src="Item.Avatar" class="image" />
+        <el-card
+          class="box-card"
+          shadow="always"
+          :body-style="{ padding: '12px' }"
+        >
+          <div @click="AddItem(Item)">
+            <img v-if="WithImage" :src="Item.Avatar" class="image" />
 
-          <span style="font-size: 12px; ">{{ Item.Name }}</span>
-          <time class="price">{{
-            Item.SellingPrice.toFixed($store.getters.settings.ToFixed)
-          }}</time>
-        </div>
-        <!--  <el-col v-permission="['Admin']"> 
+            <span style="font-size: 12px; ">{{ Item.Name }}</span>
+            <time class="price">{{
+              Item.SellingPrice.toFixed($store.getters.settings.ToFixed)
+            }}</time>
+          </div>
+          <!--  <el-col v-permission="['Admin']"> 
               <el-tooltip
                 v-for="(Inventory, index) in Item.InventoryQty"
                 :key="index"
@@ -56,8 +57,10 @@
                 <el-tag>{{ (Inventory.QtyIn - Inventory.QtyOut).toFixed($store.getters.settings.ToFixed) }}</el-tag>
               </el-tooltip>
         </el-col>-->
-      </el-card>
+        </el-card>
+      </el-col>
     </el-col>
+
     <!--
     <el-tabs type="card" :tab-position="tabPosition">
       <el-tab-pane label="All">
@@ -96,7 +99,7 @@ export default {
       query: "وجبات",
       search: "",
       List: [],
-     tabPosition: "top",
+      tabPosition: "top",
       order: false
     };
   },

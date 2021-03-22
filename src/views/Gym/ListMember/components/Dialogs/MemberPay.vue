@@ -34,7 +34,7 @@
                 ]"
                 class="currency-input"
                 v-model="Payment.TotalAmmount"
-                :value-range="{ min: 1, max: 1000 }"
+                :value-range="{ min: 0.01, max: 1000 }"
               />
             </el-form-item>
           </el-col>
