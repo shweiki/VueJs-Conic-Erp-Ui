@@ -9,11 +9,13 @@
     ></el-button>
     <el-drawer title="نماذج" :visible.sync="drawer" :direction="direction">
       <el-col :span="6" v-for="item in Reports" :key="item.Id">
-        <el-switch
-          v-model="item.AutoPrint"
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-        ></el-switch>
+        <el-form-item label="تلقائي">
+          <el-switch
+            v-model="item.AutoPrint"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          ></el-switch>
+        </el-form-item>
         <printers
           :Value="item.Printer"
           @change="
@@ -32,10 +34,9 @@
 <script>
 import { OrderReceipt } from "@/Report/OrderReceipt.js";
 import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
-
 import { SaleInvoiceLabel } from "@/Report/POSInvoice.js";
-import JSPM from "jsprintmanager";
-import Printers from "./Printers";
+import Printers from "@/components/Printers/index.vue";
+
 export default {
   name: "PrintButton",
   components: {
@@ -97,9 +98,7 @@ export default {
       } else console.log(val);
     }
   },
-  mounted() {
-    this.onInit();
-  },
+  mounted() {},
   methods: {
     SaleInvoiceLabel,
     OrderReceipt,
@@ -112,13 +111,6 @@ export default {
           JSON.stringify(this.Data) +
           (printer ? ",`" + printer + "`)" : ")")
       );
-    },
-    onInit() {
-      JSPM.JSPrintManager.auto_reconnect = true;
-      JSPM.JSPrintManager.start();
-      JSPM.JSPrintManager.WS.onStatusChanged = () => {
-        this.$store.dispatch("app/setPrinters");
-      };
     },
     focus() {
       this.$emit("focus");

@@ -1,12 +1,14 @@
 <template>
-  <el-select v-model="Printer" autocomplete="off" @change="SetVal">
-    <el-option
-      v-for="printer in printers"
-      :key="printer"
-      :label="printer"
-      :value="printer"
-    ></el-option>
-  </el-select>
+  <el-form-item label="الطابعة">
+    <el-select v-model="Printer" autocomplete="off" @change="SetVal">
+      <el-option
+        v-for="printer in printers"
+        :key="printer"
+        :label="printer"
+        :value="printer"
+      ></el-option>
+    </el-select>
+  </el-form-item>
 </template>
 <script>
 export default {

@@ -38,7 +38,9 @@ const state = {
   LimitQurey: defaultSettings.LimitQurey,
   triger: defaultSettings.triger,
   windowStyle: defaultSettings.windowStyle,
-  LimitGetInvoice: defaultSettings.LimitGetInvoice
+  LimitGetInvoice: defaultSettings.LimitGetInvoice,
+  ItemMoveDec: defaultSettings.ItemMoveDec,
+  printers: defaultSettings.printers
 }
 
 const mutations = {

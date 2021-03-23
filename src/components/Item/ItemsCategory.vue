@@ -34,12 +34,13 @@
         <el-card
           class="box-card"
           shadow="always"
+          style="background:#ff4949 "
           :body-style="{ padding: '12px' }"
         >
           <div @click="AddItem(Item)">
             <img v-if="WithImage" :src="Item.Avatar" class="image" />
 
-            <span style="font-size: 12px; ">{{ Item.Name }}</span>
+            <span class="name">{{ Item.Name }}</span>
             <time class="price">{{
               Item.SellingPrice.toFixed($store.getters.settings.ToFixed)
             }}</time>
@@ -156,9 +157,13 @@ export default {
 </script>
 <style scoped>
 .price {
-  font-size: 12px;
-  color: #f78123;
+  font-size: 13px;
+  color: #ffffff;
   float: left;
+}
+.name {
+  font-size: 12px;
+  color: #ffffff;
 }
 .image {
   width: 100%;

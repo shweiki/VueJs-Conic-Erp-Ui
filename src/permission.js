@@ -6,6 +6,7 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 import { OpenCashDrawer } from "@/api/Device";
+import getPrinterDevice from "@/utils/get-printers";
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -40,7 +41,7 @@ router.beforeEach(async (to, from, next) => {
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           // dynamically add accessible routes  
           router.addRoutes(accessRoutes)
-         
+
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           store.dispatch("CompanyInfo/GetCompanyInfo");
@@ -54,6 +55,8 @@ router.beforeEach(async (to, from, next) => {
             store.dispatch("Devices/GetDevice");
             store.dispatch("Devices/ConnectZtkDoor");
           }
+          getPrinterDevice();
+
           document.onkeydown = capturekey;
           document.onkeypress = capturekey;
           document.onkeyup = capturekey;

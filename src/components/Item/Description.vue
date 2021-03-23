@@ -1,6 +1,19 @@
 <template>
   <div>
-    <el-popover width="400" trigger="click">
+    <el-popover
+      popper-class="popover"
+      width="100%"
+      trigger="click"
+    >
+      <el-checkbox-group @change="SetVal" v-model="value" size="small">
+        <el-checkbox-button
+          v-for="item in $store.getters.settings.ItemMoveDec"
+          :key="item.value"
+          :label="item.label"
+        ></el-checkbox-button>
+      </el-checkbox-group>
+
+      <!--
       <el-drag-select
         @change="SetVal"
         v-model="value"
@@ -8,14 +21,14 @@
         placeholder="ملاحظات"
       >
         <el-option
-          v-for="item in options"
+          v-for="item in $store.getters.settings.ItemMoveDec"
           :key="item.value"
           :label="item.label"
           :value="item.value"
         />
       </el-drag-select>
-
-      <el-button type="info" icon="el-icon-s-order" slot="reference" />
+-->
+      <el-button size="mini" type="success" icon="el-icon-s-order" slot="reference" />
     </el-popover>
   </div>
 </template>
@@ -27,29 +40,7 @@ export default {
   components: { ElDragSelect },
   data() {
     return {
-      value: [],
-      options: [
-        {
-          value: "مع بصل",
-          label: "مع بصل"
-        },
-        {
-          value: "Banana",
-          label: "Banana"
-        },
-        {
-          value: "Orange",
-          label: "Orange"
-        },
-        {
-          value: "Pear",
-          label: "Pear"
-        },
-        {
-          value: "Strawberry",
-          label: "Strawberry"
-        }
-      ]
+      value: []
     };
   },
   watch: {
@@ -65,3 +56,11 @@ export default {
   }
 };
 </script>
+<style >
+.el-popper[x-placement^="bottom"] {
+    margin-top: 30px;
+}
+.popover {
+  background: #3f7faf;
+}
+</style>

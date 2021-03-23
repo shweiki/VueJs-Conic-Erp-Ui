@@ -56,7 +56,7 @@ import { PurchaseInvoiceA4 } from "@/Report/PurchaseInvoice";
 import { Label1 } from "@/Report/ItemLabel";
 import JSPM from "jsprintmanager";
 import printJS from "print-js";
-import Printers from "./Printers";
+import Printers from "@/components/Printers/index.vue";
 import T1 from "raw-loader!@/Report/Html/T1.txt";
 
 export default {

@@ -24,7 +24,7 @@ module.exports = {
   WithOutCheckItemIsExist: true,
   ToFixed: 2,
   LimitQurey: 20,
-  LimitGetInvoice: 200 ,
+  LimitGetInvoice: 200,
   errorLog: 'production',
   DateFormat: 'yyyy-MM-dd',
   DateTimeFormat: 'yyyy-MM-dd HH:mm',
@@ -32,6 +32,7 @@ module.exports = {
   PointOfSaleLayout: 'Layout1',
   datepickerQuery: [Date(), Date()],// start , End
   timeQuery: ['00:00:00', '23:59:59'],
+  printers:['Casher','WorkTable1','WorkTable2'],
   triger: {
     "CheckMembers":
     {
@@ -70,5 +71,31 @@ module.exports = {
         days: 365,
       },
     ],
-  }
+  },
+  ItemMoveDec: [
+    {
+      value: "علبة بطاطا",
+      label: "علبة بطاطا"
+    },
+    {
+      value: "جبنة شيدر",
+      label: "جبنة شيدر"
+    },
+    {
+      value: "جبنة موزاريلا",
+      label: "جبنة موزاريلا"
+    },
+    {
+      value: "جبنة مكس",
+      label: "جبنة مكس"
+    },
+    {
+      value: "هالبينو",
+      label: "هالبينو"
+    },
+    {
+      value: "بصل",
+      label: "بصل"
+    }
+  ]
 }

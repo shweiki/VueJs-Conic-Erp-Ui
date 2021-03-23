@@ -71,7 +71,7 @@
             <split-pane
               split="vertical"
               :min-percent="60"
-              :default-percent="60"
+              :default-percent="50"
             >
               <template slot="paneL">
                 <split-pane
@@ -293,7 +293,7 @@
                         ></el-table-column>
                         <el-table-column
                           prop="ItemsId"
-                          width="290"
+                          width="400"
                           align="center"
                         >
                           <template slot="header" slot-scope="{}"

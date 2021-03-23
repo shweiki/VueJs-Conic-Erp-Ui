@@ -1,48 +1,61 @@
 <template>
   <div class="app-container">
-    <el-form
-      ref="tempForm"
-      :model="tempForm"
-      label-position="top"
-      label-width="70px"
-      class="demo-ruleForm"
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      current-page.sync="1"
+      :page-size="1"
+      layout="prev, pager, next, jumper"
+      :total="10"
     >
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <el-button
-            :disabled="DisabledSave"
-            style="float: left"
-            type="success"
-            icon="fa fa-save"
-            @click="isEdit != true ? createData() : updateData()"
-            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-          >
-          <router-link
-            class="pan-btn tiffany-btn"
-            style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
-            icon="el-icon-plus"
-            to="/Report/List"
-            >{{ $t("route.ListReport") }}</router-link
-          >
-          <span>{{ $t("NewReport.Report") }}</span>
-        </div>
-        <tinymce
-          :width="900"
-          :height="700"
-          :id="tempForm.Id"
-          v-model="tempForm.HtmlDesgin"
-        />
-      </el-card>
+    </el-pagination>
+    <el-form ref="tempForm" :model="tempForm">
+      <el-button
+        :disabled="DisabledSave"
+        style="float: left"
+        type="success"
+        icon="fa fa-save"
+        @click="isEdit != true ? createData() : updateData()"
+        >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
+      >
+      <el-form-item label="تلقائي">
+        <el-switch
+          v-model="tempForm.AutoPrint"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+        ></el-switch>
+      </el-form-item>
+      <printers
+        :Value="tempForm.Printer"
+        @change="
+          v => {
+            tempForm.Printer = v;
+          }
+        "
+      />
+      <el-form-item label="اسم التقرير">
+        <el-input v-model="tempForm.Name" />
+      </el-form-item>
+      <el-form-item label="الكينونة">
+        <el-input v-model="tempForm.Type" />
+      </el-form-item>
+      <tinymce
+        :width="1100"
+        :height="700"
+        :id="tempForm.Id"
+        v-model="tempForm.Html"
+      />
     </el-form>
   </div>
 </template>
 <script>
 import { Create, Edit, GetReportByID } from "@/api/Report";
-import Tinymce from "@/components/Tinymce/index.vue";
+import Tinymce from "@/components/Tinymce";
+import Printers from "@/components/Printers/index.vue";
 
 export default {
   name: "Report",
-  components: { Tinymce },
+  components: { Tinymce, Printers },
   props: {
     isEdit: {
       type: Boolean,
@@ -80,17 +93,14 @@ export default {
       DisabledSave: false,
       tempRoute: {},
       tempForm: {
-        ID: undefined,
-        Name: "-",
-        Tax: 0.0,
-        AccountInvoiceNumber: "",
-        FakeDate: "",
-        InvoiceReportDate: "",
-        PaymentMethod: "Cash",
-        Discount: 0,
-        VendorId: 2,
-        Status: 0,
-        InventoryMovements: []
+        Id: "x",
+        Name: "",
+        Type: "",
+        AutoPrint: false,
+        Keys: "",
+        Printer: "",
+        Html: "",
+        Icon: ""
       }
     };
   },
@@ -101,6 +111,13 @@ export default {
     this.tempRoute = Object.assign({}, this.$route);
   },
   methods: {
+    handleSizeChange(val) {
+      console.log(`${val} items per page`);
+    },
+    handleCurrentChange(val) {
+      this.$router.push({ path: `/Reports/Edit/${val}` });
+      console.log(`current page: ${val}`);
+    },
     getdata(val) {
       GetReportByID({ ID: val })
         .then(response => {
@@ -115,9 +132,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    },
-    AddKey(key) {
-      console.log(key);
     },
 
     updateData() {
