@@ -14,11 +14,10 @@ export function OrderReceipt(temp, printer = undefined) {
   doc.addFont('Amiri-Regular-normal.ttf', 'Amiri-Regular', 'normal');
   doc.setFont("Amiri-Regular");
   //Logo
-  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX, startY, 12, 12);
+  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", 30, startY, 25, 25);
   //Name
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.text(store.getters.CompanyInfo.Name, startX + 24, startY += 9);
   doc.setLineWidth(1);
   doc.line(0, startY + 5, 78, startY += 5);
   doc.setFontSize(12);
@@ -31,13 +30,11 @@ export function OrderReceipt(temp, printer = undefined) {
   // doc.text("" + ItemQty + "", 5, startY);
   doc.text("الصنف", 78, startY += 6, { align: 'right' });
   doc.text("عدد", 40, startY);
-  doc.text("سعر", 27, startY);
-  doc.text("الاجمالي", 5, startY);
+
   temp.InventoryMovements.forEach(element => {
     doc.text("" + element.Name + "", 78, startY += 6, { align: 'right' });
     doc.text("" + element.Qty + "", 42, startY);
-    doc.text("" + (element.SellingPrice).toFixed(store.getters.settings.ToFixed) + "", 25, startY);
-    doc.text("" + (element.SellingPrice * element.Qty).toFixed(store.getters.settings.ToFixed) + "", 6, startY);
+
 
   });
 

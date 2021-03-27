@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow: hidden;">
     <el-form ref="F-SaleInvoice" :rules="rules" :model="tempForm">
       <div
         class="components-container"
@@ -80,7 +80,7 @@
                   :default-percent="5"
                 >
                   <template slot="paneR">
-                   <items-search :WithBarCode="false" @add="AddItem" /> 
+                    <items-search :WithBarCode="false" @add="AddItem" />
                     <items-category :WithImage="false" @add="AddItem" />
                   </template>
                   <template slot="paneL">
@@ -188,97 +188,96 @@
                         </el-form-item>
                       </el-col></el-row
                     >
-                      <el-row type="flex" class="card">
-                        <el-col :span="16">
-                          <el-input
-                            prop="Name"
-                            placeholder="اسم المستلم"
-                            v-model="tempForm.Name"
-                          ></el-input>
-                        </el-col>
-                        <el-col :span="6">
-                          <el-popover
-                            placement="right"
-                            width="400"
-                            trigger="click"
-                          >
-                            <el-form-item prop="Description">
-                              <el-input
-                                v-bind:placeholder="
-                                  $t('NewPurchaseInvoice.statement')
-                                "
-                                v-model="tempForm.Description"
-                              ></el-input>
-                            </el-form-item>
-                            <el-button type="primary" slot="reference"
-                              ><i class="el-icon-notebook-1"></i>
-                              {{
-                                $t("NewPurchaseInvoice.statement")
-                              }}</el-button
-                            >
-                          </el-popover></el-col
+                    <el-row type="flex" class="card">
+                      <el-col :span="16">
+                        <el-input
+                          prop="Name"
+                          placeholder="اسم المستلم"
+                          v-model="tempForm.Name"
+                        ></el-input>
+                      </el-col>
+                      <el-col :span="6">
+                        <el-popover
+                          placement="right"
+                          width="400"
+                          trigger="click"
                         >
-                      </el-row>
-                      <el-row type="flex" class="card" v-permission="['Admin']">
-                        <el-col :span="10">
-                          <el-form-item prop="Tax">
-                            <el-select
-                              v-model="tempForm.Tax"
-                              v-bind:placeholder="$t('Items.Tax')"
-                            >
-                              <el-option
-                                v-for="tax in TaxOptions"
-                                :key="tax.value"
-                                :label="tax.label"
-                                :value="tax.value"
-                              ></el-option>
-                            </el-select>
+                          <el-form-item prop="Description">
+                            <el-input
+                              v-bind:placeholder="
+                                $t('NewPurchaseInvoice.statement')
+                              "
+                              v-model="tempForm.Description"
+                            ></el-input>
                           </el-form-item>
-                        </el-col>
-                        <el-col :span="8">
-                          <el-input-number
-                            prop="Discount"
-                            v-model="tempForm.Discount"
-                            controls-position="right"
-                            :precision="2"
-                            :step="1"
-                            :min="0.0"
-                            :max="100"
-                          ></el-input-number>
-                        </el-col>
-                    <!--    <el-col :span="6">{{
+                          <el-button type="primary" slot="reference"
+                            ><i class="el-icon-notebook-1"></i>
+                            {{ $t("NewPurchaseInvoice.statement") }}</el-button
+                          >
+                        </el-popover></el-col
+                      >
+                    </el-row>
+                    <el-row type="flex" class="card" v-permission="['Admin']">
+                      <el-col :span="10">
+                        <el-form-item prop="Tax">
+                          <el-select
+                            v-model="tempForm.Tax"
+                            v-bind:placeholder="$t('Items.Tax')"
+                          >
+                            <el-option
+                              v-for="tax in TaxOptions"
+                              :key="tax.value"
+                              :label="tax.label"
+                              :value="tax.value"
+                            ></el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-input-number
+                          prop="Discount"
+                          v-model="tempForm.Discount"
+                          controls-position="right"
+                          :precision="2"
+                          :step="1"
+                          :min="0.0"
+                          :max="100"
+                        ></el-input-number>
+                      </el-col>
+                      <!--    <el-col :span="6">{{
                           $t("NewPurchaseInvoice.TotalDiscount")
                         }}</el-col> -->
-                      </el-row>
+                    </el-row>
 
-                      <el-row type="flex" class="card">
-                        <el-col :span="24" class="TotalAmmount">
-                          <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
-                          <el-divider direction="vertical"></el-divider>
-                          <span
-                            >{{
-                              (
-                                tempForm.InventoryMovements.reduce(
-                                  (prev, cur) => {
-                                    return prev + cur.Qty * cur.SellingPrice;
-                                  },
-                                  0
-                                ) - tempForm.Discount
-                              ).toFixed($store.getters.settings.ToFixed)
-                            }}
-                            JOD</span
-                          >
-                        </el-col>
-                      </el-row>
+                    <el-row type="flex" class="card">
+                      <el-col :span="24" class="TotalAmmount">
+                        <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
+                        <el-divider direction="vertical"></el-divider>
+                        <span
+                          >{{
+                            (
+                              tempForm.InventoryMovements.reduce(
+                                (prev, cur) => {
+                                  return prev + cur.Qty * cur.SellingPrice;
+                                },
+                                0
+                              ) - tempForm.Discount
+                            ).toFixed($store.getters.settings.ToFixed)
+                          }}
+                          JOD</span
+                        >
+                      </el-col>
+                    </el-row>
                   </template>
                   <template slot="paneL" class="card">
                     <el-form-item prop="InventoryMovements">
                       <el-table
                         highlight-current-row
                         border
-                        max-height="375"
+                        max-height="290"
                         :data="tempForm.InventoryMovements"
-                        width="100%"
+                        style="width: 100%"
+                        size="mini"
                       >
                         <el-table-column width="50" label="#">
                           <template slot-scope="scope">
@@ -293,7 +292,7 @@
                         ></el-table-column>
                         <el-table-column
                           prop="ItemsId"
-                          width="400"
+                          width="350"
                           align="center"
                         >
                           <template slot="header" slot-scope="{}"
@@ -320,7 +319,8 @@
                               }}
                               X
                               <el-input-number
-                                style="width: 30%;"
+                              size="mini"
+                                style="width: 25%;"
                                 v-model="
                                   tempForm.InventoryMovements[scope.$index].Qty
                                 "

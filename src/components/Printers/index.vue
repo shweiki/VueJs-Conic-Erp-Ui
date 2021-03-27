@@ -1,14 +1,12 @@
 <template>
-  <el-form-item label="الطابعة">
-    <el-select v-model="Printer" autocomplete="off" @change="SetVal">
-      <el-option
-        v-for="printer in printers"
-        :key="printer"
-        :label="printer"
-        :value="printer"
-      ></el-option>
-    </el-select>
-  </el-form-item>
+  <el-select v-model="Printer" placeholder="الطابعة" @change="SetVal">
+    <el-option
+      v-for="printer in printers"
+      :key="printer"
+      :label="printer"
+      :value="printer"
+    ></el-option>
+  </el-select>
 </template>
 <script>
 export default {
@@ -22,11 +20,10 @@ export default {
       Printer: ""
     };
   },
-  mounted() {
-    this.printers = this.$store.getters.printers;
-  },
+ 
   created() {
     this.Printer = this.Value;
+    this.printers = this.$store.getters.printers;
   },
   watch: {
     Value(v) {

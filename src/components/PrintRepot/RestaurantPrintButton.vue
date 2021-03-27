@@ -14,6 +14,8 @@
             v-model="item.AutoPrint"
             active-color="#13ce66"
             inactive-color="#ff4949"
+            active-value="true"
+            inactive-value="false"
           ></el-switch>
         </el-form-item>
         <printers
@@ -26,6 +28,11 @@
         /><el-button icon="el-icon-postcard" @click="eval(item.Name)">{{
           item.Name
         }}</el-button>
+        <el-button
+          icon="el-icon-postcard"
+          @click="Visualization(Data, item.Keys, item.Html, item.Printer)"
+          >{{ item.Name }}</el-button
+        >
       </el-col>
       ></el-drawer
     >
@@ -35,7 +42,10 @@
 import { OrderReceipt } from "@/Report/OrderReceipt.js";
 import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
 import { SaleInvoiceLabel } from "@/Report/POSInvoice.js";
+import Visualization from "@/Report/Visualization.js";
+
 import Printers from "@/components/Printers/index.vue";
+import { GetByListQ } from "@/api/Report";
 
 export default {
   name: "PrintButton",
@@ -55,38 +65,7 @@ export default {
     return {
       drawer: false,
       direction: "rtl",
-      Reports: [
-        {
-          Id: 1,
-          Name: "SaleInvoiceLabel",
-          Type: "",
-          AutoPrint: true,
-          Keys: "",
-          Printer: "Casher",
-          Html: "",
-          Icon: ""
-        },
-        {
-          Id: 2,
-          Name: "OrderReceipt",
-          Type: "",
-          AutoPrint: true,
-          Keys: "",
-          Printer: "WorkTable1",
-          Html: "",
-          Icon: ""
-        },
-        {
-          Id: 3,
-          Name: "OrderReceipt2",
-          Type: "",
-          AutoPrint: false,
-          Keys: "",
-          Printer: "WorkTable2",
-          Html: "",
-          Icon: ""
-        }
-      ]
+      Reports: []
     };
   },
   watch: {
@@ -98,11 +77,20 @@ export default {
       } else console.log(val);
     }
   },
-  mounted() {},
+  created() {
+    GetByListQ({
+      Page: 1,
+      Any: "SaleInvoice",
+      limit: 5,
+      Sort: "-id",
+      Status: 0
+    }).then(r => (this.Reports = r.items));
+  },
   methods: {
     SaleInvoiceLabel,
     OrderReceipt,
     OrderReceipt2,
+    Visualization,
     eval(funName, printer) {
       eval(
         "this." +

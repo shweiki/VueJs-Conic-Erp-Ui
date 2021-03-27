@@ -7,6 +7,12 @@ export function GetReport(query) {
     method: 'get',
     params: query
   })
+}export function GetTotal(query) {
+  return request({
+    url: '/Report/GetTotal',
+    method: 'get',
+    params: query
+  })
 }
 export function GetByListQ(data) {
   return request({

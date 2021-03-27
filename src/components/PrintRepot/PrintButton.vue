@@ -7,10 +7,6 @@
     width="200"
     trigger="hover"
   >
-    <printers
-      selected="XP-80C2"
-      @change="onPrinterChange"
-    />
     <el-button
       v-if="Type == 'SaleInvoice'"
       icon="el-icon-postcard"
@@ -54,16 +50,12 @@ import { SaleInvoiceLabel } from "@/Report/POSInvoice";
 import { SaleInvoiceA4 } from "@/Report/SaleInvoice";
 import { PurchaseInvoiceA4 } from "@/Report/PurchaseInvoice";
 import { Label1 } from "@/Report/ItemLabel";
-import JSPM from "jsprintmanager";
 import printJS from "print-js";
-import Printers from "@/components/Printers/index.vue";
 import T1 from "raw-loader!@/Report/Html/T1.txt";
 
 export default {
   name: "PrintButton",
-  components: {
-    Printers
-  },
+
   props: {
     Type: String,
     Css: String,
@@ -72,27 +64,8 @@ export default {
       default: {}
     }
   },
-  data() {
-    return { print2default: false, selected_printer: "" };
-  },
-  mounted() {
-    this.onInit();
-  },
+
   methods: {
-    onPrinterChange(value) {
-      this.selected_printer = value;
-      console.info("Selected printer:", value);
-    },
-    onInit() {
-      JSPM.JSPrintManager.auto_reconnect = true;
-      JSPM.JSPrintManager.start();
-      JSPM.JSPrintManager.WS.onStatusChanged = () => {
-        this.$store.dispatch("app/setPrinters");
-      };
-    },
-    DirectlyPrint() {
-      OrderReceipt(this.Data, "XP-80C2");
-    },
     focus() {
       this.$emit("focus");
     },
@@ -116,23 +89,6 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true
-      });
-    },
-    getPrinters() {
-      return new Promise((ok, err) => {
-        let printers = [];
-        if (JSPM.JSPrintManager.websocket_status == JSPM.WSStatus.Open) {
-          JSPM.JSPrintManager.getPrinters()
-            .then(function(myPrinters) {
-              printers = myPrinters;
-              console.log(printers);
-              ok(printers);
-            })
-            .catch(e => err(e));
-        } else {
-          console.warn("JSPM WS not open");
-          ok(printers);
-        }
       });
     }
   }

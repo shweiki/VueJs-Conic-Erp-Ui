@@ -3,59 +3,81 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      current-page.sync="1"
+      :current-page.sync="tempForm.Id"
       :page-size="1"
       layout="prev, pager, next, jumper"
-      :total="10"
+      :total="Total"
     >
     </el-pagination>
     <el-form ref="tempForm" :model="tempForm">
-      <el-button
-        :disabled="DisabledSave"
-        style="float: left"
-        type="success"
-        icon="fa fa-save"
-        @click="isEdit != true ? createData() : updateData()"
-        >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-      >
-      <el-form-item label="تلقائي">
-        <el-switch
-          v-model="tempForm.AutoPrint"
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-        ></el-switch>
-      </el-form-item>
-      <printers
-        :Value="tempForm.Printer"
-        @change="
-          v => {
-            tempForm.Printer = v;
-          }
-        "
-      />
-      <el-form-item label="اسم التقرير">
-        <el-input v-model="tempForm.Name" />
-      </el-form-item>
-      <el-form-item label="الكينونة">
-        <el-input v-model="tempForm.Type" />
-      </el-form-item>
-      <tinymce
-        :width="1100"
-        :height="700"
-        :id="tempForm.Id"
-        v-model="tempForm.Html"
-      />
+      <el-row type="flex">
+        <el-col :span="4">
+          <el-button
+            :disabled="DisabledSave"
+            style="float: left"
+            type="success"
+            icon="fa fa-save"
+            @click="isEdit != true ? createData() : updateData()"
+            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
+          >
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="تلقائي">
+            <el-switch
+              v-model="tempForm.AutoPrint"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-value="true"
+              inactive-value="false"
+            ></el-switch>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <printers
+            :Value="tempForm.Printer"
+            @change="
+              v => {
+                tempForm.Printer = v;
+              }
+            "
+          />
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="اسم التقرير">
+            <el-input v-model="tempForm.Name" /> </el-form-item
+        ></el-col>
+        <el-col :span="4">
+          <el-form-item label="الكينونة">
+            <el-select v-model="tempForm.Type" placeholder="Select">
+              <el-option label="SaleInvoice" value="SaleInvoice"> </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex">
+        <el-col :span="18">
+          <tinymce
+        
+            v-bind:id="'tinymce-' + tempForm.Id"
+            v-model="tempForm.Html"
+          />
+        </el-col>
+        <el-col :span="6">
+          <json-editor ref="jsonEditor" v-model="tempForm.Keys" />
+        </el-col>
+      </el-row>
     </el-form>
   </div>
 </template>
 <script>
-import { Create, Edit, GetReportByID } from "@/api/Report";
+import { Create, Edit, GetReportByID, GetTotal } from "@/api/Report";
 import Tinymce from "@/components/Tinymce";
 import Printers from "@/components/Printers/index.vue";
+import JsonEditor from "@/components/JsonEditor";
 
 export default {
   name: "Report",
-  components: { Tinymce, Printers },
+  components: { Tinymce, Printers, JsonEditor },
   props: {
     isEdit: {
       type: Boolean,
@@ -92,8 +114,9 @@ export default {
     return {
       DisabledSave: false,
       tempRoute: {},
+      Total: 0,
       tempForm: {
-        Id: "x",
+        Id: undefined,
         Name: "",
         Type: "",
         AutoPrint: false,
@@ -109,6 +132,9 @@ export default {
       this.getdata(this.$route.params && this.$route.params.id);
     }
     this.tempRoute = Object.assign({}, this.$route);
+    GetTotal().then(r => {
+      this.Total = r;
+    });
   },
   methods: {
     handleSizeChange(val) {
@@ -122,6 +148,7 @@ export default {
       GetReportByID({ ID: val })
         .then(response => {
           console.log(response);
+          response.Keys = JSON.parse(response.Keys)
           this.tempForm = response;
           // set tagsview title
           this.setTagsViewTitle();

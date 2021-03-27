@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow: hidden;">
     <el-form ref="F-SaleInvoice" :rules="rules" :model="tempForm">
       <div
         @dblclick="focusBarcode"
