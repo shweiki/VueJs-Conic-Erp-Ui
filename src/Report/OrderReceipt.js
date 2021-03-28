@@ -14,26 +14,26 @@ export function OrderReceipt(temp, printer = undefined) {
   doc.addFont('Amiri-Regular-normal.ttf', 'Amiri-Regular', 'normal');
   doc.setFont("Amiri-Regular");
   //Logo
-  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", 30, startY, 25, 25);
   //Name
   doc.setFontSize(24);
   doc.setFontType("normal");
   doc.setLineWidth(1);
-  doc.line(0, startY + 5, 78, startY += 5);
   doc.setFontSize(12);
 
-  doc.text(":رقم الفاتورة", 78, startY += 6, { align: 'right' });
-  doc.text("" + temp.Id + "", 5, startY);
+  doc.text(":رقم الطلب", 70, startY += 6, { align: 'right' });
+  doc.text("" + temp.OrderNo + "", 5, startY);
   doc.setLineWidth(1);
   doc.line(0, startY += 5, 80, startY);
   //doc.text(":عدد الاصناف", 50, startY+=6);
   // doc.text("" + ItemQty + "", 5, startY);
-  doc.text("الصنف", 78, startY += 6, { align: 'right' });
-  doc.text("عدد", 40, startY);
+  doc.text("الصنف", 70, startY += 6, { align: 'right' });
+  doc.text("عدد", 20, startY);
 
   temp.InventoryMovements.forEach(element => {
-    doc.text("" + element.Name + "", 78, startY += 6, { align: 'right' });
-    doc.text("" + element.Qty + "", 42, startY);
+    doc.text("" + element.Name + "", 70, startY += 6, { align: 'right' });
+
+    doc.text("" + element.Qty + "", 20, startY);
+    if (element.Description) doc.text("" + element.Description + "", 65, startY += 6, { align: 'right' });
 
 
   });
@@ -41,11 +41,9 @@ export function OrderReceipt(temp, printer = undefined) {
 
   doc.setLineWidth(1);
   doc.line(0, startY += 5, 80, startY);
-  doc.text(" :تاريخ الفاتورة", 78, startY += 5, { align: 'right' });
+  doc.text(" :تاريخ الفاتورة", 70, startY += 5, { align: 'right' });
   doc.text("" + formatDate(timein, "no") + " - " + tConvert(timein), 5, startY);
 
-  doc.setLineWidth(1);
-  doc.line(0, startY += 5, 80, startY);
 
   if (printer) {
     let cpj = new JSPM.ClientPrintJob();

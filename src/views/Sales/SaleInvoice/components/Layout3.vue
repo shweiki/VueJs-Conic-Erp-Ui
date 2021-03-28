@@ -319,7 +319,7 @@
                               }}
                               X
                               <el-input-number
-                              size="mini"
+                                size="mini"
                                 style="width: 25%;"
                                 v-model="
                                   tempForm.InventoryMovements[scope.$index].Qty
@@ -622,6 +622,8 @@ export default {
                 duration: 1000,
                 onClose: () => {
                   this.tempForm.Id = response;
+                  this.tempForm.OrderNo = this.tempForm.Id + 300;
+
                   this.OldInvoice = this.tempForm;
                   this.restTempForm();
                   this.DisabledSave = false;

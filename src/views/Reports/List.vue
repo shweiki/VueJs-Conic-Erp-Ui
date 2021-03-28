@@ -20,9 +20,8 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/SaleInvoice";
+import { GetByListQ } from "@/api/Report";
 
-import { SaleInvoicesList } from "@/Report/SaleInvoice";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -55,10 +54,7 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
-        User: undefined,
-        DateFrom: "",
-        DateTo: "",
-        Status: undefined
+
       },
       sortOptions: [
         { label: "ID Ascending", key: "+id" },
@@ -127,21 +123,6 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
-    },
-    print(data) {
-      data = data.map(Item => ({
-        Name: Item.Name,
-        Qty: Item.Qty,
-        SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(
-          this.$store.getters.settings.ToFixed
-        )
-      }));
-      printJS({
-        printable: data,
-        properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json"
-      });
     }
   }
 };
