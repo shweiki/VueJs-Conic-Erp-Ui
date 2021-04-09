@@ -41,7 +41,9 @@ export default {
         {
           value: "إضافات",
           label: "إضافات"
-        }
+        },
+        { value: "لحم", label: "لحم" },
+        { value: "دجاج", label: "دجاج" }
       ]
     };
   },

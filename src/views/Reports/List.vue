@@ -1,14 +1,90 @@
 ﻿<template>
-  <div class="app-container">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page.sync="currentPage3"
-      :page-size="100"
-      layout="prev, pager, next, jumper"
-      :total="1000"
+   <div class="app-container">
+    <el-row type="flex">
+      <el-col :span="4">
+        <el-input
+          v-model="listQuery.Any"
+          placeholder="Search By Any Acount Name Or Id"
+          style="width: 200px"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+      </el-col>
+   
+      
+      <el-col :span="3">
+        <el-select
+          v-model="listQuery.Sort"
+          style="width: 140px"
+          class="filter-item"
+          @change="handleFilter"
+        >
+          <el-option
+            v-for="item in sortOptions"
+            :key="item.key"
+            :label="item.label"
+            :value="item.key"
+          />
+        </el-select>
+      </el-col>
+      <el-col :span="6">
+    
+        <el-button
+          v-waves
+          :loading="downloadLoading"
+          class="filter-item"
+          type="primary"
+          icon="el-icon-download"
+          @click="handleDownload"
+        >
+        </el-button
+        ><el-button
+          v-waves
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          @click="handleFilter"
+        >
+        </el-button>
+      </el-col>
+    </el-row>
+
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%"
+      @sort-change="sortChange"
+      @row-dblclick="
+        row => {
+          $router.push({ path: `/Reports/Edit/${row.Id}` });
+        }
+      "
     >
-    </el-pagination>
+      <el-table-column
+        label="ID"
+        prop="Id"
+        sortable="custom"
+        align="center"
+        width="80"
+        :class-name="getSortClass('id')"
+      >
+        <template slot-scope="{ row }">
+          <span>{{ row.Id }}</span>
+        </template>
+      </el-table-column>
+  
+
+      <el-table-column label="Name" prop="Name" align="center">
+      </el-table-column>
+ 
+   
+
+  
+  
+    </el-table>
     <pagination
       v-show="Totals.Rows > 0"
       :total="Totals.Rows"
@@ -21,8 +97,6 @@
 
 <script>
 import { GetByListQ } from "@/api/Report";
-
-
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
@@ -30,9 +104,7 @@ import Pagination from "@/components/Pagination"; // secondary package based on 
 export default {
   name: "ComplexTable",
   components: {
-
     Pagination,
-
   },
   directives: { waves },
   data() {
@@ -67,7 +139,6 @@ export default {
     // this.getList();
   },
   methods: {
-    SaleInvoicesList,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
@@ -104,7 +175,7 @@ export default {
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list"
+          filename: "ReportTemplet"
         });
         this.downloadLoading = false;
       });

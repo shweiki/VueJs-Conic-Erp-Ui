@@ -17,36 +17,45 @@ export function OrderReceipt2(temp, printer = undefined) {
   //Name
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.setLineWidth(1);
+  doc.setLineWidth(0.65);
+  doc.setFontSize(18);
+  doc.text(temp.Type, 45, startY += 25, { align: 'right' });
   doc.setFontSize(12);
 
-  doc.text(":رقم الطلب", 70, startY += 6, { align: 'right' });
-  doc.text("" + temp.OrderNo + "", 5, startY);
-  doc.setLineWidth(1);
+  doc.text(":رقم الطلب", 70, startY += 5, { align: 'right' });
+  doc.text("" + temp.Id.toString().slice(-2) + "", 5, startY);
+  doc.setLineWidth(0.65);
   doc.line(0, startY += 5, 80, startY);
   //doc.text(":عدد الاصناف", 50, startY+=6);
   // doc.text("" + ItemQty + "", 5, startY);
   doc.text("الصنف", 70, startY += 6, { align: 'right' });
-  doc.text("عدد", 20, startY);
+  doc.text("عدد", 10, startY);
 
   temp.InventoryMovements.forEach(element => {
-    doc.text("" + element.Name + "", 70, startY += 6, { align: 'right' });
+    doc.line(0, startY += 5, 80, startY);
+    doc.text("" + element.Name + "", 70, startY += 7, { align: 'right' });
 
-    doc.text("" + element.Qty + "", 20, startY);
-    if (element.Description) doc.text("" + element.Description + "", 65, startY += 6, { align: 'right' });
+    doc.text("" + element.Qty + "", 10, startY);
+    if (element.Description) doc.text("" + element.Description + "", 65, startY += 7, { align: 'right' });
 
 
   });
 
 
-  doc.setLineWidth(1);
+  doc.setLineWidth(0.65);
   doc.line(0, startY += 5, 80, startY);
   doc.text(" :تاريخ الفاتورة", 70, startY += 5, { align: 'right' });
   doc.text("" + formatDate(timein, "no") + " - " + tConvert(timein), 5, startY);
-
-
+  if(temp.Description !=""){
+  doc.setLineWidth(0.65);
+  doc.line(0, startY += 5, 80, startY);
+  doc.text(" : *", 70, startY += 5, { align: 'right' });
+  doc.text("" + temp.Description, 5, startY);
+  }
   if (printer) {
     let cpj = new JSPM.ClientPrintJob();
+ //   cpj.clientPrinter = new JSPM.NetworkPrinter(9100,"192.168.1.100");
+
     cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
     var my_file = new JSPM.PrintFilePDF(
       doc.output('blob'),
@@ -55,6 +64,7 @@ export function OrderReceipt2(temp, printer = undefined) {
       1
     );
     cpj.files.push(my_file);
+    
     cpj.sendToClient();
 
   } else {

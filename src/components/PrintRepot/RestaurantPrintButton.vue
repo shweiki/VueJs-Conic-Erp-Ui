@@ -45,7 +45,12 @@
           icon="el-icon-printer"
           @click="printJS('Report-' + item.Id, 'html')"
         />
-
+          <el-button
+          type="warning"
+          icon="el-icon-edit"
+          @click="$router.push({ path: `/Reports/Edit/${item.Id}` })
+"
+        />
         <div
           style="direction: ltr;"
           v-bind:id="'Report-' + item.Id"
@@ -125,11 +130,12 @@ export default {
     JSPM(printer, el) {
       if (printer) {
         let cpj = new JSPM.ClientPrintJob();
-        cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
+       cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
         htmlToImage
           .toBlob(document.getElementById(el))
           .then(function(dataUrl) {
             console.log(dataUrl)
+            
             cpj.files.push(
               new JSPM.PrintFile(dataUrl, JSPM.FileSourceType.BLOB, el + ".png", 1)
             );

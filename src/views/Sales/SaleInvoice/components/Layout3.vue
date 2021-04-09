@@ -201,9 +201,11 @@
                           placement="right"
                           width="400"
                           trigger="click"
+                          @after-enter="$refs['InvoiceDescription'].focus()"
                         >
                           <el-form-item prop="Description">
                             <el-input
+                              ref="InvoiceDescription"
                               v-bind:placeholder="
                                 $t('NewPurchaseInvoice.statement')
                               "
@@ -274,7 +276,7 @@
                       <el-table
                         highlight-current-row
                         border
-                        max-height="290"
+                        max-height="320"
                         :data="tempForm.InventoryMovements"
                         style="width: 100%"
                         size="mini"
@@ -548,27 +550,21 @@ export default {
       };
     },
     AddItem(Item, Qty) {
-      var find = this.tempForm.InventoryMovements.findIndex(
-        value => value.ItemsId == Item.Id
-      );
-      if (find != -1) this.tempForm.InventoryMovements[find].Qty += Qty;
-      else {
-        let SellingPrice = Item.SellingPrice;
-        if (this.PriceMethod == "wholesale") SellingPrice = Item.OtherPrice;
-        this.tempForm.InventoryMovements.push({
-          Id: undefined,
-          ItemsId: Item.Id,
-          TypeMove: "Out",
-          Status: 0,
-          Qty: 1.0,
-          SellingPrice: SellingPrice,
-          Tax: 0.0,
-          Description: "",
-          InventoryItemId: 1,
-          Name: Item.Name,
-          SalesInvoiceId: undefined
-        });
-      }
+      let SellingPrice = Item.SellingPrice;
+      if (this.PriceMethod == "wholesale") SellingPrice = Item.OtherPrice;
+      this.tempForm.InventoryMovements.push({
+        Id: undefined,
+        ItemsId: Item.Id,
+        TypeMove: "Out",
+        Status: 0,
+        Qty: 1.0,
+        SellingPrice: SellingPrice,
+        Tax: 0.0,
+        Description: "",
+        InventoryItemId: 1,
+        Name: Item.Name,
+        SalesInvoiceId: undefined
+      });
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
@@ -622,7 +618,7 @@ export default {
                 duration: 1000,
                 onClose: () => {
                   this.tempForm.Id = response;
-                  this.tempForm.OrderNo = this.tempForm.Id + 300;
+                  this.tempForm.OrderNo = this.tempForm.Id;
 
                   this.OldInvoice = this.tempForm;
                   this.restTempForm();

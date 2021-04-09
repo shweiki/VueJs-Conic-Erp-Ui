@@ -31,9 +31,16 @@
       @click="ItemLabel"
       >Label</el-button
     >
-    <el-button icon="el-icon-s-management" @click="DirectlyPrint"
+       <el-button icon="el-icon-s-management" @click="ShawermaSheesh(Data)"
+      >ShawermaSheesh
+    </el-button>
+    <el-button icon="el-icon-s-management" @click="OrderReceipt(Data)"
       >OrderReceipt
     </el-button>
+       <el-button icon="el-icon-s-management" @click="OrderReceipt2(Data)"
+      >OrderReceipt2
+    </el-button>
+    
     <img id="barcodeV" style="display: none" />
 
     <el-button
@@ -45,14 +52,15 @@
   </el-popover>
 </template>
 <script>
-import { OrderReceipt } from "@/Report/OrderReceipt";
 import { SaleInvoiceLabel } from "@/Report/POSInvoice";
 import { SaleInvoiceA4 } from "@/Report/SaleInvoice";
 import { PurchaseInvoiceA4 } from "@/Report/PurchaseInvoice";
 import { Label1 } from "@/Report/ItemLabel";
 import printJS from "print-js";
 import T1 from "raw-loader!@/Report/Html/T1.txt";
-
+import { OrderReceipt } from "@/Report/OrderReceipt.js";
+import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
+import { ShawermaSheesh } from "@/Report/ShawermaSheesh";
 export default {
   name: "PrintButton",
 
@@ -90,7 +98,10 @@ export default {
         base64: true,
         showModal: true
       });
-    }
+    },
+        ShawermaSheesh,
+    OrderReceipt,
+    OrderReceipt2,
   }
 };
 </script>

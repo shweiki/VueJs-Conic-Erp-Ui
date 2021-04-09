@@ -1,10 +1,6 @@
 <template>
   <div>
-    <el-popover
-      popper-class="popover"
-      width="100%"
-      trigger="click"
-    >
+    <el-popover popper-class="popover" width="100%" trigger="click">
       <el-checkbox-group @change="SetVal" v-model="value" size="small">
         <el-checkbox-button
           v-for="item in $store.getters.settings.ItemMoveDec"
@@ -12,7 +8,14 @@
           :label="item.label"
         ></el-checkbox-button>
       </el-checkbox-group>
-
+      <el-input v-model="text">
+        <el-button
+          @click="SetText(text)"
+          slot="append"
+          icon="el-icon-plus"
+          type="primary"
+        ></el-button>
+      </el-input>
       <!--
       <el-drag-select
         @change="SetVal"
@@ -28,7 +31,12 @@
         />
       </el-drag-select>
 -->
-      <el-button size="mini" type="success" icon="el-icon-s-order" slot="reference" />
+      <el-button
+        size="mini"
+        type="success"
+        icon="el-icon-s-order"
+        slot="reference"
+      />
     </el-popover>
   </div>
 </template>
@@ -40,7 +48,8 @@ export default {
   components: { ElDragSelect },
   data() {
     return {
-      value: []
+      value: [],
+      text: ""
     };
   },
   watch: {
@@ -52,6 +61,11 @@ export default {
   methods: {
     SetVal(val) {
       this.$emit("Set", val.toString());
+    },
+    SetText(v) {
+      this.value.push(v);
+
+      this.SetVal(this.value);
     }
   }
 };
@@ -59,7 +73,7 @@ export default {
 
 <style  >
 .el-popper[x-placement^="bottom"] {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 .popover {
   background: #3f7faf;

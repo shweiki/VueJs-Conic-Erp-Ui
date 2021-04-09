@@ -40,10 +40,10 @@
           <div @click="AddItem(Item)">
             <img v-if="WithImage" :src="Item.Avatar" class="image" />
 
-            <span class="name">{{ Item.Name }}</span>
-            <time class="price">{{
-              Item.SellingPrice.toFixed($store.getters.settings.ToFixed)
-            }}</time>
+            <div class="name">{{ Item.Name }}</div>
+            <div class="price">
+              {{ Item.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
+          JD  </div>
           </div>
           <!--  <el-col v-permission="['Admin']"> 
               <el-tooltip
@@ -157,13 +157,15 @@ export default {
 </script>
 <style scoped>
 .price {
-  font-size: 13px;
-  color: #ffffff;
-  float: left;
-}
-.name {
   font-size: 12px;
   color: #ffffff;
+  text-align: center;
+}
+.name {
+  text-align: center;
+  font-size: 11px;
+  color: #ffffff;
+  margin-bottom: 6px;
 }
 .image {
   width: 100%;
