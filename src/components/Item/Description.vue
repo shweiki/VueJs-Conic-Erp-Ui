@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-popover popper-class="popover" width="100%" trigger="click">
+    <el-popover popper-class="popover" trigger="click">
       <el-checkbox-group @change="SetVal" v-model="value" size="small">
         <el-checkbox-button
           v-for="item in $store.getters.settings.ItemMoveDec"
@@ -32,6 +32,7 @@
       </el-drag-select>
 -->
       <el-button
+        style="float:left"
         size="mini"
         type="success"
         icon="el-icon-s-order"
@@ -74,6 +75,7 @@ export default {
 <style  >
 .el-popper[x-placement^="bottom"] {
   margin-top: 30px;
+  width: 50%;
 }
 .popover {
   background: #3f7faf;

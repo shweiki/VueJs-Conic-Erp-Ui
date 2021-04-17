@@ -28,11 +28,12 @@ export function ShawermaSheesh(temp, printer = undefined) {
   startY += 30
   doc.line(0, startY + 5, 70, startY += 5);
   doc.setFontSize(18);
-  doc.text(temp.Type, 45, startY += 6, { align: 'right' });
+  doc.text(temp.Type.charAt(0).toUpperCase() + temp.Type.slice(1), 45, startY += 6, { align: 'right' });
   doc.setFontSize(12);
 
   doc.text(":رقم الطلب", 70, startY += 6, { align: 'right' });
-  doc.text("" + temp.Id.toString().slice(-2) + "", 5, startY);
+  //doc.text("" + temp.Id.toString().slice(-2) + "", 5, startY);
+  doc.text("" + temp.Id + "", 5, startY);
   doc.setLineWidth(1);
   doc.line(0, startY += 5, 80, startY);
   //doc.text(":عدد الاصناف", 50, startY+=6);

@@ -43,7 +43,12 @@ export default {
           label: "إضافات"
         },
         { value: "لحم", label: "لحم" },
-        { value: "دجاج", label: "دجاج" }
+        { value: "دجاج", label: "دجاج" },
+        { value: "عادي", label: "عادي" },
+        { value: "سوبر", label: "سوبر" },
+        { value: "دبل", label: "دبل" },
+        { value: "تربل", label: "تربل" },
+        { value: "توفير", label: "توفير" }
       ]
     };
   },

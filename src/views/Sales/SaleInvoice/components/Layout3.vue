@@ -70,80 +70,78 @@
           <template slot="paneL">
             <split-pane
               split="vertical"
-              :min-percent="60"
-              :default-percent="50"
+              :min-percent="50"
+              :default-percent="55"
             >
               <template slot="paneL">
                 <split-pane
                   split="horizontal"
                   :min-percent="5"
-                  :default-percent="5"
+                  :default-percent="6.5"
                 >
                   <template slot="paneR">
-                    <items-search :WithBarCode="false" @add="AddItem" />
+                    <!--  <items-search :WithBarCode="false" @add="AddItem" />-->
                     <items-category :WithImage="false" @add="AddItem" />
                   </template>
                   <template slot="paneL">
-                    <el-row class="card">
-                      <el-col :span="6">
-                        <rest-of-bill
-                          :Total="
-                            tempForm.InventoryMovements.reduce((prev, cur) => {
-                              return prev + cur.Qty * cur.SellingPrice;
-                            }, 0) - tempForm.Discount
-                          "
-                          :Open="OpenRestOfBill"
-                          @Closed="
-                            () => {
-                              OpenRestOfBill = false;
-                            }
-                          "
-                          @Done="isEdit != true ? createData() : updateData()"
-                        />
+                    <el-card class="card" :body-style="{ padding: '4px' }">
+                      <el-row>
+                        <el-col :span="6">
+                          <el-switch
+                            v-model="AutoPrint"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                          ></el-switch>
+                        </el-col>
+                        <el-col :span="6">
+                          <rest-of-bill
+                            :Total="
+                              tempForm.InventoryMovements.reduce(
+                                (prev, cur) => {
+                                  return prev + cur.Qty * cur.SellingPrice;
+                                },
+                                0
+                              ) - tempForm.Discount
+                            "
+                            :Open="OpenRestOfBill"
+                            @Closed="
+                              () => {
+                                OpenRestOfBill = false;
+                              }
+                            "
+                            @Done="isEdit != true ? createData() : updateData()"
+                          />
 
-                        <el-button
-                          :disabled="DisabledSave"
-                          @click="
-                            $store.state.settings.showRestOfBill != true
-                              ? isEdit != true
-                                ? createData()
-                                : updateData()
-                              : (OpenRestOfBill = true)
-                          "
-                          type="success"
-                          icon="el-icon-check"
-                        ></el-button>
-                      </el-col>
-                      <el-col :span="6">
-                        <el-badge
-                          :value="
-                            $store.state.settings.CashDrawerCOM.OpenKeyBoard
-                          "
-                          class="item"
-                          type="primary"
-                        >
+                          <el-button
+                            :disabled="DisabledSave"
+                            @click="
+                              $store.state.settings.showRestOfBill != true
+                                ? isEdit != true
+                                  ? createData()
+                                  : updateData()
+                                : (OpenRestOfBill = true)
+                            "
+                            type="success"
+                            icon="el-icon-check"
+                          ></el-button>
+                        </el-col>
+                        <el-col :span="6">
                           <el-button
                             @click="OpenCashDrawer()"
                             type="warning"
                             icon="el-icon-takeaway-box"
-                          ></el-button
-                        ></el-badge>
-                      </el-col>
-                      <el-col :span="3">
-                        <el-switch
-                          v-model="AutoPrint"
-                          active-color="#13ce66"
-                          inactive-color="#ff4949"
-                        ></el-switch>
-                      </el-col>
-                      <el-col :span="3">
-                        <restaurant-print-button
-                          :AutoPrint="AutoPrint"
-                          :Data="OldInvoice"
-                          Css="font-size: 12px"
-                        />
-                      </el-col>
-                    </el-row>
+                          ></el-button>
+                        </el-col>
+
+                        <el-col :span="6">
+                          <restaurant-print-button
+                            :AutoPrint="AutoPrint"
+                            :Data="OldInvoice"
+                            Css="font-size: 12px"
+                          />
+                        </el-col>
+                      </el-row>
+                    </el-card>
                   </template>
                 </split-pane>
               </template>
@@ -151,7 +149,7 @@
                 <split-pane
                   split="horizontal"
                   :min-percent="57"
-                  :default-percent="60"
+                  :default-percent="65"
                 >
                   <template slot="paneR">
                     <el-row type="flex" class="card">
@@ -190,34 +188,16 @@
                     >
                     <el-row type="flex" class="card">
                       <el-col :span="16">
-                        <el-input
-                          prop="Name"
-                          placeholder="اسم المستلم"
-                          v-model="tempForm.Name"
-                        ></el-input>
+                        <el-form-item prop="Description">
+                          <el-input
+                            ref="InvoiceDescription"
+                            v-bind:placeholder="
+                              $t('NewPurchaseInvoice.statement')
+                            "
+                            v-model="tempForm.Description"
+                          ></el-input>
+                        </el-form-item>
                       </el-col>
-                      <el-col :span="6">
-                        <el-popover
-                          placement="right"
-                          width="400"
-                          trigger="click"
-                          @after-enter="$refs['InvoiceDescription'].focus()"
-                        >
-                          <el-form-item prop="Description">
-                            <el-input
-                              ref="InvoiceDescription"
-                              v-bind:placeholder="
-                                $t('NewPurchaseInvoice.statement')
-                              "
-                              v-model="tempForm.Description"
-                            ></el-input>
-                          </el-form-item>
-                          <el-button type="primary" slot="reference"
-                            ><i class="el-icon-notebook-1"></i>
-                            {{ $t("NewPurchaseInvoice.statement") }}</el-button
-                          >
-                        </el-popover></el-col
-                      >
                     </el-row>
                     <el-row type="flex" class="card" v-permission="['Admin']">
                       <el-col :span="10">
@@ -275,13 +255,12 @@
                     <el-form-item prop="InventoryMovements">
                       <el-table
                         highlight-current-row
-                        border
-                        max-height="320"
+                        max-height="400"
                         :data="tempForm.InventoryMovements"
                         style="width: 100%"
                         size="mini"
                       >
-                        <el-table-column width="50" label="#">
+                        <el-table-column width="60" label="#" align="center">
                           <template slot-scope="scope">
                             <description
                               @Set="
@@ -292,11 +271,7 @@
                                 }
                               "/></template
                         ></el-table-column>
-                        <el-table-column
-                          prop="ItemsId"
-                          width="350"
-                          align="center"
-                        >
+                        <el-table-column prop="ItemsId" align="center">
                           <template slot="header" slot-scope="{}"
                             >{{ $t("NewPurchaseInvoice.Items") }} ({{
                               tempForm.InventoryMovements.length.toFixed(
@@ -322,7 +297,7 @@
                               X
                               <el-input-number
                                 size="mini"
-                                style="width: 25%;"
+                                style="width: 37.5%;"
                                 v-model="
                                   tempForm.InventoryMovements[scope.$index].Qty
                                 "
@@ -357,6 +332,7 @@
                         <el-table-column
                           v-bind:label="$t('CashPool.Total')"
                           align="center"
+                          width="110"
                         >
                           <template slot-scope="scope">
                             <div class="currency-input">
@@ -372,9 +348,10 @@
                           </template>
                         </el-table-column>
 
-                        <el-table-column width="50" label="#" align="center">
+                        <el-table-column width="60" label="#" align="center">
                           <template slot-scope="scope">
                             <el-button
+                              style="    float: left;"
                               type="danger"
                               icon="el-icon-delete"
                               @click="RemoveItem(scope.$index)"

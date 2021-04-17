@@ -1,22 +1,34 @@
 <template>
   <div>
-    <el-radio-group v-model="query" @change="getdata">
-      <el-radio-button label="ساندويش">ساندويش </el-radio-button>
-      <el-radio-button label="وجبات"> وجبات </el-radio-button>
-      <el-radio-button label="مشروبات"> مشروبات </el-radio-button>
-      <el-radio-button label="إضافات"> إضافات </el-radio-button>
-    </el-radio-group>
-    <el-input
-      @change="focus"
-      v-model="search"
-      v-bind:placeholder="$t('ItemSales.ItemName')"
-    >
-      <el-button
-        slot="append"
-        @click="SortByName"
-        icon="el-icon-sort"
-      ></el-button>
-    </el-input>
+    <el-col :span="24">
+      <el-radio-group v-model="query" @change="getdata">
+        <el-radio-button label="ساندويش">ساندويش </el-radio-button>
+        <el-radio-button label="وجبات"> وجبات </el-radio-button>
+        <el-radio-button label="مشروبات"> مشروبات </el-radio-button>
+        <el-radio-button label="إضافات"> إضافات </el-radio-button>
+      </el-radio-group>
+    </el-col>
+    <!--
+    <el-col :span="24">
+      <el-col
+        :xs="12"
+        :sm="8"
+        :md="6"
+        :lg="6"
+        :xl="4"
+        v-for="(Item, index) in ['تربل', 'دبل', 'سوبر', 'عادي', 'توفير']"
+        :key="index"
+      >
+        <el-card
+          class="box-card"
+          shadow="always"
+          style="background:#607d8b "
+          :body-style="{ padding: '12px' }"
+        >
+          {{ Item }}
+        </el-card>
+      </el-col>
+    </el-col>-->
     <el-col :span="24">
       <el-col
         :xs="12"
@@ -34,7 +46,7 @@
         <el-card
           class="box-card"
           shadow="always"
-          style="background:#ff4949 "
+          style="background:#607d8b "
           :body-style="{ padding: '12px' }"
         >
           <div @click="AddItem(Item)">
@@ -43,7 +55,8 @@
             <div class="name">{{ Item.Name }}</div>
             <div class="price">
               {{ Item.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
-          JD  </div>
+              JD
+            </div>
           </div>
           <!--  <el-col v-permission="['Admin']"> 
               <el-tooltip

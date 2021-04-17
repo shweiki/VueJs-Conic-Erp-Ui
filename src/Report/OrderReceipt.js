@@ -19,11 +19,13 @@ export function OrderReceipt(temp, printer = undefined) {
   doc.setFontType("normal");
   doc.setLineWidth(0.65);
   doc.setFontSize(18);
-  doc.text(temp.Type, 45, startY += 25, { align: 'right' });
+  doc.text(temp.Type.charAt(0).toUpperCase() + temp.Type.slice(1), 45, startY += 25, { align: 'right' });
   doc.setFontSize(12);
 
   doc.text(":رقم الطلب", 70, startY += 5, { align: 'right' });
-  doc.text("" + temp.Id.toString().slice(-2) + "", 5, startY);
+  //doc.text("" + temp.Id.toString().slice(-2) + "", 5, startY);
+  doc.text("" + temp.Id + "", 5, startY);
+
   doc.setLineWidth(0.65);
   doc.line(0, startY += 5, 80, startY);
   //doc.text(":عدد الاصناف", 50, startY+=6);
