@@ -24,7 +24,11 @@ export function OrderReceipt2(temp, printer = undefined) {
 
   doc.text(":رقم الطلب", 70, startY += 5, { align: 'right' });
   //doc.text("" + temp.Id.toString().slice(-2) + "", 5, startY);
+  doc.setFontSize(16);
+
   doc.text("" + temp.Id + "", 5, startY);
+  doc.setFontSize(12);
+
   doc.setLineWidth(0.65);
   doc.line(0, startY += 5, 80, startY);
   //doc.text(":عدد الاصناف", 50, startY+=6);

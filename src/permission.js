@@ -71,6 +71,12 @@ router.beforeEach(async (to, from, next) => {
                   console.log(err);
                 });
             }
+            if (window.event && window.event.keyCode == 13) {
+              console.log(e)
+              $event.target.nextElementSibling.focus()
+             // e.target.nextElementSibling.focus()
+           //   e.code = 9;
+            }
 
             /*
             if (e.code == store.state.settings.KeyBoard.key) {

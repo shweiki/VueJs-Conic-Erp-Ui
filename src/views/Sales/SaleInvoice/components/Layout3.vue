@@ -174,11 +174,20 @@
                       </el-col>
                       <el-col :span="10">
                         <el-form-item>
-                          <el-radio-group v-model="tempForm.Type">
-                            <el-radio-button label="takeaway" border
+                          <el-radio-group
+                            @change="
+                              v => {
+                                v == 'Takeaway'
+                                  ? (tempForm.DeliveryPrice = 0)
+                                  : null;
+                              }
+                            "
+                            v-model="tempForm.Type"
+                          >
+                            <el-radio-button label="Takeaway" border
                               ><i class="el-icon-sell"></i>سفري</el-radio-button
                             >
-                            <el-radio-button label="delivery" border
+                            <el-radio-button label="Delivery" border
                               ><i class="el-icon-truck"></i>
                               توصيل</el-radio-button
                             >
@@ -187,7 +196,7 @@
                       </el-col></el-row
                     >
                     <el-row type="flex" class="card">
-                      <el-col :span="16">
+                      <el-col v-if="tempForm.Type == 'Takeaway'" :span="24">
                         <el-form-item prop="Description">
                           <el-input
                             ref="InvoiceDescription"
@@ -197,6 +206,12 @@
                             v-model="tempForm.Description"
                           ></el-input>
                         </el-form-item>
+                      </el-col>
+                      <el-col v-if="tempForm.Type == 'Delivery'" :span="24">
+                        <delivery-el
+                          @Set="v => (tempForm.Description = v)"
+                          @SetDeliveryPrice="v => (tempForm.DeliveryPrice = v)"
+                        />
                       </el-col>
                     </el-row>
                     <el-row type="flex" class="card" v-permission="['Admin']">
@@ -230,9 +245,24 @@
                           $t("NewPurchaseInvoice.TotalDiscount")
                         }}</el-col> -->
                     </el-row>
-
                     <el-row type="flex" class="card">
-                      <el-col :span="24" class="TotalAmmount">
+                      <el-col
+                        v-if="tempForm.Type == 'Delivery'"
+                        :span="12"
+                        class="TotalAmmount"
+                      >
+                        <span>سعر التوصيل</span>
+                        <el-divider direction="vertical"></el-divider>
+                        <span
+                          >{{
+                            tempForm.DeliveryPrice.toFixed(
+                              $store.getters.settings.ToFixed
+                            )
+                          }}
+                          JOD</span
+                        >
+                      </el-col>
+                      <el-col :span="12" class="TotalAmmount">
                         <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
                         <el-divider direction="vertical"></el-divider>
                         <span
@@ -243,7 +273,9 @@
                                   return prev + cur.Qty * cur.SellingPrice;
                                 },
                                 0
-                              ) - tempForm.Discount
+                              ) -
+                              tempForm.Discount +
+                              tempForm.DeliveryPrice
                             ).toFixed($store.getters.settings.ToFixed)
                           }}
                           JOD</span
@@ -400,6 +432,7 @@ import splitPane from "vue-splitpane";
 //import { NumericInput } from "numeric-keyboard";
 import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
+import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 
@@ -419,7 +452,8 @@ export default {
     RightMenu,
     FakeDate,
     VendorSelect,
-    Description
+    Description,
+    DeliveryEl
   },
   props: {
     isEdit: {
@@ -444,7 +478,9 @@ export default {
         Description: "",
         VendorId: 2,
         IsPrime: false,
-        Type: "takeaway",
+        Type: "Delivery",
+        DeliveryPrice: 0,
+        Region: "",
         InventoryMovements: []
       },
       rules: {
@@ -522,7 +558,9 @@ export default {
         Description: "",
         VendorId: 2,
         IsPrime: false,
-        Type: "takeaway",
+        Type: "Delivery",
+        DeliveryPrice: 0,
+        Region: "",
         InventoryMovements: []
       };
     },
@@ -595,8 +633,6 @@ export default {
                 duration: 1000,
                 onClose: () => {
                   this.tempForm.Id = response;
-                  this.tempForm.OrderNo = this.tempForm.Id;
-
                   this.OldInvoice = this.tempForm;
                   this.restTempForm();
                   this.DisabledSave = false;

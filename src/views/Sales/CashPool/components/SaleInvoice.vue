@@ -501,8 +501,8 @@ export default {
           this.Totals.Receivables.toFixed(
             this.$store.getters.settings.ToFixed
           ) +
-          " - صافي الربح : " +
-          this.Totals.Profit.toFixed(this.$store.getters.settings.ToFixed) +
+        //  " - صافي الربح : " +
+        //  this.Totals.Profit.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي خصم : " +
           this.Totals.Discount.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي التكلفة : " +

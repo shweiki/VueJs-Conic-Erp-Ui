@@ -28,35 +28,52 @@ export function ShawermaSheesh(temp, printer = undefined) {
   startY += 30
   doc.line(0, startY + 5, 70, startY += 5);
   doc.setFontSize(18);
-  doc.text(temp.Type.charAt(0).toUpperCase() + temp.Type.slice(1), 45, startY += 6, { align: 'right' });
+  doc.text(temp.Type, 45, startY += 6, { align: 'right' });
   doc.setFontSize(12);
 
   doc.text(":رقم الطلب", 70, startY += 6, { align: 'right' });
   //doc.text("" + temp.Id.toString().slice(-2) + "", 5, startY);
+  doc.setFontSize(16);
+
   doc.text("" + temp.Id + "", 5, startY);
+  doc.setFontSize(12);
+
   doc.setLineWidth(1);
   doc.line(0, startY += 5, 80, startY);
   //doc.text(":عدد الاصناف", 50, startY+=6);
   // doc.text("" + ItemQty + "", 5, startY);
 
   doc.text("الصنف", 70, startY += 6, { align: 'right' });
-  doc.text("عدد", 32, startY);
-  doc.text("سعر", 19, startY);
+  doc.text("عدد", 19, startY);
+  //doc.text("سعر", 19, startY);
   doc.text("الاجمالي", 2, startY);
 
 
   temp.InventoryMovements.forEach(element => {
     doc.text("" + element.Name + "", 70, startY += 6, { align: 'right' });
-    doc.text("" + element.Qty + "", 34, startY);
-    doc.text("" + (element.SellingPrice).toFixed(store.getters.settings.ToFixed) + "", 18, startY);
+    doc.text("" + element.Qty + "", 20, startY);
+   // doc.text("" + (element.SellingPrice).toFixed(store.getters.settings.ToFixed) + "", 18, startY);
     doc.text("" + (element.SellingPrice * element.Qty).toFixed(store.getters.settings.ToFixed) + "", 3, startY);
     if (element.Description) doc.text("" + element.Description + "", 65, startY += 6, { align: 'right' });
 
   });
+  if (temp.Type.toLowerCase() == "delivery".toLowerCase()) {
+    doc.setLineWidth(1);
+    doc.line(0, startY += 5, 80, startY);
+    doc.text(" المبلغ", 70, startY += 6, { align: 'right' });
+    doc.text(" " + TotalAmmount + "  ", 5, startY);
+
+    doc.setLineWidth(1);
+    doc.line(0, startY += 5, 80, startY);
+    doc.text(" التوصيل", 70, startY += 6, { align: 'right' });
+    doc.text(" " + temp.DeliveryPrice + "  ", 5, startY);
+
+  }
+
   doc.setLineWidth(1);
   doc.line(0, startY += 5, 80, startY);
-  doc.text("(JOD) المبلغ الاجمالي", 70, startY += 6, { align: 'right' });
-  doc.text(" " + TotalAmmount + "  ", 5, startY);
+  doc.text(" الاجمالي", 70, startY += 6, { align: 'right' });
+  doc.text(" " + (parseFloat(temp.DeliveryPrice) + parseFloat(TotalAmmount)) + "  ", 5, startY);
 
   doc.setLineWidth(1);
   doc.line(0, startY += 5, 80, startY);
@@ -70,7 +87,7 @@ export function ShawermaSheesh(temp, printer = undefined) {
     doc.setLineWidth(1);
     doc.line(0, startY += 5, 80, startY);
     doc.text(" : *", 70, startY += 5, { align: 'right' });
-    doc.text("" + temp.Description, 5, startY);
+    doc.text("" + temp.Description, 1, startY);
   }
 
   doc.setLineWidth(1);
