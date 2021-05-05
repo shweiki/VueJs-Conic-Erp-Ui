@@ -5,9 +5,9 @@
     :size="$store.getters.size"
     @change="SetVal"
     v-model="FakeDate"
-    type="date"
+    type="datetime"
     v-bind:placeholder="$t('CashPool.Date')"
-    :format="$store.getters.settings.DateFormat"
+    :format="$store.getters.settings.DateTimeFormat"
   ></el-date-picker>
 </template>
 <script>

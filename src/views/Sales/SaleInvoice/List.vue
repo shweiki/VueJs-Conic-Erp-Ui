@@ -205,13 +205,13 @@
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-            <next-oprations
-              :ObjID="scope.row.Id"
-              :Status="scope.row.Status"
-              TableName="SalesInvoice"
-              @Done="handleFilter"
-            />
-            <print-button Type="SaleInvoice" :Data="scope.row" />
+          <next-oprations
+            :ObjID="scope.row.Id"
+            :Status="scope.row.Status"
+            TableName="SalesInvoice"
+            @Done="handleFilter"
+          />
+          <print-button Type="SaleInvoice" :Data="scope.row" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -355,7 +355,10 @@ export default {
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list"
+          filename:
+            window.location.pathname.split("/") +
+            "-" +
+            JSON.stringify(this.listQuery)
         });
         this.downloadLoading = false;
       });
@@ -363,7 +366,13 @@ export default {
     formatJson(filterVal) {
       return this.list.map(v =>
         filterVal.map(j => {
-          if (j === "timestamp") {
+          if (j === "InventoryMovements") {
+            return JSON.stringify(v[j]);
+          }
+          if (j === "ActionLogs") {
+            return JSON.stringify(v[j]);
+          }
+          if (j === "FakeDate") {
             return parseTime(v[j]);
           } else {
             return v[j];

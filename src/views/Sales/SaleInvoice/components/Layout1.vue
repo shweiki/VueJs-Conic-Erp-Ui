@@ -158,7 +158,11 @@
                       style="background: #545454"
                       :body-style="{ padding: '1px' }"
                     >
-                      <items-search @add="AddItem" @focus="focusBarcode" :WithBarCode="true" />
+                      <items-search
+                        @add="AddItem"
+                        @focus="focusBarcode"
+                        :WithBarCode="true"
+                      />
                     </el-card>
                     <el-form-item prop="InventoryMovements">
                       <el-table
@@ -179,13 +183,13 @@
                           >
                           <template slot-scope="scope">
                             <div class="ItemName">
-                              {{ scope.row.Itemx.Name }}
+                              {{ scope.row.Name }}
                               <el-tag type="primary" effect="plain">{{
                                 PriceMethod == "wholesale"
-                                  ? scope.row.Itemx.OtherPrice.toFixed(
+                                  ? scope.row.OtherPrice.toFixed(
                                       $store.getters.settings.ToFixed
                                     )
-                                  : scope.row.Itemx.SellingPrice.toFixed(
+                                  : scope.row.SellingPrice.toFixed(
                                       $store.getters.settings.ToFixed
                                     )
                               }}</el-tag>
@@ -364,7 +368,7 @@
                       ></el-badge>
                     </el-col>
                     <el-col :span="6">
-                   <!--   <el-switch
+                      <!--   <el-switch
                         @change="focusBarcode"
                         v-model="AutoPrint"
                         active-color="#13ce66"
@@ -686,8 +690,8 @@ export default {
           Tax: 0.0,
           Description: "",
           InventoryItemId: 1,
-          Itemx: Item,
           Name: Item.Name,
+          OtherPrice: Item.OtherPrice,
           SalesInvoiceId: undefined
         });
       }

@@ -32,7 +32,11 @@
               prop="FakeDate"
               label="تاريخ الإصدار"
               :rules="[
-                { required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' },
+                {
+                  required: true,
+                  message: 'لايمكن ترك التاريخ فارغ',
+                  trigger: 'blur'
+                }
               ]"
             >
               <el-date-picker
@@ -45,7 +49,10 @@
           </el-col>
           <el-col :span="18">
             <el-form-item label="بيان جرد \ مسؤول الجرد">
-              <el-input type="textarea" v-model="tempForm.Description"></el-input>
+              <el-input
+                type="textarea"
+                v-model="tempForm.Description"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -90,12 +97,12 @@
             highlight-current-row
           >
             <el-table-column
-              prop="Itemx.Barcode"
+              prop="Barcode"
               label="باركود"
               align="center"
             ></el-table-column>
             <el-table-column
-              prop="Itemx.Name"
+              prop="Name"
               label="اسم الصنف"
               align="center"
             ></el-table-column>
@@ -116,7 +123,9 @@
               <template slot="header" slot-scope="{}">المخزن</template>
               <template slot-scope="scope">
                 <el-radio-group
-                  v-model="tempForm.StockMovements[scope.$index].InventoryItemId"
+                  v-model="
+                    tempForm.StockMovements[scope.$index].InventoryItemId
+                  "
                 >
                   <el-radio-button
                     v-for="(item, index) in InventoryItems"
@@ -129,7 +138,9 @@
             </el-table-column>
             <el-table-column label="وصف" width="200" align="center">
               <template slot-scope="scope">
-                <el-form-item :prop="'StockMovements.' + scope.$index + '.Description'">
+                <el-form-item
+                  :prop="'StockMovements.' + scope.$index + '.Description'"
+                >
                   <el-input
                     v-model="tempForm.StockMovements[scope.$index].Description"
                     required
@@ -173,7 +184,9 @@
       >
         <el-row>
           <el-col :span="3">
-            <el-button type="success" icon="el-plus" @click="NewItem()">حفظ</el-button>
+            <el-button type="success" icon="el-plus" @click="NewItem()"
+              >حفظ</el-button
+            >
           </el-col>
 
           <el-col :span="12">
@@ -184,7 +197,11 @@
             ></el-input>
           </el-col>
           <el-col :span="6">
-            <el-input type="text" v-model="Name" placeholder="إسم صنف"></el-input>
+            <el-input
+              type="text"
+              v-model="Name"
+              placeholder="إسم صنف"
+            ></el-input>
           </el-col>
         </el-row>
       </el-dialog>
@@ -196,7 +213,10 @@
       >
         <el-row>
           <el-col :span="3">
-            <el-button type="success" icon="el-plus" @click="onBarcodeScanned(Barcode)"
+            <el-button
+              type="success"
+              icon="el-plus"
+              @click="onBarcodeScanned(Barcode)"
               >Add</el-button
             >
           </el-col>
@@ -235,7 +255,7 @@ export default {
         ID: undefined,
         FakeDate: new Date(),
         Description: "",
-        StockMovements: [],
+        StockMovements: []
       },
       rules: {
         StockMovements: [
@@ -243,18 +263,18 @@ export default {
             type: "array",
             required: true,
             message: "لا يمكن إستكمال عملية مخزن من غير إضافة أصناف",
-            trigger: "change",
-          },
-        ],
+            trigger: "change"
+          }
+        ]
       },
       InventoryItems: [],
-      Items: [],
+      Items: []
     };
   },
   methods: {
     AddItem(Item) {
       var find = this.tempForm.StockMovements.findIndex(
-        (value) => value.ItemsId == Item.Id
+        value => value.ItemsId == Item.Id
       );
       //console.log(qty);
       if (find != -1) this.tempForm.StockMovements[find].Qty += this.Qty;
@@ -268,8 +288,9 @@ export default {
           Tax: 0.0,
           Description: "",
           InventoryItemId: 1,
-          Itemx: Item,
-          StocktakingInventoryID: undefined,
+          Barcode: Item.Barcode,
+          Name: Item.Name,
+          StocktakingInventoryID: undefined
         });
       }
       this.Barcode = "";
@@ -286,7 +307,9 @@ export default {
     },
     SearchNameItem(queryString, cb) {
       var Items = this.Items;
-      var results = queryString ? Items.filter(this.createFilter(queryString)) : Items;
+      var results = queryString
+        ? Items.filter(this.createFilter(queryString))
+        : Items;
       if (results.length <= 0) {
         // console.log(results.length);
         this.NewItemVisible = true;
@@ -297,25 +320,25 @@ export default {
       cb(results);
     },
     createFilter(queryString) {
-      return (Item) => {
+      return Item => {
         return Item.Name.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
       };
     },
     getdata() {
-      GetActiveInventory().then((response) => {
+      GetActiveInventory().then(response => {
         console.log(response);
         this.InventoryItems = response;
       });
-      GetActiveItem().then((response) => {
+      GetActiveItem().then(response => {
         console.log(response);
         this.Items = response;
       });
     },
     createData() {
-      this.$refs["tempForm"].validate((valid) => {
+      this.$refs["tempForm"].validate(valid => {
         if (valid) {
           Create(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.$notify({
                 title: "تم الإضافة بنجاح",
                 message: "تم الإضافة بنجاح",
@@ -326,10 +349,10 @@ export default {
                 onClose: () => {
                   Object.assign(this.$data, this.$options.data());
                   this.getdata();
-                },
+                }
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -350,9 +373,9 @@ export default {
         Tax: 0.0,
         Rate: 0,
         Barcode: this.Barcode,
-        Description: "",
+        Description: ""
       })
-        .then((response) => {
+        .then(response => {
           this.Barcode = "";
           this.NewItemVisible = false;
           this.getdata();
@@ -360,10 +383,10 @@ export default {
             title: "تم ",
             message: "تم الإضافة بنجاح",
             type: "success",
-            duration: 2000,
+            duration: 2000
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -373,7 +396,7 @@ export default {
         this.EnterQTYVisible = true;
         this.Qty = 1;
       } else {
-        var find = this.Items.findIndex((value) => value.Barcode == this.Barcode);
+        var find = this.Items.findIndex(value => value.Barcode == this.Barcode);
         console.log(find);
         if (find != -1) {
           if (this.Qty > 1) {
@@ -391,11 +414,11 @@ export default {
       console.log("10");
       let barcode = this.$barcodeScanner.getPreviousCode();
       // do something...
-    },
+    }
   },
   created() {
     this.$barcodeScanner.init(this.onBarcodeScanned);
     this.getdata();
-  },
+  }
 };
 </script>

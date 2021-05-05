@@ -148,11 +148,11 @@
                           >
                           <template slot-scope="scope">
                             <div class="ItemName">
-                              {{ scope.row.Itemx.Name }}
+                              {{ scope.row.Name }}
                               <el-tag type="primary" effect="plain">{{
                                 PriceMethod == "wholesale"
-                                  ? scope.row.Itemx.OtherPrice.toFixed($store.getters.settings.ToFixed)
-                                  : scope.row.Itemx.SellingPrice.toFixed($store.getters.settings.ToFixed)
+                                  ? scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed)
+                                  : scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
                               }}</el-tag>
                               <edit-item
                                 @focus="focusBarcode"
@@ -670,8 +670,8 @@ export default {
           Tax: 0.0,
           Description: "",
           InventoryItemId: 1,
-          Itemx: Item,
           Name: Item.Name,
+          OtherPrice : Item.OtherPrice,
           SalesInvoiceId: undefined,
           InventoryQty: 0,
         });

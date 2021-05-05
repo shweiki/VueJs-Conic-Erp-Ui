@@ -16,6 +16,34 @@ export function GetActiveVendor(query) {
   })
 }
 
+export function GetByID(query) {
+  return request({
+    url: '/Vendor/GetByID',
+    method: 'get',
+    params: query
+  })
+}
+export function GetVendorByAny(query) {
+  return request({
+    url: '/Vendor/GetVendorByAny',
+    method: 'get',
+    params: query
+  })
+}
+export function CheckIsExist(query) {
+  return request({
+    url: '/Vendor/CheckIsExist',
+    method: 'get',
+    params: query
+  })
+}
+export function GetByListQ(data) {
+  return request({
+    url: '/Vendor/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function Create(data) {
   return request({
     url: '/Vendor/Create',

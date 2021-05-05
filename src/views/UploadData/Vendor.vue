@@ -4,11 +4,9 @@
       :on-success="handleSuccess"
       :before-upload="beforeUpload"
     />
-    <el-button @click="AddItem" plain :disabled="isDisabled" type="success"
-      >Push
-      <span> {{ counter + "  Of  " + tableData.length }} </span></el-button
+    <el-button @click="AddVendor" plain :disabled="isDisabled" type="success"
+      >Push</el-button
     >
-
     <el-table
       height="250"
       v-loading="loading"
@@ -29,31 +27,31 @@
 
 <script>
 import UploadExcelComponent from "@/components/UploadExcel/index.vue";
-import { CreateItem } from "@/api/Item";
+import { Create } from "@/api/Vendor";
+
 export default {
-  name: "Item",
+  name: "Vendor",
   components: { UploadExcelComponent },
   data() {
     return {
       isDisabled: true,
       loading: false,
       tableData: [],
-      counter: 0,
       data: [],
       tableHeader: []
     };
   },
   methods: {
-    AddItem() {
+    AddVendor() {
       this.loading = true;
       this.isDisabled = true;
-      CreateItem(this.data[0])
+
+      Create(this.data[0])
         .then(response => {
-          console.log("tag", response);
+          console.log("tag", "" + response);
           this.data.splice(0, 1);
-          this.counter++;
           if (this.data.length != 0) {
-            this.AddItem();
+            this.AddVendor();
           } else {
             this.loading = false;
             this.tableData = [];
@@ -67,14 +65,17 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          //this.AddItem(100), 1000);
+          //this.AddVendor(100), 1000);
         });
     },
+
     beforeUpload(file) {
       const isLt1M = file.size / 1024 / 1024 < 8;
+
       if (isLt1M) {
         return true;
       }
+
       this.$message({
         message: "Please do not upload files larger than 8m in size.",
         type: "warning"
@@ -85,37 +86,51 @@ export default {
       this.loading = true;
       this.tableData = results;
       console.log(this.tableData);
-      this.data = this.tableData.map(element => {
+      this.data = this.tableData.map(x => {
+        let Phone1 = x.Description.toString().match(/\d+/);
+        let Name = x.Description.toString().replace(/[0-9]/g, "");
+        if (Phone1 == null || Phone1[0].length != 10) return false;
+        console.log(Phone1[0], Name);
         return {
           Id: undefined,
-          Name: element.Name,
-          CostPrice: element.CostPrice,
-          SellingPrice: element.SellingPrice,
-          OtherPrice: element.OtherPrice,
-          LowOrder: element.LowOrder,
-          Tax: element.Tax,
-          Rate: element.Rate,
-          Barcode: element.Barcode,
-          Description: element.Description,
-          Status: 0,
-          Category: element.Category,
-          IsPrime: false
+          Name: Name,
+          Region: "",
+          Email: "",
+          PhoneNumber1: Phone1[0],
+          PhoneNumber2: "",
+          Fax: "0",
+          CreditLimit: 0.0,
+          Description: "",
+          IsPrime: false,
+          Type: "Customer"
         };
       });
+      const seen = new Set();
+      this.data = this.data.filter(el => {
+        const duplicate = seen.has(el.PhoneNumber1);
+        seen.add(el.PhoneNumber1);
+        return !duplicate;
+      });
       this.tableHeader = header;
-      this.loading = false;
       this.isDisabled = false;
+      this.loading = false;
     },
     ExcelDateToJSDate(serial) {
       var utc_days = Math.floor(serial - 25569);
       var utc_value = utc_days * 86400;
       var date_info = new Date(utc_value * 1000);
+
       var fractional_day = serial - Math.floor(serial) + 0.0000001;
+
       var total_seconds = Math.floor(86400 * fractional_day);
+
       var seconds = total_seconds % 60;
+
       total_seconds -= seconds;
+
       var hours = Math.floor(total_seconds / (60 * 60));
       var minutes = Math.floor(total_seconds / 60) % 60;
+
       return new Date(
         date_info.getFullYear(),
         date_info.getMonth(),

@@ -25,7 +25,17 @@
                     }
                   ]"
                 >
-                  <vendor-select @Set="v => (tempForm.VendorId = v)" />
+                  <vendor-search-any
+                    @Set="
+                      v => {
+                        tempForm.Name = v.Name;
+                        tempForm.PhoneNumber = v.PhoneNumber1;
+                        tempForm.Region = v.Region;
+                        tempForm.VendorId = v.Id;
+                      }
+                    "
+                  />
+                  <!--  <vendor-select @Set="v => (tempForm.Vendor = v)" />-->
                 </el-form-item>
               </el-col>
               <el-col v-permission="['Admin']" :span="4">
@@ -163,12 +173,13 @@
                               ><i class="el-icon-bank-card"></i>بطاقة
                             </el-radio-button>
 
-                            <el-radio
+                            <el-radio-button
                               v-if="tempForm.VendorId != 2"
                               label="Receivables"
                               border
                               ><i class="el-icon-s-custom"></i
-                            ></el-radio>
+                              >ذمم</el-radio-button
+                            >
                           </el-radio-group>
                         </el-form-item>
                       </el-col>
@@ -209,9 +220,22 @@
                       </el-col>
                       <el-col v-if="tempForm.Type == 'Delivery'" :span="24">
                         <delivery-el
+                          :name="tempForm.Name"
+                          :phone="tempForm.PhoneNumber"
+                          :Region="tempForm.Region"
                           @Set="v => (tempForm.Description = v)"
+                          @SetRegion="v => (tempForm.Region = v)"
+                          @SetPhoneNumber="v => (tempForm.PhoneNumber = v)"
+                          @SetName="v => (tempForm.Name = v)"
                           @SetDeliveryPrice="v => (tempForm.DeliveryPrice = v)"
                         />
+                        <el-col :span="6">
+                          <el-switch
+                            v-model="AutoSendSMS"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                          ></el-switch>
+                        </el-col>
                       </el-col>
                     </el-row>
                     <el-row type="flex" class="card" v-permission="['Admin']">
@@ -421,6 +445,8 @@ import RestaurantPrintButton from "@/components/PrintRepot/RestaurantPrintButton
 
 // report
 import VendorSelect from "@/components/Vendor/VendorSelect";
+import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
+
 import FakeDate from "@/components/Date/FakeDate";
 
 import { Create, Edit, GetSaleInvoiceByID } from "@/api/SaleInvoice";
@@ -433,6 +459,7 @@ import splitPane from "vue-splitpane";
 import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
+import axios from "axios";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 
@@ -453,7 +480,8 @@ export default {
     FakeDate,
     VendorSelect,
     Description,
-    DeliveryEl
+    DeliveryEl,
+    VendorSearchAny
   },
   props: {
     isEdit: {
@@ -467,6 +495,7 @@ export default {
       PriceMethod: "retail",
       DisabledSave: false,
       AutoPrint: true,
+      AutoSendSMS: true,
       OpenRestOfBill: false,
       tempForm: {
         Id: undefined,
@@ -480,7 +509,8 @@ export default {
         IsPrime: false,
         Type: "Delivery",
         DeliveryPrice: 0,
-        Region: "",
+        Region: "الثامنة",
+        PhoneNumber: "",
         InventoryMovements: []
       },
       rules: {
@@ -558,9 +588,10 @@ export default {
         Description: "",
         VendorId: 2,
         IsPrime: false,
-        Type: "Delivery",
+        Type: "Takeaway",
         DeliveryPrice: 0,
         Region: "",
+        PhoneNumber: "",
         InventoryMovements: []
       };
     },
@@ -625,20 +656,28 @@ export default {
           this.DisabledSave = true;
           Create(this.tempForm)
             .then(response => {
-              this.$notify({
-                title: "تم الإضافة بنجاح",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                position: "top-left",
-                duration: 1000,
-                onClose: () => {
-                  this.tempForm.Id = response;
-                  this.OldInvoice = this.tempForm;
-                  this.restTempForm();
-                  this.DisabledSave = false;
-                  this.OpenRestOfBill = false;
-                }
-              });
+              if (response) {
+                this.$notify({
+                  title: "تم الإضافة بنجاح",
+                  message:
+                    "تم الإضافة بنجاح - " + this.tempForm.PhoneNumber + " ",
+                  type: "success",
+                  position: "top-left"
+                });
+                this.tempForm.Id = response;
+                this.OldInvoice = this.tempForm;
+                this.restTempForm();
+                this.DisabledSave = false;
+                this.OpenRestOfBill = false;
+                if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
+                  this.sendSMS(this.OldInvoice);
+              } else {
+                this.$notify.error({
+                  title: "error",
+                  message: "حصلت مشكلة في ترحيل",
+                  position: "top-left"
+                });
+              }
             })
             .catch(error => {
               console.log(error);
@@ -678,7 +717,6 @@ export default {
                   showClose: false,
                   onClose: () => {
                     this.ValidateDescription = "";
-                    this.tempForm.Id = response;
                     this.OldInvoice = this.tempForm;
                     this.$nextTick(() => {
                       this.OpenRestOfBill = false;
@@ -698,6 +736,41 @@ export default {
           console.log("error submit!!");
           return false;
         }
+      });
+    },
+    sendSMS(inv) {
+      let phone = inv.PhoneNumber.toString();
+      if (phone.length == 10) {
+        phone = phone.slice(1);
+      }
+      console.log(phone);
+      axios({
+        method: "get",
+        url: "http://josmsservice.com/sms/api/SendSingleMessage.cfm",
+        params: {
+          numbers: "962" + phone,
+          senderid: "Sh.Sheesh",
+          AccName: "highfit",
+          AccPass: "D7!cT5!SgU0",
+          msg:
+            "شكرا لإختياركم شاورما شيش , قيمة الطلب مع التوصيل " +
+            (
+              inv.DeliveryPrice +
+              inv.InventoryMovements.reduce((prev, cur) => {
+                return prev + cur.Qty * cur.SellingPrice;
+              }, 0) -
+              inv.Discount
+            ).toFixed(2) +
+            " JD",
+          requesttimeout: 5000000
+        }
+      }).then(response => {
+        this.$notify({
+          title: "تم ارسال الرسالة النصية بنجاح",
+          message: "الى الرقم  " + phone + " ",
+          type: "success",
+          position: "top-left"
+        });
       });
     },
     setTagsViewTitle() {

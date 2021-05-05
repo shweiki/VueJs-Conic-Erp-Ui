@@ -199,6 +199,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column
+          v-if="checkPermission(['Admin'])"
           type="selection"
           width="55"
           align="center"
@@ -328,12 +329,15 @@ import { CreateEntry } from "@/api/EntryAccounting";
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import { SaleInvoicesList } from "@/Report/SaleInvoice";
+import permission from "@/directive/permission/index.js";
+import checkPermission from "@/utils/permission";
 
 import printJS from "print-js";
 
 export default {
   name: "SaleInvoice",
   components: { PrintButton },
+  directives: { permission },
   data() {
     return {
       loading: true,
@@ -362,6 +366,7 @@ export default {
     this.getdata();
   },
   methods: {
+    checkPermission,
     SaleInvoicesList,
     handleSelectionChange(val) {
       this.Selection = val;
@@ -407,7 +412,7 @@ export default {
       this.Totals.Discount = this.Selection.reduce((a, b) => a + b.Discount, 0);
       this.Totals.Totals =
         this.Totals.Cash + this.Totals.Receivables + this.Totals.Visa;
-           this.Totals.Profit = this.Totals.Totals - this.Totals.TotalCost
+      this.Totals.Profit = this.Totals.Totals - this.Totals.TotalCost;
 
       this.EnableSave = false;
     },
@@ -501,8 +506,8 @@ export default {
           this.Totals.Receivables.toFixed(
             this.$store.getters.settings.ToFixed
           ) +
-        //  " - صافي الربح : " +
-        //  this.Totals.Profit.toFixed(this.$store.getters.settings.ToFixed) +
+          //  " - صافي الربح : " +
+          //  this.Totals.Profit.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي خصم : " +
           this.Totals.Discount.toFixed(this.$store.getters.settings.ToFixed) +
           " - الاجمالي التكلفة : " +

@@ -286,7 +286,7 @@ export default {
 };
 </script>
 <style scoped>
-.el-collapse-itemx {
+.el-collapse-item {
   display: block;
 }
 </style>

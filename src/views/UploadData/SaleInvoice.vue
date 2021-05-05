@@ -4,7 +4,11 @@
       :on-success="handleSuccess"
       :before-upload="beforeUpload"
     />
-    <el-button @click="AddItem" plain :disabled="isDisabled" type="success"
+    <el-button
+      @click="AddSaleInvoice"
+      plain
+      :disabled="isDisabled"
+      type="success"
       >Push
       <span> {{ counter + "  Of  " + tableData.length }} </span></el-button
     >
@@ -29,9 +33,10 @@
 
 <script>
 import UploadExcelComponent from "@/components/UploadExcel/index.vue";
-import { CreateItem } from "@/api/Item";
+import { Create } from "@/api/SaleInvoice";
+
 export default {
-  name: "Item",
+  name: "SaleInvoice",
   components: { UploadExcelComponent },
   data() {
     return {
@@ -44,16 +49,16 @@ export default {
     };
   },
   methods: {
-    AddItem() {
+    AddSaleInvoice() {
       this.loading = true;
       this.isDisabled = true;
-      CreateItem(this.data[0])
+      Create(this.data[0])
         .then(response => {
           console.log("tag", response);
           this.data.splice(0, 1);
           this.counter++;
           if (this.data.length != 0) {
-            this.AddItem();
+            this.AddSaleInvoice();
           } else {
             this.loading = false;
             this.tableData = [];
@@ -67,14 +72,17 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          //this.AddItem(100), 1000);
+          //this.AddSaleInvoice(100), 1000);
         });
     },
+
     beforeUpload(file) {
       const isLt1M = file.size / 1024 / 1024 < 8;
+
       if (isLt1M) {
         return true;
       }
+
       this.$message({
         message: "Please do not upload files larger than 8m in size.",
         type: "warning"
@@ -85,21 +93,32 @@ export default {
       this.loading = true;
       this.tableData = results;
       console.log(this.tableData);
-      this.data = this.tableData.map(element => {
+      this.data = this.tableData.map(x => {
+        //   let InventoryMovements =  JSON.parse(x.InventoryMovements)
         return {
           Id: undefined,
-          Name: element.Name,
-          CostPrice: element.CostPrice,
-          SellingPrice: element.SellingPrice,
-          OtherPrice: element.OtherPrice,
-          LowOrder: element.LowOrder,
-          Tax: element.Tax,
-          Rate: element.Rate,
-          Barcode: element.Barcode,
-          Description: element.Description,
-          Status: 0,
-          Category: element.Category,
-          IsPrime: false
+          Name: x.Name,
+          Tax: x.Tax,
+          FakeDate: x.FakeDate,
+          PaymentMethod: x.PaymentMethod,
+          Discount: x.Discount,
+          Description: x.Description,
+          VendorId: x.VendorId,
+          IsPrime: x.IsPrime,
+          Type: x.Type,
+          DeliveryPrice: x.DeliveryPrice,
+          Region: x.Region,
+          InventoryMovements: JSON.parse(x.InventoryMovements).map(im => {
+            return {
+              Id: undefined,
+              ItemsId: im.ItemsId,
+              TypeMove: im.TypeMove,
+              InventoryItemId: im.InventoryItemId,
+              Qty: im.Qty,
+              SellingPrice: im.SellingPrice,
+              Description: im.Description
+            };
+          })
         };
       });
       this.tableHeader = header;
@@ -110,12 +129,18 @@ export default {
       var utc_days = Math.floor(serial - 25569);
       var utc_value = utc_days * 86400;
       var date_info = new Date(utc_value * 1000);
+
       var fractional_day = serial - Math.floor(serial) + 0.0000001;
+
       var total_seconds = Math.floor(86400 * fractional_day);
+
       var seconds = total_seconds % 60;
+
       total_seconds -= seconds;
+
       var hours = Math.floor(total_seconds / (60 * 60));
       var minutes = Math.floor(total_seconds / 60) % 60;
+
       return new Date(
         date_info.getFullYear(),
         date_info.getMonth(),

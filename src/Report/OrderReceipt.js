@@ -16,6 +16,8 @@ export function OrderReceipt(temp, printer = undefined) {
   //Logo
   //Name
   doc.setFontSize(24);
+  doc.text(store.getters.name, 45, startY += 6, { align: 'right' });
+
   doc.setFontType("normal");
   doc.setLineWidth(0.65);
   doc.setFontSize(18);

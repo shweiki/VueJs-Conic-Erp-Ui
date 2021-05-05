@@ -20,6 +20,22 @@ const UploadData = {
       },
     },
     {
+      path: 'Upload/Vendor',
+      component: () => import('@/views/UploadData/Vendor'),
+      name: 'UploadVendor',
+      meta: {
+        title: 'UploadVendor', icon: 'execution'
+      },
+    },
+    {
+      path: 'Upload/SaleInvoice',
+      component: () => import('@/views/UploadData/SaleInvoice'),
+      name: 'UploadSaleInvoice',
+      meta: {
+        title: 'UploadSaleInvoice', icon: 'execution'
+      },
+    },
+    {
       path: 'Upload/Service',
       component: () => import('@/views/UploadData/Service'),
       name: 'UploadService',

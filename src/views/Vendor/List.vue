@@ -1,92 +1,91 @@
-<template>
+﻿<template>
   <div class="app-container">
-
-    <el-card class="box-card">
-      <div class="filter-container">
-        <el-button @click="FixPhoneNumber">FixPhoneNumber</el-button>
-        <el-popover placement="left" width="400" >
-          <p>ارسال عبر</p>
-          <div style="text-align: right; margin: 0">
-            <el-input
-              type="textarea"
-              v-model="SmsBody"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك الخصم فارغ',
-                  trigger: 'blur'
-                }
-              ]"
-            ></el-input>
-            <el-button
-              icon="el-icon-circle-plus"
-              type="primary"
-              :size="$store.getters.size"
-              @click="SendSms()"
-              >SMS</el-button
-            >
-            <el-button
-              icon="el-icon-circle-plus"
-              type="primary"
-              :size="$store.getters.size"
-              @click="SendEmail()"
-              >Email</el-button
-            >
-          </div>
-          <el-button icon="el-icon-circle-plus" slot="reference"
-            >ارسال رسالة</el-button
+    <div class="filter-container">
+      <el-popover placement="left" width="400">
+        <p>ارسال عبر</p>
+        <div style="text-align: right; margin: 0">
+          <el-input
+            type="textarea"
+            v-model="SmsBody"
+            :rules="[
+              {
+                required: true,
+                message: 'لايمكن ترك الخصم فارغ',
+                trigger: 'blur'
+              }
+            ]"
+          ></el-input>
+          <el-button
+            icon="el-icon-circle-plus"
+            type="primary"
+            :size="$store.getters.size"
+            @click="SendSms()"
+            >SMS</el-button
           >
-        </el-popover>
-        <el-row type="flex">
-          <el-col :span="12">
-            <el-input
-              v-model="listQuery.Any"
-              placeholder="Search By Any Acount Name Or Id"
-              style="width: 200px"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
-          </el-col>
+          <el-button
+            icon="el-icon-circle-plus"
+            type="primary"
+            :size="$store.getters.size"
+            @click="SendEmail()"
+            >Email</el-button
+          >
+        </div>
+        <el-button icon="el-icon-circle-plus" slot="reference"
+          >ارسال رسالة</el-button
+        >
+      </el-popover>
+      <add-vendor />
+      <el-row type="flex">
+        <el-col :span="12">
+          <el-input
+            v-model="listQuery.Any"
+            placeholder="Search By Any Acount Name Or Id"
+            style="width: 200px"
+            class="filter-item"
+            @keyup.enter.native="handleFilter"
+          />
+        </el-col>
 
-          <el-col :span="3">
-            <el-select
-              v-model="listQuery.Sort"
-              style="width: 140px"
-              class="filter-item"
-              @change="handleFilter"
-            >
-              <el-option
-                v-for="item in sortOptions"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              />
-            </el-select>
-          </el-col>
-          <el-col :span="6">
-            <el-button
-              v-waves
-              :loading="downloadLoading"
-              class="filter-item"
-              type="primary"
-              icon="el-icon-download"
-              @click="handleDownload"
-            >
-              Export </el-button
-            ><el-button
-              v-waves
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleFilter"
-            >
-              Search
-            </el-button>
-          </el-col>
-        </el-row>
-      </div>
+        <el-col :span="3">
+          <el-select
+            v-model="listQuery.Sort"
+            style="width: 140px"
+            class="filter-item"
+            @change="handleFilter"
+          >
+            <el-option
+              v-for="item in sortOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="6">
+          <el-button
+            v-waves
+            :loading="downloadLoading"
+            class="filter-item"
+            type="primary"
+            icon="el-icon-download"
+            @click="handleDownload"
+          >
+            Export </el-button
+          ><el-button
+            v-waves
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            @click="handleFilter"
+          >
+            Search
+          </el-button>
+        </el-col>
+      </el-row>
+    </div>
+    <el-card class="box-card">
       <radio-oprations
-        TableName="Member"
+        TableName="Vendor"
         @Set="
           v => {
             listQuery.Status = v;
@@ -95,7 +94,7 @@
         "
       />
       <el-divider direction="vertical"></el-divider>
-      <span>عدد المشتركين</span>
+      <span>عدد اشخاص</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Rows }}</span>
       <el-divider direction="vertical"></el-divider>
@@ -133,7 +132,7 @@
       :data="list"
       border
       fit
-       height="400"
+      height="400"
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
@@ -142,7 +141,7 @@
       @row-dblclick="
         row => {
           let r = $router.resolve({
-            path: '/Gym/Edit/' + row.Id
+            path: '/Vendor/Edit/' + row.Id
           });
           window.open(
             r.href,
@@ -217,7 +216,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          <status-tag :Status="scope.row.Status" TableName="Member" />
+          <status-tag :Status="scope.row.Status" TableName="Vendor" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
@@ -225,14 +224,13 @@
           <next-oprations
             :ObjID="scope.row.Id"
             :Status="scope.row.Status"
-            TableName="Member"
+            TableName="Vendor"
             @Done="handleFilter"
           />
-          <print-button Type="Member" :Data="scope.row" />
         </template>
       </el-table-column>
     </el-table>
-        <pagination
+    <pagination
       v-show="Totals.Rows > 0"
       :total="Totals.Rows"
       :page.sync="listQuery.Page"
@@ -243,25 +241,25 @@
 </template>
 
 <script>
-import { GetByListQ, FixPhoneNumber } from "@/api/Member";
+import { GetByListQ } from "@/api/Vendor";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import PrintButton from "@/components/PrintRepot/PrintButton";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import permission from "@/directive/permission/index.js";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import AddVendor from '@/components/Vendor/AddVendor.vue';
 
 export default {
   name: "ComplexTable",
   components: {
     StatusTag,
     NextOprations,
-    PrintButton,
     Pagination,
-    RadioOprations
+    RadioOprations,
+    AddVendor
   },
   directives: { waves, permission },
   data() {
@@ -289,7 +287,6 @@ export default {
     // this.getList();
   },
   methods: {
-    FixPhoneNumber,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
@@ -364,7 +361,7 @@ export default {
           }
         }
         //  console.log(this.Selection);
-          numbers100.forEach((element) => {
+        numbers100.forEach(element => {
           axios({
             method: "get",
             url: "http://josmsservice.com/smsonline/msgservicejo.cfm",
@@ -374,9 +371,9 @@ export default {
               AccName: "highfit",
               AccPass: "D7!cT5!SgU0",
               msg: this.SmsBody,
-              requesttimeout: 5000000,
-            },
-          }).then((response) => {
+              requesttimeout: 5000000
+            }
+          }).then(response => {
             console.log(response);
           });
         });

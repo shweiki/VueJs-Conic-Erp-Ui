@@ -16,6 +16,9 @@ export function ShawermaSheesh(temp, printer = undefined) {
   doc.addFileToVFS('Amiri-Regular-normal.ttf', AmiriRegular());
   doc.addFont('Amiri-Regular-normal.ttf', 'Amiri-Regular', 'normal');
   doc.setFont("Amiri-Regular");
+  doc.setFontSize(18);
+
+  doc.text(store.getters.name, 45, startY += 6, { align: 'right' });
 
   //Logo
   doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX + 10, startY, 50, 35);
@@ -24,11 +27,12 @@ export function ShawermaSheesh(temp, printer = undefined) {
 
   doc.setFontSize(24);
   doc.setFontType("normal");
-  doc.setLineWidth(1);
+  doc.setLineWidth(0.4);
   startY += 30
   doc.line(0, startY + 5, 70, startY += 5);
   doc.setFontSize(18);
   doc.text(temp.Type, 45, startY += 6, { align: 'right' });
+
   doc.setFontSize(12);
 
   doc.text(":رقم الطلب", 70, startY += 6, { align: 'right' });
@@ -38,7 +42,7 @@ export function ShawermaSheesh(temp, printer = undefined) {
   doc.text("" + temp.Id + "", 5, startY);
   doc.setFontSize(12);
 
-  doc.setLineWidth(1);
+  doc.setLineWidth(0.4);
   doc.line(0, startY += 5, 80, startY);
   //doc.text(":عدد الاصناف", 50, startY+=6);
   // doc.text("" + ItemQty + "", 5, startY);
@@ -58,24 +62,23 @@ export function ShawermaSheesh(temp, printer = undefined) {
 
   });
   if (temp.Type.toLowerCase() == "delivery".toLowerCase()) {
-    doc.setLineWidth(1);
+    doc.setLineWidth(0.4);
     doc.line(0, startY += 5, 80, startY);
     doc.text(" المبلغ", 70, startY += 6, { align: 'right' });
     doc.text(" " + TotalAmmount + "  ", 5, startY);
 
-    doc.setLineWidth(1);
+    doc.setLineWidth(0.4);
     doc.line(0, startY += 5, 80, startY);
     doc.text(" التوصيل", 70, startY += 6, { align: 'right' });
     doc.text(" " + temp.DeliveryPrice + "  ", 5, startY);
-
   }
 
-  doc.setLineWidth(1);
+  doc.setLineWidth(0.4);
   doc.line(0, startY += 5, 80, startY);
   doc.text(" الاجمالي", 70, startY += 6, { align: 'right' });
   doc.text(" " + (parseFloat(temp.DeliveryPrice) + parseFloat(TotalAmmount)) + "  ", 5, startY);
 
-  doc.setLineWidth(1);
+  doc.setLineWidth(0.4);
   doc.line(0, startY += 5, 80, startY);
   doc.text(" :تاريخ الفاتورة", 70, startY += 5, { align: 'right' });
   doc.text("" + formatDate(timein, "no") + " - " + tConvert(timein), 5, startY);
@@ -84,21 +87,19 @@ export function ShawermaSheesh(temp, printer = undefined) {
   doc.text(temp.PaymentMethod, 5, startY);
 
   if (temp.Description != "") {
-    doc.setLineWidth(1);
+    doc.setLineWidth(0.4);
     doc.line(0, startY += 5, 80, startY);
     doc.text(" : *", 70, startY += 5, { align: 'right' });
     doc.text("" + temp.Description, 1, startY);
   }
 
-  doc.setLineWidth(1);
+  doc.setLineWidth(0.4);
   doc.line(0, startY += 5, 80, startY);
   doc.text("هاتف :" + store.getters.CompanyInfo.PhoneNumber1 + "", 70, startY += 5, { align: 'right' });
   doc.text("العنوان :" + store.getters.CompanyInfo.Address + "", 70, startY += 5, { align: 'right' });
 
   if (printer) {
-
     let cpj = new JSPM.ClientPrintJob();
-
     cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
     var my_file = new JSPM.PrintFilePDF(
       doc.output('blob'),

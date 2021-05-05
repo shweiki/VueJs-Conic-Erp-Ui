@@ -117,11 +117,11 @@ export const asyncRoutes = [
   {
     path: '/Vendor',
     component: Layout,
-    redirect: '/Vendor/index',
+    redirect: '/Vendor/list',
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/Vendor/index'),
+        path: 'List',
+        component: () => import('@/views/Vendor/List'),
         name: 'Vendors',
         meta: {
           title: 'Vendors', icon: 'customer-service'

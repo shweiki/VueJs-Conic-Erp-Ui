@@ -1,17 +1,17 @@
 <template>
   <el-row type="flex">
     <el-col :span="10">
-      <el-input v-model="name" @change="SetText" placeholder="الاسم" />
+      <el-input v-model="name" @change="SetVal" placeholder="الاسم" />
     </el-col>
     <el-col :span="8">
       <el-select
-        @change="SetText"
+        @change="SetVal"
         filterable
-        v-model="city"
+        v-model="Region"
         placeholder="المنطقة"
       >
         <el-option
-          v-for="item in cities"
+          v-for="item in Regions"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -24,33 +24,30 @@
       </el-select>
     </el-col>
     <el-col :span="6">
-      <VuePhoneNumberInput
-        :translations="{
-          countrySelectorLabel: 'رمز البلد',
-          countrySelectorError: 'تاكد من رقم',
-          phoneNumberLabel: 'رقم الهاتف'
-        }"
-        :no-country-selector="true"
-        default-country-code="JO"
-        v-model="phone"
-        @update="SetText"
-      />
+      <el-input v-model="phone" @change="SetVal" placeholder="رقم الهاتف" />
     </el-col>
   </el-row>
 </template>
 
 <script>
-import VuePhoneNumberInput from "vue-phone-number-input";
-import "vue-phone-number-input/dist/vue-phone-number-input.css";
 export default {
-  components: { VuePhoneNumberInput },
-
+  props: {
+    Region: {
+      type: String,
+      default: ""
+    },
+    name: {
+      type: String,
+      default: ""
+    },
+    phone: {
+      type: String,
+      default: ""
+    }
+  },
   data() {
     return {
-      name: "",
-      phone: "",
-      city: "الثامنة",
-      cities: [
+      Regions: [
         {
           value: "الثامنة",
           label: "الثامنة",
@@ -92,8 +89,18 @@ export default {
           price: 1.25
         },
         {
-          value: "الجمعية - سكن الاطباء - شويخ مول",
-          label: "الجمعية - سكن الاطباء - شويخ مول",
+          value: "شويخ مول",
+          label: "شويخ مول",
+          price: 1.25
+        },
+        {
+          value: "سكن الاطباء",
+          label: "سكن الاطباء",
+          price: 1.25
+        },
+        {
+          value: "الجمعية",
+          label: "الجمعية",
           price: 1.25
         },
         {
@@ -107,33 +114,118 @@ export default {
           price: 1.5
         },
         {
-          value: "الوحدات (الشرقية + الغربية + الشعبية)",
-          label: "الوحدات (الشرقية + الغربية + الشعبية)",
+          value: "الوحدات الشرقية",
+          label: "الوحدات الشرقية",
           price: 1.5
         },
         {
-          value: "التاسعة + سيتي سنتر + الحرفية + الكرامة + الحادي عشر",
-          label: "التاسعة + سيتي سنتر + الحرفية + الكرامة + الحادي عشر",
+          value: "الوحدات الغربية",
+          label: "الوحدات الغربية",
           price: 1.5
         },
         {
-          value: "المفوضية + البنك العربي + كلية العقبة",
-          label: "المفوضية + البنك العربي + كلية العقبة",
+          value: "الوحدات الشعبية",
+          label: "الوحدات الشعبية",
           price: 1.5
         },
         {
-          value: "الشلالة + الخزان",
-          label: "الشلالة + الخزان",
+          value: "التاسعة",
+          label: "التاسعة",
+          price: 1.5
+        },
+        {
+          value: "ايلة",
+          label: "ايلة",
+          price: 1.5
+        },
+        {
+          value: "سيتي سنتر",
+          label: "سيتي سنتر",
+          price: 1.5
+        },
+        {
+          value: "الحرفية",
+          label: "الحرفية",
+          price: 1.5
+        },
+        {
+          value: "الكرامة",
+          label: "الكرامة",
+          price: 1.5
+        },
+        {
+          value: "الحادي عشر",
+          label: "الحادي عشر",
+          price: 1.5
+        },
+        {
+          value: "المفوضية",
+          label: "المفوضية",
+          price: 1.5
+        },
+        {
+          value: "البنك العربي",
+          label: "البنك العربي",
+          price: 1.5
+        },
+        {
+          value: "كلية العقبة",
+          label: "كلية العقبة",
+          price: 1.5
+        },
+        {
+          value: "النخيل",
+          label: "النخيل",
+          price: 1.5
+        },
+        {
+          value: "الشلالة",
+          label: "الشلالة",
           price: 2.0
         },
         {
-          value: "الكورنيش + المنارة + البلد القديمة + صلاح الدين",
-          label: "الكورنيش + المنارة + البلد القديمة + صلاح الدين",
+          value: "الخزان",
+          label: "الخزان",
           price: 2.0
         },
         {
-          value: "الجامعة الاردنية + مستشفى هاشم",
-          label: "الجامعة الاردنية + مستشفى هاشم",
+          value: "الكورنيش",
+          label: "الكورنيش",
+          price: 2.0
+        },
+        {
+          value: "المنارة",
+          label: "المنارة",
+          price: 2.0
+        },
+        {
+          value: "سوق البلد",
+          label: "سوق البلد",
+          price: 2.0
+        },
+        {
+          value: "البلد القديمة",
+          label: "البلد القديمة",
+          price: 2.0
+        },
+        {
+          value: "صلاح الدين",
+          label: "صلاح الدين",
+          price: 2.0
+        },
+        {
+          value: "شارع الفنادق",
+          label: "شارع الفنادق",
+          price: 2.0
+        },
+        {
+          value: "الجامعة الاردنية",
+          label: "الجامعة الاردنية",
+          price: 2.0
+        },
+        {
+          value: "مستشفى هاشم",
+          label: "مستشفى هاشم",
           price: 2.0
         },
         {
@@ -142,15 +234,38 @@ export default {
           price: 3.0
         },
         {
-          value: "المدينة الصناعية + محطة المناصير",
-          label: "المدينة الصناعية + محطة المناصير",
+          value: "محطة المناصير",
+          label: "محطة المناصير",
           price: 3.0
         },
         {
-          value:
-            "ميناء الحاويات + القرية اللوجستية + المطار + الشامية + المعامل",
-          label:
-            "ميناء الحاويات + القرية اللوجستية + المطار + الشامية + المعامل",
+          value: "المدينة الصناعية",
+          label: "المدينة الصناعية",
+          price: 3.0
+        },
+        {
+          value: "المعامل",
+          label: "المعامل",
+          price: 4.0
+        },
+        {
+          value: "الشامية",
+          label: "الشامية",
+          price: 4.0
+        },
+        {
+          value: "المطار",
+          label: "المطار",
+          price: 4.0
+        },
+        {
+          value: "القرية اللوجستية",
+          label: "القرية اللوجستية",
+          price: 4.0
+        },
+        {
+          value: "ميناء الحاويات",
+          label: "ميناء الحاويات",
           price: 4.0
         },
         {
@@ -164,8 +279,13 @@ export default {
           price: 6.0
         },
         {
-          value: "الطريق الخلفي + جامعة العقبة للتكنولوجيا",
-          label: "الطريق الخلفي + جامعة العقبة للتكنولوجيا",
+          value: "الطريق الخلفي",
+          label: "الطريق الخلفي",
+          price: 6.0
+        },
+        {
+          value: "جامعة العقبة للتكنولوجيا",
+          label: "جامعة العقبة للتكنولوجيا",
           price: 6.0
         },
         {
@@ -176,19 +296,32 @@ export default {
       ]
     };
   },
-  created(){
-    this.SetText()
+  watch: {
+    name(val) {
+      this.name = val;
+    },
+    phone(val) {
+      this.phone = val;
+    },
+    Region(val) {
+      this.Region = val;
+    }
+  },
+  created() {
+    this.SetVal();
   },
   methods: {
-    SetVal(val) {
-      this.$emit("Set", val.toString());
+    SetVal() {
       this.$emit(
         "SetDeliveryPrice",
-        this.cities.find(element => element.value == this.city).price
+        this.Regions.find(element => element.value == this.Region).price
       );
-    },
-    SetText(v) {
-      this.SetVal(this.name + " / " + this.city + " / " + "0" + this.phone);
+      this.$emit(
+        "SetRegion",
+        this.Regions.find(element => element.value == this.Region).value
+      );
+      this.$emit("SetPhoneNumber", this.phone);
+      this.$emit("SetName", this.name);
     }
   }
 };

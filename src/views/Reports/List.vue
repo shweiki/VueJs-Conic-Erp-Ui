@@ -1,5 +1,5 @@
 ﻿<template>
-   <div class="app-container">
+  <div class="app-container">
     <el-row type="flex">
       <el-col :span="4">
         <el-input
@@ -10,8 +10,7 @@
           @keyup.enter.native="handleFilter"
         />
       </el-col>
-   
-      
+
       <el-col :span="3">
         <el-select
           v-model="listQuery.Sort"
@@ -28,7 +27,6 @@
         </el-select>
       </el-col>
       <el-col :span="6">
-    
         <el-button
           v-waves
           :loading="downloadLoading"
@@ -48,7 +46,6 @@
         </el-button>
       </el-col>
     </el-row>
-
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -75,15 +72,8 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-  
-
       <el-table-column label="Name" prop="Name" align="center">
       </el-table-column>
- 
-   
-
-  
-  
     </el-table>
     <pagination
       v-show="Totals.Rows > 0"
@@ -104,7 +94,7 @@ import Pagination from "@/components/Pagination"; // secondary package based on 
 export default {
   name: "ComplexTable",
   components: {
-    Pagination,
+    Pagination
   },
   directives: { waves },
   data() {
@@ -125,8 +115,7 @@ export default {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
-        Sort: "-id",
-
+        Sort: "-id"
       },
       sortOptions: [
         { label: "ID Ascending", key: "+id" },
@@ -136,7 +125,7 @@ export default {
     };
   },
   created() {
-    // this.getList();
+    this.getList();
   },
   methods: {
     getList() {

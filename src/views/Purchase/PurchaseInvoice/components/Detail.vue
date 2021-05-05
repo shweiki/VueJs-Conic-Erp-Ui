@@ -152,14 +152,14 @@
           <items-search :WithBarCode="true" @add="AddItem" />
         </el-card>
         <el-table :data="tempForm.InventoryMovements" fit border>
-          <el-table-column align="center" prop="Itemx.Name">
+          <el-table-column align="center" prop="Name">
             <template slot="header" slot-scope="{}"
               >{{ $t("NewPurchaseInvoice.Items") }} ({{
                 TotalItems.toFixed($store.getters.settings.ToFixed)
               }})</template
             >
             <template slot-scope="scope">
-              {{ tempForm.InventoryMovements[scope.$index].Itemx.Name }}
+              {{ tempForm.InventoryMovements[scope.$index].Name }}
               <edit-item
                 :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
               />
@@ -443,7 +443,7 @@ export default {
         SellingPrice: item.CostPrice,
         Tax: 0.0,
         InventoryItemId: 1,
-        Itemx: item,
+          Name: item.Name,
         PurchaseInvoiceId: undefined,
         Description: ""
       });
