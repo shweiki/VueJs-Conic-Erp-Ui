@@ -73,11 +73,10 @@ export default {
 </script>
 
 <style  >
-.el-popper[x-placement^="bottom"] {
-  margin-top: 30px;
-  width: 50%;
-}
-.popover {
+
+.popover[x-placement^="bottom"] {
   background: #3f7faf;
+    margin-top: 30px;
+  width: 50%;
 }
 </style>

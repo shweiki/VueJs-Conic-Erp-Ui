@@ -14,7 +14,7 @@
                 <right-menu />
               </el-col>
 
-              <el-col :span="4">
+              <el-col :span="3">
                 <el-form-item
                   prop="VendorId"
                   :rules="[
@@ -35,8 +35,12 @@
                       }
                     "
                   />
+
                   <!--  <vendor-select @Set="v => (tempForm.Vendor = v)" />-->
                 </el-form-item>
+              </el-col>
+              <el-col :span="1">
+                <edit-vendor :VendorId="tempForm.VendorId" />
               </el-col>
               <el-col v-permission="['Admin']" :span="4">
                 <el-form-item
@@ -172,14 +176,14 @@
                             <el-radio-button label="Visa" border
                               ><i class="el-icon-bank-card"></i>بطاقة
                             </el-radio-button>
-
+                            <!--
                             <el-radio-button
                               v-if="tempForm.VendorId != 2"
                               label="Receivables"
                               border
                               ><i class="el-icon-s-custom"></i
                               >ذمم</el-radio-button
-                            >
+                            > -->
                           </el-radio-group>
                         </el-form-item>
                       </el-col>
@@ -222,7 +226,8 @@
                         <delivery-el
                           :name="tempForm.Name"
                           :phone="tempForm.PhoneNumber"
-                          :Region="tempForm.Region"
+                          :region="tempForm.Region"
+                          :deliveryprice="tempForm.DeliveryPrice"
                           @Set="v => (tempForm.Description = v)"
                           @SetRegion="v => (tempForm.Region = v)"
                           @SetPhoneNumber="v => (tempForm.PhoneNumber = v)"
@@ -460,6 +465,7 @@ import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
 import axios from "axios";
+import EditVendor from "@/components/Vendor/EditVendor";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 
@@ -481,7 +487,8 @@ export default {
     VendorSelect,
     Description,
     DeliveryEl,
-    VendorSearchAny
+    VendorSearchAny,
+    EditVendor
   },
   props: {
     isEdit: {

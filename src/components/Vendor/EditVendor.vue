@@ -1,17 +1,29 @@
 <template>
   <div>
     <el-button
-      type="warning"
-      icon="el-icon-circle-edit"
+      type="success"
+      icon="el-icon-edit"
       @click="getdata()"
     ></el-button>
 
     <el-dialog
       style="margin-top: -13vh"
-      title="شخص جديد"
       :visible.sync="Visible"
       @opened="$refs['Name'].focus()"
     >
+      <div slot="title" class="dialog-footer">
+        <el-col :span="4">
+          <el-button
+            icon="el-icon-finished"
+            style="float: left"
+            type="primary"
+            @click="updateData()"
+          />
+        </el-col>
+        <el-col :span="20">
+          <el-divider> تعديل شخص {{ tempForm.Id }}</el-divider>
+        </el-col>
+      </div>
       <el-form
         :model="tempForm"
         :rules="rulesForm"
@@ -45,7 +57,7 @@
               prop="Ssn"
               :rules="[
                 {
-                  required: true,
+                  required: false,
                   message: 'لايمكن ترك الرقم الوطني فارغ',
                   trigger: 'blur'
                 }
@@ -88,12 +100,17 @@
               prop="PhoneNumber1"
               :rules="[
                 {
-                  required: true,
+                  required: false,
                   message: 'لايمكن ترك الرقم الهاتف فارغ',
                   trigger: 'blur'
                 }
               ]"
             >
+              <el-input
+                v-model="tempForm.PhoneNumber1"
+                placeholder="رقم الهاتف"
+              />
+              <!--
               <VuePhoneNumberInput
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
@@ -102,13 +119,19 @@
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber1"
-              /> </el-form-item
-          ></el-col>
+              /> -->
+            </el-form-item></el-col
+          >
           <el-col :span="12">
             <el-form-item
               v-bind:label="$t('AddVendors.PhoneNumber2')"
               prop="PhoneNumber2"
             >
+              <el-input
+                v-model="tempForm.PhoneNumber2"
+                placeholder="رقم الهاتف"
+              />
+              <!--
               <VuePhoneNumberInput
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
@@ -117,8 +140,9 @@
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber2"
-              /> </el-form-item
-          ></el-col>
+              /> --></el-form-item
+            ></el-col
+          >
         </el-row>
         <el-form-item
           v-bind:label="$t('AddVendors.CreditLimit')"
@@ -133,7 +157,16 @@
           ></el-input-number>
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.Region')" prop="Region">
-          <el-input type="text" v-model="tempForm.Region"></el-input>
+          <select-region
+            :Value="tempForm.Region"
+            @SetRegion="
+              v => {
+                tempForm.Region = v;
+              }
+            "
+          />
+
+          \ <el-input type="text" v-model="tempForm.Region"></el-input>
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.Fax')" prop="Fax">
           <el-input type="text" v-model="tempForm.Fax"></el-input>
@@ -145,23 +178,17 @@
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
-        <el-button type="primary" @click="updateData()">{{
-          $t("AddVendors.Save")
-        }}</el-button>
-      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { Edit, CheckIsExist, GetByID } from "@/api/Vendor";
+import { Edit, GetByID } from "@/api/Vendor";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
+import SelectRegion from "@/components/Regions/SelectRegion";
+
 export default {
   name: "Vendor",
   props: {
@@ -170,7 +197,7 @@ export default {
       default: undefined
     }
   },
-  components: { VuePhoneNumberInput },
+  components: { VuePhoneNumberInput, SelectRegion },
   data() {
     return {
       Visible: false,
@@ -212,45 +239,27 @@ export default {
         // handle success
         this.tempForm = response;
 
-        this.Visibles = true;
+        this.Visible = true;
       });
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          CheckIsExist({
-            Name: this.tempForm.Name,
-            Ssn: this.tempForm.Ssn,
-            PhoneNumber: this.tempForm.PhoneNumber1
-          }).then(res => {
-            console.log(res);
-            if (!res) {
-              Edit(this.tempForm)
-                .then(response => {
-                  this.Visible = false;
-                  this.$notify({
-                    title: "تم ",
-                    message: "تم الإضافة بنجاح",
-                    type: "success",
-                    duration: 2000
-                  });
-
-                  //     this.SendHelloSms(this.tempForm.PhoneNumber1, this.tempForm.Name);
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-            } else {
+          Edit(this.tempForm)
+            .then(response => {
+              this.Visible = false;
               this.$notify({
-                position: "top-left",
                 title: "تم ",
-                message:
-                  " يوجد شخص يحمل نفس رقم الهاتف او الرقم الوطني او الاسم",
-                type: "warning",
-                duration: 20000
+                message: "تم تعديل بنجاح",
+                type: "success",
+                duration: 2000
               });
-            }
-          });
+
+              //     this.SendHelloSms(this.tempForm.PhoneNumber1, this.tempForm.Name);
+            })
+            .catch(error => {
+              console.log(error);
+            });
         } else {
           console.log("error submit!!");
           return false;

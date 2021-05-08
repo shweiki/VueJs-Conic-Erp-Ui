@@ -56,7 +56,7 @@ export function ShawermaSheesh(temp, printer = undefined) {
   temp.InventoryMovements.forEach(element => {
     doc.text("" + element.Name + "", 70, startY += 6, { align: 'right' });
     doc.text("" + element.Qty + "", 20, startY);
-   // doc.text("" + (element.SellingPrice).toFixed(store.getters.settings.ToFixed) + "", 18, startY);
+    // doc.text("" + (element.SellingPrice).toFixed(store.getters.settings.ToFixed) + "", 18, startY);
     doc.text("" + (element.SellingPrice * element.Qty).toFixed(store.getters.settings.ToFixed) + "", 3, startY);
     if (element.Description) doc.text("" + element.Description + "", 65, startY += 6, { align: 'right' });
 
@@ -91,6 +91,22 @@ export function ShawermaSheesh(temp, printer = undefined) {
     doc.line(0, startY += 5, 80, startY);
     doc.text(" : *", 70, startY += 5, { align: 'right' });
     doc.text("" + temp.Description, 1, startY);
+  }
+  if (temp.Name) {
+    doc.setLineWidth(0.4);
+    doc.line(0, startY += 5, 80, startY);
+    doc.text("الاسم", 70, startY += 5, { align: 'right' });
+    doc.text("" + temp.Name + "", 5, startY);
+
+    doc.setLineWidth(0.4);
+    doc.line(0, startY += 5, 80, startY);
+    doc.text("هاتف", 70, startY += 5, { align: 'right' });
+    doc.text("" + temp.PhoneNumber + "", 5, startY);
+
+    doc.setLineWidth(0.4);
+    doc.line(0, startY += 5, 80, startY);
+    doc.text("المنطقة", 70, startY += 5, { align: 'right' });
+    doc.text("" + temp.Region + "", 5, startY);
   }
 
   doc.setLineWidth(0.4);

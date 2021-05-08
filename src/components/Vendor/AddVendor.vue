@@ -88,12 +88,17 @@
               prop="PhoneNumber1"
               :rules="[
                 {
-                  required: true,
+                  required: false,
                   message: 'لايمكن ترك الرقم الهاتف فارغ',
                   trigger: 'blur'
                 }
               ]"
             >
+              <el-input
+                v-model="tempForm.PhoneNumber1"
+                placeholder="رقم الهاتف"
+              />
+              <!--
               <VuePhoneNumberInput
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
@@ -102,14 +107,19 @@
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber1"
-              /> </el-form-item
-          ></el-col>
+              /> --></el-form-item
+            ></el-col
+          >
           <el-col :span="12">
             <el-form-item
               v-bind:label="$t('AddVendors.PhoneNumber2')"
               prop="PhoneNumber2"
             >
-              <VuePhoneNumberInput
+              <el-input
+                v-model="tempForm.PhoneNumber2"
+                placeholder="رقم الهاتف"
+              />
+              <!--   <VuePhoneNumberInput
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
                   countrySelectorError: 'تاكد من رقم',
@@ -117,8 +127,9 @@
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber2"
-              /> </el-form-item
-          ></el-col>
+              />-->
+            </el-form-item></el-col
+          >
         </el-row>
         <el-form-item
           v-bind:label="$t('AddVendors.CreditLimit')"
@@ -164,6 +175,7 @@ import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
 export default {
   name: "Vendor",
+  props: ["Phone"],
   components: { VuePhoneNumberInput },
   data() {
     return {
@@ -198,6 +210,13 @@ export default {
         ]
       }
     };
+  },
+  watch: {
+    Phone(val) {
+      if (val) {
+        this.tempForm.PhoneNumber1 = val;
+      }
+    }
   },
   created() {
     this.resetTempForm();
