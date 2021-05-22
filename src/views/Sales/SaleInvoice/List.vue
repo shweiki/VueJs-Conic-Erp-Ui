@@ -86,7 +86,7 @@
             }
           "
       /></el-col>
-      <el-col :span="18">
+      <el-col v-permission="['Admin']" :span="18">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الفواتير</span>
         <el-divider direction="vertical"></el-divider>
@@ -266,6 +266,7 @@ import PrintButton from "@/components/PrintRepot/PrintButton";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import { SaleInvoicesList } from "@/Report/SaleInvoice";
+import permission from "@/directive/permission/index.js";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -282,7 +283,8 @@ export default {
     UserSelect,
     RadioOprations
   },
-  directives: { waves },
+
+  directives: { waves, permission },
   data() {
     return {
       list: [],

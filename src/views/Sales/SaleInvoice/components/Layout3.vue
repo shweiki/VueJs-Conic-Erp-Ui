@@ -162,10 +162,23 @@
               <template slot="paneR">
                 <split-pane
                   split="horizontal"
-                  :min-percent="57"
-                  :default-percent="65"
+                  :min-percent="50"
+                  :default-percent="50"
                 >
                   <template slot="paneR">
+                    <el-row type="flex" class="card">
+                      <el-col :span="24">
+                        <el-form-item prop="Description">
+                          <el-input
+                            ref="InvoiceDescription"
+                            v-bind:placeholder="
+                              $t('NewPurchaseInvoice.statement')
+                            "
+                            v-model="tempForm.Description"
+                          ></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
                     <el-row type="flex" class="card">
                       <el-col :span="14">
                         <el-form-item prop="PaymentMethod">
@@ -210,19 +223,13 @@
                         </el-form-item>
                       </el-col></el-row
                     >
-                    <el-row type="flex" class="card">
-                      <el-col v-if="tempForm.Type == 'Takeaway'" :span="24">
-                        <el-form-item prop="Description">
-                          <el-input
-                            ref="InvoiceDescription"
-                            v-bind:placeholder="
-                              $t('NewPurchaseInvoice.statement')
-                            "
-                            v-model="tempForm.Description"
-                          ></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col v-if="tempForm.Type == 'Delivery'" :span="24">
+
+                    <el-row
+                      v-if="tempForm.Type == 'Delivery'"
+                      type="flex"
+                      class="card"
+                    >
+                      <el-col :span="24">
                         <delivery-el
                           :name="tempForm.Name"
                           :phone="tempForm.PhoneNumber"
@@ -316,7 +323,7 @@
                     <el-form-item prop="InventoryMovements">
                       <el-table
                         highlight-current-row
-                        max-height="400"
+                        height="340"
                         :data="tempForm.InventoryMovements"
                         style="width: 100%"
                         size="mini"
@@ -597,7 +604,7 @@ export default {
         IsPrime: false,
         Type: "Takeaway",
         DeliveryPrice: 0,
-        Region: "",
+        Region: "الثامنة",
         PhoneNumber: "",
         InventoryMovements: []
       };

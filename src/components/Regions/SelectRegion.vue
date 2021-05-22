@@ -15,10 +15,14 @@
 </template>
 <script>
 export default {
-  props: ["Value"],
+  props: {
+    Value: {
+      type: String,
+      default: "الثامنة"
+    }
+  },
   data() {
     return {
-      Region: "الثامنة",
       DeliveryPrice: 0,
       Regions: [
         {
@@ -84,7 +88,7 @@ export default {
         {
           value: "السوق التجاري",
           label: "السوق التجاري",
-          price: 1.5
+          price: 2
         },
         {
           value: "الوحدات الشرقية",
@@ -273,13 +277,12 @@ export default {
     Value(val) {
       if (val) {
         console.log("xx", val);
-        this.Region = val;
-        this.SetVal(this.Region);
+        this.SetVal(val);
       }
     }
   },
   created() {
-    this.SetVal(this.Value);
+    this.SetVal(this.Value)
   },
   methods: {
     SetVal(val) {

@@ -45,7 +45,7 @@
               prop="Ssn"
               :rules="[
                 {
-                  required: true,
+                  required: false,
                   message: 'لايمكن ترك الرقم الوطني فارغ',
                   trigger: 'blur'
                 }
@@ -243,7 +243,7 @@ export default {
         if (valid) {
           CheckIsExist({
             Name: this.tempForm.Name,
-            Ssn: this.tempForm.Ssn,
+            //  Ssn: this.tempForm.Ssn,
             PhoneNumber: this.tempForm.PhoneNumber1
           }).then(res => {
             console.log(res);
@@ -251,6 +251,9 @@ export default {
               Create(this.tempForm)
                 .then(response => {
                   this.Visible = false;
+                  this.tempForm.Id = response
+                  this.$emit("Set", this.tempForm);
+
                   this.$notify({
                     title: "تم ",
                     message: "تم الإضافة بنجاح",

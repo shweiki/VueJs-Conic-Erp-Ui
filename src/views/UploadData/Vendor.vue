@@ -89,12 +89,19 @@ export default {
       this.data = this.tableData.map(x => {
         let Phone1 = x.Description.toString().match(/\d+/);
         let Name = x.Description.toString().replace(/[0-9]/g, "");
-        if (Phone1 == null || Phone1[0].length != 10) return false;
-        console.log(Phone1[0], Name);
+
+        if (Phone1 == null || Phone1[0].length != 10) {
+          if (x.PhoneNumber != null) {
+            Phone1 = [];
+            Phone1[0] = "0" + x.PhoneNumber;
+            Name = x.Name;
+          } else return false;
+        }
+
         return {
           Id: undefined,
           Name: Name,
-          Region: "",
+          Region: x.Region,
           Email: "",
           PhoneNumber1: Phone1[0],
           PhoneNumber2: "",

@@ -1,6 +1,15 @@
 <template>
   <div>
-    <el-col :span="2"> <add-vendor :Phone="NewPhone" /> </el-col>
+    <el-col :span="2">
+      <add-vendor
+        :Phone="NewPhone"
+        @Set="
+          v => {
+            change(v);
+          }
+        "
+      />
+    </el-col>
     <el-select
       style="width: 90%"
       v-model="search"

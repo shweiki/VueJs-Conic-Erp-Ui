@@ -9,22 +9,19 @@
         @SetRegion="
           v => {
             region = v;
+            SetVal();
           }
         "
         @SetDeliveryPrice="
           v => {
-            this.deliveryprice = v;
+            deliveryprice = v;
+            SetVal();
           }
         "
       />
     </el-col>
     <el-col :span="6">
-      <el-input
-        style="border-radius: 30px"
-        v-model="phone"
-        @change="SetVal"
-        placeholder="رقم الهاتف"
-      />
+      <el-input v-model="phone" @change="SetVal" placeholder="رقم الهاتف" />
     </el-col>
   </el-row>
 </template>
@@ -46,10 +43,11 @@ export default {
     phone(val) {
       this.phone = val;
     },
-   
+    region(val) {
+      this.region = val;
+    },
     deliveryprice(val) {
       this.deliveryprice = val;
-      this.SetVal();
     }
   },
   methods: {
