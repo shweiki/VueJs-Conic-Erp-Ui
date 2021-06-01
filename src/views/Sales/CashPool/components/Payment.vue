@@ -209,7 +209,7 @@ export default {
     handleSelectionChange(val) {
       this.Selection = val;
       this.tempForm = {
-        ID: undefined,
+        Id: undefined,
         FakeDate: new Date(),
         Description: "قيد اغلاق مقبوضات",
         Type: "ClosePayment",
@@ -230,7 +230,7 @@ export default {
       };
       this.Selection.forEach((i) => {
         this.tempForm.EntryMovements.push({
-          ID: undefined,
+          Id: undefined,
           AccountId: i.AccountId,
           Debit: i.TotalAmmount,
           Credit: 0.0,
@@ -286,7 +286,7 @@ export default {
         .then((response) => {
           console.log(response);
           ChangeArrObjStatus({
-            ObjsID: this.Selection.map((x) => x.Id),
+            ObjsId: this.Selection.map((x) => x.Id),
             TableName: "Payment",
             Status: 1,
             Description: "دفعة مؤكدة",

@@ -167,8 +167,8 @@ export default {
         ClassName: "",
       },
       tempOpration: {
-        ObjID: undefined,
-        OprationID: undefined,
+        ObjId: undefined,
+        OprationId: undefined,
         Description: "",
       },
       rulesOpration: {
@@ -220,7 +220,7 @@ export default {
     ConvertToOrderInventory(StockInventory) {
       console.log(StockInventory);
       const tempForm = {
-        ID: undefined,
+        Id: undefined,
         FakeDate: JSON.parse(JSON.stringify(new Date())),
         OrderType: "إدخال ناتج عن جرد رقم " + StockInventory.Id + "",
         Description: "" + StockInventory.Description + "",
@@ -228,7 +228,7 @@ export default {
       };
       StockInventory.StockMovements.forEach((i) => {
         tempForm.InventoryMovements.push({
-          ID: undefined,
+          Id: undefined,
           ItemsId: i.ItemsId,
           TypeMove: "In",
           Status: 0,
@@ -237,7 +237,7 @@ export default {
           Tax: 0.0,
           Description: i.Description,
           InventoryItemId: i.InventoryItemId,
-          OrderInventoryID: undefined,
+          OrderInventoryId: undefined,
         });
       });
       console.log(tempForm);
@@ -245,7 +245,7 @@ export default {
       Create(tempForm)
         .then((response) => {
           ChangeObjStatusByTableName({
-            ObjID: StockInventory.Id,
+            ObjId: StockInventory.Id,
             TableName: "StocktakingInventory",
             Status: -1,
             Description: "ترصيد جرد",
@@ -299,8 +299,8 @@ export default {
       this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatus({
-            ObjID: this.tempOpration.ObjID,
-            OprationID: this.tempOpration.OprationID,
+            ObjId: this.tempOpration.ObjID,
+            OprationId: this.tempOpration.OprationID,
             Description: this.tempOpration.Description,
           })
             .then((response) => {

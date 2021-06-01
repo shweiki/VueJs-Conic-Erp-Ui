@@ -30,7 +30,7 @@ const actions = {
     },
     ConnectZtkDoor({ commit }) {
         return new Promise((resolve, reject) => {
-            CheckDevice({ ID:3 }).then(response => {
+            CheckDevice({ Id:3 }).then(response => {
                 console.log(response)
                 commit('SET_ZtkDoor', response)
 

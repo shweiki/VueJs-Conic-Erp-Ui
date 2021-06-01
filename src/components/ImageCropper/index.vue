@@ -182,7 +182,7 @@ import { Create } from "@/api/File";
 
 export default {
   props: {
-    ObjectID: {
+    ObjectId: {
       type: Number,
       default: () => {
         return undefined;
@@ -852,7 +852,7 @@ export default {
       this.loading = 1;
       this.setStep(3);
       let file = {
-        ID: undefined,
+        Id: undefined,
         FileType: "image",
         File: createImgUrl.replace(/^data:image\/(png|jpg);base64,/, ""),
         Status: 0,

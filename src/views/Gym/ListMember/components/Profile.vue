@@ -208,7 +208,7 @@ export default {
   },
   methods: {
     getdata(val) {
-      GetMemberByID({ ID: val })
+      GetMemberByID({ Id: val })
         .then((response) => {
           this.tempForm = response;
           this.GetImageMember(this.tempForm.Id);
@@ -226,21 +226,21 @@ export default {
     tabClick(tab, event) {
       if (tab.label == "زيارات")
         GetMemberLogByID({
-          ID: this.tempForm.Id,
+          Id: this.tempForm.Id,
         }).then((response) => {
           //  console.log("log :", response);
           this.log = response.reverse();
         });
       if (tab.label == "اشتراكات")
         GetMembershipMovementByMemberID({
-          MemberID: this.tempForm.Id,
+          MemberId: this.tempForm.Id,
         }).then((response) => {
           //    console.log("log :", response);
           this.MembershipMovements = response.reverse();
         });
       if (tab.label == "مقبوضات")
         GetPaymentsByMemberID({
-          MemberID: this.tempForm.Id,
+          MemberId: this.tempForm.Id,
         }).then((response) => {
           //   console.log("log :", response);
           this.Payments = response.reverse();
@@ -254,7 +254,7 @@ export default {
         });
     },
     GetImageMember(ID) {
-      GetFileByObjID({ TableName: "Member", ObjID: ID })
+      GetFileByObjID({ TableName: "Member", ObjId: ID })
         .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
            else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
@@ -276,8 +276,8 @@ export default {
     },
     GetMemberLogFromDevices(MemberID) {
       GetUserLog({
-        DeviceID: this.$store.getters.Devices[0].Id,
-        UserID: MemberID,
+        DeviceId: this.$store.getters.Devices[0].Id,
+        UserId: MemberID,
       }).then((response) => {
         if (response) {
           console.log(response);
@@ -293,8 +293,8 @@ export default {
             duration: 2000,
           });
           GetUserLog({
-            DeviceID: this.$store.getters.Devices[1].Id,
-            UserID: MemberID,
+            DeviceId: this.$store.getters.Devices[1].Id,
+            UserId: MemberID,
           }).then((response) => {
             if (response) {
               console.log(response);

@@ -211,7 +211,7 @@ export default {
         CreateMulti({
           collection: element.map(x => {
             return {
-              ID: undefined,
+              Id: undefined,
               Type: "Freeze",
               StartDate: this.$moment(this.FreezeBetween[0]).format(),
               EndDate: this.$moment(this.FreezeBetween[1]).format(),

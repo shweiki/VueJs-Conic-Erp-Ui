@@ -199,7 +199,7 @@ export default {
         });
       }
     },
-    BarcodeIsID: {
+    BarcodeIsId: {
       get() {
         return this.$store.state.settings.BarcodeIsID;
       },

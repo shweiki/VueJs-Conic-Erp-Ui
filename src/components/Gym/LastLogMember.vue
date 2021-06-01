@@ -5,7 +5,7 @@
 import { GetlastLogByMemberId } from "@/api/MemberLog";
 export default {
   props: {
-    MemberID: {
+    MemberId: {
       type: Number,
       default: () => {
         return undefined;

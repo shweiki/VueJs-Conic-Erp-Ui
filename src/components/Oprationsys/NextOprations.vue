@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-col :span="8" v-for="(NOprations, index) in NextOprations" :key="index">
+    <el-col v-for="(NOprations, index) in NextOprations" :key="index">
       <el-button
         :type="NOprations.ClassName"
         round
@@ -50,7 +50,10 @@ export default {
     TableName: {
       type: String
     },
-    ObjID: Number
+    Description: {
+      type: String
+    },
+    ObjId: Number
   },
   data() {
     return {
@@ -64,8 +67,8 @@ export default {
         Status: 0
       },
       tempOpration: {
-        ObjID: undefined,
-        OprationID: undefined,
+        ObjId: undefined,
+        OprationId: undefined,
         Description: ""
       },
       rulesOpration: {
@@ -89,6 +92,10 @@ export default {
     Status(val) {
       this.Status = val;
       this.getdata();
+    },
+    Description(val) {
+      console.log("Description", val);
+      this.tempOpration.Description = val;
     }
   },
   created() {
@@ -116,11 +123,11 @@ export default {
       this.tempOpration.Status = Opration.Status;
       this.tempOpration.ObjID = ObjID;
       this.tempOpration.OprationID = Opration.Id;
-      this.tempOpration.Description = "";
+ //     this.tempOpration.Description = "";
     },
     Create() {
       ChangeObjStatusByTableName({
-        ObjID: this.tempOpration.ObjID,
+        ObjId: this.tempOpration.ObjID,
         TableName: this.TableName,
         Status: this.tempOpration.Status,
         Description: this.tempOpration.Description

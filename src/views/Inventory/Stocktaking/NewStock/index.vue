@@ -252,7 +252,7 @@ export default {
       Text: "",
       ValidateNote: "",
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         FakeDate: new Date(),
         Description: "",
         StockMovements: []
@@ -280,7 +280,7 @@ export default {
       if (find != -1) this.tempForm.StockMovements[find].Qty += this.Qty;
       else {
         this.tempForm.StockMovements.push({
-          ID: undefined,
+          Id: undefined,
           ItemsId: Item.Id,
           Status: 0,
           Qty: this.Qty,
@@ -290,7 +290,7 @@ export default {
           InventoryItemId: 1,
           Barcode: Item.Barcode,
           Name: Item.Name,
-          StocktakingInventoryID: undefined
+          StocktakingInventoryId: undefined
         });
       }
       this.Barcode = "";
@@ -363,7 +363,7 @@ export default {
     },
     NewItem() {
       CreateItem({
-        ID: undefined,
+        Id: undefined,
         Name: "" + this.Name + "",
         CostPrice: 0.0,
         SellingPrice: 0.0,

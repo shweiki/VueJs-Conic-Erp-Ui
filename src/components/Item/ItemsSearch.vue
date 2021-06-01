@@ -135,7 +135,7 @@ export default {
           if (res) this.AddItem(res, 1);
           else {
             if (this.$store.getters.settings.BarcodeIsID == true) {
-              GetItemByID({ ID: this.Barcode }).then(res => {
+              GetItemByID({ Id: this.Barcode }).then(res => {
                 if (res) this.AddItem(res, 1);
                 else this.OpenAddItem = true;
               });

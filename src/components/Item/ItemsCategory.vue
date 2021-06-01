@@ -103,7 +103,6 @@
 import permission from "@/directive/permission/index.js";
 import { GetItemByAny } from "@/api/Item";
 import { GetFileByObjID } from "@/api/File";
-
 export default {
   name: "ItemsCategory",
   directives: { permission },

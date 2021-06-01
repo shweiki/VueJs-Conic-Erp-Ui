@@ -31,18 +31,18 @@
       @click="ItemLabel"
       >Label</el-button
     >
-       <el-button icon="el-icon-s-management" @click="ShawermaSheesh(Data)"
+    <el-button icon="el-icon-s-management" @click="ShawermaSheesh(Data)"
       >ShawermaSheesh
     </el-button>
     <el-button icon="el-icon-s-management" @click="OrderReceipt(Data)"
       >OrderReceipt
     </el-button>
-       <el-button icon="el-icon-s-management" @click="OrderReceipt2(Data)"
+    <el-button icon="el-icon-s-management" @click="OrderReceipt2(Data)"
       >OrderReceipt2
     </el-button>
-    
-    <img id="barcodeV" style="display: none" />
 
+    <img id="barcodeV" style="display: none" />
+<img id="qr_code" style="display: none" />
     <el-button
       v-bind:style="Css"
       icon="el-icon-printer"
@@ -99,9 +99,9 @@ export default {
         showModal: true
       });
     },
-        ShawermaSheesh,
+    ShawermaSheesh,
     OrderReceipt,
-    OrderReceipt2,
+    OrderReceipt2
   }
 };
 </script>

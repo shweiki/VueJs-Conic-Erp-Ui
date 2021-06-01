@@ -396,7 +396,7 @@ Accounting:{
 NewAccountingEntry:'New Accounting Entry',
 AccountingEntryinquiries:'Accounting Entry inquiries',
 Account:'Account',
-EntryID:'Entry ID',
+EntryId:'Entry ID',
 Notes:'Notes',
 Credit:'Credit',
 Debit:'Debit',

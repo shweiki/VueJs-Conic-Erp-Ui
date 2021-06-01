@@ -213,13 +213,13 @@ export default {
       Text: "",
       ValidateNote: "",
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         FakeDate: new Date(),
         Description: "",
         Type: "Manual",
         EntryMovements: [
           {
-            ID: undefined,
+            Id: undefined,
             AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
@@ -227,7 +227,7 @@ export default {
             EntryId: undefined,
           },
           {
-            ID: undefined,
+            Id: undefined,
             AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
@@ -274,7 +274,7 @@ export default {
     },
     AddEntryMovements() {
       this.tempForm.EntryMovements.push({
-        ID: undefined,
+        Id: undefined,
         AccountId: undefined,
         Debit: 0.0,
         Credit: 0.0,
@@ -286,7 +286,7 @@ export default {
       this.tempForm.EntryMovements.splice(this.tempForm.EntryMovements.length - 1, 1);
     },
     getdata(val) {
-      GetEntryByID({ ID: val })
+      GetEntryByID({ Id: val })
         .then((response) => {
           this.tempForm = response;
           // set tagsview title
@@ -300,12 +300,12 @@ export default {
     },
     resetTempForm() {
       this.tempForm = {
-        ID: undefined,
+        Id: undefined,
         FakeDate: new Date(),
         Description: "",
         EntryMovements: [
           {
-            ID: undefined,
+            Id: undefined,
             AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
@@ -313,7 +313,7 @@ export default {
             EntryId: undefined,
           },
           {
-            ID: undefined,
+            Id: undefined,
             AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,

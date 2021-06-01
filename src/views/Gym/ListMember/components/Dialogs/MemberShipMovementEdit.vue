@@ -198,7 +198,7 @@ export default {
   components: { FakeDate, EditorsUser },
 
   props: {
-    MembershipMovementID: {
+    MembershipMovementId: {
       type: Number,
       default: undefined
     }
@@ -222,7 +222,7 @@ export default {
   },
   methods: {
     getdata() {
-      GetMembershipMovementByID({ ID: this.MembershipMovementID })
+      GetMembershipMovementByID({ Id: this.MembershipMovementID })
         .then(response => {
           console.log(response);
           this.tempForm = response;
@@ -301,7 +301,7 @@ export default {
     },
     AddExtraToMembership(Days, MemberShipMovementId) {
       let MembershipMovementOrder = {
-        ID: undefined,
+        Id: undefined,
         Type: "Extra",
         StartDate: new Date(this.tempForm.EndDate),
         EndDate: new Date(),

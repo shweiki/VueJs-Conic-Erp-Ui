@@ -78,7 +78,7 @@ export default {
         create: "إضافة"
       },
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         Name: ''
       },
       rulesForm: {
@@ -118,7 +118,7 @@ export default {
     },
     resetTempForm() {
       this.tempForm = {
-        ID: undefined,
+        Id: undefined,
         Name: ''
       };
     },

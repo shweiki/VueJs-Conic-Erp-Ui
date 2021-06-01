@@ -215,7 +215,7 @@ export default {
         create: "إضافة"
       },
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         TableName: "",
         ControllerName: "",
         RoleName: "",
@@ -265,7 +265,7 @@ export default {
     },
     resetTempForm() {
       this.tempForm = {
-        ID: undefined,
+        Id: undefined,
         TableName: "",
         ControllerName: "",
         RoleName: "",

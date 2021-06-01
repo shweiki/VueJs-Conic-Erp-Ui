@@ -24,7 +24,7 @@ const state = {
   showNavbar: defaultSettings.showNavbar,
   showBarcode: defaultSettings.showBarcode,
   showRestOfBill: defaultSettings.showRestOfBill,
-  BarcodeIsID: defaultSettings.BarcodeIsID,
+  BarcodeIsId: defaultSettings.BarcodeIsID,
   WithOutCheckItemIsExist: defaultSettings.WithOutCheckItemIsExist,
   errorLog: defaultSettings.errorLog,
   StatusQuery: defaultSettings.StatusQuery,

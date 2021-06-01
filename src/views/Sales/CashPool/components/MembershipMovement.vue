@@ -194,13 +194,13 @@ export default {
     handleSelectionChange(val) {
       this.Selection = val;
       this.tempForm = {
-        ID: undefined,
+        Id: undefined,
         FakeDate: new Date(),
         Description: "قيد اغلاق اشتراكات",
         Type: "CloseMemberShipMovement",
         EntryMovements: [
           {
-            ID: undefined,
+            Id: undefined,
             AccountId: this.InComeAccount,
             Debit: this.Total,
             Credit: 0.0,
@@ -215,7 +215,7 @@ export default {
       };
       this.Selection.forEach((i) => {
         this.tempForm.EntryMovements.push({
-          ID: undefined,
+          Id: undefined,
           AccountId: i.AccountId,
           Debit: 0.0,
           Credit: i.TotalAmmount,
@@ -258,7 +258,7 @@ export default {
         .then((response) => {
           console.log(response);
           ChangeArrObjStatus({
-            ObjsID: this.Selection.map((x) => x.Id),
+            ObjsId: this.Selection.map((x) => x.Id),
             TableName: "MembershipMovement",
             Status: 1,
             Description: "اشتراك مؤكد",

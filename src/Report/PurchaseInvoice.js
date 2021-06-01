@@ -23,7 +23,7 @@ export function PurchaseInvoiceA4(Data) {
   let res = store.getters.CompanyInfo.HeaderReport.slice(store.getters.CompanyInfo.HeaderReport.search('<tr id="forach"'), store.getters.CompanyInfo.HeaderReport.indexOf("</tr>", store.getters.CompanyInfo.HeaderReport.search('<tr id="forach"')) + 5);
 
   let tabelInventoryMovements = "";
-  Data.InventoryMovements.reverse().forEach(element => {
+  Data.InventoryMovements.forEach(element => {
     tabelInventoryMovements += "<tr style='text-align: center;'>"
     tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(store.getters.settings.ToFixed) + "</td>";
     tabelInventoryMovements += "<td>" + element.SellingPrice + "</td>";

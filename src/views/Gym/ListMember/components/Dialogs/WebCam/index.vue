@@ -27,7 +27,7 @@ import { Create } from "@/api/File";
 export default {
   name: "WebCam",
   props: {
-    ObjectID: {
+    ObjectId: {
       type: Number,
       default: () => {
         return undefined;
@@ -67,7 +67,7 @@ export default {
     createData() {
       if (this.img != null) {
         let file = {
-          ID: undefined,
+          Id: undefined,
           FileType: "image",
           File: this.img.replace(/^data:image\/(png|jpg);base64,/, ""),
           Status: 0,

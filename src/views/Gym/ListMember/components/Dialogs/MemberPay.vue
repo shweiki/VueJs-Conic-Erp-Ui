@@ -123,7 +123,7 @@ import EditorsUser from "@/components/Gym/EditorsUser";
 export default {
   components: { printJS, EditorsUser },
   props: {
-    MemberID: {
+    MemberId: {
       type: Number,
       default: () => {
         return undefined;
@@ -140,7 +140,7 @@ export default {
     return {
       OldPayment: null,
       Payment: {
-        ID: undefined,
+        Id: undefined,
         Name: "",
         FakeDate: new Date(),
         PaymentMethod: "Cash",

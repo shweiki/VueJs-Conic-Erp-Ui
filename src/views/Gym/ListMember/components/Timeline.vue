@@ -34,7 +34,7 @@ export default {
         return [];
       }
     },
-    MemberID: {
+    MemberId: {
       type: Number,
       default: () => {
         return undefined;

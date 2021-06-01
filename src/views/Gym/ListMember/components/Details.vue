@@ -284,8 +284,8 @@ export default {
       imagecropperShow: false,
       imagecropperKey: 0,
       tempOpration: {
-        ObjID: undefined,
-        OprationID: undefined,
+        ObjId: undefined,
+        OprationId: undefined,
         Description: ""
       }
     };
@@ -296,7 +296,7 @@ export default {
       this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatusByTableName({
-            ObjID: this.Member.Id,
+            ObjId: this.Member.Id,
             TableName: "Member",
             Status: -1,
             Description: this.tempOpration.Description
@@ -320,7 +320,7 @@ export default {
       this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatusByTableName({
-            ObjID: this.Member.Id,
+            ObjId: this.Member.Id,
             TableName: "Member",
             Status: -2,
             Description: this.tempOpration.Description

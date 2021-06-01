@@ -133,7 +133,7 @@ export default {
     },
 
     GetImageItem(ID) {
-      GetFileByObjID({ TableName: "Item", ObjID: ID })
+      GetFileByObjID({ TableName: "Item", ObjId: ID })
         .then(response => {
           if (response) {
             this.ItemsPrime.find(element => element.Id == ID).Avatar =

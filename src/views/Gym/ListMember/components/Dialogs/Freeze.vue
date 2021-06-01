@@ -140,7 +140,7 @@ export default {
     return {
       EnableSave: false,
       MembershipMovementOrder: {
-        ID: undefined,
+        Id: undefined,
         Type: "Freeze",
         StartDate: "",
         EndDate: "",

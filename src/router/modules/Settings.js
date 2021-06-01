@@ -28,6 +28,14 @@ const SettingsRouter = {
       },
     },
     {
+      path: 'Drivers',
+      component: () => import('@/views/Driver/List'),
+      name: 'Drivers',
+      meta: {
+        title: 'Drivers', icon: 'cost'
+      },
+    },
+    {
       path: 'Editors',
       component: () => import('@/views/Settings/EditorsUsers/index'),
       name: 'Editors',

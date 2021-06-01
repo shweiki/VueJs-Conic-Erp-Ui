@@ -253,7 +253,7 @@ export default {
     return {
       ValidateNote: "",
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         FakeDate: new Date(),
         OrderType: "ادخال: بضاعة اول المدة / بونص",
         Description: "",
@@ -287,7 +287,7 @@ export default {
   methods: {
     AddItem(item) {
       this.tempForm.InventoryMovements.unshift({
-        ID: undefined,
+        Id: undefined,
         TypeMove: "In",
         ItemsId: item != undefined ? item.Id : undefined,
         Status: 0,
@@ -297,7 +297,7 @@ export default {
         Description: "",
         InventoryItemId: 1,
         Name: Item.Name,
-        OrderInventoryID: undefined
+        OrderInventoryId: undefined
       });
     },
 
@@ -308,7 +308,7 @@ export default {
       this.tempForm.InventoryMovements[Index].Description = this.Text;
     },
     getdata(val) {
-      GetOrderInventoryByID({ ID: val })
+      GetOrderInventoryByID({ Id: val })
         .then(response => {
           console.log(response);
           this.tempForm = response;

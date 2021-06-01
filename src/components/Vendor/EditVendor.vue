@@ -235,7 +235,7 @@ export default {
 
   methods: {
     getdata() {
-      GetByID({ ID: this.VendorId }).then(response => {
+      GetByID({ Id: this.VendorId }).then(response => {
         // handle success
         this.tempForm = response;
 

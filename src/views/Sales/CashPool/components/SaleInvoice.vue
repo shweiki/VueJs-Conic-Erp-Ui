@@ -115,7 +115,7 @@
       >
       <el-divider direction="vertical"></el-divider>
     </el-card>
-    <el-card class="box-card">
+    <el-card v-permission="['Admin']" class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>
       <el-table
         height="250"
@@ -233,6 +233,13 @@
               scope.row.Name
             }}</strong>
           </template>
+        </el-table-column>
+        <el-table-column
+          v-bind:label="$t('Type')"
+          width="80"
+          align="center"
+          prop="Type"
+        >
         </el-table-column>
         <el-table-column
           prop="PaymentMethod"
@@ -436,7 +443,7 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitGetInvoice,
         Sort: "-id",
-        Status: 0
+        Status: 2
       })
         .then(response => {
           // handle success
@@ -532,7 +539,7 @@ export default {
       CreateEntry(this.tempForm)
         .then(response => {
           ChangeArrObjStatus({
-            ObjsID: this.Selection.map(x => x.Id),
+            ObjsId: this.Selection.map(x => x.Id),
             TableName: "SalesInvoice",
             Status: 1,
             Description: "فاتورة مؤكدة"

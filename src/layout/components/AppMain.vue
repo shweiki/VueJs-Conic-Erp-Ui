@@ -24,6 +24,7 @@
       <li @click="refreshSelectedTag()">{{ $t("tagsView.refresh") }}</li>
       <li @click="Forward()">{{ $t("tagsView.Forward") }}</li>
       <li @click="Back()">{{ $t("tagsView.Back") }}</li>
+      <li @click="Copy()">{{ $t("tagsView.Copy") }}</li>
     </ul>
   </section>
 </template>
@@ -31,6 +32,7 @@
 import { METHODS } from "http";
 import path from "path";
 import Clock from "@/components/Clock";
+import clip from "@/utils/clipboard"; // use clipboard directly
 
 export default {
   name: "AppMain",
@@ -44,7 +46,7 @@ export default {
     },
     key() {
       return this.$route.path;
-    },
+    }
   },
   watch: {
     visible(value) {
@@ -53,7 +55,7 @@ export default {
       } else {
         document.body.removeEventListener("click", this.closeMenu);
       }
-    },
+    }
   },
   data() {
     return {
@@ -61,7 +63,7 @@ export default {
       top: 0,
       left: 0,
       FullPath: "",
-      affixTags: [],
+      affixTags: []
     };
   },
   methods: {
@@ -69,7 +71,7 @@ export default {
       const fullPath = this.FullPath;
 
       this.$router.replace({
-        path: "/redirect" + fullPath,
+        path: "/redirect" + fullPath
       });
     },
     Back() {
@@ -78,6 +80,12 @@ export default {
       } else {
         this.$router.go(-1);
       }
+    },
+    Copy() {
+      var selObj = window.getSelection();
+      var selRange = selObj.getRangeAt(0);
+      console.log(selObj, selRange);
+      // do stuff with the range
     },
     Forward() {
       this.$router.go(1);
@@ -102,8 +110,8 @@ export default {
     },
     closeMenu() {
       this.visible = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

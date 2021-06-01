@@ -67,13 +67,13 @@ export default {
       Value: 1,
       Type:"Credit",
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         FakeDate: new Date(),
         Description: '',
         Type: "Manual",
         EntryMovements: [
           {
-            ID: undefined,
+            Id: undefined,
             AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
@@ -81,7 +81,7 @@ export default {
             EntryId: undefined,
           },
           {
-            ID: undefined,
+            Id: undefined,
             AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,

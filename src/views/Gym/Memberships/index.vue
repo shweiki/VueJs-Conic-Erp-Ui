@@ -313,7 +313,7 @@ export default {
         ClassName: ""
       },
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         Name: "",
         NumberDays: 30,
         MorningPrice: 0.0,
@@ -340,8 +340,8 @@ export default {
         ]
       },
       tempOpration: {
-        ObjID: undefined,
-        OprationID: undefined,
+        ObjId: undefined,
+        OprationId: undefined,
         Description: ""
       },
       rulesOpration: {
@@ -373,7 +373,7 @@ export default {
     },
     resetTempForm() {
       this.tempForm = {
-        ID: undefined,
+        Id: undefined,
         Name: "",
         NumberDays: 30,
         MorningPrice: 0.0,
@@ -502,8 +502,8 @@ export default {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
-            ObjID: this.tempOpration.ObjID,
-            OprationID: this.tempOpration.OprationID,
+            ObjId: this.tempOpration.ObjID,
+            OprationId: this.tempOpration.OprationID,
             Description: this.tempOpration.Description
           })
             .then(response => {

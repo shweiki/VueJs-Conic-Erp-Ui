@@ -140,26 +140,25 @@ export default {
     },
     approval() {
       if (this.Selection.length > 0)
-          ChangeArrObjStatus({
-            ObjsID: this.Selection.map(x => x.Id),
-            TableName: "MembershipMovementOrder",
-            Status: 1,
-            Description: "طلب تجميد او زيادة موافق عليه"
-          }).then(response => {
-            console.log(response);
-                this.$notify({
-              title: "تم ",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              duration: 2000
-            });
-            this.$nextTick(() => {
-              this.$router.replace({
-                path: "/redirect" + this.$route.fullPath
-              });
+        ChangeArrObjStatus({
+          ObjsId: this.Selection.map(x => x.Id),
+          TableName: "MembershipMovementOrder",
+          Status: 1,
+          Description: "طلب تجميد او زيادة موافق عليه"
+        }).then(response => {
+          console.log(response);
+          this.$notify({
+            title: "تم ",
+            message: "تم الإضافة بنجاح",
+            type: "success",
+            duration: 2000
+          });
+          this.$nextTick(() => {
+            this.$router.replace({
+              path: "/redirect" + this.$route.fullPath
             });
           });
-   
+        });
     }
   }
 };

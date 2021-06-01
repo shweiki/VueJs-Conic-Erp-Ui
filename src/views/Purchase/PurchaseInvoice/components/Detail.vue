@@ -368,7 +368,7 @@ export default {
       ValidateNote: "",
       DisabledSave: false,
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         Name: "-",
         Tax: 0.0,
         AccountInvoiceNumber: "",
@@ -418,7 +418,7 @@ export default {
   },
   methods: {
     getdata(val) {
-      GetPurchaseInvoiceByID({ ID: val })
+      GetPurchaseInvoiceByID({ Id: val })
         .then(response => {
           console.log(response);
           this.tempForm = response;
@@ -435,7 +435,7 @@ export default {
     },
     AddItem(item) {
       this.tempForm.InventoryMovements.unshift({
-        ID: undefined,
+        Id: undefined,
         ItemsId: item != undefined ? item.Id : undefined,
         TypeMove: "In",
         Status: 0,

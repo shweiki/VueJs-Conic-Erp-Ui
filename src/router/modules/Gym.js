@@ -22,11 +22,10 @@ const GymRouter = {
       component: () => import('@/views/Gym/ListMember/Edit'),
       name: 'EditMember',
       meta: {
-         title: 'Edit Member', noCache: true, activeMenu: '/Gym/ListMember/index'
+        title: 'Edit Member', noCache: true, activeMenu: '/Gym/ListMember/index'
       },
       hidden: true,
     },
-
     {
       path: 'Members',
       component: () => import('@/views/Gym/Members/List'),

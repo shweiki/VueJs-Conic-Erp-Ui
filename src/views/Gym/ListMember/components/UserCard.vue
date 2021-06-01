@@ -179,8 +179,8 @@ export default {
     },
     SetOnDevice(DeviceID, Name) {
       SetUser({
-        DeviceID: DeviceID,
-        UserID: this.Member.Id
+        DeviceId: DeviceID,
+        UserId: this.Member.Id
       }).then(response => {
         if (response) {
           this.$notify({

@@ -166,7 +166,7 @@ export default {
     return {
       Visible: false,
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         Name: "",
         Ssn: "",
         DateofBirth: "",
@@ -200,7 +200,7 @@ export default {
   methods: {
     resetTempForm() {
       this.tempForm = {
-        ID: undefined,
+        Id: undefined,
         Name: "",
         Ssn: "",
         DateofBirth: "",

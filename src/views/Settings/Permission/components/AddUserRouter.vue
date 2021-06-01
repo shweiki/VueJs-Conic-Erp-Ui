@@ -44,7 +44,7 @@ import { AddUserRouter, getRoutes } from "@/api/Role";
 
 export default {
   props: {
-    UserID: {
+    UserId: {
       type: String,
       default: "",
     },
@@ -95,7 +95,7 @@ export default {
     },
     confirmRouter() {
       AddUserRouter({
-        UserID: this.UserID,
+        UserId: this.UserID,
         Router: JSON.stringify(this.$refs.tree.getCheckedKeys()),
         DefulateRedirect: this.Redirect,
       })

@@ -49,6 +49,7 @@
       </el-col>
       <el-col :span="6">
         <el-button
+          v-permission="['Admin']"
           v-waves
           class="filter-item"
           icon="el-icon-printer"
@@ -57,6 +58,7 @@
         ></el-button>
         <el-button
           v-waves
+          v-permission="['Admin']"
           :loading="downloadLoading"
           class="filter-item"
           type="primary"
@@ -184,6 +186,13 @@
         }}</template>
       </el-table-column>
       <el-table-column
+        v-bind:label="$t('Type')"
+        width="80"
+        align="center"
+        prop="Type"
+      >
+      </el-table-column>
+      <el-table-column
         v-bind:label="$t('CashPool.Amountv')"
         width="120"
         align="center"
@@ -212,6 +221,7 @@
             @Done="handleFilter"
           />
           <print-button Type="SaleInvoice" :Data="scope.row" />
+          <dialog-action-log TableName="SalesInvoice" :ObjID="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -271,6 +281,7 @@ import permission from "@/directive/permission/index.js";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
   name: "ComplexTable",
@@ -281,7 +292,8 @@ export default {
     PrintButton,
     Pagination,
     UserSelect,
-    RadioOprations
+    RadioOprations,
+    DialogActionLog
   },
 
   directives: { waves, permission },

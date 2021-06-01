@@ -3,6 +3,8 @@ import { AmiriRegular } from "@/assets/custom-theme/fonts/Amiri-Regular.js";
 import store from '@/store'
 import JSPM from "jsprintmanager";
 import printJS from "print-js";
+import QRCode from 'qrcode'
+
 
 export function ShawermaSheesh(temp, printer = undefined) {
   let startX = 1, startY = 0
@@ -17,18 +19,13 @@ export function ShawermaSheesh(temp, printer = undefined) {
   doc.addFont('Amiri-Regular-normal.ttf', 'Amiri-Regular', 'normal');
   doc.setFont("Amiri-Regular");
   doc.setFontSize(18);
-
-  doc.text(store.getters.name, 45, startY += 6, { align: 'right' });
-
   //Logo
-  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX + 10, startY, 50, 35);
-
+  doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX + 10, startY, 50, 25);
   //Name
-
   doc.setFontSize(24);
   doc.setFontType("normal");
   doc.setLineWidth(0.4);
-  startY += 30
+  startY += 15
   doc.line(0, startY + 5, 70, startY += 5);
   doc.setFontSize(18);
   doc.text(temp.Type, 45, startY += 6, { align: 'right' });
@@ -52,7 +49,6 @@ export function ShawermaSheesh(temp, printer = undefined) {
   //doc.text("سعر", 19, startY);
   doc.text("الاجمالي", 2, startY);
 
-
   temp.InventoryMovements.forEach(element => {
     doc.text("" + element.Name + "", 70, startY += 6, { align: 'right' });
     doc.text("" + element.Qty + "", 20, startY);
@@ -61,27 +57,23 @@ export function ShawermaSheesh(temp, printer = undefined) {
     if (element.Description) doc.text("" + element.Description + "", 65, startY += 6, { align: 'right' });
 
   });
+
+  doc.line(0, startY += 5, 80, startY);
+  doc.text("طريقة الدفع", 70, startY += 5, { align: 'right' });
+  doc.text(temp.PaymentMethod, 5, startY);
+
   if (temp.Type.toLowerCase() == "delivery".toLowerCase()) {
     doc.setLineWidth(0.4);
     doc.line(0, startY += 5, 80, startY);
     doc.text(" المبلغ", 70, startY += 6, { align: 'right' });
     doc.text(" " + TotalAmmount + "  ", 5, startY);
 
-    doc.setLineWidth(0.4);
-    doc.line(0, startY += 5, 80, startY);
     doc.text(" التوصيل", 70, startY += 6, { align: 'right' });
     doc.text(" " + temp.DeliveryPrice + "  ", 5, startY);
   }
 
-  doc.setLineWidth(0.4);
-  doc.line(0, startY += 5, 80, startY);
   doc.text(" الاجمالي", 70, startY += 6, { align: 'right' });
   doc.text(" " + (parseFloat(temp.DeliveryPrice) + parseFloat(TotalAmmount)) + "  ", 5, startY);
-
-
-  doc.line(0, startY += 5, 80, startY);
-  doc.text("طريقة الدفع", 70, startY += 5, { align: 'right' });
-  doc.text(temp.PaymentMethod, 5, startY);
 
   if (temp.Description) {
     doc.setLineWidth(0.4);
@@ -90,30 +82,54 @@ export function ShawermaSheesh(temp, printer = undefined) {
     doc.text("" + temp.Description, 1, startY);
   }
   if (temp.Type.toLowerCase() == "delivery".toLowerCase()) {
+
     doc.setLineWidth(0.4);
     doc.line(0, startY += 5, 80, startY);
     doc.text("الاسم", 70, startY += 5, { align: 'right' });
     doc.text("" + temp.Name + "", 5, startY);
 
-    doc.setLineWidth(0.4);
-    doc.line(0, startY += 5, 80, startY);
     doc.text("هاتف", 70, startY += 5, { align: 'right' });
     doc.text("" + temp.PhoneNumber + "", 5, startY);
 
-    doc.setLineWidth(0.4);
-    doc.line(0, startY += 5, 80, startY);
     doc.text("المنطقة", 70, startY += 5, { align: 'right' });
     doc.text("" + temp.Region + "", 5, startY);
-  }
 
+  }
   doc.setLineWidth(0.4);
   doc.line(0, startY += 5, 80, startY);
   doc.text("هاتف :" + store.getters.CompanyInfo.PhoneNumber1 + "", 70, startY += 5, { align: 'right' });
+
+  doc.setFontSize(6);
+  doc.text(store.getters.name, 5, startY);
+  doc.setFontSize(12);
+
   doc.text("العنوان :" + store.getters.CompanyInfo.Address + "", 70, startY += 5, { align: 'right' });
   doc.setLineWidth(0.4);
   doc.line(0, startY += 5, 80, startY);
-  doc.text(" :تاريخ الفاتورة", 70, startY += 5, { align: 'right' });
+  doc.text(" :تاريخ و وقت", 70, startY += 5, { align: 'right' });
   doc.text("" + formatDate(timein, "no") + " - " + tConvert(timein), 5, startY);
+  /// QR 
+  var opts = {
+    errorCorrectionLevel: 'H',
+    type: 'image/jpeg',
+    quality: 1,
+    margin: 1,
+    color: {
+      dark: "#010599FF",
+      light: "#FFBF60FF"
+    }
+  }
+  QRCode.toDataURL("\n" +
+    "" + temp.PhoneNumber + "\n" +
+    store.getters.CompanyInfo.Website +""
+    ,  (err, url) => {
+    if (err) throw err
+    document.getElementById("qr_code").src = url
+  })
+  if (temp.Type.toLowerCase() == "delivery".toLowerCase()) {
+
+    doc.addImage(document.querySelector('img#qr_code'), "jpeg", 22, startY += 5, 35, 35)
+  }
   if (printer) {
     let cpj = new JSPM.ClientPrintJob();
     cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
@@ -125,9 +141,7 @@ export function ShawermaSheesh(temp, printer = undefined) {
     );
     cpj.files.push(my_file);
     cpj.sendToClient();
-
   } else {
-
     printJS({
       printable: doc.output('datauristring').replace(/^data:application\/pdf;filename=generated.pdf;base64,/, ''),
       type: "pdf",
@@ -135,8 +149,6 @@ export function ShawermaSheesh(temp, printer = undefined) {
       showModal: true
     });
   }
-
-
 }
 
 export function tConvert(date) {

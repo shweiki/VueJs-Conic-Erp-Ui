@@ -180,6 +180,9 @@
               {{ item }}
             </el-tag>
           </el-collapse-item>
+          <el-collapse-item title="Ingredients" name="Ingredients">
+            <ingredients :Value="tempForm.Ingredients" />
+          </el-collapse-item>
         </el-collapse>
       </el-form>
     </el-dialog>
@@ -232,7 +235,7 @@ export default {
   },
   methods: {
     getdata() {
-      GetItemByID({ ID: this.ItemId }).then(response => {
+      GetItemByID({ Id: this.ItemId }).then(response => {
         // handle success
         this.tempForm = response;
         this.GetImageItem(this.tempForm.Id);
@@ -266,7 +269,7 @@ export default {
       });
     },
     GetImageItem(ID) {
-      GetFileByObjID({ TableName: "Item", ObjID: ID })
+      GetFileByObjID({ TableName: "Item", ObjId: ID })
         .then(response => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;

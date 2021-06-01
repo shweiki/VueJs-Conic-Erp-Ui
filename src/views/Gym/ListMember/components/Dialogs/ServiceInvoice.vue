@@ -90,7 +90,7 @@ import { GetActiveService } from "@/api/Service";
 
 export default {
   props: {
-    MemberID: {
+    MemberId: {
       type: Number,
       default: () => {
         return undefined;
@@ -102,7 +102,7 @@ export default {
     return {
       Services: [],
       Service: {},
-      ServiceID: undefined,
+      ServiceId: undefined,
 
       Visible: false,
       Description: ""
@@ -121,7 +121,7 @@ export default {
     },
     createData() {
       let SaleInvoice = {
-        ID: undefined,
+        Id: undefined,
         Name: this.Service.Name,
         Tax: 0.0,
         FakeDate: new Date(),
@@ -136,7 +136,7 @@ export default {
       let ItemSellingPrice = this.Service.SellingPrice / this.Service.Qty;
       for (var i = 0; i < this.Service.Qty; i++) {
         SaleInvoice.InventoryMovements.push({
-          ID: undefined,
+          Id: undefined,
           ItemsId: this.Service.ItemId,
           TypeMove: "Out",
           Status: 1,

@@ -323,7 +323,7 @@
                     <el-form-item prop="InventoryMovements">
                       <el-table
                         highlight-current-row
-                        height="340"
+                        height="300"
                         :data="tempForm.InventoryMovements"
                         style="width: 100%"
                         size="mini"
@@ -616,7 +616,7 @@ export default {
         Id: undefined,
         ItemsId: Item.Id,
         TypeMove: "Out",
-        Status: 0,
+        Status: 2,
         Qty: 1.0,
         SellingPrice: SellingPrice,
         Tax: 0.0,
@@ -668,6 +668,9 @@ export default {
           ) > 0
         ) {
           this.DisabledSave = true;
+          this.tempForm.Type == "Delivery"
+            ? (this.tempForm.Status = 0)
+            : (this.tempForm.Status = 2);
           Create(this.tempForm)
             .then(response => {
               if (response) {
@@ -683,6 +686,8 @@ export default {
                 this.restTempForm();
                 this.DisabledSave = false;
                 this.OpenRestOfBill = false;
+              //  this.AutoPrint = true;
+
                 if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
                   this.sendSMS(this.OldInvoice);
               } else {
@@ -767,7 +772,9 @@ export default {
           AccName: "highfit",
           AccPass: "D7!cT5!SgU0",
           msg:
-            "شكرا لإختياركم شاورما شيش , قيمة الطلب مع التوصيل " +
+            "شكرا لإختياركم شاورما شيش , طلب رقم (" +
+            inv.Id.toString().slice(-4) +
+            ") القيمة مع التوصيل " +
             (
               inv.DeliveryPrice +
               inv.InventoryMovements.reduce((prev, cur) => {

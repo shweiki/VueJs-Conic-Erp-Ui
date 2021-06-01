@@ -155,8 +155,8 @@ export default {
         ClassName: "",
       },
       tempOpration: {
-        ObjID: undefined,
-        OprationID: undefined,
+        ObjId: undefined,
+        OprationId: undefined,
         Description: "",
       },
       rulesOpration: {
@@ -209,8 +209,8 @@ export default {
       this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatus({
-            ObjID: this.tempOpration.ObjID,
-            OprationID: this.tempOpration.OprationID,
+            ObjId: this.tempOpration.ObjID,
+            OprationId: this.tempOpration.OprationID,
             Description: this.tempOpration.Description,
           })
             .then((response) => {

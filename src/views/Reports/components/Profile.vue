@@ -145,7 +145,7 @@ export default {
       console.log(`current page: ${val}`);
     },
     getdata(val) {
-      GetReportByID({ ID: val })
+      GetReportByID({ Id: val })
         .then(response => {
           console.log(response);
           response.Keys = JSON.parse(response.Keys)

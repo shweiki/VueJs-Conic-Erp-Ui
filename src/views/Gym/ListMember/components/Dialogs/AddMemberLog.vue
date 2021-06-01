@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       Temp: {
-        ID: undefined,
+        Id: undefined,
         Type: "Manual",
         MemberId: undefined,
         DateTime: "",

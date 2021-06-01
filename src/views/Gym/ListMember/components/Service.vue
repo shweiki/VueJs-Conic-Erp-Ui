@@ -86,7 +86,7 @@ export default {
     },
     createOprationData() {
       ChangeObjStatusByTableName({
-        ObjID: this.InventoryMovementId,
+        ObjId: this.InventoryMovementId,
         TableName: "InventoryMovement",
         Status: 0,
         Description: "تم استلام حركة من المستودع"

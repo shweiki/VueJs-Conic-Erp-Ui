@@ -262,7 +262,7 @@ export default {
         return undefined;
       }
     },
-    MemberID: {
+    MemberId: {
       type: Number,
       default: () => {
         return undefined;
@@ -286,7 +286,7 @@ export default {
     return {
       Memberships: [],
       MembershipMovement: {
-        ID: undefined,
+        Id: undefined,
         TotalAmmount: 0,
         Tax: 0.0,
         StartDate: new Date(),
@@ -297,13 +297,13 @@ export default {
         DiscountDescription: "",
         Description: "",
         Status: 0,
-        MemberID: undefined,
+        MemberId: undefined,
         EditorName: "",
         MembershipId: undefined
       },
       OldPayment: null,
       Payment: {
-        ID: undefined,
+        Id: undefined,
         Name: "",
         FakeDate: new Date(),
         PaymentMethod: "Cash",
@@ -314,7 +314,7 @@ export default {
         IsPrime: true,
         EditorName: "",
 
-        MemberID: undefined,
+        MemberId: undefined,
         Type: ""
       },
       EnableSave: false,
@@ -445,7 +445,7 @@ export default {
     },
     AddExtraToMembership(Days, MemberShipMovementId) {
       let MembershipMovementOrder = {
-        ID: undefined,
+        Id: undefined,
         Type: "Extra",
         StartDate: new Date(this.MembershipMovement.EndDate),
         EndDate: new Date(),

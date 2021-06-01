@@ -20,7 +20,7 @@ module.exports = {
   showNavbar: true,
   showBarcode: false,
   showRestOfBill: false,
-  BarcodeIsID: false,
+  BarcodeIsId: false,
   WithOutCheckItemIsExist: true,
   ToFixed: 2,
   LimitQurey: 20,

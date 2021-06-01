@@ -128,7 +128,7 @@
 
 <script>
 import { CreateItem, CheckItemIsExist } from "@/api/Item";
-import Category from './Category.vue';
+import Category from "./Category.vue";
 
 export default {
   components: { Category },
@@ -205,7 +205,7 @@ export default {
             BarCode: this.tempForm.Barcode,
             Name: this.tempForm.Name
           }).then(response => {
-            if (!response ) {
+            if (!response) {
               CreateItem(this.tempForm)
                 .then(response => {
                   this.Open = false;
@@ -228,7 +228,7 @@ export default {
                 title: "تم ",
                 message: "يوجد صنف يحمل نفس الاسم / الباركود",
                 type: "warning",
-                duration: 20000,
+                duration: 20000
               });
             }
           });

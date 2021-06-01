@@ -190,7 +190,7 @@ export default {
     },
     createFreeze() {
       let MembershipMovementOrder = {
-        ID: undefined,
+        Id: undefined,
         Type: "Freeze",
         StartDate: this.FreezeBetween[0],
         EndDate: this.FreezeBetween[1],

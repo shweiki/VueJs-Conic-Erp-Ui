@@ -78,7 +78,7 @@ export default {
       console.log(this.tableData);
       this.data = this.tableData.map(element => {
         return {
-          ID: undefined,
+          Id: undefined,
           Name:
             element.n1 + " " + element.n2 + " " + element.n3 + " " + element.n4,
           Ssn: element.ssn,

@@ -66,6 +66,14 @@ const UploadData = {
       meta: {
         title: 'UploadMembershipMovement', icon: 'execution'
       },
+    },
+    {
+      path: 'Upload/Oprationsys',
+      component: () => import('@/views/UploadData/Oprationsys'),
+      name: 'UploadOprationsys',
+      meta: {
+        title: 'UploadOprationsys', icon: 'execution'
+      },
     }
   ]
 }

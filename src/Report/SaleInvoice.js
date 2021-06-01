@@ -17,7 +17,7 @@ export function SaleInvoiceA4(temp ,ReportTemp ) {
   ReportTemp = ReportTemp.replace('{{TotalAmmount}}', TotalAmmount)
   let res = ReportTemp.slice(ReportTemp.search('<tr id="forach"'), ReportTemp.indexOf("</tr>", ReportTemp.search('<tr id="forach"')) + 5);
   let tabelInventoryMovements = "";
-  temp.InventoryMovements.reverse().forEach(element => {
+  temp.InventoryMovements.forEach(element => {
     tabelInventoryMovements += "<tr style='text-align: center;'>"
     tabelInventoryMovements += "<td>" + (element.SellingPrice * element.Qty).toFixed(toFixed) + "</td>";
     tabelInventoryMovements += "<td>" + element.SellingPrice + "</td>";

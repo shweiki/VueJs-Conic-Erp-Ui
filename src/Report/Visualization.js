@@ -7,7 +7,7 @@ export default function Visualization(Data, Keys, Html, printer) {
   });
   let res = Html.slice(Html.search('<tr id="forach"'), Html.indexOf("</tr>", Html.search('<tr id="forach"')) + 5);
   let tabelInventoryMovements = "";
-  Data.InventoryMovements.reverse().forEach(element => {
+  Data.InventoryMovements.forEach(element => {
     Object.keys(element
     ).forEach(key => {
       Html = Html.replace('[InventoryMovements.' + key + ']', element[key])

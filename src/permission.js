@@ -88,6 +88,7 @@ router.beforeEach(async (to, from, next) => {
                 });
             }*/
           }
+          
           console.log("to : ", defulateRedirect)
           //  to.path = store.settings.defulateRedirect
           // next({ ...to, replace: true })

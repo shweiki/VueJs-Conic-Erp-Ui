@@ -139,7 +139,7 @@ export default {
         );
         console.log(MembershipId, Type, MemberID);
         return {
-          ID: undefined,
+          Id: undefined,
           TotalAmmount: element.VALUE,
           Tax: 0.0,
           StartDate: this.ExcelDateToJSDate(element.On_Date),
@@ -150,7 +150,7 @@ export default {
           DiscountDescription: '',
           Description: element.Note,
           Status: 1,
-          MemberID: MemberID,
+          MemberId: MemberID,
           MembershipId: MembershipId
         };
       })

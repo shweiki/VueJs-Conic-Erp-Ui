@@ -195,7 +195,7 @@ export default {
         return undefined;
       }
     },
-    MemberID: {
+    MemberId: {
       type: Number,
       default: () => {
         return undefined;
@@ -214,7 +214,7 @@ export default {
     return {
       Memberships: [],
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         TotalAmmount: 0,
         Tax: 0.0,
         StartDate: "",
@@ -319,7 +319,7 @@ export default {
     },
     AddExtraToMembership(Days, MemberShipMovementId) {
       let MembershipMovementOrder = {
-        ID: undefined,
+        Id: undefined,
         Type: "Extra",
         StartDate: new Date(this.tempForm.EndDate),
         EndDate: new Date(),

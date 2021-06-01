@@ -13,7 +13,7 @@ const SalesRouter = {
       component: () => import('@/views/Sales/SaleInvoice/Edit'),
       name: 'EditInvoice',
       meta: {
-         title: 'EditInvoice', noCache: true, activeMenu: '/Sales/SalesInvoice/List'
+        title: 'EditInvoice', noCache: true, activeMenu: '/Sales/SalesInvoice/List'
       },
       hidden: true,
     },
@@ -25,7 +25,14 @@ const SalesRouter = {
         title: 'ListSalesInvoice', icon: 'cost'
       },
     },
-    
+    {
+      path: 'SaleInvoiceStatus',
+      component: () => import('@/views/Sales/SaleInvoice/SaleInvoiceStatus'),
+      name: 'SaleInvoiceStatus',
+      meta: {
+        title: 'SaleInvoiceStatus', icon: 'cost'
+      },
+    },
     {
       path: 'SalesItems',
       component: () => import('@/views/Sales/SalesItems'),

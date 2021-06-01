@@ -98,7 +98,7 @@ export default {
     return {
       EnableSave: false,
       MembershipMovementOrder: {
-        ID: undefined,
+        Id: undefined,
         Type: "Extra",
         StartDate: new Date(this.EndDate),
         EndDate: new Date(),

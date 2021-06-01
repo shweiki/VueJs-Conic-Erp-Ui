@@ -158,7 +158,7 @@ export default {
         ClassName: "",
       },
       tempForm: {
-        ID: undefined,
+        Id: undefined,
         Name: "",
         CostPrice: 0.0,
         SellingPrice: 0.0,
@@ -176,7 +176,7 @@ export default {
     AddItem(item) {
       this.loading = true;
 
-      GetItemByID({ ID: item.Id }).then((response) => {
+      GetItemByID({ Id: item.Id }).then((response) => {
         // handle success
         console.log(response);
         this.tableData.push(response);

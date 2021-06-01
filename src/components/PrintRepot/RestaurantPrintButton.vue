@@ -60,6 +60,8 @@
       </el-col>
       ></el-drawer
     >
+    <img id="qr_code" style="display: none"/>
+
   </div>
 </template>
 <script>
@@ -157,7 +159,7 @@ export default {
       );
 
       let tabelInventoryMovements = "";
-      Data.InventoryMovements.reverse().forEach(element => {
+      Data.InventoryMovements.forEach(element => {
         Object.keys(element).forEach(key => {
           Html = Html.replace("[InventoryMovements." + key + "]", element[key]);
         });
