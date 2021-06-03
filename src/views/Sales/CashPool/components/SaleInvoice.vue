@@ -443,7 +443,7 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitGetInvoice,
         Sort: "-id",
-        Status: 2
+        Status: 0
       })
         .then(response => {
           // handle success

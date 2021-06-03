@@ -196,7 +196,7 @@
                                   ].InventoryQty = q;
                                 }
                               "
-                              :ItemID="tempForm.InventoryMovements[scope.$index].ItemsId"
+                              :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
                             />
                           </template>
                         </el-table-column>

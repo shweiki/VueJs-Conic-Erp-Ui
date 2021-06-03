@@ -19,7 +19,7 @@ const mutations = {
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
   },
-  SET_Id: (state, Id) => {
+  SET_ID: (state, Id) => {
     state.Id = Id
   },
   SET_NAME: (state, name) => {

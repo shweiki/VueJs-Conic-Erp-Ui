@@ -25,7 +25,7 @@ import { CalculateInventoryItemQty } from "@/api/Item";
 
 export default {
   props: {
-    ItemId: { type: Number, default: undefined },
+    ItemId: { type: Number },
   },
   mounted() {
     this.getdata();
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     getdata() {
-      CalculateInventoryItemQty({ Id: this.ItemID }).then((response) => {
+      CalculateInventoryItemQty({ Id: this.ItemId }).then((response) => {
         // handle success
         this.InventoryQty = response;
       });

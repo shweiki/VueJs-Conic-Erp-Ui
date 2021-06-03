@@ -10,12 +10,37 @@ const InventoryRouter = {
   },
   children: [
     {
-      path: 'Items',
-      component: () => import('@/views/Inventory/Item/List'),
-      name: 'Items',
-      meta: {
-        title: 'Items', icon: 'item'
-      },
+      path: '/Item',
+      component: () => import('@/views/Inventory/Item/index'),
+      redirect: '/Item/List',
+      name: 'Item',
+      meta: { title: 'Items', icon: 'orderinv' },
+      children: [
+        {
+          path: 'Create',
+          component: () => import('@/views/Inventory/Item/Create'),
+          name: 'NewItem',
+          meta: { title: 'NewItem', icon: 'box2' }
+        },
+
+        {
+          path: 'Edit/:id(\\d+)',
+          component: () => import('@/views/Inventory/Item/Edit'),
+          name: 'EditItem',
+          meta: {
+            title: 'Edit Item Inventory', noCache: true, activeMenu: '/Inventory/Item/List'
+          },
+          hidden: true,
+        },
+        {
+          path: 'List',
+          component: () => import('@/views/Inventory/Item/List'),
+          name: 'ListItem',
+          meta: {
+            title: 'ListItem', icon: 'orderinv'
+          },
+        }
+      ]
     },
     {
       path: 'ItemMove',

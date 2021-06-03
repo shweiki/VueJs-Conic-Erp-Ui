@@ -150,7 +150,8 @@ export default {
         Rate: 0,
         IsPrime: false,
         Barcode: "",
-        Description: ""
+        Description: "",
+        Ingredients: null
       },
       rulesForm: {
         Name: [
@@ -195,7 +196,9 @@ export default {
         Barcode: "",
         IsPrime: false,
         Description: "",
-        Status: 0
+        Status: 0,
+                Ingredients: null
+
       };
     },
     createData() {

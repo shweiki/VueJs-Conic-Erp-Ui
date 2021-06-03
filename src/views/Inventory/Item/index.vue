@@ -1,4 +1,8 @@
 ﻿<template>
+      <router-view />
+</template>
+<!--
+<template>
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
@@ -202,3 +206,4 @@ export default {
   },
 };
 </script>
+ -->

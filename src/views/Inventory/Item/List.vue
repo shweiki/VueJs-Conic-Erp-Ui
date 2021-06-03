@@ -92,7 +92,19 @@
       @sort-change="sortChange"
       ref="multipleTable"
       @selection-change="handleSelectionChange"
-      @row-dblclick="dblclick"
+      @row-dblclick="
+        row => {
+          //  $emit('dblclick', row);
+          let r = $router.resolve({
+            path: '/Item/Edit/' + row.Id
+          });
+          window.open(
+            r.href,
+            r.route.name,
+            $store.getters.settings.windowStyle
+          );
+        }
+      "
     >
       <el-table-column
         type="selection"
@@ -286,20 +298,6 @@ export default {
   },
   methods: {
     CalculateCostPrice,
-    dblclick(row) {
-      this.$emit("dblclick", row);
-      /*
-    row => {
-          let r = $router.resolve({
-            path: '/Item/Edit/' + row.Id
-          });
-          window.open(
-            r.href,
-            r.route.name,
-            $store.getters.settings.windowStyle
-          );
-        }*/
-    },
 
     getList() {
       this.listLoading = true;

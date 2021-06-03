@@ -162,7 +162,7 @@
               </el-col> </el-row
           ></el-collapse-item>
           <el-collapse-item title="Qty" name="Qty">
-            <inventory-qty :ItemID="tempForm.Id" />
+            <inventory-qty :ItemId="tempForm.Id" />
           </el-collapse-item>
           <el-collapse-item title="Category" name="Category">
             <category

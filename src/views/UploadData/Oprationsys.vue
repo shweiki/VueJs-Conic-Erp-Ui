@@ -8,7 +8,6 @@
       >Push
       <span> {{ counter + "  Of  " + tableData.length }} </span></el-button
     >
-
     <el-table
       height="250"
       v-loading="loading"
@@ -26,7 +25,6 @@
     </el-table>
   </div>
 </template>
-
 <script>
 import UploadExcelComponent from "@/components/UploadExcel/index.vue";
 import { Create } from "@/api/Oprationsys";
@@ -91,11 +89,11 @@ export default {
           TableName: element.TableName,
           ControllerName: element.ControllerName,
           RoleName: element.RoleName,
-          OprationName: element.RoleName,
+          OprationName: element.OprationName,
           OprationDescription: element.OprationDescription,
           ArabicOprationDescription: element.ArabicOprationDescription,
           Status: element.Status,
-          ReferenceStatus: element.Status,
+          ReferenceStatus: element.ReferenceStatus,
           IconClass: element.IconClass,
           ClassName: element.ClassName,
           Color: element.Color

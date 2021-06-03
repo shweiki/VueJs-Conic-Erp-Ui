@@ -286,17 +286,18 @@ export default {
   },
   methods: {
     AddItem(item) {
+      console.log(item)
       this.tempForm.InventoryMovements.unshift({
         Id: undefined,
         TypeMove: "In",
-        ItemsId: item != undefined ? item.Id : undefined,
+        ItemsId: item.Id ,
         Status: 0,
         Qty: 1.0,
         SellingPrice: 0,
         Tax: 0.0,
         Description: "",
         InventoryItemId: 1,
-        Name: Item.Name,
+        Name: item.Name,
         OrderInventoryId: undefined
       });
     },
