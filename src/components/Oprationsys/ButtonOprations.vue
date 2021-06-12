@@ -102,7 +102,7 @@ export default {
       /// temp
 
       this.tempOpration.Status = Opration.Status;
-      //  this.tempOpration.ObjID = ObjID;
+      //  this.tempOpration.ObjId = ObjId;
       this.tempOpration.OprationID = Opration.Id;
       //     this.tempOpration.Description = "";
     },

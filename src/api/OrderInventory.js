@@ -7,9 +7,9 @@ export function GetOrderInventory(query) {
     params: query
   })
 }
-export function GetOrderInventoryByID(query) {
+export function GetOrderInventoryById(query) {
   return request({
-    url: '/OrderInventory/GetOrderInventoryByID',
+    url: '/OrderInventory/GetOrderInventoryById',
     method: 'get',
     params: query
   })

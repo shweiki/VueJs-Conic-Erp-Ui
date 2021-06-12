@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import { Edit, GetByID } from "@/api/Vendor";
+import { Edit, GetById } from "@/api/Vendor";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
@@ -235,7 +235,7 @@ export default {
 
   methods: {
     getdata() {
-      GetByID({ Id: this.VendorId }).then(response => {
+      GetById({ Id: this.VendorId }).then(response => {
         // handle success
         this.tempForm = response;
 

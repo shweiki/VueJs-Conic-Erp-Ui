@@ -63,7 +63,7 @@
             }
           ]"
         >
-          <fake-date
+          <Fake-Date
             :Value="tempForm.StartDate"
             @Set="
               v => {
@@ -294,10 +294,10 @@ export default {
       });
     },
     calc() {
+     if(this.Memberships.length <= 0) return false
       let Membership = this.Memberships.find(
         obj => obj.Id == this.tempForm.MembershipId
       );
-      console.log(Membership);
 
       let Price =
         this.tempForm.Type == "Morning"
@@ -309,7 +309,7 @@ export default {
           : this.Discount.value;
 
       this.tempForm.TotalAmmount = Price - this.tempForm.Discount;
-      this.tempForm.MemberId = this.MemberID;
+      this.tempForm.MemberId = this.MemberId;
 
       this.tempForm.EndDate = LocalDateTime.ofInstant(
         Instant.ofEpochMilli(new Date(this.tempForm.StartDate))

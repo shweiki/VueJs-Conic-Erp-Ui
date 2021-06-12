@@ -29,7 +29,7 @@
               >
               <el-col :span="12">
                 <span>اخر زيارة</span>
-                <last-log-member :MemberID="member.MemberId" />
+                <last-log-member :MemberId="member.MemberId" />
               </el-col>
             </el-row>
             <el-col :span="24">

@@ -59,7 +59,7 @@
                     icon="el-icon-upload"
                     @click="imagecropperShow = true"
                   ></el-button>
-                  <web-cam TableName="Item" :ObjectID="tempForm.Id" />
+                  <web-cam TableName="Item" :ObjectId="tempForm.Id" />
                 </pan-thumb>
                 <image-cropper
                   v-show="imagecropperShow"
@@ -68,7 +68,7 @@
                   :height="150"
                   lang-type="ar"
                   TableName="Item"
-                  :ObjectID="tempForm.Id"
+                  :ObjectId="tempForm.Id"
                   @close="close"
                   @crop-upload-success="cropSuccess"
                 /> </el-col
@@ -190,12 +190,12 @@
 </template>
 
 <script>
-import { Edit, GetItemByID } from "@/api/Item";
+import { Edit, GetItemById } from "@/api/Item";
 import InventoryQty from "@/components/Item/InventoryQty";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
-import { GetFileByObjID } from "@/api/File";
+import { GetFileByObjId } from "@/api/File";
 import permission from "@/directive/permission/index.js";
 import Category from "./Category";
 import elDragDialog from "@/directive/el-drag-dialog"; // base on element-ui
@@ -235,7 +235,7 @@ export default {
   },
   methods: {
     getdata() {
-      GetItemByID({ Id: this.ItemId }).then(response => {
+      GetItemById({ Id: this.ItemId }).then(response => {
         // handle success
         this.tempForm = response;
         this.GetImageItem(this.tempForm.Id);
@@ -269,7 +269,7 @@ export default {
       });
     },
     GetImageItem(ID) {
-      GetFileByObjID({ TableName: "Item", ObjId: ID })
+      GetFileByObjId({ TableName: "Item", ObjId: ID })
         .then(response => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;

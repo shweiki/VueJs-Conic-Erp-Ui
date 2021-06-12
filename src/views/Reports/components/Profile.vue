@@ -70,7 +70,7 @@
   </div>
 </template>
 <script>
-import { Create, Edit, GetReportByID, GetTotal } from "@/api/Report";
+import { Create, Edit, GetReportById, GetTotal } from "@/api/Report";
 import Tinymce from "@/components/Tinymce";
 import Printers from "@/components/Printers/index.vue";
 import JsonEditor from "@/components/JsonEditor";
@@ -145,7 +145,7 @@ export default {
       console.log(`current page: ${val}`);
     },
     getdata(val) {
-      GetReportByID({ Id: val })
+      GetReportById({ Id: val })
         .then(response => {
           console.log(response);
           response.Keys = JSON.parse(response.Keys)

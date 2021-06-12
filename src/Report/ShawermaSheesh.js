@@ -120,7 +120,7 @@ export function ShawermaSheesh(temp, printer = undefined) {
     }
   }
   QRCode.toDataURL("\n" +
-    "" + temp.PhoneNumber + "\n" +
+    "" + temp.PhoneNumber + "\n\n\n" +
     store.getters.CompanyInfo.Website +""
     ,  (err, url) => {
     if (err) throw err

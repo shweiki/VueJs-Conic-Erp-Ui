@@ -29,7 +29,7 @@
               :height="150"
               lang-type="ar"
               TableName="CompanyInfo"
-              :ObjectID="1"
+              :ObjectId="1"
               @close="close"
               @crop-upload-success="cropSuccess"
               @SetImage="SetBaseImage"

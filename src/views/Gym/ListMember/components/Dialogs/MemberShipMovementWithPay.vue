@@ -187,6 +187,8 @@
             class="currency-input"
             v-model="Payment.TotalAmmount"
             :value-range="{ min: 0.01, max: 1000 }"
+                      @focus="$event.target.select()"
+
           />
         </el-form-item>
 
@@ -364,7 +366,7 @@ export default {
                     //  if(this.Discount.ValueOfDays >0)
                     // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
 
-                    this.Payment.MemberID = this.MemberID;
+                    this.Payment.MemberId = this.MemberId;
                     this.Payment.Description +=
                       "وذالك عن اشتراك رقم " +
                       response +
@@ -424,7 +426,7 @@ export default {
       this.MembershipMovement.TotalAmmount =
         Price - this.MembershipMovement.Discount;
       this.Payment.TotalAmmount = this.MembershipMovement.TotalAmmount;
-      this.MembershipMovement.MemberID = this.MemberID;
+      this.MembershipMovement.MemberId = this.MemberId;
 
       this.MembershipMovement.EndDate = new Date(
         this.MembershipMovement.EndDate.setTime(
@@ -434,7 +436,7 @@ export default {
       );
     },
     Print() {
-      this.OldPayment.ObjectID = this.MemberID;
+      this.OldPayment.ObjectId = this.MemberId;
 
       printJS({
         printable: PaymentMember(this.OldPayment),

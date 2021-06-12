@@ -18,7 +18,7 @@ export default {
     };
   },
   mounted() {
-    GetlastLogByMemberId({ MemberId: this.MemberID }).then(res => {
+    GetlastLogByMemberId({ MemberId: this.MemberId }).then(res => {
       this.lastLog = res;
     });
   }

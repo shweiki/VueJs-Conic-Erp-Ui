@@ -193,6 +193,8 @@
                 @change="SumTotalAmmount"
                 class="currency-input"
                 :precision="10"
+                          @focus="$event.target.select()"
+
                 v-model="tempForm.InventoryMovements[scope.$index].SellingPrice"
               />
             </template>
@@ -317,7 +319,7 @@
   </div>
 </template>
 <script>
-import { Create, Edit, GetPurchaseInvoiceByID } from "@/api/PurchaseInvoice";
+import { Create, Edit, GetPurchaseInvoiceById } from "@/api/PurchaseInvoice";
 import FakeDate from "@/components/Date/FakeDate";
 
 import { GetActiveInventory } from "@/api/InventoryItem";
@@ -418,7 +420,7 @@ export default {
   },
   methods: {
     getdata(val) {
-      GetPurchaseInvoiceByID({ Id: val })
+      GetPurchaseInvoiceById({ Id: val })
         .then(response => {
           console.log(response);
           this.tempForm = response;

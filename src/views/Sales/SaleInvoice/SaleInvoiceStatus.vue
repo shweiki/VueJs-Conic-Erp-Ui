@@ -229,7 +229,7 @@
       <el-table-column width="120" align="center">
         <template slot-scope="scope">
           <next-oprations
-            :ObjID="scope.row.Id"
+            :ObjId="scope.row.Id"
             :Status="scope.row.Status"
             TableName="SalesInvoice"
             :Description="DriverDescription"
@@ -240,7 +240,7 @@
       <el-table-column width="55" align="center">
         <template slot-scope="scope">
           <print-button Type="SaleInvoice" :Data="scope.row" />
-          <dialog-action-log TableName="SalesInvoice" :ObjID="scope.row.Id" />
+          <dialog-action-log TableName="SalesInvoice" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -427,10 +427,10 @@ export default {
     sortChange(data) {
       const { prop, order } = data;
       if (prop === "id") {
-        this.sortByID(order);
+        this.sortById(order);
       }
     },
-    sortByID(order) {
+    sortById(order) {
       if (order === "ascending") {
         this.listQuery.sort = "+id";
       } else {

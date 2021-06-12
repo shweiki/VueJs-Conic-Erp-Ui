@@ -4,7 +4,7 @@
       <el-button
         :type="NOprations.ClassName"
         round
-        @click="handleOprationsys(ObjID, NOprations)"
+        @click="handleOprationsys(ObjId, NOprations)"
         >{{ NOprations.OprationDescription }}</el-button
       >
     </el-col>
@@ -110,7 +110,7 @@ export default {
         );
       });
     },
-    handleOprationsys(ObjID, Opration) {
+    handleOprationsys(ObjId, Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
@@ -121,13 +121,13 @@ export default {
       /// temp
 
       this.tempOpration.Status = Opration.Status;
-      this.tempOpration.ObjID = ObjID;
+      this.tempOpration.ObjId = ObjId;
       this.tempOpration.OprationID = Opration.Id;
  //     this.tempOpration.Description = "";
     },
     Create() {
       ChangeObjStatusByTableName({
-        ObjId: this.tempOpration.ObjID,
+        ObjId: this.tempOpration.ObjId,
         TableName: this.TableName,
         Status: this.tempOpration.Status,
         Description: this.tempOpration.Description

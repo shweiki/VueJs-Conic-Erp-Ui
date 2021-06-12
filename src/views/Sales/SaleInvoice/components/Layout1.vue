@@ -500,7 +500,7 @@ import PrintButton from "@/components/PrintRepot/PrintButton";
 
 // report
 
-import { Create, Edit, GetSaleInvoiceByID } from "@/api/SaleInvoice";
+import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import { GetActiveInventory } from "@/api/InventoryItem";
 import { GetActiveMenuItem } from "@/api/MenuItem";
 import { GetActiveVendor } from "@/api/Vendor";
@@ -710,7 +710,7 @@ export default {
     },
     checkPermission,
     getdata(val) {
-      GetSaleInvoiceByID({ Id: val })
+      GetSaleInvoiceById({ Id: val })
         .then(response => {
           this.tempForm = response;
           // set tagsview title

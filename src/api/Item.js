@@ -43,9 +43,9 @@ export function GetActiveItem(query) {
     params: query
   })
 }
-export function GetItemByID(query) {
+export function GetItemById(query) {
   return request({
-    url: '/Item/GetItemByID',
+    url: '/Item/GetItemById',
     method: 'get',
     params: query
   })

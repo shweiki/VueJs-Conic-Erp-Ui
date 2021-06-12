@@ -177,9 +177,9 @@ export default {
         showModal: true
       });
     },
-    SetOnDevice(DeviceID, Name) {
+    SetOnDevice(DeviceId, Name) {
       SetUser({
-        DeviceId: DeviceID,
+        DeviceId: DeviceId,
         UserId: this.Member.Id
       }).then(response => {
         if (response) {

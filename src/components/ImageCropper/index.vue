@@ -857,7 +857,7 @@ export default {
         File: createImgUrl.replace(/^data:image\/(png|jpg);base64,/, ""),
         Status: 0,
         TableName: this.TableName,
-        FKTable: this.ObjectID
+        FKTable: this.ObjectId
       };
       Create(file)
         .then(resData => {

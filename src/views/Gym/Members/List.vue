@@ -223,7 +223,7 @@
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <next-oprations
-            :ObjID="scope.row.Id"
+            :ObjId="scope.row.Id"
             :Status="scope.row.Status"
             TableName="Member"
             @Done="handleFilter"
@@ -306,10 +306,10 @@ export default {
     sortChange(data) {
       const { prop, order } = data;
       if (prop === "id") {
-        this.sortByID(order);
+        this.sortById(order);
       }
     },
-    sortByID(order) {
+    sortById(order) {
       if (order === "ascending") {
         this.listQuery.sort = "+id";
       } else {

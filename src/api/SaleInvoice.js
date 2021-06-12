@@ -39,9 +39,9 @@ export function Edit(data) {
     data: qs.stringify(data)
   })
 }
-export function GetSaleInvoiceByID(query) {
+export function GetSaleInvoiceById(query) {
   return request({
-    url: '/SaleInvoice/GetSaleInvoiceByID',
+    url: '/SaleInvoice/GetSaleInvoiceById',
     method: 'get',
     params: query
   })

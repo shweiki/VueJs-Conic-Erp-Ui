@@ -15,16 +15,16 @@ export function Edit(data) {
     data: qs.stringify(data)
   })
 }
-export function GetMembershipMovementByMemberID(query) {
+export function GetMembershipMovementByMemberId(query) {
   return request({
-    url: '/MembershipMovement/GetMembershipMovementByMemberID',
+    url: '/MembershipMovement/GetMembershipMovementByMemberId',
     method: 'get',
     params: query
   })
 }
-export function GetMembershipMovementByID(query) {
+export function GetMembershipMovementById(query) {
   return request({
-    url: '/MembershipMovement/GetMembershipMovementByID',
+    url: '/MembershipMovement/GetMembershipMovementById',
     method: 'get',
     params: query
   })

@@ -461,7 +461,7 @@ import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
 import FakeDate from "@/components/Date/FakeDate";
 
-import { Create, Edit, GetSaleInvoiceByID } from "@/api/SaleInvoice";
+import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import { GetActiveInventory } from "@/api/InventoryItem";
 import { GetActiveMenuItem } from "@/api/MenuItem";
 
@@ -637,7 +637,7 @@ export default {
         });
     },
     getdata(val) {
-      GetSaleInvoiceByID({ Id: val })
+      GetSaleInvoiceById({ Id: val })
         .then(response => {
           this.tempForm = response;
           // set tagsview title
@@ -668,9 +668,9 @@ export default {
           ) > 0
         ) {
           this.DisabledSave = true;
-          this.tempForm.Type == "Delivery"
-            ? (this.tempForm.Status = 0)
-            : (this.tempForm.Status = 2);
+        //  this.tempForm.Type == "Delivery"
+         //   ? (this.tempForm.Status = 0)
+        //    : (this.tempForm.Status = 2);
           Create(this.tempForm)
             .then(response => {
               if (response) {

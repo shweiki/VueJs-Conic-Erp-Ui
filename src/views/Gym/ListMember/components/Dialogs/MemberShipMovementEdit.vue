@@ -180,7 +180,7 @@
 </template>
 
 <script>
-import { Edit, GetMembershipMovementByID } from "@/api/MembershipMovement";
+import { Edit, GetMembershipMovementById } from "@/api/MembershipMovement";
 import FakeDate from "@/components/Date/FakeDate.vue";
 
 import { GetActiveMembership } from "@/api/Membership";
@@ -222,7 +222,7 @@ export default {
   },
   methods: {
     getdata() {
-      GetMembershipMovementByID({ Id: this.MembershipMovementID })
+      GetMembershipMovementById({ Id: this.MembershipMovementID })
         .then(response => {
           console.log(response);
           this.tempForm = response;
@@ -279,6 +279,7 @@ export default {
       });
     },
     calc() {
+      console.log(this.Memberships , this.tempForm.MembershipId)
       let Membership = this.Memberships.find(
         obj => obj.Id == this.tempForm.MembershipId
       );

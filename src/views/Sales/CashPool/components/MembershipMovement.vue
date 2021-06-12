@@ -147,7 +147,7 @@
         <el-table-column width="180" align="center" v-if="checkPermission(['Admin'])">
           <template slot-scope="scope">
             <next-oprations
-              :ObjID="scope.row.Id"
+              :ObjId="scope.row.Id"
               :Status="scope.row.Status"
               TableName="MembershipMovement"
               @Done="getdata"

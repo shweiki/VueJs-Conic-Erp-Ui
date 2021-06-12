@@ -2,7 +2,7 @@
 import store from '@/store'
 import printJS from "print-js";
 let toFixed = store.getters.settings.ToFixed;
-export function SaleInvoiceA4(temp ,ReportTemp ) {
+export function SaleInvoiceA4(temp, ReportTemp) {
   let TotalAmmount = (
     temp.InventoryMovements.reduce((prev, cur) => {
       return prev + cur.Qty * cur.SellingPrice;
@@ -70,6 +70,128 @@ export function SaleInvoicesList(data) {
         toFixed
       ) +
       "</h3><h3 style='float:right'>  التاريخ  : " +
+      formatDate(new Date()) +
+      "</h3>",
+    gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
+    gridStyle: "border: 2px solid #3971A5; text-align: center;"
+  });
+}
+export function SaleInvoicesItemsMovements(data) {
+  console.log(data)
+  let { Totals, Items } = data
+  let ItemsMovements = [];
+  Items.map(a => {
+    return a.InventoryMovements.map(m => {
+      var find = ItemsMovements.findIndex(
+        value => value.Name == m.Name
+      );
+      if (find != -1) ItemsMovements[find].TotalCount += m.Qty;
+      else {
+        ItemsMovements.push({
+          Name: m.Name,
+          TotalCount: m.Qty,
+          AvgPrice: m.SellingPrice.toFixed(toFixed),
+          CostPrice: m.CostPrice,
+          Ingredients: JSON.parse(m.Ingredients) || []
+        });
+      }
+    });
+  });
+  printJS({
+    printable: ItemsMovements.map(Item => ({
+      "المجموع البيع": (Item.TotalCount * Item.AvgPrice).toFixed(
+        toFixed
+      ),
+      "سعر البيع": Item.AvgPrice,
+      "المجموع التكلفة": (Item.TotalCount * Item.CostPrice).toFixed(
+        toFixed
+      ),
+      "سعر التكلفة": Item.CostPrice,
+      "العدد": Item.TotalCount,
+      "الصنف": Item.Name
+    })),
+    properties: [
+      "المجموع البيع",
+      "سعر البيع",
+      "المجموع التكلفة",
+      "سعر التكلفة",
+      "العدد",
+      "الصنف"
+    ],
+    type: "json",
+    header:
+      "<h3 style='float:right'> الاجمالي النقدي " +
+      Totals.Cash.toFixed(toFixed) +
+      " - الاجمالي الفيزا : " +
+      Totals.Visa.toFixed(toFixed) +
+      " - الاجمالي الاجل : " +
+      Totals.Receivables.toFixed(toFixed) +
+      //  " - صافي الربح : " +
+      //  this.Totals.Profit.toFixed(this.$toFixed) +
+      " - الاجمالي خصم : " +
+      Totals.Discount.toFixed(toFixed) +
+      " - الاجمالي التكلفة : " +
+      Totals.TotalCost.toFixed(toFixed) +
+      " - الاجمالي :  " +
+      (
+        Totals.Cash +
+        Totals.Receivables +
+        Totals.Visa
+      ).toFixed(toFixed) +
+      "</h3><h3 style='float:right'>  التاريخ  : " +
+      formatDate(new Date()) +
+      "</h3>",
+    gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
+    gridStyle: "border: 2px solid #3971A5; text-align: center;"
+  });
+}
+export function SaleInvoicesItemsIngredients(data) {
+  console.log(data)
+  let { Totals, Items } = data
+  let ItemsMovements = [];
+  let ItemsIngredients = [];
+
+  Items.map(a => {
+    return a.InventoryMovements.map(m => {
+      var find = ItemsMovements.findIndex(
+        value => value.Name == m.Name
+      );
+      if (find != -1) ItemsMovements[find].TotalCount += m.Qty;
+      else {
+        ItemsMovements.push({
+          Name: m.Name,
+          TotalCount: m.Qty,
+          AvgPrice: m.SellingPrice.toFixed(toFixed),
+          CostPrice: m.CostPrice,
+          Ingredients: JSON.parse(m.Ingredients) || []
+        });
+      }
+    });
+  });
+  ItemsMovements.map(a => {
+    return a.Ingredients.map(m => {
+      var find = ItemsIngredients.findIndex(
+        value => value.Name == m.Name
+      );
+      if (find != -1)
+        ItemsIngredients[find].TotalCount += a.TotalCount * m.Qty;
+      else {
+        ItemsIngredients.push({
+          Name: m.Name,
+          TotalCount: a.TotalCount * m.Qty
+        });
+      }
+    });
+  });
+  printJS({
+    printable: ItemsIngredients.map(Item => ({
+      العدد: Item.TotalCount,
+      الصنف: Item.Name
+    })),
+    properties: ["العدد", "الصنف"],
+    type: "json",
+    header:
+      "<h3 style='float:right'>  التاريخ  : " +
       formatDate(new Date()) +
       "</h3>",
     gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",

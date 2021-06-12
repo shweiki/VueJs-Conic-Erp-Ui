@@ -209,7 +209,7 @@
   </div>
 </template>
 <script>
-import { Create, Edit, GetOrderInventoryByID } from "@/api/OrderInventory";
+import { Create, Edit, GetOrderInventoryById } from "@/api/OrderInventory";
 import { GetActiveInventory } from "@/api/InventoryItem";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
@@ -309,7 +309,7 @@ export default {
       this.tempForm.InventoryMovements[Index].Description = this.Text;
     },
     getdata(val) {
-      GetOrderInventoryByID({ Id: val })
+      GetOrderInventoryById({ Id: val })
         .then(response => {
           console.log(response);
           this.tempForm = response;

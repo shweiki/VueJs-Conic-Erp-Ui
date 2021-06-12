@@ -77,7 +77,7 @@ export default {
       this.tableData = results;
       console.log(this.tableData);
       this.data = this.tableData.map(element => {
-        let MemberID, MembershipId, Type;
+        let MemberId, MembershipId, Type;
         if (element.Offers_ID == 10028) {
           // 1 Day
           MembershipId = 4;
@@ -133,11 +133,11 @@ export default {
           MembershipId = 6;
           Type = "FullDay";
         }
-        MemberID = this.FindIDMemberByTag(
+        MemberId = this.FindIDMemberByTag(
           element.Member_ID,
           this.$store.getters.Members
         );
-        console.log(MembershipId, Type, MemberID);
+        console.log(MembershipId, Type, MemberId);
         return {
           Id: undefined,
           TotalAmmount: element.VALUE,
@@ -150,7 +150,7 @@ export default {
           DiscountDescription: '',
           Description: element.Note,
           Status: 1,
-          MemberId: MemberID,
+          MemberId: MemberId,
           MembershipId: MembershipId
         };
       })

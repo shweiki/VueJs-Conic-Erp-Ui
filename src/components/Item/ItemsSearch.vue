@@ -65,7 +65,7 @@
 <script>
 import AddItem from "./AddItem";
 import DialogSearchItem from "./DialogSearchItem";
-import { GetItemByBarcode, GetItemByID } from "@/api/Item";
+import { GetItemByBarcode, GetItemById } from "@/api/Item";
 import ItemSearchAny from "./ItemSearchAny";
 import permission from "@/directive/permission/index.js";
 
@@ -134,8 +134,8 @@ export default {
         GetItemByBarcode({ BarCode: this.Barcode }).then(res => {
           if (res) this.AddItem(res, 1);
           else {
-            if (this.$store.getters.settings.BarcodeIsID == true) {
-              GetItemByID({ Id: this.Barcode }).then(res => {
+            if (this.$store.getters.settings.BarcodeIsId == true) {
+              GetItemById({ Id: this.Barcode }).then(res => {
                 if (res) this.AddItem(res, 1);
                 else this.OpenAddItem = true;
               });

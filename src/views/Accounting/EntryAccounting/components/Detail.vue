@@ -194,7 +194,7 @@
   </div>
 </template>
 <script>
-import { CreateEntry, GetEntryByID, Edit } from "@/api/EntryAccounting";
+import { CreateEntry, GetEntryById, Edit } from "@/api/EntryAccounting";
 import { GetActiveAccounts } from "@/api/Account";
 import FakeDate from "@/components/Date/FakeDate";
 import AccountSearchAny from '@/components/TreeAccount/AccountSearchAny.vue';
@@ -286,7 +286,7 @@ export default {
       this.tempForm.EntryMovements.splice(this.tempForm.EntryMovements.length - 1, 1);
     },
     getdata(val) {
-      GetEntryByID({ Id: val })
+      GetEntryById({ Id: val })
         .then((response) => {
           this.tempForm = response;
           // set tagsview title

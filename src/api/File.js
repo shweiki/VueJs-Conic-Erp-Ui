@@ -10,9 +10,9 @@ export function Create(data) {
   })
 }
 
-export function GetFileByObjID(query) {
+export function GetFileByObjId(query) {
   return request({
-    url: '/Files/GetFileByObjID',
+    url: '/Files/GetFileByObjId',
     method: 'get',
     params:  query 
     

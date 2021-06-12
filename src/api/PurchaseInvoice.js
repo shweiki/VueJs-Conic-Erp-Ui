@@ -15,9 +15,9 @@ export function GetByListQ(data) {
   })
 }
 
-export function GetPurchaseInvoiceByID(query) {
+export function GetPurchaseInvoiceById(query) {
   return request({
-    url: '/PurchaseInvoice/GetPurchaseInvoiceByID',
+    url: '/PurchaseInvoice/GetPurchaseInvoiceById',
     method: 'get',
     params: query
   })

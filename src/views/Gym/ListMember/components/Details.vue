@@ -14,7 +14,7 @@
               icon="el-icon-upload"
               @click="imagecropperShow = true"
             ></el-button>
-            <web-cam TableName="Member" :ObjectID="Member.Id" />
+            <web-cam TableName="Member" :ObjectId="Member.Id" />
           </pan-thumb>
           <image-cropper
             v-show="imagecropperShow"
@@ -23,7 +23,7 @@
             :height="150"
             lang-type="ar"
             TableName="Member"
-            :ObjectID="Member.Id"
+            :ObjectId="Member.Id"
             @close="close"
             @crop-upload-success="cropSuccess"
           />
@@ -97,7 +97,7 @@
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
-            <last-log-member :MemberID="Member.Id" />
+            <last-log-member :MemberId="Member.Id" />
           </el-col>
           <el-col :span="4">
             <span>رقم الهاتف</span>

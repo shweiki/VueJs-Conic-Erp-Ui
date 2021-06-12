@@ -22,9 +22,9 @@ export function GetByListQ(data) {
   })
 }
 
-export function GetReportByID(query) {
+export function GetReportById(query) {
   return request({
-    url: '/Report/GetReportByID',
+    url: '/Report/GetReportById',
     method: 'get',
     params: query
   })

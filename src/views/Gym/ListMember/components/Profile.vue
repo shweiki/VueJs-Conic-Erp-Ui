@@ -31,7 +31,7 @@
               <el-row>
                 <el-col :span="24">
                   <member-ship-movement
-                    :MemberID="tempForm.Id"
+                    :MemberId="tempForm.Id"
                     :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
                     :Enable="
@@ -42,13 +42,13 @@
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <member-pay :MemberID="tempForm.Id" :Name="tempForm.Name" />
+                  <member-pay :MemberId="tempForm.Id" :Name="tempForm.Name" />
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="24">
                   <member-ship-movement-with-pay
-                    :MemberID="tempForm.Id"
+                    :MemberId="tempForm.Id"
                     :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
                     :Enable="
@@ -59,7 +59,7 @@
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <service-invoice :MemberID="tempForm.Id" />
+                  <service-invoice :MemberId="tempForm.Id" />
                 </el-col>
               </el-row>
               <el-row>
@@ -86,7 +86,7 @@
               <payment :Payments="Payments" />
             </el-tab-pane>
             <el-tab-pane label="زيارات" name="timeline">
-              <timeline :timeline="log" :MemberID="tempForm.Id" />
+              <timeline :timeline="log" :MemberId="tempForm.Id" />
             </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
               <account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
@@ -125,11 +125,11 @@ import Account from "./Account";
 import Service from "./Service";
 import Communication from "./Communication";
 
-import {  GetMemberByID } from "@/api/Member";
-import { GetMemberLogByID } from "@/api/MemberLog";
-import { GetMembershipMovementByMemberID } from "@/api/MembershipMovement";
-import { GetFileByObjID } from "@/api/File";
-import { GetPaymentsByMemberID } from "@/api/Payment";
+import {  GetMemberById } from "@/api/Member";
+import { GetMemberLogById } from "@/api/MemberLog";
+import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
+import { GetFileByObjId } from "@/api/File";
+import { GetPaymentsByMemberId } from "@/api/Payment";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
 
 import Massage from "@/components/Massage";
@@ -208,7 +208,7 @@ export default {
   },
   methods: {
     getdata(val) {
-      GetMemberByID({ Id: val })
+      GetMemberById({ Id: val })
         .then((response) => {
           this.tempForm = response;
           this.GetImageMember(this.tempForm.Id);
@@ -225,21 +225,21 @@ export default {
     },
     tabClick(tab, event) {
       if (tab.label == "زيارات")
-        GetMemberLogByID({
+        GetMemberLogById({
           Id: this.tempForm.Id,
         }).then((response) => {
           //  console.log("log :", response);
           this.log = response.reverse();
         });
       if (tab.label == "اشتراكات")
-        GetMembershipMovementByMemberID({
+        GetMembershipMovementByMemberId({
           MemberId: this.tempForm.Id,
         }).then((response) => {
           //    console.log("log :", response);
           this.MembershipMovements = response.reverse();
         });
       if (tab.label == "مقبوضات")
-        GetPaymentsByMemberID({
+        GetPaymentsByMemberId({
           MemberId: this.tempForm.Id,
         }).then((response) => {
           //   console.log("log :", response);
@@ -254,7 +254,7 @@ export default {
         });
     },
     GetImageMember(ID) {
-      GetFileByObjID({ TableName: "Member", ObjId: ID })
+      GetFileByObjId({ TableName: "Member", ObjId: ID })
         .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
            else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
@@ -274,10 +274,10 @@ export default {
 
       this.tempForm.Age = age;
     },
-    GetMemberLogFromDevices(MemberID) {
+    GetMemberLogFromDevices(MemberId) {
       GetUserLog({
         DeviceId: this.$store.getters.Devices[0].Id,
-        UserId: MemberID,
+        UserId: MemberId,
       }).then((response) => {
         if (response) {
           console.log(response);
@@ -294,7 +294,7 @@ export default {
           });
           GetUserLog({
             DeviceId: this.$store.getters.Devices[1].Id,
-            UserId: MemberID,
+            UserId: MemberId,
           }).then((response) => {
             if (response) {
               console.log(response);

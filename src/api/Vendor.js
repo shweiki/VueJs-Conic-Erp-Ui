@@ -16,9 +16,9 @@ export function GetActiveVendor(query) {
   })
 }
 
-export function GetByID(query) {
+export function GetById(query) {
   return request({
-    url: '/Vendor/GetByID',
+    url: '/Vendor/GetById',
     method: 'get',
     params: query
   })

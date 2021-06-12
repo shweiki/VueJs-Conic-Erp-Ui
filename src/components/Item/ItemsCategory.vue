@@ -102,7 +102,7 @@
 <script>
 import permission from "@/directive/permission/index.js";
 import { GetItemByAny } from "@/api/Item";
-import { GetFileByObjID } from "@/api/File";
+import { GetFileByObjId } from "@/api/File";
 export default {
   name: "ItemsCategory",
   directives: { permission },
@@ -154,7 +154,7 @@ export default {
     GetImageItem(item) {
       let defImg = this.$store.getters.CompanyInfo.Logo;
       return new Promise(function(resolve, reject) {
-        GetFileByObjID({ TableName: "Item", ObjID: item.Id })
+        GetFileByObjId({ TableName: "Item", ObjId: item.Id })
           .then(response => {
             response ? (item.Avatar = response.File) : (item.Avatar = defImg);
             resolve(item);

@@ -81,7 +81,7 @@
 <script>
 import permission from "@/directive/permission/index.js";
 import { GetIsPrimeItem } from "@/api/Item";
-import { GetFileByObjID } from "@/api/File";
+import { GetFileByObjId } from "@/api/File";
 
 export default {
   name: "ItemsPrime",
@@ -133,7 +133,7 @@ export default {
     },
 
     GetImageItem(ID) {
-      GetFileByObjID({ TableName: "Item", ObjId: ID })
+      GetFileByObjId({ TableName: "Item", ObjId: ID })
         .then(response => {
           if (response) {
             this.ItemsPrime.find(element => element.Id == ID).Avatar =

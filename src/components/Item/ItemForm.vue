@@ -35,7 +35,7 @@
               icon="el-icon-upload"
               @click="imagecropperShow = true"
             ></el-button>
-            <web-cam TableName="Item" :ObjectID="tempForm.Id" />
+            <web-cam TableName="Item" :ObjectId="tempForm.Id" />
           </pan-thumb>
           <image-cropper
             v-show="imagecropperShow"
@@ -44,7 +44,7 @@
             :height="150"
             lang-type="ar"
             TableName="Item"
-            :ObjectID="tempForm.Id"
+            :ObjectId="tempForm.Id"
             @close="close"
             @crop-upload-success="cropSuccess"
           /> </el-col
@@ -128,31 +128,33 @@
           </el-form-item>
         </el-col>
       </el-row>
-
-      <ingredients :Value="tempForm.Ingredients" />
+      <ingredient
+        :Value="tempForm.Ingredients"
+        @Set="
+          v => {
+            tempForm.Ingredients = v;
+          }
+        "
+      />
     </el-form>
   </div>
 </template>
 
 <script>
-import { Edit, GetItemByID } from "@/api/Item";
-import InventoryQty from "@/components/Item/InventoryQty";
+import { Edit, GetItemById } from "@/api/Item";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
-import { GetFileByObjID } from "@/api/File";
+import { GetFileByObjId } from "@/api/File";
 import permission from "@/directive/permission/index.js";
-import Category from "./Category";
-import Ingredient from "./Ingredient";
+import Ingredient from "./Ingredient.vue";
 
 export default {
   name: "ItemForm",
   components: {
-    InventoryQty,
     PanThumb,
     WebCam,
     ImageCropper,
-    Category,
     Ingredient
   },
   props: {
@@ -191,7 +193,7 @@ export default {
   },
   methods: {
     getdata() {
-      GetItemByID({ Id: this.ItemId }).then(response => {
+      GetItemById({ Id: this.ItemId }).then(response => {
         // handle success
         this.tempForm = response;
         this.GetImageItem(this.tempForm.Id);
@@ -203,6 +205,7 @@ export default {
       this.$emit("focus");
     },
     updateData() {
+      console.log(this.tempForm)
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           Edit(this.tempForm)
@@ -225,7 +228,7 @@ export default {
       });
     },
     GetImageItem(ID) {
-      GetFileByObjID({ TableName: "Item", ObjId: ID })
+      GetFileByObjId({ TableName: "Item", ObjId: ID })
         .then(response => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;

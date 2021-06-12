@@ -95,7 +95,7 @@ export default {
     },
     confirmRouter() {
       AddUserRouter({
-        UserId: this.UserID,
+        UserId: this.UserId,
         Router: JSON.stringify(this.$refs.tree.getCheckedKeys()),
         DefulateRedirect: this.Redirect,
       })

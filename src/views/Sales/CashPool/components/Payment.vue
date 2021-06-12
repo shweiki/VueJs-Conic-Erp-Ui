@@ -111,14 +111,14 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="ObjectID"
+          prop="ObjectId"
           label="رقم المشترك"
           align="center"
         ></el-table-column>
 
         <el-table-column prop="Name" label="المشترك" align="center">
           <template slot-scope="scope">
-            <router-link :to="'/Gym/Edit/' + scope.row.ObjectID">
+            <router-link :to="'/Gym/Edit/' + scope.row.ObjectId">
               <strong style="font-size: 10px; cursor: pointer">{{
                 scope.row.Name
               }}</strong>
@@ -157,7 +157,7 @@
         <el-table-column width="180" align="center" v-if="checkPermission(['Admin'])">
           <template slot-scope="scope">
             <next-oprations
-              :ObjID="scope.row.Id"
+              :ObjId="scope.row.Id"
               :Status="scope.row.Status"
               TableName="Payment"
               @Done="getdata"
@@ -312,7 +312,7 @@ export default {
         printable: data,
         properties: [
           "ID",
-          "ObjectID",
+          "ObjectId",
           "Name",
           "FakeDate",
           "PaymentMethod",

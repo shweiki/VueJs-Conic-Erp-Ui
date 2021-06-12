@@ -2,26 +2,26 @@
   <div class="app-container">
     <el-row v-if="tempForm">
       <el-col :span="24" :xs="24" v-loading="loading">
-        <items-search />
+        <Items-Search  />
 
-  
         <el-card class="box-card">
           <el-tabs
             v-model="activeTab"
             tab-position="right"
             @tab-click="tabClick"
           >
-                <el-tab-pane label="بيانات" name="Details">
-            <item-form :ItemId="tempForm.Id" />
+            <el-tab-pane label="بيانات" name="Details">
+              <Item-Form :ItemId="tempForm.Id" />
             </el-tab-pane>
             <el-tab-pane label="الكمية" name="Qty">
-              <inventory-qty :ItemId="tempForm.Id" />
+              <Inventory-Qty :ItemId="tempForm.Id" />
             </el-tab-pane>
             <el-tab-pane label="حركات" name="Movements"> </el-tab-pane>
-            <el-tab-pane label="مكونات" name="Ingredients"> </el-tab-pane>
+        
             <el-tab-pane label="مبيعات" name="Sales"> </el-tab-pane>
             <el-tab-pane label="مشتريات" name="Purchases"> </el-tab-pane>
-            <el-tab-pane label="سندات مخزون" name="OrderInventory"> </el-tab-pane>
+            <el-tab-pane label="سندات مخزون" name="OrderInventory">
+            </el-tab-pane>
           </el-tabs>
         </el-card>
       </el-col>
@@ -32,12 +32,13 @@
 <script>
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import InventoryQty from "@/components/Item/InventoryQty";
-import ItemForm from "@/components/Item/ItemForm";
+import ItemForm from "@/components/Item/ItemForm.vue";
+import Ingredient from "@/components/Item/Ingredient";
 
-import { GetItemByID } from "@/api/Item";
+import { GetItemById } from "@/api/Item";
 export default {
   name: "Details",
-  components: { ItemsSearch, InventoryQty, ItemForm },
+  components: { ItemsSearch, InventoryQty, ItemForm, Ingredient },
   props: {
     isEdit: {
       type: Boolean,
@@ -72,7 +73,7 @@ export default {
       }
     };
     return {
-      activeTab: "Qty",
+      activeTab: "Details",
       loading: true,
       tempRoute: {},
       tempForm: null,
@@ -92,7 +93,7 @@ export default {
   },
   methods: {
     getdata(val) {
-      GetItemByID({ Id: val })
+      GetItemById({ Id: val })
         .then(response => {
           this.tempForm = response;
           //this.GetImageItem(this.tempForm.Id);
@@ -113,7 +114,7 @@ export default {
             if (tab.label == "مالية") console.log(tab);
     },
     GetImageItem(ID) {
-      GetFileByObjID({ TableName: "Item", ObjId: ID })
+      GetFileByObjId({ TableName: "Item", ObjId: ID })
         .then(response => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;

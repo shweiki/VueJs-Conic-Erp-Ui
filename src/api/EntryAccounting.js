@@ -8,9 +8,9 @@ export function GetEntryAccounting(query) {
     params: query
   })
 }
-export function GetEntryByID(query) {
+export function GetEntryById(query) {
   return request({
-    url: '/EntryAccounting/GetEntryByID',
+    url: '/EntryAccounting/GetEntryById',
     method: 'get',
     params: query
   })

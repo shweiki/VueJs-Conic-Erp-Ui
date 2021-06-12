@@ -171,6 +171,13 @@
               type="success"
               @click="printAllItemSale(ItemsMovements)"
             ></el-button>
+            <el-button
+              :disabled="EnableSave"
+              style="float: left"
+              icon="el-icon-printer"
+              type="success"
+              @click="printItemsIngredients(ItemsIngredients)"
+            ></el-button>
           </template>
           <template slot-scope="scope">{{
             (scope.row.AvgPrice * scope.row.TotalCount).toFixed(
@@ -366,7 +373,8 @@ export default {
         TotalCost: 0,
         Discount: 0
       },
-      ItemsMovements: []
+      ItemsMovements: [],
+      ItemsIngredients: []
     };
   },
   created() {
@@ -463,7 +471,25 @@ export default {
                   AvgPrice: m.SellingPrice.toFixed(
                     this.$store.getters.settings.ToFixed
                   ),
-                  CostPrice: m.CostPrice
+                  CostPrice: m.CostPrice,
+                  Ingredients: JSON.parse(m.Ingredients) || []
+                });
+              }
+            });
+          });
+
+          this.ItemsIngredients = [];
+          this.ItemsMovements.map(a => {
+            return a.Ingredients.map(m => {
+              var find = this.ItemsIngredients.findIndex(
+                value => value.Name == m.Name
+              );
+              if (find != -1)
+                this.ItemsIngredients[find].TotalCount += a.TotalCount * m.Qty;
+              else {
+                this.ItemsIngredients.push({
+                  Name: m.Name,
+                  TotalCount: a.TotalCount * m.Qty
                 });
               }
             });
@@ -476,6 +502,23 @@ export default {
       this.loading = false;
     },
 
+    printItemsIngredients(data) {
+      data = data.map(Item => ({
+        العدد: Item.TotalCount,
+        الصنف: Item.Name
+      }));
+      printJS({
+        printable: data,
+        properties: ["العدد", "الصنف"],
+        type: "json",
+        header:
+          "<h3 style='float:right'>  التاريخ  : " +
+          this.formatDate(new Date()) +
+          "</h3>",
+        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
+      });
+    },
     printAllItemSale(data) {
       data = data.map(Item => ({
         "المجموع البيع": (Item.TotalCount * Item.AvgPrice).toFixed(

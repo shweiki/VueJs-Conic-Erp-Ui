@@ -91,7 +91,7 @@
       <el-table-column width="120" align="center">
         <template slot-scope="scope">
           <next-oprations
-            :ObjID="scope.row.Id"
+            :ObjId="scope.row.Id"
             :Status="scope.row.Status"
             TableName="MembershipMovementOrder"
             @Done="getdata"

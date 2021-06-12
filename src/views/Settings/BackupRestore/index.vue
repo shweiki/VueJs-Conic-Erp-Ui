@@ -38,7 +38,7 @@
       <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
       <el-table-column label="DataBaseName" prop="DataBaseName"></el-table-column>
       <el-table-column label="DateTime" prop="DateTime"></el-table-column>
-      <el-table-column label="UserID" prop="UserId"></el-table-column>
+      <el-table-column label="UserId" prop="UserId"></el-table-column>
     </el-table>
   </div>
 </template>

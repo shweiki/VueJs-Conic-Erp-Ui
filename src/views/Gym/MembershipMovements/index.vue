@@ -156,7 +156,13 @@ import {
 } from "@/api/MembershipMovement";
 import { CreateMulti } from "@/api/MembershipMovementOrder";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-
+import {
+  LocalDateTime,
+  LocalDate,
+  LocalTime,
+  DateTimeFormatter,
+  Instant
+} from "@js-joda/core";
 export default {
   name: "Member",
   components: { RadioOprations },
@@ -186,8 +192,15 @@ export default {
     },
     FilterByDateIn(val) {
       this.loading = true;
+      let date = LocalDate.ofInstant(Instant.ofEpochMilli(val))
+        .atStartOfDay()
+        .format(
+          DateTimeFormatter.ofPattern(
+            this.$store.getters.settings.DateTimeFormat
+          )
+        );
       GetMembershipMovementByDateIn({
-        DateIn: this.$moment(val).format()
+        DateIn: date
       }).then(response => {
         //console.log(response)
         this.tableData = response;
@@ -208,13 +221,29 @@ export default {
       }
 
       createFreeze100.forEach(element => {
+        let date = [
+          LocalDate.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[0]))
+            .atStartOfDay()
+            .format(
+              DateTimeFormatter.ofPattern(
+                this.$store.getters.settings.DateTimeFormat
+              )
+            ),
+          LocalDate.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[1]))
+            .atTime(LocalTime.MAX)
+            .format(
+              DateTimeFormatter.ofPattern(
+                this.$store.getters.settings.DateTimeFormat
+              )
+            )
+        ];
         CreateMulti({
           collection: element.map(x => {
             return {
               Id: undefined,
               Type: "Freeze",
-              StartDate: this.$moment(this.FreezeBetween[0]).format(),
-              EndDate: this.$moment(this.FreezeBetween[1]).format(),
+              StartDate: date[0],
+              EndDate: date[1],
               Status: 2,
               Description: this.Description,
               MemberShipMovementId: x.Id

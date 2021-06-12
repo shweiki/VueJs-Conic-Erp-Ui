@@ -42,9 +42,9 @@ export function CheckMemberLog(query) {
   })
 }
 
-export function GetMemberLogByID(query) {
+export function GetMemberLogById(query) {
   return request({
-    url: '/MemberLog/GetMemberLogByID',
+    url: '/MemberLog/GetMemberLogById',
     method: 'get',
     params:  query 
     

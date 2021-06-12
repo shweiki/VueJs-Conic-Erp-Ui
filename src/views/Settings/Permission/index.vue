@@ -61,7 +61,7 @@
         <el-table-column align="left">
           <template slot-scope="scope">
             <add-user-router
-              :UserID="scope.row.Id"
+              :UserId="scope.row.Id"
               :Router="scope.row.router"
               :Redirect="scope.row.Redirect"
             />

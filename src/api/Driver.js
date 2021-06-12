@@ -66,9 +66,9 @@ export function GetDriverByStatus(query) {
   })
 }
 
-export function GetDriverByID(query) {
+export function GetDriverById(query) {
   return request({
-    url: '/Driver/GetDriverByID',
+    url: '/Driver/GetDriverById',
     method: 'get',
     params:  query 
     

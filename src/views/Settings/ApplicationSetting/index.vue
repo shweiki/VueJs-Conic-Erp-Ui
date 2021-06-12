@@ -90,8 +90,8 @@
               <span>{{ $t("Settings.sidebarLogo") }}</span>
               <el-switch v-model="sidebarLogo" class="drawer-switch" /> </el-col
             ><el-col :span="6">
-              <span>{{ $t("Settings.BarcodeIsID") }}</span>
-              <el-switch v-model="BarcodeIsID" class="drawer-switch" />
+              <span>{{ $t("Settings.BarcodeIsId") }}</span>
+              <el-switch v-model="BarcodeIsId" class="drawer-switch" />
             </el-col>
           </el-row>
         </el-card>
@@ -201,11 +201,11 @@ export default {
     },
     BarcodeIsId: {
       get() {
-        return this.$store.state.settings.BarcodeIsID;
+        return this.$store.state.settings.BarcodeIsId;
       },
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
-          key: "BarcodeIsID",
+          key: "BarcodeIsId",
           value: val
         });
       }

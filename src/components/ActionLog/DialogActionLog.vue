@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     getdata() {
-      GetLogByObjTable({ TableName: this.TableName, Id: this.ObjID }).then(
+      GetLogByObjTable({ TableName: this.TableName, Id: this.ObjId }).then(
         response => {
           // handle success
           this.actionlogs = response;

@@ -254,7 +254,7 @@ export default {
           name +
           "</h2></center><h3 style='float:right'> " +
           " - الاجمالي لقيمة المخزون :  " +
-          Items.reduce((a, b) => a + b.Qty * b.CostPrice, 0).toFixed($store.getters.settings.ToFixed) +
+          Items.reduce((a, b) => a + b.Qty * b.CostPrice, 0).toFixed(this.$store.getters.settings.ToFixed) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;",
@@ -304,7 +304,7 @@ export default {
         this.$refs["dataForm"].clearValidate();
       });
     },
-    handleOprationsys(ObjID, Opration) {
+    handleOprationsys(ObjId, Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
@@ -312,7 +312,7 @@ export default {
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
-      this.tempOpration.ObjID = ObjID;
+      this.tempOpration.ObjId = ObjId;
       this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
@@ -368,7 +368,7 @@ export default {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
-            ObjId: this.tempOpration.ObjID,
+            ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationID,
             Description: this.tempOpration.Description,
           })

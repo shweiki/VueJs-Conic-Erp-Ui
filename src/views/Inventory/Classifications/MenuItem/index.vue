@@ -270,7 +270,7 @@ export default {
         this.$refs["dataForm"].clearValidate();
       });
     },
-    handleOprationsys(ObjID, Opration) {
+    handleOprationsys(ObjId, Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
@@ -278,7 +278,7 @@ export default {
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
-      this.tempOpration.ObjID = ObjID;
+      this.tempOpration.ObjId = ObjId;
       this.tempOpration.OprationID = Opration.Id;
       this.tempOpration.Description = "";
     },
@@ -333,7 +333,7 @@ export default {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
-            ObjId: this.tempOpration.ObjID,
+            ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationID,
             Description: this.tempOpration.Description,
           })

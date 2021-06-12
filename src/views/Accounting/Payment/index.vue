@@ -122,7 +122,7 @@
         <el-table-column label="#" align="center">
           <template slot-scope="scope">
             <next-oprations
-              :ObjID="scope.row.Id"
+              :ObjId="scope.row.Id"
               :Status="scope.row.Status"
               TableName="Payment"
               @Done="getdata"

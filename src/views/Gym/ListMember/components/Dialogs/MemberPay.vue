@@ -23,7 +23,7 @@
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="TotalAmmount" label="القيمة المقبوضة">
+            <el-form-item label="القيمة المقبوضة">
               <currency-input
                 :rules="[
                   {
@@ -35,6 +35,7 @@
                 class="currency-input"
                 v-model="Payment.TotalAmmount"
                 :value-range="{ min: 0.01, max: 1000 }"
+                @focus="$event.target.select()"
               />
             </el-form-item>
           </el-col>
@@ -158,7 +159,7 @@ export default {
   },
   methods: {
     Print() {
-      this.OldPayment.ObjectID = this.MemberID;
+      this.OldPayment.ObjectId = this.MemberId;
       printJS({
         printable: PaymentMember(this.OldPayment),
         type: "pdf",
@@ -169,7 +170,7 @@ export default {
     create() {
       this.$refs["Form"].validate(valid => {
         if (valid) {
-          this.Payment.MemberId = this.MemberID;
+          this.Payment.MemberId = this.MemberId;
           CreatePayment(this.Payment)
             .then(response => {
               this.Payment.Name = this.Name;

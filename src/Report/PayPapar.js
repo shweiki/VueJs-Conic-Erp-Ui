@@ -34,7 +34,7 @@ export function PaymentMember(temp) {
 
 
   doc.text(":رقم المشترك  ", 200, startY+=8, {align:'right'});
-  doc.text("" + temp.ObjectID + "", 5, startY);
+  doc.text("" + temp.ObjectId + "", 5, startY);
  doc.text(":الاسم  ", 200, startY+=8, {align:'right'});
  doc.text("" + temp.Name + "", 5, startY);
 
@@ -88,7 +88,7 @@ doc.setLineDash([0]);
 
 
   doc.text(":رقم المشترك  ", 200, startY+=8, {align:'right'});
-  doc.text("" + temp.ObjectID + "", 5, startY);
+  doc.text("" + temp.ObjectId + "", 5, startY);
  doc.text(":الاسم  ", 200, startY+=8, {align:'right'});
  doc.text("" + temp.Name + "", 5, startY);
 

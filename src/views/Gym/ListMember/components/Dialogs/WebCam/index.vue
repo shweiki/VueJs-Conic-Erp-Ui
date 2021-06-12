@@ -72,7 +72,7 @@ export default {
           File: this.img.replace(/^data:image\/(png|jpg);base64,/, ""),
           Status: 0,
           TableName: "Member",
-          FKTable: this.ObjectID
+          FKTable: this.ObjectId
         };
         Create(file).then(response => {
           if (response) {

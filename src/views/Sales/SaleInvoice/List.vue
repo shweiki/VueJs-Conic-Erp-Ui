@@ -57,11 +57,27 @@
           @click="SaleInvoicesList({ Totals: Totals, Items: list })"
         ></el-button>
         <el-button
+          v-permission="['Admin']"
+          v-waves
+          class="filter-item"
+          icon="el-icon-printer"
+          type="info"
+          @click="SaleInvoicesItemsMovements({ Totals: Totals, Items: list })"
+        ></el-button>
+        <el-button
+          v-permission="['Admin']"
+          v-waves
+          class="filter-item"
+          icon="el-icon-printer"
+          type="success"
+          @click="SaleInvoicesItemsIngredients({ Totals: Totals, Items: list })"
+        ></el-button>
+        <el-button
           v-waves
           v-permission="['Admin']"
           :loading="downloadLoading"
           class="filter-item"
-          type="primary"
+          type="warning"
           icon="el-icon-download"
           @click="handleDownload"
         >
@@ -215,13 +231,13 @@
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <next-oprations
-            :ObjID="scope.row.Id"
+            :ObjId="scope.row.Id"
             :Status="scope.row.Status"
             TableName="SalesInvoice"
             @Done="handleFilter"
           />
           <print-button Type="SaleInvoice" :Data="scope.row" />
-          <dialog-action-log TableName="SalesInvoice" :ObjID="scope.row.Id" />
+          <dialog-action-log TableName="SalesInvoice" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -275,7 +291,11 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import { SaleInvoicesList } from "@/Report/SaleInvoice";
+import {
+  SaleInvoicesList,
+  SaleInvoicesItemsMovements,
+  SaleInvoicesItemsIngredients
+} from "@/Report/SaleInvoice";
 import permission from "@/directive/permission/index.js";
 
 import waves from "@/directive/waves"; // waves directive
@@ -333,6 +353,8 @@ export default {
   },
   methods: {
     SaleInvoicesList,
+    SaleInvoicesItemsMovements,
+    SaleInvoicesItemsIngredients,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
@@ -349,10 +371,10 @@ export default {
     sortChange(data) {
       const { prop, order } = data;
       if (prop === "id") {
-        this.sortByID(order);
+        this.sortById(order);
       }
     },
-    sortByID(order) {
+    sortById(order) {
       if (order === "ascending") {
         this.listQuery.sort = "+id";
       } else {

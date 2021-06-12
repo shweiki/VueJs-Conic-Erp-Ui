@@ -66,9 +66,9 @@ export function GetMemberByStatus(query) {
   })
 }
 
-export function GetMemberByID(query) {
+export function GetMemberById(query) {
   return request({
-    url: '/Member/GetMemberByID',
+    url: '/Member/GetMemberById',
     method: 'get',
     params:  query 
     

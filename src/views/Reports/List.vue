@@ -144,10 +144,10 @@ export default {
     sortChange(data) {
       const { prop, order } = data;
       if (prop === "id") {
-        this.sortByID(order);
+        this.sortById(order);
       }
     },
-    sortByID(order) {
+    sortById(order) {
       if (order === "ascending") {
         this.listQuery.sort = "+id";
       } else {

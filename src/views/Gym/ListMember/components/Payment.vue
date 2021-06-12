@@ -6,7 +6,7 @@
           <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="ObjectID" label="رقم المشترك" align="center"></el-table-column>
+      <el-table-column prop="ObjectId" label="رقم المشترك" align="center"></el-table-column>
 
 
 

@@ -15,9 +15,9 @@ export function GetByListQ(data) {
   })
 }
 
-export function GetPaymentsByMemberID(query) {
+export function GetPaymentsByMemberId(query) {
   return request({
-    url: '/Payment/GetPaymentsByMemberID',
+    url: '/Payment/GetPaymentsByMemberId',
     method: 'get',
     params: query
   })

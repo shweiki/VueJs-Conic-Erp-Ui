@@ -23,7 +23,7 @@
           <el-col :span="12">
             <el-form-item label="خدمة">
               <el-select
-                v-model="ServiceID"
+                v-model="ServiceId"
                 @change="
                   id => {
                     Service = Services.find(obj => obj.Id == id);
@@ -129,7 +129,7 @@ export default {
         Discount: 0,
         Status: 0,
         Description: this.Description,
-        MemberId: this.MemberID,
+        MemberId: this.MemberId,
         IsPrime: true,
         InventoryMovements: []
       };

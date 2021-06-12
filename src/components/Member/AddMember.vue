@@ -22,7 +22,11 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input type="text" ref="MemberName" v-model="tempForm.Name"></el-input>
+              <el-input
+                type="text"
+                ref="MemberName"
+                v-model="tempForm.Name"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -35,14 +39,15 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             >
               <el-date-picker
                 v-model="tempForm.DateofBirth"
                 type="date"
                 placeholder="تاريخ ميلاد"
+                format="dd-MM-yyyy"
               ></el-date-picker>
               <!--
               <birth-datepicker
@@ -67,8 +72,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك الرقم الوطني فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             >
               <el-input
@@ -85,16 +90,19 @@
                 {
                   required: false,
                   message: 'Please input email address',
-                  trigger: 'blur',
+                  trigger: 'blur'
                 },
                 {
                   type: 'email',
                   message: 'Please input correct email address',
-                  trigger: ['blur', 'change'],
-                },
+                  trigger: ['blur', 'change']
+                }
               ]"
             >
-              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
+              <el-input
+                type="text"
+                v-model="tempForm.Email"
+              ></el-input> </el-form-item
           ></el-col>
         </el-row>
 
@@ -107,15 +115,15 @@
                 {
                   required: true,
                   message: 'لايمكن ترك الرقم الهاتف فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             >
               <VuePhoneNumberInput
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
                   countrySelectorError: 'تاكد من رقم',
-                  phoneNumberLabel: 'رقم الهاتف',
+                  phoneNumberLabel: 'رقم الهاتف'
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber1"
@@ -130,7 +138,7 @@
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
                   countrySelectorError: 'تاكد من رقم',
-                  phoneNumberLabel: 'رقم الهاتف',
+                  phoneNumberLabel: 'رقم الهاتف'
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber2"
@@ -138,12 +146,17 @@
           ></el-col>
         </el-row>
 
-        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+        <el-form-item
+          v-bind:label="$t('AddVendors.Description')"
+          prop="Description"
+        >
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button @click="Visible = false">{{
+          $t("AddVendors.Cancel")
+        }}</el-button>
         <el-button type="primary" @click="createData()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -175,23 +188,23 @@ export default {
         PhoneNumber2: "",
         Description: "",
         Type: "New",
-        Tag: null,
+        Tag: null
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
@@ -208,33 +221,33 @@ export default {
         PhoneNumber1: "",
         PhoneNumber2: "",
         Description: "",
-        Type: "New",
+        Type: "New"
       };
     },
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           CheckMemberIsExist({
             Ssn: this.tempForm.Ssn,
-            PhoneNumber: this.tempForm.PhoneNumber1,
-          }).then((res) => {
+            PhoneNumber: this.tempForm.PhoneNumber1
+          }).then(res => {
             console.log(res);
             if (!res) {
               this.tempForm.DateofBirth = new Date(this.tempForm.DateofBirth);
               Create(this.tempForm)
-                .then((response) => {
+                .then(response => {
                   this.Visible = false;
                   this.$notify({
                     title: "تم ",
                     message: "تم الإضافة بنجاح",
                     type: "success",
-                    duration: 2000,
+                    duration: 2000
                   });
                   this.$router.push({ path: `/Gym/Edit/${response}` });
 
-             //     this.SendHelloSms(this.tempForm.PhoneNumber1, this.tempForm.Name);
+                  //     this.SendHelloSms(this.tempForm.PhoneNumber1, this.tempForm.Name);
                 })
-                .catch((error) => {
+                .catch(error => {
                   console.log(error);
                 });
             } else {
@@ -243,7 +256,7 @@ export default {
                 title: "تم ",
                 message: "يوجد عضو يحمل نفس رقم الهاتف او الرقم الوطني",
                 type: "warning",
-                duration: 20000,
+                duration: 20000
               });
             }
           });
@@ -274,11 +287,12 @@ export default {
           senderid: "High Fit",
           AccName: "highfit",
           AccPass: "D7!cT5!SgU0",
-          msg: "عزيزي " + name + " نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح ",
-          requesttimeout: 5000000,
-        },
-      }).then((response) => {});
-    },
-  },
+          msg:
+            "عزيزي " + name + " نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح ",
+          requesttimeout: 5000000
+        }
+      }).then(response => {});
+    }
+  }
 };
 </script>

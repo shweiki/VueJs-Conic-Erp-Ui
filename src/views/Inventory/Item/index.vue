@@ -129,7 +129,7 @@
   </div>
 </template>
 <script>
-import {  GetItemByID } from "@/api/Item";
+import {  GetItemById } from "@/api/Item";
 import printJS from "print-js";
 import ItemsSearch from "@/components/Item/ItemsSearch.vue";
 import { Label1 } from "@/Report/ItemLabel";
@@ -180,7 +180,7 @@ export default {
     AddItem(item) {
       this.loading = true;
 
-      GetItemByID({ Id: item.Id }).then((response) => {
+      GetItemById({ Id: item.Id }).then((response) => {
         // handle success
         console.log(response);
         this.tableData.push(response);
