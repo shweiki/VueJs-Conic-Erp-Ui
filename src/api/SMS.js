@@ -1,13 +1,14 @@
 import request from '@/utils/RequestApi'
+import store from '@/store'
 
 export function SendSMS(number, msg) {
     return request({
         method: 'get',
         params: {
             numbers: '962' + number,
-            senderid: 'High Fit',
-            AccName: 'highfit',
-            AccPass: 'D7!cT5!SgU0',
+            senderid: store.getters.settings.Sms.senderid,
+            AccName: store.getters.settings.Sms.AccName,
+            AccPass: store.getters.settings.Sms.AccPass,
             msg: msg,
             requesttimeout: 5000000
         },

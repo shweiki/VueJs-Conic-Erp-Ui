@@ -23,6 +23,5 @@ const getters = {
   Oprations: state => state.CompanyInfo.Oprations,
   Devices: state => state.Devices.AllDevices,
   ZtkDoor: state => state.Devices.ZtkDoor,
-
 }
 export default getters

@@ -19,10 +19,8 @@ const actions = {
         return new Promise((resolve, reject) => {
             GetDevice().then(response => {
                 console.log(response)
-
                 commit('SET_Devices', response)
                 resolve(response)
-
             }).catch(error => {
                 reject(error)
             })
@@ -33,7 +31,6 @@ const actions = {
             CheckDevice({ Id:3 }).then(response => {
                 console.log(response)
                 commit('SET_ZtkDoor', response)
-
                 resolve(response)
 
             }).catch(error => {

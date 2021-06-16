@@ -40,7 +40,9 @@ const state = {
   windowStyle: defaultSettings.windowStyle,
   LimitGetInvoice: defaultSettings.LimitGetInvoice,
   ItemMoveDec: defaultSettings.ItemMoveDec,
-  printers: defaultSettings.printers
+  printers: defaultSettings.printers,
+  Sms : defaultSettings.Sms
+
 }
 
 const mutations = {

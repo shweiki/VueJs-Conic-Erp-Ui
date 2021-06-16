@@ -97,13 +97,11 @@ export default {
       }
     }
   },
-
   data() {
     return {
       Services: [],
       Service: {},
       ServiceId: undefined,
-
       Visible: false,
       Description: ""
     };

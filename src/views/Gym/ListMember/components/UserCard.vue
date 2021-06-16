@@ -142,7 +142,6 @@ export default {
     }
   },
   methods: {
-
     updateData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
@@ -150,6 +149,7 @@ export default {
           Edit(this.Member)
             .then(response => {
               this.dialogFormVisible = false;
+              console.log("device" ,this.$store.getters.Devices);
               this.$store.getters.Devices.forEach(element => {
                 this.SetOnDevice(element.Id, element.Name);
               });

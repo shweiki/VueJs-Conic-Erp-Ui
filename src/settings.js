@@ -25,6 +25,11 @@ module.exports = {
   ToFixed: 2,
   LimitQurey: 20,
   LimitGetInvoice: 200,
+  Sms: {
+    senderid: "", //'High Fit'
+    AccName: "", //'highfit',
+    AccPass: "", //'D7!cT5!SgU0'
+  },
   errorLog: 'production',
   DateFormat: 'yyyy-MM-dd',
   DateTimeFormat: 'yyyy-MM-dd HH:mm',
@@ -32,7 +37,7 @@ module.exports = {
   PointOfSaleLayout: 'Layout1',
   datepickerQuery: [Date(), Date()],// start , End
   timeQuery: ['00:00:00', '23:59:59'],
-  printers:['Casher','WorkTable1','WorkTable2'],
+  printers: ['Casher', 'WorkTable1', 'WorkTable2'],
   triger: {
     "CheckMembers":
     {

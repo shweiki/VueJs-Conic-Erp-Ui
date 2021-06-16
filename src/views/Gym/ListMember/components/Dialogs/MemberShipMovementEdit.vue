@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button icon="el-icon-edit" circle></el-button>
+    <el-button icon="el-icon-edit" circle @click="Visibles = true"></el-button>
 
     <el-dialog
       style="margin-top: -13vh"
@@ -279,7 +279,7 @@ export default {
       });
     },
     calc() {
-      console.log(this.Memberships , this.tempForm.MembershipId)
+      console.log(this.Memberships, this.tempForm.MembershipId);
       let Membership = this.Memberships.find(
         obj => obj.Id == this.tempForm.MembershipId
       );

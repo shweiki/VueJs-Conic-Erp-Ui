@@ -22,7 +22,9 @@
                     style="width: 100px"
                     type="info"
                     icon="el-icon-zoom-in"
-                    @click="$router.replace({ path: '/redirect' + '/Gym/ListMember' })"
+                    @click="
+                      $router.replace({ path: '/redirect' + '/Gym/ListMember' })
+                    "
                     >جميع مشتركين</el-button
                   >
                 </el-col>
@@ -35,7 +37,9 @@
                     :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
                     :Enable="
-                      tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false
+                      tempForm.TotalCredit - tempForm.TotalDebit > 0
+                        ? true
+                        : false
                     "
                   />
                 </el-col>
@@ -52,7 +56,9 @@
                     :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
                     :Enable="
-                      tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false
+                      tempForm.TotalCredit - tempForm.TotalDebit > 0
+                        ? true
+                        : false
                     "
                   />
                 </el-col>
@@ -75,26 +81,42 @@
           </el-row>
         </el-card>
         <el-card class="box-card">
-          <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
+          <el-tabs
+            v-model="activeTab"
+            tab-position="right"
+            @tab-click="tabClick"
+          >
             <el-tab-pane label="بيانات" name="Details">
-              <user-card :Member="tempForm" />
+              <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
+              <User-Card :Member="tempForm" />
             </el-tab-pane>
             <el-tab-pane label="اشتراكات" name="activity">
-              <activity :MembershipMovements="MembershipMovements" />
+              <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
+              <Activity :MembershipMovements="MembershipMovements" />
             </el-tab-pane>
             <el-tab-pane label="مقبوضات" name="Payment">
-              <payment :Payments="Payments" />
+              <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
+
+              <Payment :Payments="Payments" />
             </el-tab-pane>
             <el-tab-pane label="زيارات" name="timeline">
-              <timeline :timeline="log" :MemberId="tempForm.Id" />
+              <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
+
+              <Timeline :timeline="log" :MemberId="tempForm.Id" />
             </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
-              <account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
+              <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
+              <Account
+                :EntryMovements="EntryMovements"
+                :AccountId="tempForm.AccountId"
+              />
             </el-tab-pane>
             <el-tab-pane label="خدمات" name="Service">
-              <service :ServiceInvoices="tempForm.ServiceInvoices" />
+              <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
+              <service :ServiceInvoices="ServiceInvoices" />
             </el-tab-pane>
             <el-tab-pane label="تواصل" name="communication">
+              <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
               <Communication />
             </el-tab-pane>
           </el-tabs>
@@ -105,34 +127,35 @@
 </template>
 
 <script>
-import MemberLog from "./MemberLog";
+import MemberLog from "./MemberLog.vue";
 import { GetUserLog } from "@/api/Device";
 
-import Details from "./Details";
-import UserCard from "./UserCard";
-import MemberShipMovementWithPay from "./Dialogs/MemberShipMovementWithPay";
-import MemberShipMovement from "./Dialogs/MemberShipMovement";
+import Details from "./Details.vue";
+import UserCard from "./UserCard.vue";
+import MemberShipMovementWithPay from "./Dialogs/MemberShipMovementWithPay.vue";
+import MemberShipMovement from "./Dialogs/MemberShipMovement.vue";
 
-import MemberPay from "./Dialogs/MemberPay";
-import ServiceInvoice from "./Dialogs/ServiceInvoice";
-import MemberSearch from "./MemberSearch";
+import MemberPay from "./Dialogs/MemberPay.vue";
+import ServiceInvoice from "./Dialogs/ServiceInvoice.vue";
+import MemberSearch from "./MemberSearch.vue";
 
-import Payment from "./Payment";
+import Payment from "./Payment.vue";
 
-import Activity from "./Activity";
-import Timeline from "./Timeline";
-import Account from "./Account";
-import Service from "./Service";
-import Communication from "./Communication";
+import Activity from "./Activity.vue";
+import Timeline from "./Timeline.vue";
+import Account from "./Account.vue";
+import Service from "./Service.vue";
+import Communication from "./Communication.vue";
 
-import {  GetMemberById } from "@/api/Member";
+import { GetMemberById } from "@/api/Member";
 import { GetMemberLogById } from "@/api/MemberLog";
 import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
 import { GetFileByObjId } from "@/api/File";
 import { GetPaymentsByMemberId } from "@/api/Payment";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
+import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
 
-import Massage from "@/components/Massage";
+import Massage from "@/components/Massage/index.vue";
 
 export default {
   name: "Profile",
@@ -151,13 +174,13 @@ export default {
     ServiceInvoice,
     MemberLog,
     Massage,
-    MemberSearch,
+    MemberSearch
   },
   props: {
     isEdit: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
 
   data() {
@@ -165,7 +188,7 @@ export default {
       if (value === "") {
         this.$message({
           message: rule.field + "اواي",
-          type: "error",
+          type: "error"
         });
         callback(new Error(rule.field + "اي"));
       } else {
@@ -179,7 +202,7 @@ export default {
         } else {
           this.$message({
             message: "اه",
-            type: "error",
+            type: "error"
           });
           callback(new Error("اوه"));
         }
@@ -195,10 +218,10 @@ export default {
       MembershipMovements: [],
       Payments: [],
       EntryMovements: [],
-      log: [],
+      ServiceInvoices: [],
+      log: []
     };
   },
-
   created() {
     if (this.isEdit) {
       this.getdata(this.$route.params && this.$route.params.id);
@@ -209,7 +232,7 @@ export default {
   methods: {
     getdata(val) {
       GetMemberById({ Id: val })
-        .then((response) => {
+        .then(response => {
           this.tempForm = response;
           this.GetImageMember(this.tempForm.Id);
           this.getAge();
@@ -219,47 +242,54 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
     tabClick(tab, event) {
       if (tab.label == "زيارات")
         GetMemberLogById({
-          Id: this.tempForm.Id,
-        }).then((response) => {
+          Id: this.tempForm.Id
+        }).then(response => {
           //  console.log("log :", response);
           this.log = response.reverse();
         });
       if (tab.label == "اشتراكات")
         GetMembershipMovementByMemberId({
-          MemberId: this.tempForm.Id,
-        }).then((response) => {
+          MemberId: this.tempForm.Id
+        }).then(response => {
           //    console.log("log :", response);
           this.MembershipMovements = response.reverse();
         });
       if (tab.label == "مقبوضات")
         GetPaymentsByMemberId({
-          MemberId: this.tempForm.Id,
-        }).then((response) => {
+          MemberId: this.tempForm.Id
+        }).then(response => {
           //   console.log("log :", response);
           this.Payments = response.reverse();
         });
       if (tab.label == "مالية")
         GetEntryMovementsByAccountId({
-          AccountId: this.tempForm.AccountId,
-        }).then((response) => {
+          AccountId: this.tempForm.AccountId
+        }).then(response => {
           console.log("log :", response);
           this.EntryMovements = response.reverse();
+        });
+      if (tab.label == "خدمات")
+        GetSaleInvoiceByMemberId({
+          Id: this.tempForm.Id
+        }).then(response => {
+          console.log("log :", response);
+          this.ServiceInvoices = response.reverse();
         });
     },
     GetImageMember(ID) {
       GetFileByObjId({ TableName: "Member", ObjId: ID })
-        .then((response) => {
+        .then(response => {
           if (response) this.tempForm.Avatar = response.File;
-           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
+          else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
@@ -277,8 +307,8 @@ export default {
     GetMemberLogFromDevices(MemberId) {
       GetUserLog({
         DeviceId: this.$store.getters.Devices[0].Id,
-        UserId: MemberId,
-      }).then((response) => {
+        UserId: MemberId
+      }).then(response => {
         if (response) {
           console.log(response);
           this.$notify({
@@ -290,12 +320,12 @@ export default {
               response +
               "",
             type: "success",
-            duration: 2000,
+            duration: 2000
           });
           GetUserLog({
             DeviceId: this.$store.getters.Devices[1].Id,
-            UserId: MemberId,
-          }).then((response) => {
+            UserId: MemberId
+          }).then(response => {
             if (response) {
               console.log(response);
               this.$notify({
@@ -307,7 +337,7 @@ export default {
                   response +
                   "",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             }
           });
@@ -317,15 +347,15 @@ export default {
     setTagsViewTitle() {
       const title = "Member";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`,
+        title: `${title}-${this.tempForm.Id}`
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Member";
       document.title = `${title} - ${this.tempForm.Id}`;
-    },
-  },
+    }
+  }
 };
 </script>
 <style>

@@ -41,6 +41,10 @@
       <el-table-column label="#" align="center">
         <template slot-scope="scope">
           <el-button
+            v-if="
+              scope.row.InventoryMovements.filter(obj => obj.Status == 1)
+                .length > 0
+            "
             type="danger"
             icon="el-icon-minus"
             @click="MinusOne(scope.row.Id)"
