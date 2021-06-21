@@ -75,14 +75,10 @@ export default {
               //this.AddItem(100), 1000);
             });
         } else {
+          this.data.splice(0, 1);
+          this.counter++;
           this.AddItem();
-          this.$notify({
-            position: "top-left",
-            title: "تم ",
-            message: "يوجد صنف يحمل نفس الاسم / الباركود",
-            type: "warning",
-            duration: 20000
-          });
+          console.log("tag", "يوجد صنف يحمل نفس الاسم / الباركود");
         }
       });
     },

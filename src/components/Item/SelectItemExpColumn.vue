@@ -4,7 +4,7 @@
     v-model="date"
     type="date"
     :size="$store.getters.size"
-    placeholder="Pick a EXP"
+    placeholder="تاريخ الانتهاء"
     :picker-options="pickerOptions"
     :format="$store.getters.settings.DateFormat"
   >
@@ -26,7 +26,7 @@ export default {
   },
   mounted() {
     this.getdata();
-    this.date = new Date(this.Value);
+    if (!this.Value) this.date = new Date(this.Value);
   },
   data() {
     return {
@@ -54,6 +54,7 @@ export default {
         // handle success
         //  console.log(response);
         response.forEach(x => {
+          this.date = x.Exp;
           this.pickerOptions.shortcuts.push({
             text: this.formatDate(x.Exp),
             onClick(picker) {

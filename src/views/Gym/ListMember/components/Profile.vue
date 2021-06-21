@@ -9,7 +9,7 @@
 
         <el-card
           class="box-card"
-          v-bind:class="{ BlackList: tempForm.Status == -2 ? true : false }"
+          v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
         >
           <el-row>
             <el-col :span="19">
