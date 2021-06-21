@@ -24,7 +24,8 @@
               <el-input-number
                 v-model="Extra"
                 :min="1"
-                :max="100"
+                :max="100"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>

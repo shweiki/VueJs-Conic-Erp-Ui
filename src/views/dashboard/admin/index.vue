@@ -4,12 +4,15 @@
 
     <panel-group />
     <el-card class="box-card" >
-      <el-tabs v-model="activeTab" tab-position="right">
+      <el-tabs v-model="activeTab" tab-position="top">
         <el-tab-pane label="ذمم مدينة" name="Receivables">
           <receivables />
         </el-tab-pane>
         <el-tab-pane label="ذمم دائنة" name="Payable">
           <payable />
+        </el-tab-pane>
+          <el-tab-pane label="الحد الادنى لطلب" name="LowOrderItem">
+          <Low-Order-Item />
         </el-tab-pane>
         <el-tab-pane v-if="$store.state.settings.BusinessType == 'GymManagment'" label="طلبات التجميد و اضافي" name="MembershipmentOrdar">
           <membershipment-ordar />
@@ -24,6 +27,8 @@ import PanelGroup from "./components/PanelGroup";
 import MembershipmentOrdar from "./components/MembershipmentOrdar";
 import Receivables from "./components/Receivables";
 import Payable from "./components/Payable";
+import LowOrderItem from "./components/LowOrderItem.vue";
+
 import RouterMenu from "@/components/RouterMenu";
 
 export default {
@@ -33,7 +38,8 @@ export default {
     PanelGroup,
     MembershipmentOrdar,
     Receivables,
-    Payable
+    Payable,
+    LowOrderItem
   },
   data() {
     return {

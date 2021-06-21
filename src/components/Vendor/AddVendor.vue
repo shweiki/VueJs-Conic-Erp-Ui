@@ -4,6 +4,7 @@
       type="warning"
       icon="el-icon-circle-plus"
       @click="Visible = true"
+      :size="$store.getters.size"
     ></el-button>
 
     <el-dialog
@@ -140,7 +141,8 @@
             :precision="2"
             :step="1"
             :min="0.0"
-            :max="10000000"
+            :max="10000000"                            @focus="$event.target.select()"
+
           ></el-input-number>
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.Region')" prop="Region">
@@ -251,7 +253,7 @@ export default {
               Create(this.tempForm)
                 .then(response => {
                   this.Visible = false;
-                  this.tempForm.Id = response
+                  this.tempForm.Id = response;
                   this.$emit("Set", this.tempForm);
 
                   this.$notify({

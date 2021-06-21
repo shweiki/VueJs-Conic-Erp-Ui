@@ -275,6 +275,7 @@
                           :step="1"
                           :min="0.0"
                           :max="100"
+                          @focus="$event.target.select()"
                         ></el-input-number>
                       </el-col>
                       <!--    <el-col :span="6">{{
@@ -373,6 +374,7 @@
                                 :step="1"
                                 :min="1"
                                 :max="1000000"
+                                @focus="$event.target.select()"
                               ></el-input-number>
                             </div>
                             <el-col
@@ -668,9 +670,9 @@ export default {
           ) > 0
         ) {
           this.DisabledSave = true;
-        //  this.tempForm.Type == "Delivery"
-         //   ? (this.tempForm.Status = 0)
-        //    : (this.tempForm.Status = 2);
+          //  this.tempForm.Type == "Delivery"
+          //   ? (this.tempForm.Status = 0)
+          //    : (this.tempForm.Status = 2);
           Create(this.tempForm)
             .then(response => {
               if (response) {
@@ -686,7 +688,7 @@ export default {
                 this.restTempForm();
                 this.DisabledSave = false;
                 this.OpenRestOfBill = false;
-              //  this.AutoPrint = true;
+                //  this.AutoPrint = true;
 
                 if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
                   this.sendSMS(this.OldInvoice);

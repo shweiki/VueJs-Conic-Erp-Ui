@@ -225,6 +225,7 @@
                               :step="1"
                               :min="0"
                               :max="1000000"
+                              @focus="$event.target.select()"
                             ></el-input-number>
                           </template>
                         </el-table-column>
@@ -429,6 +430,7 @@
                             :step="1"
                             :min="0.0"
                             :max="100"
+                            @focus="$event.target.select()"
                           ></el-input-number>
                         </el-col>
                         <el-col
@@ -578,8 +580,7 @@ export default {
         Description: "",
         VendorId: 2,
         IsPrime: false,
-        InventoryMovements: [],
-        enterPressed: false
+        InventoryMovements: []
       },
       rules: {
         InventoryMovements: [

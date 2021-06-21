@@ -25,6 +25,7 @@
       <li @click="Forward()">{{ $t("tagsView.Forward") }}</li>
       <li @click="Back()">{{ $t("tagsView.Back") }}</li>
       <li @click="Copy()">{{ $t("tagsView.Copy") }}</li>
+      <li @click="Paste()">{{ $t("tagsView.Paste") }}</li>
     </ul>
   </section>
 </template>
@@ -33,10 +34,14 @@ import { METHODS } from "http";
 import path from "path";
 import Clock from "@/components/Clock";
 import clip from "@/utils/clipboard"; // use clipboard directly
+import clipboard from "@/directive/clipboard/index.js"; // use clipboard by v-directive
 
 export default {
   name: "AppMain",
   components: { Clock },
+  directives: {
+    clipboard
+  },
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews;
@@ -82,9 +87,16 @@ export default {
       }
     },
     Copy() {
-      var selObj = window.getSelection();
-      var selRange = selObj.getRangeAt(0);
-      console.log(selObj, selRange);
+      window.document.execCommand("copy");
+    //  clip(selRange, event);
+
+    
+      // do stuff with the range
+    },
+    Paste() {
+      window.document.execCommand("paste");
+
+   
       // do stuff with the range
     },
     Forward() {

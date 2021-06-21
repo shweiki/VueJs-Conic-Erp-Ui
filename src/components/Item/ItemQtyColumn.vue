@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     getdata() {
-      CalculateInventoryItemQty({ Id: this.ItemID }).then((response) => {
+      CalculateInventoryItemQty({ Id: this.ItemId }).then((response) => {
         // handle success
         console.log(response[0]);
         this.Inventory = response[0];

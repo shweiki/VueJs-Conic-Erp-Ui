@@ -5,8 +5,9 @@
         <search-by-date
           :Value="[]"
           @Set="
-            (v) => {
+            v => {
               date = v;
+              getdata();
             }
           "
         />
@@ -22,8 +23,9 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            (data) =>
-              !search || data.FakeDate.toLowerCase().includes(search.toLowerCase())
+            data =>
+              !search ||
+              data.FakeDate.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -32,16 +34,20 @@
         highlight-current-row
         style="width: 100%"
         @row-dblclick="
-          (row) => {
+          row => {
             $router.replace({
-              path: '/OrderInventories/Edit/' + row.Id,
+              path: '/OrderInventories/Edit/' + row.Id
             });
           }
         "
       >
         <el-table-column align="center" prop="Id" width="120">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="getdata"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="getdata"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -121,13 +127,18 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
+        <el-button
+          :type="textOpration.ClassName"
+          @click="createOprationData()"
+          >{{ textOpration.OprationDescription }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -152,28 +163,28 @@ export default {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: "",
+        ClassName: ""
       },
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: "",
+        Description: ""
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
@@ -185,8 +196,8 @@ export default {
 
       GetOrderInventory({
         DateFrom: this.date[0],
-        DateTo: this.date[1],
-      }).then((response) => {
+        DateTo: this.date[1]
+      }).then(response => {
         console.log(response);
         this.tableData = response;
         this.loading = false;
@@ -197,7 +208,8 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription =
+        Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -206,31 +218,31 @@ export default {
       this.tempOpration.Description = "";
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           ChangeObjStatus({
             ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description,
+            Description: this.tempOpration.Description
           })
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
           console.log("error submit!!");
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>

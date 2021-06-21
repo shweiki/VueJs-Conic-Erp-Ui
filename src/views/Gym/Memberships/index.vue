@@ -164,7 +164,8 @@
                 v-model="tempForm.NumberDays"
                 :step="1"
                 :min="1"
-                :max="1000"
+                :max="1000"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -178,7 +179,8 @@
                 :precision="2"
                 :step="0.1"
                 :min="0.0"
-                :max="1500"
+                :max="1500"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -192,7 +194,8 @@
                 :precision="2"
                 :step="0.1"
                 :min="0.0"
-                :max="1500"
+                :max="1500"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -206,7 +209,8 @@
                 :precision="2"
                 :step="0.01"
                 :min="0.01"
-                :max="1"
+                :max="1"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -217,7 +221,8 @@
                 :precision="2"
                 :step="1"
                 :min="1"
-                :max="365"
+                :max="365"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -228,7 +233,8 @@
                 :precision="2"
                 :step="1"
                 :min="1"
-                :max="365"
+                :max="365"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>

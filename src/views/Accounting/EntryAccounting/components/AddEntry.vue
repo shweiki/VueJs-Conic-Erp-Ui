@@ -23,7 +23,8 @@
           </el-col>
           <el-col :span="12">
             <el-form-item prop="Value" label="القيمة">
-              <el-input-number v-model="Value" :min="0.01" :max="100000"></el-input-number>
+              <el-input-number                             @focus="$event.target.select()"
+ v-model="Value" :min="0.01" :max="100000"></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>

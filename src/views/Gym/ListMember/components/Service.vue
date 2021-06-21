@@ -64,6 +64,7 @@
 
 <script>
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
+import { InBody } from "@/Report/InBody";
 
 export default {
   props: {
@@ -77,7 +78,8 @@ export default {
   data() {
     return {
       Visible: false,
-      InventoryMovementId: undefined
+      InventoryMovementId: undefined,
+      SID: undefined
     };
   },
   methods: {
@@ -87,6 +89,7 @@ export default {
         ({ Id }) => Id == SID
       ).InventoryMovements.filter(obj => obj.Status == 1);
       this.InventoryMovementId = InventoryMovement[0].Id;
+      this.SID = SID;
     },
     createOprationData() {
       ChangeObjStatusByTableName({
@@ -105,9 +108,7 @@ export default {
             duration: 2000
           });
           this.$nextTick(() => {
-            this.$router.replace({
-              path: "/redirect" + this.$route.fullPath
-            });
+            InBody(this.ServiceInvoices.find(({ Id }) => Id == this.SID));
           });
         })
         .catch(error => {

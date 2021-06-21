@@ -29,7 +29,7 @@
 
 <script>
 import UploadExcelComponent from "@/components/UploadExcel/index.vue";
-import { CreateItem } from "@/api/Item";
+import { CreateItem, CheckItemIsExist } from "@/api/Item";
 export default {
   name: "Item",
   components: { UploadExcelComponent },
@@ -47,28 +47,44 @@ export default {
     AddItem() {
       this.loading = true;
       this.isDisabled = true;
-      CreateItem(this.data[0])
-        .then(response => {
-          console.log("tag", response);
-          this.data.splice(0, 1);
-          this.counter++;
-          if (this.data.length != 0) {
-            this.AddItem();
-          } else {
-            this.loading = false;
-            this.tableData = [];
-            this.$notify({
-              title: "تم ",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              duration: 2000
+      CheckItemIsExist({
+        BarCode: this.data[0].Barcode,
+        Name: this.data[0].Name
+      }).then(response => {
+        if (!response) {
+          CreateItem(this.data[0])
+            .then(response => {
+              console.log("tag", response);
+              this.data.splice(0, 1);
+              this.counter++;
+              if (this.data.length != 0) {
+                this.AddItem();
+              } else {
+                this.loading = false;
+                this.tableData = [];
+                this.$notify({
+                  title: "تم ",
+                  message: "تم الإضافة بنجاح",
+                  type: "success",
+                  duration: 2000
+                });
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              //this.AddItem(100), 1000);
             });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          //this.AddItem(100), 1000);
-        });
+        } else {
+          this.AddItem();
+          this.$notify({
+            position: "top-left",
+            title: "تم ",
+            message: "يوجد صنف يحمل نفس الاسم / الباركود",
+            type: "warning",
+            duration: 20000
+          });
+        }
+      });
     },
     beforeUpload(file) {
       const isLt1M = file.size / 1024 / 1024 < 8;

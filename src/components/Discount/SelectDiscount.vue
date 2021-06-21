@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="value" @change="SetVal" placeholder="خصم">
+  <el-select v-model="value" clearable  @change="SetVal" placeholder="خصم">
     <el-option
       v-for="Discount in options"
       :key="Discount.label"

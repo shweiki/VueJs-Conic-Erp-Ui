@@ -128,6 +128,7 @@
                   :step="1"
                   :min="0.0"
                   :max="1000000"
+                  @focus="$event.target.select()"
                 ></el-input-number>
               </template>
             </el-table-column>
@@ -140,6 +141,19 @@
                   <el-radio-button label="In">إضافة</el-radio-button>
                   <el-radio-button label="Out">سحب</el-radio-button>
                 </el-radio-group>
+              </template>
+            </el-table-column>
+            <el-table-column label="EXP" width="175" align="center">
+              <template slot-scope="scope">
+                <Select-Item-Exp-Column
+                  @SetVal="
+                    v => {
+                      tempForm.InventoryMovements[scope.$index].EXP = v;
+                    }
+                  "
+                  :Value="tempForm.InventoryMovements[scope.$index].EXP"
+                  :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
+                />
               </template>
             </el-table-column>
             <el-table-column align="center">
@@ -213,10 +227,12 @@ import { Create, Edit, GetOrderInventoryById } from "@/api/OrderInventory";
 import { GetActiveInventory } from "@/api/InventoryItem";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
+import ExpDate from "@/components/Date/ExpDate.vue";
+import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
 
 export default {
   name: "NewOrderInventories",
-  components: { ItemsSearch, EditItem },
+  components: { ItemsSearch, EditItem, ExpDate, SelectItemExpColumn },
   props: {
     isEdit: {
       type: Boolean,
@@ -286,11 +302,11 @@ export default {
   },
   methods: {
     AddItem(item) {
-      console.log(item)
+      console.log(item);
       this.tempForm.InventoryMovements.unshift({
         Id: undefined,
         TypeMove: "In",
-        ItemsId: item.Id ,
+        ItemsId: item.Id,
         Status: 0,
         Qty: 1.0,
         SellingPrice: 0,
@@ -341,11 +357,11 @@ export default {
                 showClose: false,
                 onClose: () => {
                   if (response) {
-                    this.$nextTick(() => {
+                    /*    this.$nextTick(() => {
                       this.$router.replace({
                         path: "/redirect" + "/OrderInventories/List"
                       });
-                    });
+                    });*/
                   }
                 }
               });
@@ -373,11 +389,11 @@ export default {
                 showClose: false,
                 onClose: () => {
                   if (response) {
-                    this.$nextTick(() => {
+                    /*    this.$nextTick(() => {
                       this.$router.replace({
                         path: "/redirect" + "/OrderInventories/List"
                       });
-                    });
+                    });*/
                   }
                 }
               });

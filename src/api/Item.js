@@ -29,6 +29,13 @@ export function GetByListQ(data) {
     data: qs.stringify(data)
   })
 }
+export function GetLowOrder(data) {
+  return request({
+    url: '/Item/GetLowOrder',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function CheckItemIsExist(query) {
   return request({
     url: '/Item/CheckItemIsExist',
@@ -64,6 +71,7 @@ export function GetIsPrimeItem(query) {
     params: query
   })
 }
+
 export function GetItemMove(query) {
   return request({
     url: '/Item/GetItemMove',
@@ -90,6 +98,13 @@ export function Edit(data) {
 export function CalculateInventoryItemQty(data) {
   return request({
     url: '/Item/CalculateInventoryItemQty',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+export function GetInventoryItemEXP(data) {
+  return request({
+    url: '/Item/GetInventoryItemEXP',
     method: 'post',
     data: qs.stringify(data)
   })

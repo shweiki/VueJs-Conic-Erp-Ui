@@ -113,7 +113,7 @@
             </el-tab-pane>
             <el-tab-pane label="خدمات" name="Service">
               <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
-              <service :ServiceInvoices="ServiceInvoices" />
+              <Service :ServiceInvoices="ServiceInvoices" />
             </el-tab-pane>
             <el-tab-pane label="تواصل" name="communication">
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>

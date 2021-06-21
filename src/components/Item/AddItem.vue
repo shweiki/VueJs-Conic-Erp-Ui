@@ -42,6 +42,8 @@
                 :step="0.1"
                 :min="0.0"
                 :max="1500"
+                                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -56,6 +58,8 @@
                 :step="0.1"
                 :min="0.0"
                 :max="1500"
+                                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -70,6 +74,8 @@
                 :step="0.1"
                 :min="0.0"
                 :max="1500"
+                                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -82,6 +88,8 @@
                 v-model="tempForm.LowOrder"
                 :min="1"
                 :max="100000000"
+                                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -93,6 +101,8 @@
                 :step="0.01"
                 :min="0.01"
                 :max="1"
+                                            @focus="$event.target.select()"
+
               />
             </el-form-item>
           </el-col>

@@ -17,10 +17,9 @@
     <el-dialog
       style="margin-top: -13vh"
       title="تسجيل اشتراك"
-      @opened="getdata"
       :visible.sync="Visibles"
     >
-      <el-form :model="MembershipMovement" ref="dataForm">
+      <el-form :model="tempForm" ref="dataForm">
         <el-form-item
           label="الفترة"
           prop="Type"
@@ -28,7 +27,7 @@
             { required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }
           ]"
         >
-          <el-radio-group v-model="MembershipMovement.Type" @change="calc">
+          <el-radio-group v-model="tempForm.Type" @change="calc">
             <el-radio label="Morning" border>Morning</el-radio>
             <el-radio label="FullDay" border>Full Day</el-radio>
           </el-radio-group>
@@ -44,19 +43,15 @@
             }
           ]"
         >
-          <el-select
-            v-model="MembershipMovement.MembershipId"
-            filterable
-            @change="calc"
-            placeholder="إشتراك"
-          >
-            <el-option
-              v-for="item in Memberships"
-              :key="item.Id"
-              :label="item.Name"
-              :value="item.Id"
-            ></el-option>
-          </el-select>
+          <Select-Memberships
+            @Set="
+              v => {
+                Membership = v;
+                tempForm.MembershipId = v.Id;
+                calc();
+              }
+            "
+          />
         </el-form-item>
         <el-form-item
           label="تاريخ بدء"
@@ -69,12 +64,15 @@
             }
           ]"
         >
-          <el-date-picker
-            @change="calc"
-            v-model="MembershipMovement.StartDate"
-            type="date"
-            format="dd/MM/yyyy"
-          ></el-date-picker>
+          <Fake-Date
+            :Value="tempForm.StartDate"
+            @Set="
+              v => {
+                tempForm.StartDate = v;
+                calc();
+              }
+            "
+          />
         </el-form-item>
         <el-form-item
           label="تاريخ انتهاء"
@@ -87,28 +85,25 @@
             }
           ]"
         >
-          <el-date-picker
-            format="dd/MM/yyyy"
-            disabled
-            v-model="MembershipMovement.EndDate"
-            type="date"
-          ></el-date-picker>
+          <Fake-Date
+            :Value="tempForm.EndDate"
+            @Set="
+              v => {
+                tempForm.EndDate = v;
+              }
+            "
+          />
         </el-form-item>
         <el-form-item label="خصم" prop="Discount">
-          <el-select v-model="Discount" @change="calc">
-            <el-option
-              v-for="Discount in DiscountOptions"
-              :key="Discount.label"
-              :label="Discount.label"
-              :value="Discount"
-            >
-              <span style="float: left">{{ Discount.label }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"
-                >{{ Discount.value
-                }}{{ Discount.type == "Percentage" ? "%" : "-" }}</span
-              >
-            </el-option>
-          </el-select>
+          <Select-Discount
+            :Price="Price"
+            @Set="
+              v => {
+                tempForm.Discount = v;
+                calc();
+              }
+            "
+          />
         </el-form-item>
         <el-form-item
           label="سبب الخصم"
@@ -123,7 +118,7 @@
         >
           <el-input
             style="width:220px"
-            v-model="MembershipMovement.DiscountDescription"
+            v-model="tempForm.DiscountDescription"
           ></el-input>
         </el-form-item>
 
@@ -134,7 +129,7 @@
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
-          <el-radio-group v-model="MembershipMovement.Description">
+          <el-radio-group v-model="tempForm.Description">
             <el-radio label="تجديد اشتراك" border>تجديد اشتراك</el-radio>
             <el-radio label="مشترك جديد" border>مشترك جديد</el-radio>
             <el-radio label border></el-radio>
@@ -153,7 +148,7 @@
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <editors-user @Set="v => (MembershipMovement.EditorName = v)" />
+              <editors-user @Set="v => (tempForm.EditorName = v)" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -166,9 +161,7 @@
           <span
             >JOD
             {{
-              MembershipMovement.TotalAmmount.toFixed(
-                $store.getters.settings.ToFixed
-              )
+              tempForm.TotalAmmount.toFixed($store.getters.settings.ToFixed)
             }}</span
           >
         </el-form-item>
@@ -187,8 +180,7 @@
             class="currency-input"
             v-model="Payment.TotalAmmount"
             :value-range="{ min: 0.01, max: 1000 }"
-                      @focus="$event.target.select()"
-
+            @focus="$event.target.select()"
           />
         </el-form-item>
 
@@ -245,18 +237,21 @@
 </template>
 
 <script>
-import { Create } from "@/api/MembershipMovement";
 import { CreatePayment } from "@/api/Payment";
 import printJS from "print-js";
 import { PaymentMember } from "@/Report/PayPapar";
-import EditorsUser from "@/components/Gym/EditorsUser";
 
-import { GetActiveMembership } from "@/api/Membership";
-import { GetActiveDiscount } from "@/api/Discount";
 import { string } from "clipboard";
-
+import { Create } from "@/api/MembershipMovement";
+import EditorsUser from "@/components/Gym/EditorsUser.vue";
+import SelectMemberships from "@/components/Gym/SelectMemberships.vue";
+import FakeDate from "@/components/Date/FakeDate.vue";
+import SelectDiscount from "@/components/Discount/SelectDiscount.vue";
+import { Create as CreateSaleInvoice } from "@/api/SaleInvoice";
+import { GetActiveService } from "@/api/Service";
+import { LocalDateTime, Instant } from "@js-joda/core";
 export default {
-  components: { EditorsUser },
+  components: { FakeDate, EditorsUser, SelectMemberships, SelectDiscount },
   props: {
     AccountId: {
       type: Number,
@@ -286,21 +281,19 @@ export default {
 
   data() {
     return {
-      Memberships: [],
-      MembershipMovement: {
+      tempForm: {
         Id: undefined,
         TotalAmmount: 0,
         Tax: 0.0,
-        StartDate: new Date(),
-        EndDate: new Date(),
+        StartDate: "",
+        EndDate: "",
         Type: "FullDay",
         VisitsUsed: 0,
-        Discount: 0,
         DiscountDescription: "",
         Description: "",
         Status: 0,
-        MemberId: undefined,
         EditorName: "",
+        MemberId: undefined,
         MembershipId: undefined
       },
       OldPayment: null,
@@ -315,14 +308,26 @@ export default {
         VendorId: undefined,
         IsPrime: true,
         EditorName: "",
-
         MemberId: undefined,
         Type: ""
       },
       EnableSave: false,
       Visibles: false,
-      DiscountOptions: [],
-      Discount: {},
+      Discount: 0,
+      Price: 0,
+      Membership: {
+        Description: "",
+        FullDayPrice: 45,
+        Id: 2,
+        MaxFreezeLimitDays: 6,
+        MinFreezeLimitDays: 3,
+        MorningPrice: 30,
+        Name: "شهر",
+        NumberDays: 30,
+        Rate: 0,
+        Status: 0,
+        Tax: 0.01
+      },
       pickerOptions: {
         disabledDate(time) {
           console.log(time);
@@ -332,27 +337,6 @@ export default {
     };
   },
   methods: {
-    getdata() {
-      GetActiveMembership()
-        .then(response => {
-          console.log(response);
-          this.Memberships = response;
-          this.MembershipMovement.MembershipId = response[0].Id;
-          GetActiveDiscount()
-            .then(response => {
-              console.log(response);
-              this.DiscountOptions = response;
-              this.Discount = this.DiscountOptions[0];
-              this.calc();
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     createData() {
       this.$refs["dataForm"].validate(valid => {
         this.calc();
@@ -360,20 +344,22 @@ export default {
           this.$refs["Form"].validate(valid => {
             if (valid) {
               this.EnableSave = true;
-              Create(this.MembershipMovement)
+              Create(this.tempForm)
                 .then(response => {
                   if (response) {
                     //  if(this.Discount.ValueOfDays >0)
                     // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
+
+                    this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
 
                     this.Payment.MemberId = this.MemberId;
                     this.Payment.Description +=
                       "وذالك عن اشتراك رقم " +
                       response +
                       "وينتهي في " +
-                      this.formatDate(this.MembershipMovement.EndDate, "no") +
+                      this.formatDate(this.tempForm.EndDate, "no") +
                       "لفترة " +
-                      this.MembershipMovement.Type +
+                      this.tempForm.Type +
                       " .";
                     CreatePayment(this.Payment)
                       .then(response => {
@@ -409,32 +395,23 @@ export default {
       });
     },
     calc() {
-      let Membership = this.Memberships.find(
-        obj => obj.Id == this.MembershipMovement.MembershipId
-      );
-      // console.log(Membership);
-
-      let Price =
-        this.MembershipMovement.Type == "Morning"
+      let Membership = this.Membership;
+      this.Price =
+        this.tempForm.Type == "Morning"
           ? Membership.MorningPrice
           : Membership.FullDayPrice;
-      this.MembershipMovement.Discount =
-        this.Discount.type == "Percentage"
-          ? (this.Discount.value / 100) * Price
-          : this.Discount.value;
 
-      this.MembershipMovement.TotalAmmount =
-        Price - this.MembershipMovement.Discount;
-      this.Payment.TotalAmmount = this.MembershipMovement.TotalAmmount;
-      this.MembershipMovement.MemberId = this.MemberId;
+      this.tempForm.TotalAmmount = this.Price - this.tempForm.Discount;
+      this.Payment.TotalAmmount = this.tempForm.TotalAmmount;
+      this.tempForm.MemberId = this.MemberId;
 
-      this.MembershipMovement.EndDate = new Date(
-        this.MembershipMovement.EndDate.setTime(
-          this.MembershipMovement.StartDate.getTime() +
-            3600 * 1000 * 24 * Membership.NumberDays
-        )
-      );
+      this.tempForm.EndDate = LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(new Date(this.tempForm.StartDate))
+      )
+        .plusDays(Membership.NumberDays)
+        .toString();
     },
+
     Print() {
       this.OldPayment.ObjectId = this.MemberId;
 
@@ -445,11 +422,68 @@ export default {
         showModal: true
       });
     },
+    OneInBodyFreeForeach30Days(NumberDays) {
+      if (NumberDays < 30) return false;
+      GetActiveService()
+        .then(response => {
+          //   console.log(response);
+          let Service = response.find(
+            obj => obj.Name == "One InBody Free Foreach 30 Days"
+          );
+          let SaleInvoice = {
+            Id: undefined,
+            Name: Service.Name,
+            Tax: 0.0,
+            FakeDate: new Date(),
+            PaymentMethod: "Service",
+            Discount: 0,
+            Status: 3,
+            Description: "فاتورة خدمية ",
+            MemberId: this.MemberId,
+            IsPrime: true,
+            InventoryMovements: []
+          };
+          for (var i = 0; i < NumberDays / 30; i++) {
+            SaleInvoice.InventoryMovements.push({
+              Id: undefined,
+              ItemsId: Service.ItemId,
+              TypeMove: "Out",
+              Status: 1,
+              Qty: 1.0,
+              SellingPrice: 0,
+              Tax: 0.0,
+              Description: "",
+              InventoryItemId: 1,
+              SalesInvoiceId: undefined
+            });
+          }
+          console.log(SaleInvoice);
+          if (SaleInvoice.InventoryMovements.length > 0) {
+            CreateSaleInvoice(SaleInvoice)
+              .then(response => {
+                if (response) {
+                  this.$notify({
+                    title: "تم ",
+                    message: "تم الإضافة One InBody Free Foreach 30 Days بنجاح",
+                    type: "success",
+                    duration: 2000
+                  });
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     AddExtraToMembership(Days, MemberShipMovementId) {
       let MembershipMovementOrder = {
         Id: undefined,
         Type: "Extra",
-        StartDate: new Date(this.MembershipMovement.EndDate),
+        StartDate: new Date(this.tempForm.EndDate),
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,

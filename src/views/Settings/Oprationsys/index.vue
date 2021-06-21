@@ -126,6 +126,7 @@
                 v-model="tempForm.Status"
                 :step="1"
                 :max="15"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </div>
@@ -138,6 +139,7 @@
                 v-model="tempForm.ReferenceStatus"
                 :step="1"
                 :max="15"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </div>

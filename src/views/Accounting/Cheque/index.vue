@@ -178,7 +178,8 @@
                 :precision="2"
                 :step="0.1"
                 :min="0.0"
-                :max="1500"
+                :max="1500"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </el-form-item>
           </el-col>

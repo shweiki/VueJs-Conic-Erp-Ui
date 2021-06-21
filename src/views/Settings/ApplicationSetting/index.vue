@@ -43,6 +43,14 @@
                 <el-option label="Layout1" value="Layout1"> </el-option>
                 <el-option label="Layout2" value="Layout2"> </el-option>
                 <el-option label="Layout3" value="Layout3"> </el-option>
+                <el-option label="Pharmacy" value="Pharmacy"> </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6">
+              <span>{{ $t("Settings.PurchaseLayout") }}</span>
+              <el-select v-model="PurchaseLayout" placeholder="PurchaseLayout">
+                <el-option label="SuperMarket" value="SuperMarket"> </el-option>
+                <el-option label="Pharmacy" value="Pharmacy"> </el-option>
               </el-select>
             </el-col>
             <el-col :span="6">
@@ -274,6 +282,17 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "PointOfSaleLayout",
+          value: val
+        });
+      }
+    },
+    PurchaseLayout: {
+      get() {
+        return this.$store.state.settings.PurchaseLayout;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "PurchaseLayout",
           value: val
         });
       }

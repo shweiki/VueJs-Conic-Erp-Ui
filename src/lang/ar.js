@@ -201,7 +201,9 @@ export default {
     closeOthers: 'اغلاق الاخرين',
     closeAll: 'اغلاق الكل',
     Back: 'رجوع',
-    Forward: 'الى الامام'
+    Forward: 'الى الامام',
+    Copy: "نسخ",
+    Paste: "لصق"
 
   },
   Settings: {
@@ -211,16 +213,16 @@ export default {
     fixedHeader: 'رأس ثابت',
     sidebarLogo: 'شعار الشريط الجانبي ',
     DateFormat: "صيغة البيانات",
-    DateTimeFormat : "صيغة الوقت والتاريخ",
+    DateTimeFormat: "صيغة الوقت والتاريخ",
     CashDrawerCOM: 'درج الكاش',
-    PointOfSaleLayout:'شكل نظام البيع',
+    PointOfSaleLayout: 'شكل نظام البيع',
     BusinessType: "نوع العمل",
     showSettings: "إظهار الإعدادات",
     showRestOfBill: "إظهار بقية الفاتورة",
     sidebarOpen: 'فتح الشريط الجانبي',
     WithOutCheckItemIsExist: 'دون البحث بالأصناف الموجودة',
-    BarcodeIsId:"الباركود هو رقم المنتج (ID)",
-    loginBackground:"خلفية شاشة تسجيل الدخول",
+    BarcodeIsId: "الباركود هو رقم المنتج (ID)",
+    loginBackground: "خلفية شاشة تسجيل الدخول",
     sidebarImages: 'صورة الشريط الجانبي',
     Images: 'الصور',
   },
@@ -361,7 +363,7 @@ export default {
     StoreMovement: 'حركات المستودع',
     Statement: 'بيان الطلب',
     Store: 'المستودع',
-    OrderNumber:'عدد الطلبات',
+    OrderNumber: 'عدد الطلبات',
     TotalNumber: 'العدد الكلي',
 
   },

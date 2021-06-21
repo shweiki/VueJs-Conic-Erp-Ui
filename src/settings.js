@@ -35,6 +35,7 @@ module.exports = {
   DateTimeFormat: 'yyyy-MM-dd HH:mm',
   StatusQuery: 0,
   PointOfSaleLayout: 'Layout1',
+  PurchaseLayout: 'SuperMarket',
   datepickerQuery: [Date(), Date()],// start , End
   timeQuery: ['00:00:00', '23:59:59'],
   printers: ['Casher', 'WorkTable1', 'WorkTable2'],

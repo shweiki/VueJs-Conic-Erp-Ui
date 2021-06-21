@@ -34,6 +34,7 @@ const state = {
   timeQuery: defaultSettings.timeQuery,
   pickerOptions: defaultSettings.pickerOptions,
   PointOfSaleLayout: defaultSettings.PointOfSaleLayout,
+  PurchaseLayout: defaultSettings.PurchaseLayout,
   ToFixed: defaultSettings.ToFixed,
   LimitQurey: defaultSettings.LimitQurey,
   triger: defaultSettings.triger,

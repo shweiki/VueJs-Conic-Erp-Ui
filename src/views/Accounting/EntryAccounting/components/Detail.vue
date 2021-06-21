@@ -116,7 +116,8 @@
                 :precision="2"
                 :step="1"
                 :min="0.0"
-                :max="1000000"
+                :max="1000000"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </template>
           </el-table-column>
@@ -138,7 +139,8 @@
                 :precision="2"
                 :step="1"
                 :min="0.0"
-                :max="1000000"
+                :max="1000000"                            @focus="$event.target.select()"
+
               ></el-input-number>
             </template>
           </el-table-column>
