@@ -131,7 +131,7 @@
         align="center"
       ></el-table-column>
       <el-table-column
-        label="ID"
+        v-bind:label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"
@@ -142,9 +142,9 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Company" prop="Company" align="center">
+      <el-table-column v-bind:label="$t('CashDrawer.Company')" prop="Company" align="center">
       </el-table-column>
-      <el-table-column label="Name" prop="Name" align="center">
+      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
