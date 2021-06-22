@@ -29,14 +29,15 @@ export default {
     Devices: "Devices",
     Roles: "Roles",
     UploadData: "Upload Data",
-
+    SaleInvoiceStatus: "Sales Invoice Status",
+    UploadVendor:"Vendors",
     UploadItem: "Upload Item",
     UploadService: "Upload Service",
     UploadMemberShip: "Upload Membership",
     UploadMember: "Upload Member",
     UploadMembershipMovement: "Upload Membership Movement",
-
-
+    UploadSaleInvoice:"Sales Invoices",
+    UploadOprationsys:"System Oprations",
     Inventory: 'Inventory',
     Items: 'Items',
     ApplicationSetting: "Application Settings",
@@ -72,8 +73,12 @@ export default {
     DirectivePermission: "Directive Permission",
     RolePermission: "Role Permission",
     MembershipMovements: "Membership Movements",
-    Services: "Services"
-
+    Services: "Services",
+    NewItem:"New Item",
+    ListItem:"List Item",
+    Drivers:"Drivers",
+    NewReport:"New Report",
+    ListReport:"Reports List"
   },
   Settings: {
     settings: "Settings",
@@ -200,7 +205,8 @@ export default {
     closeAll: 'Close All',
     Back: 'Back',
     Copy: "Copy",
-    Paste: "Paste"
+    Paste: "Paste",
+    Forward:"Forward",
 
   },
   settings: {
@@ -208,7 +214,8 @@ export default {
     theme: 'Theme Color',
     tagsView: 'Open Tags-View',
     fixedHeader: 'Fixed Header',
-    sidebarLogo: 'Sidebar Logo'
+    sidebarLogo: 'Sidebar Logo',
+    PurchaseLayout:"Purchase Layout",
   },
   PanelGroup: {
     Sales: 'Sales',
@@ -217,6 +224,7 @@ export default {
     Purchases: 'Purchases'
   },
   Vendors: {
+    ID:"ID",
     Vendor: 'Clients And Suppliers',
     Add: 'Add',
     Search: 'Search By Name',
@@ -243,7 +251,8 @@ export default {
     Description: 'Description',
     Cancel: 'Cancel',
     Save: 'Save',
-    EditorName: 'Editor Name'
+    EditorName: 'Editor Name',
+    Region:"Region",
   },
   Sales: {
     ByDate: 'Search By Date',
@@ -272,7 +281,8 @@ export default {
     quantity: 'Quantity',
     Price: 'Price',
     Total: 'Total',
-    Memberships: 'Memberships'
+    Memberships: 'Memberships',
+    AccountInvoiceNumber:"Account Invoice Number"
   },
   ItemSales: {
     Name: 'Name',
@@ -335,7 +345,8 @@ export default {
     ItemName: 'Item Name',
     PurchaseCost: 'Purchase Cost',
     SellingPrice: 'Selling Price',
-    ToCA: 'To Customer \ Account'
+    ToCA: 'To Customer \ Account',
+    Category:"Category"
   },
   OrderInventories: {
     OrderType: 'Order Type',
@@ -493,6 +504,7 @@ export default {
     PCIP: "Computer IP",
     BTCash: "BTCash",
     Name: "Name",
+    Company:"Company",
   },
   Account: {
     Account: "Account",
@@ -558,5 +570,10 @@ export default {
     HeaderReport: "HeaderReport",
     FooterReport: "FooterReport",
     Edit: "Edit"
-  }
+  },
+  Backup: {
+    DataBaseName:"DataBase Name",
+    DateTime:"Date Time",
+    UserId:"User Id",
+  },
 }

@@ -35,10 +35,10 @@
     >
       <el-table-column label="#" prop="Id" width="50"></el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
-      <el-table-column label="DataBaseName" prop="DataBaseName"></el-table-column>
-      <el-table-column label="DateTime" prop="DateTime"></el-table-column>
-      <el-table-column label="UserId" prop="UserId"></el-table-column>
+      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center"> </el-table-column>
+      <el-table-column v-bind:label="$t('Backup.DataBaseName')" prop="DataBaseName"></el-table-column>
+      <el-table-column v-bind:label="$t('Backup.DateTime')" prop="DateTime"></el-table-column>
+      <el-table-column v-bind:label="$t('Backup.UserId')" prop="UserId"></el-table-column>
     </el-table>
   </div>
 </template>

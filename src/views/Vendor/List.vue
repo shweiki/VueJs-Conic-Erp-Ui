@@ -94,7 +94,7 @@
         "
       />
       <el-divider direction="vertical"></el-divider>
-      <span>عدد اشخاص</span>
+      <span>عدد الاشخاص</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Rows }}</span>
       <el-divider direction="vertical"></el-divider>
@@ -157,7 +157,7 @@
         align="center"
       ></el-table-column>
       <el-table-column
-        label="ID"
+        v-bind:label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"
@@ -169,7 +169,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center">
+      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"

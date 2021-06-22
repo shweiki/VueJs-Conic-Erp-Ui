@@ -165,7 +165,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center">
+      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
 
       <el-table-column

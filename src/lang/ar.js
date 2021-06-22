@@ -73,8 +73,16 @@ export default {
     DirectivePermission: "صلاحيات التوجيه",
     RolePermission: "صلاحيات الوظائف",
     MembershipMovements: "حركات اشتركات",
-    Services: "خدمات"
-
+    Services: "خدمات",
+    SaleInvoiceStatus:"حالة فواتير المبيعات",
+    UploadVendor:"موردين",
+    UploadSaleInvoice:"فواتير المبيعات",
+    UploadOprationsys:"عمليات النظام",
+    NewItem:"صنف جديد",
+    ListItem:"قائمة الأصناف",
+    Drivers:"السائقين",
+    NewReport:"تقرير جديد",
+    ListReport:"قائمة التقارير"
   },
   Settings: {
     settings: "اعدادات",
@@ -203,7 +211,8 @@ export default {
     Back: 'رجوع',
     Forward: 'الى الامام',
     Copy: "نسخ",
-    Paste: "لصق"
+    Paste: "لصق",
+    Forward:"تقدم"
 
   },
   Settings: {
@@ -225,6 +234,7 @@ export default {
     loginBackground: "خلفية شاشة تسجيل الدخول",
     sidebarImages: 'صورة الشريط الجانبي',
     Images: 'الصور',
+    PurchaseLayout:"تنسيق الشراء",
   },
   PanelGroup: {
     Sales: 'مبيعات',
@@ -233,6 +243,7 @@ export default {
     Purchases: 'المشتريات'
   },
   Vendors: {
+    ID:"الرقم",
     Vendor: 'العملاء و الموردون',
     Add: 'إضافة',
     Search: 'البحث بحسب الإسم',
@@ -258,7 +269,8 @@ export default {
     Description: 'الوصف',
     Cancel: 'إلغاء',
     Save: 'حفظ',
-    EditorName: 'محرر السند'
+    EditorName: 'محرر السند',
+    Region:"المنطقة",
 
   },
   Sales: {
@@ -288,7 +300,8 @@ export default {
     quantity: 'الكمية',
     Price: 'السعر',
     Total: 'المجموع',
-    Memberships: 'الإشتراكات'
+    Memberships: 'الإشتراكات',
+    AccountInvoiceNumber:"رقم حساب الفاتورة",
   },
   ItemSales: {
     Name: "الإسم",
@@ -351,7 +364,8 @@ export default {
     ItemName: 'إسم الصنف',
     PurchaseCost: 'سعر الشراء',
     SellingPrice: 'سعر البيع',
-    ToCA: 'إالى حساب / عميل'
+    ToCA: 'إالى حساب / عميل',
+    Category:"الأصناف",
   },
   OrderInventories: {
     OrderType: 'نوع الطلب',
@@ -511,6 +525,7 @@ export default {
     PCIP: "ip الكمبيوتر",
     BTCash: "كاش BT",
     Name: "الإسم",
+    Company:"الشركة",
   },
   Account: {
     Account: "الحسابات",
@@ -575,5 +590,10 @@ export default {
     HeaderReport: "التقرير",
     FooterReport: "التقرير",
     Edit: "تعديل"
-  }
+  },
+  Backup: {
+    DataBaseName:"اسم قاعدة البيانات",
+    DateTime:"التاريخ والوقت",
+    UserId:"رقم المستخدم",
+  },
 }
