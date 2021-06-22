@@ -1,20 +1,27 @@
 <template>
   <div class="dashboard-editor-container">
-      <router-menu />
+    <router-menu />
 
     <panel-group />
-    <el-card class="box-card" >
-      <el-tabs v-model="activeTab" tab-position="top">
+    <el-card class="box-card">
+      <el-tabs v-model="activeTab" tab-position="right">
         <el-tab-pane label="ذمم مدينة" name="Receivables">
           <receivables />
         </el-tab-pane>
         <el-tab-pane label="ذمم دائنة" name="Payable">
           <payable />
         </el-tab-pane>
-          <el-tab-pane label="الحد الادنى لطلب" name="LowOrderItem">
+        <el-tab-pane label="الحد الادنى لطلب" name="LowOrderItem">
           <Low-Order-Item />
         </el-tab-pane>
-        <el-tab-pane v-if="$store.state.settings.BusinessType == 'GymManagment'" label="طلبات التجميد و اضافي" name="MembershipmentOrdar">
+        <el-tab-pane label="الاصناف التي انتهت صلاحيتها" name="LowOrderItem">
+          <EXP-Item />
+        </el-tab-pane>
+        <el-tab-pane
+          v-if="$store.state.settings.BusinessType == 'GymManagment'"
+          label="طلبات التجميد و اضافي"
+          name="MembershipmentOrdar"
+        >
           <membershipment-ordar />
         </el-tab-pane>
       </el-tabs>
@@ -28,6 +35,7 @@ import MembershipmentOrdar from "./components/MembershipmentOrdar";
 import Receivables from "./components/Receivables";
 import Payable from "./components/Payable";
 import LowOrderItem from "./components/LowOrderItem.vue";
+import EXPItem from "./components/EXPItem.vue";
 
 import RouterMenu from "@/components/RouterMenu";
 
@@ -39,7 +47,8 @@ export default {
     MembershipmentOrdar,
     Receivables,
     Payable,
-    LowOrderItem
+    LowOrderItem,
+    EXPItem
   },
   data() {
     return {

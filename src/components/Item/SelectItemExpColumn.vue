@@ -26,7 +26,10 @@ export default {
   },
   mounted() {
     this.getdata();
-    if (!this.Value) this.date = new Date(this.Value);
+    if (!this.Value) {
+      this.date = new Date(this.Value);
+      this.SetVal(this.date);
+    }
   },
   data() {
     return {
@@ -55,6 +58,7 @@ export default {
         //  console.log(response);
         response.forEach(x => {
           this.date = x.Exp;
+          this.SetVal(this.date);
           this.pickerOptions.shortcuts.push({
             text: this.formatDate(x.Exp),
             onClick(picker) {

@@ -23,7 +23,7 @@
                   ]"
                 >
                   <fake-date
-                    :Value="tempForm.FakeDate.toString()"
+                    :Value="tempForm.FakeDate"
                     @Set="v => (tempForm.FakeDate = v)"
                     @focus="focusBarcode"
                   />
@@ -410,7 +410,6 @@
                             :max="100"
                           ></el-input-number>
                         </el-col>
-                     
                       </el-row>
                       <el-row>
                         <el-col :span="24">
@@ -753,6 +752,25 @@ export default {
           console.log(this.tempForm);
           Create(this.tempForm)
             .then(response => {
+              if(!response)
+               this.$notify({
+                title: "حصلت مشكلة في عملية الحفظ يرجى التاكد من البيانات",
+                message: "مشكلة",
+                type: "success",
+                position: "top-left",
+                duration: 1000,
+                onClose: () => {
+                  this.ValidateDescription = "";
+                  this.tempForm.Id = response;
+                  this.OldInvoice = this.tempForm;
+                  this.AutoPrint ? this.Print() : undefined;
+             //     this.restTempForm();
+                  this.DisabledSave = false;
+                  this.focusBarcode();
+                  this.OpenRestOfBill = false;
+                }
+              });
+              else
               this.$notify({
                 title: "تم الإضافة بنجاح",
                 message: "تم الإضافة بنجاح",

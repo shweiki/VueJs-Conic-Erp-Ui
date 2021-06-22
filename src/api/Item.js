@@ -36,6 +36,13 @@ export function GetLowOrder(data) {
     data: qs.stringify(data)
   })
 }
+export function GetEXP(data) {
+  return request({
+    url: '/Item/GetEXP',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function CheckItemIsExist(query) {
   return request({
     url: '/Item/CheckItemIsExist',

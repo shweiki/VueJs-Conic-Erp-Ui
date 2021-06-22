@@ -4,7 +4,7 @@
     clear-icon="false"
     :size="$store.getters.size"
     @change="SetVal"
-    v-model="FakeDate"
+    v-model="date"
     type="datetime"
     v-bind:placeholder="$t('CashPool.Date')"
     :format="$store.getters.settings.DateTimeFormat"
@@ -16,34 +16,34 @@ import {
   LocalDate,
   LocalTime,
   DateTimeFormatter,
-  Instant,
+  Instant
 } from "@js-joda/core";
 export default {
   props: {
-    Value: String,
+    Value: String
   },
   data() {
     return {
-      FakeDate: "",
+      date: ""
     };
   },
-  created() {
+  mounted() {
     this.SetVal(new Date());
+    this.date = new Date();
   },
   watch: {
     Value(val) {
       if (val != "") this.SetVal(new Date(val));
       else this.SetVal(new Date());
-    },
+    }
   },
   methods: {
     SetVal(val) {
-        console.log("fake-date" ,val);
-      this.FakeDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
+      val = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
         DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
       );
-      this.$emit("Set", this.FakeDate);
-    },
-  },
+      this.$emit("Set", val);
+    }
+  }
 };
 </script>

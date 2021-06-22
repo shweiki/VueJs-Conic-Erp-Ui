@@ -21,36 +21,39 @@ import {
   LocalDate,
   LocalTime,
   DateTimeFormatter,
-  Instant,
+  Instant
 } from "@js-joda/core";
 
 export default {
   data() {
     return {
-      date: [],
+      date: []
     };
   },
   created() {
     this.SetVal([new Date(), new Date()]);
+    this.date = [new Date(), new Date()];
   },
   methods: {
     SetVal(val) {
-      if (!val) this.date = [];
-      else
-        this.date = [
-          LocalDate.ofInstant(Instant.ofEpochMilli(val[0]))
-            .atStartOfDay()
-            .format(
-              DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
-            ),
-          LocalDate.ofInstant(Instant.ofEpochMilli(val[1]))
-            .atTime(LocalTime.MAX)
-            .format(
-              DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
-            ),
-        ];
-      this.$emit("Set", this.date);
-    },
-  },
+      val = [
+        LocalDate.ofInstant(Instant.ofEpochMilli(val[0]))
+          .atStartOfDay()
+          .format(
+            DateTimeFormatter.ofPattern(
+              this.$store.getters.settings.DateTimeFormat
+            )
+          ),
+        LocalDate.ofInstant(Instant.ofEpochMilli(val[1]))
+          .atTime(LocalTime.MAX)
+          .format(
+            DateTimeFormatter.ofPattern(
+              this.$store.getters.settings.DateTimeFormat
+            )
+          )
+      ];
+      this.$emit("Set", val);
+    }
+  }
 };
 </script>

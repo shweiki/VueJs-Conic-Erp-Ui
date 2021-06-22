@@ -2,12 +2,13 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <search-by-date
-          :Value="[]"
+     <search-by-date
+          :Value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
             v => {
-              date = v;
-              getdata();
+              listQuery.DateFrom = v[0];
+              listQuery.DateTo = v[1];
+              handleFilter();
             }
           "
         />
