@@ -12,7 +12,7 @@
         <span>{{ $t("Accounting.AccountingEntryinquiries") }}</span>
       </div>
       <div slot="header" class="clearfix">
-        <search-by-date
+        <Search-By-Date
           :Value="[]"
           @Set="
             v => {

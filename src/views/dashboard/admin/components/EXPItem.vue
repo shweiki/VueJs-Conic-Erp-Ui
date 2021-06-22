@@ -11,6 +11,18 @@
             @keyup.enter.native="handleFilter"
           />
         </el-col>
+        <el-col :span="8">
+          <Search-By-Date
+            :Value="[listQuery.DateFrom, listQuery.DateTo]"
+            @Set="
+              v => {
+                listQuery.DateFrom = v[0];
+                listQuery.DateTo = v[1];
+                handleFilter();
+              }
+            "
+          />
+        </el-col>
         <el-col :span="3">
           <el-select
             v-model="listQuery.Sort"
@@ -141,18 +153,9 @@
           <item-qty :ItemId="scope.row.Id" />
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Items.Category')"
-        align="center"
-        width="120"
-      >
+      <el-table-column width="140" label="EXP" align="center">
         <template slot-scope="scope">
-          <el-tag
-            v-for="item of Array.from((scope.row.Category || '').split(','))"
-            :key="item"
-          >
-            {{ item }}
-          </el-tag>
+          <Select-Item-Exp-Column :ItemId="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column
@@ -259,6 +262,8 @@ import AddItem from "@/components/Item/AddItem.vue";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
+import SearchByDate from "@/components/Date/SearchByDate.vue";
 
 export default {
   name: "ComplexTable",
@@ -270,7 +275,9 @@ export default {
     RadioOprations,
     ItemQty,
     EditItem,
-    AddItem
+    AddItem,
+    SelectItemExpColumn,
+    SearchByDate
   },
   directives: { waves },
   data() {
@@ -284,6 +291,8 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
+        DateFrom: "",
+        DateTo: "",
         Status: undefined
       },
       sortOptions: [

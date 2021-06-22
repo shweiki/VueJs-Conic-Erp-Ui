@@ -13,7 +13,7 @@
             />
           </el-col>
           <el-col :span="8">
-            <search-by-date
+            <Search-By-Date
               :Value="[listQuery.DateFrom, listQuery.DateTo]"
               @Set="
                 v => {

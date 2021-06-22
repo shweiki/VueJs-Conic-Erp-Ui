@@ -14,7 +14,7 @@
         <el-tab-pane label="الحد الادنى لطلب" name="LowOrderItem">
           <Low-Order-Item />
         </el-tab-pane>
-        <el-tab-pane label="الاصناف التي انتهت صلاحيتها" name="LowOrderItem">
+        <el-tab-pane label="الاصناف التي انتهت صلاحيتها" name="EXPItem">
           <EXP-Item />
         </el-tab-pane>
         <el-tab-pane

@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <search-by-date
+        <Search-By-Date
           :Value="[]"
           @Set="
             (v) => {

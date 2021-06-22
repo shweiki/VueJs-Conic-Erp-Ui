@@ -1,8 +1,17 @@
 ﻿<template>
   <div class="app-container">
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-     <search-by-date
+    <el-row type="flex">
+      <el-col :span="4">
+        <el-input
+          v-model="listQuery.Any"
+          placeholder="Search By Any Acount Name Or Id"
+          style="width: 200px"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+      </el-col>
+      <el-col :span="8">
+        <Search-By-Date
           :Value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
             v => {
@@ -12,236 +21,327 @@
             }
           "
         />
-        <router-link
-          class="pan-btn tiffany-btn"
-          style="float: left; padding: 10px 15px; border-radius: 6px"
-          icon="el-icon-plus"
-          to="/OrderInventories/Create"
-          >{{ $t("route.NewOrderInventory") }}</router-link
+      </el-col>
+      <el-col :span="3">
+        <user-select
+          @Set="
+            v => {
+              listQuery.User = v;
+              handleFilter();
+            }
+          "
+        />
+      </el-col>
+      <el-col :span="3">
+        <el-select
+          v-model="listQuery.Sort"
+          style="width: 140px"
+          class="filter-item"
+          @change="handleFilter"
         >
-      </div>
-      <el-table
-        v-loading="loading"
-        :data="
-          tableData.filter(
-            data =>
-              !search ||
-              data.FakeDate.toLowerCase().includes(search.toLowerCase())
-          )
-        "
-        fit
-        border
-        max-height="900"
-        highlight-current-row
-        style="width: 100%"
-        @row-dblclick="
-          row => {
-            $router.replace({
-              path: '/OrderInventories/Edit/' + row.Id
-            });
-          }
-        "
-      >
-        <el-table-column align="center" prop="Id" width="120">
-          <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata"
-            ></el-button>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="FakeDate"
-          v-bind:label="$t('Sales.Date')"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="OrderType"
-          v-bind:label="$t('OrderInventories.OrderType')"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="Description"
-          label="ملاحظات"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          align="center"
-          v-bind:label="$t('OrderInventories.Status')"
-          width="100"
-        >
-          <template slot-scope="scope">
-            <status-tag :Status="scope.row.Status" TableName="OrderInventory" />
-          </template>
-        </el-table-column>
-        <el-table-column width="100" align="center">
-          <template slot-scope="scope">
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              round
-              @click="handleOprationsys(scope.row.Id, NOprations)"
-              >{{ NOprations.OprationDescription }}</el-button
-            >
-          </template>
-        </el-table-column>
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-table :data="props.row.InventoryMovements">
-              <el-table-column
-                prop="Name"
-                v-bind:label="$t('OrderInventories.Items')"
-                width="130"
-              ></el-table-column>
-              <el-table-column
-                prop="Qty"
-                v-bind:label="$t('OrderInventories.Quantity')"
-              ></el-table-column>
-              <el-table-column
-                prop="InventoryName"
-                v-bind:label="$t('OrderInventories.Inventory')"
-              ></el-table-column>
-              <el-table-column
-                property="Description"
-                v-bind:label="$t('OrderInventories.Notes')"
-              ></el-table-column>
-            </el-table>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      :title="textOpration.OprationDescription"
-      :visible.sync="dialogOprationVisible"
-    >
-      <el-form
-        ref="dataOpration"
-        :rules="rulesOpration"
-        :model="tempOpration"
-        label-position="top"
-        label-width="70px"
-        style="width: 400px margin-left:50px"
-      >
-        <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
+          <el-option
+            v-for="item in sortOptions"
+            :key="item.key"
+            :label="item.label"
+            :value="item.key"
+          />
+        </el-select>
+      </el-col>
+      <el-col :span="6">
         <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-          >{{ textOpration.OprationDescription }}</el-button
+          v-waves
+          v-permission="['Admin']"
+          :loading="downloadLoading"
+          class="filter-item"
+          type="warning"
+          icon="el-icon-download"
+          @click="handleDownload"
         >
-      </div>
-    </el-dialog>
+        </el-button
+        ><el-button
+          v-waves
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          @click="handleFilter"
+        >
+        </el-button>
+      </el-col>
+    </el-row>
+
+    <el-row type="flex">
+      <el-col :span="6">
+        <radio-oprations
+          TableName="OrderInventory"
+          @Set="
+            v => {
+              listQuery.Status = v;
+              handleFilter();
+            }
+          "
+      /></el-col>
+      <el-col v-permission="['Admin']" :span="18">
+        <el-divider direction="vertical"></el-divider>
+        <span>عدد الطلبات</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Rows }}</span>
+        <el-divider direction="vertical"></el-divider>
+      </el-col>
+    </el-row>
+
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%"
+      @sort-change="sortChange"
+      @row-dblclick="
+        row => {
+          //  $emit('dblclick', row);
+          let r = $router.resolve({
+            path: '/OrderInventories/Edit/' + row.Id
+          });
+          window.open(
+            r.href,
+            r.route.name,
+            $store.getters.settings.windowStyle
+          );
+        }
+      "
+    >
+      <el-table-column
+        label="ID"
+        prop="Id"
+        sortable="custom"
+        align="center"
+        width="80"
+        :class-name="getSortClass('id')"
+      >
+        <template slot-scope="{ row }">
+          <span>{{ row.Id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Sales.Date')"
+        width="150px"
+        align="center"
+      >
+        <template slot-scope="{ row }">
+          <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        prop="OrderType"
+        v-bind:label="$t('OrderInventories.OrderType')"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="Description"
+        label="ملاحظات"
+        align="center"
+      ></el-table-column>
+
+      <el-table-column
+        v-bind:label="$t('Sales.Status')"
+        width="120"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <status-tag :Status="scope.row.Status" TableName="OrderInventory" />
+        </template>
+      </el-table-column>
+      <el-table-column width="180" align="center">
+        <template slot-scope="scope">
+          <next-oprations
+            :ObjId="scope.row.Id"
+            :Status="scope.row.Status"
+            TableName="OrderInventory"
+            @Done="handleFilter"
+          />
+          <dialog-action-log TableName="OrderInventory" :ObjId="scope.row.Id" />
+        </template>
+      </el-table-column>
+      <el-table-column type="expand" align="center">
+        <template slot-scope="props">
+          <el-table :data="props.row.InventoryMovements">
+            <el-table-column
+              prop="Name"
+              v-bind:label="$t('CashPool.Items')"
+              width="130"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              prop="Qty"
+              v-bind:label="$t('CashPool.quantity')"
+              align="center"
+            ></el-table-column>
+          </el-table>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      v-show="Totals.Rows > 0"
+      :total="Totals.Rows"
+      :page.sync="listQuery.Page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
   </div>
 </template>
+
 <script>
-import { GetOrderInventory } from "@/api/OrderInventory";
-import { ChangeObjStatus } from "@/api/Oprationsys";
-import StatusTag from "@/components/Oprationsys/StatusTag";
+import { GetByListQ } from "@/api/OrderInventory";
+import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
+import StatusTag from "@/components/Oprationsys/StatusTag";
+import PrintButton from "@/components/PrintRepot/PrintButton";
+import UserSelect from "@/components/User/UserSelect";
+import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import {
+  SaleInvoicesList,
+  SaleInvoicesItemsMovements,
+  SaleInvoicesItemsIngredients
+} from "@/Report/SaleInvoice";
+import permission from "@/directive/permission/index.js";
+
+import waves from "@/directive/waves"; // waves directive
+import { parseTime } from "@/utils";
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
-  name: "OrderInventory",
-  components: { StatusTag, SearchByDate },
+  name: "ComplexTable",
+  components: {
+    StatusTag,
+    NextOprations,
+    SearchByDate,
+    PrintButton,
+    Pagination,
+    UserSelect,
+    RadioOprations,
+    DialogActionLog
+  },
+
+  directives: { waves, permission },
   data() {
     return {
-      tableData: [],
-      loading: true,
-      search: "",
-      dialogOprationVisible: false,
-      date: [],
-      textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: ""
+      list: [],
+      Totals: {
+        Rows: 0,
+        Totals: 0,
+        Cash: 0,
+        Receivables: 0,
+        Visa: 0,
+        Profit: 0,
+        TotalCost: 0,
+        Discount: 0
       },
-      tempOpration: {
-        ObjId: undefined,
-        OprationId: undefined,
-        Description: ""
+      listLoading: false,
+      listQuery: {
+        Page: 1,
+        Any: "",
+        limit: this.$store.getters.settings.LimitQurey,
+        Sort: "-id",
+        User: undefined,
+        DateFrom: "",
+        DateTo: "",
+        Status: undefined
       },
-      rulesOpration: {
-        Description: [
-          {
-            required: true,
-            message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
-          },
-          {
-            minlength: 5,
-            maxlength: 150,
-            message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+      sortOptions: [
+        { label: "ID Ascending", key: "+id" },
+        { label: "ID Descending", key: "-id" }
+      ],
+      downloadLoading: false
     };
   },
   created() {
-    this.getdata();
+    // this.getList();
   },
   methods: {
-    getdata() {
-      this.loading = true;
-
-      GetOrderInventory({
-        DateFrom: this.date[0],
-        DateTo: this.date[1]
-      }).then(response => {
-        console.log(response);
-        this.tableData = response;
-        this.loading = false;
+    SaleInvoicesList,
+    SaleInvoicesItemsMovements,
+    SaleInvoicesItemsIngredients,
+    getList() {
+      this.listLoading = true;
+      //    console.log("sdsad", this.listQuery);
+      GetByListQ(this.listQuery).then(response => {
+        this.list = response.items;
+        this.Totals = response.Totals;
+        this.listLoading = false;
       });
     },
-
-    handleOprationsys(ObjId, Opration) {
-      this.dialogOprationVisible = true;
-      // text
-      this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
-      this.textOpration.IconClass = Opration.IconClass;
-      this.textOpration.ClassName = Opration.ClassName;
-      /// temp
-      this.tempOpration.ObjId = ObjId;
-      this.tempOpration.OprationID = Opration.Id;
-      this.tempOpration.Description = "";
+    handleFilter() {
+      this.listQuery.Page = 1;
+      this.getList();
     },
-    createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
-        if (valid) {
-          ChangeObjStatus({
-            ObjId: this.tempOpration.ObjId,
-            OprationId: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description
-          })
-            .then(response => {
-              this.getdata();
-              this.dialogOprationVisible = false;
-              this.$notify({
-                title: "تم  ",
-                message: "تمت العملية بنجاح",
-                type: "success",
-                duration: 2000
-              });
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-        }
+    sortChange(data) {
+      const { prop, order } = data;
+      if (prop === "id") {
+        this.sortById(order);
+      }
+    },
+    sortById(order) {
+      if (order === "ascending") {
+        this.listQuery.sort = "+id";
+      } else {
+        this.listQuery.sort = "-id";
+      }
+      this.handleFilter();
+    },
+    handleDownload() {
+      this.downloadLoading = true;
+      import("@/Report/Excel/Export2Excel").then(excel => {
+        const tHeader = Object.keys(this.list[0]);
+        const filterVal = Object.keys(this.list[0]);
+        const data = this.formatJson(filterVal);
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename:
+            window.location.pathname.split("/") +
+            "-" +
+            JSON.stringify(this.listQuery)
+        });
+        this.downloadLoading = false;
+      });
+    },
+    formatJson(filterVal) {
+      return this.list.map(v =>
+        filterVal.map(j => {
+          if (j === "InventoryMovements") {
+            return JSON.stringify(v[j]);
+          }
+          if (j === "ActionLogs") {
+            return JSON.stringify(v[j]);
+          }
+          if (j === "FakeDate") {
+            return parseTime(v[j]);
+          } else {
+            return v[j];
+          }
+        })
+      );
+    },
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort;
+      return sort === `+${key}` ? "ascending" : "descending";
+    },
+    print(data) {
+      data = data.map(Item => ({
+        Name: Item.Name,
+        Qty: Item.Qty,
+        SellingPrice: Item.SellingPrice,
+        Total: (Item.SellingPrice * Item.Qty).toFixed(
+          this.$store.getters.settings.ToFixed
+        )
+      }));
+      printJS({
+        printable: data,
+        properties: ["Name", "Qty", "SellingPrice", "Total"],
+        type: "json"
       });
     }
   }

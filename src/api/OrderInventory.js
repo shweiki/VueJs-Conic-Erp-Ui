@@ -1,10 +1,11 @@
 import request from '@/utils/RequestApi'
 import qs from 'qs';
-export function GetOrderInventory(query) {
+
+export function GetByListQ(data) {
   return request({
-    url: '/OrderInventory/GetOrderInventory',
-    method: 'get',
-    params: query
+    url: '/OrderInventory/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
   })
 }
 export function GetOrderInventoryById(query) {
