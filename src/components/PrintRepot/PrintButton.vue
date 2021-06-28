@@ -72,7 +72,6 @@ export default {
       default: {}
     }
   },
-
   methods: {
     focus() {
       this.$emit("focus");

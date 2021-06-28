@@ -69,7 +69,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <status-tag :Status="scope.row.Status" TableName="UnitItem" />
+            <Status-Tag :Status="scope.row.Status" TableName="UnitItem" />
           </template>
         </el-table-column>
 

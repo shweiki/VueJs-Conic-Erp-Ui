@@ -83,7 +83,7 @@
         ></el-table-column>
         <el-table-column v-bind:label="$t('Items.Status')" align="center" width="100">
           <template slot-scope="scope">
-            <status-tag :Status="scope.row.Status" TableName="Bank" />
+            <Status-Tag :Status="scope.row.Status" TableName="Bank" />
           </template>
         </el-table-column>
         <el-table-column width="120" align="center">

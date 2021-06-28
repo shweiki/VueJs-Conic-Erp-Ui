@@ -175,7 +175,7 @@
             <span>حالة المشترك</span>
           </el-col>
           <el-col :span="8">
-            <status-tag :Status="Member.Status" TableName="Member" />
+            <Status-Tag :Status="Member.Status" TableName="Member" />
           </el-col>
         </el-row>
       </el-col>

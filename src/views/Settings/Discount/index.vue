@@ -70,7 +70,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <status-tag :Status="scope.row.Status" TableName="Discount" />
+            <Status-Tag :Status="scope.row.Status" TableName="Discount" />
           </template>
         </el-table-column>
       <!--  <el-table-column align="right" width="200">

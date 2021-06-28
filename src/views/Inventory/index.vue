@@ -15,7 +15,8 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            data =>
+              !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -39,7 +40,10 @@
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Inventory.StoreName')" />
+            <el-input
+              v-model="search"
+              v-bind:placeholder="$t('Inventory.StoreName')"
+            />
           </template>
         </el-table-column>
         <el-table-column
@@ -53,32 +57,41 @@
           width="220"
           align="center"
         ></el-table-column>
-        <el-table-column v-bind:label="$t('Items.Status')" width="120" align="center">
+        <el-table-column
+          v-bind:label="$t('Items.Status')"
+          width="120"
+          align="center"
+        >
           <template slot-scope="scope">
-            <status-tag :Status="scope.row.Status" TableName="InventoryItem" />
+            <Status-Tag :Status="scope.row.Status" TableName="InventoryItem" />
           </template>
         </el-table-column>
 
         <el-table-column width="200">
           <template slot-scope="scope">
-            <el-button
-              icon="el-icon-edit"
-              circle
-              @click="handleUpdate(scope.row)"
-            ></el-button>
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              round
-              @click="handleOprationsys(scope.row.Id, NOprations)"
-              >{{ NOprations.OprationDescription }}</el-button
-            >
-            <el-button
-              icon="el-icon-printer"
-              type="primary"
-              @click="print(scope.row.InventoryQty, scope.row.Name)"
-            ></el-button>
+            <el-col :span="8">
+              <el-button
+                icon="el-icon-edit"
+                circle
+                @click="handleUpdate(scope.row)"
+              ></el-button>
+            </el-col>
+            <el-col :span="8">
+              <Next-Oprations
+                :ObjId="scope.row.Id"
+                :Status="scope.row.Status"
+                TableName="InventoryItem"
+                @Done="handleFilter"
+              />
+            </el-col>
+            <el-col :span="8">
+              <el-button
+                :loading="LoadingInventoryQty"
+                icon="el-icon-printer"
+                type="primary"
+                @click="print(scope.row.InventoryQty, scope.row.Name)"
+              ></el-button>
+            </el-col>
           </template>
         </el-table-column>
         <el-table-column type="expand">
@@ -96,7 +109,10 @@
                 width="130"
                 align="center"
               ></el-table-column>
-              <el-table-column v-bind:label="$t('Stocks.Quantity')" align="center">
+              <el-table-column
+                v-bind:label="$t('Stocks.Quantity')"
+                align="center"
+              >
                 <template slot-scope="scope">
                   <el-tag style="font-size: x-large">{{
                     scope.row.QtyIn - scope.row.QtyOut
@@ -124,7 +140,10 @@
         <el-form-item v-bind:label="$t('Inventory.StoreName')" prop="Name">
           <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('OrderInventories.Notes')" prop="Description">
+        <el-form-item
+          v-bind:label="$t('OrderInventories.Notes')"
+          prop="Description"
+        >
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -151,14 +170,22 @@
         label-width="70px"
         style="width: 400px margin-left:50px"
       >
-        <el-form-item v-bind:label="$t('Inventory.OperationNote')" prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+        <el-form-item
+          v-bind:label="$t('Inventory.OperationNote')"
+          prop="Description"
+        >
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
+        <el-button
+          :type="textOpration.ClassName"
+          @click="createOprationData()"
+          >{{ textOpration.OprationDescription }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -169,10 +196,11 @@ import { ChangeObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import { InventoryQty } from "@/api/InventoryItem";
+import NextOprations from "@/components/Oprationsys/NextOprations";
 
 export default {
   name: "InventoryItem",
-  components: { StatusTag },
+  components: { StatusTag, NextOprations },
 
   data() {
     return {
@@ -182,56 +210,57 @@ export default {
       dialogOprationVisible: false,
       dialogFormStatus: "",
       search: "",
+      LoadingInventoryQty: true,
       textMapForm: {
         update: "تعديل",
-        create: "إضافة",
+        create: "إضافة"
       },
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: "",
+        ClassName: ""
       },
       tempForm: {
         Id: undefined,
         Name: "",
-        Description: "",
+        Description: ""
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: "",
+        Description: ""
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 أحرف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
@@ -239,11 +268,11 @@ export default {
   },
   methods: {
     print(InventoryQty, name) {
-      let Items = InventoryQty.map((Item) => ({
+      let Items = InventoryQty.map(Item => ({
         Name: Item.Item.Name,
         Qty: Item.QtyIn - Item.QtyOut,
         CostPrice: Item.Item.CostPrice,
-        Total: (Item.QtyIn - Item.QtyOut) * Item.Item.CostPrice,
+        Total: (Item.QtyIn - Item.QtyOut) * Item.Item.CostPrice
       }));
       printJS({
         printable: Items,
@@ -254,26 +283,29 @@ export default {
           name +
           "</h2></center><h3 style='float:right'> " +
           " - الاجمالي لقيمة المخزون :  " +
-          Items.reduce((a, b) => a + b.Qty * b.CostPrice, 0).toFixed(this.$store.getters.settings.ToFixed) +
+          Items.reduce((a, b) => a + b.Qty * b.CostPrice, 0).toFixed(
+            this.$store.getters.settings.ToFixed
+          ) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
+        gridStyle: "border: 2px solid #3971A5; text-align: center;"
       });
     },
     getdata() {
       this.loading = true;
       GetInventoryItem()
-        .then((response) => {
+        .then(response => {
           // handle success
           this.tableData = response;
-          this.tableData.forEach((element) => {
-            InventoryQty({ Id: element.Id }).then((response) => {
+          this.tableData.forEach(element => {
+            InventoryQty({ Id: element.Id }).then(response => {
               element.InventoryQty = response;
+              this.LoadingInventoryQty = false;
             });
           });
           this.loading = false;
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
         });
@@ -282,7 +314,7 @@ export default {
       this.tempForm = {
         Id: undefined,
         Name: "",
-        Description: "",
+        Description: ""
       };
     },
     handleCreate() {
@@ -308,7 +340,8 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription =
+        Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -317,21 +350,21 @@ export default {
       this.tempOpration.Description = "";
     },
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           console.log(this.tempForm);
           Create(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -341,20 +374,20 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           Edit(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -364,25 +397,25 @@ export default {
       });
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
             ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationID,
-            Description: this.tempOpration.Description,
+            Description: this.tempOpration.Description
           })
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -390,7 +423,7 @@ export default {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>

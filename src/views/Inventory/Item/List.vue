@@ -161,13 +161,13 @@
         align="center"
       >
         <template slot-scope="scope">
-          <status-tag :Status="scope.row.Status" TableName="Item" />
+          <Status-Tag :Status="scope.row.Status" TableName="Item" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <el-col :span="8">
-            <next-oprations
+            <Next-Oprations
               :ObjId="scope.row.Id"
               :Status="scope.row.Status"
               TableName="Item"
@@ -248,7 +248,7 @@
 
 <script>
 import { GetByListQ, CalculateCostPrice } from "@/api/Item";
-import NextOprations from "@/components/Oprationsys/NextOprations";
+import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";

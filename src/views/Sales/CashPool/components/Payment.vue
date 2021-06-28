@@ -156,7 +156,7 @@
 
         <el-table-column width="180" align="center" v-if="checkPermission(['Admin'])">
           <template slot-scope="scope">
-            <next-oprations
+            <Next-Oprations
               :ObjId="scope.row.Id"
               :Status="scope.row.Status"
               TableName="Payment"

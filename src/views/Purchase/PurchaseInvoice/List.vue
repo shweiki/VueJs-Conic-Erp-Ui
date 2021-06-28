@@ -218,12 +218,12 @@
         align="center"
       >
         <template slot-scope="scope">
-          <status-tag :Status="scope.row.Status" TableName="PurchaseInvoice" />
+          <Status-Tag :Status="scope.row.Status" TableName="PurchaseInvoice" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <next-oprations
+          <Next-Oprations
             :ObjId="scope.row.Id"
             :Status="scope.row.Status"
             TableName="PurchaseInvoice"

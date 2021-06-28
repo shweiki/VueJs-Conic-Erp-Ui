@@ -49,7 +49,7 @@
                 Log.Name
               }}</strong></el-tag
             >
-            <status-tag :Status="Log.Status" TableName="Member"> </status-tag>
+            <Status-Tag :Status="Log.Status" TableName="Member"> </Status-Tag>
             <el-tag
               v-if="Log.ActiveMemberShip != null"
               v-bind:type="

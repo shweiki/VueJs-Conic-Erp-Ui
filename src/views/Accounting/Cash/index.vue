@@ -72,7 +72,7 @@
           width="100"
         >
           <template slot-scope="scope">
-            <status-tag :Status="scope.row.Status" TableName="Cash" />
+            <Status-Tag :Status="scope.row.Status" TableName="Cash" />
           </template>
         </el-table-column>
         <el-table-column width="120" align="center">
@@ -86,7 +86,7 @@
               ></el-button>
             </el-col>
             <el-col :span="12">
-              <next-oprations
+              <Next-Oprations
                 :ObjId="scope.row.Id"
                 :Status="scope.row.Status"
                 TableName="Cash"

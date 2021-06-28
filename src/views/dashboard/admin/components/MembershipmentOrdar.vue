@@ -90,7 +90,7 @@
 
       <el-table-column width="120" align="center">
         <template slot-scope="scope">
-          <next-oprations
+          <Next-Oprations
             :ObjId="scope.row.Id"
             :Status="scope.row.Status"
             TableName="MembershipMovementOrder"

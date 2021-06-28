@@ -157,7 +157,14 @@
       @sort-change="sortChange"
       @row-dblclick="
         row => {
-          $router.push({ path: `/Sales/Edit/${row.Id}` });
+          let r = $router.resolve({
+            path: '/Sales/Edit/' + row.Id
+          });
+          window.open(
+            r.href,
+            r.route.name,
+            $store.getters.settings.windowStyle
+          );
         }
       "
     >
@@ -183,7 +190,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
+      <el-table-column
+        v-bind:label="$t('AddVendors.Name')"
+        prop="Name"
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         prop="PaymentMethod"
@@ -225,12 +236,12 @@
         align="center"
       >
         <template slot-scope="scope">
-          <status-tag :Status="scope.row.Status" TableName="SalesInvoice" />
+          <Status-Tag :Status="scope.row.Status" TableName="SalesInvoice" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <next-oprations
+          <Next-Oprations
             :ObjId="scope.row.Id"
             :Status="scope.row.Status"
             TableName="SalesInvoice"

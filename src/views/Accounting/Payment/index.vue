@@ -116,12 +116,12 @@
         </el-table-column>
         <el-table-column v-bind:label="$t('Items.Status')" align="center">
           <template slot-scope="scope">
-            <status-tag :Status="scope.row.Status" TableName="Payment" />
+            <Status-Tag :Status="scope.row.Status" TableName="Payment" />
           </template>
         </el-table-column>
         <el-table-column label="#" align="center">
           <template slot-scope="scope">
-            <next-oprations
+            <Next-Oprations
               :ObjId="scope.row.Id"
               :Status="scope.row.Status"
               TableName="Payment"

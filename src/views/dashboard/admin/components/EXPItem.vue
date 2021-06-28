@@ -164,13 +164,13 @@
         align="center"
       >
         <template slot-scope="scope">
-          <status-tag :Status="scope.row.Status" TableName="Item" />
+          <Status-Tag :Status="scope.row.Status" TableName="Item" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <el-col :span="8">
-            <next-oprations
+            <Next-Oprations
               :ObjId="scope.row.Id"
               :Status="scope.row.Status"
               TableName="Item"
