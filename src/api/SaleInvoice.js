@@ -9,9 +9,9 @@ export function GetByListQ(data) {
   })
 }
 
-export function GetSaleItem(query) {
+export function GetByItem(query) {
   return request({
-    url: '/SaleInvoice/GetSaleItem',
+    url: '/SaleInvoice/GetByItem',
     method: 'get',
     params: query
   })

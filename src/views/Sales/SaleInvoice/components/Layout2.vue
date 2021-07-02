@@ -189,7 +189,7 @@
                         </el-table-column>
                         <el-table-column width="80" label="رصيد" align="center">
                           <template slot-scope="scope">
-                            <item-qty-column
+                            <Item-Qty-Column
                               @LowQty="
                                 (q) => {
                                   tempForm.InventoryMovements[

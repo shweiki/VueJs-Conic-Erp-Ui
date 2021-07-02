@@ -22,9 +22,9 @@ export function GetPurchaseInvoiceById(query) {
     params: query
   })
 }
-export function GetPurchaseItem(query) {
+export function GetByItem(query) {
   return request({
-    url: '/PurchaseInvoice/GetPurchaseItem',
+    url: '/PurchaseInvoice/GetByItem',
     method: 'get',
     params: query
   })

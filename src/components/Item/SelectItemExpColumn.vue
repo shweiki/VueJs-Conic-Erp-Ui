@@ -24,9 +24,9 @@ export default {
     Value: String,
     ItemId: { type: Number, default: undefined }
   },
-  mounted() {
+  created() {
     this.getdata();
-    if (!this.Value) {
+    if (this.Value) {
       this.date = new Date(this.Value);
       this.SetVal(this.date);
     }
@@ -44,13 +44,13 @@ export default {
   },
   methods: {
     SetVal(val) {
-      console.log(val);
+      if(val){
       val = new Date(val);
       val = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
         DateTimeFormatter.ofPattern(this.$store.getters.settings.DateFormat)
       );
       this.$emit("SetVal", val);
-      console.log(val);
+      }
     },
     getdata() {
       GetInventoryItemEXP({ Id: this.ItemId }).then(response => {

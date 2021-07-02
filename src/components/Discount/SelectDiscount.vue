@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="value" clearable  @change="SetVal" placeholder="خصم">
+  <el-select v-model="value" clearable @change="SetVal" placeholder="خصم">
     <el-option
       v-for="Discount in options"
       :key="Discount.label"
@@ -22,32 +22,31 @@ export default {
   data() {
     return {
       options: [],
-      value: "لايوجد خصم"
+      value: "لا يوجد خصم",
     };
   },
   watch: {
     Price(val) {
-      if (val > 0) this.Price = val;
-      else this.Price = 0;
+      if (val > 0) {
+        console.log(val)
+        this.Price = val;
+        this.SetVal(this.value);
+      } else this.Price = 0;
     }
   },
   created() {
-    GetActiveDiscount()
-      .then(response => {
-        this.options = response;
-        this.SetVal(this.value);
-      })
-      .catch(error => {
-        reject(error);
-      });
+    GetActiveDiscount().then(response => {
+      this.options = response;
+    });
   },
   methods: {
     SetVal(val) {
       let dis = this.options.find(obj => obj.label == val);
-      this.$emit(
-        "Set",
-        dis.type == "Percentage" ? (dis.value / 100) * this.Price : dis.value
-      );
+      if (dis)
+        this.$emit(
+          "Set",
+          dis.type == "Percentage" ? (dis.value / 100) * this.Price : dis.value
+        );
     }
   }
 };

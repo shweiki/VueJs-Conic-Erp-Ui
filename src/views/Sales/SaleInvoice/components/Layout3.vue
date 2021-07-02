@@ -25,7 +25,7 @@
                     }
                   ]"
                 >
-                  <vendor-search-any
+                  <Vendor-Search-Any
                     @Set="
                       v => {
                         tempForm.Name = v.Name;

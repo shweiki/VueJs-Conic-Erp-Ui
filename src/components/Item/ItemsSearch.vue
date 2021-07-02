@@ -17,7 +17,7 @@
       </el-col>
 
       <el-col :span="8">
-        <item-search-any @Set="v => AddItem(v, 1)" />
+        <Item-Search-Any @Set="v => AddItem(v, 1)" />
       </el-col>
       <el-col v-if="WithBarCode" :span="8">
         <el-input

@@ -15,6 +15,14 @@ export function GetOrderInventoryById(query) {
     params: query
   })
 }
+export function GetByItem(query) {
+  return request({
+    url: '/OrderInventory/GetByItem',
+    method: 'get',
+    params: query
+  })
+}
+
 export function Create(data) {
   return request({
     url: '/OrderInventory/Create',

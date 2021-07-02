@@ -134,7 +134,15 @@
           JOD</span
         >
         <el-divider direction="vertical"></el-divider>
-
+        <span>الخصم</span>
+        <el-divider direction="vertical"></el-divider>
+        <span
+          >{{
+            Totals.Discount.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
+        <el-divider direction="vertical"></el-divider>
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
         <span

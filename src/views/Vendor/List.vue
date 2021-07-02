@@ -84,7 +84,7 @@
       </el-row>
     </div>
     <el-card class="box-card">
-      <radio-oprations
+      <Radio-Oprations
         TableName="Vendor"
         @Set="
           v => {

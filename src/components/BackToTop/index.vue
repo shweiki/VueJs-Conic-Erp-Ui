@@ -22,7 +22,7 @@ export default {
       type: Object,
       default: function() {
         return {
-          right: '50px',
+          right: '-50px',
           bottom: '50px',
           width: '40px',
           height: '40px',

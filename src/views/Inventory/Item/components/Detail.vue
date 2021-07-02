@@ -17,7 +17,6 @@
               <Inventory-Qty :ItemId="tempForm.Id" />
             </el-tab-pane>
             <el-tab-pane label="حركات" name="Movements"> </el-tab-pane>
-        
             <el-tab-pane label="مبيعات" name="Sales"> </el-tab-pane>
             <el-tab-pane label="مشتريات" name="Purchases"> </el-tab-pane>
             <el-tab-pane label="سندات مخزون" name="OrderInventory">

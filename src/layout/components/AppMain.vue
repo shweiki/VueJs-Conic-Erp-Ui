@@ -88,15 +88,13 @@ export default {
     },
     Copy() {
       window.document.execCommand("copy");
-    //  clip(selRange, event);
+      //  clip(selRange, event);
 
-    
       // do stuff with the range
     },
     Paste() {
       window.document.execCommand("paste");
 
-   
       // do stuff with the range
     },
     Forward() {

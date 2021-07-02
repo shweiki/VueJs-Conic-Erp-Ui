@@ -43,7 +43,7 @@ export default {
   methods: {
     change(val) {
       this.$emit("Set", val);
-            this.search = "";
+      this.search = "";
       this.options = [];
     },
 

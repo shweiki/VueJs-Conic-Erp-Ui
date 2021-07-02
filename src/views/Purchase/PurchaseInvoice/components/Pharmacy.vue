@@ -67,7 +67,7 @@
                 }
               ]"
             >
-              <vendor-search-any
+              <Vendor-Search-Any
                 :Value="tempForm.Name"
                 @Set="
                   v => {
@@ -444,7 +444,7 @@ export default {
         });
     },
     AddItem(item) {
-      this.tempForm.InventoryMovements.unshift({
+      this.tempForm.InventoryMovements.push({
         Id: undefined,
         ItemsId: item != undefined ? item.Id : undefined,
         TypeMove: "In",

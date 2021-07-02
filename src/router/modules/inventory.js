@@ -88,7 +88,15 @@ const InventoryRouter = {
           meta: {
             title: 'ListOrderInventory', icon: 'orderinv'
           },
-        }
+        },
+        {
+          path: 'OrderInventoriesItems',
+          component: () => import('@/views/Inventory/OrderInventories/OrderInventoriesItems'),
+          name: 'OrderInventoriesItems',
+          meta: {
+            title: 'OrderInventoriesItems', icon: 'shopping-cart (1)'
+          },
+        },
       ]
     },
     {

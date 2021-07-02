@@ -58,7 +58,7 @@
               </el-col>
 
               <el-col :span="6">
-                <vendor-search-any
+                <Vendor-Search-Any
                   :Value="tempForm.Name"
                   @Set="
                     v => {
@@ -185,7 +185,7 @@
                         </el-table-column>
                         <el-table-column width="80" label="رصيد" align="center">
                           <template slot-scope="scope">
-                            <item-qty-column
+                            <Item-Qty-Column
                               :ItemId="
                                 tempForm.InventoryMovements[scope.$index]
                                   .ItemsId
@@ -361,7 +361,7 @@
                           <el-input
                             @change="focusBarcode"
                             prop="Name"
-                            placeholder="اسم المستلم"
+                            placeholder="اسم المريض"
                             v-model="tempForm.Name"
                           ></el-input>
                         </el-col>
@@ -390,7 +390,7 @@
                                   return prev + cur.Qty * cur.SellingPrice;
                                 },
                                 0
-                              ) - tempForm.Discount
+                              )
                             "
                             @Set="
                               v => {
@@ -407,7 +407,7 @@
                             :precision="2"
                             :step="1"
                             :min="0.0"
-                            :max="100"
+                            :max="1000000"
                           ></el-input-number>
                         </el-col>
                       </el-row>
@@ -752,42 +752,42 @@ export default {
           console.log(this.tempForm);
           Create(this.tempForm)
             .then(response => {
-              if(!response)
-               this.$notify({
-                title: "حصلت مشكلة في عملية الحفظ يرجى التاكد من البيانات",
-                message: "مشكلة",
-                type: "success",
-                position: "top-left",
-                duration: 1000,
-                onClose: () => {
-                  this.ValidateDescription = "";
-                  this.tempForm.Id = response;
-                  this.OldInvoice = this.tempForm;
-                  this.AutoPrint ? this.Print() : undefined;
-             //     this.restTempForm();
-                  this.DisabledSave = false;
-                  this.focusBarcode();
-                  this.OpenRestOfBill = false;
-                }
-              });
+              if (!response)
+                this.$notify({
+                  title: "حصلت مشكلة في عملية الحفظ يرجى التاكد من البيانات",
+                  message: "مشكلة",
+                  type: "success",
+                  position: "top-left",
+                  duration: 1000,
+                  onClose: () => {
+                    this.ValidateDescription = "";
+                    this.tempForm.Id = response;
+                    this.OldInvoice = this.tempForm;
+                    this.AutoPrint ? this.Print() : undefined;
+                    //     this.restTempForm();
+                    this.DisabledSave = false;
+                    this.focusBarcode();
+                    this.OpenRestOfBill = false;
+                  }
+                });
               else
-              this.$notify({
-                title: "تم الإضافة بنجاح",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                position: "top-left",
-                duration: 1000,
-                onClose: () => {
-                  this.ValidateDescription = "";
-                  this.tempForm.Id = response;
-                  this.OldInvoice = this.tempForm;
-                  this.AutoPrint ? this.Print() : undefined;
-                  this.restTempForm();
-                  this.DisabledSave = false;
-                  this.focusBarcode();
-                  this.OpenRestOfBill = false;
-                }
-              });
+                this.$notify({
+                  title: "تم الإضافة بنجاح",
+                  message: "تم الإضافة بنجاح",
+                  type: "success",
+                  position: "top-left",
+                  duration: 1000,
+                  onClose: () => {
+                    this.ValidateDescription = "";
+                    this.tempForm.Id = response;
+                    this.OldInvoice = this.tempForm;
+                    this.AutoPrint ? this.Print() : undefined;
+                    this.restTempForm();
+                    this.DisabledSave = false;
+                    this.focusBarcode();
+                    this.OpenRestOfBill = false;
+                  }
+                });
             })
             .catch(error => {
               console.log(error);

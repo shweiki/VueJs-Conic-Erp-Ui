@@ -60,13 +60,14 @@
       <el-col :span="6">
         <el-button
           v-waves
+          v-permission="['Admin']"
           :loading="downloadLoading"
           class="filter-item"
-          type="primary"
+          type="warning"
           icon="el-icon-download"
           @click="handleDownload"
         >
-          Export </el-button
+        </el-button
         ><el-button
           v-waves
           class="filter-item"
@@ -74,55 +75,14 @@
           icon="el-icon-search"
           @click="handleFilter"
         >
-          Search
         </el-button>
       </el-col>
     </el-row>
+
     <el-row type="flex">
-      <el-col :span="18">
-        <el-divider direction="vertical"></el-divider>
-        <span>عدد الفواتير</span>
-        <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Rows }}</span>
-        <el-divider direction="vertical"></el-divider>
-
-        <span>{{ $t("CashPool.Cash") }}</span>
-        <el-divider direction="vertical"></el-divider>
-        <span
-          >{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span
-        >
-        <el-divider direction="vertical"></el-divider>
-
-        <span>{{ $t("CashPool.Visa") }}</span>
-        <el-divider direction="vertical"></el-divider>
-        <span
-          >{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span
-        >
-        <el-divider direction="vertical"></el-divider>
-
-        <span>الاجل</span>
-        <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Receivables.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
-        <el-divider direction="vertical"></el-divider>
-
-        <span>{{ $t("CashPool.Amount") }}</span>
-        <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Totals.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
-        <el-divider direction="vertical"></el-divider
-      ></el-col>
       <el-col :span="6">
         <radio-oprations
-          TableName="PurchaseInvoice"
+          TableName="OrderInventory"
           @Set="
             v => {
               listQuery.Status = v;
@@ -130,6 +90,13 @@
             }
           "
       /></el-col>
+      <el-col v-permission="['Admin']" :span="18">
+        <el-divider direction="vertical"></el-divider>
+        <span>عدد الطلبات</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Rows }}</span>
+        <el-divider direction="vertical"></el-divider>
+      </el-col>
     </el-row>
 
     <el-table
@@ -142,8 +109,9 @@
       @sort-change="sortChange"
       @row-dblclick="
         row => {
+          //  $emit('dblclick', row);
           let r = $router.resolve({
-            path: '/Purchase/Edit/' + row.PurchaseInvoiceId
+            path: '/OrderInventories/Edit/' + row.OrderInventoryId
           });
           window.open(
             r.href,
@@ -176,55 +144,15 @@
       </el-table-column>
 
       <el-table-column
-        v-bind:label="$t('AddVendors.Name')"
-        prop="Name"
+        prop="OrderType"
+        v-bind:label="$t('OrderInventories.OrderType')"
         align="center"
-      >
-      </el-table-column>
-
-      <el-table-column
-        v-bind:label="$t('Sales.Date')"
-        width="150px"
-        align="center"
-      >
-        <template slot-scope="{ row }">
-          <span>{{
-            row.InvoicePurchaseDate | parseTime("{y}-{m}-{d} {h}:{i}")
-          }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.AccountInvoiceNumber')"
-        width="120"
-        align="center"
-        prop="AccountInvoiceNumber"
       ></el-table-column>
       <el-table-column
-        v-bind:label="$t('CashPool.Pay')"
-        width="120"
+        prop="Description"
+        label="ملاحظات"
         align="center"
-        prop="PaymentMethod"
-      >
-      </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Discount')"
-        width="120"
-        align="center"
-      >
-        <template slot-scope="scope">{{
-          scope.row.Discount.toFixed($store.getters.settings.ToFixed)
-        }}</template>
-      </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Amountv')"
-        width="120"
-        align="center"
-      >
-        <template slot-scope="{ row }">
-          {{ row.Total.toFixed($store.getters.settings.ToFixed) }}
-          JOD
-        </template>
-      </el-table-column>
+      ></el-table-column>
 
       <el-table-column
         v-bind:label="$t('Sales.Status')"
@@ -232,7 +160,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="PurchaseInvoice" />
+          <Status-Tag :Status="scope.row.Status" TableName="OrderInventory" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
@@ -240,10 +168,10 @@
           <Next-Oprations
             :ObjId="scope.row.Id"
             :Status="scope.row.Status"
-            TableName="PurchaseInvoice"
+            TableName="OrderInventory"
             @Done="handleFilter"
           />
-          <print-button Type="PurchaseInvoice" :Data="scope.row" />
+          <dialog-action-log TableName="OrderInventory" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -260,21 +188,6 @@
               v-bind:label="$t('CashPool.quantity')"
               align="center"
             ></el-table-column>
-            <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
-              <template slot-scope="scope">{{
-                scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
-              }}</template>
-            </el-table-column>
-            <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-              <template slot-scope="scope"
-                >{{
-                  (scope.row.SellingPrice * scope.row.Qty).toFixed(
-                    $store.getters.settings.ToFixed
-                  )
-                }}
-                JOD</template
-              >
-            </el-table-column>
           </el-table>
         </template>
       </el-table-column>
@@ -290,7 +203,7 @@
 </template>
 
 <script>
-import { GetByItem } from "@/api/PurchaseInvoice";
+import { GetByItem } from "@/api/OrderInventory";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -298,9 +211,12 @@ import PrintButton from "@/components/PrintRepot/PrintButton";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 
+import permission from "@/directive/permission/index.js";
+
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 import ItemSearchAny from "@/components/Item/ItemSearchAny";
 
 export default {
@@ -313,17 +229,27 @@ export default {
     Pagination,
     UserSelect,
     RadioOprations,
+    DialogActionLog,
     ItemSearchAny
   },
-  directives: { waves },
+
+  directives: { waves, permission },
   data() {
     return {
       list: [],
       ItemName: "",
-      Totals: { Rows: 0, Totals: 0, Cash: 0, Receivables: 0, Visa: 0 },
+      Totals: {
+        Rows: 0,
+        Totals: 0,
+        Cash: 0,
+        Receivables: 0,
+        Visa: 0,
+        Profit: 0,
+        TotalCost: 0,
+        Discount: 0
+      },
       listLoading: false,
       listQuery: {
-        ItemId: undefined,
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -380,7 +306,10 @@ export default {
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list"
+          filename:
+            window.location.pathname.split("/") +
+            "-" +
+            JSON.stringify(this.listQuery)
         });
         this.downloadLoading = false;
       });
@@ -388,7 +317,13 @@ export default {
     formatJson(filterVal) {
       return this.list.map(v =>
         filterVal.map(j => {
-          if (j === "timestamp") {
+          if (j === "InventoryMovements") {
+            return JSON.stringify(v[j]);
+          }
+          if (j === "ActionLogs") {
+            return JSON.stringify(v[j]);
+          }
+          if (j === "FakeDate") {
             return parseTime(v[j]);
           } else {
             return v[j];
@@ -399,6 +334,21 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
+    },
+    print(data) {
+      data = data.map(Item => ({
+        Name: Item.Name,
+        Qty: Item.Qty,
+        SellingPrice: Item.SellingPrice,
+        Total: (Item.SellingPrice * Item.Qty).toFixed(
+          this.$store.getters.settings.ToFixed
+        )
+      }));
+      printJS({
+        printable: data,
+        properties: ["Name", "Qty", "SellingPrice", "Total"],
+        type: "json"
+      });
     }
   }
 };
