@@ -22,13 +22,13 @@ export default {
   data() {
     return {
       options: [],
-      value: "لا يوجد خصم",
+      value: "لايوجد خصم"
     };
   },
   watch: {
     Price(val) {
       if (val > 0) {
-        console.log(val)
+        console.log(val);
         this.Price = val;
         this.SetVal(this.value);
       } else this.Price = 0;
@@ -37,6 +37,7 @@ export default {
   created() {
     GetActiveDiscount().then(response => {
       this.options = response;
+       this.SetVal(this.value)
     });
   },
   methods: {

@@ -4,7 +4,7 @@
      --><el-date-picker
       v-model="date"
       :format="$store.getters.settings.DateTimeFormat"
-      type="daterange"
+      type="datetimerange"
       align="right"
       v-bind:range-separator="$t('Sales.until')"
       v-bind:start-placeholder="$t('Sales.From')"
@@ -31,27 +31,30 @@ export default {
     };
   },
   created() {
-    this.SetVal([new Date(), new Date()]);
-    this.date = [new Date(), new Date()];
+    this.SetVal([
+      new Date().setHours(0, 0, 0, 0),
+      new Date().setHours(23, 59, 59, 999)
+    ]);
+    //  this.date = [new Date(), new Date()];
   },
   methods: {
     SetVal(val) {
+      console.log(val);
       val = [
-        LocalDate.ofInstant(Instant.ofEpochMilli(val[0]))
-          .atStartOfDay()
-          .format(
-            DateTimeFormatter.ofPattern(
-              this.$store.getters.settings.DateTimeFormat
-            )
-          ),
-        LocalDate.ofInstant(Instant.ofEpochMilli(val[1]))
-          .atTime(LocalTime.MAX)
-          .format(
-            DateTimeFormatter.ofPattern(
-              this.$store.getters.settings.DateTimeFormat
-            )
+        LocalDateTime.ofInstant(Instant.ofEpochMilli(val[0])).format(
+          DateTimeFormatter.ofPattern(
+            this.$store.getters.settings.DateTimeFormat
           )
+        ),
+        LocalDateTime.ofInstant(Instant.ofEpochMilli(val[1])).format(
+          DateTimeFormatter.ofPattern(
+            this.$store.getters.settings.DateTimeFormat
+          )
+        )
       ];
+      console.log(val);
+      this.date = val;
+
       this.$emit("Set", val);
     }
   }
