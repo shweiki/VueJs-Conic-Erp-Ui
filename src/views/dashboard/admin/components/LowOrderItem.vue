@@ -5,7 +5,7 @@
         <el-col :span="12">
           <el-input
             v-model="listQuery.Any"
-            placeholder="البحث بحسب رقم / الاسم / الباركود  / التصنيف"
+            v-bind:placeholder="$t('MinOrd.SBy')"
             style="width: 200px"
             class="filter-item"
             @keyup.enter.native="handleFilter"
@@ -62,22 +62,22 @@
       "
     />
     <el-divider direction="vertical"></el-divider>
-    <span>عدد </span>
+    <span>{{$t("MinOrd.Qty")}} </span>
     <el-divider direction="vertical"></el-divider>
     <span>{{ Totals.Rows }}</span>
     <el-divider direction="vertical"></el-divider>
 
-    <span>مجموع الموادر ()</span>
+    <span>{{$t("MinOrd.TotalIn")}}</span>
     <el-divider direction="vertical"></el-divider>
     <span>{{ Totals.TotalIn.toFixed($store.getters.settings.ToFixed) }} </span>
     <el-divider direction="vertical"></el-divider>
 
-    <span> مجموع الصادر </span>
+    <span>{{$t("MinOrd.TotalOut")}}</span>
     <el-divider direction="vertical"></el-divider>
     <span>{{ Totals.TotalOut.toFixed($store.getters.settings.ToFixed) }} </span>
     <el-divider direction="vertical"></el-divider>
 
-    <span>الرصيد</span>
+    <span>{{$t("MinOrd.Balance")}}</span>
     <el-divider direction="vertical"></el-divider>
     <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} </span>
     <el-divider direction="vertical"></el-divider>

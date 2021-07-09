@@ -5,16 +5,16 @@
     <panel-group />
     <el-card class="box-card">
       <el-tabs v-model="activeTab" tab-position="right">
-        <el-tab-pane label="ذمم مدينة" name="Receivables">
+        <el-tab-pane v-bind:label="$t('PanelGroup.Receivables')" name="Receivables">
           <receivables />
         </el-tab-pane>
-        <el-tab-pane label="ذمم دائنة" name="Payable">
+        <el-tab-pane v-bind:label="$t('PanelGroup.Creditor')" name="Payable">
           <payable />
         </el-tab-pane>
-        <el-tab-pane label="الحد الادنى لطلب" name="LowOrderItem">
+        <el-tab-pane v-bind:label="$t('PanelGroup.MinimumOrder')" name="LowOrderItem">
           <Low-Order-Item />
         </el-tab-pane>
-        <el-tab-pane label="الاصناف التي انتهت صلاحيتها" name="EXPItem">
+        <el-tab-pane v-bind:label="$t('PanelGroup.expiredItems')" name="EXPItem">
           <EXP-Item />
         </el-tab-pane>
         <el-tab-pane

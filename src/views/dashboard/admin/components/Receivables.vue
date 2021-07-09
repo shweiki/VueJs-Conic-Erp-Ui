@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <el-divider direction="vertical"></el-divider>
-      <span>المجموع</span>
+      <span>{{$t("PanelGroup.Total")}}</span>
       <el-divider direction="vertical"></el-divider>
       <span>
         {{

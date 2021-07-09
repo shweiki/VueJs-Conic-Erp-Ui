@@ -27,8 +27,9 @@
       class="avatar-container right-menu-item hover-effect"
       trigger="click"
     >
+    <!-- $store.getters.avatar -->
       <div class="avatar-wrapper">
-        <img :src="$store.getters.avatar" class="user-avatar" />
+        <img src="../../icons/Conic.png" class="user-avatar" />
         <i class="el-icon-caret-bottom" />
       </div>
       <el-dropdown-menu slot="dropdown">

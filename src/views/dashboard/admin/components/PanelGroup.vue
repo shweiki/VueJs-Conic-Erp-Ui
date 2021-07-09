@@ -1,12 +1,12 @@
 <template>
-  <el-row :gutter="20" class="panel-group">
-    <el-col :xs="6" :sm="6" :lg="4" class="card-panel-col">
+  <el-row :gutter="20" class="panel-group" style="  margin: 20px 2px;">
+    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">مشتركين</div>
+          <div class="card-panel-text">{{ $t("PanelGroup.ActiveMembers") }}</div>
           <count-to
             :start-val="0"
             :end-val="Totals.MembersActive"
@@ -17,14 +17,13 @@
       </div>
     </el-col>
 
-    <el-col :xs="6" :sm="6" :lg="4" class="card-panel-col">
+    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">الرسائل</div>
-
+          <div class="card-panel-text">{{ $t("PanelGroup.Messages") }}</div>
           <count-to
             :start-val="0"
             :end-val="parseInt(Totals.MsgCredit)"
@@ -34,13 +33,13 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="4" class="card-panel-col">
+    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">اعضاء</div>
+          <div class="card-panel-text">{{ $t("PanelGroup.Members") }}</div>
           <count-to
             :start-val="0"
             :end-val="Totals.Members"
@@ -50,13 +49,13 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="4" class="card-panel-col">
+    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">اصناف</div>
+          <div class="card-panel-text">{{ $t("PanelGroup.Items") }}</div>
           <count-to
             :start-val="0"
             :end-val="Totals.Items"
@@ -66,7 +65,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="4" class="card-panel-col">
+    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -83,7 +82,7 @@
       </div>
     </el-col>
 
-    <el-col :xs="6" :sm="6" :lg="4" class="card-panel-col">
+    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="message" class-name="card-panel-icon" />
@@ -99,7 +98,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="4" class="card-panel-col">
+    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
@@ -115,7 +114,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="4" class="card-panel-col">
+    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="shopping" class-name="card-panel-icon" />
@@ -166,7 +165,6 @@ export default {
 
 <style lang="scss" scoped>
 .panel-group {
-  margin-top: 10px;
 
   .card-panel-col {
     margin-bottom: 5px;

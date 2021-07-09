@@ -209,6 +209,13 @@ export default {
     Forward:"Forward",
 
   },
+  MinOrd:{
+    SBy:"Search By Name /Number /Barcode /Category",
+    Qty:"Quantity",
+    TotalIn:"Total In",
+    TotalOut:"Total Out",
+    Balance:"Balance",
+  },
   settings: {
     title: 'Page style setting',
     theme: 'Theme Color',
@@ -218,6 +225,15 @@ export default {
     PurchaseLayout:"Purchase Layout",
   },
   PanelGroup: {
+    MinimumOrder:"Minimum Order",
+    Receivables:"Receivables",
+    Creditor:"Creditor",
+    expiredItems:"expired Items",
+    Total:"Total",
+    Messages:"Messages",
+    ActiveMembers:"Active Members",
+    Members:"Members",
+    Items:"Items",
     Sales: 'Sales',
     Customers: 'Customers',
     Provider: 'Provider',
