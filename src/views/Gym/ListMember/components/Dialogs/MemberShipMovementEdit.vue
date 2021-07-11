@@ -16,8 +16,8 @@
             {
               required: true,
               message: 'الرجاء اختيار الفترة',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <el-radio-group v-model="tempForm.Type" @change="calc">
@@ -32,13 +32,13 @@
             {
               required: true,
               message: 'الرجاء اختيار نوع اشتراك',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
-            <Select-Memberships
+          <Select-Memberships
             @Set="
-              v => {
+              (v) => {
                 Membership = v;
                 tempForm.MembershipId = v.Id;
                 calc();
@@ -53,14 +53,14 @@
             {
               required: true,
               message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <fake-date
             :Value="tempForm.StartDate"
             @Set="
-              v => {
+              (v) => {
                 tempForm.StartDate = v;
                 calc();
               }
@@ -74,24 +74,24 @@
             {
               required: true,
               message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <fake-date
             :Value="tempForm.EndDate"
             @Set="
-              v => {
+              (v) => {
                 tempForm.EndDate = v;
               }
             "
           />
         </el-form-item>
         <el-form-item label="خصم" prop="Discount">
-              <Select-Discount
+          <Select-Discount
             :Price="Price"
             @Set="
-              v => {
+              (v) => {
                 tempForm.Discount = v;
                 calc();
               }
@@ -105,8 +105,8 @@
             {
               required: true,
               message: 'لايمكن ترك الخصم فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <el-input
@@ -116,9 +116,7 @@
         </el-form-item>
 
         <el-form-item
-          :rules="[
-            { required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }
-          ]"
+          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -144,27 +142,22 @@
                 {
                   required: true,
                   message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <Editors-User @Set="v => (tempForm.EditorName = v)" />
+              <Editors-User @Set="(v) => (tempForm.EditorName = v)" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
-          $t("AddVendors.Cancel")
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button :disabled="EnableSave" type="primary" @click="createData()">{{
+          $t("AddVendors.Save")
         }}</el-button>
-        <el-button
-          :disabled="EnableSave"
-          type="primary"
-          @click="createData()"
-          >{{ $t("AddVendors.Save") }}</el-button
-        >
       </div>
     </el-dialog>
   </div>
@@ -183,8 +176,8 @@ export default {
   props: {
     MembershipMovementId: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   data() {
     return {
@@ -192,8 +185,8 @@ export default {
       EnableSave: false,
       Visibles: false,
       Discount: 0,
-            Price: 0,
-  Membership: {
+      Price: 0,
+      Membership: {
         Description: "",
         FullDayPrice: 45,
         Id: 2,
@@ -204,56 +197,50 @@ export default {
         NumberDays: 30,
         Rate: 0,
         Status: 0,
-        Tax: 0.01
+        Tax: 0.01,
       },
       pickerOptions: {
         disabledDate(time) {
           console.log(time);
           return time.getTime() < Date.now() - 8.64e7;
-        }
-      }
+        },
+      },
     };
   },
   methods: {
     getdata() {
       GetMembershipMovementById({ Id: this.MembershipMovementId })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.tempForm = response;
-                  this.Visibles = true;
-
+          this.Visibles = true;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         this.calc();
         if (valid) {
           this.EnableSave = true;
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               if (response) {
                 //  if(this.Discount.ValueOfDays >0)
                 // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
-                    this.Visibles = false;
+                this.Visibles = false;
                 this.EnableSave = false;
                 this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
                 this.$notify({
                   title: "تم ",
                   message: "تم الإضافة بنجاح",
                   type: "success",
-                  duration: 2000
+                  duration: 2000,
                 });
               }
             })
-            .catch(error => {
-              console.log(error);
-            });
-              }
-            })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -284,18 +271,19 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,
-        MemberShipMovementId: MemberShipMovementId
+        MemberShipMovementId: MemberShipMovementId,
       };
       MembershipMovementOrder.EndDate = new Date(
         MembershipMovementOrder.EndDate.setTime(
           MembershipMovementOrder.StartDate.getTime() + 3600 * 1000 * 24 * Days
         )
       );
-      Create(MembershipMovementOrder).then(response => {
+      Create(MembershipMovementOrder).then((response) => {
         if (response) {
         }
       });
-    },AddExtraToMembership(Days, MemberShipMovementId) {
+    },
+    AddExtraToMembership(Days, MemberShipMovementId) {
       let MembershipMovementOrder = {
         Id: undefined,
         Type: "Extra",
@@ -303,14 +291,14 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,
-        MemberShipMovementId: MemberShipMovementId
+        MemberShipMovementId: MemberShipMovementId,
       };
       MembershipMovementOrder.EndDate = new Date(
         MembershipMovementOrder.EndDate.setTime(
           MembershipMovementOrder.StartDate.getTime() + 3600 * 1000 * 24 * Days
         )
       );
-      Create(MembershipMovementOrder).then(response => {
+      Create(MembershipMovementOrder).then((response) => {
         if (response) {
         }
       });
@@ -318,10 +306,10 @@ export default {
     OneInBodyFreeForeach30Days(NumberDays) {
       if (NumberDays < 30) return false;
       GetActiveService()
-        .then(response => {
+        .then((response) => {
           //   console.log(response);
           let Service = response.find(
-            obj => obj.Name == "One InBody Free Foreach 30 Days"
+            (obj) => obj.Name == "One InBody Free Foreach 30 Days"
           );
           let SaleInvoice = {
             Id: undefined,
@@ -334,7 +322,7 @@ export default {
             Description: "فاتورة خدمية ",
             MemberId: this.MemberId,
             IsPrime: true,
-            InventoryMovements: []
+            InventoryMovements: [],
           };
           for (var i = 0; i < NumberDays / 30; i++) {
             SaleInvoice.InventoryMovements.push({
@@ -347,32 +335,32 @@ export default {
               Tax: 0.0,
               Description: "",
               InventoryItemId: 1,
-              SalesInvoiceId: undefined
+              SalesInvoiceId: undefined,
             });
           }
           console.log(SaleInvoice);
           if (SaleInvoice.InventoryMovements.length > 0) {
             CreateSaleInvoice(SaleInvoice)
-              .then(response => {
+              .then((response) => {
                 if (response) {
                   this.$notify({
                     title: "تم ",
                     message: "تم الإضافة One InBody Free Foreach 30 Days بنجاح",
                     type: "success",
-                    duration: 2000
+                    duration: 2000,
                   });
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
               });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
