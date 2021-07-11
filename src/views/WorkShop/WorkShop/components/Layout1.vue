@@ -17,6 +17,23 @@
           ></el-input>
           <el-tag>{{ tempForm.Name }}</el-tag>
           <el-tag>{{ VendorName }}</el-tag>
+          <el-col :span="12">
+            <el-form-item v-bind:label="$t('WorkShop.TAmount')">
+              <currency-input
+                :rules="[
+                  {
+                    required: true,
+                    message: 'لايمكن ترك القيمة فارغ',
+                    trigger: 'blur',
+                  },
+                ]"
+                class="currency-input"
+                v-model="tempForm.TotalAmmount"
+                :value-range="{ min: 0.0, max: 100000 }"
+                @focus="$event.target.select()"
+              />
+            </el-form-item>
+          </el-col>
           <el-button
             :disabled="DisabledSave"
             style="float: left"
@@ -27,10 +44,10 @@
           >
         </div>
         <el-row type="flex">
-          <el-col :span="4">
+          <el-col :span="6" align="center">
             <el-form-item
               prop="FakeDate"
-              v-bind:label="$t('NewPurchaseInvoice.ReleaseDate')"
+              v-bind:label="$t('WorkShop.StartDate')"
               :rules="[
                 {
                   required: true,
@@ -45,10 +62,10 @@
               />
             </el-form-item>
           </el-col>
-
-          <el-col :span="4">
+          <el-col :span="8" align="right">
             <el-form-item
               label="الى حساب"
+              align="center"
               prop="VendorId"
               :rules="[
                 {
@@ -59,6 +76,7 @@
               ]"
             >
               <Vendor-Search-Any
+                align="right"
                 @Set="
                   (v) => {
                     VendorName = v.Name;
@@ -68,23 +86,10 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="6">
-            <el-form-item label="طريقة الدفع" prop="PaymentMethod">
-              <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
-                <el-radio label="Cash" border>{{
-                  $t("NewPurchaseInvoice.Cash")
-                }}</el-radio>
-
-                <el-radio v-if="tempForm.VendorId != 2" label="Receivables" border>{{
-                  $t("NewPurchaseInvoice.Receivables")
-                }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
+          <el-col :span="6" align="center">
             <el-form-item
-              prop="InvoicePurchaseDate"
-              v-bind:label="$t('NewPurchaseInvoice.InvDate')"
+              prop="DeliveryDate"
+              v-bind:label="$t('WorkShop.EndDate')"
               :rules="[
                 {
                   required: true,
@@ -94,17 +99,9 @@
               ]"
             >
               <fake-date
-                :Value="tempForm.InvoicePurchaseDate"
-                @Set="(v) => (tempForm.InvoicePurchaseDate = v)"
+                :Value="tempForm.DeliveryDate"
+                @Set="(v) => (tempForm.DeliveryDate = v)"
               />
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item prop="AccountInvoiceNumber" label="رقم فاتورة">
-              <el-input
-                placeholder="رقم فاتورة"
-                v-model="tempForm.AccountInvoiceNumber"
-              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -121,8 +118,10 @@
         <el-table :data="tempForm.InventoryMovements" fit border>
           <el-table-column align="center" prop="Name">
             <template slot="header" slot-scope="{}"
-              >{{ $t("NewPurchaseInvoice.Items") }} ({{
-                TotalItems.toFixed($store.getters.settings.ToFixed)
+              >{{ $t("WorkShop.Items") }} ({{
+                tempForm.InventoryMovements.length.toFixed(
+                  $store.getters.settings.ToFixed
+                )
               }})</template
             >
             <template slot-scope="scope">
@@ -133,12 +132,14 @@
           <el-table-column width="130" align="center">
             <template slot="header" slot-scope="{}"
               >{{ $t("NewPurchaseInvoice.quantity") }} ({{
-                TotalQty.toFixed($store.getters.settings.ToFixed)
+                tempForm.InventoryMovements.reduce(
+                  (a, b) => a + (b["Qty"] || 0),
+                  0
+                ).toFixed($store.getters.settings.ToFixed)
               }})</template
             >
             <template slot-scope="scope">
               <el-input-number
-                @change="SumTotalAmmount"
                 controls-position="right"
                 v-model="tempForm.InventoryMovements[scope.$index].Qty"
                 :precision="2"
@@ -155,7 +156,6 @@
             }}</template>
             <template slot-scope="scope">
               <currency-input
-                @change="SumTotalAmmount"
                 class="currency-input"
                 :precision="3"
                 @focus="$event.target.select()"
@@ -218,23 +218,29 @@
         <el-col :span="24">
           <el-card shadow="hover">
             <el-divider direction="vertical"></el-divider>
-            <span>{{ $t("NewPurchaseInvoice.Items") }}</span>
+            <span>{{ $t("WorkShop.Items") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalItems.toFixed($store.getters.settings.ToFixed) }}</span>
+            <span>{{
+              tempForm.InventoryMovements.length.toFixed($store.getters.settings.ToFixed)
+            }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.QuantityAmount") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalQty.toFixed($store.getters.settings.ToFixed) }}</span>
+            <span>{{
+              tempForm.InventoryMovements.reduce(
+                (a, b) => a + (b["Qty"] || 0),
+                0
+              ).toFixed($store.getters.settings.ToFixed)
+            }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.TotalDiscount") }}</span>
             <el-divider direction="vertical"></el-divider>
             <span>
               <el-input-number
-                @change="SumTotalAmmount"
                 v-model="tempForm.Discount"
-                :precision="2"
+                :precision="1"
                 :step="1"
                 :min="0.0"
                 :max="100"
@@ -245,8 +251,22 @@
 
             <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalAmmount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+            <span
+              >{{
+                tempForm.InventoryMovements.reduce((prev, cur) => {
+                  return prev + cur.Qty * cur.SellingPrice;
+                }, 0).toFixed($store.getters.settings.ToFixed)
+              }}
+              JOD</span
+            >
             <el-divider direction="vertical"></el-divider>
+            <el-form-item>
+              <el-input
+                v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
+                type="textarea"
+                v-model="tempForm.Description"
+              ></el-input>
+            </el-form-item>
           </el-card>
         </el-col>
       </el-row>
@@ -265,7 +285,7 @@ import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
 
 export default {
-  name: "NewPurchaseInvoice",
+  name: "NewWorkShop",
   components: {
     ItemsSearch,
     EditItem,
@@ -311,20 +331,22 @@ export default {
       VendorName: "",
       TotalQty: 0,
       TotalItems: 0,
-      TotalAmmount: 0,
       ValidateNote: "",
       DisabledSave: false,
       tempForm: {
         Id: undefined,
         Name: "",
         Tax: 0.0,
-        AccountInvoiceNumber: "",
         FakeDate: "",
-        InvoicePurchaseDate: "",
-        PaymentMethod: "Cash",
+        PaymentMethod: "Receivables",
+        TotalAmmount: 0,
         Discount: 0,
-        VendorId: 2,
+        DeliveryDate: "",
+        LowCost: 0,
+        Description: "",
         Status: 0,
+        VendorId: undefined,
+
         InventoryMovements: [],
       },
       rules: {
@@ -363,7 +385,6 @@ export default {
         .then((response) => {
           console.log(response);
           this.tempForm = response;
-          this.SumTotalAmmount();
           // set tagsview title
           this.setTagsViewTitle();
 
@@ -388,30 +409,20 @@ export default {
         PurchaseInvoiceId: undefined,
         Description: "",
       });
-      this.SumTotalAmmount();
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
-      this.SumTotalAmmount();
-    },
-    SumTotalAmmount() {
-      this.TotalItems = this.tempForm.InventoryMovements.length;
-      this.TotalQty = this.tempForm.InventoryMovements.reduce(
-        (a, b) => a + (b["Qty"] || 0),
-        0
-      );
-      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function (prev, cur) {
-        return prev + cur.Qty * cur.SellingPrice;
-      }, 0);
-      this.TotalAmmount -= this.tempForm.Discount;
-      document.getElementById("barcode").focus();
     },
 
     updateData() {
       this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
+          if (
+            this.tempForm.TotalAmmount > 0 &&
+            this.tempForm.InventoryMovements.length > 0 &&
+            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
+          ) {
             Edit(this.tempForm)
               .then((response) => {
                 this.$notify({
@@ -443,7 +454,11 @@ export default {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
 
-          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
+          if (
+            this.tempForm.TotalAmmount > 0 &&
+            this.tempForm.InventoryMovements.length > 0 &&
+            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
+          ) {
             this.DisabledSave = true;
 
             Create(this.tempForm)

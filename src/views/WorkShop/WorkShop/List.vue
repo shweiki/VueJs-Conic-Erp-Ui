@@ -1,4 +1,9 @@
-﻿<template>
+﻿<!-- 
+تاريخ البدء والانتهاء
++ القيمة المتفق عليها
+القيمة الاجمالية = قيمة التكلفة
+-->
+<template>
   <div class="app-container">
     <el-row type="flex">
       <el-col :span="4">
@@ -71,7 +76,7 @@
     <el-row type="flex">
       <el-col :span="18">
         <el-divider direction="vertical"></el-divider>
-        <span>عدد الفواتير</span>
+        <span>{{ $t("WorkShop.WSNumbers") }}</span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Rows }}</span>
         <el-divider direction="vertical"></el-divider>
@@ -137,7 +142,11 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
+      <el-table-column
+        v-bind:label="$t('WorkShop.StartDate')"
+        width="150px"
+        align="center"
+      >
         <template slot-scope="{ row }">
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
@@ -146,17 +155,11 @@
       <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
 
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
+      <el-table-column v-bind:label="$t('WorkShop.EndDate')" width="150px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.DeliveryDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.AccountInvoiceNumber')"
-        width="120"
-        align="center"
-        prop="AccountInvoiceNumber"
-      ></el-table-column>
       <el-table-column
         v-bind:label="$t('CashPool.Pay')"
         width="120"
@@ -169,9 +172,15 @@
           scope.row.Discount.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
+      <el-table-column v-bind:label="$t('WorkShop.Amount')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.Total.toFixed($store.getters.settings.ToFixed) }}
+          JOD
+        </template>
+      </el-table-column>
+      <el-table-column v-bind:label="$t('WorkShop.TAmount')" width="120" align="center">
+        <template slot-scope="{ row }">
+          {{ row.TotalAmmount.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
@@ -181,7 +190,7 @@
           <Status-Tag :Status="scope.row.Status" TableName="WorkShop" />
         </template>
       </el-table-column>
-      <el-table-column width="180" align="center">
+      <el-table-column width="100" align="center">
         <template slot-scope="scope">
           <Next-Oprations
             :ObjId="scope.row.Id"
