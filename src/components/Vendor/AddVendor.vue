@@ -171,12 +171,7 @@
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
-       
-      </div>
+
     </el-dialog>
   </div>
 </template>
