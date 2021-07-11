@@ -11,6 +11,7 @@ import AccountingRouter from './modules/Accounting'
 import InventoryRouter from './modules/inventory'
 import PurchasesRouter from './modules/Purchases'
 import SalesRouter from './modules/Sales'
+import WorkShopsRouter from './modules/WorkShops'
 import SettingsRouter from './modules/Settings'
 import UploadData from './modules/UploadData'
 
@@ -46,53 +47,54 @@ import UploadData from './modules/UploadData'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
-  {
-    path: '/redirect',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index')
-      }
-    ]
-  },
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-  {
-    path: '/auth-redirect',
-    component: () => import('@/views/login/auth-redirect'),
-    hidden: true
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/error-page/404'),
-    hidden: true
-  },
-  {
-    path: '/401',
-    component: () => import('@/views/error-page/401'),
-    hidden: true
-  },
+export const constantRoutes = [{
+        path: '/redirect',
+        component: Layout,
+        hidden: true,
+        children: [{
+            path: '/redirect/:path(.*)',
+            component: () =>
+                import ('@/views/redirect/index')
+        }]
+    },
+    {
+        path: '/login',
+        component: () =>
+            import ('@/views/login/index'),
+        hidden: true
+    },
+    {
+        path: '/auth-redirect',
+        component: () =>
+            import ('@/views/login/auth-redirect'),
+        hidden: true
+    },
+    {
+        path: '/404',
+        component: () =>
+            import ('@/views/error-page/404'),
+        hidden: true
+    },
+    {
+        path: '/401',
+        component: () =>
+            import ('@/views/error-page/401'),
+        hidden: true
+    },
 
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/Profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
-      }
-    ]
-  },
+    {
+        path: '/',
+        component: Layout,
+        redirect: '/index',
+        hidden: true,
+        children: [{
+            path: 'index',
+            component: () =>
+                import ('@/views/Profile/index'),
+            name: 'Profile',
+            meta: { title: 'Profile', icon: 'user', noCache: true }
+        }]
+    },
 
 ]
 
@@ -100,119 +102,128 @@ export const constantRoutes = [
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [
-  {
-    path: '/dashboard',
-    component: Layout,
-    redirect: '/dashboard/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/Vendor',
-    component: Layout,
-    redirect: '/Vendor/list',
-    children: [
-      {
-        path: 'List',
-        component: () => import('@/views/Vendor/List'),
-        name: 'Vendors',
-        meta: {
-          title: 'Vendors', icon: 'customer-service'
-        },
-      }
-    ]
-  },
-  {
-    path: '/Sales/Create',
-    component: () => import('@/views/Sales/SaleInvoice/Create'),
-    name: 'NewSaleInvoice',
-    meta: {
-      title: 'NewSaleInvoice', icon: 'bill'
+export const asyncRoutes = [{
+        path: '/dashboard',
+        component: Layout,
+        redirect: '/dashboard/index',
+        children: [{
+            path: 'index',
+            component: () =>
+                import ('@/views/dashboard/index'),
+            name: 'Dashboard',
+            meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
+        }]
     },
-  },
-
-  /** when your routing map is too long, you can split it into small modules **/
-  //componentsRouter,
-  GymRouter,
-  SalesRouter,
-  PurchasesRouter,
-  InventoryRouter,
-  AccountingRouter,
-  SettingsRouter,
-  UploadData,
-  {
-    path: '/Reports',
-    component: Layout,
-    redirect: '/Reports',
-    meta: {
-      title: 'Reports', icon: 'report', affix: true
+    {
+        path: '/Vendor',
+        component: Layout,
+        redirect: '/Vendor/list',
+        children: [{
+            path: 'List',
+            component: () =>
+                import ('@/views/Vendor/List'),
+            name: 'Vendors',
+            meta: {
+                title: 'Vendors',
+                icon: 'customer-service'
+            },
+        }]
     },
-    children: [
-      {
-        path: 'Create',
-        component: () => import('@/views/Reports/Create'),
-        name: 'NewReport',
-        meta: { title: 'NewReport', icon: 'edit' }
-      },
-      {
-        path: 'Edit/:id(\\d+)',
-        component: () => import('@/views/Reports/Edit'),
-        name: 'EditReport',
+    {
+        path: '/Sales/Create',
+        component: () =>
+            import ('@/views/Sales/SaleInvoice/Create'),
+        name: 'NewSaleInvoice',
         meta: {
-           title: 'EditInvoice', noCache: true, activeMenu: '/Reports/List'
+            title: 'NewSaleInvoice',
+            icon: 'bill'
         },
-        hidden: true,
-      },
-      {
-        path: 'List',
-        component: () => import('@/views/Reports/List'),
-        name: 'ListReport',
-        meta: {
-          title: 'ListReport', icon: 'cost'
-        },
-      }
-    ]
-  },
+    },
 
-  //Guide
-  {
-    path: '/Guide',
-    component: Layout,
-    redirect: '/Guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/Guide/index'),
-        name: 'Guide',
+    /** when your routing map is too long, you can split it into small modules **/
+    //componentsRouter,
+    GymRouter,
+    SalesRouter,
+    PurchasesRouter,
+    WorkShopsRouter,
+    InventoryRouter,
+    AccountingRouter,
+    SettingsRouter,
+    UploadData,
+    {
+        path: '/Reports',
+        component: Layout,
+        redirect: '/Reports',
         meta: {
-          title: 'Guide', icon: 'guide', noCache: true
+            title: 'Reports',
+            icon: 'report',
+            affix: true
         },
-      }
-    ]
-  },
+        children: [{
+                path: 'Create',
+                component: () =>
+                    import ('@/views/Reports/Create'),
+                name: 'NewReport',
+                meta: { title: 'NewReport', icon: 'edit' }
+            },
+            {
+                path: 'Edit/:id(\\d+)',
+                component: () =>
+                    import ('@/views/Reports/Edit'),
+                name: 'EditReport',
+                meta: {
+                    title: 'EditInvoice',
+                    noCache: true,
+                    activeMenu: '/Reports/List'
+                },
+                hidden: true,
+            },
+            {
+                path: 'List',
+                component: () =>
+                    import ('@/views/Reports/List'),
+                name: 'ListReport',
+                meta: {
+                    title: 'ListReport',
+                    icon: 'cost'
+                },
+            }
+        ]
+    },
+
+    //Guide
+    {
+        path: '/Guide',
+        component: Layout,
+        redirect: '/Guide/index',
+        children: [{
+            path: 'index',
+            component: () =>
+                import ('@/views/Guide/index'),
+            name: 'Guide',
+            meta: {
+                title: 'Guide',
+                icon: 'guide',
+                noCache: true
+            },
+        }]
+    },
 
 
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
 })
 
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher // reset router
 }
 
 export default router
