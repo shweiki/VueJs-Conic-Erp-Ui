@@ -9,10 +9,23 @@
 
     <el-dialog
       style="margin-top: -13vh"
-      title="شخص جديد"
       :visible.sync="Visible"
       @opened="$refs['Name'].focus()"
     >
+    <div slot="title" class="dialog-footer">
+        <el-col :span="4">
+          <el-button
+            icon="el-icon-finished"
+            style="float: left"
+            type="primary"
+            @click="createData()"
+          />
+        </el-col>
+        <el-col :span="20">
+          <el-divider> شخص جديد </el-divider>
+        </el-col>
+      </div>
+      
       <el-form
         :model="tempForm"
         :rules="rulesForm"
@@ -162,9 +175,7 @@
         <el-button @click="Visible = false">{{
           $t("AddVendors.Cancel")
         }}</el-button>
-        <el-button type="primary" @click="createData()">{{
-          $t("AddVendors.Save")
-        }}</el-button>
+       
       </div>
     </el-dialog>
   </div>
