@@ -28,7 +28,7 @@
   </a>
 </p>
 
-English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [Spanish](./README.es.md)
+English | [Arabic](./README.AR.md)
 
 <p align="center">
   <b>SPONSORED BY</b>
