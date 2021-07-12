@@ -84,7 +84,7 @@
 
         <el-table-column prop="Name" label="المشترك" align="center">
           <template slot-scope="scope">
-            <router-link :to="'/Gym/Edit/' + scope.row.accountID">
+            <router-link :to="'/Gym/Edit/' + scope.row.accountId">
               <strong style="font-size: 10px; cursor: pointer">{{
                 scope.row.Name
               }}</strong>
@@ -209,7 +209,7 @@ export default {
       printJS({
         printable: data,
         properties: [
-          "ID",
+          "Id",
           "AccountId",
           "Name",
           "FakeDate",

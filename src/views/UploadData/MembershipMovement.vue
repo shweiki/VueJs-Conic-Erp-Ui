@@ -78,63 +78,63 @@ export default {
       console.log(this.tableData);
       this.data = this.tableData.map(element => {
         let MemberId, MembershipId, Type;
-        if (element.Offers_ID == 10028) {
+        if (element.Offers_Id == 10028) {
           // 1 Day
           MembershipId = 4;
           Type = "OneDay";
         }
-        if (element.Offers_ID == 10029) {
+        if (element.Offers_Id == 10029) {
           // 1 month Morning
           MembershipId = 2;
           Type = "Morning";
         }
-        if (element.Offers_ID == 10030) {
+        if (element.Offers_Id == 10030) {
           // 3 month Morning
           MembershipId = 3;
           Type = "Morning";
         }
-        if (element.Offers_ID == 10031) {
+        if (element.Offers_Id == 10031) {
           // 6 month Morning
           MembershipId = 5;
           Type = "Morning";
         }
-        if (element.Offers_ID == 10032) {
+        if (element.Offers_Id == 10032) {
           // 12 month Morning
           MembershipId = 7;
           Type = "Morning";
         }
-        if (element.Offers_ID == 10033) {
+        if (element.Offers_Id == 10033) {
           // 1 month FullDay
           MembershipId = 2;
           Type = "FullDay";
         }
-        if (element.Offers_ID == 10046) {
+        if (element.Offers_Id == 10046) {
           // 3 month FullDay
           MembershipId = 3;
           Type = "FullDay";
         }
-        if (element.Offers_ID == 10047) {
+        if (element.Offers_Id == 10047) {
           // 6 month FullDay
           MembershipId = 5;
           Type = "FullDay";
         }
-        if (element.Offers_ID == 10048) {
+        if (element.Offers_Id == 10048) {
           // 12 month FullDay
           MembershipId = 7;
           Type = "FullDay";
         }
-        if (element.Offers_ID == 10068) {
+        if (element.Offers_Id == 10068) {
           // 12 month FullDay
           MembershipId = 7;
           Type = "FullDay";
         }
-        if (element.Offers_ID == 10069) {
+        if (element.Offers_Id == 10069) {
           // 9 month FullDay
           MembershipId = 6;
           Type = "FullDay";
         }
-        MemberId = this.FindIDMemberByTag(
-          element.Member_ID,
+        MemberId = this.FindIdMemberByTag(
+          element.Member_Id,
           this.$store.getters.Members
         );
         console.log(MembershipId, Type, MemberId);
@@ -158,7 +158,7 @@ export default {
       this.loading = false
       this.isDisabled = false;
     },
-    FindIDMemberByTag(Tag, arr) {
+    FindIdMemberByTag(Tag, arr) {
       for (var i = 0; i < arr.length; i++) {
         if (arr[i].Tag == Tag) {
           return arr[i].Id;

@@ -55,7 +55,7 @@
                 }
               ]"
             >
-              <fake-date
+              <Fake-Date
                 :Value="tempForm.FakeDate"
                 @Set="v => (tempForm.FakeDate = v)"
               />
@@ -126,7 +126,7 @@
                 }
               ]"
             >
-              <fake-date
+              <Fake-Date
                 :Value="tempForm.InvoicePurchaseDate"
                 @Set="v => (tempForm.InvoicePurchaseDate = v)"
               />

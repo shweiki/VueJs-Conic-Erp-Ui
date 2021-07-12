@@ -52,7 +52,7 @@
         ></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            IDs
+            Ids
             {{ tableData.length }}
           </template>
         </el-table-column>

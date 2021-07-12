@@ -112,7 +112,7 @@
       "
     >
       <el-table-column
-        label="ID"
+        label="Id"
         prop="Id"
         sortable="custom"
         align="center"
@@ -251,8 +251,8 @@ export default {
         Status: undefined
       },
       sortOptions: [
-        { label: "ID Ascending", key: "+id" },
-        { label: "ID Descending", key: "-id" }
+        { label: "Id Ascending", key: "+id" },
+        { label: "Id Descending", key: "-id" }
       ],
       downloadLoading: false
     };

@@ -12,25 +12,34 @@
 import { GetEditorsUser } from "@/api/EditorsUser";
 
 export default {
+  props: ["Value"],
+
   data() {
     return {
       options: [],
-      value: ""
+      value: "",
     };
   },
   created() {
     GetEditorsUser()
-      .then(response => {
+      .then((response) => {
         this.options = response;
       })
-      .catch(error => {
+      .catch((error) => {
         reject(error);
       });
+  },
+  watch: {
+    Value(val) {
+      console.log(" eee  " + val);
+      if (val) this.SetVal(val);
+    },
   },
   methods: {
     SetVal(val) {
       this.$emit("Set", val);
-    }
-  }
+      this.value = val;
+    },
+  },
 };
 </script>

@@ -3,6 +3,7 @@
     <!-- <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
      --><el-date-picker
       v-model="date"
+      :size="$store.getters.size"
       :format="$store.getters.settings.DateTimeFormat"
       type="datetimerange"
       align="right"
@@ -21,20 +22,17 @@ import {
   LocalDate,
   LocalTime,
   DateTimeFormatter,
-  Instant
+  Instant,
 } from "@js-joda/core";
 
 export default {
   data() {
     return {
-      date: []
+      date: [],
     };
   },
   created() {
-    this.SetVal([
-      new Date().setHours(0, 0, 0, 0),
-      new Date().setHours(23, 59, 59, 999)
-    ]);
+    this.SetVal([new Date().setHours(0, 0, 0, 0), new Date().setHours(23, 59, 59, 999)]);
     //  this.date = [new Date(), new Date()];
   },
   methods: {
@@ -42,21 +40,16 @@ export default {
       console.log(val);
       val = [
         LocalDateTime.ofInstant(Instant.ofEpochMilli(val[0])).format(
-          DateTimeFormatter.ofPattern(
-            this.$store.getters.settings.DateTimeFormat
-          )
+          DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
         ),
         LocalDateTime.ofInstant(Instant.ofEpochMilli(val[1])).format(
-          DateTimeFormatter.ofPattern(
-            this.$store.getters.settings.DateTimeFormat
-          )
-        )
+          DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
+        ),
       ];
       console.log(val);
       this.date = val;
-
       this.$emit("Set", val);
-    }
-  }
+    },
+  },
 };
 </script>

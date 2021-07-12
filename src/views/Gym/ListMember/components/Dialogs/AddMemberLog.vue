@@ -31,7 +31,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
-              <fake-date
+              <Fake-Date
                 :Value="Temp.DateTime"
                 @Set="
                   (v) => {

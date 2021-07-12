@@ -12,20 +12,25 @@
 import { GetActiveMembership } from "@/api/Membership";
 
 export default {
+  props: ["MembershipId"],
   data() {
     return {
       options: [],
-      value: 2
+      value: 2,
     };
+  },
+  watch: {
+    MembershipId(val) {
+      if (val) this.SetVal(val);
+    },
   },
   created() {
     GetActiveMembership()
-      .then(response => {
+      .then((response) => {
         this.options = response;
-        this.value = response[0].Id;
-        this.SetVal(this.value);
+        this.SetVal(response[0].Id);
       })
-      .catch(error => {
+      .catch((error) => {
         reject(error);
       });
   },
@@ -33,9 +38,10 @@ export default {
     SetVal(val) {
       this.$emit(
         "Set",
-        this.options.find(obj => obj.Id == val)
+        this.options.find((obj) => obj.Id == val)
       );
-    }
-  }
+      this.value = val;
+    },
+  },
 };
 </script>

@@ -304,7 +304,7 @@ export default {
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
       this.tempOpration.ObjId = ObjId;
-      this.tempOpration.OprationID = Opration.Id;
+      this.tempOpration.OprationId = Opration.Id;
       this.tempOpration.Description = "";
     },
     createData() {
@@ -359,7 +359,7 @@ export default {
           console.log(this.tempOpration);
           ChangeObjStatus({
             ObjId: this.tempOpration.ObjId,
-            OprationId: this.tempOpration.OprationID,
+            OprationId: this.tempOpration.OprationId,
             Description: this.tempOpration.Description,
           })
             .then((response) => {

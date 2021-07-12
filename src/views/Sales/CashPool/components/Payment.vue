@@ -311,7 +311,7 @@ export default {
       printJS({
         printable: data,
         properties: [
-          "ID",
+          "Id",
           "ObjectId",
           "Name",
           "FakeDate",

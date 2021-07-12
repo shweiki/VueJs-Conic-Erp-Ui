@@ -81,7 +81,7 @@
               >
                 <i class="fa fa-barcode el-input__icon" slot="suffix"></i>
                 <template slot-scope="{ item }">
-                  <div class="ID">{{ item.Barcode }}</div>
+                  <div class="Id">{{ item.Barcode }}</div>
                   <span class="Name">{{ item.Name }}</span>
                 </template>
               </el-autocomplete>

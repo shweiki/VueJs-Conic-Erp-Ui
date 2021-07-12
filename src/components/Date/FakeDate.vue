@@ -16,34 +16,36 @@ import {
   LocalDate,
   LocalTime,
   DateTimeFormatter,
-  Instant
+  Instant,
 } from "@js-joda/core";
 export default {
   props: {
-    Value: String
+    Value: String,
   },
   data() {
     return {
-      date: ""
+      date: "",
     };
   },
-  mounted() {
+  created() {
     this.SetVal(new Date());
-    this.date = new Date();
+    //   this.date = new Date();
   },
   watch: {
     Value(val) {
+      //     console.log(val);
       if (val != "") this.SetVal(new Date(val));
       else this.SetVal(new Date());
-    }
+    },
   },
   methods: {
     SetVal(val) {
       val = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
         DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
       );
+      this.date = val;
       this.$emit("Set", val);
-    }
-  }
+    },
+  },
 };
 </script>

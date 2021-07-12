@@ -18,7 +18,7 @@
     >
       <el-table-column
         prop="Id"
-        label="ID"
+        label="Id"
         width="120"
         align="center"
       ></el-table-column>

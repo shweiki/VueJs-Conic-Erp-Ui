@@ -112,7 +112,7 @@
         align="center"
       ></el-table-column>
       <el-table-column
-        v-bind:label="$t('Vendors.ID')"
+        v-bind:label="$t('Vendors.Id')"
         prop="Id"
         sortable="custom"
         align="center"
@@ -287,8 +287,8 @@ export default {
         Status: undefined
       },
       sortOptions: [
-        { label: "ID Ascending", key: "+id" },
-        { label: "ID Descending", key: "-id" }
+        { label: "Id Ascending", key: "+id" },
+        { label: "Id Descending", key: "-id" }
       ],
       downloadLoading: false
     };

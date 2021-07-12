@@ -283,8 +283,8 @@ export default {
           this.ServiceInvoices = response.reverse();
         });
     },
-    GetImageMember(ID) {
-      GetFileByObjId({ TableName: "Member", ObjId: ID })
+    GetImageMember(Id) {
+      GetFileByObjId({ TableName: "Member", ObjId: Id })
         .then(response => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;

@@ -1,6 +1,6 @@
 <template>
   <el-select
-    v-model="Name"
+    v-model="value"
     placeholder="Users"
     clearable
     class="filter-item"
@@ -8,7 +8,7 @@
     @change="SetVal"
   >
     <el-option
-      v-for="item in UsersNames"
+      v-for="item in options"
       :key="item.key"
       :label="item.UserName"
       :value="item.UserName"
@@ -19,21 +19,33 @@
 import { GetUsersNames } from "@/api/User";
 
 export default {
+  props: ["Value"],
   data() {
     return {
-      Name: "",
-      UsersNames: [],
+      value: "",
+      options: [],
     };
+  },
+  watch: {
+    Value(val) {
+      console.log(" eee  " + val);
+      if (val) this.SetVal(val);
+    },
   },
   created() {
     GetUsersNames().then((res) => {
-      this.UsersNames = res;
+      this.options = res;
+      //   this.SetVal(response[0].UserName);
     });
   },
   methods: {
-    SetVal() {
+    SetVal(val) {
       //      console.log(" eee  " + this.Name);
-      this.$emit("Set", this.Name);
+      this.$emit(
+        "Set",
+        this.options.find((obj) => obj.UserName == val)
+      );
+      this.value = val;
     },
   },
 };

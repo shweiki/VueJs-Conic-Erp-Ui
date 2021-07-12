@@ -285,7 +285,7 @@ export default {
       printJS({
         printable: data,
         properties: [
-          "ID",
+          "Id",
           "MemberId",
           "MemberName",
           "MembershipName",

@@ -53,7 +53,7 @@
                     }
                   ]"
                 >
-                  <fake-date
+                  <Fake-Date
                     :Value="tempForm.FakeDate"
                     @Set="v => (tempForm.FakeDate = v)"
                   />

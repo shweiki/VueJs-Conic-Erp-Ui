@@ -112,8 +112,8 @@ export default {
           if (tab.label == "مقبوضات")
             if (tab.label == "مالية") console.log(tab);
     },
-    GetImageItem(ID) {
-      GetFileByObjId({ TableName: "Item", ObjId: ID })
+    GetImageItem(Id) {
+      GetFileByObjId({ TableName: "Item", ObjId: Id })
         .then(response => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;

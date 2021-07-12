@@ -23,10 +23,7 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -45,15 +42,15 @@ export default {
   props: {
     Status: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
     TableName: {
-      type: String
+      type: String,
     },
     Description: {
-      type: String
+      type: String,
     },
-    ObjId: Number
+    ObjId: Number,
   },
   data() {
     return {
@@ -64,28 +61,28 @@ export default {
         ArabicOprationDescription: "",
         IconClass: "",
         ClassName: "",
-        Status: 0
+        Status: 0,
       },
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: ""
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   watch: {
@@ -96,43 +93,39 @@ export default {
     Description(val) {
       console.log("Description", val);
       this.tempOpration.Description = val;
-    }
+    },
   },
   created() {
     this.getdata();
   },
   methods: {
     getdata() {
-      this.NextOprations = this.$store.getters.Oprations.filter(Item => {
-        return (
-          Item.TableName == this.TableName &&
-          Item.ReferenceStatus == this.Status
-        );
+      this.NextOprations = this.$store.getters.Oprations.filter((Item) => {
+        return Item.TableName == this.TableName && Item.ReferenceStatus == this.Status;
       });
     },
     handleOprationsys(ObjId, Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
 
       this.tempOpration.Status = Opration.Status;
       this.tempOpration.ObjId = ObjId;
-      this.tempOpration.OprationID = Opration.Id;
- //     this.tempOpration.Description = "";
+      this.tempOpration.OprationId = Opration.Id;
+      //     this.tempOpration.Description = "";
     },
     Create() {
       ChangeObjStatusByTableName({
         ObjId: this.tempOpration.ObjId,
         TableName: this.TableName,
         Status: this.tempOpration.Status,
-        Description: this.tempOpration.Description
+        Description: this.tempOpration.Description,
       })
-        .then(response => {
+        .then((response) => {
           if (response) this.$emit("Done");
 
           this.dialogOprationVisible = false;
@@ -140,14 +133,14 @@ export default {
             title: "تم  ",
             message: "تمت العملية بنجاح",
             type: "success",
-            duration: 2000
+            duration: 2000,
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

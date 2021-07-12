@@ -37,6 +37,7 @@
           ]"
         >
           <Select-Memberships
+            :MembershipId="tempForm.MembershipId"
             @Set="
               (v) => {
                 Membership = v;
@@ -57,7 +58,7 @@
             },
           ]"
         >
-          <fake-date
+          <Fake-Date
             :Value="tempForm.StartDate"
             @Set="
               (v) => {
@@ -78,7 +79,7 @@
             },
           ]"
         >
-          <fake-date
+          <Fake-Date
             :Value="tempForm.EndDate"
             @Set="
               (v) => {
@@ -147,7 +148,10 @@
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <Editors-User @Set="(v) => (tempForm.EditorName = v)" />
+              <Editors-User
+                :Value="tempForm.EditorName"
+                @Set="(v) => (tempForm.EditorName = v)"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -170,6 +174,8 @@ import SelectMemberships from "@/components/Gym/SelectMemberships.vue";
 import SelectDiscount from "@/components/Discount/SelectDiscount.vue";
 import EditorsUser from "@/components/Gym/EditorsUser";
 import { LocalDateTime, Instant } from "@js-joda/core";
+import { GetActiveService } from "@/api/Service";
+import { Create as CreateSaleInvoice } from "@/api/SaleInvoice";
 
 export default {
   components: { FakeDate, EditorsUser, SelectMemberships, SelectDiscount },
@@ -256,7 +262,7 @@ export default {
           ? Membership.MorningPrice
           : Membership.FullDayPrice;
       this.tempForm.TotalAmmount = this.Price - this.tempForm.Discount;
-      this.tempForm.MemberId = this.MemberId;
+      //  this.tempForm.MemberId = this.MemberId;
       this.tempForm.EndDate = LocalDateTime.ofInstant(
         Instant.ofEpochMilli(new Date(this.tempForm.StartDate))
       )
@@ -320,7 +326,7 @@ export default {
             Discount: 0,
             Status: 3,
             Description: "فاتورة خدمية ",
-            MemberId: this.MemberId,
+            MemberId: this.tempForm.MemberId,
             IsPrime: true,
             InventoryMovements: [],
           };

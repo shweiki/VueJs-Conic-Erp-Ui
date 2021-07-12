@@ -79,17 +79,17 @@ export default {
     return {
       Visible: false,
       InventoryMovementId: undefined,
-      SID: undefined
+      SId: undefined
     };
   },
   methods: {
-    MinusOne(SID) {
+    MinusOne(SId) {
       this.Visible = true;
       let InventoryMovement = this.ServiceInvoices.find(
-        ({ Id }) => Id == SID
+        ({ Id }) => Id == SId
       ).InventoryMovements.filter(obj => obj.Status == 1);
       this.InventoryMovementId = InventoryMovement[0].Id;
-      this.SID = SID;
+      this.SId = SId;
     },
     createOprationData() {
       ChangeObjStatusByTableName({
@@ -108,7 +108,7 @@ export default {
             duration: 2000
           });
           this.$nextTick(() => {
-            InBody(this.ServiceInvoices.find(({ Id }) => Id == this.SID));
+            InBody(this.ServiceInvoices.find(({ Id }) => Id == this.SId));
           });
         })
         .catch(error => {

@@ -136,7 +136,7 @@
       "
     >
       <el-table-column
-        label="ID"
+        label="Id"
         prop="Id"
         sortable="custom"
         align="center"
@@ -165,7 +165,7 @@
 
       <el-table-column prop="Name" label="المشترك" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/Gym/Edit/' + scope.row.accountID">
+          <router-link :to="'/Gym/Edit/' + scope.row.accountId">
             <strong style="font-size: 10px; cursor: pointer">{{
               scope.row.Name
             }}</strong>
@@ -265,8 +265,8 @@ export default {
         Status: undefined
       },
       sortOptions: [
-        { label: "ID Ascending", key: "+id" },
-        { label: "ID Descending", key: "-id" }
+        { label: "Id Ascending", key: "+id" },
+        { label: "Id Descending", key: "-id" }
       ],
       downloadLoading: false
     };
