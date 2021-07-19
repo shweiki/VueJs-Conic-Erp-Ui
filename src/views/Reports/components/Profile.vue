@@ -22,9 +22,18 @@
           >
         </el-col>
         <el-col :span="4">
-          <el-form-item label="تلقائي">
+          <el-form-item label="تلقائي الطباعة">
             <el-switch
               v-model="tempForm.AutoPrint"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-value="true"
+              inactive-value="false"
+            ></el-switch>
+          </el-form-item>
+          <el-form-item label="تلقائي ارسال">
+            <el-switch
+              v-model="tempForm.AutoSent"
               active-color="#13ce66"
               inactive-color="#ff4949"
               active-value="true"
@@ -48,22 +57,44 @@
         ></el-col>
         <el-col :span="4">
           <el-form-item label="الكينونة">
-            <el-select v-model="tempForm.Type" placeholder="Select">
-              <el-option label="SaleInvoice" value="SaleInvoice"> </el-option>
-            </el-select>
+            <el-input v-model="tempForm.Type" />
           </el-form-item>
         </el-col>
+        <el-col :span="4">
+          <el-form-item
+            prop="EmailSent"
+            label="Email"
+            :rules="[
+              {
+                required: false,
+                message: 'Please input email address',
+                trigger: 'blur'
+              },
+              {
+                type: 'email',
+                message: 'Please input correct email address',
+                trigger: ['blur', 'change']
+              }
+            ]"
+          >
+            <el-input v-model="tempForm.EmailSent"></el-input> </el-form-item
+        ></el-col>
       </el-row>
       <el-row type="flex">
         <el-col :span="18">
           <tinymce
-        
             v-bind:id="'tinymce-' + tempForm.Id"
             v-model="tempForm.Html"
           />
         </el-col>
         <el-col :span="6">
-          <json-editor ref="jsonEditor" v-model="tempForm.Keys" />
+          <Keys
+            @Add="
+              v => {
+                AddTinymce(v);
+              }
+            "
+          />
         </el-col>
       </el-row>
     </el-form>
@@ -73,11 +104,11 @@
 import { Create, Edit, GetReportById, GetTotal } from "@/api/Report";
 import Tinymce from "@/components/Tinymce";
 import Printers from "@/components/Printers/index.vue";
-import JsonEditor from "@/components/JsonEditor";
+import Keys from "./Keys.vue";
 
 export default {
   name: "Report",
-  components: { Tinymce, Printers, JsonEditor },
+  components: { Tinymce, Printers, Keys },
   props: {
     isEdit: {
       type: Boolean,
@@ -85,43 +116,18 @@ export default {
     }
   },
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === "") {
-        this.$message({
-          message: rule.field + "اواي",
-          type: "error"
-        });
-        callback(new Error(rule.field + "اي"));
-      } else {
-        callback();
-      }
-    };
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback();
-        } else {
-          this.$message({
-            message: "اه",
-            type: "error"
-          });
-          callback(new Error("اوه"));
-        }
-      } else {
-        callback();
-      }
-    };
     return {
       DisabledSave: false,
       tempRoute: {},
       Total: 0,
       tempForm: {
-        Id: undefined,
+        Id: 1,
         Name: "",
         Type: "",
         AutoPrint: false,
-        Keys: "",
+        AutoSent: false,
         Printer: "",
+        EmailSent: "",
         Html: "",
         Icon: ""
       }
@@ -137,6 +143,11 @@ export default {
     });
   },
   methods: {
+    AddTinymce(v) {
+      window.tinymce
+        .get("tinymce-" + this.tempForm.Id + "")
+        .insertContent(`${v}`);
+    },
     handleSizeChange(val) {
       console.log(`${val} items per page`);
     },
@@ -148,7 +159,6 @@ export default {
       GetReportById({ Id: val })
         .then(response => {
           console.log(response);
-          response.Keys = JSON.parse(response.Keys)
           this.tempForm = response;
           // set tagsview title
           this.setTagsViewTitle();
@@ -188,17 +198,29 @@ export default {
       this.$refs["tempForm"].validate(valid => {
         if (valid) {
           this.DisabledSave = true;
-
+          this.tempForm.Id = undefined;
           Create(this.tempForm)
             .then(response => {
-              this.$notify({
-                title: "تم الإضافة بنجاح",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                position: "top-left",
-                duration: 1000,
-                showClose: false
-              });
+              if (response)
+                this.$notify({
+                  title: "تم الإضافة بنجاح",
+                  message: "تم الإضافة بنجاح",
+                  type: "success",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false
+                });
+              else {
+                this.$notify({
+                  title: "حصلت مشكلة",
+                  message: "الرجاء التاكد من المعلومات",
+                  type: "success",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false
+                });
+                this.DisabledSave = false;
+              }
             })
             .catch(error => {
               console.log(error);

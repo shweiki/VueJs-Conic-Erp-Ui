@@ -210,7 +210,7 @@
             TableName="Payment"
             @Done="handleFilter"
           />
-          <print-button Type="Payment" :Data="scope.row" />
+          <Print-Button Type="Payment" :Data="scope.row" />
         </template>
       </el-table-column>
     </el-table>

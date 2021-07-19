@@ -175,7 +175,7 @@
           /></el-col>
           <el-col :span="8"> <edit-item :ItemId="scope.row.Id" /> </el-col>
           <el-col :span="8">
-            <print-button Type="Item" :Data="scope.row" />
+            <Print-Button Type="Item" :Data="scope.row" />
           </el-col>
         </template>
       </el-table-column>

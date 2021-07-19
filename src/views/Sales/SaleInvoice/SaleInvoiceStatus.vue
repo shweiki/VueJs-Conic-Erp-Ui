@@ -239,7 +239,7 @@
       </el-table-column>
       <el-table-column width="55" align="center">
         <template slot-scope="scope">
-          <print-button Type="SaleInvoice" :Data="scope.row" />
+          <Print-Button Type="SaleInvoice" :Data="scope.row" />
           <dialog-action-log TableName="SalesInvoice" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>

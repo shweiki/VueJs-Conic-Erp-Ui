@@ -165,7 +165,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
+      <el-table-column
+        v-bind:label="$t('AddVendors.Name')"
+        prop="Name"
+        align="center"
+      >
       </el-table-column>
 
       <el-table-column
@@ -229,7 +233,7 @@
             TableName="PurchaseInvoice"
             @Done="handleFilter"
           />
-          <print-button Type="PurchaseInvoice" :Data="scope.row" />
+          <Drawer-Print Type="PurchaseInvoice" :Data="scope.row" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -280,7 +284,7 @@ import { GetByListQ } from "@/api/PurchaseInvoice";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import { SaleInvoicesList } from "@/Report/SaleInvoice";
@@ -295,7 +299,7 @@ export default {
     StatusTag,
     NextOprations,
     SearchByDate,
-    PrintButton,
+    DrawerPrint,
     Pagination,
     UserSelect,
     RadioOprations
@@ -327,7 +331,7 @@ export default {
     // this.getList();
   },
   methods: {
-        SaleInvoicesList,
+    SaleInvoicesList,
 
     getList() {
       this.listLoading = true;

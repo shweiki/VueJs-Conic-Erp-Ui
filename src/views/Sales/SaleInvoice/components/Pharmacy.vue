@@ -337,7 +337,8 @@
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                       ></el-switch>
-                      <print-button
+
+                      <Drawer-Print
                         v-if="OldInvoice == null ? false : true"
                         Type="SaleInvoice"
                         :Data="OldInvoice"
@@ -472,7 +473,7 @@ import RestOfBill from "@/components/Sales/RestOfBill";
 import LangSelect from "@/components/LangSelect";
 import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 // report
 
@@ -506,7 +507,7 @@ export default {
     ItemsSearch,
     ItemsPrime,
     EditItem,
-    PrintButton,
+    DrawerPrint,
     RestOfBill,
     RightMenu,
     FakeDate,
@@ -522,32 +523,6 @@ export default {
     }
   },
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === "") {
-        this.$message({
-          message: rule.field + "اواي",
-          type: "error"
-        });
-        callback(new Error(rule.field + "اي"));
-      } else {
-        callback();
-      }
-    };
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback();
-        } else {
-          this.$message({
-            message: "اه",
-            type: "error"
-          });
-          callback(new Error("اوه"));
-        }
-      } else {
-        callback();
-      }
-    };
     return {
       OldInvoice: null,
       AutoPrint: false,

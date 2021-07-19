@@ -341,7 +341,7 @@
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                       ></el-switch>
-                      <print-button
+                      <Print-Button
                         v-if="OldInvoice == null ? false : true"
                         Type="SaleInvoice"
                         :Data="OldInvoice"

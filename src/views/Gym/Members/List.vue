@@ -228,7 +228,7 @@
             TableName="Member"
             @Done="handleFilter"
           />
-          <print-button Type="Member" :Data="scope.row" />
+          <Print-Button Type="Member" :Data="scope.row" />
         </template>
       </el-table-column>
     </el-table>

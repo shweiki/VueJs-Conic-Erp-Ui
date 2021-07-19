@@ -17,7 +17,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item prop="MemberId" label="المشترك">
-              <member-search-any
+              <Member-Search-Any
                 @Set="
                   (v) => {
                     Temp.MemberId = v.Id;

@@ -45,32 +45,7 @@ export default {
     }
   },
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === "") {
-        this.$message({
-          message: rule.field + "اواي",
-          type: "error"
-        });
-        callback(new Error(rule.field + "اي"));
-      } else {
-        callback();
-      }
-    };
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback();
-        } else {
-          this.$message({
-            message: "اه",
-            type: "error"
-          });
-          callback(new Error("اوه"));
-        }
-      } else {
-        callback();
-      }
-    };
+    
     return {
       activeTab: "Details",
       loading: true,

@@ -243,7 +243,7 @@
             TableName="PurchaseInvoice"
             @Done="handleFilter"
           />
-          <print-button Type="PurchaseInvoice" :Data="scope.row" />
+          <Print-Button Type="PurchaseInvoice" :Data="scope.row" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">

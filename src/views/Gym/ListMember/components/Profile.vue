@@ -2,10 +2,10 @@
   <div class="app-container">
     <el-row v-if="tempForm">
       <el-col :span="6" :xs="24">
-        <member-log />
+        <Member-Log />
       </el-col>
       <el-col :span="18" :xs="24" v-loading="loading">
-        <member-search />
+        <Member-Search />
 
         <el-card
           class="box-card"
@@ -32,7 +32,7 @@
 
               <el-row>
                 <el-col :span="24">
-                  <member-ship-movement
+                  <Member-Ship-Movement
                     :MemberId="tempForm.Id"
                     :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
@@ -46,12 +46,12 @@
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <member-pay :MemberId="tempForm.Id" :Name="tempForm.Name" />
+                  <Member-Pay :MemberId="tempForm.Id" :Name="tempForm.Name" />
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <member-ship-movement-with-pay
+                  <Member-Ship-Movement-With-Pay
                     :MemberId="tempForm.Id"
                     :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
@@ -184,32 +184,7 @@ export default {
   },
 
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === "") {
-        this.$message({
-          message: rule.field + "اواي",
-          type: "error"
-        });
-        callback(new Error(rule.field + "اي"));
-      } else {
-        callback();
-      }
-    };
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback();
-        } else {
-          this.$message({
-            message: "اه",
-            type: "error"
-          });
-          callback(new Error("اوه"));
-        }
-      } else {
-        callback();
-      }
-    };
+  
     return {
       activeTab: "Details",
       loading: true,

@@ -198,7 +198,7 @@
             TableName="WorkShop"
             @Done="handleFilter"
           />
-          <print-button Type="WorkShop" :Data="scope.row" />
+          <Print-Button Type="WorkShop" :Data="scope.row" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">

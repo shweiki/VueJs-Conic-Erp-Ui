@@ -286,7 +286,7 @@
             ></el-button>
           </template>
           <template slot-scope="scope">
-            <print-button Type="SaleInvoice" :Data="scope.row" />
+            <Print-Button Type="SaleInvoice" :Data="scope.row" />
           </template>
         </el-table-column>
         <el-table-column type="expand">

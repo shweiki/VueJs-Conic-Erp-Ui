@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Profile from './components/Profile'
+import Profile from './components/Profile.vue'
 
 export default {
   name: 'EditMember',

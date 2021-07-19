@@ -45,11 +45,10 @@
 <script>
 import permission from "@/directive/permission/index.js";
 import MemberLog from "./components/MemberLog";
-import MemberSearch from "./components/MemberSearch";
+import MemberSearch from "./components/MemberSearch.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
-import LastLogMember from "@/components/Gym/LastLogMember";
-import { GetMember } from "@/api/Member";
+import LastLogMember from "@/components/Gym/LastLogMember.vue";
 
 //import { GetActiveMember } from "@/api/Member";
 
