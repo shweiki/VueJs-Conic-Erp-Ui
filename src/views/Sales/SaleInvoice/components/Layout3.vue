@@ -525,7 +525,7 @@ export default {
         IsPrime: false,
         Type: "Delivery",
         DeliveryPrice: 0,
-        Region: "الثامنة",
+        Region: "",
         PhoneNumber: "",
         InventoryMovements: []
       },
@@ -606,7 +606,7 @@ export default {
         IsPrime: false,
         Type: "Takeaway",
         DeliveryPrice: 0,
-        Region: "الثامنة",
+        Region: "",
         PhoneNumber: "",
         InventoryMovements: []
       };

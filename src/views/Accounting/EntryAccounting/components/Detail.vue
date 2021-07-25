@@ -67,7 +67,7 @@
                 :rules="[
                   {
                     required: true,
-                    message: 'لا يمكن ترك حساب فارغ',
+                    message: 'لا يمكن ترك الحساب فارغ',
                     trigger: 'blur',
                   },
                 ]"

@@ -1,11 +1,19 @@
 <template>
   <div>
     <el-col :span="24">
-      <el-radio-group v-model="query" @change="getdata">
-        <el-radio-button label="ساندويش">ساندويش </el-radio-button>
+      <el-radio-group v-model="query" @change="getdata" >
+        <el-radio-button 
+        v-for="cat in cats"
+                              :key="cat.value"
+                              :label="cat.label"
+                              :value="cat.value"> 
+         {{ cat.label }} </el-radio-button>
+        <!-- <category-tabs :label="option.label"
+        :text="option.text"/> -->
+        <!-- <el-radio-button label="ساندويش">ساندويش </el-radio-button>
         <el-radio-button label="وجبات"> وجبات </el-radio-button>
         <el-radio-button label="مشروبات"> مشروبات </el-radio-button>
-        <el-radio-button label="إضافات"> إضافات </el-radio-button>
+        <el-radio-button label="إضافات"> إضافات </el-radio-button> -->
       </el-radio-group>
     </el-col>
     <!--
@@ -103,13 +111,18 @@
 import permission from "@/directive/permission/index.js";
 import { GetItemByAny } from "@/api/Item";
 import { GetFileByObjId } from "@/api/File";
+import { GetActiveMenuItem } from "@/api/MenuItem";
+
 export default {
   name: "ItemsCategory",
   directives: { permission },
   props: ["WithImage"],
   data() {
     return {
-      query: "وجبات",
+      cats:[
+       
+      ],
+      query: "ساندويش",
       search: "",
       List: [],
       tabPosition: "top",
@@ -118,6 +131,16 @@ export default {
   },
   created() {
     this.getdata();
+    GetActiveMenuItem()  .then((response) => {
+          // handle success
+          console.log(response);
+          this.cats = response;
+          this.loading = false;
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error);
+        })
   },
   methods: {
     AddItem(item) {

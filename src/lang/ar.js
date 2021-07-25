@@ -619,5 +619,12 @@ export default {
         WSNumbers: "عدد الورش",
         Amount: "قيمة التكلفة",
         TAmount: "المبلغ"
+    },
+    Area:{
+        Areas:"المناطق",
+        City:"المدينة",
+        Address1:"العنوان 1",
+        Address2:"العنوان 2",
+        DelievryPrice:"سعر التوصيل"
     }
 }

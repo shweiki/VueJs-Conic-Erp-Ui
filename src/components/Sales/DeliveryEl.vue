@@ -14,7 +14,7 @@
         "
         @SetDeliveryPrice="
           v => {
-            deliveryprice = v;
+            DelievryPrice = v;
             SetVal();
           }
         "
@@ -32,7 +32,7 @@ export default {
   components: { SelectRegion },
   props: {
     region: String,
-    deliveryprice: Number,
+    DelievryPrice: Number,
     name: String,
     phone: String
   },
@@ -46,14 +46,14 @@ export default {
     region(val) {
       this.region = val;
     },
-    deliveryprice(val) {
-      this.deliveryprice = val;
+    DelievryPrice(val) {
+      this.DelievryPrice = val;
     }
   },
   methods: {
     SetVal() {
       this.$emit("SetRegion", this.region);
-      this.$emit("SetDeliveryPrice", this.deliveryprice);
+      this.$emit("SetDeliveryPrice", this.DelievryPrice);
       this.$emit("SetPhoneNumber", this.phone);
       this.$emit("SetName", this.name);
     }

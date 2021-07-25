@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
@@ -9,13 +9,7 @@
           @click="handleCreate()"
           >{{ $t("Classification.Add") }}</el-button
         >
-        <el-button
-          style="float: left"
-          icon="el-icon-printer"
-          type="primary"
-          @click="print(tableData)"
-        ></el-button>
-        <span>{{ $t("Classification.Unit") }}</span>
+        <span>{{ $t("Area.Areas") }}</span>
       </div>
       <el-table
         v-loading="loading"
@@ -33,64 +27,57 @@
         <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
-              type="primary"
+              circle
+              type="success"
               icon="el-icon-refresh"
               @click="getdata()"
+              :size="$store.getters.size"
             ></el-button>
           </template>
         </el-table-column>
         <el-table-column
-          v-bind:label="$t('Classification.Address')"
-          prop="Name"
+          v-bind:label="$t('Area.City')"
+          prop="Asress1"
+          width="200"
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')"/>
+            <el-input v-model="search" v-bind:placeholder="$t('Area.City')" />
           </template>
         </el-table-column>
-
-        <!-- <el-table-column
-          v-bind:label="$t('Classification.Date')"
-          prop="ActionLogs[0].PostingDateTime"
+        <el-table-column
+          v-bind:label="$t('Area.Address1')"
+          prop="Adress2"
           width="200"
           align="center"
-        ></el-table-column> -->
-        <el-table-column
-          v-bind:label="$t('Classification.Notes')"
-          prop="Description"
-          
-          align="center"
         ></el-table-column>
-        <!-- <el-table-column
-          v-bind:label="$t('Classification.Status')"
+        <el-table-column
+          v-bind:label="$t('Area.Address2')"
+          prop="Adress3"
           width="120"
           align="center"
-        >
-          <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="MenuItem" />
-          </template>
-        </el-table-column> -->
-        <!-- <el-table-column align="right" width="200">
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('Area.DelievryPrice')"
+          prop="DelievryPrice"
+          width="120"
+          align="center"
+        ></el-table-column>
+       
+        <!-- <el-table-column width="120" align="center">
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.Opration.Status != -1"
               icon="el-icon-edit"
+              :size="$store.getters.size"
               circle
               @click="handleUpdate(scope.row)"
             ></el-button>
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              round
-              @click="handleOprationsys(scope.row.Id, NOprations)"
-              >{{ NOprations.OprationDescription }}</el-button
-            >
+          
           </template>
         </el-table-column> -->
       </el-table>
     </el-card>
-
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
@@ -104,19 +91,37 @@
         label-position="top"
         label-width="70px"
       >
-        <el-form-item v-bind:label="$t('Classification.Name')" prop="Name">
-          <el-input type="text" v-model="tempForm.Name"></el-input>
+     
+        <el-form-item v-bind:label="$t('Area.City')" prop="Asress1">
+          <el-input type="text" v-model="tempForm.Asress1"></el-input> 
+      
         </el-form-item>
-        <el-form-item v-bind:label="$t('Classification.Status')" prop="Description">
-          <el-input type="textarea" v-model="tempForm.Description"></el-input>
+        <el-form-item v-bind:label="$t('Area.Address1')" prop="Adress2">
+          <el-input type="text" v-model="tempForm.Adress2"></el-input>
         </el-form-item>
+        <el-form-item v-bind:label="$t('Area.Address2')" prop="Adress3">
+          <el-input type="text" v-model="tempForm.Adress3"></el-input>
+        </el-form-item>
+         <el-form-item v-bind:label="$t('Area.DelievryPrice')" prop="DelievryPrice">
+              <el-input-number
+                v-model="tempForm.DelievryPrice"
+                :precision="2"
+                :step="0.1"
+                :min="0.0"
+                :max="1500"                            @focus="$event.target.select()"
+
+              ></el-input-number>
+            </el-form-item>
+       
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">إلغاء</el-button>
+        <el-button @click="dialogFormVisible = false">{{
+          $t("Classification.cancel")
+        }}</el-button>
         <el-button
           type="primary"
           @click="dialogFormStatus === 'create' ? createData() : updateData()"
-          >حفظ</el-button
+          >{{ $t("AddVendors.Save") }}</el-button
         >
       </div>
     </el-dialog>
@@ -149,16 +154,11 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
-import { GetMenuItem, Create, Edit } from "@/api/MenuItem";
+import { GetAreas, Create, Edit } from "@/api/Area";
 import { ChangeObjStatus } from "@/api/Oprationsys";
-import StatusTag from "@/components/Oprationsys/StatusTag";
-
-import printJS from "print-js";
 export default {
-  name: "MenuItem",
-  components: { StatusTag },
+  name: "Area",
   data() {
     return {
       tableData: [],
@@ -167,6 +167,8 @@ export default {
       dialogOprationVisible: false,
       dialogFormStatus: "",
       search: "",
+    
+
       textMapForm: {
         update: "تعديل",
         create: "إضافة",
@@ -179,20 +181,22 @@ export default {
       },
       tempForm: {
         Id: undefined,
-        Name: "",
-        Description: "",
+        Asress1: "",
+        Adress2: "",
+        Adress3: "",
+        DelievryPrice: 0.0
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: "يجب إدخال اسم ",
+            message: "يجب إدخال إسم ",
             trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
-            message: "الرجاء إدخال اسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
+            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
             trigger: "blur",
           },
         ],
@@ -212,7 +216,7 @@ export default {
           {
             minlength: 5,
             maxlength: 150,
-            message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
+            message: "الرجاء إدخال إسم لا يقل عن 5 احرف و لا يزيد عن 150 حرف",
             trigger: "blur",
           },
         ],
@@ -223,16 +227,9 @@ export default {
     this.getdata();
   },
   methods: {
-    print(data) {
-      printJS({
-        printable: data,
-        properties: ["Name", "Description"],
-        type: "json",
-      });
-    },
     getdata() {
       this.loading = true;
-      GetMenuItem()
+      GetAreas()
         .then((response) => {
           // handle success
           console.log(response);
@@ -243,32 +240,33 @@ export default {
           // handle error
           console.log(error);
         });
+       
     },
     resetTempForm() {
       this.tempForm = {
-        Id: undefined,
-        Name: "",
-        Description: "",
+       Id: undefined,
+        Asress1: "",
+        Adress2: "",
+        Adress3: "",
+        DelievryPrice: 0.0
       };
     },
     handleCreate() {
       this.resetTempForm();
       this.dialogFormStatus = "create";
       this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+      this.$refs["dataForm"].clearValidate();
     },
     handleUpdate(row) {
       console.log(row);
       this.tempForm.Id = row.Id;
-      this.tempForm.Name = row.Name;
-      this.tempForm.Description = row.Description;
+      this.tempForm.Asress1 = row.Asress1;
+      this.tempForm.Adress2 = row.Adress2;
+      this.tempForm.Adress3 = row.Adress3;
+      this.tempForm.DelievryPrice = row.DelievryPrice;
       this.dialogFormStatus = "update";
       this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+      this.$refs["dataForm"].clearValidate();
     },
     handleOprationsys(ObjId, Opration) {
       this.dialogOprationVisible = true;

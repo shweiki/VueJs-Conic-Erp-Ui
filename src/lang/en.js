@@ -600,5 +600,12 @@ export default {
         Amount: "Total Cost",
         TAmount: "Price"
 
+    },
+    Area:{
+        Areas:"Areas",
+        City:"City",
+        Address1:"Address 1",
+        Address2:"Address 2",
+        DelievryPrice:"Delievry Price"
     }
 }
