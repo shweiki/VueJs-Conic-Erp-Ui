@@ -18,7 +18,7 @@
 
 <script>
 import ElDragSelect from "@/components/DragSelect"; // base on element-ui
-
+import { GetActiveMenuItem } from "@/api/MenuItem";
 export default {
   props: ["Value"],
   components: { ElDragSelect },
@@ -26,34 +26,44 @@ export default {
     return {
       value: [],
       options: [
-        {
-          value: "ساندويش",
-          label: "ساندويش"
-        },
-        {
-          value: "وجبات",
-          label: "وجبات"
-        },
-        {
-          value: "مشروبات",
-          label: "مشروبات"
-        },
-        {
-          value: "إضافات",
-          label: "إضافات"
-        },
-        { value: "لحم", label: "لحم" },
-        { value: "دجاج", label: "دجاج" },
-        { value: "عادي", label: "عادي" },
-        { value: "سوبر", label: "سوبر" },
-        { value: "دبل", label: "دبل" },
-        { value: "تربل", label: "تربل" },
-        { value: "توفير", label: "توفير" }
+        // {
+        //   value: "ساندويش",
+        //   label: "ساندويش"
+        // },
+        // {
+        //   value: "وجبات",
+        //   label: "وجبات"
+        // },
+        // {
+        //   value: "مشروبات",
+        //   label: "مشروبات"
+        // },
+        // {
+        //   value: "إضافات",
+        //   label: "إضافات"
+        // },
+        // { value: "لحم", label: "لحم" },
+        // { value: "دجاج", label: "دجاج" },
+        // { value: "عادي", label: "عادي" },
+        // { value: "سوبر", label: "سوبر" },
+        // { value: "دبل", label: "دبل" },
+        // { value: "تربل", label: "تربل" },
+        // { value: "توفير", label: "توفير" }
       ]
     };
   },
   created() {
     if (this.Value) this.value = Array.from(this.Value.split(","));
+     GetActiveMenuItem()  .then((response) => {
+          // handle success
+          console.log(response);
+          this.options = response;
+          this.loading = false;
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error);
+        })
   },
   methods: {
     SetVal(val) {
