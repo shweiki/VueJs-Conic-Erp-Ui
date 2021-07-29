@@ -83,7 +83,7 @@
       <el-row type="flex">
         <el-col :span="18">
           <tinymce
-            v-bind:id="'tinymce-' + tempForm.Id"
+            v-bind:id="'tinymce-' + 0"
             v-model="tempForm.Html"
           />
         </el-col>
@@ -144,8 +144,9 @@ export default {
   },
   methods: {
     AddTinymce(v) {
+      console.log(this.tempForm.Id)
       window.tinymce
-        .get("tinymce-" + this.tempForm.Id + "")
+        .get("tinymce-" + 0 + "")
         .insertContent(`${v}`);
     },
     handleSizeChange(val) {

@@ -652,7 +652,6 @@ export default {
     },
     AddItem(Item, Qty) {
       this.focusBarcode();
-
       var find = this.tempForm.InventoryMovements.findIndex(
         value => value.ItemsId == Item.Id
       );
@@ -710,13 +709,13 @@ export default {
       this.$refs["F-SaleInvoice"].validate(valid => {
         this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
         this.tempForm.Tax = parseInt(this.tempForm.Tax);
-        if (
-          valid &&
+        let Total =
           this.tempForm.InventoryMovements.reduce((prev, cur) => {
             return prev + cur.Qty * cur.SellingPrice;
-          }, 0) -
-            this.tempForm.Discount >
-            0 &&
+          }, 0) - this.tempForm.Discount;
+        if (
+          valid &&
+          Total > 0 &&
           this.tempForm.InventoryMovements.length > 0 &&
           this.tempForm.InventoryMovements.reduce(
             (a, b) => a + (b["Qty"] || 0),
@@ -731,12 +730,13 @@ export default {
                 this.$notify({
                   title: "حصلت مشكلة في عملية الحفظ يرجى التاكد من البيانات",
                   message: "مشكلة",
-                  type: "success",
+                  type: "error",
                   position: "top-left",
                   duration: 1000,
                   onClose: () => {
                     this.ValidateDescription = "";
                     this.tempForm.Id = response;
+                    this.tempForm.Total = Total;
                     this.OldInvoice = this.tempForm;
                     this.AutoPrint ? this.Print() : undefined;
                     //     this.restTempForm();
@@ -755,6 +755,7 @@ export default {
                   onClose: () => {
                     this.ValidateDescription = "";
                     this.tempForm.Id = response;
+                    this.tempForm.Total = Total;
                     this.OldInvoice = this.tempForm;
                     this.AutoPrint ? this.Print() : undefined;
                     this.restTempForm();
@@ -781,12 +782,12 @@ export default {
         if (valid) {
           this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          if (
+          let Total =
             this.tempForm.InventoryMovements.reduce((prev, cur) => {
               return prev + cur.Qty * cur.SellingPrice;
-            }, 0) -
-              this.tempForm.Discount >
-              0 &&
+            }, 0) - this.tempForm.Discount;
+          if (
+            Total > 0 &&
             this.tempForm.InventoryMovements.length > 0 &&
             this.tempForm.InventoryMovements.reduce(
               (a, b) => a + (b["Qty"] || 0),
@@ -806,6 +807,7 @@ export default {
                   onClose: () => {
                     this.ValidateDescription = "";
                     this.tempForm.Id = response;
+                    this.tempForm.Total = Total;
                     this.OldInvoice = this.tempForm;
                     this.AutoPrint ? this.Print() : undefined;
                     this.$nextTick(() => {

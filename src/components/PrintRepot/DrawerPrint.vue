@@ -8,7 +8,7 @@
       @click="drawer = true"
     ></el-button>
     <el-drawer
-      size="50%"
+      size="70%"
       title="نماذج"
       :visible.sync="drawer"
       :direction="direction"
@@ -22,14 +22,14 @@
         <el-button
           type="success"
           icon="el-icon-printer"
-          @click="printJS('Report-' + item.Id, 'html')"
-        />
-        <el-button
-          type="danger"
-          icon="el-icon-printer"
           @click="PrintNewWin(item.Html)"
         />
-
+        <!-- 
+        <el-button
+          type="warning"
+          icon="el-icon-printer"
+          @click="JSPM(item.Printer, 'Report-' + item.Id)"
+        /> -->
         <el-button
           type="warning"
           icon="el-icon-edit"
@@ -44,6 +44,38 @@
             );
           "
         />
+        <el-col span="6">
+          <el-form-item
+            prop="EmailSent"
+            label="Email"
+            :rules="[
+              {
+                required: false,
+                message: 'Please input email address',
+                trigger: 'blur'
+              },
+              {
+                type: 'email',
+                message: 'Please input correct email address',
+                trigger: ['blur', 'change']
+              }
+            ]"
+          >
+            <el-input
+              placeholder="Please input Email"
+              v-model="item.EmailSent"
+              class="input-with-select"
+            >
+              <el-button
+                @click="SendEmail"
+                slot="append"
+                icon="el-icon-s-promotion"
+              ></el-button>
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <img id="imageblo" />
+
         <div
           style="direction: ltr;"
           v-bind:id="'Report-' + item.Id"
@@ -59,7 +91,7 @@
 import { OrderReceipt } from "@/Report/OrderReceipt.js";
 import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
 import { ShawermaSheesh } from "@/Report/ShawermaSheesh";
-import  Visualization  from "@/Report/Visualization.js";
+import Visualization from "@/Report/Visualization.js";
 
 import printJS from "print-js";
 import JSPM from "jsprintmanager";
@@ -145,26 +177,29 @@ export default {
         win.print();
       }, 1000);
     },
+    SendEmail() {},
     JSPM(printer, el) {
       if (printer) {
         let cpj = new JSPM.ClientPrintJob();
         cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
+
         htmlToImage
-          .toBlob(document.getElementById(el))
-          .then(function(dataUrl) {
+          .toPng(document.getElementById(el))
+          .then(dataUrl => {
             console.log(dataUrl);
+            document.getElementById("imageblo").src = dataUrl;
 
             cpj.files.push(
               new JSPM.PrintFile(
                 dataUrl,
-                JSPM.FileSourceType.BLOB,
+                JSPM.FileSourceType.URL,
                 el + ".png",
                 1
               )
             );
             cpj.sendToClient();
           })
-          .catch(function(error) {
+          .catch(error => {
             console.error("oops, something went wrong!", error);
           });
       }

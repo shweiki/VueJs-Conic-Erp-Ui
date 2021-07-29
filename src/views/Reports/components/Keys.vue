@@ -8,7 +8,7 @@
     </el-radio-group>
 
     <el-tabs
-     v-model="activeName"
+      v-model="activeName"
       :tab-position="tabPosition"
       type="border-card"
       style="height: 200px;"
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       tabPosition: "left",
-      activeName:"Dates",
+      activeName: "Dates",
       Keys: [
         {
           name: "Dates",
@@ -83,6 +83,10 @@ export default {
           name: "Numbers",
           keys: [
             {
+              name: "Id",
+              value: "Id : {{Id}}"
+            },
+            {
               name: "VendorId",
               value: "VendorId : {{VendorId}}"
             },
@@ -97,6 +101,10 @@ export default {
             {
               name: "Discount",
               value: "Discount : {{Discount}}"
+            },
+            {
+              name: "Total",
+              value: "Total : {{Total}}"
             },
             {
               name: "DeliveryPrice",
@@ -134,8 +142,9 @@ export default {
                         </tr>\
                         <tr id='InventoryMovements' >\
                         <td>{{item.Description}}</td>\
-                            <td>{{item.Total}}</td>\
+                            <td>{#{{item.SellingPrice}}*{{item.Qty}}/}</td>\
                             <td>{{item.SellingPrice}}</td>\
+                            <td>{{item.EXP}}</td>\
                             <td>{{item.Qty}}</td>\
                             <td>{{item.Name}}</td>\
                             <td>{{item.ItemsId}}</td>\

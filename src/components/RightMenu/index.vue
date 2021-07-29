@@ -27,9 +27,9 @@
       class="avatar-container right-menu-item hover-effect"
       trigger="click"
     >
-    <!-- $store.getters.avatar -->
+      <!-- $store.getters.avatar -->
       <div class="avatar-wrapper">
-        <img src="../../icons/Conic.png" class="user-avatar" />
+        <img :src="$store.getters.avatar" class="user-avatar" />
         <i class="el-icon-caret-bottom" />
       </div>
       <el-dropdown-menu slot="dropdown">
@@ -43,7 +43,10 @@
             {{ $t("navbar.dashboard") }}
           </el-dropdown-item>
         </router-link>
-        <router-link v-permission="['Developer']" to="/Settings/ApplicationSetting">
+        <router-link
+          v-permission="['Developer']"
+          to="/Settings/ApplicationSetting"
+        >
           <el-dropdown-item>
             {{ $t("route.ApplicationSetting") }}
           </el-dropdown-item>
