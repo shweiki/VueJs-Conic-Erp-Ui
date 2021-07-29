@@ -65,12 +65,12 @@
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <service-invoice :MemberId="tempForm.Id" />
+                  <Service-Invoice :MemberId="tempForm.Id" />
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <massage
+                  <Massage
                     :NumberPhone1="tempForm.PhoneNumber1"
                     :NumberPhone2="tempForm.PhoneNumber2"
                     :Email="tempForm.Email"

@@ -5,12 +5,43 @@
       <el-input
         type="textarea"
         v-model="Description"
-        :rules="[{ required: true, message: 'لايمكن ترك الخصم فارغ', trigger: 'blur' } ]"
+        :rules="[
+          { required: true, message: 'لايمكن ترك الخصم فارغ', trigger: 'blur' }
+        ]"
       ></el-input>
-      <el-button icon="el-icon-circle-plus" type="primary" :size="$store.getters.size" @click="SendSms()">SMS</el-button>
-      <el-button icon="el-icon-circle-plus" type="primary" :size="$store.getters.size" @click="SendEmail()">Email</el-button>
+      <el-button
+        icon="el-icon-chat-line-round"
+        type="primary"
+        :size="$store.getters.size"
+      >
+        <a
+          v-bind:href="
+            'https://wa.me/962' + NumberPhone1 + '?text=' + Description
+          "
+          target="_blank"
+        >
+          WhatsApp</a
+        ></el-button
+      >
+
+      <el-button
+        icon="el-icon-chat-square"
+        type="primary"
+        :size="$store.getters.size"
+        @click="SendSms()"
+        >SMS</el-button
+      >
+      <el-button
+        icon="el-icon-message"
+        type="primary"
+        :size="$store.getters.size"
+        @click="SendEmail()"
+        >Email</el-button
+      >
     </div>
-    <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
+    <el-button icon="el-icon-circle-plus" slot="reference"
+      >ارسال رسالة</el-button
+    >
   </el-popover>
 </template>
 
@@ -63,9 +94,26 @@ export default {
             msg: this.Description,
             requesttimeout: 5000000
           }
-        }).then(response => {
-          
+        }).then(response => {});
+        this.visible = false;
+        this.$notify({
+          title: "تم ",
+          message: "تم ارسال بنجاح",
+          type: "success",
+          duration: 2000
         });
+      }
+    },
+    SendWhatsApp() {
+      if (this.NumberPhone1 != "" && this.Description != "") {
+        if (this.NumberPhone1.length == 10) this.NumberPhone1.slice(1);
+        axios({
+          method: "get",
+          url: "https://wa.me/962" + this.NumberPhone1 + "",
+          params: {
+            text: this.Description
+          }
+        }).then(response => {});
         this.visible = false;
         this.$notify({
           title: "تم ",

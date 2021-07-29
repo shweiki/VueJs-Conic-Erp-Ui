@@ -6,7 +6,6 @@
       <el-radio-button label="bottom">bottom</el-radio-button>
       <el-radio-button label="left">left</el-radio-button>
     </el-radio-group>
-
     <el-tabs
       v-model="activeName"
       :tab-position="tabPosition"
@@ -141,7 +140,7 @@ export default {
                             <td>رقم المخزن</td>\
                         </tr>\
                         <tr id='InventoryMovements' >\
-                        <td>{{item.Description}}</td>\
+                            <td>{{item.Description}}</td>\
                             <td>{#{{item.SellingPrice}}*{{item.Qty}}/}</td>\
                             <td>{{item.SellingPrice}}</td>\
                             <td>{{item.EXP}}</td>\
