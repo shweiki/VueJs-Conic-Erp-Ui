@@ -95,7 +95,7 @@
                 >
                   <template slot="paneR">
                     <!--  <items-search :WithBarCode="false" @add="AddItem" />-->
-                    <items-category :WithImage="false" @add="AddItem" />
+                    <items-category :WithImage="true" @add="AddItem" />
                   </template>
                   <template slot="paneL">
                     <el-card class="card" :body-style="{ padding: '4px' }">
