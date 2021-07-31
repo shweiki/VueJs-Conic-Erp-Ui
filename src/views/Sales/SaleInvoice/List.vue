@@ -255,7 +255,13 @@
             TableName="SalesInvoice"
             @Done="handleFilter"
           />
-          <Print-Button Type="SaleInvoice" :Data="scope.row" />
+           <Drawer-Print
+                        
+                        Type="SaleInvoice"
+                        :Data="scope.row"
+                        Css="font-size: 12px"
+                      />
+           <Print-Button Type="SaleInvoice" :Data="scope.row" /> 
           <dialog-action-log TableName="SalesInvoice" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
@@ -310,6 +316,7 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import PrintButton from "@/components/PrintRepot/PrintButton";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import {
   SaleInvoicesList,
   SaleInvoicesItemsMovements,
@@ -329,6 +336,7 @@ export default {
     NextOprations,
     SearchByDate,
     PrintButton,
+    DrawerPrint,
     Pagination,
     UserSelect,
     RadioOprations,
