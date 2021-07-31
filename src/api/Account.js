@@ -23,7 +23,13 @@ export function GetAccountByAny(query) {
   })
 }
 
-
+export function GetByListQ(data) {
+  return request({
+    url: '/Account/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function GetInComeAccounts() {
   return request({
     url: '/Account/GetInComeAccounts',

@@ -171,7 +171,7 @@
             TableName="OrderInventory"
             @Done="handleFilter"
           />
-          <dialog-action-log TableName="OrderInventory" :ObjId="scope.row.Id" />
+          <Dialog-Action-Log TableName="OrderInventory" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">

@@ -31,7 +31,10 @@
         <el-row>
           <el-col :span="18">
             <el-form-item v-bind:label="$t('Classification.Notes')">
-              <el-input type="textarea" v-model="tempForm.Description"></el-input>
+              <el-input
+                type="textarea"
+                v-model="tempForm.Description"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -42,13 +45,13 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             >
               <Fake-Date
                 :Value="tempForm.FakeDate.toString()"
-                @Set="(v) => (tempForm.FakeDate = v)"
+                @Set="v => (tempForm.FakeDate = v)"
               />
             </el-form-item>
           </el-col>
@@ -68,33 +71,12 @@
                   {
                     required: true,
                     message: 'لا يمكن ترك الحساب فارغ',
-                    trigger: 'blur',
-                  },
+                    trigger: 'blur'
+                  }
                 ]"
               >
-            <account-search-any
-            @focus="focusAccount"
-            />
-                <el-select
-                  style="width: 100%"
-                  v-model="tempForm.EntryMovements[scope.$index].AccountId"
-                  filterable
-                  v-bind:placeholder="$t('Accounting.Account')"
-                  autocomplete="off"
-                >
-                  <el-option
-                    v-for="item in Account"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                    <span style="float: right">{{ item.label }}</span>
-                    <span style="float: left color: #8492a6 font-size: 13px">{{
-                      item.value
-                    }}</span>
-                  </el-option>
-                </el-select>
-
+                <account-search-any  />
+ 
               </el-form-item>
             </template>
           </el-table-column>
@@ -109,15 +91,17 @@
             <template slot-scope="scope">
               <el-input-number
                 v-bind:disabled="
-                  tempForm.EntryMovements[scope.$index].Debit != 0 ? true : false
+                  tempForm.EntryMovements[scope.$index].Debit != 0
+                    ? true
+                    : false
                 "
                 controls-position="right"
                 v-model="tempForm.EntryMovements[scope.$index].Credit"
                 :precision="2"
                 :step="1"
                 :min="0.0"
-                :max="1000000"                            @focus="$event.target.select()"
-
+                :max="1000000"
+                @focus="$event.target.select()"
               ></el-input-number>
             </template>
           </el-table-column>
@@ -132,19 +116,24 @@
             <template slot-scope="scope">
               <el-input-number
                 v-bind:disabled="
-                  tempForm.EntryMovements[scope.$index].Credit != 0 ? true : false
+                  tempForm.EntryMovements[scope.$index].Credit != 0
+                    ? true
+                    : false
                 "
                 controls-position="right"
                 v-model="tempForm.EntryMovements[scope.$index].Debit"
                 :precision="2"
                 :step="1"
                 :min="0.0"
-                :max="1000000"                            @focus="$event.target.select()"
-
+                :max="1000000"
+                @focus="$event.target.select()"
               ></el-input-number>
             </template>
           </el-table-column>
-          <el-table-column v-bind:label="$t('Classification.Notes')" width="450">
+          <el-table-column
+            v-bind:label="$t('Classification.Notes')"
+            width="450"
+          >
             <template slot-scope="scope">
               <el-form-item
                 :prop="'EntryMovements.' + scope.$index + '.Description'"
@@ -152,8 +141,8 @@
                   {
                     required: true,
                     message: 'لايمكن ترك بيان فارغ',
-                    trigger: 'blur',
-                  },
+                    trigger: 'blur'
+                  }
                 ]"
               >
                 <el-input
@@ -181,15 +170,21 @@
       </el-form>
       <template>
         <el-card shadow="hover" style="float: left">
-          <el-button type="danger" icon="fa fa-minus" @click="RemoveEntryMovements()"
+          <el-button
+            type="danger"
+            icon="fa fa-minus"
+            @click="RemoveEntryMovements()"
             >حذف الأخير</el-button
           >
         </el-card>
 
         <el-card shadow="hover">
-          <el-button type="primary" icon="el-icon-plus" @click="AddEntryMovements()">{{
-            $t("Stocks.AddMore")
-          }}</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="AddEntryMovements()"
+            >{{ $t("Stocks.AddMore") }}</el-button
+          >
         </el-card>
       </template>
     </el-card>
@@ -197,21 +192,19 @@
 </template>
 <script>
 import { CreateEntry, GetEntryById, Edit } from "@/api/EntryAccounting";
-import { GetActiveAccounts } from "@/api/Account";
 import FakeDate from "@/components/Date/FakeDate";
-import AccountSearchAny from '@/components/TreeAccount/AccountSearchAny.vue';
+import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
 export default {
   name: "NewAccountingEntry",
-  components: { FakeDate ,AccountSearchAny },
+  components: { FakeDate, AccountSearchAny },
   props: {
     isEdit: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
-      Account: [],
       Text: "",
       ValidateNote: "",
       tempForm: {
@@ -226,7 +219,7 @@ export default {
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
-            EntryId: undefined,
+            EntryId: undefined
           },
           {
             Id: undefined,
@@ -234,10 +227,10 @@ export default {
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
-            EntryId: undefined,
-          },
-        ],
-      },
+            EntryId: undefined
+          }
+        ]
+      }
     };
   },
   created() {
@@ -249,25 +242,12 @@ export default {
       lock: true,
       text: "تحميل",
       spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 0.7)",
+      background: "rgba(0, 0, 0, 0.7)"
     });
-    GetActiveAccounts()
-      .then((response) => {
-        // handle success
-        console.log(response);
-        this.Account = response;
-        loading.close();
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error);
-        loading.close();
-      });
+    loading.close();
   },
-  mounted() {
-    this.focusAccount();},
-  methods: {
 
+  methods: {
     Copy(Text) {
       this.Text = Text;
     },
@@ -281,22 +261,25 @@ export default {
         Debit: 0.0,
         Credit: 0.0,
         Description: "",
-        EntryId: undefined,
+        EntryId: undefined
       });
     },
     RemoveEntryMovements() {
-      this.tempForm.EntryMovements.splice(this.tempForm.EntryMovements.length - 1, 1);
+      this.tempForm.EntryMovements.splice(
+        this.tempForm.EntryMovements.length - 1,
+        1
+      );
     },
     getdata(val) {
       GetEntryById({ Id: val })
-        .then((response) => {
+        .then(response => {
           this.tempForm = response;
           // set tagsview title
           this.setTagsViewTitle();
           // set page title
           this.setPageTitle();
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
@@ -312,7 +295,7 @@ export default {
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
-            EntryId: undefined,
+            EntryId: undefined
           },
           {
             Id: undefined,
@@ -320,13 +303,13 @@ export default {
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
-            EntryId: undefined,
-          },
-        ],
+            EntryId: undefined
+          }
+        ]
       };
     },
     createData() {
-      this.$refs["tempForm"].validate((valid) => {
+      this.$refs["tempForm"].validate(valid => {
         if (valid) {
           if (
             this.tempForm.EntryMovements.reduce((prev, cur) => {
@@ -344,20 +327,22 @@ export default {
               0
           ) {
             CreateEntry(this.tempForm)
-              .then((response) => {
+              .then(response => {
                 this.getdata();
                 this.resetTempForm();
                 this.$notify({
                   title: "تم ",
                   message: "تم الإضافة بنجاح",
                   type: "success",
-                  duration: 2000,
+                  duration: 2000
                 });
               })
-              .catch((error) => {
+              .catch(error => {
                 console.log(error);
               });
-          } else this.ValidateNote = "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
+          } else
+            this.ValidateNote =
+              "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
@@ -365,7 +350,7 @@ export default {
       });
     },
     updateData() {
-      this.$refs["tempForm"].validate((valid) => {
+      this.$refs["tempForm"].validate(valid => {
         if (valid) {
           if (
             this.tempForm.EntryMovements.reduce((prev, cur) => {
@@ -383,19 +368,21 @@ export default {
               0
           ) {
             Edit(this.tempForm)
-              .then((response) => {
+              .then(response => {
                 this.getdata();
                 this.$notify({
                   title: "تم ",
                   message: "تم الإضافة بنجاح",
                   type: "success",
-                  duration: 2000,
+                  duration: 2000
                 });
               })
-              .catch((error) => {
+              .catch(error => {
                 console.log(error);
               });
-          } else this.ValidateNote = "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
+          } else
+            this.ValidateNote =
+              "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
@@ -405,14 +392,14 @@ export default {
     setTagsViewTitle() {
       const title = "Edit Entry";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`,
+        title: `${title}-${this.tempForm.Id}`
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Entry";
       document.title = `${title} - ${this.tempForm.Id}`;
-    },
-  },
+    }
+  }
 };
 </script>

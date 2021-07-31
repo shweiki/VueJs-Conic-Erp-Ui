@@ -1,391 +1,308 @@
 <template>
   <div class="app-container">
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <el-button
-          style="float: left"
-          type="success"
-          icon="el-icon-plus"
-          @click="handleCreate()"
-          >{{ $t("Classification.Add") }}</el-button
-        >
-        <span>{{ $t("Account.Account") }}</span>
-      </div>
-      <el-table
-        v-loading="loading"
-        :data="
-          tableData.filter(
-            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
-          )
-        "
-        fit
-        max-height="700"
-        highlight-current-row
-        style="width: 100%"
-      >
-        <el-table-column label="#" prop="Id" width="50"></el-table-column>
-        <el-table-column prop="Code" width="60">
-          <template slot="header" slot-scope="{}">
-            <el-button
-              circle
-              type="success"
-              icon="el-icon-refresh"
-              @click="getdata()"
-              :size="$store.getters.size"
-            ></el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="Name" align="center">
-          <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Account.AccountName')" />
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-bind:label="$t('Account.MainAccount')"
-          prop="Type"
-          width="150"
-        ></el-table-column>
+    <el-row type="flex">
+      <el-col :span="12">
+        <el-input
+          v-model="listQuery.Any"
+          placeholder="Search By Any Acount Name Or Id"
+          style="width: 200px"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+      </el-col>
 
-        <el-table-column
-          v-bind:label="$t('Account.Credit')"
-          prop="totalCredit"
-          width="100"
-          align="center"
+      <el-col :span="3">
+        <el-select
+          v-model="listQuery.Sort"
+          style="width: 140px"
+          class="filter-item"
+          @change="handleFilter"
         >
-          <template slot-scope="scope">{{ scope.row.TotalCredit.toFixed($store.getters.settings.ToFixed) }}</template>
-        </el-table-column>
-        <el-table-column
-          v-bind:label="$t('Account.Debit')"
-          prop="totalDebit"
-          width="100"
-          align="center"
-        >
-          <template slot-scope="scope">{{ scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed) }}</template>
-        </el-table-column>
-        <el-table-column v-bind:label="$t('Account.funds')" width="100" align="center">
-          <template slot-scope="scope">{{
-            (scope.row.TotalCredit - scope.row.TotalDebit).toFixed($store.getters.settings.ToFixed)
-          }}</template>
-        </el-table-column>
-        <el-table-column v-bind:label="$t('Account.Status')" align="center" width="70">
-          <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="Account" />
-          </template>
-        </el-table-column>
-        <!--
-        <el-table-column align="right" width="200">
-          <template slot-scope="scope">
-            <el-button
-              v-if="scope.row.Opration.Status != -1"
-              icon="el-icon-edit"
-              :size="$store.getters.size"
-              circle
-              @click="handleUpdate(scope.row)"
-            ></el-button>
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              :size="$store.getters.size"
-              round
-              @click="handleOprationsys(scope.row.Id, NOprations)"
-              >{{ NOprations.OprationDescription }}</el-button
-            >
-          </template>
-        </el-table-column>
-        -->
-      </el-table>
-    </el-card>
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      :title="textMapForm[dialogFormStatus]"
-      :visible.sync="dialogFormVisible"
-    >
-      <el-form
-        ref="dataForm"
-        :rules="rulesForm"
-        :model="tempForm"
-        label-position="top"
-        label-width="70px"
-      >
-        <el-form-item v-bind:label="$t('Account.AccType')" prop="Type">
-          <el-select v-model="tempForm.Type" filterable placeholder="الحسابات الرئيسية">
-            <el-option
-              v-for="item in TypeAccounts"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item v-bind:label="$t('Account.AccName')" prop="Name">
-          <el-input type="text" v-model="tempForm.Name"></el-input>
-        </el-form-item>
-        <el-form-item v-bind:label="$t('Account.Code')" prop="Code">
-          <el-input type="text" v-model="tempForm.Code"></el-input>
-        </el-form-item>
-        <el-form-item v-bind:label="$t('Account.Notes')" prop="Description">
-          <el-input type="textarea" v-model="tempForm.Description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{
-          $t("Account.cancel")
-        }}</el-button>
+          <el-option
+            v-for="item in sortOptions"
+            :key="item.key"
+            :label="item.label"
+            :value="item.key"
+          />
+        </el-select>
+      </el-col>
+      <el-col :span="6">
         <el-button
+          v-waves
+          :loading="downloadLoading"
+          class="filter-item"
           type="primary"
-          @click="dialogFormStatus === 'create' ? createData() : updateData()"
-          >{{ $t("Account.Save") }}</el-button
+          icon="el-icon-download"
+          @click="handleDownload"
         >
-      </div>
-    </el-dialog>
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      :title="textOpration.OprationDescription"
-      :visible.sync="dialogOprationVisible"
+          Export </el-button
+        ><el-button
+          v-waves
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          @click="handleFilter"
+        >
+          Search
+        </el-button>
+      </el-col>
+    </el-row>
+
+    <el-row type="flex">
+      <el-col :span="6">
+        <radio-oprations
+          TableName="Account"
+          @Set="
+            v => {
+              listQuery.Status = v;
+              handleFilter();
+            }
+          "
+      /></el-col>
+      <el-col v-permission="['Admin']" :span="18">
+        <el-divider direction="vertical"></el-divider>
+        <span>عدد الحسابات</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Rows }}</span>
+        <el-divider direction="vertical"></el-divider>
+
+        <span>مجموع المدين (لك)</span>
+        <el-divider direction="vertical"></el-divider>
+        <span
+          >{{
+            Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
+        <el-divider direction="vertical"></el-divider>
+
+        <span> (عليك) مجموع الدائن </span>
+        <el-divider direction="vertical"></el-divider>
+        <span
+          >{{
+            Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
+        <el-divider direction="vertical"></el-divider>
+
+        <span>الرصيد</span>
+        <el-divider direction="vertical"></el-divider>
+        <span
+          >{{
+            Totals.Totals.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
+        <el-divider direction="vertical"></el-divider>
+      </el-col>
+    </el-row>
+
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%"
+      @sort-change="sortChange"
     >
-      <el-form
-        ref="dataOpration"
-        :rules="rulesOpration"
-        :model="tempOpration"
-        label-position="top"
-        label-width="70px"
-        style="width: 400px margin-left:50px"
+      <el-table-column label="#" prop="Id" width="50"></el-table-column>
+      <el-table-column prop="Code" width="60"> </el-table-column>
+      <el-table-column
+        prop="Name"
+        align="center"
+        v-bind:label="$t('Account.AccountName')"
       >
-        <el-form-item
-          v-bind:label="$t('Classification.OperationNote')"
-          prop="Description"
-        >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
-      </div>
-    </el-dialog>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Account.MainAccount')"
+        prop="Type"
+        width="150"
+      ></el-table-column>
+
+      <el-table-column
+        v-bind:label="$t('Account.Credit')"
+        prop="totalCredit"
+        width="100"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.TotalCredit.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Account.Debit')"
+        prop="totalDebit"
+        width="100"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Account.funds')"
+        width="100"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
+            $store.getters.settings.ToFixed
+          )
+        }}</template>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Account.Status')"
+        align="center"
+        width="70"
+      >
+        <template slot-scope="scope">
+          <Status-Tag :Status="scope.row.Status" TableName="Account" />
+        </template>
+      </el-table-column>
+
+      <el-table-column width="180" align="center">
+        <template slot-scope="scope">
+          <Next-Oprations
+            :ObjId="scope.row.Id"
+            :Status="scope.row.Status"
+            TableName="Account"
+            @Done="handleFilter"
+          />
+          <Print-Button Type="Account" :Data="scope.row" />
+          <Dialog-Action-Log TableName="Account" :ObjId="scope.row.Id" />
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      v-show="Totals.Rows > 0"
+      :total="Totals.Rows"
+      :page.sync="listQuery.Page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
   </div>
 </template>
 <script>
-import { GetAccount, Create, Edit } from "@/api/Account";
-import { ChangeObjStatus } from "@/api/Oprationsys";
+import { GetByListQ } from "@/api/Account";
 import StatusTag from "@/components/Oprationsys/StatusTag";
+import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import NextOprations from "@/components/Oprationsys/NextOprations";
+import waves from "@/directive/waves"; // waves directive
+import { parseTime } from "@/utils";
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import permission from "@/directive/permission/index.js";
 
 export default {
   name: "TableAccount",
-  components: { StatusTag },
+  components: { StatusTag, RadioOprations, NextOprations, Pagination },
+  directives: { waves, permission },
   data() {
     return {
-      loading: true,
-      dialogFormVisible: false,
-      dialogOprationVisible: false,
-      dialogFormStatus: "",
-      tableData: [],
+      list: [],
+      Totals: {
+        Rows: 0,
+        Totals: 0,
+        TotalCredit: 0,
+        TotalDebit: 0
+      },
+      listLoading: false,
+      listQuery: {
+        Page: 1,
+        Any: "",
+        limit: this.$store.getters.settings.LimitQurey,
+        Sort: "+id",
+        User: undefined,
+
+        Status: undefined
+      },
+      sortOptions: [
+        { label: "Id Ascending", key: "+id" },
+        { label: "Id Descending", key: "-id" }
+      ],
+      downloadLoading: false,
       TypeAccounts: [
         {
           label: "حساب",
-          value: "Vendor",
+          value: "Vendor"
         },
         {
           label: "خزينة كاش",
-          value: "Cash",
-        },
-      ],
-      search: "",
-      textMapForm: {
-        update: "تعديل",
-        create: "إضافة",
-      },
-      textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: "",
-      },
-      tempForm: {
-        Id: undefined,
-        Name: "",
-        Status: 0,
-        Code: "",
-        Type: undefined,
-        Description: "",
-      },
-      rulesForm: {
-        Name: [
-          {
-            required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur",
-          },
-          {
-            minlength: 3,
-            maxlength: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 احرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
-      tempOpration: {
-        ObjId: undefined,
-        OprationId: undefined,
-        Description: "",
-      },
-      rulesOpration: {
-        Description: [
-          {
-            required: true,
-            message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
-          },
-          {
-            minlength: 5,
-            maxlength: 150,
-            message: "الرجاء إدخال إسم لا يقل عن 5 أحرف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+          value: "Cash"
+        }
+      ]
     };
   },
   created() {
-    this.getdata();
+    //   this.getdata();
   },
   methods: {
-    getdata() {
-      this.loading = true;
-      GetAccount()
-        .then((response) => {
-          // handle success
-          console.log(response);
-          this.tableData = response.Accounts;
-          this.loading = false;
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error);
+    getList() {
+      this.listLoading = true;
+      //    console.log("sdsad", this.listQuery);
+      GetByListQ(this.listQuery).then(response => {
+        this.list = response.items;
+        this.Totals = response.Totals;
+        this.listLoading = false;
+      });
+    },
+    handleFilter() {
+      this.listQuery.Page = 1;
+      this.getList();
+    },
+    sortChange(data) {
+      const { prop, order } = data;
+      if (prop === "id") {
+        this.sortById(order);
+      }
+    },
+    sortById(order) {
+      if (order === "ascending") {
+        this.listQuery.sort = "+id";
+      } else {
+        this.listQuery.sort = "-id";
+      }
+      this.handleFilter();
+    },
+    handleDownload() {
+      this.downloadLoading = true;
+      import("@/Report/Excel/Export2Excel").then(excel => {
+        const tHeader = Object.keys(this.list[0]);
+        const filterVal = Object.keys(this.list[0]);
+        const data = this.formatJson(filterVal);
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename:
+            window.location.pathname.split("/") +
+            "-" +
+            JSON.stringify(this.listQuery)
         });
-    },
-    resetTempForm() {
-      this.tempForm = {
-        Id: undefined,
-        Name: "",
-        Status: 0,
-        Code: "",
-        Type: undefined,
-        Description: "",
-      };
-    },
-    handleCreate() {
-      this.resetTempForm();
-      this.dialogFormStatus = "create";
-      this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
+        this.downloadLoading = false;
       });
     },
-    handleUpdate(row) {
-      console.log(row);
-      this.tempForm.Id = row.Id;
-      this.tempForm.Name = row.Name;
-      this.tempForm.Status = row.Status;
-      this.tempForm.Code = row.Code;
-      this.tempForm.Type = row.Parent.Id;
-      this.tempForm.Description = row.Description;
-      this.dialogFormStatus = "update";
-      this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+    formatJson(filterVal) {
+      return this.list.map(v =>
+        filterVal.map(j => {
+          if (j === "InventoryMovements") {
+            return JSON.stringify(v[j]);
+          }
+          if (j === "ActionLogs") {
+            return JSON.stringify(v[j]);
+          }
+          if (j === "FakeDate") {
+            return parseTime(v[j]);
+          } else {
+            return v[j];
+          }
+        })
+      );
     },
-    handleOprationsys(ObjId, Opration) {
-      this.dialogOprationVisible = true;
-      // text
-      this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
-      this.textOpration.IconClass = Opration.IconClass;
-      this.textOpration.ClassName = Opration.ClassName;
-      /// temp
-      this.tempOpration.ObjId = ObjId;
-      this.tempOpration.OprationId = Opration.Id;
-      this.tempOpration.Description = "";
-    },
-    createData() {
-      this.$refs["dataForm"].validate((valid) => {
-        if (valid) {
-          Create(this.tempForm)
-            .then((response) => {
-              this.getdata();
-              this.dialogFormVisible = false;
-              this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                duration: 2000,
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    updateData() {
-      this.$refs["dataForm"].validate((valid) => {
-        if (valid) {
-          Edit(this.tempForm)
-            .then((response) => {
-              this.getdata();
-              this.dialogFormVisible = false;
-              this.$notify({
-                title: "تم",
-                message: "تم التعديل بنجاح",
-                type: "success",
-                duration: 2000,
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
-        if (valid) {
-          console.log(this.tempOpration);
-          ChangeObjStatus({
-            ObjId: this.tempOpration.ObjId,
-            OprationId: this.tempOpration.OprationId,
-            Description: this.tempOpration.Description,
-          })
-            .then((response) => {
-              this.getdata();
-              this.dialogOprationVisible = false;
-              this.$notify({
-                title: "تم  ",
-                message: "تمت العملية بنجاح",
-                type: "success",
-                duration: 2000,
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-  },
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort;
+      return sort === `+${key}` ? "ascending" : "descending";
+    }
+  }
 };
 </script>

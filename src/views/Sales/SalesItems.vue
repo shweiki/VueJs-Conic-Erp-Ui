@@ -258,7 +258,7 @@
             @Done="handleFilter"
           />
           <Print-Button Type="SaleInvoice" :Data="scope.row" />
-          <dialog-action-log TableName="SalesInvoice" :ObjId="scope.row.Id" />
+          <Dialog-Action-Log TableName="SalesInvoice" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
