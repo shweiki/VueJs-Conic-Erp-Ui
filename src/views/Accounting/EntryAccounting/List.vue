@@ -164,7 +164,7 @@ export default {
             return obj.value == this.AccountId;
           }).label +
           "</h2></center><h3 style='float:left'>الاجمالي " +
-          this.Total.toFixed($store.getters.settings.ToFixed) +
+          this.Total.toFixed(this.$store.getters.settings.ToFixed) +
           "</h3><h3 style='float:right'>  الفترة  : " +
           this.formatDate(this.date[0]) +
           " - " +

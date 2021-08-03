@@ -75,8 +75,17 @@
                   }
                 ]"
               >
-                <account-search-any  />
- 
+                <Account-Search-Any
+                  @Set="
+                    v => {
+                      tempForm.EntryMovements[scope.$index].AccountId = v.Id;
+                      tempForm.EntryMovements[scope.$index].Accountx = v;
+                    }
+                  "
+                />
+                <ElTag type="success">{{
+                  tempForm.EntryMovements[scope.$index].Accountx.Name
+                }}</ElTag>
               </el-form-item>
             </template>
           </el-table-column>
@@ -216,6 +225,7 @@ export default {
           {
             Id: undefined,
             AccountId: undefined,
+            Accountx: { Name: "" },
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
@@ -224,6 +234,7 @@ export default {
           {
             Id: undefined,
             AccountId: undefined,
+            Accountx: { Name: "" },
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
@@ -258,6 +269,8 @@ export default {
       this.tempForm.EntryMovements.push({
         Id: undefined,
         AccountId: undefined,
+                    Accountx: { Name: "" },
+
         Debit: 0.0,
         Credit: 0.0,
         Description: "",
@@ -292,6 +305,8 @@ export default {
           {
             Id: undefined,
             AccountId: undefined,
+                        Accountx: { Name: "" },
+
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
@@ -300,6 +315,8 @@ export default {
           {
             Id: undefined,
             AccountId: undefined,
+                        Accountx: { Name: "" },
+
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
@@ -326,16 +343,26 @@ export default {
               }, 0) !=
               0
           ) {
+            
             CreateEntry(this.tempForm)
               .then(response => {
-                this.getdata();
-                this.resetTempForm();
-                this.$notify({
-                  title: "تم ",
-                  message: "تم الإضافة بنجاح",
-                  type: "success",
-                  duration: 2000
-                });
+                if (response) {
+                  this.getdata(response);
+                  this.resetTempForm();
+                  this.$notify({
+                    title: "تم ",
+                    message: "تم الإضافة بنجاح",
+                    type: "success",
+                    duration: 2000
+                  });
+                } else {
+                  this.$notify({
+                    title: "خطأ ",
+                    message: "حصلت مشكلة في عملية الحفظ",
+                    type: "error",
+                    duration: 20000
+                  });
+                }
               })
               .catch(error => {
                 console.log(error);

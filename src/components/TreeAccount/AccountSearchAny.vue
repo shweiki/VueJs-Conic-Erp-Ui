@@ -37,7 +37,6 @@ export default {
       this.options = [];
       this.$emit("Set", val);
     },
-
     querySearch(query) {
       if (query !== "" && query.length > 1) {
         GetAccountByAny({ Any: query }).then(res => {
