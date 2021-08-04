@@ -71,7 +71,7 @@
           </el-col>
         </el-row>
       </div>
-      <radio-oprations
+      <Radio-Oprations
         TableName="Payment"
         @Set="
           v => {
@@ -210,7 +210,7 @@
             TableName="Payment"
             @Done="handleFilter"
           />
-          <Print-Button Type="Payment" :Data="scope.row" />
+          <Drawer-Print Type="Payment" :Data="scope.row" />
         </template>
       </el-table-column>
     </el-table>
@@ -229,8 +229,8 @@ import { GetByListQ } from "@/api/Payment";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import PrintButton from "@/components/PrintRepot/PrintButton";
-import UserSelect from "@/components/User/UserSelect";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
+import UserSelect from "@/components/User/UserSelect.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 
 import waves from "@/directive/waves"; // waves directive
@@ -243,7 +243,7 @@ export default {
     StatusTag,
     NextOprations,
     SearchByDate,
-    PrintButton,
+    DrawerPrint,
     Pagination,
     UserSelect,
     RadioOprations

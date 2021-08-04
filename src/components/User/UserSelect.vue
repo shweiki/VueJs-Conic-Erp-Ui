@@ -43,7 +43,7 @@ export default {
       //      console.log(" eee  " + this.Name);
       this.$emit(
         "Set",
-        this.options.find((obj) => obj.UserName == val)
+        this.options.find((obj) => obj.UserName == val).UserName
       );
       this.value = val;
     },

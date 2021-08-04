@@ -269,7 +269,7 @@ export default {
       this.tempForm.EntryMovements.push({
         Id: undefined,
         AccountId: undefined,
-                    Accountx: { Name: "" },
+        Accountx: { Name: "" },
 
         Debit: 0.0,
         Credit: 0.0,
@@ -305,8 +305,7 @@ export default {
           {
             Id: undefined,
             AccountId: undefined,
-                        Accountx: { Name: "" },
-
+            Accountx: { Name: "" },
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
@@ -315,8 +314,7 @@ export default {
           {
             Id: undefined,
             AccountId: undefined,
-                        Accountx: { Name: "" },
-
+            Accountx: { Name: "" },
             Debit: 0.0,
             Credit: 0.0,
             Description: "",
@@ -343,7 +341,6 @@ export default {
               }, 0) !=
               0
           ) {
-            
             CreateEntry(this.tempForm)
               .then(response => {
                 if (response) {

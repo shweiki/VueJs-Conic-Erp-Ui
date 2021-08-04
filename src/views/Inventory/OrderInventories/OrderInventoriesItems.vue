@@ -81,7 +81,7 @@
 
     <el-row type="flex">
       <el-col :span="6">
-        <radio-oprations
+        <Radio-Oprations
           TableName="OrderInventory"
           @Set="
             v => {
@@ -207,7 +207,7 @@ import { GetByItem } from "@/api/OrderInventory";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 
@@ -225,7 +225,7 @@ export default {
     StatusTag,
     NextOprations,
     SearchByDate,
-    PrintButton,
+    DrawerPrint,
     Pagination,
     UserSelect,
     RadioOprations,

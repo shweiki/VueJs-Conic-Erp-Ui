@@ -16,7 +16,7 @@
             </el-date-picker
           ></el-col>
           <el-col :span="12">
-            <radio-oprations TableName="MembershipMovement" @Change="getdata" />
+            <Radio-Oprations TableName="MembershipMovement" @Change="getdata" />
           </el-col>
         </el-row>
         <el-button

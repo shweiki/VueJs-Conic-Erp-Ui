@@ -111,7 +111,7 @@
         <el-divider direction="vertical"></el-divider
       ></el-col>
       <el-col :span="6">
-        <radio-oprations
+        <Radio-Oprations
           TableName="PurchaseInvoice"
           @Set="
             v => {

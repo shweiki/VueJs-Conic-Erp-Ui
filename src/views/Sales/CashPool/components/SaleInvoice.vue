@@ -286,7 +286,7 @@
             ></el-button>
           </template>
           <template slot-scope="scope">
-            <Print-Button Type="SaleInvoice" :Data="scope.row" />
+            <Drawer-Print Type="SaleInvoice" :Data="scope.row" />
           </template>
         </el-table-column>
         <el-table-column type="expand">
@@ -341,7 +341,7 @@ import { GetActiveCash } from "@/api/Cash";
 import { GetInComeAccounts } from "@/api/Account";
 import { CreateEntry } from "@/api/EntryAccounting";
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import { SaleInvoicesList } from "@/Report/SaleInvoice";
 import permission from "@/directive/permission/index.js";
 import checkPermission from "@/utils/permission";
@@ -350,7 +350,7 @@ import printJS from "print-js";
 
 export default {
   name: "SaleInvoice",
-  components: { PrintButton },
+  components: { DrawerPrint },
   directives: { permission },
   data() {
     return {

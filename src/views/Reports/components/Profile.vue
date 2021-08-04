@@ -215,7 +215,7 @@ export default {
                 this.$notify({
                   title: "حصلت مشكلة",
                   message: "الرجاء التاكد من المعلومات",
-                  type: "success",
+                  type: "error",
                   position: "top-left",
                   duration: 1000,
                   showClose: false

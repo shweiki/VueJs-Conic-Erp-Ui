@@ -102,7 +102,7 @@
         <el-divider direction="vertical"></el-divider
       ></el-col>
       <el-col :span="6">
-        <radio-oprations
+        <Radio-Oprations
           TableName="WorkShop"
           @Set="
             (v) => {
@@ -198,7 +198,7 @@
             TableName="WorkShop"
             @Done="handleFilter"
           />
-          <Print-Button Type="WorkShop" :Data="scope.row" />
+          <Drawer-Print Type="WorkShop" :Data="scope.row" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -249,7 +249,7 @@ import { GetByListQ } from "@/api/WorkShop";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import { SaleInvoicesList } from "@/Report/SaleInvoice";
@@ -264,7 +264,7 @@ export default {
     StatusTag,
     NextOprations,
     SearchByDate,
-    PrintButton,
+    DrawerPrint,
     Pagination,
     UserSelect,
     RadioOprations,

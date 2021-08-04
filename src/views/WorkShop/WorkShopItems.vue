@@ -121,7 +121,7 @@
         <el-divider direction="vertical"></el-divider
       ></el-col>
       <el-col :span="6">
-        <radio-oprations
+        <Radio-Oprations
           TableName="PurchaseInvoice"
           @Set="
             v => {
@@ -243,7 +243,7 @@
             TableName="PurchaseInvoice"
             @Done="handleFilter"
           />
-          <Print-Button Type="PurchaseInvoice" :Data="scope.row" />
+          <Drawer-Print Type="PurchaseInvoice" :Data="scope.row" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -294,7 +294,7 @@ import { GetByItem } from "@/api/PurchaseInvoice";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 
@@ -309,7 +309,7 @@ export default {
     StatusTag,
     NextOprations,
     SearchByDate,
-    PrintButton,
+    DrawerPrint,
     Pagination,
     UserSelect,
     RadioOprations,

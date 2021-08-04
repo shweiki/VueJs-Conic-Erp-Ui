@@ -125,7 +125,7 @@
               :Status="scope.row.Status"
               TableName="PurchaseInvoice"
             />
-            <Print-Button Type="PurchaseInvoice" :Data="scope.row" />
+            <Drawer-Print Type="PurchaseInvoice" :Data="scope.row" />
           </template>
         </el-table-column>
         <el-table-column type="expand">

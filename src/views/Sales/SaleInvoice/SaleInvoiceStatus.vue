@@ -121,7 +121,7 @@
     </el-row>
     <el-row type="flex">
       <el-col :span="9">
-        <radio-oprations
+        <Radio-Oprations
           TableName="SalesInvoice"
           @Set="
             v => {
@@ -239,7 +239,7 @@
       </el-table-column>
       <el-table-column width="55" align="center">
         <template slot-scope="scope">
-          <Print-Button Type="SaleInvoice" :Data="scope.row" />
+          <Drawer-Print Type="SaleInvoice" :Data="scope.row" />
           <Dialog-Action-Log TableName="SalesInvoice" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
@@ -296,7 +296,7 @@ import { GetByListQ } from "@/api/SaleInvoice";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import { SaleInvoicesList } from "@/Report/SaleInvoice";
@@ -314,7 +314,7 @@ export default {
     StatusTag,
     NextOprations,
     SearchByDate,
-    PrintButton,
+    DrawerPrint,
     Pagination,
     UserSelect,
     RadioOprations,

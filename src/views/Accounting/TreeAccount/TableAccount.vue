@@ -50,7 +50,7 @@
 
     <el-row type="flex">
       <el-col :span="6">
-        <radio-oprations
+        <Radio-Oprations
           TableName="Account"
           @Set="
             v => {
@@ -170,7 +170,7 @@
             TableName="Account"
             @Done="handleFilter"
           />
-          <Print-Button Type="Account" :Data="scope.row" />
+          <Drawer-Print Type="Account" :Data="scope.row" />
           <Dialog-Action-Log TableName="Account" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>

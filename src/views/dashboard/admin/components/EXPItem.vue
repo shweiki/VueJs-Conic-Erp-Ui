@@ -64,7 +64,7 @@
         /></el-col>
       </el-row>
     </div>
-    <radio-oprations
+    <Radio-Oprations
       TableName="Item"
       @Set="
         v => {
@@ -178,7 +178,7 @@
           /></el-col>
           <el-col :span="8"> <edit-item :ItemId="scope.row.Id" /> </el-col>
           <el-col :span="8">
-            <Print-Button Type="Item" :Data="scope.row" />
+            <Drawer-Print Type="Item" :Data="scope.row" />
           </el-col>
         </template>
       </el-table-column>
@@ -253,7 +253,7 @@
 import { GetEXP, CalculateCostPrice } from "@/api/Item";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import PrintButton from "@/components/PrintRepot/PrintButton.vue";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import ItemQty from "@/components/Item/ItemQty.vue";
 import EditItem from "@/components/Item/EditItem.vue";
@@ -270,7 +270,7 @@ export default {
   components: {
     StatusTag,
     NextOprations,
-    PrintButton,
+    DrawerPrint,
     Pagination,
     RadioOprations,
     ItemQty,

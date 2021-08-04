@@ -85,7 +85,7 @@
           </el-col>
         </el-row>
       </div>
-      <radio-oprations
+      <Radio-Oprations
         TableName="Member"
         @Set="
           v => {
@@ -228,7 +228,7 @@
             TableName="Member"
             @Done="handleFilter"
           />
-          <Print-Button Type="Member" :Data="scope.row" />
+          <Drawer-Print Type="Member" :Data="scope.row" />
         </template>
       </el-table-column>
     </el-table>
@@ -246,7 +246,7 @@
 import { GetByListQ, FixPhoneNumber } from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import permission from "@/directive/permission/index.js";
 
@@ -259,7 +259,7 @@ export default {
   components: {
     StatusTag,
     NextOprations,
-    PrintButton,
+    DrawerPrint,
     Pagination,
     RadioOprations
   },

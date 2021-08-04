@@ -85,7 +85,7 @@
           </el-col>
         </el-row>
       </div>
-      <radio-oprations
+      <Radio-Oprations
         TableName="Driver"
         @Set="
           v => {

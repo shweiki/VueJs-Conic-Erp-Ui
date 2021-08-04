@@ -375,7 +375,7 @@
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                       ></el-switch> -->
-                      <Print-Button
+                      <Drawer-Print
                         v-if="OldInvoice == null ? false : true"
                         Type="SaleInvoice"
                         :Data="OldInvoice"
@@ -498,7 +498,7 @@ import ItemsPrime from "@/components/Item/ItemsPrime";
 import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill";
 
-import PrintButton from "@/components/PrintRepot/PrintButton";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 
 // report
 
@@ -525,7 +525,7 @@ export default {
     ItemsSearch,
     ItemsPrime,
     EditItem,
-    PrintButton,
+    DrawerPrint,
     RestOfBill,
     RightMenu,
     FakeDate

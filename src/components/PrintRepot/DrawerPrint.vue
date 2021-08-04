@@ -14,6 +14,7 @@
       :direction="direction"
       @opened="getdata()"
     >
+      <ElTag type="success">{{ Type }}</ElTag>
       <el-col
         v-bind:span="24 / Reports.length"
         v-for="item in Reports"

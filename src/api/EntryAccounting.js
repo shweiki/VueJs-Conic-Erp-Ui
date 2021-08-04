@@ -7,6 +7,12 @@ export function GetEntryAccounting(query) {
     method: 'get',
     params: query
   })
+}export function GetByListQ(data) {
+  return request({
+    url: '/EntryAccounting/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
+  })
 }
 export function GetEntryById(query) {
   return request({

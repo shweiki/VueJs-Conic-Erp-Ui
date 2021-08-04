@@ -1,6 +1,129 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
+      <div class="filter-container">
+        <el-row type="flex">
+          <el-col :span="4">
+            <el-input
+              v-model="listQuery.Any"
+              placeholder="Search By Any Acount Name Or Id"
+              style="width: 200px"
+              class="filter-item"
+              @keyup.enter.native="handleFilter"
+            />
+          </el-col>
+          <Account-Search-Any
+            @Set="
+              v => {
+                listQuery.AccountId = v.Id;
+                Accountx = v;
+              }
+            "
+          />
+          <ElTag type="success">{{ Accountx.Name }}</ElTag>
+          <el-col :span="8">
+            <Search-By-Date
+              :Value="[listQuery.DateFrom, listQuery.DateTo]"
+              @Set="
+                v => {
+                  listQuery.DateFrom = v[0];
+                  listQuery.DateTo = v[1];
+                  handleFilter();
+                }
+              "
+            />
+          </el-col>
+          <el-col :span="3">
+            <user-select
+              @Set="
+                v => {
+                  listQuery.User = v;
+                  handleFilter();
+                }
+              "
+            />
+          </el-col>
+          <el-col :span="3">
+            <el-select
+              v-model="listQuery.Sort"
+              style="width: 140px"
+              class="filter-item"
+              @change="handleFilter"
+            >
+              <el-option
+                v-for="item in sortOptions"
+                :key="item.key"
+                :label="item.label"
+                :value="item.key"
+              />
+            </el-select>
+          </el-col>
+          <el-col :span="6">
+            <el-button
+              v-waves
+              :loading="downloadLoading"
+              class="filter-item"
+              type="primary"
+              icon="el-icon-download"
+              @click="handleDownload"
+            >
+              Export </el-button
+            ><el-button
+              v-waves
+              class="filter-item"
+              type="primary"
+              icon="el-icon-search"
+              @click="handleFilter"
+            >
+              Search
+            </el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <Radio-Oprations
+        TableName="EntryAccounting"
+        @Set="
+          v => {
+            listQuery.Status = v;
+            handleFilter();
+          }
+        "
+      />
+      <el-divider direction="vertical"></el-divider>
+      <span>عدد القيود</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>{{ Totals.Rows }}</span>
+      <el-divider direction="vertical"></el-divider>
+
+      <span>مجموع المدين</span>
+      <el-divider direction="vertical"></el-divider>
+      <span
+        >{{ Totals.Credit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
+      <el-divider direction="vertical"></el-divider>
+
+      <span>مجموع الدائن</span>
+      <el-divider direction="vertical"></el-divider>
+      <span
+        >{{ Totals.Debit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
+      <el-divider direction="vertical"></el-divider>
+
+      <span>الرصيد</span>
+      <el-divider direction="vertical"></el-divider>
+      <span
+        >{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
+      <el-divider direction="vertical"></el-divider>
+
+      <el-button
+        style="float: left"
+        icon="el-icon-printer"
+        type="success"
+        @click="print(list)"
+      ></el-button>
+    </el-card>
+    <el-card class="box-card">
       <div slot="header" class="clearfix">
         <router-link
           class="pan-btn tiffany-btn"
@@ -11,57 +134,24 @@
         >
         <span>{{ $t("Accounting.AccountingEntryinquiries") }}</span>
       </div>
-      <div slot="header" class="clearfix">
-        <Search-By-Date
-          :Value="[]"
-          @Set="
-            v => {
-              date = v;
-            }
-          "
-          @focus="getdata()"
-        />
-      </div>
+
       <el-card class="box-card">
-        <span class="demonstration">{{ $t("Accounting.Account") }}</span>
-        <el-select
-          v-model="AccountId"
-          filterable
-          v-bind:placeholder="$t('Accounting.Account')"
-          @change="getdata"
-          autocomplete="off"
-        >
-          <el-option
-            v-for="(item, index) in Account"
-            :key="index"
-            :label="item.label"
-            :value="item.value"
-          >
-            <span style="float: right">{{ item.label }}</span>
-            <span style="float: left color: #8492a6 font-size: 13px">{{
-              item.value
-            }}</span>
-          </el-option>
-        </el-select>
-        <el-divider direction="vertical"></el-divider>
-        <span>{{ Total.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-        <el-divider direction="vertical"></el-divider>
         <el-button
           style="float: left"
           icon="el-icon-printer"
           type="success"
-          @click="print(tableData)"
+          @click="print(list)"
         ></el-button>
       </el-card>
 
       <el-table
-        v-loading="loading"
-        :data="tableData"
+        v-loading="listLoading"
+        :data="list"
         fit
         border
-        max-height="850"
         highlight-current-row
         style="width: 100%"
+        @sort-change="sortChange"
         @row-dblclick="
           row => {
             $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
@@ -74,13 +164,6 @@
           width="120"
           align="center"
         >
-          <template slot="header" slot-scope="{}">
-            <el-button
-              type="success"
-              icon="el-icon-refresh"
-              @click="getdata"
-            ></el-button>
-          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -103,55 +186,145 @@
             scope.row.Debit.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
+        <el-table-column
+          v-bind:label="$t('Sales.Status')"
+          width="120"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <Status-Tag
+              :Status="scope.row.Status"
+              TableName="EntryAccounting"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column width="180" align="center">
+          <template slot-scope="scope">
+            <Next-Oprations
+              :ObjId="scope.row.Id"
+              :Status="scope.row.Status"
+              TableName="EntryAccounting"
+              @Done="handleFilter"
+            />
+          <Drawer-Print Type="EntryAccounting" :Data="scope.row" />
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
   </div>
 </template>
 <script>
+import { GetByListQ } from "@/api/EntryAccounting";
+import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
-
-import { GetEntryAccounting } from "@/api/EntryAccounting";
-import { GetActiveAccounts } from "@/api/Account";
+import StatusTag from "@/components/Oprationsys/StatusTag";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import UserSelect from "@/components/User/UserSelect";
+import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import printJS from "print-js";
+import permission from "@/directive/permission/index.js";
+import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
+
+import waves from "@/directive/waves"; // waves directive
+import { parseTime } from "@/utils";
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
   name: "EntryAccounting",
-  components: { SearchByDate },
+  components: {
+    StatusTag,
+    NextOprations,
+    SearchByDate,
+    DrawerPrint,
+    Pagination,
+    UserSelect,
+    RadioOprations,
+    DialogActionLog,
+    AccountSearchAny
+  },
+  directives: { waves, permission },
   data() {
     return {
-      tableData: [],
-      Account: [],
-      Total: 0,
-      date: [],
-      loading: true,
-      AccountId: 2
+      Accountx: { Name: "" },
+      list: [],
+      Totals: { Rows: 0, Totals: 0, Debit: 0, Credit: 0 },
+      listLoading: false,
+      listQuery: {
+        Page: 1,
+        Any: "",
+        limit: this.$store.getters.settings.LimitQurey,
+        Sort: "-id",
+        User: undefined,
+        DateFrom: "",
+        DateTo: "",
+        Status: undefined,
+        AccountId: 2
+      },
+      sortOptions: [
+        { label: "Id Ascending", key: "+id" },
+        { label: "Id Descending", key: "-id" }
+      ],
+      downloadLoading: false
     };
   },
-  created() {
-    console.log(this.date);
-    this.getdata();
-  },
-  methods: {
-    getdata() {
-      this.loading = true;
-      GetEntryAccounting({
-        AccountId: this.AccountId,
-        DateFrom: this.date[0],
-        DateTo: this.date[1]
-      }).then(response => {
-        console.log(response);
-        this.tableData = response;
-        this.Total =
-          this.tableData.reduce((a, b) => a + b.Credit, 0) -
-          this.tableData.reduce((a, b) => a + b.Debit, 0);
 
-        GetActiveAccounts().then(response => {
-          // handle success
-          console.log(response);
-          this.Account = response;
-          this.loading = false;
-        });
+  methods: {
+    getList() {
+      this.listLoading = true;
+      //    console.log("sdsad", this.listQuery);
+      GetByListQ(this.listQuery).then(response => {
+        this.list = response.items;
+        this.Totals = response.Totals;
+        this.listLoading = false;
       });
+    },
+    handleFilter() {
+      this.listQuery.Page = 1;
+      this.getList();
+    },
+    sortChange(data) {
+      const { prop, order } = data;
+      if (prop === "id") {
+        this.sortById(order);
+      }
+    },
+    sortById(order) {
+      if (order === "ascending") {
+        this.listQuery.sort = "+id";
+      } else {
+        this.listQuery.sort = "-id";
+      }
+      this.handleFilter();
+    },
+    handleDownload() {
+      this.downloadLoading = true;
+      import("@/Report/Excel/Export2Excel").then(excel => {
+        const tHeader = Object.keys(this.list[0]);
+        const filterVal = Object.keys(this.list[0]);
+        const data = this.formatJson(filterVal);
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: "table-list"
+        });
+        this.downloadLoading = false;
+      });
+    },
+    formatJson(filterVal) {
+      return this.list.map(v =>
+        filterVal.map(j => {
+          if (j === "timestamp") {
+            return parseTime(v[j]);
+          } else {
+            return v[j];
+          }
+        })
+      );
+    },
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort;
+      return sort === `+${key}` ? "ascending" : "descending";
     },
     print(data) {
       printJS({
