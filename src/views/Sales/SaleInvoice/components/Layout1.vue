@@ -322,7 +322,7 @@
                   </template>
                   <template slot="paneR">
                     <el-col :span="6">
-                      <rest-of-bill
+                      <Rest-Of-Bill
                         :Total="
                           tempForm.InventoryMovements.reduce((prev, cur) => {
                             return prev + cur.Qty * cur.SellingPrice;
@@ -647,11 +647,9 @@ export default {
     },
     AddItem(Item, Qty) {
       this.focusBarcode();
-
       var find = this.tempForm.InventoryMovements.findIndex(
         value => value.ItemsId == Item.Id
       );
-
       if (find != -1) this.tempForm.InventoryMovements[find].Qty += Qty;
       else {
         let SellingPrice = Item.SellingPrice;

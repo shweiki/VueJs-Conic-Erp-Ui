@@ -284,7 +284,7 @@
                   </template>
                   <template slot="paneR">
                     <el-col :span="6">
-                      <rest-of-bill
+                      <Rest-Of-Bill
                         :Total="
                           tempForm.InventoryMovements.reduce((prev, cur) => {
                             return prev + cur.Qty * cur.SellingPrice;

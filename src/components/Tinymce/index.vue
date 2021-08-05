@@ -31,7 +31,7 @@ const tinymceCDN =
 
 export default {
   name: "Tinymce",
-  components: { editorImage },
+  components: { editorImage  },
   props: {
     id: {
       type: String,
@@ -128,7 +128,7 @@ export default {
       const _this = this;
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
-        language: this.languageTypeList["ar"],
+        language: this.languageTypeList["en"],
         height: this.height,
         body_class: "panel-body ",
         object_resizing: false,

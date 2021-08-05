@@ -1,13 +1,15 @@
 <template>
   <div>
     <el-col :span="24">
-      <el-radio-group v-model="query" @change="getdata" >
-        <el-radio-button 
-        v-for="cat in cats"
-                              :key="cat.value"
-                              :label="cat.label"
-                              :value="cat.value"> 
-         {{ cat.label }} </el-radio-button>
+      <el-radio-group v-model="query" @change="getdata">
+        <el-radio-button
+          v-for="cat in cats"
+          :key="cat.value"
+          :label="cat.label"
+          :value="cat.value"
+        >
+          {{ cat.label }}
+        </el-radio-button>
         <!-- <category-tabs :label="option.label"
         :text="option.text"/> -->
         <!-- <el-radio-button label="ساندويش">ساندويش </el-radio-button>
@@ -119,10 +121,8 @@ export default {
   props: ["WithImage"],
   data() {
     return {
-      cats:[
-       
-      ],
-      query: "ساندويش",
+      cats: [],
+      query: "",
       search: "",
       List: [],
       tabPosition: "top",
@@ -130,17 +130,19 @@ export default {
     };
   },
   created() {
-    this.getdata();
-    GetActiveMenuItem()  .then((response) => {
-          // handle success
-          console.log(response);
-          this.cats = response;
-          this.loading = false;
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error);
-        })
+    GetActiveMenuItem()
+      .then(response => {
+        // handle success
+        console.log(response);
+        this.cats = response;
+        this.query = response[0].value;
+        this.getdata();
+        this.loading = false;
+      })
+      .catch(error => {
+        // handle error
+        console.log(error);
+      });
   },
   methods: {
     AddItem(item) {

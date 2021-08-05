@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     getdata() {
-      console.log("  this.Opration ", this.Status);
+    //  console.log("  this.Opration ", this.Status);
       this.Opration = this.$store.getters.Oprations.find((obj) => {
         return obj.TableName == this.TableName && obj.Status == this.Status;
       });
