@@ -148,7 +148,7 @@
                         </el-col>
 
                         <el-col :span="6">
-                          <restaurant-Drawer-Print
+                          <Restaurant-Print-Button
                             :AutoPrint="AutoPrint"
                             :Data="OldInvoice"
                             Css="font-size: 12px"

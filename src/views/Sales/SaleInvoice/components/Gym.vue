@@ -14,10 +14,7 @@
                 <right-menu />
               </el-col>
               <el-col :span="4">
-                <el-radio-group
-                  v-model="PriceMethod"
-                  text-color="#f78123"
-                >
+                <el-radio-group v-model="PriceMethod" text-color="#f78123">
                   <el-radio label="retail" border>مفرق</el-radio>
                   <el-radio label="wholesale" border>جملة</el-radio>
                 </el-radio-group>
@@ -156,6 +153,7 @@
                         </el-col>
                         <el-col :span="6">
                           <Drawer-Print
+                            Type="SaleInvoice"
                             :AutoPrint="AutoPrint"
                             :Data="OldInvoice"
                             Css="font-size: 12px"
