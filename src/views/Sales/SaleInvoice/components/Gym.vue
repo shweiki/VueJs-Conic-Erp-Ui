@@ -10,11 +10,19 @@
         <split-pane split="horizontal" :min-percent="92" :default-percent="92">
           <template slot="paneR">
             <el-row class="card">
-              <el-col :span="8">
+              <el-col :span="6">
                 <right-menu />
               </el-col>
-
-              <el-col :span="3">
+              <el-col :span="4">
+                <el-radio-group
+                  v-model="PriceMethod"
+                  text-color="#f78123"
+                >
+                  <el-radio label="retail" border>مفرق</el-radio>
+                  <el-radio label="wholesale" border>جملة</el-radio>
+                </el-radio-group>
+              </el-col>
+              <el-col :span="5">
                 <el-form-item
                   prop="VendorId"
                   :rules="[
@@ -42,7 +50,8 @@
               <el-col :span="1">
                 <edit-vendor :VendorId="tempForm.VendorId" />
               </el-col>
-              <el-col v-permission="['Admin']" :span="4">
+
+              <el-col v-permission="['Admin']" :span="3">
                 <el-form-item
                   prop="FakeDate"
                   :rules="[
@@ -59,8 +68,7 @@
                   />
                 </el-form-item>
               </el-col>
-
-              <el-col :span="8">
+              <el-col :span="4">
                 <el-button
                   type="primary"
                   icon="el-icon-s-home"
@@ -146,9 +154,8 @@
                             icon="el-icon-takeaway-box"
                           ></el-button>
                         </el-col>
-
                         <el-col :span="6">
-                          <restaurant-Drawer-Print
+                          <Drawer-Print
                             :AutoPrint="AutoPrint"
                             :Data="OldInvoice"
                             Css="font-size: 12px"
@@ -223,7 +230,6 @@
                         </el-form-item>
                       </el-col></el-row
                     >
-
                     <el-row
                       v-if="tempForm.Type == 'Delivery'"
                       type="flex"
@@ -358,11 +364,15 @@
                           <template slot-scope="scope">
                             <div class="ItemName">
                               {{ scope.row.Name }}
-
-                              {{
-                                tempForm.InventoryMovements[scope.$index]
-                                  .SellingPrice
-                              }}
+                              <el-tag type="primary" effect="plain">{{
+                                PriceMethod == "wholesale"
+                                  ? scope.row.OtherPrice.toFixed(
+                                      $store.getters.settings.ToFixed
+                                    )
+                                  : scope.row.SellingPrice.toFixed(
+                                      $store.getters.settings.ToFixed
+                                    )
+                              }}</el-tag>
                               X
                               <el-input-number
                                 size="mini"
@@ -398,7 +408,6 @@
                             </el-col>
                           </template>
                         </el-table-column>
-
                         <el-table-column
                           v-bind:label="$t('CashPool.Total')"
                           align="center"
@@ -455,7 +464,7 @@ import RightMenu from "@/components/RightMenu";
 import LangSelect from "@/components/LangSelect";
 import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
-import RestaurantPrintButton from "@/components/PrintRepot/RestaurantPrintButton.vue";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 // report
 import VendorSelect from "@/components/Vendor/VendorSelect";
@@ -489,7 +498,7 @@ export default {
     ItemsSearch,
     ItemsCategory,
     EditItem,
-    RestaurantPrintButton,
+    DrawerPrint,
     RestOfBill,
     RightMenu,
     FakeDate,
@@ -691,7 +700,9 @@ export default {
                 //  this.AutoPrint = true;
 
                 if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
-                  this.sendSMS(this.OldInvoice);
+                  console.log(this.OldInvoice);
+
+                //   this.sendSMS(this.OldInvoice);
               } else {
                 this.$notify.error({
                   title: "error",

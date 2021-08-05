@@ -123,7 +123,6 @@ export default {
       console.log("Data Report = ", val);
       this.Reports.forEach((item, index) => {
         item.Html = this.Visualization(val, item.Html, "Set");
-
         if (item.AutoPrint && this.AutoPrint) {
           this.eval(item.Name, item.Printer);
         }
@@ -142,7 +141,6 @@ export default {
         this.Reports = r.items;
         this.Reports.forEach((item, index) => {
           item.Html = this.Visualization(this.Data, item.Html, "Set");
-
           if (item.AutoPrint && this.AutoPrint) {
             this.eval(item.Name, item.Printer);
           }

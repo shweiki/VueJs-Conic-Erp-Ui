@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
+    <el-radio-group v-model="tabPosition" >
       <el-radio-button label="top">top</el-radio-button>
       <el-radio-button label="right">right</el-radio-button>
       <el-radio-button label="bottom">bottom</el-radio-button>
@@ -10,7 +10,6 @@
       v-model="activeName"
       :tab-position="tabPosition"
       type="border-card"
-      style="height: 200px;"
     >
       <el-tab-pane
         v-for="(item, index) in Keys"
