@@ -61,7 +61,7 @@
           
           align="center"
         ></el-table-column>
-        <!-- <el-table-column
+        <el-table-column
           v-bind:label="$t('Classification.Status')"
           width="120"
           align="center"
@@ -69,25 +69,25 @@
           <template slot-scope="scope">
             <Status-Tag :Status="scope.row.Status" TableName="MenuItem" />
           </template>
-        </el-table-column> -->
-        <!-- <el-table-column align="right" width="200">
+        </el-table-column>
+          <el-table-column align="right" width="200">
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.Opration.Status != -1"
+              
               icon="el-icon-edit"
               circle
               @click="handleUpdate(scope.row)"
             ></el-button>
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              round
-              @click="handleOprationsys(scope.row.Id, NOprations)"
-              >{{ NOprations.OprationDescription }}</el-button
-            >
+              <Next-Oprations
+                :ObjId="scope.row.Id"
+                :Status="scope.row.Status"
+                TableName="MenuItem"
+                @Done="getdata"
+            />
+         
+             
           </template>
-        </el-table-column> -->
+        </el-table-column>  
       </el-table>
     </el-card>
 
@@ -107,7 +107,7 @@
         <el-form-item v-bind:label="$t('Classification.Name')" prop="Name">
           <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('Classification.Status')" prop="Description">
+        <el-form-item v-bind:label="$t('Classification.Notes')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -154,11 +154,11 @@
 import { GetMenuItem, Create, Edit } from "@/api/MenuItem";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-
+import NextOprations from "@/components/Oprationsys/NextOprations";
 import printJS from "print-js";
 export default {
   name: "MenuItem",
-  components: { StatusTag },
+  components: { StatusTag, NextOprations },
   data() {
     return {
       tableData: [],
