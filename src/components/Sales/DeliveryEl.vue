@@ -7,13 +7,13 @@
       <select-region
         :Value="region"
         @SetRegion="
-          v => {
+          (v) => {
             region = v;
             SetVal();
           }
         "
         @SetDeliveryPrice="
-          v => {
+          (v) => {
             DelievryPrice = v;
             SetVal();
           }
@@ -27,14 +27,14 @@
 </template>
 
 <script>
-import SelectRegion from "@/components/Regions/SelectRegion";
+import SelectRegion from "@/components/Regions/SelectRegion.vue";
 export default {
   components: { SelectRegion },
   props: {
     region: String,
     DelievryPrice: Number,
     name: String,
-    phone: String
+    phone: String,
   },
   watch: {
     name(val) {
@@ -48,7 +48,7 @@ export default {
     },
     DelievryPrice(val) {
       this.DelievryPrice = val;
-    }
+    },
   },
   methods: {
     SetVal() {
@@ -56,7 +56,7 @@ export default {
       this.$emit("SetDeliveryPrice", this.DelievryPrice);
       this.$emit("SetPhoneNumber", this.phone);
       this.$emit("SetName", this.name);
-    }
-  }
+    },
+  },
 };
 </script>

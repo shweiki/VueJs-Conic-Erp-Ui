@@ -13,33 +13,33 @@
     </el-option>
   </el-select> -->
 
+  <div>
+    <add-dialog @Done="getdata" />
 
-   <el-select
-                  @change="SetVal"
-                  v-model="Value"
-                  filterable
-                  placeholder="المنطقة"
-                >
-                  <el-option
-                    v-for="item in Regions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                    <span style="float: left">{{ item.label }}</span>
-                    <span style="float: right; color: #8492a6; font-size: 13px">{{
-                      item.price
-                    }}</span>
-                  </el-option>
-                </el-select>
+    <el-select @change="SetVal" v-model="Value" filterable placeholder="المنطقة">
+      <el-option
+        v-for="item in Regions"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      >
+        <span style="float: left">{{ item.label }}</span>
+        <span style="float: right; color: #8492a6; font-size: 13px">{{
+          item.price
+        }}</span>
+      </el-option>
+    </el-select>
+  </div>
 </template>
 <script>
+import AddDialog from "@/views/Settings/Areas/AddDialog.vue";
 import { GetAreasLabel } from "@/api/Area";
 export default {
+  components: { AddDialog },
   props: {
     Value: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
@@ -52,14 +52,14 @@ export default {
       if (val) {
         this.SetVal(val);
       }
-    }
+    },
   },
   created() {
     this.getdata();
-    this.SetVal(this.Value)
+    this.SetVal(this.Value);
   },
   methods: {
-        getdata() {
+    getdata() {
       this.loading = true;
       GetAreasLabel()
         .then((response) => {
@@ -71,21 +71,17 @@ export default {
         .catch((error) => {
           // handle error
           console.log(error);
-        })
+        });
     },
     SetVal(val) {
-      this.$emit(
-        "SetRegion",
-        this.Regions.find(element => element.value == val).value
-      );
+      this.$emit("SetRegion", this.Regions.find((element) => element.value == val).value);
       this.$emit(
         "SetDeliveryPrice",
-        this.Regions.find(element => element.value == val).price
+        this.Regions.find((element) => element.value == val).price
       );
-    }
-  }
+    },
+  },
 };
-
 
 // Regions: [
 //         {
