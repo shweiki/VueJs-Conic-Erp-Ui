@@ -5,26 +5,26 @@
         ? 'float: left; direction: rtl; height: 50px;'
         : 'float: right; height: 50px;'
     "
-    class="right-menu"
+    class="Right-Menu"
   >
     <template v-if="$store.getters.device !== 'mobile'">
-      <!--  <clock style="width : 270px" class="right-menu-item hover-effect" />-->
+      <!--  <clock style="width : 270px" class="Right-Menu-item hover-effect" />-->
 
-      <search id="header-search" class="right-menu-item" />
+      <search id="header-search" class="Right-Menu-item" />
 
-      <error-log class="errLog-container right-menu-item hover-effect" />
+      <error-log class="errLog-container Right-Menu-item hover-effect" />
 
-      <screenfull id="screenfull" class="right-menu-item hover-effect" />
+      <screenfull id="screenfull" class="Right-Menu-item hover-effect" />
 
       <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
-        <size-select id="size-select" class="right-menu-item hover-effect" />
+        <size-select id="size-select" class="Right-Menu-item hover-effect" />
       </el-tooltip>
 
-      <lang-select class="right-menu-item hover-effect" />
+      <lang-select class="Right-Menu-item hover-effect" />
     </template>
 
     <el-dropdown
-      class="avatar-container right-menu-item hover-effect"
+      class="avatar-container Right-Menu-item hover-effect"
       trigger="click"
     >
       <!-- $store.getters.avatar -->
@@ -86,14 +86,14 @@ export default {
 };
 </script>
 <style  lang="scss" scoped>
-.right-menu {
+.Right-Menu {
   height: 100%;
   line-height: 50px;
   &:focus {
     outline: none;
   }
 
-  .right-menu-item {
+  .Right-Menu-item {
     display: inline-block;
     padding: 0 8px;
     height: 100%;

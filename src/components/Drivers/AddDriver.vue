@@ -260,8 +260,6 @@ export default {
                     type: "success",
                     duration: 2000
                   });
-                  //   this.$router.push({ path: `/Gym/Edit/${response}` });
-                  //     this.SendHelloSms(this.tempForm.PhoneNumber1, this.tempForm.Name);
                 })
                 .catch(error => {
                   console.log(error);
@@ -292,22 +290,6 @@ export default {
       }
 
       return age;
-    },
-    SendHelloSms(phoneNumber, name) {
-      if (phoneNumber.length == 10) phoneNumber.slice(1);
-      axios({
-        method: "get",
-        url: "http://josmsservice.com/smsonline/msgservicejo.cfm",
-        params: {
-          numbers: "962" + phoneNumber,
-          senderid: "High Fit",
-          AccName: "highfit",
-          AccPass: "D7!cT5!SgU0",
-          msg:
-            "عزيزي " + name + " نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح ",
-          requesttimeout: 5000000
-        }
-      }).then(response => {});
     }
   }
 };

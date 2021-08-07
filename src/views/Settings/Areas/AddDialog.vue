@@ -5,7 +5,7 @@
       type="success"
       icon="el-icon-plus"
       @click="handleCreate()"
-      >{{ $t("Classification.Add") }}</el-button
+      ></el-button
     >
     <el-dialog
       style="margin-top: -13vh"
@@ -14,7 +14,7 @@
       :visible.sync="dialogFormVisible"
     >
       <el-form
-        ref="dataForm"
+        ref="AreaForm"
         :rules="rulesForm"
         :model="tempForm"
         label-position="top"
@@ -95,10 +95,10 @@ export default {
     handleCreate() {
       this.resetTempForm();
       this.dialogFormVisible = true;
-      this.$refs["dataForm"].clearValidate();
+      this.$refs["AreaForm"].clearValidate();
     },
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["AreaForm"].validate((valid) => {
         if (valid) {
           Create(this.tempForm)
             .then((response) => {

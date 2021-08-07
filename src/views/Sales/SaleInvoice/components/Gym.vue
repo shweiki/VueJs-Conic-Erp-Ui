@@ -11,7 +11,7 @@
           <template slot="paneR">
             <el-row class="card">
               <el-col :span="6">
-                <right-menu />
+                <Right-Menu />
               </el-col>
               <el-col :span="4">
                 <el-radio-group v-model="PriceMethod" text-color="#f78123">
@@ -480,7 +480,6 @@ import splitPane from "vue-splitpane";
 import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
-import axios from "axios";
 import EditVendor from "@/components/Vendor/EditVendor";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
@@ -697,10 +696,6 @@ export default {
                 this.OpenRestOfBill = false;
                 //  this.AutoPrint = true;
 
-                if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
-                  console.log(this.OldInvoice);
-
-                //   this.sendSMS(this.OldInvoice);
               } else {
                 this.$notify.error({
                   title: "error",
@@ -768,43 +763,7 @@ export default {
         }
       });
     },
-    sendSMS(inv) {
-      let phone = inv.PhoneNumber.toString();
-      if (phone.length == 10) {
-        phone = phone.slice(1);
-      }
-      console.log(phone);
-      axios({
-        method: "get",
-        url: "http://josmsservice.com/sms/api/SendSingleMessage.cfm",
-        params: {
-          numbers: "962" + phone,
-          senderid: "Sh.Sheesh",
-          AccName: "highfit",
-          AccPass: "D7!cT5!SgU0",
-          msg:
-            "شكرا لإختياركم شاورما شيش , طلب رقم (" +
-            inv.Id.toString().slice(-4) +
-            ") القيمة مع التوصيل " +
-            (
-              inv.DeliveryPrice +
-              inv.InventoryMovements.reduce((prev, cur) => {
-                return prev + cur.Qty * cur.SellingPrice;
-              }, 0) -
-              inv.Discount
-            ).toFixed(2) +
-            " JD",
-          requesttimeout: 5000000
-        }
-      }).then(response => {
-        this.$notify({
-          title: "تم ارسال الرسالة النصية بنجاح",
-          message: "الى الرقم  " + phone + " ",
-          type: "success",
-          position: "top-left"
-        });
-      });
-    },
+ 
     setTagsViewTitle() {
       const title = "Edit Sale";
       const route = Object.assign({}, this.tempRoute, {

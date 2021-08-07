@@ -11,7 +11,7 @@
           <template slot="paneR">
             <el-row class="card">
               <el-col :span="8">
-                <right-menu />
+                <Right-Menu />
               </el-col>
 
               <el-col :span="3">
@@ -146,7 +146,6 @@
                             icon="el-icon-takeaway-box"
                           ></el-button>
                         </el-col>
-
                         <el-col :span="6">
                           <Restaurant-Print-Button
                             :AutoPrint="AutoPrint"
@@ -473,8 +472,8 @@ import splitPane from "vue-splitpane";
 import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
-import axios from "axios";
 import EditVendor from "@/components/Vendor/EditVendor";
+import { SendSMS } from "@/api/SMS";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 
@@ -689,9 +688,24 @@ export default {
                 this.DisabledSave = false;
                 this.OpenRestOfBill = false;
                 //  this.AutoPrint = true;
-
                 if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
-                  this.sendSMS(this.OldInvoice);
+                  SendSMS(
+                    this.OldInvoice.PhoneNumber,
+                    "شكرا لإختياركم شاورما شيش , طلب رقم (" +
+                      this.OldInvoice.Id.toString().slice(-4) +
+                      ") القيمة مع التوصيل " +
+                      (
+                        this.OldInvoice.DeliveryPrice +
+                        this.OldInvoice.InventoryMovements.reduce(
+                          (prev, cur) => {
+                            return prev + cur.Qty * cur.SellingPrice;
+                          },
+                          0
+                        ) -
+                        this.OldInvoice.Discount
+                      ).toFixed(2) +
+                      " JD"
+                  );
               } else {
                 this.$notify.error({
                   title: "error",
@@ -757,43 +771,6 @@ export default {
           console.log("error submit!!");
           return false;
         }
-      });
-    },
-    sendSMS(inv) {
-      let phone = inv.PhoneNumber.toString();
-      if (phone.length == 10) {
-        phone = phone.slice(1);
-      }
-      console.log(phone);
-      axios({
-        method: "get",
-        url: "http://josmsservice.com/sms/api/SendSingleMessage.cfm",
-        params: {
-          numbers: "962" + phone,
-          senderid: "Sh.Sheesh",
-          AccName: "highfit",
-          AccPass: "D7!cT5!SgU0",
-          msg:
-            "شكرا لإختياركم شاورما شيش , طلب رقم (" +
-            inv.Id.toString().slice(-4) +
-            ") القيمة مع التوصيل " +
-            (
-              inv.DeliveryPrice +
-              inv.InventoryMovements.reduce((prev, cur) => {
-                return prev + cur.Qty * cur.SellingPrice;
-              }, 0) -
-              inv.Discount
-            ).toFixed(2) +
-            " JD",
-          requesttimeout: 5000000
-        }
-      }).then(response => {
-        this.$notify({
-          title: "تم ارسال الرسالة النصية بنجاح",
-          message: "الى الرقم  " + phone + " ",
-          type: "success",
-          position: "top-left"
-        });
       });
     },
     setTagsViewTitle() {

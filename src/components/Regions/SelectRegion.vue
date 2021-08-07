@@ -14,21 +14,29 @@
   </el-select> -->
 
   <div>
-    <add-dialog @Done="getdata" />
-
-    <el-select @change="SetVal" v-model="Value" filterable placeholder="المنطقة">
-      <el-option
-        v-for="item in Regions"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
+    <el-col :span="6">
+      <add-dialog @Done="getdata" />
+    </el-col>
+    <el-col :span="18">
+      <el-select
+        @change="SetVal"
+        v-model="Region"
+        filterable
+        placeholder="المنطقة"
       >
-        <span style="float: left">{{ item.label }}</span>
-        <span style="float: right; color: #8492a6; font-size: 13px">{{
-          item.price
-        }}</span>
-      </el-option>
-    </el-select>
+        <el-option
+          v-for="item in Regions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+          <span style="float: left">{{ item.label }}</span>
+          <span style="float: right; color: #8492a6; font-size: 13px">{{
+            item.price
+          }}</span>
+        </el-option>
+      </el-select>
+    </el-col>
   </div>
 </template>
 <script>
@@ -38,49 +46,56 @@ export default {
   components: { AddDialog },
   props: {
     Value: {
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return {
+      Region: "",
       Regions: [],
-      Price: 0.0,
+      Price: 0.0
     };
   },
   watch: {
     Value(val) {
       if (val) {
-        this.SetVal(val);
+        this.Region = this.Regions.find(element => element.label == val).value;
+        this.SetVal(this.Region);
       }
-    },
+    }
   },
   created() {
     this.getdata();
-    this.SetVal(this.Value);
+    this.SetVal(this.Region);
   },
   methods: {
     getdata() {
       this.loading = true;
       GetAreasLabel()
-        .then((response) => {
+        .then(response => {
           // handle success
           console.log(response);
           this.Regions = response;
           this.loading = false;
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
         });
     },
     SetVal(val) {
-      this.$emit("SetRegion", this.Regions.find((element) => element.value == val).value);
-      this.$emit(
-        "SetDeliveryPrice",
-        this.Regions.find((element) => element.value == val).price
-      );
-    },
-  },
+      if (val) {
+        this.$emit(
+          "SetRegion",
+          this.Regions.find(element => element.value == val).label
+        );
+        this.$emit(
+          "SetDeliveryPrice",
+          this.Regions.find(element => element.value == val).price
+        );
+      }
+    }
+  }
 };
 
 // Regions: [
@@ -220,7 +235,7 @@ export default {
 //           price: 2.0
 //         },
 //         {
-//           value: "الخزان",
+//           value: "الخزان",FF
 //           label: "الخزان",
 //           price: 2.0
 //         },

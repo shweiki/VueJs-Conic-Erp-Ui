@@ -80,29 +80,14 @@ export default {
   },
   methods: {
     SendSms() {
-      if (this.NumberPhone1 != "" && this.Description != "") {
-        if (this.NumberPhone1.length == 10) this.NumberPhone1.slice(1);
-
-        axios({
-          method: "get",
-          url: "http://josmsservice.com/smsonline/msgservicejo.cfm",
-          params: {
-            numbers: "962" + this.NumberPhone1,
-            senderid: "High Fit",
-            AccName: "highfit",
-            AccPass: "D7!cT5!SgU0",
-            msg: this.Description,
-            requesttimeout: 5000000
-          }
-        }).then(response => {});
-        this.visible = false;
-        this.$notify({
-          title: "تم ",
-          message: "تم ارسال بنجاح",
-          type: "success",
-          duration: 2000
-        });
-      }
+      console.log("Sms sended", SendSMS(this.NumberPhone1, this.Description));
+      this.visible = false;
+      this.$notify({
+        title: "تم ",
+        message: "تم ارسال بنجاح",
+        type: "success",
+        duration: 2000
+      });
     },
     SendWhatsApp() {
       if (this.NumberPhone1 != "" && this.Description != "") {

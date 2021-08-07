@@ -1,10 +1,9 @@
 <template>
   <div class="app-container">
-
     <el-card class="box-card">
       <div class="filter-container">
         <el-button @click="FixPhoneNumber">FixPhoneNumber</el-button>
-        <el-popover placement="left" width="400" >
+        <el-popover placement="left" width="400">
           <p>ارسال عبر</p>
           <div style="text-align: right; margin: 0">
             <el-input
@@ -133,7 +132,7 @@
       :data="list"
       border
       fit
-       height="400"
+      height="400"
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
@@ -232,7 +231,7 @@
         </template>
       </el-table-column>
     </el-table>
-        <pagination
+    <pagination
       v-show="Totals.Rows > 0"
       :total="Totals.Rows"
       :page.sync="listQuery.Page"
@@ -253,6 +252,7 @@ import permission from "@/directive/permission/index.js";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import { SendMultiSMS } from "@/api/SMS";
 
 export default {
   name: "ComplexTable",
@@ -352,34 +352,9 @@ export default {
     SendSms() {
       if (this.Selection.length > 0) {
         let numbers = this.Selection.map(element => {
-          return "962" + element.PhoneNumber1;
+          return element.PhoneNumber1;
         });
-        console.log("numbers", numbers);
-        let numbers100 = [];
-        for (var i = 0; i < numbers.length; i++) {
-          if (numbers.length > 0) {
-            numbers100.push(numbers.splice(0, 100));
-          } else {
-            break;
-          }
-        }
-        //  console.log(this.Selection);
-          numbers100.forEach((element) => {
-          axios({
-            method: "get",
-            url: "http://josmsservice.com/smsonline/msgservicejo.cfm",
-            params: {
-              numbers: element,
-              senderid: "High Fit",
-              AccName: "highfit",
-              AccPass: "D7!cT5!SgU0",
-              msg: this.SmsBody,
-              requesttimeout: 5000000,
-            },
-          }).then((response) => {
-            console.log(response);
-          });
-        });
+        SendMultiSMS(numbers, this.SmsBody);
         this.$notify({
           title: "تم ",
           message: "تم ارسال بنجاح",

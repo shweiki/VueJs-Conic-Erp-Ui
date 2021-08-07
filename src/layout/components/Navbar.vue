@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-   <right-menu />
+   <Right-Menu />
 
     <hamburger
       id="hamburger-container"

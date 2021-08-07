@@ -137,7 +137,7 @@
               </el-col>
 
               <el-col :span="6">
-                <right-menu />
+                <Right-Menu />
               </el-col>
             </el-row>
           </template>
@@ -857,7 +857,7 @@ export default {
   font-weight: 500;
   color: mediumseagreen;
 }
-.right-menu-item {
+.Right-Menu-item {
   color: #ffffff;
   display: inline-block;
   padding: 0 8px;

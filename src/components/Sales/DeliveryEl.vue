@@ -1,27 +1,27 @@
 <template>
   <el-row type="flex">
     <el-col :span="10">
-      <el-input v-model="name" @change="SetVal" placeholder="الاسم" />
+      <el-input v-model="vName" @change="SetVal" placeholder="الاسم" />
     </el-col>
     <el-col :span="8">
-      <select-region
+      <Select-Region
         :Value="region"
         @SetRegion="
-          (v) => {
-            region = v;
+          v => {
+            vRegion = v;
             SetVal();
           }
         "
         @SetDeliveryPrice="
-          (v) => {
-            DelievryPrice = v;
+          v => {
+            vDelievryPrice = v;
             SetVal();
           }
         "
       />
     </el-col>
     <el-col :span="6">
-      <el-input v-model="phone" @change="SetVal" placeholder="رقم الهاتف" />
+      <el-input v-model="vPhone" @change="SetVal" placeholder="رقم الهاتف" />
     </el-col>
   </el-row>
 </template>
@@ -34,29 +34,37 @@ export default {
     region: String,
     DelievryPrice: Number,
     name: String,
-    phone: String,
+    phone: String
+  },
+  data() {
+    return {
+      vName: "",
+      vPhone: "",
+      vRegion: "",
+      vDelievryPrice: 0
+    };
   },
   watch: {
     name(val) {
-      this.name = val;
+      this.vName = val;
     },
     phone(val) {
-      this.phone = val;
+      this.vPhone = val;
     },
     region(val) {
-      this.region = val;
+      this.vRegion = val;
     },
     DelievryPrice(val) {
-      this.DelievryPrice = val;
-    },
+      this.vDelievryPrice = val;
+    }
   },
   methods: {
     SetVal() {
-      this.$emit("SetRegion", this.region);
-      this.$emit("SetDeliveryPrice", this.DelievryPrice);
-      this.$emit("SetPhoneNumber", this.phone);
-      this.$emit("SetName", this.name);
-    },
-  },
+      this.$emit("SetRegion", this.vRegion);
+      this.$emit("SetDeliveryPrice", this.vDelievryPrice);
+      this.$emit("SetPhoneNumber", this.vPhone);
+      this.$emit("SetName", this.vName);
+    }
+  }
 };
 </script>
