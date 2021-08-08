@@ -53,54 +53,33 @@ module.exports = {
     windowStyle: 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=55,left=500',
     pickerOptions: {
         shortcuts: [{
-            text: "اليوم",
-            days: 0,
-        },
-        {
-            text: "البارحة",
-            days: 1,
-        },
-        {
-            text: "قبل أسبوع",
-            days: 7,
-        },
-        {
-            text: "قبل شهر",
-            days: 30,
-        },
-        {
-            text: "قبل 3 أشهر",
-            days: 90,
-        },
-        {
-            text: "قبل 1 سنة",
-            days: 365,
-        },
+                text: "اليوم",
+                days: 0,
+            },
+            {
+                text: "البارحة",
+                days: 1,
+            },
+            {
+                text: "قبل أسبوع",
+                days: 7,
+            },
+            {
+                text: "قبل شهر",
+                days: 30,
+            },
+            {
+                text: "قبل 3 أشهر",
+                days: 90,
+            },
+            {
+                text: "قبل 1 سنة",
+                days: 365,
+            },
         ],
     },
     ItemMoveDec: [{
-        value: "علبة بطاطا",
-        label: "علبة بطاطا"
-    },
-    {
-        value: "جبنة شيدر",
-        label: "جبنة شيدر"
-    },
-    {
-        value: "جبنة موزاريلا",
-        label: "جبنة موزاريلا"
-    },
-    {
-        value: "جبنة مكس",
-        label: "جبنة مكس"
-    },
-    {
-        value: "هالبينو",
-        label: "هالبينو"
-    },
-    {
-        value: "بصل",
-        label: "بصل"
-    }
-    ]
+        value: "value",
+        label: "label"
+    }, ]
 }
