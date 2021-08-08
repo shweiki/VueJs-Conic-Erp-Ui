@@ -21,7 +21,8 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            data =>
+              !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -41,23 +42,28 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
+            <el-input
+              v-model="search"
+              v-bind:placeholder="$t('Classification.Name')"
+            />
           </template>
         </el-table-column>
-        <el-table-column prop="Value" label="القيمة" align="center"></el-table-column>
-        <el-table-column prop="Type" label="نوع" align="center"></el-table-column>
+        <el-table-column
+          prop="Value"
+          label="القيمة"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="Type"
+          label="نوع"
+          align="center"
+        ></el-table-column>
         <el-table-column
           prop="ValueOfDays"
           label="عدد الايام الاضافية"
           align="center"
         ></el-table-column>
 
-        <el-table-column
-          v-bind:label="$t('Classification.Date')"
-          prop="ActionLogs[0].PostingDateTime"
-          width="200"
-          align="center"
-        ></el-table-column>
         <el-table-column
           v-bind:label="$t('Classification.Notes')"
           prop="Description"
@@ -71,9 +77,14 @@
         >
           <template slot-scope="scope">
             <Status-Tag :Status="scope.row.Status" TableName="Discount" />
+            <el-button
+              icon="el-icon-edit"
+              circle
+              @click="handleUpdate(scope.row)"
+            ></el-button>
           </template>
         </el-table-column>
-      <!--  <el-table-column align="right" width="200">
+        <!--  <el-table-column align="right" width="200">
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.Opration.Status != -1"
@@ -120,7 +131,10 @@
           <el-option label="نسية" value="Percentage"></el-option>
           <el-option label="مقطوع" value="Value"></el-option>
         </el-select>
-        <el-form-item v-bind:label="$t('Classification.Status')" prop="Description">
+        <el-form-item
+          v-bind:label="$t('Classification.Status')"
+          prop="Description"
+        >
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -151,13 +165,18 @@
           v-bind:label="$t('Classification.OperationNote')"
           prop="Description"
         >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
+        <el-button
+          :type="textOpration.ClassName"
+          @click="createOprationData()"
+          >{{ textOpration.OprationDescription }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -182,13 +201,13 @@ export default {
       search: "",
       textMapForm: {
         update: "تعديل",
-        create: "إضافة",
+        create: "إضافة"
       },
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: "",
+        ClassName: ""
       },
       tempForm: {
         Id: undefined,
@@ -198,43 +217,43 @@ export default {
         Type: "Percentage",
         IsPrime: false,
         Status: 0,
-        Description: "",
+        Description: ""
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال اسم ",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال اسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: "",
+        Description: ""
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
@@ -245,19 +264,19 @@ export default {
       printJS({
         printable: data,
         properties: ["Name", "Description"],
-        type: "json",
+        type: "json"
       });
     },
     getdata() {
       this.loading = true;
       GetDiscount()
-        .then((response) => {
+        .then(response => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
         });
@@ -269,7 +288,7 @@ export default {
         Type: "Percentage",
         IsPrime: false,
         Status: 0,
-        Description: "",
+        Description: ""
       };
     },
     handleCreate() {
@@ -299,7 +318,8 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription =
+        Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -308,20 +328,20 @@ export default {
       this.tempOpration.Description = "";
     },
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           Create(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -331,20 +351,20 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           Edit(this.tempForm)
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -354,25 +374,25 @@ export default {
       });
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs["dataOpration"].validate(valid => {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
             ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationId,
-            Description: this.tempOpration.Description,
+            Description: this.tempOpration.Description
           })
-            .then((response) => {
+            .then(response => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         } else {
@@ -380,7 +400,7 @@ export default {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>

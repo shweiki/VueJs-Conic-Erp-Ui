@@ -111,6 +111,7 @@ export default {
           Description: element.Description,
           Status: 0,
           Category: element.Category,
+          Ingredients :element.Ingredients ,
           IsPrime: false
         };
       });

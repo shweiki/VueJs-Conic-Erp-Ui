@@ -87,7 +87,7 @@ export default {
       this.tableData = results;
       console.log(this.tableData);
       this.data = this.tableData.map(x => {
-        let Phone1 = x.Description.toString().match(/\d+/);
+        /*    let Phone1 = x.Description.toString().match(/\d+/);
         let Name = x.Description.toString().replace(/[0-9]/g, "");
 
         if (Phone1 == null || Phone1[0].length != 10) {
@@ -110,6 +110,20 @@ export default {
           Description: "",
           IsPrime: false,
           Type: "Customer"
+        };
+        */
+        return {
+          Id: undefined,
+          Name: x.Name,
+          Region: x.Region,
+          Email: x.Email,
+          PhoneNumber1: x.PhoneNumber1,
+          PhoneNumber2: x.PhoneNumber2,
+          Fax: x.Fax,
+          CreditLimit: x.CreditLimit,
+          Description: x.Description,
+          IsPrime: false,
+          Type: x.Type
         };
       });
       const seen = new Set();
