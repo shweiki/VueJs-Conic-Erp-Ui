@@ -1,16 +1,7 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <el-button
-          style="float: left"
-          type="success"
-          icon="el-icon-plus"
-          @click="handleCreate()"
-          >{{ $t("Classification.Add") }}</el-button
-        >
-        <span>{{ $t("Cheque.Cheques") }}</span>
-      </div>
+    <add-cheque/>
       <el-table
         v-loading="loading"
         :data="
@@ -268,10 +259,10 @@ import { GetCheques, Create } from "@/api/Cheque";
 import { GetVendor, GetVendorCheque } from "@/api/Vendor";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-
+import AddCheque from "@/components/Add/AddCheque";
 export default {
   name: "Cheque",
-  components: { StatusTag },
+  components: { StatusTag, AddCheque },
   data() {
     return {
       tableData: [],
@@ -281,104 +272,7 @@ export default {
       dialogFormStatus: "",
       search: "",
       Vendors: [],
-      BanksNames: [
-        {
-          value: " العربي",
-          label: " العربي",
-        },
-        {
-          value: "المؤسسة العربية المصرفية",
-          label: "المؤسسة العربية المصرفية ",
-        },
-        {
-          value: " الاردن",
-          label: " الاردن",
-        },
-        {
-          value: " القاهرة عمان",
-          label: " القاهرة عمان",
-        },
-        {
-          value: " المال الأردني",
-          label: " المال الأردني",
-        },
-        {
-          value: " التجاري الأردني",
-          label: " التجاري الأردني",
-        },
-        {
-          value: " الاردني الكويتي",
-          label: " الاردني الكويتي",
-        },
-        {
-          value: " الاهلي الاردني",
-          label: " الاهلي الاردني",
-        },
-        {
-          value: " الاسكان للتجارة والتمويل",
-          label: " الاسكان للتجارة والتمويل",
-        },
-        {
-          value: " الاستثمار العربي الاردني",
-          label: " الاستثمار العربي الاردني",
-        },
-        {
-          value: "الاستثماري",
-          label: "الاستثماري",
-        },
-        {
-          value: "سوسيته جنرال",
-          label: "سوسيته جنرال",
-        },
-        {
-          value: "الاتحاد",
-          label: "الاتحاد",
-        },
-        {
-          value: "ستاندرد تشارترد",
-          label: "ستاندرد تشارترد",
-        },
-        {
-          value: " العقاري المصري العربي",
-          label: " العقاري المصري العربي",
-        },
-        {
-          value: "سيتي بنك إن . إيه",
-          label: "سيتي بنك إن . إيه",
-        },
-        {
-          value: "الرافدين",
-          label: "الرافدين",
-        },
-        {
-          value: " الكويت الوطني",
-          label: " الكويت الوطني",
-        },
-        {
-          value: " لبنان والمهجر",
-          label: " لبنان والمهجر",
-        },
-        {
-          value: "عوده ش.م.ل",
-          label: "عوده ش.م.ل",
-        },
-        {
-          value: " العربي الاسلامي الدولي",
-          label: " العربي الاسلامي الدولي",
-        },
-        {
-          value: " الاسلامي الاردني",
-          label: " الاسلامي الاردني",
-        },
-        {
-          value: " صفوة الإسلامي",
-          label: " صفوة الإسلامي",
-        },
-        {
-          value: "مصرف الراجحي",
-          label: "مصرف الراجحي",
-        },
-      ],
+ 
       textMapForm: {
         update: "تعديل",
         create: "إضافة",
@@ -458,11 +352,7 @@ export default {
           console.log(error);
         });
 
-      GetVendorCheque().then((response) => {
-        // handle success
-        console.log(response);
-        this.Vendors = response;
-      });
+ 
     },
     resetTempForm() {
       this.tempForm = {

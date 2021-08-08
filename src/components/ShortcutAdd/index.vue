@@ -50,6 +50,29 @@
         إشتراك جديد
       </el-col>
     </template>
+        <template>
+      <el-col :span="20">
+        <add-cat/>
+      </el-col>
+      <el-col :span="4">
+        تصنيف جديد
+      </el-col>
+    </template>
+        <template>
+      <el-col :span="20">
+        <add-cash/>
+      </el-col>
+      <el-col :span="4">
+        إضافة كاش 
+      </el-col>
+    </template>
+        <template>
+      <el-col :span="20">
+        <add-cheque/>
+      </el-col>
+      <el-col :span="4">
+        إضافة شيك       </el-col>
+    </template>
       <div slot="footer" class="dialog-footer">
         <el-button @click="Open = false">{{
           $t("permission.cancel")
@@ -65,8 +88,11 @@ import AddMember from "@/components/Member/AddMember.vue";
 import AddVendor from "@/components/Vendor/AddVendor.vue";
 import AddInventory from '../Add/AddInventory.vue';
 import AddMembership from '../Gym/AddMembership.vue';
+import AddCash from '../Add/AddCash.vue';
+import AddCheque from '../Add/AddCheque.vue';
+import AddCat from '../Add/AddCat.vue';
 export default {
-  components:{AddItem, AddMember, AddVendor, AddInventory, AddMembership},
+  components:{AddItem, AddMember, AddVendor, AddInventory, AddMembership, AddCash, AddCheque, AddCat},
  data() {
     return {
       Open: false,

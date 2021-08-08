@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <!-- <div slot="header" class="clearfix">
         <el-button
           style="float: left"
           type="success"
@@ -10,7 +10,8 @@
           >{{ $t("Classification.Add") }}</el-button
         >
         <span>{{ $t("CashDrawer.CashDrawer") }}</span>
-      </div>
+      </div> -->
+      <add-cash/>
       <el-table
         v-loading="loading"
         :data="
@@ -173,10 +174,11 @@ import { GetCash, Create, Edit } from "@/api/Cash";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
+import AddCash from "@/components/Add/AddCash";
 
 export default {
   name: "Cash",
-  components: { StatusTag, NextOprations },
+  components: { StatusTag, NextOprations, AddCash },
   data() {
     return {
       tableData: [],

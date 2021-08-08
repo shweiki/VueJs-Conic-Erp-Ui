@@ -1,22 +1,7 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <el-button
-          style="float: left"
-          type="success"
-          icon="el-icon-plus"
-          @click="handleCreate()"
-          >{{ $t("Classification.Add") }}</el-button
-        >
-        <el-button
-          style="float: left"
-          icon="el-icon-printer"
-          type="primary"
-          @click="print(tableData)"
-        ></el-button>
-        <span>{{ $t("Classification.Unit") }}</span>
-      </div>
+  <add-cat/>
       <el-table
         v-loading="loading"
         :data="
@@ -155,10 +140,11 @@ import { GetMenuItem, Create, Edit } from "@/api/MenuItem";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
+import AddCat from "@/components/Add/AddCat";
 import printJS from "print-js";
 export default {
   name: "MenuItem",
-  components: { StatusTag, NextOprations },
+  components: { StatusTag, NextOprations, AddCat },
   data() {
     return {
       tableData: [],
