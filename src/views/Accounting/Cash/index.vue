@@ -123,7 +123,7 @@
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <!-- <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{
           $t("Classification.cancel")
         }}</el-button>
@@ -132,7 +132,7 @@
           @click="dialogFormStatus === 'create' ? createData() : updateData()"
           >{{ $t("AddVendors.Save") }}</el-button
         >
-      </div>
+      </div> -->
     </el-dialog>
     <el-dialog
       style="margin-top: -13vh"

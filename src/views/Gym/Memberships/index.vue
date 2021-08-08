@@ -2,13 +2,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <el-button
-          style="float: left"
-          type="success"
-          icon="el-icon-plus"
-          @click="handleCreate()"
-          >{{ $t("Vendors.Add") }}</el-button
-        >
+       <add-membership/>
         <span>{{ $t("CashPool.Memberships") }}</span>
       </div>
       <el-table
@@ -133,12 +127,25 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <el-dialog
+    
+<el-dialog
       style="margin-top: -13vh"
       :show-close="false"
-      :title="textMapForm[dialogFormStatus]"
       :visible.sync="dialogFormVisible"
     >
+      <div slot="title" class="dialog-footer">
+        <el-col :span="4">
+          <el-button
+            icon="el-icon-finished"
+            style="float: left"
+            type="primary"
+            @click="updateData()"
+          />
+        </el-col>
+        <el-col :span="20">
+          <el-divider> إضافة إشتراك </el-divider>
+        </el-col>
+      </div>
       <el-form
         ref="dataForm"
         :rules="rulesForm"
@@ -250,17 +257,18 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <!-- <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{
           $t("permission.cancel")
         }}</el-button>
         <el-button
           type="primary"
-          @click="dialogFormStatus === 'create' ? createData() : updateData()"
+          @click="createData()"
           >حفظ</el-button
         >
-      </div>
+      </div> -->
     </el-dialog>
+
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
@@ -295,10 +303,10 @@
 <script>
 import { GetMembership, Create, Edit } from "@/api/Membership";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-
+import AddMembership from "@/components/Gym/AddMembership.vue"
 import { ChangeObjStatus } from "@/api/Oprationsys";
 export default {
-  components: { StatusTag },
+  components: { StatusTag,AddMembership },
   name: "Membership",
   data() {
     return {
@@ -318,7 +326,7 @@ export default {
         IconClass: "",
         ClassName: ""
       },
-      tempForm: {
+       tempForm: {
         Id: undefined,
         Name: "",
         NumberDays: 30,
@@ -377,7 +385,7 @@ export default {
         this.loading = false;
       });
     },
-    resetTempForm() {
+  resetTempForm() {
       this.tempForm = {
         Id: undefined,
         Name: "",
@@ -390,6 +398,29 @@ export default {
         MinFreezeLimitDays: 3,
         MaxFreezeLimitDays: 0
       };
+    },
+    createData() {
+      this.$refs["dataForm"].validate(valid => {
+        if (valid) {
+          Create(this.tempForm)
+            .then(response => {
+              this.dialogFormVisible = false;
+              this.getdata();
+              this.$notify({
+                title: "تم ",
+                message: "تم الإضافة بنجاح",
+                type: "success",
+                duration: 2000
+              });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
     handleCreate() {
       this.resetTempForm();
@@ -430,29 +461,7 @@ export default {
       this.tempOpration.OprationId = Opration.Id;
       this.tempOpration.Description = "";
     },
-    createData() {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          Create(this.tempForm)
-            .then(response => {
-              this.getdata();
-              this.dialogFormVisible = false;
-              this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                duration: 2000
-              });
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
+
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];

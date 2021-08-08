@@ -21,6 +21,7 @@
       </el-tooltip>
 
       <lang-select class="Right-Menu-item hover-effect" />
+      <Shortcut-Add class="Right-Menu-item hover-effect" />
     </template>
 
     <el-dropdown
@@ -71,11 +72,12 @@ import ErrorLog from "@/components/ErrorLog";
 import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
 import LangSelect from "@/components/LangSelect";
+import ShortcutAdd from "@/components/ShortcutAdd";
 import Search from "@/components/HeaderSearch";
 import Clock from "@/components/Clock";
 export default {
   directives: { permission },
-  components: { ErrorLog, Screenfull, SizeSelect, LangSelect, Search, Clock },
+  components: { ErrorLog, Screenfull, SizeSelect, LangSelect, Search, Clock, ShortcutAdd },
   methods: {
     async logout() {
       await this.$store.dispatch("user/logout");

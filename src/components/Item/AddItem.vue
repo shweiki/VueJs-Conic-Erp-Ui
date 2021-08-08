@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-button
-      type="primary"
-      icon="el-icon-plus"
-      circle
+      type="warning"
+      icon="el-icon-circle-plus"
+      :size="$store.getters.size"
       @click="Open = true"
     ></el-button>
 

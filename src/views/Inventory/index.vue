@@ -2,13 +2,14 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <el-button
+        <!-- <el-button
           style="float: left"
           type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
           >{{ $t("Vendors.Add") }}</el-button
-        >
+        > -->
+        <add-inventory/>
         <span>{{ $t("Inventory.Wharehouse") }}</span>
       </div>
       <el-table
@@ -124,12 +125,24 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <el-dialog
+   <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
-      :title="textMapForm[dialogFormStatus]"
       :visible.sync="dialogFormVisible"
     >
+      <div slot="title" class="dialog-footer">
+        <el-col :span="4">
+          <el-button
+            icon="el-icon-finished"
+            style="float: left"
+            type="primary"
+            @click="updateData()"
+          />
+        </el-col>
+        <el-col :span="20">
+          <el-divider> إضافة مخزن </el-divider>
+        </el-col>
+      </div>
       <el-form
         ref="dataForm"
         :rules="rulesForm"
@@ -147,14 +160,14 @@
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <!-- <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">الغاء</el-button>
         <el-button
           type="primary"
           @click="dialogFormStatus === 'create' ? createData() : updateData()"
           >حفظ</el-button
         >
-      </div>
+      </div>  -->
     </el-dialog>
     <el-dialog
       style="margin-top: -13vh"
@@ -197,10 +210,11 @@ import printJS from "print-js";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import { InventoryQty } from "@/api/InventoryItem";
 import NextOprations from "@/components/Oprationsys/NextOprations";
+import AddInventory from "@/components/Add/AddInventory.vue"
 
 export default {
   name: "InventoryItem",
-  components: { StatusTag, NextOprations },
+  components: { StatusTag, NextOprations, AddInventory },
 
   data() {
     return {
@@ -215,18 +229,24 @@ export default {
         update: "تعديل",
         create: "إضافة"
       },
+      tempForm: {
+        Id: undefined,
+        Name: "",
+        Description: ""
+      },
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
         ClassName: ""
       },
-      tempForm: {
-        Id: undefined,
-        Name: "",
+   
+      tempOpration: {
+        ObjId: undefined,
+        OprationId: undefined,
         Description: ""
       },
-      rulesForm: {
+            rulesForm: {
         Name: [
           {
             required: true,
@@ -240,11 +260,6 @@ export default {
             trigger: "blur"
           }
         ]
-      },
-      tempOpration: {
-        ObjId: undefined,
-        OprationId: undefined,
-        Description: ""
       },
       rulesOpration: {
         Description: [
@@ -267,6 +282,36 @@ export default {
     this.getdata();
   },
   methods: {
+     resetTempForm() {
+      this.tempForm = {
+        Id: undefined,
+        Name: "",
+        Description: ""
+      };
+    },
+         createData() {
+      this.$refs["dataForm"].validate(valid => {
+        if (valid) {
+          console.log(this.tempForm);
+          Create(this.tempForm)
+            .then(response => {
+              this.dialogFormVisible = false;
+              this.$notify({
+                title: "تم ",
+                message: "تم الإضافة بنجاح",
+                type: "success",
+                duration: 2000
+              });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
     print(InventoryQty, name) {
       let Items = InventoryQty.map(Item => ({
         Name: Item.Item.Name,
@@ -349,30 +394,7 @@ export default {
       this.tempOpration.OprationId = Opration.Id;
       this.tempOpration.Description = "";
     },
-    createData() {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          console.log(this.tempForm);
-          Create(this.tempForm)
-            .then(response => {
-              this.getdata();
-              this.dialogFormVisible = false;
-              this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                duration: 2000
-              });
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
+ 
     updateData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
