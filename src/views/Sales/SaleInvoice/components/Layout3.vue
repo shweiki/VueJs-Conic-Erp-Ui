@@ -147,14 +147,13 @@
                           ></el-button>
                         </el-col>
                         <el-col :span="6">
-                         <Drawer-Print
-                        v-if="OldInvoice == null ? false : true"
-                        Type="SaleInvoice"
-                        :Data="OldInvoice"
-                        :AutoPrint="AutoPrint"
-                        Css="font-size: 35px"
-                        @focus="focusBarcode"
-                      />
+                          <Drawer-Print
+                            v-if="OldInvoice == null ? false : true"
+                            Type="SaleInvoice"
+                            :Data="OldInvoice"
+                            :AutoPrint="AutoPrint"
+                            @focus="focusBarcode"
+                          />
                         </el-col>
                       </el-row>
                     </el-card>
