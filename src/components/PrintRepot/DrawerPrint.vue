@@ -7,30 +7,24 @@
       type="info"
       @click="drawer = true"
     ></el-button>
-    <el-drawer
-      size="70%"
-      title="نماذج"
-      :visible.sync="drawer"
-      :direction="direction"
-      @opened="getdata()"
-    >
-      <ElTag type="success">{{ Type }}</ElTag>
+    <el-drawer size="80%" :visible.sync="drawer" @opened="getdata()">
+      <template slot="title">
+        <ElTag type="success">{{ Type }}</ElTag>
+      </template>
       <el-col
         v-bind:span="24 / Reports.length"
         v-for="item in Reports"
         :key="item.Id"
       >
+        <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
+
         <el-button
-          type="success"
-          icon="el-icon-printer"
-          @click="PrintNewWin(item.Html)"
-        />
-        <!-- 
-        <el-button
-          type="warning"
-          icon="el-icon-printer"
-          @click="JSPM(item.Printer, 'Report-' + item.Id)"
-        /> -->
+          class="filter-item"
+          type="primary"
+          icon="el-icon-download"
+          @click="handleDownload(item)"
+        >
+        </el-button>
         <el-button
           type="warning"
           icon="el-icon-edit"
@@ -45,44 +39,43 @@
             );
           "
         />
-        <el-col span="6">
-          <el-form-item
-            prop="EmailSent"
-            label="Email"
-            :rules="[
-              {
-                required: false,
-                message: 'Please input email address',
-                trigger: 'blur'
-              },
-              {
-                type: 'email',
-                message: 'Please input correct email address',
-                trigger: ['blur', 'change']
-              }
-            ]"
+        <el-col :span="6">
+          <el-input
+            placeholder="Please input Email"
+            v-model="item.EmailSent"
+            class="input-with-select"
           >
-            <el-input
-              placeholder="Please input Email"
-              v-model="item.EmailSent"
-              class="input-with-select"
-            >
-              <el-button
-                @click="SendEmail"
-                slot="append"
-                icon="el-icon-s-promotion"
-              ></el-button>
-            </el-input>
-          </el-form-item>
+            <el-button
+              @click="SendEmail(item)"
+              slot="append"
+              icon="el-icon-s-promotion"
+            ></el-button>
+          </el-input>
         </el-col>
-        <img id="imageblo" />
-
-        <div
-          style="direction: ltr;"
+        <el-col :span="6">
+          <el-input
+            placeholder="Please input Number as 79xxxxxxx"
+            v-model="PhoneNumber"
+            class="input-with-select"
+          >
+            <el-button
+              @click="SendWhatsApp(item)"
+              slot="append"
+              icon="el-icon-chat-round"
+              type="success"
+            ></el-button>
+          </el-input>
+        </el-col>
+        <iframe
+          height="500px"
+          frameborder="0"
+          style="overflow:hidden;width:100%"
           v-bind:id="'Report-' + item.Id"
-          class="editor-content"
-          v-html="item.Html"
-        />
+          class="iframeR"
+          :srcdoc="item.Html"
+          :title="item.Name"
+        ></iframe>
+        <iframe id="ifrmPrint" class="iframeR" :title="item.Name"></iframe>
       </el-col>
     </el-drawer>
     <img id="qr_code" style="display: none" />
@@ -93,11 +86,13 @@ import { OrderReceipt } from "@/Report/OrderReceipt.js";
 import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
 import { ShawermaSheesh } from "@/Report/ShawermaSheesh";
 import Visualization from "@/Report/Visualization.js";
+import jsPDF from "jspdf";
 
 import printJS from "print-js";
 import JSPM from "jsprintmanager";
 import * as htmlToImage from "html-to-image";
 import { GetByListQ } from "@/api/Report";
+import { SendEmail } from "@/api/StmpEmail";
 
 export default {
   name: "PrintButton",
@@ -114,8 +109,8 @@ export default {
   data() {
     return {
       drawer: false,
-      direction: "rtl",
-      Reports: []
+      Reports: [],
+      PhoneNumber: ""
     };
   },
   watch: {
@@ -161,33 +156,87 @@ export default {
           (printer ? ",`" + printer + "`)" : ")")
       );
     },
-    PrintNewWin(Html) {
-      let win = window.open(
-        "",
-        "Title",
-        "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=600,top=" +
-          (screen.height - 50) +
-          ",left=" +
-          (screen.width - 500)
-      );
-      win.document.body.innerHTML = Html;
-
-      setTimeout(() => {
-        win.print();
-      }, 1000);
+    Print(item) {
+      try {
+        var oIframe = document.getElementById("ifrmPrint");
+        var oDoc = oIframe.contentWindow || oIframe.contentDocument;
+        if (oDoc.document) oDoc = oDoc.document;
+        oDoc.write("<head><title>title</title>");
+        oDoc.write('</head><body onload="this.focus(); this.print();">');
+        oDoc.write(item.Html + "</body>");
+        oDoc.close();
+        setTimeout(() => {
+          document.getElementById("ifrmPrint").src = "";
+        }, 2000);
+      } catch (e) {
+        self.print();
+      }
     },
-    SendEmail() {},
+    SendEmail(item) {
+      ///  To , Subject , Body
+      SendEmail(
+        "tahashweiki@yahoo.com",
+        "From Conic Erp App Invoice #" + item.Id + "",
+        item.Html
+      );
+      this.$notify({
+        title: "تم ",
+        message: "تم ارسال بنجاح",
+        type: "success",
+        duration: 20000
+      });
+    },
+    SendWhatsApp(item) {
+      var oIframe = document.getElementById("Report-" + item.Id);
+      var oDoc = oIframe.contentWindow || oIframe.contentDocument;
+      if (oDoc.document) oDoc = oDoc.document;
+      oDoc.write("<head><title>title</title>");
+      oDoc.write("</head><body >");
+      oDoc.write(item.Html + "</body>");
+      console.log(oDoc.body);
+      htmlToImage
+        .toPng(oDoc.body)
+        .then(dataUrl => {
+          window.open(
+            "https://wa.me/962" +
+              this.PhoneNumber +
+              "?public.image=" +
+              dataUrl +
+              ""
+          );
+        })
+        .catch(error => {
+          console.error("oops, something went wrong!", error);
+        });
+    },
+    handleDownload(item) {
+      var oIframe = document.getElementById("Report-" + item.Id);
+      var oDoc = oIframe.contentWindow || oIframe.contentDocument;
+      if (oDoc.document) oDoc = oDoc.document;
+      oDoc.write("<head><title>title</title>");
+      oDoc.write("</head><body >");
+      oDoc.write(item.Html + "</body>");
+      console.log(oDoc.body);
+      htmlToImage
+        .toPng(oDoc.body)
+        .then(dataUrl => {
+          const pdf = new jsPDF();
+          pdf.addImage(dataUrl, "PNG", 0, 0);
+          pdf.save("Invoice #" + item.Id + ".pdf");
+          oDoc.close();
+        })
+        .catch(error => {
+          console.error("oops, something went wrong!", error);
+        });
+    },
     JSPM(printer, el) {
       if (printer) {
         let cpj = new JSPM.ClientPrintJob();
         cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
-
         htmlToImage
           .toPng(document.getElementById(el))
           .then(dataUrl => {
             console.log(dataUrl);
-            document.getElementById("imageblo").src = dataUrl;
-
             cpj.files.push(
               new JSPM.PrintFile(
                 dataUrl,
@@ -217,7 +266,7 @@ export default {
   color: #24292e;
   cursor: pointer;
 }
-.editor-content {
-  color: black;
+.iframeR {
+  border: none;
 }
 </style>

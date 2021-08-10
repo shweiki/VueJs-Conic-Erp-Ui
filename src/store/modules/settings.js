@@ -43,8 +43,8 @@ const state = {
     LimitGetInvoice: defaultSettings.LimitGetInvoice,
     ItemMoveDec: defaultSettings.ItemMoveDec,
     printers: defaultSettings.printers,
-    Sms: defaultSettings.Sms
-
+    Sms: defaultSettings.Sms,
+    OutgoingMailServer: defaultSettings.OutgoingMailServer,
 }
 
 const mutations = {
@@ -66,7 +66,7 @@ const actions = {
                         var obj = JSON.parse(x.Description);
                         if (obj.key === "pickerOptions") {
                             obj.value.shortcuts.map(OP => {
-                                OP.onClick = function(picker) {
+                                OP.onClick = function (picker) {
                                     const end = new Date();
                                     const start = new Date();
                                     start.setTime(start.getTime() - 3600 * 1000 * 24 * OP.days);

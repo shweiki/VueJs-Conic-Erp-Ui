@@ -1,6 +1,5 @@
 const start = new Date();
 
-
 module.exports = {
     theme: '#74b9ff',
     title: 'High  Fit',
@@ -31,6 +30,12 @@ module.exports = {
         senderid: "", //'High Fit'
         AccName: "", //'highfit',
         AccPass: "", //'D7!cT5!SgU0'
+    },
+    OutgoingMailServer: {
+        Host: "", //mail.privateemail.com
+        Username: "", // hello@conic-isv.com
+        Password: "", // *****
+        From: "", // hello@conic-isv.com
     },
     errorLog: 'production',
     DateFormat: 'yyyy-MM-dd',

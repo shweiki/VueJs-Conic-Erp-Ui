@@ -10,19 +10,17 @@
         ]"
       ></el-input>
       <el-button
-        icon="el-icon-chat-line-round"
+        icon="el-icon-chat-round"
         type="primary"
         :size="$store.getters.size"
-      >
-        <a
-          v-bind:href="
+        @click="
+          window.open(
             'https://wa.me/962' + NumberPhone1 + '?text=' + Description
-          "
-          target="_blank"
-        >
-          WhatsApp</a
-        ></el-button
+          )
+        "
       >
+        WhatsApp
+      </el-button>
 
       <el-button
         icon="el-icon-chat-square"
@@ -47,26 +45,25 @@
 
 <script>
 import { SendSMS } from "@/api/SMS";
-import { string } from "clipboard";
 import axios from "axios";
 
 export default {
   props: {
     NumberPhone1: {
-      type: string,
+      type: String,
       default: () => {
         return undefined;
       }
     },
 
     NumberPhone2: {
-      type: string,
+      type: String,
       default: () => {
         return undefined;
       }
     },
     Email: {
-      type: string,
+      type: String,
       default: () => {
         return undefined;
       }
@@ -89,6 +86,7 @@ export default {
         duration: 2000
       });
     },
+
     SendWhatsApp() {
       if (this.NumberPhone1 != "" && this.Description != "") {
         if (this.NumberPhone1.length == 10) this.NumberPhone1.slice(1);
