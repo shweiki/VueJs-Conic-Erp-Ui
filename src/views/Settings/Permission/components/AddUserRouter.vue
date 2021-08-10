@@ -30,7 +30,9 @@
         </el-form-item>
       </el-form>
       <div style="text-align: right">
-        <el-button type="danger" @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="danger" @click="dialogVisible = false"
+          >Cancel</el-button
+        >
         <el-button type="primary" @click="confirmRouter">Confirm</el-button>
       </div>
     </el-dialog>
@@ -46,16 +48,16 @@ export default {
   props: {
     UserId: {
       type: String,
-      default: "",
+      default: ""
     },
     Router: {
       type: String,
-      default: "",
+      default: ""
     },
     Redirect: {
       type: String,
-      default: "/",
-    },
+      default: "/"
+    }
   },
   data() {
     return {
@@ -64,14 +66,14 @@ export default {
       checkStrictly: false,
       defaultProps: {
         children: "children",
-        label: "title",
-      },
+        label: "title"
+      }
     };
   },
   computed: {
     routesData() {
       return this.routes;
-    },
+    }
   },
   created() {
     this.getRoutes();
@@ -97,18 +99,18 @@ export default {
       AddUserRouter({
         UserId: this.UserId,
         Router: JSON.stringify(this.$refs.tree.getCheckedKeys()),
-        DefulateRedirect: this.Redirect,
+        DefulateRedirect: this.Redirect
       })
-        .then((response) => {
+        .then(response => {
           this.dialogVisible = false;
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",
             type: "success",
-            duration: 2000,
+            duration: 2000
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -122,7 +124,10 @@ export default {
           continue;
         }*/
 
-        const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route);
+        const onlyOneShowingChild = this.onlyOneShowingChild(
+          route.children,
+          route
+        );
 
         if (route.children && onlyOneShowingChild && !route.alwaysShow) {
           route = onlyOneShowingChild;
@@ -130,7 +135,7 @@ export default {
 
         const data = {
           path: path.resolve(basePath, route.path),
-          title: route.meta && route.meta.title,
+          title: route.meta && route.meta.title
         };
 
         // recursive child routes
@@ -143,7 +148,7 @@ export default {
     },
     generateArr(routes) {
       let data = [];
-      routes.forEach((route) => {
+      routes.forEach(route => {
         data.push(route);
         if (route.children) {
           const temp = this.generateArr(route.children);
@@ -154,7 +159,6 @@ export default {
       });
       return data;
     },
-
     generateTree(routes, basePath = "/", checkedKeys) {
       const res = [];
       for (const route of routes) {
@@ -162,7 +166,11 @@ export default {
 
         // recursive child routes
         if (route.children) {
-          route.children = this.generateTree(route.children, routePath, checkedKeys);
+          route.children = this.generateTree(
+            route.children,
+            routePath,
+            checkedKeys
+          );
         }
 
         if (
@@ -178,7 +186,7 @@ export default {
     // reference: src/view/layout/components/Sidebar/SidebarItem.vue
     onlyOneShowingChild(children = [], parent) {
       let onlyOneChild = null;
-      const showingChildren = children.filter((item) => !item.hidden);
+      const showingChildren = children.filter(item => !item.hidden);
 
       // When there is only one child route, the child route is displayed by default
       if (showingChildren.length === 1) {
@@ -194,8 +202,8 @@ export default {
       }
 
       return false;
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -342,6 +342,7 @@
                         v-if="OldInvoice == null ? false : true"
                         Type="SaleInvoice"
                         :Data="OldInvoice"
+                        :AutoPrint="AutoPrint"
                         Css="font-size: 35px"
                         @focus="focusBarcode"
                       />
@@ -738,7 +739,6 @@ export default {
                     this.tempForm.Id = response;
                     this.tempForm.Total = Total;
                     this.OldInvoice = this.tempForm;
-                    this.AutoPrint ? this.Print() : undefined;
                     //     this.restTempForm();
                     this.DisabledSave = false;
                     this.focusBarcode();
@@ -757,7 +757,6 @@ export default {
                     this.tempForm.Id = response;
                     this.tempForm.Total = Total;
                     this.OldInvoice = this.tempForm;
-                    this.AutoPrint ? this.Print() : undefined;
                     this.restTempForm();
                     this.DisabledSave = false;
                     this.focusBarcode();

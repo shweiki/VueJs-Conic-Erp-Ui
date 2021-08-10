@@ -147,11 +147,14 @@
                           ></el-button>
                         </el-col>
                         <el-col :span="6">
-                          <Restaurant-Print-Button
-                            :AutoPrint="AutoPrint"
-                            :Data="OldInvoice"
-                            Css="font-size: 12px"
-                          />
+                         <Drawer-Print
+                        v-if="OldInvoice == null ? false : true"
+                        Type="SaleInvoice"
+                        :Data="OldInvoice"
+                        :AutoPrint="AutoPrint"
+                        Css="font-size: 35px"
+                        @focus="focusBarcode"
+                      />
                         </el-col>
                       </el-row>
                     </el-card>
@@ -454,7 +457,7 @@ import RightMenu from "@/components/RightMenu";
 import LangSelect from "@/components/LangSelect";
 import Screenfull from "@/components/Screenfull";
 import SizeSelect from "@/components/SizeSelect";
-import RestaurantPrintButton from "@/components/PrintRepot/RestaurantPrintButton.vue";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 // report
 import VendorSelect from "@/components/Vendor/VendorSelect";
@@ -488,7 +491,7 @@ export default {
     ItemsSearch,
     ItemsCategory,
     EditItem,
-    RestaurantPrintButton,
+    DrawerPrint,
     RestOfBill,
     RightMenu,
     FakeDate,

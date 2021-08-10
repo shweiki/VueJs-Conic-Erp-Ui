@@ -7,6 +7,13 @@ export function GetAccount(query) {
     params: query
   })
 }
+export function GetTreeAccount(query) {
+  return request({
+    url: '/Account/GetTreeAccount',
+    method: 'get',
+    params: query
+  })
+}
 
 export function GetActiveAccounts(query) {
   return request({

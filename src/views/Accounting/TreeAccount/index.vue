@@ -5,42 +5,55 @@
       <div slot="header" class="clearfix">
         <el-button
           style="float: left"
-          type='success'
+          type="success"
           icon="el-icon-plus"
           @click="handleCreate()"
-        >{{ $t('Classification.Add') }}</el-button>
-        <span>{{ $t('Account.Account') }}</span>
+          >{{ $t("Classification.Add") }}</el-button
+        >
+        <span>{{ $t("Account.Account") }}</span>
       </div>
       <div class="custom-tree-container">
-
+        <el-button
+          type="primary"
+          icon="el-icon-refresh"
+          @click="getdata()"
+        ></el-button>
+        <el-col :span="6">
+          <el-input placeholder="Filter keyword" v-model="filterText">
+          </el-input>
+        </el-col>
         <div class="block">
           <el-tree
-            :data="data"
+            :data="Tree"
             show-checkbox
-            node-key="id"
+            node-key="Id"
+            accordion
             default-expand-all
             :expand-on-click-node="false"
+            :filter-node-method="filterNode"
+            ref="AccountTree"
           >
-                                <span>
-                <el-button type="text" :size="$store.getters.size" @click="() => append(data)">إضافة</el-button>
-                <el-button type="text" :size="$store.getters.size" @click="() => remove(node, data)">حذف</el-button>
+            <span class="custom-tree-node" slot-scope="{ data }">
+              <span
+                >{{ data.Name }} - {{ data.Code }}
+                <edit-account :AccountId="data.Id" />
               </span>
-            <span class="custom-tree-node" slot-scope="{ node }">
-
-              <span>{{ node.label }}</span>
-
+              <span>
+                <span>{{ data.TotalCredit }}</span>
+                <span>{{ data.TotalDebit }}</span>
+                <span>{{ data.TotalCredit - data.TotalDebit }}</span>
+              </span>
             </span>
-       
           </el-tree>
         </div>
       </div>
-
     </el-card>
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
       :title="textMapForm[dialogFormStatus]"
-      :visible.sync="dialogFormVisible" >
+      :visible.sync="dialogFormVisible"
+    >
       <el-form
         ref="dataForm"
         :rules="rulesForm"
@@ -49,7 +62,11 @@
         label-width="70px"
       >
         <el-form-item v-bind:label="$t('Account.AccType')" prop="Type">
-          <el-select v-model="tempForm.Type" filterable placeholder="الحسابات الرئيسية">
+          <el-select
+            v-model="tempForm.Type"
+            filterable
+            placeholder="الحسابات الرئيسية"
+          >
             <el-option
               v-for="item in TypeAccounts"
               :key="item.value"
@@ -69,141 +86,36 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('Account.cancel') }}</el-button>
+        <el-button @click="dialogFormVisible = false">{{
+          $t("Account.cancel")
+        }}</el-button>
         <el-button
           type="primary"
-          @click="dialogFormStatus==='create'?createData():updateData()"
-        >{{ $t('Account.Save') }}</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      :title="textOpration.OprationDescription"
-      :visible.sync="dialogOprationVisible"
-    >
-      <el-form
-        ref="dataOpration"
-        :rules="rulesOpration"
-        :model="tempOpration"
-        label-position="top"
-        label-width="70px"
-        style="width: 400px margin-left:50px"
-      >
-        <el-form-item v-bind:label="$t('Classification.OperationNote')" prop="Description">
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-        >{{textOpration.OprationDescription}}</el-button>
+          @click="dialogFormStatus === 'create' ? createData() : updateData()"
+          >{{ $t("Account.Save") }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import { GetAccount, Create, Edit } from "@/api/Account";
-import { ChangeObjStatus } from "@/api/Oprationsys";
+import { GetTreeAccount, Create, Edit } from "@/api/Account";
+import EditAccount from "./EditAccount.vue";
 export default {
+  components: {  EditAccount },
   name: "TreeAccount",
+  watch: {
+    filterText(val) {
+      this.$refs["AccountTree"].filter(val);
+    }
+  },
   data() {
-    const data = [
-      {
-        id: 1,
-        label: "الاصول",
-        children: [
-          {
-            id: 4,
-            label: "الاصول المتداولة",
-            children: [
-              {
-                id: 9,
-                label: "الصندوق",
-                type : "Cash"
-              },
-              {
-                id: 10,
-                label: "البنك"
-              },
-              {
-                id: 10,
-                label: "المدينون"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: 2,
-        label: "الالتزامات",
-        children: [
-          {
-            id: 5,
-            label: "الالتزامات المتداولة"
-          },
-          {
-            id: 6,
-            label: "الالتزامات غير المتداولة"
-          }
-        ]
-      },
-      {
-        id: 3,
-        label: "حقوق الملكية",
-        children: [
-          {
-            id: 7,
-            label: "راس المال"
-          },
-          {
-            id: 8,
-            label: "المسحوبات الشخصية"
-          }
-        ]
-      },
-            {
-        id: 3,
-        label: "الايرادات",
-        children: [
-          {
-            id: 7,
-            label: "ايرادات المبيعات"
-          },
-          {
-            id: 8,
-            label: "الايرادات الاخرى"
-          }
-        ]
-      },
-                  {
-        id: 3,
-        label: "المصروفات",
-        children: [
-          {
-            id: 7,
-            label: "تكلفة المبيعات"
-          },
-          {
-            id: 8,
-            label: "مصاريف البيع والتسويق"
-          },
-          {
-            id: 8,
-            label: "مصاريف ادارية وعمومية"
-          }
-        ]
-      }
-    ];
     return {
-      data: JSON.parse(JSON.stringify(data)),
-
       loading: true,
       dialogFormVisible: false,
-      dialogOprationVisible: false,
-      dialogFormStatus: '',
-      tableData: [],
+      dialogFormStatus: "",
+      filterText: "",
+      Tree: [],
       TypeAccounts: [
         {
           label: "حساب",
@@ -214,57 +126,32 @@ export default {
           value: "Cash"
         }
       ],
-      search: '',
+      search: "",
       textMapForm: {
         update: "تعديل",
         create: "إضافة"
       },
-      textOpration: {
-        OprationDescription: '',
-        ArabicOprationDescription: '',
-        IconClass: '',
-        ClassName: ''
-      },
+
       tempForm: {
         Id: undefined,
-        AccountName: '',
+        AccountName: "",
         Status: 0,
-        Code: '',
+        Code: "",
         Type: undefined,
-        Description: ''
+        Description: ""
       },
       rulesForm: {
         AccountName: [
           {
             required: true,
-            message: 'يجب إدخال إسم ',
-            trigger: 'blur'
+            message: "يجب إدخال إسم ",
+            trigger: "blur"
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 احرف و لا يزيد عن 50 حرف",
-            trigger: 'blur'
-          }
-        ]
-      },
-      tempOpration: {
-        ObjId: undefined,
-        OprationId: undefined,
-        Description: ''
-      },
-      rulesOpration: {
-        Description: [
-          {
-            required: true,
-            message: "يجب إدخال ملاحظة للعملية",
-            trigger: 'blur'
-          },
-          {
-            minlength: 5,
-            maxlength: 150,
-            message: "الرجاء إدخال إسم لا يقل عن 5 أحرف و لا يزيد عن 150 حرف",
-            trigger: 'blur'
+            trigger: "blur"
           }
         ]
       }
@@ -274,66 +161,58 @@ export default {
     this.getdata();
   },
   methods: {
-            append(data) {
-        const newChild = { id: id++, label: "testtest", children: [] };
-        if (!data.children) {
-          this.$set(data, "children", []);
-        }
-        data.children.push(newChild);
-      },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.Name.indexOf(value) !== -1 || data.Code.indexOf(value) !== -1;
+    },
 
-      remove(node, data) {
-        const parent = node.parent;
-        const children = parent.data.children || parent.data;
-        const index = children.findIndex(d => d.Id === data.Id);
-        children.splice(index, 1);
-      },
-
-      renderContent(h, { node, data, store }) {
-        return (
-          <span class="custom-tree-node">
-            <span>{node.label}</span>
-            <span>
-              <el-button
-                size={this.$store.getters.size}
-                type="text"
-                on-click={() => this.append(data)}
-              >
-                إضافة
-              </el-button>
-              <el-button
-                size={$store.getters.size}
-                type="text"
-                on-click={() => this.remove(node, data)}
-              >
-                حذف
-              </el-button>
-            </span>
-          </span>
-        );
-      },
     getdata() {
       this.loading = true;
-      GetAccount()
+      GetTreeAccount()
         .then(response => {
           // handle success
-          console.log(response)
-          this.tableData = response.Accounts;
-          this.loading = false
+          console.log(response);
+          this.Tree = this.generateTree(response);
+          console.log(this.Tree);
+
+          this.loading = false;
         })
         .catch(error => {
           // handle error
           console.log(error);
-        })
+        });
     },
+    generateTree(list) {
+      var map = {},
+        node,
+        roots = [],
+        i;
+
+      for (i = 0; i < list.length; i += 1) {
+        map[list[i].Id] = i; // initialize the map
+        list[i].children = []; // initialize the children
+      }
+
+      for (i = 0; i < list.length; i += 1) {
+        node = list[i];
+        if (node.ParentId !== 0) {
+          // if you have dangling branches check that map[node.parentId] exists
+          list[map[node.ParentId]].children.push(node);
+        } else {
+          roots.push(node);
+        }
+      }
+      return roots;
+    },
+
     resetTempForm() {
       this.tempForm = {
         Id: undefined,
-        AccountName: '',
+        AccountName: "",
         Status: 0,
-        Code: '',
+        Code: "",
         Type: undefined,
-        Description: ''
+        Description: ""
       };
     },
     handleCreate() {
@@ -342,7 +221,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
+      });
     },
     handleUpdate(row) {
       console.log(row);
@@ -356,20 +235,7 @@ export default {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
-      })
-    },
-    handleOprationsys(ObjId, Opration) {
-      this.dialogOprationVisible = true;
-      // text
-      this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
-      this.textOpration.IconClass = Opration.IconClass;
-      this.textOpration.ClassName = Opration.ClassName;
-      /// temp
-      this.tempOpration.ObjId = ObjId;
-      this.tempOpration.OprationId = Opration.Id;
-      this.tempOpration.Description = "";
+      });
     },
     createData() {
       this.$refs["dataForm"].validate(valid => {
@@ -381,18 +247,18 @@ export default {
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
-                type: 'success',
+                type: "success",
                 duration: 2000
-              })
+              });
             })
             .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     updateData() {
       this.$refs["dataForm"].validate(valid => {
@@ -403,55 +269,27 @@ export default {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
-                message: 'تم التعديل بنجاح',
-                type: 'success',
+                message: "تم التعديل بنجاح",
+                type: "success",
                 duration: 2000
-              })
+              });
             })
             .catch(error => {
               console.log(error);
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      })
-    },
-    createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
-        if (valid) {
-          console.log(this.tempOpration);
-          ChangeObjStatus({
-            ObjId: this.tempOpration.ObjId,
-            OprationId: this.tempOpration.OprationId,
-            Description: this.tempOpration.Description
-          })
-            .then(response => {
-              this.getdata();
-              this.dialogOprationVisible = false;
-              this.$notify({
-                title: "تم  ",
-                message: "تمت العملية بنجاح",
-                type: 'success',
-                duration: 2000
-              })
-            })
-            .catch(error => {
-              console.log(error);
-            })
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      })
+      });
     }
   }
 };
 </script>
 
 <style>
-.el-tree-node__children{
-      margin-right: 18px;
+.el-tree-node__children {
+  margin-right: 18px;
 }
 .custom-tree-node {
   flex: 1;
