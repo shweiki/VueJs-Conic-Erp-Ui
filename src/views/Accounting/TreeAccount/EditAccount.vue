@@ -1,12 +1,14 @@
 <template>
   <div>
     <el-button
-      type="success"
+      type="primary"
       icon="el-icon-edit"
       @click="getdata()"
+      circle
     ></el-button>
     <el-dialog
       style="margin-top: -13vh"
+      :show-close="false"
       :visible.sync="Visible"
       @opened="$refs['Name'].focus()"
     >
@@ -24,46 +26,46 @@
         </el-col>
       </div>
       <el-form
-        :model="tempForm"
-        :rules="rulesForm"
         ref="dataForm"
-        class="demo-form-inline"
+        :rules="rulesForm"
+        :model="tempForm"
         label-position="top"
+        label-width="70px"
       >
-        <div>
-          <el-radio v-model="tempForm.Type" label="Customer" border>{{
-            $t("AddVendors.Customer")
-          }}</el-radio>
-          <el-radio v-model="tempForm.Type" label="Supplier" border>{{
-            $t("AddVendors.Supplier")
-          }}</el-radio>
-        </div>
-        <el-row type="flex">
-          <el-col :span="24">
-            <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input
-                type="text"
-                ref="Name"
-                v-model="tempForm.Name"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
+        <el-form-item v-bind:label="$t('Account.AccType')" prop="Type">
+          <select-accounts-type
+            :Value="tempForm.Type"
+            @Set="v => (tempForm.Type = v)"
+          />
+        </el-form-item>
+        <el-form-item v-bind:label="$t('Account.AccName')" prop="Name">
+          <el-input ref="Name" type="text" v-model="tempForm.Name"></el-input>
+        </el-form-item>
+        <el-form-item v-bind:label="$t('Account.Code')" prop="Code">
+          <el-input type="text" v-model="tempForm.Code"></el-input>
+        </el-form-item>
+        <el-form-item v-bind:label="$t('Account.Notes')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="Visible = false">{{
+          $t("Account.cancel")
+        }}</el-button>
+        <el-button type="primary" @click="updateData()">{{
+          $t("Account.Save")
+        }}</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import { Edit, GetById } from "@/api/Account";
+import SelectAccountsType from "./SelectAccountsType.vue";
 
 export default {
+  components: { SelectAccountsType },
   props: {
     AccountId: {
       type: Number,
@@ -76,16 +78,11 @@ export default {
       tempForm: {
         Id: undefined,
         Name: "",
-        Ssn: "",
-        Region: "",
-        Email: "",
-        PhoneNumber1: "",
-        PhoneNumber2: "",
-        Fax: "0",
-        CreditLimit: 0.0,
+        Status: 0,
+        Code: "",
+        Type: undefined,
         Description: "",
-        IsPrime: false,
-        Type: "Customer"
+        ParentId: 0
       },
       rulesForm: {
         Name: [
@@ -104,7 +101,6 @@ export default {
       }
     };
   },
-
   methods: {
     getdata() {
       GetById({ Id: this.AccountId }).then(response => {

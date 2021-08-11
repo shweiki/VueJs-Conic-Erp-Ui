@@ -1,103 +1,120 @@
 <template>
-<div>
- <el-button type="primary"
-      icon="el-icon-plus"
-      circle
-      @click="Open = true" style="background-color: #1b3459;"></el-button>
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      title="إضافة"
-      :visible.sync="Open"
-    >
-    <template>
-      <el-col :span="20">
-        <Add-Item/>
-      </el-col>
-      <el-col :span="4">
-        صنف جديد
-      </el-col>
-    </template>
-        <template>
-      <el-col :span="20">
-        <Add-Member/>
-      </el-col>
-      <el-col :span="4">
-        مشترك جديد
-      </el-col>
-    </template>
-           <template>
-      <el-col :span="20">
-        <Add-Vendor/>
-      </el-col>
-      <el-col :span="4">
-        عميل/مورد جديد
-      </el-col>
-    </template>
-      <template>
-      <el-col :span="20">
-        <add-inventory/>
-      </el-col>
-      <el-col :span="4">
-        مخزن جديد
-      </el-col>
-    </template>
-      <template>
-      <el-col :span="20">
-        <add-membership/>
-      </el-col>
-      <el-col :span="4">
-        إشتراك جديد
-      </el-col>
-    </template>
-        <template>
-      <el-col :span="20">
-        <add-cat/>
-      </el-col>
-      <el-col :span="4">
-        تصنيف جديد
-      </el-col>
-    </template>
-        <template>
-      <el-col :span="20">
-        <add-cash/>
-      </el-col>
-      <el-col :span="4">
-        إضافة كاش 
-      </el-col>
-    </template>
-        <template>
-      <el-col :span="20">
-        <add-cheque/>
-      </el-col>
-      <el-col :span="4">
-        إضافة شيك       </el-col>
-    </template>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="Open = false">{{
-          $t("permission.cancel")
-        }}</el-button>
-      </div>
-    </el-dialog>
-</div>
+  <div>
+    <el-popover placement="bottom" width="250" trigger="click">
+      <el-row>
+        <el-col :span="12"><Add-Item /></el-col>
+        <el-col :span="12">صنف جديد</el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12"> <Add-Member /> </el-col>
+        <el-col :span="12"> مشترك جديد </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12"> <Add-Vendor /> </el-col>
+        <el-col :span="12"> عميل/مورد جديد </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12"> <Add-Inventory /> </el-col>
+        <el-col :span="12"> مخزن جديد </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12"> <Add-Membership /> </el-col>
+        <el-col :span="12"> إشتراك جديد </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12"> <Add-Cat /> </el-col>
+        <el-col :span="12"> تصنيف جديد </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12"> <Add-Cash /> </el-col>
+        <el-col :span="12"> إضافة كاش </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12"> <Add-Cheque /> </el-col>
+        <el-col :span="12"> إضافة شيك </el-col>
+      </el-row>
+      <i
+        class="el-icon-plus avatar-container Right-Menu-item hover-effect"
+        slot="reference"
+      >
+        <i class="el-icon-caret-bottom"
+      /></i>
+    </el-popover>
+  </div>
 </template>
 
 <script>
 import AddItem from "@/components/Item/AddItem.vue";
 import AddMember from "@/components/Member/AddMember.vue";
 import AddVendor from "@/components/Vendor/AddVendor.vue";
-import AddInventory from '../Add/AddInventory.vue';
-import AddMembership from '../Gym/AddMembership.vue';
-import AddCash from '../Add/AddCash.vue';
-import AddCheque from '../Add/AddCheque.vue';
-import AddCat from '../Add/AddCat.vue';
+import AddInventory from "../Add/AddInventory.vue";
+import AddMembership from "../Gym/AddMembership.vue";
+import AddCash from "../Add/AddCash.vue";
+import AddCheque from "../Add/AddCheque.vue";
+import AddCat from "../Add/AddCat.vue";
 export default {
-  components:{AddItem, AddMember, AddVendor, AddInventory, AddMembership, AddCash, AddCheque, AddCat},
- data() {
-    return {
-      Open: false,
-
-    };
-  },
+  components: {
+    AddItem,
+    AddMember,
+    AddVendor,
+    AddInventory,
+    AddMembership,
+    AddCash,
+    AddCheque,
+    AddCat
+  }
 };
 </script>
+<style  lang="scss" scoped>
+.Right-Menu {
+  height: 100%;
+  line-height: 50px;
+  &:focus {
+    outline: none;
+  }
+
+  .Right-Menu-item {
+    display: inline-block;
+    padding: 0 8px;
+    font-size: 18px;
+    color: #ffffff;
+    vertical-align: text-bottom;
+
+    &.hover-effect {
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.025);
+      }
+    }
+  }
+
+  .avatar-container {
+
+    .avatar-wrapper {
+      margin-top: 5px;
+      position: relative;
+
+      .user-avatar {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+
+      .el-icon-caret-bottom {
+        cursor: pointer;
+        position: absolute;
+        right: -10px;
+        top: 25px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+.errLog-container {
+  display: inline-block;
+  vertical-align: top;
+}
+</style>

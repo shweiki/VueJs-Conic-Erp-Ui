@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
-  <add-cat/>
+  <Add-Cat/>
       <el-table
         v-loading="loading"
         :data="

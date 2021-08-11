@@ -31,7 +31,7 @@ export function SaleInvoiceA4(temp, ReportTemp) {
   win.print()
 }
 export function SaleInvoicesList(data) {
-  let { Totals, Items } = data
+  let { Totals, Items , Dates} = data
   printJS({
     printable: Items.map(Item => ({
       المجموع: Item.Total.toFixed(toFixed),
@@ -70,7 +70,7 @@ export function SaleInvoicesList(data) {
         toFixed
       ) +
       "</h3><h3 style='float:right'>  التاريخ  : " +
-      formatDate(new Date()) +
+      formatDate(Dates[0]) + '----' +  formatDate(Dates[1]) +
       "</h3>",
     gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
     gridStyle: "border: 2px solid #3971A5; text-align: center;"
@@ -78,7 +78,7 @@ export function SaleInvoicesList(data) {
 }
 export function SaleInvoicesItemsMovements(data) {
   console.log(data)
-  let { Totals, Items } = data
+  let { Totals, Items , Dates } = data
   let ItemsMovements = [];
   Items.map(a => {
     return a.InventoryMovements.map(m => {
@@ -139,7 +139,7 @@ export function SaleInvoicesItemsMovements(data) {
         Totals.Visa
       ).toFixed(toFixed) +
       "</h3><h3 style='float:right'>  التاريخ  : " +
-      formatDate(new Date()) +
+      formatDate(Dates[0]) + '----' +  formatDate(Dates[1]) +
       "</h3>",
     gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
     gridStyle: "border: 2px solid #3971A5; text-align: center;"

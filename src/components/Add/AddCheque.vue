@@ -1,13 +1,13 @@
 <template>
   <div>
-      <el-button
+    <el-button
       type="warning"
       icon="el-icon-circle-plus"
       @click="dialogFormVisible = true"
       :size="$store.getters.size"
     ></el-button>
 
-  <el-dialog
+    <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
       :visible.sync="dialogFormVisible"
@@ -25,8 +25,8 @@
           <el-divider> إضافة شيك </el-divider>
         </el-col>
       </div>
-  
-  <el-form
+
+      <el-form
         ref="dataForm"
         :rules="rulesForm"
         :model="tempForm"
@@ -52,7 +52,11 @@
           </el-col>
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Cheque.BankName')" prop="BankName">
-              <el-select v-model="tempForm.BankName" filterable placeholder="BankName">
+              <el-select
+                v-model="tempForm.BankName"
+                filterable
+                placeholder="BankName"
+              >
                 <el-option
                   v-for="item in BanksNames"
                   :key="item.value"
@@ -65,14 +69,17 @@
         </el-row>
         <el-row :gutter="24">
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Cheque.ChequeAmount')" prop="ChequeAmount">
+            <el-form-item
+              v-bind:label="$t('Cheque.ChequeAmount')"
+              prop="ChequeAmount"
+            >
               <el-input-number
                 v-model="tempForm.ChequeAmount"
                 :precision="2"
                 :step="0.1"
                 :min="0.0"
-                :max="1500"                            @focus="$event.target.select()"
-
+                :max="1500"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -81,7 +88,11 @@
               prop="FakeDate"
               v-bind:label="$t('Cheque.FakeDate')"
               :rules="[
-                { required: true, message: 'لايمكن ترك التاريخ فارغ', trigger: 'blur' },
+                {
+                  required: true,
+                  message: 'لايمكن ترك التاريخ فارغ',
+                  trigger: 'blur'
+                }
               ]"
             >
               <el-date-picker
@@ -93,7 +104,10 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item v-bind:label="$t('Cheque.ChequeNumber')" prop="ChequeNumber">
+        <el-form-item
+          v-bind:label="$t('Cheque.ChequeNumber')"
+          prop="ChequeNumber"
+        >
           <el-input type="text" v-model="tempForm.ChequeNumber"></el-input>
         </el-form-item>
         <el-form-item v-bind:label="$t('Cheque.Payee')" prop="Payee">
@@ -102,11 +116,17 @@
         <el-form-item v-bind:label="$t('Cheque.Currency')" prop="Currency">
           <el-input type="text" v-model="tempForm.Currency"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('Cheque.PaymentType')" prop="PaymentType">
+        <el-form-item
+          v-bind:label="$t('Cheque.PaymentType')"
+          prop="PaymentType"
+        >
           <el-input type="text" v-model="tempForm.PaymentType"></el-input>
         </el-form-item>
 
-        <el-form-item v-bind:label="$t('Cheque.BankAddress')" prop="BankAddress">
+        <el-form-item
+          v-bind:label="$t('Cheque.BankAddress')"
+          prop="BankAddress"
+        >
           <el-input type="textarea" v-model="tempForm.BankAddress"></el-input>
         </el-form-item>
         <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
@@ -125,105 +145,106 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
+      Vendors: [],
       BanksNames: [
         {
           value: " العربي",
-          label: " العربي",
+          label: " العربي"
         },
         {
           value: "المؤسسة العربية المصرفية",
-          label: "المؤسسة العربية المصرفية ",
+          label: "المؤسسة العربية المصرفية "
         },
         {
           value: " الاردن",
-          label: " الاردن",
+          label: " الاردن"
         },
         {
           value: " القاهرة عمان",
-          label: " القاهرة عمان",
+          label: " القاهرة عمان"
         },
         {
           value: " المال الأردني",
-          label: " المال الأردني",
+          label: " المال الأردني"
         },
         {
           value: " التجاري الأردني",
-          label: " التجاري الأردني",
+          label: " التجاري الأردني"
         },
         {
           value: " الاردني الكويتي",
-          label: " الاردني الكويتي",
+          label: " الاردني الكويتي"
         },
         {
           value: " الاهلي الاردني",
-          label: " الاهلي الاردني",
+          label: " الاهلي الاردني"
         },
         {
           value: " الاسكان للتجارة والتمويل",
-          label: " الاسكان للتجارة والتمويل",
+          label: " الاسكان للتجارة والتمويل"
         },
         {
           value: " الاستثمار العربي الاردني",
-          label: " الاستثمار العربي الاردني",
+          label: " الاستثمار العربي الاردني"
         },
         {
           value: "الاستثماري",
-          label: "الاستثماري",
+          label: "الاستثماري"
         },
         {
           value: "سوسيته جنرال",
-          label: "سوسيته جنرال",
+          label: "سوسيته جنرال"
         },
         {
           value: "الاتحاد",
-          label: "الاتحاد",
+          label: "الاتحاد"
         },
         {
           value: "ستاندرد تشارترد",
-          label: "ستاندرد تشارترد",
+          label: "ستاندرد تشارترد"
         },
         {
           value: " العقاري المصري العربي",
-          label: " العقاري المصري العربي",
+          label: " العقاري المصري العربي"
         },
         {
           value: "سيتي بنك إن . إيه",
-          label: "سيتي بنك إن . إيه",
+          label: "سيتي بنك إن . إيه"
         },
         {
           value: "الرافدين",
-          label: "الرافدين",
+          label: "الرافدين"
         },
         {
           value: " الكويت الوطني",
-          label: " الكويت الوطني",
+          label: " الكويت الوطني"
         },
         {
           value: " لبنان والمهجر",
-          label: " لبنان والمهجر",
+          label: " لبنان والمهجر"
         },
         {
           value: "عوده ش.م.ل",
-          label: "عوده ش.م.ل",
+          label: "عوده ش.م.ل"
         },
         {
           value: " العربي الاسلامي الدولي",
-          label: " العربي الاسلامي الدولي",
+          label: " العربي الاسلامي الدولي"
         },
         {
           value: " الاسلامي الاردني",
-          label: " الاسلامي الاردني",
+          label: " الاسلامي الاردني"
         },
         {
           value: " صفوة الإسلامي",
-          label: " صفوة الإسلامي",
+          label: " صفوة الإسلامي"
         },
         {
           value: "مصرف الراجحي",
-          label: "مصرف الراجحي",
-        },
+          label: "مصرف الراجحي"
+        }
       ],
- tempForm: {
+      tempForm: {
         Id: undefined,
         BankAddress: "",
         BankName: "",
@@ -235,9 +256,9 @@ export default {
         Currency: "",
         Description: "",
         IsPrime: false,
-        VendorId: undefined,
+        VendorId: undefined
       },
-       rulesForm: {
+      rulesForm: {
         Name: [
           {
             required: true,
@@ -251,7 +272,7 @@ export default {
             trigger: "blur"
           }
         ]
-      },
+      }
     };
   },
   created() {
@@ -259,12 +280,14 @@ export default {
     this.resetTempForm();
   },
   methods: {
-        getdata() { GetVendorCheque().then((response) => {
+    getdata() {
+      GetVendorCheque().then(response => {
         // handle success
         console.log(response);
         this.Vendors = response;
-      });},
-     resetTempForm() {
+      });
+    },
+    resetTempForm() {
       this.tempForm = {
         Id: undefined,
         BankAddress: "",
@@ -277,10 +300,10 @@ export default {
         Currency: "",
         Description: "",
         IsPrime: false,
-        VendorId: undefined,
+        VendorId: undefined
       };
     },
-     createData() {
+    createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           console.log(this.tempForm);
@@ -302,9 +325,7 @@ export default {
           return false;
         }
       });
-    },
-
-
+    }
   }
 };
 </script>

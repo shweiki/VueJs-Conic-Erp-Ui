@@ -11,7 +11,7 @@
         >
         <span>{{ $t("CashDrawer.CashDrawer") }}</span>
       </div> -->
-      <add-cash/>
+      <Add-Cash/>
       <el-table
         v-loading="loading"
         :data="

@@ -9,7 +9,7 @@
           @click="handleCreate()"
           >{{ $t("Vendors.Add") }}</el-button
         > -->
-        <add-inventory/>
+        <Add-Inventory/>
         <span>{{ $t("Inventory.Wharehouse") }}</span>
       </div>
       <el-table

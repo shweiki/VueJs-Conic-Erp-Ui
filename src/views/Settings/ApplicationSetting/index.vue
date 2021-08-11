@@ -45,6 +45,8 @@
                 <el-option label="Layout3" value="Layout3"> </el-option>
                 <el-option label="Pharmacy" value="Pharmacy"> </el-option>
                 <el-option label="Gym" value="Gym"> </el-option>
+                                <el-option label="Public" value="Public"> </el-option>
+
               </el-select>
             </el-col>
             <el-col :span="6">
