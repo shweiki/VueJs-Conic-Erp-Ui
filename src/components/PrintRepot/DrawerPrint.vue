@@ -30,7 +30,7 @@
           icon="el-icon-edit"
           @click="
             let r = $router.resolve({
-              path: '/Reports/Edit/' + item.Id
+              path: '/Reports/Edit/' + item.Id,
             });
             window.open(
               r.href,
@@ -69,13 +69,12 @@
         <iframe
           height="500px"
           frameborder="0"
-          style="overflow:hidden;width:100%"
+          style="overflow: hidden; width: 100%"
           v-bind:id="'Report-' + item.Id"
           class="iframeR"
           :srcdoc="item.Html"
           :title="item.Name"
         ></iframe>
-        <iframe id="ifrmPrint" class="iframeR" :title="item.Name"></iframe>
       </el-col>
     </el-drawer>
     <img id="qr_code" style="display: none" />
@@ -103,26 +102,30 @@ export default {
     AutoPrint: Boolean,
     Data: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       drawer: false,
       Reports: [],
-      PhoneNumber: ""
+      PhoneNumber: "",
     };
   },
   watch: {
     Data(val) {
-      console.log("Data Report = ", val);
       this.Reports.forEach((item, index) => {
         item.Html = this.Visualization(val, item.Html, "Set");
+        console.log(this.AutoPrint, item.AutoPrint);
+
         if (item.AutoPrint && this.AutoPrint) {
-         //   this.Print(item);
+          this.JSPM(item.Printer, item);
         }
       });
-    }
+    },
+  },
+  created() {
+    this.getdata();
   },
   methods: {
     getdata() {
@@ -131,14 +134,11 @@ export default {
         Any: this.Type,
         limit: 5,
         Sort: "-id",
-        Status: 0
-      }).then(r => {
+        Status: 0,
+      }).then((r) => {
         this.Reports = r.items;
         this.Reports.forEach((item, index) => {
           item.Html = this.Visualization(this.Data, item.Html, "Set");
-          if (item.AutoPrint && this.AutoPrint) {
-         //   this.Print(item);
-          }
         });
       });
     },
@@ -183,7 +183,7 @@ export default {
         title: "تم ",
         message: "تم ارسال بنجاح",
         type: "success",
-        duration: 20000
+        duration: 20000,
       });
     },
     SendWhatsApp(item) {
@@ -196,16 +196,16 @@ export default {
       console.log(oDoc.body);
       htmlToImage
         .toPng(oDoc.body)
-        .then(dataUrl => {
+        .then((dataUrl) => {
           window.open(
             "https://wa.me/962" +
               this.PhoneNumber +
               "?public.image=" +
-              dataUrl +
+              //dataUrl +
               ""
           );
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("oops, something went wrong!", error);
         });
     },
@@ -219,40 +219,49 @@ export default {
       console.log(oDoc.body);
       htmlToImage
         .toPng(oDoc.body)
-        .then(dataUrl => {
+        .then((dataUrl) => {
           const pdf = new jsPDF();
           pdf.addImage(dataUrl, "PNG", 0, 0);
           pdf.save("Invoice #" + item.Id + ".pdf");
           oDoc.close();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("oops, something went wrong!", error);
         });
     },
-    JSPM(printer, el) {
+    JSPM(printer, item) {
+      console.log("hi im here", printer);
       if (printer) {
-        let cpj = new JSPM.ClientPrintJob();
-        cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
+        var oIframe = document.getElementById("ifrmPrint");
+        var oDoc = oIframe.contentWindow || oIframe.contentDocument;
+        if (oDoc.document) oDoc = oDoc.document;
+        oDoc.write("<head><title>title</title>");
+        oDoc.write("</head><body >");
+        oDoc.write(item.Html + "</body>");
+        console.log(oDoc.body);
         htmlToImage
-          .toPng(document.getElementById(el))
-          .then(dataUrl => {
-            console.log(dataUrl);
-            cpj.files.push(
-              new JSPM.PrintFile(
-                dataUrl,
-                JSPM.FileSourceType.URL,
-                el + ".png",
-                1
-              )
+          .toPng(oDoc.body)
+          .then((dataUrl) => {
+            const doc = new jsPDF();
+            doc.addImage(dataUrl, "PNG", 0, 0);
+            let cpj = new JSPM.ClientPrintJob();
+            cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
+            var my_file = new JSPM.PrintFilePDF(
+              doc.output("blob"),
+              JSPM.FileSourceType.BLOB,
+              item.Id + ".pdf",
+              1
             );
+            cpj.files.push(my_file);
             cpj.sendToClient();
+            oDoc.close();
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("oops, something went wrong!", error);
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

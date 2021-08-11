@@ -47,12 +47,12 @@ export default {
   components: { TouchKeyboard },
   props: {
     Total: Number,
-    Open: Boolean
+    Open: Boolean,
   },
   watch: {
     Open(val) {
       this.Show = val;
-    }
+    },
   },
   data() {
     return { Show: false, RestOfBill: 0 };
@@ -65,12 +65,15 @@ export default {
       this.RestOfBill = input;
     },
     onKeyPress(button) {
-      if (button == "{enter}") this.$emit("Done");
+      if (button == "{enter}") {
+        this.RestOfBill = 0;
+        this.$emit("Done");
+      }
     },
     onInputChange(input) {
-    //  console.log(input);
+      //  console.log(input);
       this.RestOfBill = input;
-    }
-  }
+    },
+  },
 };
 </script>
