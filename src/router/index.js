@@ -6,6 +6,7 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
+import VendorRouter from './modules/Vendor'
 import GymRouter from './modules/Gym'
 import AccountingRouter from './modules/Accounting'
 import InventoryRouter from './modules/inventory'
@@ -48,53 +49,53 @@ import UploadData from './modules/UploadData'
  * all roles can be accessed
  */
 export const constantRoutes = [{
-        path: '/redirect',
-        component: Layout,
-        hidden: true,
-        children: [{
-            path: '/redirect/:path(.*)',
-            component: () =>
-                import ('@/views/redirect/index')
-        }]
-    },
-    {
-        path: '/login',
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [{
+        path: '/redirect/:path(.*)',
         component: () =>
-            import ('@/views/login/index'),
-        hidden: true
-    },
-    {
-        path: '/auth-redirect',
-        component: () =>
-            import ('@/views/login/auth-redirect'),
-        hidden: true
-    },
-    {
-        path: '/404',
-        component: () =>
-            import ('@/views/error-page/404'),
-        hidden: true
-    },
-    {
-        path: '/401',
-        component: () =>
-            import ('@/views/error-page/401'),
-        hidden: true
-    },
+            import('@/views/redirect/index')
+    }]
+},
+{
+    path: '/login',
+    component: () =>
+        import('@/views/login/index'),
+    hidden: true
+},
+{
+    path: '/auth-redirect',
+    component: () =>
+        import('@/views/login/auth-redirect'),
+    hidden: true
+},
+{
+    path: '/404',
+    component: () =>
+        import('@/views/error-page/404'),
+    hidden: true
+},
+{
+    path: '/401',
+    component: () =>
+        import('@/views/error-page/401'),
+    hidden: true
+},
 
-    {
-        path: '/',
-        component: Layout,
-        redirect: '/index',
-        hidden: true,
-        children: [{
-            path: 'index',
-            component: () =>
-                import ('@/views/Profile/index'),
-            name: 'Profile',
-            meta: { title: 'Profile', icon: 'user', noCache: true }
-        }]
-    },
+{
+    path: '/',
+    component: Layout,
+    redirect: '/index',
+    hidden: true,
+    children: [{
+        path: 'index',
+        component: () =>
+            import('@/views/Profile/index'),
+        name: 'Profile',
+        meta: { title: 'Profile', icon: 'user', noCache: true }
+    }]
+},
 
 ]
 
@@ -103,42 +104,28 @@ export const constantRoutes = [{
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [{
-        path: '/dashboard',
-        component: Layout,
-        redirect: '/dashboard/index',
-        children: [{
-            path: 'index',
-            component: () =>
-                import ('@/views/dashboard/index'),
-            name: 'Dashboard',
-            meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
-        }]
-    },
-    {
-        path: '/Vendor',
-        component: Layout,
-        redirect: '/Vendor/list',
-        children: [{
-            path: 'List',
-            component: () =>
-                import ('@/views/Vendor/List'),
-            name: 'Vendors',
-            meta: {
-                title: 'Vendors',
-                icon: 'customer-service'
-            },
-        }]
-    },
-    {
-        path: '/Sales/Create',
+    path: '/dashboard',
+    component: Layout,
+    redirect: '/dashboard/index',
+    children: [{
+        path: 'index',
         component: () =>
-            import ('@/views/Sales/SaleInvoice/Create'),
-        name: 'NewSaleInvoice',
-        meta: {
-            title: 'NewSaleInvoice',
-            icon: 'bill'
-        },
+            import('@/views/dashboard/index'),
+        name: 'Dashboard',
+        meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
+    }]
+},
+    VendorRouter,
+{
+    path: '/Sales/PonitOfSale',
+    component: () =>
+        import('@/views/Sales/SaleInvoice/Create'),
+    name: 'PonitOfSale',
+    meta: {
+        title: 'PonitOfSale',
+        icon: 'bill'
     },
+},
 
     /** when your routing map is too long, you can split it into small modules **/
     //componentsRouter,
@@ -150,64 +137,64 @@ export const asyncRoutes = [{
     AccountingRouter,
     SettingsRouter,
     UploadData,
+{
+    path: '/Reports',
+    component: Layout,
+    redirect: '/Reports',
+    meta: {
+        title: 'Reports',
+        icon: 'report',
+        affix: true
+    },
+    children: [{
+        path: 'Create',
+        component: () =>
+            import('@/views/Reports/Create'),
+        name: 'NewReport',
+        meta: { title: 'NewReport', icon: 'edit' }
+    },
     {
-        path: '/Reports',
-        component: Layout,
-        redirect: '/Reports',
+        path: 'Edit/:id(\\d+)',
+        component: () =>
+            import('@/views/Reports/Edit'),
+        name: 'EditReport',
         meta: {
-            title: 'Reports',
-            icon: 'report',
-            affix: true
+            title: 'EditInvoice',
+            noCache: true,
+            activeMenu: '/Reports/List'
         },
-        children: [{
-                path: 'Create',
-                component: () =>
-                    import ('@/views/Reports/Create'),
-                name: 'NewReport',
-                meta: { title: 'NewReport', icon: 'edit' }
-            },
-            {
-                path: 'Edit/:id(\\d+)',
-                component: () =>
-                    import ('@/views/Reports/Edit'),
-                name: 'EditReport',
-                meta: {
-                    title: 'EditInvoice',
-                    noCache: true,
-                    activeMenu: '/Reports/List'
-                },
-                hidden: true,
-            },
-            {
-                path: 'List',
-                component: () =>
-                    import ('@/views/Reports/List'),
-                name: 'ListReport',
-                meta: {
-                    title: 'ListReport',
-                    icon: 'cost'
-                },
-            }
-        ]
+        hidden: true,
     },
-
-    //Guide
     {
-        path: '/Guide',
-        component: Layout,
-        redirect: '/Guide/index',
-        children: [{
-            path: 'index',
-            component: () =>
-                import ('@/views/Guide/index'),
-            name: 'Guide',
-            meta: {
-                title: 'Guide',
-                icon: 'guide',
-                noCache: true
-            },
-        }]
-    },
+        path: 'List',
+        component: () =>
+            import('@/views/Reports/List'),
+        name: 'ListReport',
+        meta: {
+            title: 'ListReport',
+            icon: 'cost'
+        },
+    }
+    ]
+},
+
+//Guide
+{
+    path: '/Guide',
+    component: Layout,
+    redirect: '/Guide/index',
+    children: [{
+        path: 'index',
+        component: () =>
+            import('@/views/Guide/index'),
+        name: 'Guide',
+        meta: {
+            title: 'Guide',
+            icon: 'guide',
+            noCache: true
+        },
+    }]
+},
 
 
 ]

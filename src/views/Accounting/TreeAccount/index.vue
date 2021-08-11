@@ -34,15 +34,15 @@
             ref="AccountTree"
           >
             <span class="custom-tree-node" slot-scope="{ data }">
-              <span
-                >{{ data.Name }} - {{ data.Code }}
-                <edit-account :AccountId="data.Id" />
-              </span>
+              <span>{{ data.Name }} - {{ data.Code }} </span>
               <span>
-                <span>{{ data.TotalCredit }}</span>
-                <span>{{ data.TotalDebit }}</span>
+                <!--     <span>{{ data.TotalCredit }}</span>
+                <span>{{ data.TotalDebit }}</span> -->
                 <span>{{ data.TotalCredit - data.TotalDebit }}</span>
               </span>
+              <el-col :span="2">
+                <edit-account :AccountId="data.Id" />
+              </el-col>
             </span>
           </el-tree>
         </div>
@@ -102,7 +102,7 @@
 import { GetTreeAccount, Create, Edit } from "@/api/Account";
 import EditAccount from "./EditAccount.vue";
 export default {
-  components: {  EditAccount },
+  components: { EditAccount },
   name: "TreeAccount",
   watch: {
     filterText(val) {
@@ -118,12 +118,28 @@ export default {
       Tree: [],
       TypeAccounts: [
         {
-          label: "حساب",
+          label: "رئيسي",
+          value: "Main"
+        },
+        {
+          label: "عميل | مورد",
           value: "Vendor"
+        },
+        {
+          label: "مشترك",
+          value: "Vendor"
+        },
+        {
+          label: "ايراد",
+          value: "InCome"
         },
         {
           label: "خزينة كاش",
           value: "Cash"
+        },
+        {
+          label: "بنك",
+          value: "Bank"
         }
       ],
       search: "",

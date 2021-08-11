@@ -682,7 +682,6 @@ export default {
       this.tempForm.InventoryMovements.splice(index, 1);
       this.focusBarcode();
     },
-
     OpenCashDrawer() {
       this.focusBarcode();
       OpenCashDrawer({ Com: this.$store.state.settings.CashDrawerCOM.COM })

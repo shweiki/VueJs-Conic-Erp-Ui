@@ -20,6 +20,11 @@
       v-if="$store.getters.settings.PointOfSaleLayout == 'Gym'"
       :is-edit="false"
     />
+        <Public
+      v-if="$store.getters.settings.PointOfSaleLayout == 'Public'"
+      :is-edit="false"
+    />
+    
   </div>
 </template>
 
@@ -29,10 +34,12 @@ import Layout2 from "./components/Layout2";
 import Layout3 from "./components/Layout3";
 import Pharmacy from "./components/Pharmacy.vue";
 import Gym from "./components/Gym.vue";
+import Public from "./components/Public.vue";
+
 
 export default {
   name: "CreateInvoice",
-  components: { Layout1, Layout2, Layout3, Pharmacy, Gym }
+  components: { Layout1, Layout2, Layout3, Pharmacy, Gym ,Public}
 };
 </script>
 

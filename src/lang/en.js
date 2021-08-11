@@ -16,6 +16,7 @@ export default {
         CompanyInfo: 'Company Info',
         Classifications: 'Classifications',
         Vendors: 'Vendors',
+        PonitOfSale: 'Point Of Sale',
         NewSaleInvoice: 'New Sale Invoice',
         SalesInvoice: 'Sales Invoice',
         SalesItems: 'Sales Items',
@@ -601,11 +602,11 @@ export default {
         TAmount: "Price"
 
     },
-    Area:{
-        Areas:"Areas",
-        City:"City",
-        Address1:"Address 1",
-        Address2:"Address 2",
-        DelievryPrice:"Delievry Price"
+    Area: {
+        Areas: "Areas",
+        City: "City",
+        Address1: "Address 1",
+        Address2: "Address 2",
+        DelievryPrice: "Delievry Price"
     }
 }

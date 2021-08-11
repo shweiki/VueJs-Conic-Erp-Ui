@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-       <add-membership/>
+       <Add-Membership/>
         <span>{{ $t("CashPool.Memberships") }}</span>
       </div>
       <el-table

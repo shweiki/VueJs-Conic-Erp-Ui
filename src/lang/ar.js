@@ -16,7 +16,8 @@ export default {
         CompanyInfo: 'معلومات الشركة',
         Classifications: 'التصنيفات',
         Vendors: 'العملاء و الموردين',
-        NewSaleInvoice: 'نقاط البيع',
+        PonitOfSale: 'نقاط البيع',
+        NewSaleInvoice: 'انشاء فاتورة بيع',
         SalesInvoice: 'فواتير البيع',
         SalesItems: 'مبيعات صنف',
         CashPool: 'اغلاق صندوق',
@@ -620,11 +621,11 @@ export default {
         Amount: "قيمة التكلفة",
         TAmount: "المبلغ"
     },
-    Area:{
-        Areas:"المناطق",
-        City:"المدينة",
-        Address1:"العنوان 1",
-        Address2:"العنوان 2",
-        DelievryPrice:"سعر التوصيل"
+    Area: {
+        Areas: "المناطق",
+        City: "المدينة",
+        Address1: "العنوان 1",
+        Address2: "العنوان 2",
+        DelievryPrice: "سعر التوصيل"
     }
 }

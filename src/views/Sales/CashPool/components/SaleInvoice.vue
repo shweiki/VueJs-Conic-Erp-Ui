@@ -282,7 +282,13 @@
             <el-button
               icon="el-icon-printer"
               type="success"
-              @click="SaleInvoicesList({ Totals: Totals, Items: Selection })"
+              @click="
+                SaleInvoicesList({
+                  Totals: Totals,
+                  Items: Selection,
+                  Dates: [new Date(), new Date()]
+                })
+              "
             ></el-button>
           </template>
           <template slot-scope="scope">

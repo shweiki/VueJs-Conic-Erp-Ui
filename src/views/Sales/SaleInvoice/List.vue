@@ -54,7 +54,13 @@
           class="filter-item"
           icon="el-icon-printer"
           type="primary"
-          @click="SaleInvoicesList({ Totals: Totals, Items: list })"
+          @click="
+            SaleInvoicesList({
+              Totals: Totals,
+              Items: list,
+              Dates: [listQuery.DateFrom, listQuery.DateTo]
+            })
+          "
         ></el-button>
         <el-button
           v-permission="['Admin']"
@@ -62,7 +68,13 @@
           class="filter-item"
           icon="el-icon-printer"
           type="info"
-          @click="SaleInvoicesItemsMovements({ Totals: Totals, Items: list })"
+          @click="
+            SaleInvoicesItemsMovements({
+              Totals: Totals,
+              Items: list,
+              Dates: [listQuery.DateFrom, listQuery.DateTo]
+            })
+          "
         ></el-button>
         <el-button
           v-permission="['Admin']"
@@ -70,7 +82,13 @@
           class="filter-item"
           icon="el-icon-printer"
           type="success"
-          @click="SaleInvoicesItemsIngredients({ Totals: Totals, Items: list })"
+          @click="
+            SaleInvoicesItemsIngredients({
+              Totals: Totals,
+              Items: list,
+              dates: [listQuery.DateFrom, listQuery.DateTo]
+            })
+          "
         ></el-button>
         <el-button
           v-waves

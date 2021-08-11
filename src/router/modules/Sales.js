@@ -9,6 +9,12 @@ const SalesRouter = {
   },
   children: [
     {
+      path: 'Create',
+      component: () => import('@/views/Sales/SaleInvoice/Create'),
+      name: 'NewSaleInvoice',
+      meta: { title: 'NewSaleInvoice', icon: 'edit' }
+    },
+    {
       path: 'Edit/:id(\\d+)',
       component: () => import('@/views/Sales/SaleInvoice/Edit'),
       name: 'EditInvoice',
