@@ -131,8 +131,8 @@ export default {
     getdata() {
       GetReportByType({
         Type: this.Type
-      }).then(r => {
-        this.Reports = r.items;
+      }).then(res => {
+        this.Reports = res;
         this.Reports.forEach((item, index) => {
           item.Html = this.Visualization(this.Data, item.Html, "Set");
         });
