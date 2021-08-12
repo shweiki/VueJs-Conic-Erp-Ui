@@ -182,9 +182,7 @@ export default {
       default: true
     }
   },
-
   data() {
-  
     return {
       activeTab: "Details",
       loading: true,

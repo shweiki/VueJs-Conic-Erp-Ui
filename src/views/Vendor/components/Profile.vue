@@ -1,10 +1,8 @@
 <template>
   <div class="app-container">
     <el-row v-if="tempForm">
-      <el-col :span="6" :xs="24"> </el-col>
-      <el-col :span="18" :xs="24" v-loading="loading">
+      <el-col :span="24" :xs="24" v-loading="loading">
         <Vendor-Search />
-
         <el-card
           class="box-card"
           v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
@@ -21,7 +19,9 @@
                     type="info"
                     icon="el-icon-zoom-in"
                     @click="
-                      $router.replace({ path: '/redirect' + '/Vendor/List' })
+                      $router.replace({
+                        path: '/redirect' + '/Vendor/ListVendor'
+                      })
                     "
                     >جميع العملاء</el-button
                   >
@@ -33,11 +33,8 @@
                   <Vendor-Pay :VendorId="tempForm.Id" :Name="tempForm.Name" />
                 </el-col>
               </el-row>
-
               <el-row>
-                <el-col :span="24">
-                  <Service-Invoice :VendorId="tempForm.Id" />
-                </el-col>
+                <el-col :span="24"> </el-col>
               </el-row>
               <el-row>
                 <el-col :span="24">
@@ -61,13 +58,18 @@
               <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
               <User-Card :Vendor="tempForm" />
             </el-tab-pane>
-
+            <el-tab-pane label="مبيعات" name="SaleInvoice">
+              <span slot="label"><i class="el-icon-refresh"></i> مبيعات</span>
+              <Sale-Invoice :VendorId="tempForm.Id" />
+            </el-tab-pane>
+            <el-tab-pane label="مشتريات" name="PurchaseInvoice">
+              <span slot="label"><i class="el-icon-refresh"></i> مشتريات</span>
+              <Purchase-Invoice :VendorId="tempForm.Id" />
+            </el-tab-pane>
             <el-tab-pane label="مقبوضات" name="Payment">
               <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
-
-              <Payment :Payments="Payments" />
+              <Payment :VendorId="tempForm.Id" />
             </el-tab-pane>
-
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
               <Account
@@ -75,7 +77,6 @@
                 :AccountId="tempForm.AccountId"
               />
             </el-tab-pane>
-
             <el-tab-pane label="تواصل" name="communication">
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
               <Communication />
@@ -92,18 +93,18 @@ import Details from "./Details.vue";
 import UserCard from "./UserCard.vue";
 
 import VendorPay from "./Dialogs/VendorPay.vue";
-import ServiceInvoice from "./Dialogs/ServiceInvoice.vue";
 import VendorSearch from "./VendorSearch.vue";
 
 import Payment from "./Payment.vue";
+import SaleInvoice from "./SaleInvoice.vue";
+import PurchaseInvoice from "./PurchaseInvoice.vue";
 
 import Account from "./Account.vue";
 import Communication from "./Communication.vue";
+import { GetFileByObjId } from "@/api/File";
 
 import { GetById } from "@/api/Vendor";
-import { GetPaymentsByVendorId } from "@/api/Payment";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
-import { GetSaleInvoiceByVendorId } from "@/api/SaleInvoice";
 
 import Massage from "@/components/Massage/index.vue";
 
@@ -113,13 +114,13 @@ export default {
     Details,
     UserCard,
     Account,
-    Service,
     Payment,
     VendorPay,
-    ServiceInvoice,
     Massage,
     VendorSearch,
-    Communication
+    Communication,
+    SaleInvoice,
+    PurchaseInvoice
   },
   props: {
     isEdit: {
@@ -127,7 +128,6 @@ export default {
       default: true
     }
   },
-
   data() {
     return {
       activeTab: "Details",
@@ -150,6 +150,7 @@ export default {
       GetById({ Id: val })
         .then(response => {
           this.tempForm = response;
+          this.GetImage(this.tempForm.Id);
           this.loading = false;
           this.setTagsViewTitle();
           // set page title
@@ -160,13 +161,6 @@ export default {
         });
     },
     tabClick(tab, event) {
-      if (tab.label == "مقبوضات")
-        GetPaymentsByVendorId({
-          VendorId: this.tempForm.Id
-        }).then(response => {
-          //   console.log("log :", response);
-          this.Payments = response.reverse();
-        });
       if (tab.label == "مالية")
         GetEntryMovementsByAccountId({
           AccountId: this.tempForm.AccountId
@@ -175,17 +169,26 @@ export default {
           this.EntryMovements = response.reverse();
         });
     },
-
+    GetImage(Id) {
+      GetFileByObjId({ TableName: "Vendor", ObjId: Id })
+        .then(response => {
+          if (response) this.tempForm.Avatar = response.File;
+          else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     setTagsViewTitle() {
       const title = "Vendor";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`
+        title: `${title}-${this.tempForm.Name}`
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Vendor";
-      document.title = `${title} - ${this.tempForm.Id}`;
+      document.title = `${title} - ${this.tempForm.Name}`;
     }
   }
 };

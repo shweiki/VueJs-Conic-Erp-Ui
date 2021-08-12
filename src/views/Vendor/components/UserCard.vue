@@ -38,26 +38,6 @@
           ></el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="8">
-        <el-form-item
-          label="تاريخ ميلاد"
-          prop="DateofBirth"
-          :rules="[
-            {
-              required: true,
-              message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur'
-            }
-          ]"
-        >
-          <el-date-picker
-            format="dd/MM/yyyy"
-            v-model="Vendor.DateofBirth"
-            type="date"
-            placeholder="تاريخ ميلاد"
-          ></el-date-picker>
-        </el-form-item>
-      </el-col>
     </el-row>
     <el-row type="flex">
       <el-col :span="12">
@@ -109,25 +89,16 @@
         <el-button
           type="primary"
           icon="el-icon-save"
-          @click="Vendor.Id != null ? updateData() : createData()"
+          @click=" updateData() "
           >{{ $t("AddVendors.Save") }}</el-button
         >
       </el-col>
-      <el-col :span="3">
-        <el-button
-          @click="Print()"
-          type="primary"
-          icon="el-icon-printer"
-        ></el-button
-      ></el-col>
     </el-row>
   </el-form>
 </template>
 
 <script>
 import {  Edit } from "@/api/Vendor";
-import { SetUser } from "@/api/Device";
-import printJS from "print-js";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 export default {
@@ -144,14 +115,9 @@ export default {
     updateData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
- 
           Edit(this.Vendor)
             .then(response => {
               this.dialogFormVisible = false;
-              console.log("device" ,this.$store.getters.Devices);
-              this.$store.getters.Devices.forEach(element => {
-                this.SetOnDevice(element.Id, element.Name);
-              });
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
@@ -168,23 +134,6 @@ export default {
         }
       });
     },
-
-    SetOnDevice(DeviceId, Name) {
-      SetUser({
-        DeviceId: DeviceId,
-        UserId: this.Vendor.Id
-      }).then(response => {
-        if (response) {
-          this.$notify({
-            title: "تم",
-            message: "تم ارسال البيانات لاجهاز " + Name + "  " + response + " ",
-            type: "success",
-            duration: 3000,
-            position: "top-right"
-          });
-        }
-      });
-    }
   }
 };
 </script>

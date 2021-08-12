@@ -22,7 +22,13 @@ export function GetPaymentsByMemberId(query) {
     params: query
   })
 }
-
+export function GetPaymentsByVendorId(query) {
+  return request({
+    url: '/Payment/GetPaymentsByVendorId',
+    method: 'get',
+    params: query
+  })
+}
 export function GetPaymentByStatus(query) {
   return request({
     url: '/Payment/GetPaymentByStatus',

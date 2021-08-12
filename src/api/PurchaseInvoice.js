@@ -22,6 +22,13 @@ export function GetPurchaseInvoiceById(query) {
     params: query
   })
 }
+export function GetPurchaseInvoiceByVendorId(query) {
+  return request({
+    url: '/PurchaseInvoice/GetPurchaseInvoiceByVendorId',
+    method: 'get',
+    params: query
+  })
+}
 export function GetByItem(query) {
   return request({
     url: '/PurchaseInvoice/GetByItem',

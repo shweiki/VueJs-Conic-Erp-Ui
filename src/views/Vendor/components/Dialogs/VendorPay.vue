@@ -1,15 +1,19 @@
 <template>
   <div>
-    <el-button
-      v-bind:disabled="OldPayment != null ? false : true"
-      @click="Print()"
-      type="primary"
-      icon="el-icon-printer"
-    ></el-button>
-    <el-button type="primary" icon="el-icon-plus" @click="Visibles = true">قبض</el-button>
-
-    <el-dialog style="margin-top: -13vh" title="تسجيل قبض" :visible.sync="Visibles">
-      <el-form :model="Payment" ref="Form" label-position="top" class="demo-form-inline">
+    <el-button type="primary" icon="el-icon-plus" @click="Visibles = true"
+      >قبض</el-button
+    >
+    <el-dialog
+      style="margin-top: -13vh"
+      title="تسجيل قبض"
+      :visible.sync="Visibles"
+    >
+      <el-form
+        :model="Payment"
+        ref="Form"
+        label-position="top"
+        class="demo-form-inline"
+      >
         <el-row>
           <el-col :span="12">
             <el-form-item label="القيمة المقبوضة">
@@ -18,8 +22,8 @@
                   {
                     required: true,
                     message: 'لايمكن ترك القيمة فارغ',
-                    trigger: 'blur',
-                  },
+                    trigger: 'blur'
+                  }
                 ]"
                 class="currency-input"
                 v-model="Payment.TotalAmmount"
@@ -36,8 +40,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             >
               <el-date-picker
@@ -52,7 +56,10 @@
         <el-row>
           <el-col :span="12">
             <el-form-item prop="PaymentMethod" label="طريقة الدفع">
-              <el-radio-group v-model="Payment.PaymentMethod" text-color="#f78123">
+              <el-radio-group
+                v-model="Payment.PaymentMethod"
+                text-color="#f78123"
+              >
                 <el-radio label="Cash" border>{{
                   $t("NewPurchaseInvoice.Cash")
                 }}</el-radio>
@@ -62,31 +69,19 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
-              <el-input v-model="Payment.Description"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
             <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              v-bind:label="$t('AddVendors.EditorName')"
+              v-bind:label="$t('AddVendors.Description')"
+              prop="Description"
             >
-              <editors-user @Set="(v) => (Payment.EditorName = v)" />
+              <el-input v-model="Payment.Description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button @click="Visibles = false">{{
+          $t("AddVendors.Cancel")
+        }}</el-button>
         <el-button type="primary" @click="create()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -97,26 +92,20 @@
 
 <script>
 import { CreatePayment } from "@/api/Payment";
-// report
-import printJS from "print-js";
-import { PaymentMember } from "@/Report/PayPapar";
-import EditorsUser from "@/components/Gym/EditorsUser";
-
 export default {
-  components: { printJS, EditorsUser },
   props: {
     VendorId: {
       type: Number,
       default: () => {
         return undefined;
-      },
+      }
     },
     Name: {
       type: String,
       default: () => {
         return undefined;
-      },
-    },
+      }
+    }
   },
   data() {
     return {
@@ -133,46 +122,33 @@ export default {
         IsPrime: true,
         MemberId: undefined,
         EditorName: "",
-        Type: "",
+        Type: ""
       },
-      Visibles: false,
+      Visibles: false
     };
   },
   methods: {
-    Print() {
-      this.OldPayment.ObjectId = this.VendorId;
-      printJS({
-        printable: PaymentMember(this.OldPayment),
-        type: "pdf",
-        base64: true,
-        showModal: true,
-      });
-      this.Payment.Id = undefined;
-    },
     create() {
-      this.$refs["Form"].validate((valid) => {
+      this.$refs["Form"].validate(valid => {
         if (valid) {
           this.Payment.VendorId = this.VendorId;
           CreatePayment(this.Payment)
-            .then((response) => {
+            .then(response => {
               this.Payment.Name = this.Name;
               this.Visibles = false;
-              this.OldPayment = this.Payment;
-              this.OldPayment.Id = response;
-              this.Print();
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000,
+                duration: 2000
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>

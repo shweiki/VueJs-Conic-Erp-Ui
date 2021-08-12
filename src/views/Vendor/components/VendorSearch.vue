@@ -1,10 +1,7 @@
 <template>
   <el-row style="background: #2f3542; color: white">
 
-    <el-col :span="2">
-      <Add-Vendor />
-    </el-col>
-    <el-col :span="14">
+    <el-col :span="24">
       <Vendor-Search-Any
         @Set="
           (v) => {
