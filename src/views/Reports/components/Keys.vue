@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-radio-group v-model="tabPosition" >
+    <el-radio-group v-model="tabPosition">
       <el-radio-button label="top">top</el-radio-button>
       <el-radio-button label="right">right</el-radio-button>
       <el-radio-button label="bottom">bottom</el-radio-button>
@@ -43,8 +43,16 @@ export default {
           name: "Dates",
           keys: [
             {
-              name: "FakeDate",
+              name: "DateTime",
               value: "FakeDate : {{FakeDate}}"
+            },
+            {
+              name: "Date",
+              value: "FakeDate : {#formatDate('{{FakeDate}}')/}"
+            },
+            {
+              name: "Time",
+              value: "FakeDate : {#TimeConvert('{{FakeDate}}')/}"
             }
           ]
         },
@@ -64,6 +72,10 @@ export default {
               value: "PaymentMethod : {{PaymentMethod}}"
             },
             {
+              name: "EditorName",
+              value: "EditorName : {{EditorName}}"
+            },
+            {
               name: "Description",
               value: "Description : {{Description}}"
             },
@@ -74,6 +86,11 @@ export default {
             {
               name: "Region",
               value: "Region : {{Region}}"
+            },
+            {
+              name: "ConvetNumberToArabicWords",
+              value:
+                "المبلغ كتابة : {#ConvetNumberToArabicWords({{TotalAmmount}})/}"
             }
           ]
         },
@@ -83,6 +100,14 @@ export default {
             {
               name: "Id",
               value: "Id : {{Id}}"
+            },
+            {
+              name: "AccountId",
+              value: "AccountId : {{AccountId}}"
+            },
+            {
+              name: "ObjectId",
+              value: "ObjectId : {{ObjectId}}"
             },
             {
               name: "VendorId",
@@ -99,6 +124,10 @@ export default {
             {
               name: "Discount",
               value: "Discount : {{Discount}}"
+            },
+            {
+              name: "TotalAmmount",
+              value: "TotalAmmount : {{TotalAmmount}}"
             },
             {
               name: "Total",

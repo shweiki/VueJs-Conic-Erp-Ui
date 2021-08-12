@@ -14,12 +14,18 @@
       >اشتراك و قبض</el-button
     >
 
-    <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك" :visible.sync="Visibles">
+    <el-dialog
+      style="margin-top: -13vh"
+      title="تسجيل اشتراك"
+      :visible.sync="Visibles"
+    >
       <el-form :model="tempForm" ref="dataForm">
         <el-form-item
           label="الفترة"
           prop="Type"
-          :rules="[{ required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }]"
+          :rules="[
+            { required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }
+          ]"
         >
           <el-radio-group v-model="tempForm.Type" @change="calc">
             <el-radio label="Morning" border>Morning</el-radio>
@@ -33,13 +39,13 @@
             {
               required: true,
               message: 'الرجاء اختيار نوع اشتراك',
-              trigger: 'blur',
-            },
+              trigger: 'blur'
+            }
           ]"
         >
           <Select-Memberships
             @Set="
-              (v) => {
+              v => {
                 Membership = v;
                 tempForm.MembershipId = v.Id;
                 calc();
@@ -54,14 +60,14 @@
             {
               required: true,
               message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur',
-            },
+              trigger: 'blur'
+            }
           ]"
         >
           <Fake-Date
             :Value="tempForm.StartDate"
             @Set="
-              (v) => {
+              v => {
                 tempForm.StartDate = v;
                 calc();
               }
@@ -75,14 +81,14 @@
             {
               required: true,
               message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur',
-            },
+              trigger: 'blur'
+            }
           ]"
         >
           <Fake-Date
             :Value="tempForm.EndDate"
             @Set="
-              (v) => {
+              v => {
                 tempForm.EndDate = v;
               }
             "
@@ -92,7 +98,7 @@
           <Select-Discount
             :Price="Price"
             @Set="
-              (v) => {
+              v => {
                 tempForm.Discount = v;
                 calc();
               }
@@ -106,8 +112,8 @@
             {
               required: true,
               message: 'لايمكن ترك الخصم فارغ',
-              trigger: 'blur',
-            },
+              trigger: 'blur'
+            }
           ]"
         >
           <el-input
@@ -117,7 +123,9 @@
         </el-form-item>
 
         <el-form-item
-          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
+          :rules="[
+            { required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }
+          ]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -135,12 +143,12 @@
                 {
                   required: true,
                   message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <editors-user @Set="(v) => (tempForm.EditorName = v)" />
+              <editors-user @Set="v => (tempForm.EditorName = v)" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -152,7 +160,9 @@
         <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
           <span
             >JOD
-            {{ tempForm.TotalAmmount.toFixed($store.getters.settings.ToFixed) }}</span
+            {{
+              tempForm.TotalAmmount.toFixed($store.getters.settings.ToFixed)
+            }}</span
           >
         </el-form-item>
       </el-form>
@@ -164,8 +174,8 @@
               {
                 required: true,
                 message: 'لايمكن ترك القيمة فارغ',
-                trigger: 'blur',
-              },
+                trigger: 'blur'
+              }
             ]"
             class="currency-input"
             v-model="Payment.TotalAmmount"
@@ -176,14 +186,22 @@
 
         <el-form-item prop="PaymentMethod" label="طريقة الدفع">
           <el-radio-group v-model="Payment.PaymentMethod" text-color="#f78243">
-            <el-radio label="Cash" border>{{ $t("NewPurchaseInvoice.Cash") }}</el-radio>
+            <el-radio label="Cash" border>{{
+              $t("NewPurchaseInvoice.Cash")
+            }}</el-radio>
             <el-radio label="Visa" border>Visa</el-radio>
             <el-radio label="Cheque" border>Cheque</el-radio>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
-          <el-input style="width: 220px" v-model="Payment.Description"></el-input>
+        <el-form-item
+          v-bind:label="$t('AddVendors.Description')"
+          prop="Description"
+        >
+          <el-input
+            style="width: 220px"
+            v-model="Payment.Description"
+          ></el-input>
         </el-form-item>
         <el-row>
           <el-col :span="24">
@@ -193,21 +211,26 @@
                 {
                   required: true,
                   message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <editors-user @Set="(v) => (Payment.EditorName = v)" />
+              <editors-user @Set="v => (Payment.EditorName = v)" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button :disabled="EnableSave" type="primary" @click="createData()">{{
-          $t("AddVendors.Save")
+        <el-button @click="Visibles = false">{{
+          $t("AddVendors.Cancel")
         }}</el-button>
+        <el-button
+          :disabled="EnableSave"
+          type="primary"
+          @click="createData()"
+          >{{ $t("AddVendors.Save") }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -234,26 +257,26 @@ export default {
       type: Number,
       default: () => {
         return undefined;
-      },
+      }
     },
     MemberId: {
       type: Number,
       default: () => {
         return undefined;
-      },
+      }
     },
     Name: {
       type: string,
       default: () => {
         return undefined;
-      },
+      }
     },
     Enable: {
       type: Boolean,
       default: () => {
         return true;
-      },
-    },
+      }
+    }
   },
 
   data() {
@@ -271,7 +294,7 @@ export default {
         Status: 0,
         EditorName: "",
         MemberId: undefined,
-        MembershipId: undefined,
+        MembershipId: undefined
       },
       OldPayment: null,
       Payment: {
@@ -286,7 +309,7 @@ export default {
         IsPrime: true,
         EditorName: "",
         MemberId: undefined,
-        Type: "",
+        Type: ""
       },
       EnableSave: false,
       Visibles: false,
@@ -303,26 +326,26 @@ export default {
         NumberDays: 30,
         Rate: 0,
         Status: 0,
-        Tax: 0.01,
+        Tax: 0.01
       },
       pickerOptions: {
         disabledDate(time) {
           console.log(time);
           return time.getTime() < Date.now() - 8.64e7;
-        },
-      },
+        }
+      }
     };
   },
   methods: {
     createData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         this.calc();
         if (valid) {
-          this.$refs["Form"].validate((valid) => {
+          this.$refs["Form"].validate(valid => {
             if (valid) {
               this.EnableSave = true;
               Create(this.tempForm)
-                .then((response) => {
+                .then(response => {
                   if (response) {
                     //  if(this.Discount.ValueOfDays >0)
                     // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
@@ -331,7 +354,8 @@ export default {
 
                     this.Payment.MemberId = this.MemberId;
                     this.Payment.Description +=
-                      "وذالك عن اشتراك رقم " +
+                      this.tempForm.Description +
+                      "  -  وذالك عن اشتراك رقم " +
                       response +
                       "وينتهي في " +
                       this.formatDate(this.tempForm.EndDate, "no") +
@@ -339,7 +363,7 @@ export default {
                       this.tempForm.Type +
                       " .";
                     CreatePayment(this.Payment)
-                      .then((response) => {
+                      .then(response => {
                         this.Payment.Name = this.Name;
                         this.Visibles = false;
                         this.$notify({
@@ -352,15 +376,15 @@ export default {
                             this.OldPayment = this.Payment;
                             this.Print();
                             this.EnableSave = false;
-                          },
+                          }
                         });
                       })
-                      .catch((error) => {
+                      .catch(error => {
                         console.log(error);
                       });
                   }
                 })
-                .catch((error) => {
+                .catch(error => {
                   console.log(error);
                 });
             }
@@ -396,16 +420,16 @@ export default {
         printable: PaymentMember(this.OldPayment),
         type: "pdf",
         base64: true,
-        showModal: true,
+        showModal: true
       });
     },
     OneInBodyFreeForeach30Days(NumberDays) {
       if (NumberDays < 30) return false;
       GetActiveService()
-        .then((response) => {
+        .then(response => {
           //   console.log(response);
           let Service = response.find(
-            (obj) => obj.Name == "One InBody Free Foreach 30 Days"
+            obj => obj.Name == "One InBody Free Foreach 30 Days"
           );
           let SaleInvoice = {
             Id: undefined,
@@ -418,7 +442,7 @@ export default {
             Description: "فاتورة خدمية ",
             MemberId: this.MemberId,
             IsPrime: true,
-            InventoryMovements: [],
+            InventoryMovements: []
           };
           for (var i = 0; i < NumberDays / 30; i++) {
             SaleInvoice.InventoryMovements.push({
@@ -431,28 +455,28 @@ export default {
               Tax: 0.0,
               Description: "",
               InventoryItemId: 1,
-              SalesInvoiceId: undefined,
+              SalesInvoiceId: undefined
             });
           }
           console.log(SaleInvoice);
           if (SaleInvoice.InventoryMovements.length > 0) {
             CreateSaleInvoice(SaleInvoice)
-              .then((response) => {
+              .then(response => {
                 if (response) {
                   this.$notify({
                     title: "تم ",
                     message: "تم الإضافة One InBody Free Foreach 30 Days بنجاح",
                     type: "success",
-                    duration: 2000,
+                    duration: 2000
                   });
                 }
               })
-              .catch((error) => {
+              .catch(error => {
                 console.log(error);
               });
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
@@ -464,14 +488,14 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,
-        MemberShipMovementId: MemberShipMovementId,
+        MemberShipMovementId: MemberShipMovementId
       };
       MembershipMovementOrder.EndDate = new Date(
         MembershipMovementOrder.EndDate.setTime(
           MembershipMovementOrder.StartDate.getTime() + 3600 * 1000 * 24 * Days
         )
       );
-      Create(MembershipMovementOrder).then((response) => {
+      Create(MembershipMovementOrder).then(response => {
         if (response) {
         }
       });
@@ -485,8 +509,8 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

@@ -440,7 +440,6 @@
         </split-pane>
       </div>
     </el-form>
-    <iframe id="ifrmPrint" class="iframeR"></iframe>
   </div>
 </template>
 

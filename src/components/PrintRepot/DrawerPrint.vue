@@ -67,7 +67,7 @@
           </el-input>
         </el-col>
         <iframe
-          height="500px"
+          height="350px"
           frameborder="0"
           style="overflow: hidden; width: 100%"
           v-bind:id="'Report-' + item.Id"
@@ -75,6 +75,7 @@
           :srcdoc="item.Html"
           :title="item.Name"
         ></iframe>
+        <iframe id="ifrmPrint" class="iframeR"></iframe>
       </el-col>
     </el-drawer>
     <img id="qr_code" style="display: none" />
@@ -116,8 +117,6 @@ export default {
     Data(val) {
       this.Reports.forEach((item, index) => {
         item.Html = this.Visualization(val, item.Html, "Set");
-        console.log(this.AutoPrint, item.AutoPrint);
-
         if (item.AutoPrint && this.AutoPrint) {
           this.JSPM(item.Printer, item);
         }
@@ -134,6 +133,7 @@ export default {
       }).then(res => {
         this.Reports = res;
         this.Reports.forEach((item, index) => {
+          console.log("Data : ", this.Data);
           item.Html = this.Visualization(this.Data, item.Html, "Set");
         });
       });
