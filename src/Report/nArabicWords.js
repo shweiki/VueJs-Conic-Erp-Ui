@@ -69,9 +69,11 @@ const TableScales = [
     "تسع",
     "عشر"
   ];
+  let s=0;
 
 export function nArabicWords(
   NumIn = 0,
+  
   {
     Feminine,
     Comma,
@@ -88,6 +90,7 @@ export function nArabicWords(
   let havedic = false;
   let dic;
   if (NumIn % 1 != 0) {
+    ++s;
     havedic = true;
     dic = Math.floor((NumIn % 1).toFixed(2) * 100);
     NumIn = Math.floor(NumIn);
@@ -233,8 +236,9 @@ export function nArabicWords(
       }
     }
     (NumIn % 1) * 100;
-    if (havedic) return Words999 + " دينار " + nArabicWords(dic) + " قرشا ";
-    else return Words999 ; //Return the Triple in Words
+    if (!havedic) {
+      if (s===0) {return Words999 + " دينار "} else {s=0; return  Words999 + " قرشا "}}
+    else { console.log("s= ", s); return  Words999 + " دينار و" + nArabicWords(dic) }; //Return the Triple in Words
     //Return the Triple in Words
   }
 }
