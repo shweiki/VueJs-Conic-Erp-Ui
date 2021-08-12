@@ -22,6 +22,13 @@ export function GetByListQ(data) {
   })
 }
 
+export function GetReportByType(query) {
+  return request({
+    url: '/Report/GetReportByType',
+    method: 'get',
+    params: query
+  })
+}
 export function GetReportById(query) {
   return request({
     url: '/Report/GetReportById',

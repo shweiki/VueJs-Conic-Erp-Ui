@@ -30,7 +30,7 @@
           icon="el-icon-edit"
           @click="
             let r = $router.resolve({
-              path: '/Reports/Edit/' + item.Id,
+              path: '/Reports/Edit/' + item.Id
             });
             window.open(
               r.href,
@@ -90,7 +90,7 @@ import jsPDF from "jspdf";
 import printJS from "print-js";
 import JSPM from "jsprintmanager";
 import * as htmlToImage from "html-to-image";
-import { GetByListQ } from "@/api/Report";
+import { GetReportByType } from "@/api/Report";
 import { SendEmail } from "@/api/StmpEmail";
 
 export default {
@@ -102,14 +102,14 @@ export default {
     AutoPrint: Boolean,
     Data: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   data() {
     return {
       drawer: false,
       Reports: [],
-      PhoneNumber: "",
+      PhoneNumber: ""
     };
   },
   watch: {
@@ -122,20 +122,16 @@ export default {
           this.JSPM(item.Printer, item);
         }
       });
-    },
+    }
   },
   created() {
     this.getdata();
   },
   methods: {
     getdata() {
-      GetByListQ({
-        Page: 1,
-        Any: this.Type,
-        limit: 5,
-        Sort: "-id",
-        Status: 0,
-      }).then((r) => {
+      GetReportByType({
+        Type: this.Type
+      }).then(r => {
         this.Reports = r.items;
         this.Reports.forEach((item, index) => {
           item.Html = this.Visualization(this.Data, item.Html, "Set");
@@ -183,7 +179,7 @@ export default {
         title: "تم ",
         message: "تم ارسال بنجاح",
         type: "success",
-        duration: 20000,
+        duration: 20000
       });
     },
     SendWhatsApp(item) {
@@ -196,7 +192,7 @@ export default {
       console.log(oDoc.body);
       htmlToImage
         .toPng(oDoc.body)
-        .then((dataUrl) => {
+        .then(dataUrl => {
           window.open(
             "https://wa.me/962" +
               this.PhoneNumber +
@@ -205,7 +201,7 @@ export default {
               ""
           );
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("oops, something went wrong!", error);
         });
     },
@@ -219,13 +215,13 @@ export default {
       console.log(oDoc.body);
       htmlToImage
         .toPng(oDoc.body)
-        .then((dataUrl) => {
+        .then(dataUrl => {
           const pdf = new jsPDF();
           pdf.addImage(dataUrl, "PNG", 0, 0);
           pdf.save("Invoice #" + item.Id + ".pdf");
           oDoc.close();
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("oops, something went wrong!", error);
         });
     },
@@ -241,7 +237,7 @@ export default {
         console.log(oDoc.body);
         htmlToImage
           .toPng(oDoc.body)
-          .then((dataUrl) => {
+          .then(dataUrl => {
             const doc = new jsPDF();
             doc.addImage(dataUrl, "PNG", 0, 0);
             let cpj = new JSPM.ClientPrintJob();
@@ -256,12 +252,12 @@ export default {
             cpj.sendToClient();
             oDoc.close();
           })
-          .catch((error) => {
+          .catch(error => {
             console.error("oops, something went wrong!", error);
           });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

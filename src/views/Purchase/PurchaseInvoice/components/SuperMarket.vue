@@ -19,28 +19,11 @@
           >
           <router-link
             class="pan-btn tiffany-btn"
-            style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
+            style="float: right; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
             icon="el-icon-plus"
             to="/Purchase/List"
             >{{ $t("route.ListPurchaseInvoice") }}</router-link
           >
-          <span>{{ $t("NewPurchaseInvoice.PurchaseInvoice") }}</span>
-          <el-col :span="10">
-            <el-form-item>
-              <el-input
-                v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
-                type="textarea"
-                v-model="tempForm.Description"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-input
-              prop="Name"
-              placeholder="اسم المستلم"
-              v-model="tempForm.Name"
-            ></el-input>
-          </el-col>
         </div>
         <el-row type="flex">
           <el-col :span="4">
@@ -180,8 +163,8 @@
                 :precision="2"
                 :step="1"
                 :min="0.0"
-                :max="1000000"                            @focus="$event.target.select()"
-
+                :max="1000000"
+                @focus="$event.target.select()"
               ></el-input-number>
             </template>
           </el-table-column>
@@ -194,8 +177,7 @@
                 @change="SumTotalAmmount"
                 class="currency-input"
                 :precision="10"
-                          @focus="$event.target.select()"
-
+                @focus="$event.target.select()"
                 v-model="tempForm.InventoryMovements[scope.$index].SellingPrice"
               />
             </template>
@@ -299,8 +281,8 @@
                 :precision="2"
                 :step="1"
                 :min="0.0"
-                :max="100"                            @focus="$event.target.select()"
-
+                :max="100"
+                @focus="$event.target.select()"
               ></el-input-number>
             </span>
             <el-divider direction="vertical"></el-divider>
@@ -317,6 +299,23 @@
           </el-card>
         </el-col>
       </el-row>
+
+      <el-col :span="10">
+        <el-form-item>
+          <el-input
+            v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
+            type="textarea"
+            v-model="tempForm.Description"
+          ></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-input
+          prop="Name"
+          placeholder="اسم المستلم"
+          v-model="tempForm.Name"
+        ></el-input>
+      </el-col>
     </el-form>
   </div>
 </template>
@@ -339,7 +338,6 @@ export default {
     }
   },
   data() {
-    
     return {
       TotalQty: 0,
       TotalItems: 0,
@@ -422,7 +420,7 @@ export default {
         SellingPrice: item.CostPrice,
         Tax: 0.0,
         InventoryItemId: 1,
-          Name: item.Name,
+        Name: item.Name,
         PurchaseInvoiceId: undefined,
         Description: ""
       });

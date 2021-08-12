@@ -3,16 +3,26 @@
     <el-table height="500" :data="Payments" fit border highlight-current-row>
       <el-table-column label="#" prop="Id" align="center">
         <template slot="header" slot-scope="{}">
-          <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-refresh"
+            @click="getdata()"
+          ></el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="ObjectId" label="رقم المشترك" align="center"></el-table-column>
-
-
+      <el-table-column
+        prop="ObjectId"
+        label="رقم المشترك"
+        align="center"
+      ></el-table-column>
 
       <el-table-column label="التاريخ" align="center" width="150">
         <template slot-scope="scope">
-          <el-date-picker format="dd/MM/yyyy" disabled v-model="scope.row.FakeDate"></el-date-picker>
+          <el-date-picker
+            format="dd/MM/yyyy"
+            disabled
+            v-model="scope.row.FakeDate"
+          ></el-date-picker>
         </template>
       </el-table-column>
       <el-table-column
@@ -21,22 +31,28 @@
         align="center"
       ></el-table-column>
       <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-        <template slot-scope="scope">{{scope.row.TotalAmmount.toFixed($store.getters.settings.ToFixed) }} JOD</template>
+        <template slot-scope="scope"
+          >{{
+            scope.row.TotalAmmount.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</template
+        >
       </el-table-column>
       <el-table-column label="#" align="center">
         <template slot-scope="scope">
-          <el-button icon="el-icon-printer" type="primary" @click="printPayment(scope.row)"></el-button>
+          <drawer-print Type="Payment" :Data="scope.row" />
         </template>
       </el-table-column>
       <el-table-column label="الحالة" align="center">
         <template slot-scope="scope">
-           <Status-Tag
-                  :Status="scope.row.Status"
-                  TableName="Payment"
-                />
+          <Status-Tag :Status="scope.row.Status" TableName="Payment" />
         </template>
       </el-table-column>
-      <el-table-column label="محرر" align="center" prop="EditorName"></el-table-column>
+      <el-table-column
+        label="محرر"
+        align="center"
+        prop="EditorName"
+      ></el-table-column>
     </el-table>
   </div>
 </template>
@@ -47,9 +63,10 @@ import { PaymentMember } from "@/Report/PayPapar";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 
 import printJS from "print-js";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
-  components :{StatusTag},
+  components: { StatusTag, DrawerPrint },
   props: {
     Payments: {
       type: Array,
@@ -66,7 +83,7 @@ export default {
         type: "pdf",
         base64: true,
         showModal: true
-      })
+      });
     }
   }
 };
