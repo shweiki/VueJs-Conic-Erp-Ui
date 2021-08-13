@@ -1,5 +1,7 @@
 <template>
   <div class="app-container">
+    <add-account-dialog />
+
     <el-row type="flex">
       <el-col :span="12">
         <el-input
@@ -158,6 +160,7 @@
         width="70"
       >
         <template slot-scope="scope">
+          <Edit-Account :AccountId="scope.row.Id" />
           <Status-Tag :Status="scope.row.Status" TableName="Account" />
         </template>
       </el-table-column>
@@ -193,10 +196,23 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import permission from "@/directive/permission/index.js";
+import AddAccountDialog from "./AddAccountDialog.vue";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import EditAccount from "./EditAccount.vue";
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
   name: "TableAccount",
-  components: { StatusTag, RadioOprations, NextOprations, Pagination },
+  components: {
+    StatusTag,
+    RadioOprations,
+    NextOprations,
+    Pagination,
+    AddAccountDialog,
+    DrawerPrint,
+    EditAccount,
+    DialogActionLog
+  },
   directives: { waves, permission },
   data() {
     return {

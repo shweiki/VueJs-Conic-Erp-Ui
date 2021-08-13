@@ -49,7 +49,7 @@ export default {
         NewOrderInventory: 'سندات مخزون',
         Inventories: 'مخازن',
         Inventory: 'مخزن',
-        TreeAccount: 'حسابات',
+        TreeAccount: 'شجرة الحسابات',
         EntryAccounting: 'قيود',
         NewAccountingEntry: 'قيد جديد',
         Sales: 'مبيعات',

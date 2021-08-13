@@ -52,6 +52,7 @@ const AccountingRouter = {
     {
       path: 'TableAccount',
       component: () => import('@/views/Accounting/TreeAccount/TableAccount'),
+      name: 'TableAccount',
       meta: {
         title: 'TableAccount', icon: 'cost'
       },

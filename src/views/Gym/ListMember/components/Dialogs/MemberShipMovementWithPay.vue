@@ -1,19 +1,19 @@
 <template>
   <div>
-    <el-button
-      v-bind:disabled="OldPayment != null ? false : true"
-      @click="Print()"
-      type="success"
-      icon="el-icon-printer"
-    ></el-button>
-    <el-button
-      :disabled="Enable"
-      type="success"
-      icon="el-icon-plus"
-      @click="Visibles = true"
-      >اشتراك و قبض</el-button
+    <el-row>
+      <el-col :span="6">
+        <drawer-print :Data="OldPayment" Type="Payment" />
+      </el-col>
+      <el-col :span="18">
+        <el-button
+          :disabled="Enable"
+          type="success"
+          icon="el-icon-plus"
+          @click="Visibles = true"
+          >اشتراك و قبض</el-button
+        >
+      </el-col></el-row
     >
-
     <el-dialog
       style="margin-top: -13vh"
       title="تسجيل اشتراك"
@@ -238,10 +238,8 @@
 
 <script>
 import { CreatePayment } from "@/api/Payment";
-import printJS from "print-js";
-import { PaymentMember } from "@/Report/PayPapar";
-
-import { string } from "clipboard";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import { SendSMS } from "@/api/SMS";
 import { Create } from "@/api/MembershipMovement";
 import EditorsUser from "@/components/Gym/EditorsUser.vue";
 import SelectMemberships from "@/components/Gym/SelectMemberships.vue";
@@ -251,7 +249,13 @@ import { Create as CreateSaleInvoice } from "@/api/SaleInvoice";
 import { GetActiveService } from "@/api/Service";
 import { LocalDateTime, Instant } from "@js-joda/core";
 export default {
-  components: { FakeDate, EditorsUser, SelectMemberships, SelectDiscount },
+  components: {
+    FakeDate,
+    EditorsUser,
+    SelectMemberships,
+    SelectDiscount,
+    DrawerPrint
+  },
   props: {
     AccountId: {
       type: Number,
@@ -265,8 +269,14 @@ export default {
         return undefined;
       }
     },
+    NumberPhone1: {
+      type: String,
+      default: () => {
+        return undefined;
+      }
+    },
     Name: {
-      type: string,
+      type: String,
       default: () => {
         return undefined;
       }
@@ -278,7 +288,6 @@ export default {
       }
     }
   },
-
   data() {
     return {
       tempForm: {
@@ -349,7 +358,6 @@ export default {
                   if (response) {
                     //  if(this.Discount.ValueOfDays >0)
                     // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
-
                     this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
 
                     this.Payment.MemberId = this.MemberId;
@@ -374,7 +382,21 @@ export default {
                           onClose: () => {
                             this.Payment.Id = response;
                             this.OldPayment = this.Payment;
-                            this.Print();
+                            this.OldPayment.ObjectId = this.MemberId;
+                            SendSMS(
+                              this.NumberPhone1,
+                              "تم دفع مبلغ " +
+                                this.OldPayment.TotalAmmount.toFixed(
+                                  this.$store.getters.settings.ToFixed
+                                ) +
+                                " دينار" +
+                                " لاشتراك " +
+                                this.Membership.Name +
+                                " " +
+                                this.tempForm.Type +
+                                " للمشترك رقم " +
+                                this.MemberId
+                            );
                             this.EnableSave = false;
                           }
                         });
@@ -411,17 +433,6 @@ export default {
       )
         .plusDays(Membership.NumberDays)
         .toString();
-    },
-
-    Print() {
-      this.OldPayment.ObjectId = this.MemberId;
-
-      printJS({
-        printable: PaymentMember(this.OldPayment),
-        type: "pdf",
-        base64: true,
-        showModal: true
-      });
     },
     OneInBodyFreeForeach30Days(NumberDays) {
       if (NumberDays < 30) return false;

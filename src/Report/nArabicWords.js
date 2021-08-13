@@ -33,15 +33,15 @@
 * @returns       : {string} The wordified number string in Arabic.
 **********************************************************************/
 const TableScales = [
-    "",
-    "ألف",
-    "مليون",
-    "مليار",
-    "ترليون",
-    "كوادرليون",
-    "كوينتليون",
-    "سكستليون"
-  ], // Add here only
+  "",
+  "ألف",
+  "مليون",
+  "مليار",
+  "ترليون",
+  "كوادرليون",
+  "كوينتليون",
+  "سكستليون"
+], // Add here only
   TableScalesP = ["", "آلاف", "ملايين", "مليارات"], // Do not change this table
   TableMale = [
     "",
@@ -69,11 +69,11 @@ const TableScales = [
     "تسع",
     "عشر"
   ];
-  let s=0;
+let s = 0;
 
 export function nArabicWords(
   NumIn = 0,
-  
+
   {
     Feminine,
     Comma,
@@ -237,8 +237,9 @@ export function nArabicWords(
     }
     (NumIn % 1) * 100;
     if (!havedic) {
-      if (s===0) {return Words999 + " دينار "} else {s=0; return  Words999 + " قرشا "}}
-    else { console.log("s= ", s); return  Words999 + " دينار و" + nArabicWords(dic) }; //Return the Triple in Words
+      if (s === 0) { return Words999 + " دينار " } else { s = 0; return Words999 + " قرشا " }
+    }
+    else { return Words999 + " دينار و" + nArabicWords(dic) }; //Return the Triple in Words
     //Return the Triple in Words
   }
 }

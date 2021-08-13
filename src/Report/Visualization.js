@@ -37,8 +37,6 @@ export default function Visualization(Data, Html, Type) {
           if (Equation != "" && Equation.search("{{") <= -1) {
             let evalV = Equation.replace("{#", "");
             evalV = evalV.replace("/}", "");
-            console.log("evalV  " + evalV);
-
             row = row.replace(Equation, eval(evalV));
           }
           indexOccurence = row.indexOf(searchKeyword, indexOccurence + 1);
@@ -55,11 +53,8 @@ export default function Visualization(Data, Html, Type) {
     );
   }
   var searchKeyword = "{#";
-
   var startingIndices = [];
-
   var indexOccurence = Html.indexOf(searchKeyword, 0);
-
   while (indexOccurence >= 0) {
     startingIndices.push(indexOccurence);
     let Equation = Html.slice(
@@ -69,14 +64,10 @@ export default function Visualization(Data, Html, Type) {
     if (Equation != "" && Equation.search("{{") <= -1) {
       let evalV = Equation.replace("{#", "");
       evalV = evalV.replace("/}", "");
-      console.log("evalV  " + evalV);
-
       Html = Html.replace(Equation, eval(evalV));
     }
     indexOccurence = Html.indexOf(searchKeyword, indexOccurence + 1);
   }
-  console.log("startingIndices  ", startingIndices);
-
   if (Type == "Set") {
     //  Html += nArabicWords(2000)
     return Html;

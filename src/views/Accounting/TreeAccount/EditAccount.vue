@@ -44,6 +44,16 @@
         <el-form-item v-bind:label="$t('Account.Code')" prop="Code">
           <el-input type="text" v-model="tempForm.Code"></el-input>
         </el-form-item>
+        <el-form-item label="تحت قائمة" prop="ParentId">
+          <select-parent
+            :Value="tempForm.ParentId"
+            @Set="
+              v => {
+                tempForm.ParentId = v;
+              }
+            "
+          />
+        </el-form-item>
         <el-form-item v-bind:label="$t('Account.Notes')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
@@ -63,9 +73,10 @@
 <script>
 import { Edit, GetById } from "@/api/Account";
 import SelectAccountsType from "./SelectAccountsType.vue";
+import SelectParent from "./SelectParent.vue";
 
 export default {
-  components: { SelectAccountsType },
+  components: { SelectAccountsType, SelectParent },
   props: {
     AccountId: {
       type: Number,

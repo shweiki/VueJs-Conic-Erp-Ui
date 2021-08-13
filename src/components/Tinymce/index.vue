@@ -31,7 +31,7 @@ const tinymceCDN =
 
 export default {
   name: "Tinymce",
-  components: { editorImage  },
+  components: { editorImage },
   props: {
     id: {
       type: String,
@@ -133,8 +133,11 @@ export default {
         body_class: "panel-body ",
         object_resizing: false,
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
+        font_formats:
+          "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; AkrutiKndPadmini=Akpdmi-n; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats",
         menubar: this.menubar,
         plugins: plugins,
+        fontsize_formats: "4pt 6pt 8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt",
         end_container_on_empty_block: true,
         powerpaste_word_import: "clean",
         code_dialog_height: 450,

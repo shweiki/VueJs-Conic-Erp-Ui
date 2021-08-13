@@ -67,7 +67,7 @@
           </el-input>
         </el-col>
         <iframe
-          height="350px"
+          height="500px"
           frameborder="0"
           style="overflow: hidden; width: 100%"
           v-bind:id="'Report-' + item.Id"
@@ -115,12 +115,14 @@ export default {
   },
   watch: {
     Data(val) {
-      this.Reports.forEach((item, index) => {
-        item.Html = this.Visualization(val, item.Html, "Set");
-        if (item.AutoPrint && this.AutoPrint) {
-          this.JSPM(item.Printer, item);
-        }
-      });
+      if (val != null) {
+        this.Reports.forEach((item, index) => {
+          item.Html = this.Visualization(val, item.Html, "Set");
+          if (item.AutoPrint && this.AutoPrint) {
+            this.JSPM(item.Printer, item);
+          }
+        });
+      }
     }
   },
   created() {
@@ -133,8 +135,8 @@ export default {
       }).then(res => {
         this.Reports = res;
         this.Reports.forEach((item, index) => {
-          console.log("Data : ", this.Data);
-          item.Html = this.Visualization(this.Data, item.Html, "Set");
+          if (this.Data != null)
+            item.Html = this.Visualization(this.Data, item.Html, "Set");
         });
       });
     },
