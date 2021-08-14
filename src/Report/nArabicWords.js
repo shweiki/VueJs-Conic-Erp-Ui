@@ -92,7 +92,7 @@ export function nArabicWords(
   if (NumIn % 1 != 0) {
     ++s;
     havedic = true;
-    dic = Math.floor((NumIn % 1).toFixed(2) * 100);
+    dic = Math.floor((NumIn % 1).toFixed(3) * 1000);
     NumIn = Math.floor(NumIn);
   } // if 0 or "0" then "zero"
   let Triplet,
@@ -237,7 +237,7 @@ export function nArabicWords(
     }
     (NumIn % 1) * 100;
     if (!havedic) {
-      if (s===0) {return Words999 + " دينار "} else {s=0; return  Words999 + " قرشا "}}
+      if (s===0) {return Words999 + " دينار "} else {s=0; return  Words999 + " فلس "}}
     else { console.log("s= ", s); return  Words999 + " دينار و" + nArabicWords(dic) }; //Return the Triple in Words
     //Return the Triple in Words
   }

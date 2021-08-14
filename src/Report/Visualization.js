@@ -83,7 +83,9 @@ export default function Visualization(Data, Html, Type) {
   }
 }
 export function ToFixedX(num) {
-  return num.toFixed(toFixed);
+  console.log("cooFixed",toFixed);
+  return num.toFixed(3);
+  
 }
 
 export function formatDateX(date) {
