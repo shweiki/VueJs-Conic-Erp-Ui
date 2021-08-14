@@ -8,14 +8,9 @@
         </el-col>
       </div>
       <div class="custom-tree-container">
-        <el-button
-          type="primary"
-          icon="el-icon-refresh"
-          @click="getdata()"
-        ></el-button>
+        <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
         <el-col :span="6">
-          <el-input placeholder="Filter keyword" v-model="filterText">
-          </el-input>
+          <el-input placeholder="Filter keyword" v-model="filterText"> </el-input>
         </el-col>
         <div class="block">
           <el-tree
@@ -23,13 +18,14 @@
             show-checkbox
             node-key="Id"
             accordion
+            icon-class="el-icon-refresh"
             default-expand-all
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             ref="AccountTree"
           >
             <span class="custom-tree-node" slot-scope="{ data }">
-              <span>({{ data.Id }})  {{ data.Name }}  {{ data.Code }} </span>
+              <span>({{ data.Id }}) {{ data.Name }} {{ data.Code }} </span>
               <span>
                 <!--     <span>{{ data.TotalCredit }}</span>
                 <span>{{ data.TotalDebit }}</span> -->
@@ -56,13 +52,13 @@ export default {
   watch: {
     filterText(val) {
       this.$refs["AccountTree"].filter(val);
-    }
+    },
   },
   data() {
     return {
       filterText: "",
       Tree: [],
-      search: ""
+      search: "",
     };
   },
   created() {
@@ -76,12 +72,12 @@ export default {
 
     getdata() {
       GetTreeAccount()
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.Tree = this.generateTree(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
@@ -107,8 +103,8 @@ export default {
         }
       }
       return roots;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -125,4 +121,3 @@ export default {
   padding-right: 8px;
 }
 </style>
-
