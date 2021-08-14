@@ -245,7 +245,6 @@ export default {
                     duration: 2000
                   });
                   this.$router.push({ path: `/Gym/Edit/${response}` });
-
                   SendSMS(
                     this.tempForm.PhoneNumber1,
                     "عزيزي " +

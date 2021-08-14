@@ -46,7 +46,11 @@
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <Member-Pay :MemberId="tempForm.Id" :Name="tempForm.Name" />
+                  <Member-Pay
+                    :MemberId="tempForm.Id"
+                    :Name="tempForm.Name"
+                    :NumberPhone1="tempForm.PhoneNumber1"
+                  />
                 </el-col>
               </el-row>
               <el-row>
@@ -55,6 +59,7 @@
                     :MemberId="tempForm.Id"
                     :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
+                    :NumberPhone1="tempForm.PhoneNumber1"
                     :Enable="
                       tempForm.TotalCredit - tempForm.TotalDebit > 0
                         ? true
@@ -245,8 +250,11 @@ export default {
         GetEntryMovementsByAccountId({
           AccountId: this.tempForm.AccountId
         }).then(response => {
-          console.log("log :", response);
-          this.EntryMovements = response.reverse();
+          this.EntryMovements = response.map((curr, i, array) => {
+            curr.TotalRow =
+              array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
+            return curr;
+          });
         });
       if (tab.label == "خدمات")
         GetSaleInvoiceByMemberId({
@@ -318,14 +326,14 @@ export default {
       });
     },
     setTagsViewTitle() {
-      const title = "Member";
+      const title = "مشترك";
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Member";
+      const title = "مشترك";
       document.title = `${title} - ${this.tempForm.Id}`;
     }
   }

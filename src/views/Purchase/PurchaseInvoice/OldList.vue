@@ -25,7 +25,7 @@
           tableData.filter(
             (data) =>
               !search ||
-              data.Account.AccountName.toLowerCase().includes(search.toLowerCase())
+              data.Account.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit

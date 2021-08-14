@@ -1,51 +1,49 @@
 <template>
   <el-select
     v-model="value"
-    placeholder="Users"
+    placeholder="ضمن قائمة"
     clearable
     class="filter-item"
-    style="width: 130px"
     @change="SetVal"
   >
     <el-option
       v-for="item in options"
-      :key="item.key"
-      :label="item.UserName"
-      :value="item.UserName"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value"
     />
   </el-select>
 </template>
 <script>
-import { GetUsersNames } from "@/api/User";
+import { GetMainAccount } from "@/api/Account";
 
 export default {
-  props: ["Value"],
+  props: {
+    Value: Number
+  },
   data() {
     return {
       value: "",
-      options: [],
+      options: []
     };
   },
   watch: {
     Value(val) {
-      if (val) this.SetVal(val);
-    },
+      this.SetVal(val);
+    }
   },
   created() {
-    GetUsersNames().then((res) => {
+    GetMainAccount().then(res => {
       this.options = res;
+      this.value = this.Value;
       //   this.SetVal(response[0].UserName);
     });
   },
   methods: {
     SetVal(val) {
-      //      console.log(" eee  " + this.Name);
-      this.$emit(
-        "Set",
-        this.options.find((obj) => obj.UserName == val).UserName
-      );
       this.value = val;
-    },
-  },
+      this.$emit("Set", this.options.find(obj => obj.value == val).value);
+    }
+  }
 };
 </script>

@@ -21,7 +21,13 @@ export function GetTreeAccount(query) {
     params: query
   })
 }
-
+export function GetMainAccount(query) {
+  return request({
+    url: '/Account/GetMainAccount',
+    method: 'get',
+    params: query
+  })
+}
 export function GetActiveAccounts(query) {
   return request({
     url: '/Account/GetActiveAccounts',

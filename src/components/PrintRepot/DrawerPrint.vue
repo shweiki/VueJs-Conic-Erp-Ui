@@ -11,11 +11,7 @@
       <template slot="title">
         <ElTag type="success">{{ Type }}</ElTag>
       </template>
-      <el-col
-        v-bind:span="24 / Reports.length"
-        v-for="item in Reports"
-        :key="item.Id"
-      >
+      <el-col v-bind:span="24 / Reports.length" v-for="item in Reports" :key="item.Id">
         <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
 
         <el-button
@@ -30,13 +26,9 @@
           icon="el-icon-edit"
           @click="
             let r = $router.resolve({
-              path: '/Reports/Edit/' + item.Id
+              path: '/Reports/Edit/' + item.Id,
             });
-            window.open(
-              r.href,
-              r.route.name,
-              $store.getters.settings.windowStyle
-            );
+            window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
           "
         />
         <el-col :span="6">
@@ -67,7 +59,7 @@
           </el-input>
         </el-col>
         <iframe
-          height="350px"
+          height="500px"
           frameborder="0"
           style="overflow: hidden; width: 100%"
           v-bind:id="'Report-' + item.Id"
@@ -103,25 +95,28 @@ export default {
     AutoPrint: Boolean,
     Data: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       drawer: false,
       Reports: [],
-      PhoneNumber: ""
+      PhoneNumber: "",
     };
   },
   watch: {
     Data(val) {
-      this.Reports.forEach((item, index) => {
-        item.Html = this.Visualization(val, item.Html, "Set");
-        if (item.AutoPrint && this.AutoPrint) {
-          this.JSPM(item.Printer, item);
-        }
-      });
-    }
+      if (val != null) {
+        this.Reports.forEach((item, index) => {
+          item.Html = this.Visualization(val, item.Html, "Set");
+          if (item.AutoPrint && this.AutoPrint) {
+            //  this.Print(item);
+            //  this.JSPM(item.Printer, item);
+          }
+        });
+      }
+    },
   },
   created() {
     this.getdata();
@@ -129,12 +124,16 @@ export default {
   methods: {
     getdata() {
       GetReportByType({
-        Type: this.Type
-      }).then(res => {
+        Type: this.Type,
+      }).then((res) => {
         this.Reports = res;
         this.Reports.forEach((item, index) => {
-          console.log("Data : ", this.Data);
-          item.Html = this.Visualization(this.Data, item.Html, "Set");
+          if (this.Data != null)
+            item.Html = this.Visualization(this.Data, item.Html, "Set");
+          console.log("AutoPrint", item.AutoPrint, this.AutoPrint);
+          if (item.AutoPrint && this.AutoPrint && this.drawer) {
+            //    this.Print(item);
+          }
         });
       });
     },
@@ -179,7 +178,7 @@ export default {
         title: "تم ",
         message: "تم ارسال بنجاح",
         type: "success",
-        duration: 20000
+        duration: 20000,
       });
     },
     SendWhatsApp(item) {
@@ -192,7 +191,7 @@ export default {
       console.log(oDoc.body);
       htmlToImage
         .toPng(oDoc.body)
-        .then(dataUrl => {
+        .then((dataUrl) => {
           window.open(
             "https://wa.me/962" +
               this.PhoneNumber +
@@ -201,7 +200,7 @@ export default {
               ""
           );
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("oops, something went wrong!", error);
         });
     },
@@ -215,13 +214,13 @@ export default {
       console.log(oDoc.body);
       htmlToImage
         .toPng(oDoc.body)
-        .then(dataUrl => {
+        .then((dataUrl) => {
           const pdf = new jsPDF();
           pdf.addImage(dataUrl, "PNG", 0, 0);
           pdf.save("Invoice #" + item.Id + ".pdf");
           oDoc.close();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("oops, something went wrong!", error);
         });
     },
@@ -237,7 +236,7 @@ export default {
         console.log(oDoc.body);
         htmlToImage
           .toPng(oDoc.body)
-          .then(dataUrl => {
+          .then((dataUrl) => {
             const doc = new jsPDF();
             doc.addImage(dataUrl, "PNG", 0, 0);
             let cpj = new JSPM.ClientPrintJob();
@@ -252,12 +251,12 @@ export default {
             cpj.sendToClient();
             oDoc.close();
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("oops, something went wrong!", error);
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

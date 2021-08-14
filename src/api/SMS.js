@@ -2,7 +2,8 @@ import request from '@/utils/RequestApi'
 import store from '@/store'
 
 export function SendSMS(numberPhone, msg) {
-    if (numberPhone.length == 10) {
+    if (numberPhone.length >= 10) {
+        numberPhone = numberPhone.replaceAll(" ", "");
         numberPhone = numberPhone.slice(1);
     }
     if (numberPhone.length == 9 && store.getters.settings.Sms.baseURLSendSingleMessage)
@@ -22,7 +23,8 @@ export function SendSMS(numberPhone, msg) {
 }
 export function SendMultiSMS(numberPhones, msg) {
     numberPhones = numberPhones.map(element => {
-        if (element.length == 10) {
+        if (element.length >= 10) {
+            numberPhone = numberPhone.replaceAll(" ", "");
             element = element.slice(1);
         }
         return "962" + element;

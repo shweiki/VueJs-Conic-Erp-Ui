@@ -64,7 +64,7 @@
                 <el-button
                   type="primary"
                   icon="el-icon-s-home"
-                  @click="$router.replace({ path: '/redirect' + '/dashboard' })"
+                  @click="$router.replace({ path: '/redirect' + $store.getters.defulate_redirect, })"
                 ></el-button>
                 <el-button
                   type="primary"

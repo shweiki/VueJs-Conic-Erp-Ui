@@ -56,6 +56,13 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <Account-Search-Any
+          @Set="
+            v => {
+              AddEntryMovements(v);
+            }
+          "
+        />
         <el-table
           :data="tempForm.EntryMovements"
           fit
@@ -63,7 +70,10 @@
           max-height="350"
           highlight-current-row
         >
-          <el-table-column v-bind:label="$t('Accounting.Account')">
+          <el-table-column
+            align="center"
+            v-bind:label="$t('Accounting.Account')"
+          >
             <template slot-scope="scope">
               <el-form-item
                 :prop="'EntryMovements.' + scope.$index + '.AccountId'"
@@ -75,21 +85,15 @@
                   }
                 ]"
               >
-                <Account-Search-Any
-                  @Set="
-                    v => {
-                      tempForm.EntryMovements[scope.$index].AccountId = v.Id;
-                      tempForm.EntryMovements[scope.$index].Accountx = v;
-                    }
-                  "
-                />
-                <ElTag type="success">{{
-                  tempForm.EntryMovements[scope.$index].Accountx.Name
-                }}</ElTag>
+                {{ tempForm.EntryMovements[scope.$index].Name }}
+                <el-col :span="4">
+                  <Edit-Account
+                    :AccountId="tempForm.EntryMovements[scope.$index].AccountId"
+                /></el-col>
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column width="230">
+          <el-table-column align="center" width="150">
             <template slot="header" slot-scope="{}"
               >{{ $t("Accounting.Credit") }} ({{
                 tempForm.EntryMovements.reduce((prev, cur) => {
@@ -114,7 +118,7 @@
               ></el-input-number>
             </template>
           </el-table-column>
-          <el-table-column width="230">
+          <el-table-column align="center" width="150">
             <template slot="header" slot-scope="{}"
               >{{ $t("Accounting.Debit") }} ({{
                 tempForm.EntryMovements.reduce((prev, cur) => {
@@ -140,8 +144,9 @@
             </template>
           </el-table-column>
           <el-table-column
+            align="center"
             v-bind:label="$t('Classification.Notes')"
-            width="450"
+            width="320"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -160,42 +165,39 @@
                   class="input-with-select"
                 >
                   <template slot="prepend">
-                    <el-button
-                      @click="Copy(scope.row.Description)"
-                      icon="fa fa-copy"
-                    ></el-button>
+                    <el-tooltip effect="dark" content="Copy" placement="top">
+                      <el-button
+                        @click="Copy(scope.row.Description)"
+                        icon="fa fa-copy"
+                      ></el-button>
+                    </el-tooltip>
                   </template>
                   <template slot="append">
-                    <el-button
-                      @click="Paste(scope.$index)"
-                      icon="fa fa-paste"
-                    ></el-button>
+                    <el-tooltip effect="dark" content="Paste" placement="top">
+                      <el-button
+                        @click="Paste(scope.$index)"
+                        icon="fa fa-paste"
+                      ></el-button>
+                    </el-tooltip>
                   </template>
                 </el-input>
               </el-form-item>
             </template>
           </el-table-column>
+          <el-table-column width="55">
+            <template slot-scope="scope">
+              <el-tooltip effect="dark" content="Remove" placement="top">
+                <el-button
+                  type="danger"
+                  icon="el-icon-delete"
+                  circle
+                  @click="RemoveEntryMovements(scope.$index)"
+                ></el-button>
+              </el-tooltip>
+            </template>
+          </el-table-column>
         </el-table>
       </el-form>
-      <template>
-        <el-card shadow="hover" style="float: left">
-          <el-button
-            type="danger"
-            icon="fa fa-minus"
-            @click="RemoveEntryMovements()"
-            >حذف الأخير</el-button
-          >
-        </el-card>
-
-        <el-card shadow="hover">
-          <el-button
-            type="primary"
-            icon="el-icon-plus"
-            @click="AddEntryMovements()"
-            >{{ $t("Stocks.AddMore") }}</el-button
-          >
-        </el-card>
-      </template>
     </el-card>
   </div>
 </template>
@@ -203,9 +205,11 @@
 import { CreateEntry, GetEntryById, Edit } from "@/api/EntryAccounting";
 import FakeDate from "@/components/Date/FakeDate";
 import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
+import EditAccount from "@/views/Accounting/TreeAccount/EditAccount.vue";
+
 export default {
   name: "NewAccountingEntry",
-  components: { FakeDate, AccountSearchAny },
+  components: { FakeDate, AccountSearchAny, EditAccount },
   props: {
     isEdit: {
       type: Boolean,
@@ -221,26 +225,7 @@ export default {
         FakeDate: new Date(),
         Description: "",
         Type: "Manual",
-        EntryMovements: [
-          {
-            Id: undefined,
-            AccountId: undefined,
-            Accountx: { Name: "" },
-            Debit: 0.0,
-            Credit: 0.0,
-            Description: "",
-            EntryId: undefined
-          },
-          {
-            Id: undefined,
-            AccountId: undefined,
-            Accountx: { Name: "" },
-            Debit: 0.0,
-            Credit: 0.0,
-            Description: "",
-            EntryId: undefined
-          }
-        ]
+        EntryMovements: []
       }
     };
   },
@@ -265,23 +250,19 @@ export default {
     Paste(Index) {
       this.tempForm.EntryMovements[Index].Description = this.Text;
     },
-    AddEntryMovements() {
+    AddEntryMovements(v) {
       this.tempForm.EntryMovements.push({
         Id: undefined,
-        AccountId: undefined,
-        Accountx: { Name: "" },
-
+        AccountId: v.Id,
+        Name: v.Name,
         Debit: 0.0,
         Credit: 0.0,
         Description: "",
         EntryId: undefined
       });
     },
-    RemoveEntryMovements() {
-      this.tempForm.EntryMovements.splice(
-        this.tempForm.EntryMovements.length - 1,
-        1
-      );
+    RemoveEntryMovements(index) {
+      this.tempForm.EntryMovements.splice(index, 1);
     },
     getdata(val) {
       GetEntryById({ Id: val })
@@ -301,26 +282,7 @@ export default {
         Id: undefined,
         FakeDate: new Date(),
         Description: "",
-        EntryMovements: [
-          {
-            Id: undefined,
-            AccountId: undefined,
-            Accountx: { Name: "" },
-            Debit: 0.0,
-            Credit: 0.0,
-            Description: "",
-            EntryId: undefined
-          },
-          {
-            Id: undefined,
-            AccountId: undefined,
-            Accountx: { Name: "" },
-            Debit: 0.0,
-            Credit: 0.0,
-            Description: "",
-            EntryId: undefined
-          }
-        ]
+        EntryMovements: []
       };
     },
     createData() {
@@ -414,14 +376,14 @@ export default {
       });
     },
     setTagsViewTitle() {
-      const title = "Edit Entry";
+      const title = "تعديل قيد";
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Edit Entry";
+      const title = "تعديل قيد";
       document.title = `${title} - ${this.tempForm.Id}`;
     }
   }
