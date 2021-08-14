@@ -237,14 +237,11 @@ export function nArabicWords(
     }
     (NumIn % 1) * 100;
     if (!havedic) {
-<<<<<<< HEAD
-      if (s===0) {return Words999 + " دينار "} else {s=0; return  Words999 + " فلس "}}
-    else { console.log("s= ", s); return  Words999 + " دينار و" + nArabicWords(dic) }; //Return the Triple in Words
-=======
-      if (s === 0) { return Words999 + " دينار " } else { s = 0; return Words999 + " قرشا " }
+
+      if (s === 0) { return Words999 + " دينار " } else { s = 0; return Words999 + " فلس " }
     }
     else { return Words999 + " دينار و" + nArabicWords(dic) }; //Return the Triple in Words
->>>>>>> 5ec875cf8a9f4e766f7741a7c1518e8d47336907
+
     //Return the Triple in Words
   }
 }
