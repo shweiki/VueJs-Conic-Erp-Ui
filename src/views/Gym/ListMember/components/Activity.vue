@@ -25,7 +25,7 @@
           ></el-date-picker>
         </template>
       </el-table-column>
-      <el-table-column label="الحالة" align="center">
+      <el-table-column label="الحالة" width="100" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="MembershipMovement" />
           <el-tag type="warning" v-if="scope.row.Status > 0">

@@ -8,20 +8,15 @@ const service = axios.create({
 baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
 timeout: 200000000 ,// request timeout
 withCredentials: true,
-
 })
-
 // request interceptor
 service.interceptors.request.use(
   config => {
     // do something before request is sent    "Content-Type": "application/json"
 // console.log("config" , config);
 //   config.headers['X-Requested-With']= 'XMLHttpRequest',
-
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
    // config.headers['Cache-Control'] ='no-cache'
-
-
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
