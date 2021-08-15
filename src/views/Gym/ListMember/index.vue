@@ -16,7 +16,7 @@
           :key="index"
         >
           <el-card :body-style="{ padding: '0px' }" class="box-card" shadow="always">
-            <div slot="header" class="clearfix">
+            <div slot="header" >
               <router-link :to="'/Gym/Edit/' + member.MemberId">
                 <strong style="font-size: 10px; cursor: pointer">{{
                   member.Name.split(" ").slice(0, 4).join(" ")

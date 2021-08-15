@@ -53,6 +53,23 @@ export default {
             {
               name: "Time",
               value: "FakeDate : {#TimeConvert('{{FakeDate}}')/}"
+            },
+            {
+              name: "DateFrom - DateTime",
+              value: "DateFrom : {{DateFrom}}"
+            },
+            {
+              name: "DateFrom - Date",
+              value: "DateFrom : {#formatDate('{{DateFrom}}')/}"
+            },
+
+            {
+              name: "DateTo - DateTime",
+              value: "DateTo : {{DateTo}}"
+            },
+            {
+              name: "DateTo - Date",
+              value: "DateTo : {#formatDate('{{DateTo}}')/}"
             }
           ]
         },
@@ -134,6 +151,22 @@ export default {
               value: "Total : {{Total}}"
             },
             {
+              name: "TotalCredit",
+              value: "Total Credit : {{TotalCredit}}"
+            },
+            {
+              name: "TotalDebit",
+              value: "Total Debit : {{TotalDebit}}"
+            },
+            {
+              name: "TotalDebitCredit",
+              value: "Total Debit & Credit : {{TotalDebitCredit}}"
+            },
+            {
+              name: "TotalRows",
+              value: "Total Rows : {{TotalRows}}"
+            },
+            {
               name: "DeliveryPrice",
               value: "DeliveryPrice : {{DeliveryPrice}}"
             },
@@ -183,6 +216,30 @@ export default {
                             <td>{{item.Id}}</td>\
                             <td>{{item.InventoryItemName}}</td>\
                             <td>{{item.InventoryItemId}}</td>\
+                        </tr>\
+                    </tbody>\
+                </table>"
+            },
+            {
+              name: "حركة القيود",
+              value:
+                "<table>\
+                    <tbody>\
+                        <tr>\
+                            <td>الرصيد</td>\
+                            <td>الدائن</td>\
+                            <td>المدين</td>\
+                            <td>البيان</td>\
+                            <td>التاريخ</td>\
+                            <td>رقم الحركة</td>\
+                        </tr>\
+                        <tr id='InventoryMovements' >\
+                            <td>{{item.TotalRow}}</td>\
+                            <td>{{item.Debit}}</td>\
+                            <td>{{item.Credit}}</td>\
+                            <td>{{item.Description}}</td>\
+                            <td>{{item.FakeDate}}</td>\
+                            <td>{{item.Id}}</td>\
                         </tr>\
                     </tbody>\
                 </table>"

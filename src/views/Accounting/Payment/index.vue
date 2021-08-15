@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div slot="header" >
         <span>استعلامات المقبوضات</span>
         <div style="float: left">
           <el-radio-group v-model="Status" @change="getdata()">
@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div slot="header" class="clearfix">
+      <div slot="header" >
         <Search-By-Date
           :Value="[]"
           @Set="

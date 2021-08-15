@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div slot="header" >
         <Add-Dialog @Done="getdata()" />
         <span>{{ $t("Area.Areas") }}</span>
       </div>

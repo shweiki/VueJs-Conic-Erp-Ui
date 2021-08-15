@@ -6,7 +6,7 @@
           <el-input
             v-model="listQuery.Any"
             v-bind:placeholder="$t('MinOrd.SBy')"
-            style="width: 200px"
+            
             class="filter-item"
             @keyup.enter.native="handleFilter"
           />

@@ -43,7 +43,7 @@
             <el-input
               v-model="listQuery.Any"
               placeholder="Search By Any Acount Name Or Id"
-              style="width: 200px"
+              
               class="filter-item"
               @keyup.enter.native="handleFilter"
             />

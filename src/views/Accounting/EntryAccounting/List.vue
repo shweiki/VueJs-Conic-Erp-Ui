@@ -1,17 +1,18 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
+      <div slot="header">
+        <router-link
+          class="pan-btn tiffany-btn"
+          style="float: left; padding: 10px 15px; border-radius: 6px"
+          icon="el-icon-plus"
+          to="/EntryAccounting/Create"
+          >{{ $t("Accounting.NewAccountingEntry") }}</router-link
+        >
+        <span>{{ $t("Accounting.AccountingEntryinquiries") }}</span>
+      </div>
       <div class="filter-container">
         <el-row type="flex">
-          <el-col :span="4">
-            <el-input
-              v-model="listQuery.Any"
-              placeholder="Search By Any Acount Name Or Id"
-              style="width: 200px"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
-          </el-col>
           <Account-Search-Any
             @Set="
               v => {
@@ -21,6 +22,17 @@
             "
           />
           <ElTag type="success">{{ Accountx.Name }}</ElTag>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="4">
+            <el-input
+              v-model="listQuery.Any"
+              placeholder="Search By Any Acount Name Or Id"
+              class="filter-item"
+              @keyup.enter.native="handleFilter"
+            />
+          </el-col>
+
           <el-col :span="8">
             <Search-By-Date
               :Value="[listQuery.DateFrom, listQuery.DateTo]"
@@ -43,7 +55,7 @@
               "
             />
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <el-select
               v-model="listQuery.Sort"
               style="width: 140px"
@@ -58,7 +70,7 @@
               />
             </el-select>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <el-button
               v-waves
               :loading="downloadLoading"
@@ -78,6 +90,21 @@
               Search
             </el-button>
           </el-col>
+          <el-col :span="1">
+            <drawer-print
+              Type="AccountStatement"
+              :Data="{
+                Name: Accountx.Name,
+                Id: Accountx.Id,
+                DateFrom: listQuery.DateFrom,
+                DateTo: listQuery.DateTo,
+                InventoryMovements: list,
+                TotalCredit: Totals.Credit,
+                TotalDebit: Totals.Debit,
+                TotalDebitCredit: Totals.Totals,
+                TotalRows: Totals.Rows
+              }"
+          /></el-col>
         </el-row>
       </div>
       <Radio-Oprations
@@ -116,34 +143,6 @@
       >
       <el-divider direction="vertical"></el-divider>
 
-      <el-button
-        style="float: left"
-        icon="el-icon-printer"
-        type="success"
-        @click="print(list)"
-      ></el-button>
-    </el-card>
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <router-link
-          class="pan-btn tiffany-btn"
-          style="float: left; padding: 10px 15px; border-radius: 6px"
-          icon="el-icon-plus"
-          to="/EntryAccounting/Create"
-          >{{ $t("Accounting.NewAccountingEntry") }}</router-link
-        >
-        <span>{{ $t("Accounting.AccountingEntryinquiries") }}</span>
-      </div>
-
-      <el-card class="box-card">
-        <el-button
-          style="float: left"
-          icon="el-icon-printer"
-          type="success"
-          @click="print(list)"
-        ></el-button>
-      </el-card>
-
       <el-table
         v-loading="listLoading"
         :data="list"
@@ -165,12 +164,11 @@
           align="center"
         >
         </el-table-column>
-        <el-table-column
-          align="center"
-          v-bind:label="$t('Stocks.Date')"
-          prop="FakeDate"
-          width="120"
-        ></el-table-column>
+        <el-table-column label="التاريخ" align="center" width="140">
+          <template slot-scope="{ row }">
+            <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           v-bind:label="$t('Accounting.Notes')"
           prop="Description"
@@ -184,6 +182,16 @@
         <el-table-column label="دائن" prop="Debit" width="100" align="center">
           <template slot-scope="scope">{{
             scope.row.Debit.toFixed($store.getters.settings.ToFixed)
+          }}</template>
+        </el-table-column>
+        <el-table-column
+          label="الرصيد"
+          prop="TotalRow"
+          width="100"
+          align="center"
+        >
+          <template slot-scope="scope">{{
+            scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
         <el-table-column
@@ -206,7 +214,7 @@
               TableName="EntryAccounting"
               @Done="handleFilter"
             />
-          <Drawer-Print Type="EntryAccounting" :Data="scope.row" />
+            <Drawer-Print Type="EntryAccounting" :Data="scope.row" />
           </template>
         </el-table-column>
       </el-table>
@@ -254,7 +262,7 @@ export default {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
-        Sort: "-id",
+        Sort: "+id",
         User: undefined,
         DateFrom: "",
         DateTo: "",
@@ -274,7 +282,11 @@ export default {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then(response => {
-        this.list = response.items;
+        this.list = response.items.map((curr, i, array) => {
+          curr.TotalRow =
+            array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
+          return curr;
+        });
         this.Totals = response.Totals;
         this.listLoading = false;
       });
@@ -326,27 +338,7 @@ export default {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
-    print(data) {
-      printJS({
-        printable: data,
-        properties: ["Id", "FakeDate", "Description", "Credit", "Debit"],
-        type: "json",
-        header:
-          "<center> <h2>" +
-          this.Account.find(obj => {
-            return obj.value == this.AccountId;
-          }).label +
-          "</h2></center><h3 style='float:left'>الاجمالي " +
-          this.Total.toFixed(this.$store.getters.settings.ToFixed) +
-          "</h3><h3 style='float:right'>  الفترة  : " +
-          this.formatDate(this.date[0]) +
-          " - " +
-          this.formatDate(this.date[1]) +
-          "</h3>",
-        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;"
-      });
-    },
+
     formatDate(date) {
       let d = new Date(date),
         day = "" + d.getDate(),

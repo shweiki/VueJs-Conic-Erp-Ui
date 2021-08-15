@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button
-      type="primary"
+      type="success"
       icon="el-icon-plus"
       @click="Visible = true"
       circle
@@ -32,7 +32,8 @@
           <el-input type="text" v-model="tempForm.Code"></el-input>
         </el-form-item>
         <el-form-item label="تحت قائمة" prop="ParentId">
-          <select-parent
+          <Select-Parent
+            :Value="tempForm.ParentId"
             @Set="
               v => {
                 tempForm.ParentId = v;
@@ -62,6 +63,12 @@ import SelectAccountsType from "./SelectAccountsType.vue";
 import SelectParent from "./SelectParent.vue";
 export default {
   components: { SelectParent, SelectAccountsType },
+  props: ["ParentId"],
+  watch: {
+    ParentId(v) {
+      this.tempForm.ParentId = v;
+    }
+  },
   data() {
     return {
       Visible: false,
@@ -104,7 +111,7 @@ export default {
       };
     },
     handleCreate() {
-      this.resetTempForm();
+      //this.resetTempForm();
       this.Visible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();

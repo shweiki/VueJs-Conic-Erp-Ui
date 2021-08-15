@@ -4,7 +4,7 @@
     <el-row type="flex">
       <el-col v-for="(Inventory, index) in InventoryQty" :key="index">
         <el-card class="box-card">
-          <div slot="header" class="clearfix">
+          <div slot="header" >
             <span> اسم المخزن : {{ Inventory.InventoryName }}</span>
           </div>
           <div>

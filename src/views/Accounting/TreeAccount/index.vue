@@ -1,64 +1,98 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <el-col :span="3"> <add-account-dialog @Done="getdata()" /> </el-col>
-        <el-col :span="21">
+      <div slot="header">
+        <el-col :span="24">
           <span>{{ $t("Account.Account") }}</span>
         </el-col>
       </div>
-      <div class="custom-tree-container">
-        <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
-        <el-col :span="6">
-          <el-input placeholder="Filter keyword" v-model="filterText"> </el-input>
-        </el-col>
-        <div class="block">
-          <el-tree
-            :data="Tree"
-            show-checkbox
-            node-key="Id"
-            accordion
-            icon-class="el-icon-refresh"
-            default-expand-all
-            :expand-on-click-node="false"
-            :filter-node-method="filterNode"
-            ref="AccountTree"
-          >
-            <span class="custom-tree-node" slot-scope="{ data }">
-              <span>({{ data.Id }}) {{ data.Name }} {{ data.Code }} </span>
-              <span>
-                <!--     <span>{{ data.TotalCredit }}</span>
-                <span>{{ data.TotalDebit }}</span> -->
-                <span>{{ data.TotalCredit - data.TotalDebit }}</span>
+      <el-row type="flex">
+        <el-col :span="24">
+          <el-row type="flex">
+            <el-col :span="10">
+              <el-input placeholder="بحث عن اسم الحساب" v-model="filterText">
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <Entry-Movements-Dialog :AccountId="Selected.Id" />
+            </el-col>
+            <el-col :span="4">
+              <Edit-Account :AccountId="Selected.Id" />
+            </el-col>
+            <el-col :span="4">
+              <Add-Account-Dialog :ParentId="Selected.Id" @Done="getdata()" />
+            </el-col>
+            <drawer-print Type="" :Data="{}" />
+
+            <el-col :span="4">
+              <el-button
+                type="primary"
+                icon="el-icon-refresh"
+                @click="getdata()"
+              ></el-button>
+            </el-col>
+          </el-row>
+          <div class="custom-tree-container">
+            <el-tree
+              :data="Tree"
+              node-key="Id"
+              accordion
+              icon-class="el-icon-folder"
+              :filter-node-method="filterNode"
+              @node-click="Select"
+              ref="AccountTree"
+            >
+              <span class="custom-tree-node" slot-scope="{ data }">
+                <span style="color:black;"
+                  >({{ data.Id }}) {{ data.Name }} {{ data.Code }}
+                </span>
+
+                <span>
+                  <span style="color:red;">{{
+                    (data.TotalCredit - data.TotalDebit).toFixed(
+                      $store.getters.settings.ToFixed
+                    )
+                  }}</span>
+                </span>
               </span>
-              <el-col :span="2">
-                <Edit-Account :AccountId="data.Id" />
-              </el-col>
-            </span>
-          </el-tree>
-        </div>
-      </div>
+            </el-tree>
+          </div>
+        </el-col>
+      </el-row>
     </el-card>
+    <el-row>
+      <el-col :span="24"> <create /> </el-col
+    ></el-row>
   </div>
 </template>
 <script>
 import { GetTreeAccount } from "@/api/Account";
 import EditAccount from "./EditAccount.vue";
 import AddAccountDialog from "./AddAccountDialog.vue";
+import Create from "../EntryAccounting/Create.vue";
+import EntryMovementsDialog from "./EntryMovementsDialog.vue";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
-  components: { EditAccount, AddAccountDialog },
+  components: {
+    EditAccount,
+    AddAccountDialog,
+    Create,
+    EntryMovementsDialog,
+    DrawerPrint
+  },
   name: "TreeAccount",
   watch: {
     filterText(val) {
       this.$refs["AccountTree"].filter(val);
-    },
+    }
   },
   data() {
     return {
+      Selected: {},
       filterText: "",
       Tree: [],
-      search: "",
+      search: ""
     };
   },
   created() {
@@ -72,39 +106,44 @@ export default {
 
     getdata() {
       GetTreeAccount()
-        .then((response) => {
+        .then(response => {
           // handle success
           console.log(response);
           this.Tree = this.generateTree(response);
         })
-        .catch((error) => {
+        .catch(error => {
           // handle error
           console.log(error);
         });
+    },
+    Select(v) {
+      this.Selected = v;
     },
     generateTree(list) {
       var map = {},
         node,
         roots = [],
         i;
-
       for (i = 0; i < list.length; i += 1) {
         map[list[i].Id] = i; // initialize the map
         list[i].children = []; // initialize the children
       }
 
-      for (i = 0; i < list.length; i += 1) {
+      for (i = list.length - 1; i >= 0; i--) {
         node = list[i];
         if (node.ParentId !== 0) {
           // if you have dangling branches check that map[node.parentId] exists
           list[map[node.ParentId]].children.push(node);
+
+          list[map[node.ParentId]].TotalCredit += node.TotalCredit;
+          list[map[node.ParentId]].TotalDebit += node.TotalDebit;
         } else {
           roots.push(node);
         }
       }
-      return roots;
-    },
-  },
+      return roots.reverse();
+    }
+  }
 };
 </script>
 
@@ -119,5 +158,8 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   padding-right: 8px;
+}
+.custom-tree-container {
+  margin-top: 15px;
 }
 </style>

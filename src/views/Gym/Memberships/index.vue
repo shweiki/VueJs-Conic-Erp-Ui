@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div slot="header" >
        <Add-Membership/>
         <span>{{ $t("CashPool.Memberships") }}</span>
       </div>

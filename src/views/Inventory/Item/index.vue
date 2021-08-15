@@ -5,7 +5,7 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div slot="header" >
         <add-item style="float: left" />
 
         <el-button

@@ -1,10 +1,11 @@
 <template>
   <div>
     <el-button
-      type="primary"
+      type="success"
       icon="el-icon-edit"
       @click="getdata()"
       circle
+      v-bind:disabled="AccountId == undefined"
     ></el-button>
     <el-dialog
       style="margin-top: -13vh"
@@ -45,7 +46,7 @@
           <el-input type="text" v-model="tempForm.Code"></el-input>
         </el-form-item>
         <el-form-item label="تحت قائمة" prop="ParentId">
-          <select-parent
+          <Select-Parent
             :Value="tempForm.ParentId"
             @Set="
               v => {

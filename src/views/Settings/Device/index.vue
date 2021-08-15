@@ -2,7 +2,7 @@
   <div class="app-container">
     <p>{{ response }}</p>
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div slot="header" >
         <el-button
           style="float: left"
           type="success"

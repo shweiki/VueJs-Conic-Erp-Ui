@@ -35,8 +35,8 @@ export default {
   created() {
     GetMainAccount().then(res => {
       this.options = res;
+      console.log("val " ,this.Value )
       this.value = this.Value;
-      //   this.SetVal(response[0].UserName);
     });
   },
   methods: {

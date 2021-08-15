@@ -8,7 +8,7 @@
       class="demo-ruleForm"
     >
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header" >
           <el-input
             prop="Name"
             placeholder="اسم الورشة"

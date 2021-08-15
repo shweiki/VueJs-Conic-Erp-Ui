@@ -6,7 +6,7 @@
           <el-input
             v-model="listQuery.Any"
             placeholder="البحث بحسب رقم / الاسم / الباركود  / التصنيف"
-            style="width: 200px"
+            
             class="filter-item"
             @keyup.enter.native="handleFilter"
           />

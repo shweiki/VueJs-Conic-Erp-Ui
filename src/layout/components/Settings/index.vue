@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div slot="header" >
         <span>{{ $t("Settings.Images") }}</span>
       </div>
       <span>{{ $t("Settings.sidebarImages") }}</span>

@@ -1,6 +1,6 @@
 <template>
   <el-card style="margin-bottom: 20px">
-    <div slot="header" class="clearfix">
+    <div slot="header" >
       <div class="user-name text-center">{{ user.name }}</div>
     </div>
 

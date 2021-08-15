@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div slot="header" >
         <el-row type="flex">
           <el-col :span="3">
             <span>{{ $t("Members.Member") }}</span>

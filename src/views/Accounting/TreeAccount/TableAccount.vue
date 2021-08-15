@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
-    <add-account-dialog />
+    <Add-Account-Dialog />
 
     <el-row type="flex">
       <el-col :span="12">
         <el-input
           v-model="listQuery.Any"
           placeholder="Search By Any Acount Name Or Id"
-          style="width: 200px"
+          
           class="filter-item"
           @keyup.enter.native="handleFilter"
         />

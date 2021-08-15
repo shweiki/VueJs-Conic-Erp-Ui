@@ -6,7 +6,6 @@
 
       <el-table-column prop="Name" label="الاشتراك" align="center"></el-table-column>
       <el-table-column prop="Type" label="الفترة" align="center"></el-table-column>
-
       <el-table-column label="تاريخ البدء" align="center" width="150">
         <template slot-scope="scope">
           <el-date-picker
@@ -100,7 +99,6 @@
         </template>
       </el-table-column>
       <el-table-column label="محرر" align="center" prop="EditorName"></el-table-column>
-
       <el-table-column width="40" v-if="checkPermission(['Admin'])">
         <template slot-scope="scope">
           <Member-Ship-Movement-Edit :MembershipMovementId="scope.row.Id" />
