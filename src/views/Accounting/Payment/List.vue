@@ -7,7 +7,6 @@
             <el-input
               v-model="listQuery.Any"
               placeholder="Search By Any Acount Name Or Id"
-              
               class="filter-item"
               @keyup.enter.native="handleFilter"
             />
@@ -210,6 +209,7 @@
             TableName="Payment"
             @Done="handleFilter"
           />
+          <Dialog-Action-Log TableName="Payment" :ObjId="scope.row.Id" />
           <Drawer-Print Type="Payment" :Data="scope.row" />
         </template>
       </el-table-column>
