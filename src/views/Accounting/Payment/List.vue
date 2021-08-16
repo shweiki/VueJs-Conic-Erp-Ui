@@ -232,6 +232,7 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import UserSelect from "@/components/User/UserSelect.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -246,7 +247,8 @@ export default {
     DrawerPrint,
     Pagination,
     UserSelect,
-    RadioOprations
+    RadioOprations,
+    DialogActionLog
   },
   directives: { waves },
   data() {
