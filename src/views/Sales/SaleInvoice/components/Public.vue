@@ -8,7 +8,7 @@
       class="demo-ruleForm"
     >
       <el-card class="box-card">
-        <div slot="header" >
+        <div slot="header">
           <el-button
             :disabled="DisabledSave"
             style="float: left"
@@ -19,7 +19,12 @@
           >
           <router-link
             class="pan-btn tiffany-btn"
-            style="float: right; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
+            style="
+              float: right;
+              margin-left: 20px;
+              padding: 10px 15px;
+              border-radius: 6px;
+            "
             icon="el-icon-plus"
             to="/Sales/List"
             >{{ $t("route.ListSalesInvoice") }}</router-link
@@ -34,18 +39,17 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <Fake-Date
                 :Value="tempForm.FakeDate"
-                @Set="v => (tempForm.FakeDate = v)"
+                @Set="(v) => (tempForm.FakeDate = v)"
               />
             </el-form-item>
           </el-col>
-
-          <el-col :span="4">
+          <el-col :span="6">
             <el-form-item
               label="الى حساب"
               prop="VendorId"
@@ -53,56 +57,37 @@
                 {
                   required: true,
                   message: 'لايمكن ترك حساب فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
-              <el-select
-                v-model="tempForm.VendorId"
-                filterable
-                v-bind:placeholder="$t('NewPurchaseInvoice.Acc')"
-                autocomplete="off"
-                default-first-option
-              >
-                <el-option
-                  v-for="item in Vendor"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                  <span style="float: right">{{ item.label }}</span>
-                  <span style="float: left color: #8492a6 font-size: 13px">{{
-                    item.value
-                  }}</span>
-                </el-option>
-              </el-select>
+              <Vendor-Search-Any
+                :Value="tempForm.Name"
+                @Set="
+                  (v) => {
+                    Vendor = v;
+                    tempForm.VendorId = v.Id;
+                  }
+                "
+              />
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="طريقة الدفع" prop="PaymentMethod">
-              <el-radio-group
-                v-model="tempForm.PaymentMethod"
-                text-color="#f78123"
-              >
+              <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
                 <el-radio label="Cash" border>{{
                   $t("NewPurchaseInvoice.Cash")
                 }}</el-radio>
 
-                <el-radio
-                  v-if="tempForm.VendorId != 2"
-                  label="Receivables"
-                  border
-                  >{{ $t("NewPurchaseInvoice.Receivables") }}</el-radio
-                >
+                <el-radio v-if="tempForm.VendorId != 2" label="Receivables" border>{{
+                  $t("NewPurchaseInvoice.Receivables")
+                }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="باسم" prop="Name">
-              <el-input
-                placeholder="اسم المستلم"
-                v-model="tempForm.Name"
-              ></el-input>
+              <el-input placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -127,9 +112,7 @@
             >
             <template slot-scope="scope">
               {{ tempForm.InventoryMovements[scope.$index].Name }}
-              <edit-item
-                :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
-              />
+              <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
             </template>
           </el-table-column>
 
@@ -184,9 +167,7 @@
             }}</template>
             <template slot-scope="scope">
               <el-radio-group
-                v-model="
-                  tempForm.InventoryMovements[scope.$index].InventoryItemId
-                "
+                v-model="tempForm.InventoryMovements[scope.$index].InventoryItemId"
               >
                 <el-radio-button
                   v-for="(item, index) in InventoryItems"
@@ -203,13 +184,9 @@
             align="center"
           >
             <template slot-scope="scope">
-              <el-form-item
-                :prop="'InventoryMovements.' + scope.$index + '.Description'"
-              >
+              <el-form-item :prop="'InventoryMovements.' + scope.$index + '.Description'">
                 <el-input
-                  v-model="
-                    tempForm.InventoryMovements[scope.$index].Description
-                  "
+                  v-model="tempForm.InventoryMovements[scope.$index].Description"
                   required
                   class="input-with-select"
                 >
@@ -240,7 +217,6 @@
           </el-table-column>
         </el-table>
       </el-card>
-
       <el-row type="flex">
         <el-col :span="24">
           <el-card shadow="hover">
@@ -248,9 +224,7 @@
             <span>{{ $t("NewPurchaseInvoice.Items") }}</span>
             <el-divider direction="vertical"></el-divider>
             <span>{{
-              tempForm.InventoryMovements.length.toFixed(
-                $store.getters.settings.ToFixed
-              )
+              tempForm.InventoryMovements.length.toFixed($store.getters.settings.ToFixed)
             }}</span>
             <el-divider direction="vertical"></el-divider>
 
@@ -309,20 +283,20 @@
 <script>
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import FakeDate from "@/components/Date/FakeDate";
-
+import { CreateBehindEntry } from "@/api/EntryAccounting";
 import { GetActiveInventory } from "@/api/InventoryItem";
-import { GetActiveVendor } from "@/api/Vendor";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
+import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 
 export default {
   name: "NewSalesInvoice",
-  components: { ItemsSearch, EditItem, FakeDate },
+  components: { ItemsSearch, EditItem, FakeDate, VendorSearchAny },
   props: {
     isEdit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -338,7 +312,7 @@ export default {
         Discount: 0,
         VendorId: 2,
         Status: 0,
-        InventoryMovements: []
+        InventoryMovements: [],
       },
       rules: {
         InventoryMovements: [
@@ -346,14 +320,14 @@ export default {
             type: "array",
             required: true,
             message: "لا يمكن إستكمال عملية الشراء من غير إضافة أصناف",
-            trigger: "change"
-          }
-        ]
+            trigger: "change",
+          },
+        ],
       },
       InventoryItems: [],
       CashAccounts: [],
-      Vendor: [],
-      tempRoute: {}
+      Vendor: undefined,
+      tempRoute: {},
     };
   },
   created() {
@@ -362,24 +336,15 @@ export default {
     }
     this.tempRoute = Object.assign({}, this.$route);
 
-    GetActiveInventory().then(response => {
+    GetActiveInventory().then((response) => {
       console.log(response);
       this.InventoryItems = response;
     });
-
-    GetActiveVendor().then(response => {
-      console.log(response);
-      this.Vendor = response;
-    });
-
-    // Why need to make a copy of this.$route here?
-    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
-    // https://github.com/PanJiaChen/vue-element-admin/issues/1221
   },
   methods: {
     getdata(val) {
       GetSaleInvoiceById({ Id: val })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.tempForm = response;
           // set tagsview title
@@ -388,7 +353,7 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -403,15 +368,14 @@ export default {
         Tax: 0.0,
         InventoryItemId: 1,
         Name: item.Name,
-        Description: ""
+        Description: "",
       });
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
     },
-
     updateData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
         this.tempForm.Tax = parseInt(this.tempForm.Tax);
         let Total =
@@ -422,13 +386,10 @@ export default {
           valid &&
           Total > 0 &&
           this.tempForm.InventoryMovements.length > 0 &&
-          this.tempForm.InventoryMovements.reduce(
-            (a, b) => a + (b["Qty"] || 0),
-            0
-          ) > 0
+          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
         ) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.$notify({
                 title: "تم تعديل  بنجاح",
                 message: "تم تعديل بنجاح",
@@ -440,10 +401,10 @@ export default {
                   if (response) {
                     this.$router.push({ path: `/Sales/List` });
                   }
-                }
+                },
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -453,7 +414,7 @@ export default {
       });
     },
     createData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
         this.tempForm.Tax = parseInt(this.tempForm.Tax);
         let Total =
@@ -464,26 +425,58 @@ export default {
           valid &&
           Total > 0 &&
           this.tempForm.InventoryMovements.length > 0 &&
-          this.tempForm.InventoryMovements.reduce(
-            (a, b) => a + (b["Qty"] || 0),
-            0
-          ) > 0
+          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
         ) {
           this.DisabledSave = true;
 
           Create(this.tempForm)
-            .then(response => {
-              this.$router.push({ path: `/Sales/List` });
-              this.$notify({
-                title: "تم الإضافة بنجاح",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                position: "top-left",
-                duration: 1000,
-                showClose: false
-              });
+            .then((response) => {
+              if (response) {
+                CreateBehindEntry({
+                  Id: undefined,
+                  FakeDate: this.tempForm.FakeDate,
+                  Description: "",
+                  Type: "Auto",
+                  EntryMovements: [
+                    {
+                      Id: undefined,
+                      AccountId: this.Vendor.AccountId,
+                      Debit: 0.0,
+                      Credit: Total,
+                      Description: "فاتورة مبيعات رقم" + response + " ",
+                      EntryId: undefined,
+                    },
+                    {
+                      Id: undefined,
+                      AccountId: this.Vendor.AccountId,
+                      Debit: Total,
+                      Credit: 0.0,
+                      Description: "فاتورة مبيعات رقم" + response + " ",
+                      EntryId: undefined,
+                    },
+                  ],
+                });
+                this.$router.push({ path: `/Sales/List` });
+                this.$notify({
+                  title: "تم الإضافة بنجاح",
+                  message: "تم الإضافة بنجاح",
+                  type: "success",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                });
+              } else {
+                this.$notify({
+                  title: "مشكلة",
+                  message: "حصلت مشكلة في عملية الحفظ",
+                  type: "error",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                });
+              }
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
               this.DisabledSave = false;
             });
@@ -496,14 +489,14 @@ export default {
     setTagsViewTitle() {
       const title = "Edit Sales";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`
+        title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Sales";
       document.title = `${title} - ${this.tempForm.Id}`;
-    }
-  }
+    },
+  },
 };
 </script>

@@ -10,8 +10,7 @@
         <el-col :span="24">
           <el-row type="flex">
             <el-col :span="10">
-              <el-input placeholder="بحث عن اسم الحساب" v-model="filterText">
-              </el-input>
+              <el-input placeholder="بحث عن اسم الحساب" v-model="filterText"> </el-input>
             </el-col>
             <el-col :span="4">
               <Entry-Movements-Dialog :AccountId="Selected.Id" />
@@ -20,10 +19,13 @@
               <Edit-Account :AccountId="Selected.Id" />
             </el-col>
             <el-col :span="4">
-              <Add-Account-Dialog :ParentId="Selected.Id" @Done="getdata()" />
+              <Add-Account-Dialog
+                v-bind:Code="Selected.Code + '-0' + (Selected.children.length + 1)"
+                :ParentId="Selected.Id"
+                @Done="getdata()"
+              />
             </el-col>
             <drawer-print Type="" :Data="{}" />
-
             <el-col :span="4">
               <el-button
                 type="primary"
@@ -43,12 +45,10 @@
               ref="AccountTree"
             >
               <span class="custom-tree-node" slot-scope="{ data }">
-                <span style="color:black;"
-                  >({{ data.Id }}) {{ data.Name }} {{ data.Code }}
-                </span>
+                <span style="color: black">({{ data.Code }}) {{ data.Name }} </span>
 
                 <span>
-                  <span style="color:red;">{{
+                  <span style="color: red">{{
                     (data.TotalCredit - data.TotalDebit).toFixed(
                       $store.getters.settings.ToFixed
                     )
@@ -79,20 +79,31 @@ export default {
     AddAccountDialog,
     Create,
     EntryMovementsDialog,
-    DrawerPrint
+    DrawerPrint,
   },
   name: "TreeAccount",
   watch: {
     filterText(val) {
       this.$refs["AccountTree"].filter(val);
-    }
+    },
   },
   data() {
     return {
-      Selected: {},
+      Selected: {
+        Code: "0",
+        Description: "",
+        Id: 0,
+        Name: "",
+        ParentId: 0,
+        Status: 0,
+        TotalCredit: 0,
+        TotalDebit: 0,
+        Type: "",
+        children: [],
+      },
       filterText: "",
       Tree: [],
-      search: ""
+      search: "",
     };
   },
   created() {
@@ -106,17 +117,18 @@ export default {
 
     getdata() {
       GetTreeAccount()
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.Tree = this.generateTree(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
     },
     Select(v) {
+      console.log("vvv", v);
       this.Selected = v;
     },
     generateTree(list) {
@@ -129,7 +141,8 @@ export default {
         list[i].children = []; // initialize the children
       }
 
-      for (i = list.length - 1; i >= 0; i--) {
+      // for (i = list.length - 1; i >= 0; i--) {
+      for (i = 0; i < list.length; i += 1) {
         node = list[i];
         if (node.ParentId !== 0) {
           // if you have dangling branches check that map[node.parentId] exists
@@ -141,9 +154,10 @@ export default {
           roots.push(node);
         }
       }
-      return roots.reverse();
-    }
-  }
+      //   return roots.reverse();
+      return roots;
+    },
+  },
 };
 </script>
 
