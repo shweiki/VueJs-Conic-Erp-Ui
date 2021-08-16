@@ -12,7 +12,7 @@
       :visible.sync="Visible"
       @opened="$refs['Name'].focus()"
     >
-    <div slot="title" class="dialog-footer">
+      <div slot="title" class="dialog-footer">
         <el-col :span="4">
           <el-button
             icon="el-icon-finished"
@@ -25,7 +25,6 @@
           <el-divider> شخص جديد </el-divider>
         </el-col>
       </div>
-      
       <el-form
         :model="tempForm"
         :rules="rulesForm"
@@ -44,11 +43,7 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input
-                type="text"
-                ref="Name"
-                v-model="tempForm.Name"
-              ></el-input>
+              <el-input type="text" ref="Name" v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -61,8 +56,8 @@
                 {
                   required: false,
                   message: 'لايمكن ترك الرقم الوطني فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-input
@@ -79,19 +74,16 @@
                 {
                   required: false,
                   message: 'Please input email address',
-                  trigger: 'blur'
+                  trigger: 'blur',
                 },
                 {
                   type: 'email',
                   message: 'Please input correct email address',
-                  trigger: ['blur', 'change']
-                }
+                  trigger: ['blur', 'change'],
+                },
               ]"
             >
-              <el-input
-                type="text"
-                v-model="tempForm.Email"
-              ></el-input> </el-form-item
+              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
           ></el-col>
         </el-row>
 
@@ -104,14 +96,11 @@
                 {
                   required: false,
                   message: 'لايمكن ترك الرقم الهاتف فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
-              <el-input
-                v-model="tempForm.PhoneNumber1"
-                placeholder="رقم الهاتف"
-              />
+              <el-input v-model="tempForm.PhoneNumber1" placeholder="رقم الهاتف" />
               <!--
               <VuePhoneNumberInput
                 :translations="{
@@ -129,10 +118,7 @@
               v-bind:label="$t('AddVendors.PhoneNumber2')"
               prop="PhoneNumber2"
             >
-              <el-input
-                v-model="tempForm.PhoneNumber2"
-                placeholder="رقم الهاتف"
-              />
+              <el-input v-model="tempForm.PhoneNumber2" placeholder="رقم الهاتف" />
               <!--   <VuePhoneNumberInput
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
@@ -145,17 +131,14 @@
             </el-form-item></el-col
           >
         </el-row>
-        <el-form-item
-          v-bind:label="$t('AddVendors.CreditLimit')"
-          prop="CreditLimit"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.CreditLimit')" prop="CreditLimit">
           <el-input-number
             v-model="tempForm.CreditLimit"
             :precision="2"
             :step="1"
             :min="0.0"
-            :max="10000000"                            @focus="$event.target.select()"
-
+            :max="10000000"
+            @focus="$event.target.select()"
           ></el-input-number>
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.Region')" prop="Region">
@@ -164,14 +147,10 @@
         <el-form-item v-bind:label="$t('AddVendors.Fax')" prop="Fax">
           <el-input type="text" v-model="tempForm.Fax"></el-input>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
-
     </el-dialog>
   </div>
 </template>
@@ -200,23 +179,23 @@ export default {
         CreditLimit: 0.0,
         Description: "",
         IsPrime: false,
-        Type: "Customer"
+        Type: "Customer",
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   watch: {
@@ -224,7 +203,7 @@ export default {
       if (val) {
         this.tempForm.PhoneNumber1 = val;
       }
-    }
+    },
   },
   created() {
     this.resetTempForm();
@@ -243,21 +222,21 @@ export default {
         CreditLimit: 0.0,
         Description: "",
         IsPrime: false,
-        Type: "Customer"
+        Type: "Customer",
       };
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           CheckIsExist({
             Name: this.tempForm.Name,
             //  Ssn: this.tempForm.Ssn,
-            PhoneNumber: this.tempForm.PhoneNumber1
-          }).then(res => {
+            PhoneNumber: this.tempForm.PhoneNumber1,
+          }).then((res) => {
             console.log(res);
             if (!res) {
               Create(this.tempForm)
-                .then(response => {
+                .then((response) => {
                   this.Visible = false;
                   this.tempForm.Id = response;
                   this.$emit("Set", this.tempForm);
@@ -266,21 +245,19 @@ export default {
                     title: "تم ",
                     message: "تم الإضافة بنجاح",
                     type: "success",
-                    duration: 2000
+                    duration: 2000,
                   });
-
                 })
-                .catch(error => {
+                .catch((error) => {
                   console.log(error);
                 });
             } else {
               this.$notify({
                 position: "top-left",
                 title: "تم ",
-                message:
-                  " يوجد شخص يحمل نفس رقم الهاتف او الرقم الوطني او الاسم",
+                message: " يوجد شخص يحمل نفس رقم الهاتف او الرقم الوطني او الاسم",
                 type: "warning",
-                duration: 20000
+                duration: 20000,
               });
             }
           });
@@ -290,8 +267,6 @@ export default {
         }
       });
     },
-
-
-  }
+  },
 };
 </script>
