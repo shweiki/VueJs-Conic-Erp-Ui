@@ -428,7 +428,6 @@ export default {
           this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
         ) {
           this.DisabledSave = true;
-
           Create(this.tempForm)
             .then((response) => {
               if (response) {
@@ -453,6 +452,7 @@ export default {
                       Credit: 0.0,
                       Description: "فاتورة مبيعات رقم" + response + " ",
                       EntryId: undefined,
+                      Tabel,
                     },
                   ],
                 });

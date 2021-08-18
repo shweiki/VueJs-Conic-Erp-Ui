@@ -3,15 +3,12 @@ import { CheckMembershipMovement } from "@/api/MembershipMovement";
 import { CheckMemberLog, GetMemberLogByStatus } from "@/api/MemberLog";
 import store from '@/store'
 
-
 const state = {
     Members: [],
     ActiveMembers: [],
 
 }
-
 const mutations = {
-
     SET_ACTIVEMEMBER: (state, response) => {
         state.ActiveMembers = response.reverse()
     }
@@ -30,21 +27,17 @@ const actions = {
                             value: store.getters.settings.triger,
                         });
                         resolve(response)
-                    }
-                    ).catch(error => {
+                    }).catch(error => {
                         reject(error)
                     })
                 }).catch(error => {
                     reject(error)
                 })
-
-
             }).catch(error => {
                 reject(error)
             })
         })
     },
-
     GetActiveMember({ commit }) {
         return new Promise((resolve, reject) => {
             GetActiveMember().then(response => {
@@ -59,7 +52,6 @@ const actions = {
         })
     }
 }
-
 export default {
     namespaced: true,
     state,
