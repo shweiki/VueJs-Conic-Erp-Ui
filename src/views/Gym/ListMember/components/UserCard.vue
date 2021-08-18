@@ -126,7 +126,6 @@
 
 <script>
 import {  Edit } from "@/api/Member";
-import { SetUser } from "@/api/Device";
 import printJS from "print-js";
 import { MemberAgreement } from "@/Report/MemberAgreement";
 import VuePhoneNumberInput from "vue-phone-number-input";
@@ -149,10 +148,6 @@ export default {
           Edit(this.Member)
             .then(response => {
               this.dialogFormVisible = false;
-              console.log("device" ,this.$store.getters.Devices);
-              this.$store.getters.Devices.forEach(element => {
-                this.SetOnDevice(element.Id, element.Name);
-              });
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
@@ -177,22 +172,7 @@ export default {
         showModal: true
       });
     },
-    SetOnDevice(DeviceId, Name) {
-      SetUser({
-        DeviceId: DeviceId,
-        UserId: this.Member.Id
-      }).then(response => {
-        if (response) {
-          this.$notify({
-            title: "تم",
-            message: "تم ارسال البيانات لاجهاز " + Name + "  " + response + " ",
-            type: "success",
-            duration: 3000,
-            position: "top-right"
-          });
-        }
-      });
-    }
+
   }
 };
 </script>

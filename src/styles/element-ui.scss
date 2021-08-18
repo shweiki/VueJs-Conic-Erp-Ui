@@ -5,7 +5,9 @@
   font-weight: 400 !important;
   color: whitesmoke;
 }
-
+.el-breadcrumb__item{
+  float: revert;
+}
 .el-upload {
   input[type="file"] {
     display: none !important;

@@ -13,8 +13,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك الخصم فارغ',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             ></el-input>
             <el-button
@@ -32,14 +32,17 @@
               >Email</el-button
             >
           </div>
-          <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
+          <el-button icon="el-icon-circle-plus" slot="reference"
+            >ارسال رسالة</el-button
+          >
         </el-popover>
+        <add-member />
+
         <el-row type="flex">
           <el-col :span="12">
             <el-input
               v-model="listQuery.Any"
               placeholder="Search By Any Acount Name Or Id"
-              
               class="filter-item"
               @keyup.enter.native="handleFilter"
             />
@@ -87,7 +90,7 @@
           <Radio-Oprations
             TableName="Member"
             @Set="
-              (v) => {
+              v => {
                 listQuery.Status = v;
                 handleFilter();
               }
@@ -104,20 +107,31 @@
           <span>مجموع المدين (لك)</span>
           <el-divider direction="vertical"></el-divider>
           <span
-            >{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+            >{{
+              Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</span
           >
           <el-divider direction="vertical"></el-divider>
 
           <span> (عليك) مجموع الدائن </span>
           <el-divider direction="vertical"></el-divider>
           <span
-            >{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+            >{{
+              Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</span
           >
           <el-divider direction="vertical"></el-divider>
 
           <span>الرصيد</span>
           <el-divider direction="vertical"></el-divider>
-          <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+          <span
+            >{{
+              Totals.Totals.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</span
+          >
           <el-divider direction="vertical"></el-divider>
         </el-col>
       </el-row>
@@ -135,15 +149,23 @@
       ref="multipleTable"
       @selection-change="handleSelectionChange"
       @row-dblclick="
-        (row) => {
+        row => {
           let r = $router.resolve({
-            path: '/Gym/Edit/' + row.Id,
+            path: '/Gym/Edit/' + row.Id
           });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+          window.open(
+            r.href,
+            r.route.name,
+            $store.getters.settings.windowStyle
+          );
         }
       "
     >
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      ></el-table-column>
       <el-table-column
         label="Id"
         prop="Id"
@@ -157,13 +179,35 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
+      <el-table-column label="Name" prop="Name" align="center">
+      </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
         prop="PhoneNumber1"
         width="120"
       ></el-table-column>
-
+      <el-table-column
+        prop="lastLogByMember"
+        sortable
+        label="اخر زيارة"
+        width="140"
+        align="center"
+      >
+        <template slot-scope="{ row }">
+          <span>{{
+            row.lastLogByMember | parseTime("{y}-{m}-{d} {h}:{i}")
+          }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="MembershipsCount"
+        sortable
+        label="عدد اشتراكات"
+        width="120"
+        align="center"
+      >
+        <template slot-scope="scope">{{ scope.row.MembershipsCount }}</template>
+      </el-table-column>
       <el-table-column
         prop="totalCredit"
         sortable
@@ -186,14 +230,22 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Account.funds')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
           )
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Sales.Status')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Member" />
         </template>
@@ -232,6 +284,8 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import { SendMultiSMS } from "@/api/SMS";
+import LastLogMember from "@/components/Gym/LastLogMember.vue";
+import AddMember from "@/components/Member/AddMember.vue";
 
 export default {
   name: "ComplexTable",
@@ -241,6 +295,8 @@ export default {
     DrawerPrint,
     Pagination,
     RadioOprations,
+    LastLogMember,
+    AddMember
   },
   directives: { waves, permission },
   data() {
@@ -255,13 +311,13 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
-        Status: undefined,
+        Status: undefined
       },
       sortOptions: [
         { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" },
+        { label: "Id Descending", key: "-id" }
       ],
-      downloadLoading: false,
+      downloadLoading: false
     };
   },
   created() {
@@ -272,7 +328,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then((response) => {
+      GetByListQ(this.listQuery).then(response => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -298,21 +354,21 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
+      import("@/Report/Excel/Export2Excel").then(excel => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list",
+          filename: "table-list"
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
+      return this.list.map(v =>
+        filterVal.map(j => {
           if (j === "timestamp") {
             return parseTime(v[j]);
           } else {
@@ -321,7 +377,7 @@ export default {
         })
       );
     },
-    getSortClass: function (key) {
+    getSortClass: function(key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
@@ -330,7 +386,7 @@ export default {
     },
     SendSms() {
       if (this.Selection.length > 0) {
-        let numbers = this.Selection.map((element) => {
+        let numbers = this.Selection.map(element => {
           return element.PhoneNumber1;
         });
         SendMultiSMS(numbers, this.SmsBody);
@@ -338,17 +394,17 @@ export default {
           title: "تم ",
           message: "تم ارسال بنجاح",
           type: "success",
-          duration: 2000,
+          duration: 2000
         });
       } else {
         this.$notify({
           title: "تم ",
           message: "الرجاء تحديد المشتركين",
           type: "error",
-          duration: 2000,
+          duration: 2000
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>

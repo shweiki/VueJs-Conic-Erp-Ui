@@ -6,7 +6,6 @@
       @click="dialogFormVisible = true"
       :size="$store.getters.size"
     ></el-button>
-
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
