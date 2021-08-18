@@ -3,6 +3,9 @@
     <el-card class="box-card">
       <div class="filter-container">
         <el-button @click="FixPhoneNumber">FixPhoneNumber</el-button>
+        <el-button @click="CheckLastActionLogMembers"
+          >CheckLastActionLogMembers</el-button
+        >
         <el-popover placement="left" width="400">
           <p>ارسال عبر</p>
           <div style="text-align: right; margin: 0">
@@ -258,7 +261,7 @@
             TableName="Member"
             @Done="handleFilter"
           />
-          <Drawer-Print Type="Member" :Data="scope.row" />
+          <Dialog-Action-Log TableName="Member" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
     </el-table>
@@ -273,10 +276,13 @@
 </template>
 
 <script>
-import { GetByListQ, FixPhoneNumber } from "@/api/Member";
-import NextOprations from "@/components/Oprationsys/NextOprations";
+import {
+  GetByListQ,
+  FixPhoneNumber,
+  CheckLastActionLogMembers
+} from "@/api/Member";
+import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import permission from "@/directive/permission/index.js";
 
@@ -286,17 +292,18 @@ import Pagination from "@/components/Pagination"; // secondary package based on 
 import { SendMultiSMS } from "@/api/SMS";
 import LastLogMember from "@/components/Gym/LastLogMember.vue";
 import AddMember from "@/components/Member/AddMember.vue";
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
   name: "ComplexTable",
   components: {
     StatusTag,
     NextOprations,
-    DrawerPrint,
     Pagination,
     RadioOprations,
     LastLogMember,
-    AddMember
+    AddMember,
+    DialogActionLog
   },
   directives: { waves, permission },
   data() {
@@ -325,6 +332,7 @@ export default {
   },
   methods: {
     FixPhoneNumber,
+    CheckLastActionLogMembers,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);

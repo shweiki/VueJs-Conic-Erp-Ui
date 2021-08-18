@@ -99,3 +99,9 @@ export function CheckMembers() {
     method: 'get',
   })
 }
+export function CheckLastActionLogMembers() {
+  return request({
+    url: '/Member/CheckLastActionLogMembers',
+    method: 'get',
+  })
+}

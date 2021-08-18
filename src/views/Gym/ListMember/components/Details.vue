@@ -93,7 +93,6 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="4">
-
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
@@ -167,8 +166,9 @@
           </el-col>
           <el-col :span="8">
             <span>{{
-              (Member.TotalCredit - Member.TotalDebit).toFixed(this.$store.getters.settings.ToFixed) +
-                $t("MemberList.JOD")
+              (Member.TotalCredit - Member.TotalDebit).toFixed(
+                this.$store.getters.settings.ToFixed
+              ) + $t("MemberList.JOD")
             }}</span>
           </el-col>
           <el-col :span="4">
@@ -250,6 +250,7 @@
         <el-button type="success" @click="RemoveBlackList()"
           >فك الرفض</el-button
         >
+        <Dialog-Action-Log TableName="Member" :ObjId="Member.Id" />
       </div>
     </el-dialog>
   </div>
@@ -266,9 +267,17 @@ import LastLogMember from "@/components/Gym/LastLogMember";
 
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
-  components: { LastLogMember, PanThumb, WebCam, StatusTag, ImageCropper },
+  components: {
+    LastLogMember,
+    PanThumb,
+    WebCam,
+    StatusTag,
+    ImageCropper,
+    DialogActionLog
+  },
   props: {
     Member: {
       type: Object,
