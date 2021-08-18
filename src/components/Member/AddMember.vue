@@ -189,7 +189,8 @@ export default {
         PhoneNumber2: "",
         Description: "",
         Type: "New",
-        Tag: null
+        Tag: null,
+        Status: -1
       },
       rulesForm: {
         Name: [
@@ -222,7 +223,8 @@ export default {
         PhoneNumber1: "",
         PhoneNumber2: "",
         Description: "",
-        Type: "New"
+        Type: "New",
+        Status: -1
       };
     },
     createData() {
@@ -281,8 +283,7 @@ export default {
       }
 
       return age;
-    },
-
+    }
   }
 };
 </script>

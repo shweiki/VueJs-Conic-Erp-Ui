@@ -23,17 +23,17 @@ const actions = {
                 console.log(response)
                 CheckMemberLog().then(response => {
                     console.log(response)
-
-                    //   console.log("new Date()" + new Date())
-                    store.state.settings.triger.CheckMembers.LastRun = "" + Date() + ""
-                    store.dispatch("settings/changeSetting", {
-                        key: "triger",
-                        value: store.getters.settings.triger,
-                    });
-                    resolve(response)
-
-
-
+                    CheckMembers().then(response => {
+                        store.state.settings.triger.CheckMembers.LastRun = "" + Date() + ""
+                        store.dispatch("settings/changeSetting", {
+                            key: "triger",
+                            value: store.getters.settings.triger,
+                        });
+                        resolve(response)
+                    }
+                    ).catch(error => {
+                        reject(error)
+                    })
                 }).catch(error => {
                     reject(error)
                 })

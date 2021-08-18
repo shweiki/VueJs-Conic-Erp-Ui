@@ -82,6 +82,11 @@
                   />
                 </el-col>
               </el-row>
+              <el-row v-if="tempForm.MembershipsCount > 0">
+                <el-col :span="24">
+                  <Send-To-Device :ObjectId="tempForm.Id" />
+                </el-col>
+              </el-row>
             </el-col>
           </el-row>
         </el-card>
@@ -159,6 +164,7 @@ import { GetFileByObjId } from "@/api/File";
 import { GetPaymentsByMemberId } from "@/api/Payment";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
 import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
+import SendToDevice from "@/components/Device/SendToDevice.vue";
 
 import Massage from "@/components/Massage/index.vue";
 
@@ -179,7 +185,8 @@ export default {
     ServiceInvoice,
     MemberLog,
     Massage,
-    MemberSearch
+    MemberSearch,
+    SendToDevice
   },
   props: {
     isEdit: {

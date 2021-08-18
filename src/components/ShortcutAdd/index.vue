@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-popover placement="bottom" width="250" trigger="click">
+    <el-popover
+      v-model="visible"
+      placement="bottom"
+      width="250"
+      trigger="manual"
+    >
       <el-row>
         <el-col :span="12"><Add-Item /></el-col>
         <el-col :span="12">صنف جديد</el-col>
@@ -36,6 +41,7 @@
       <i
         class="el-icon-plus avatar-container Right-Menu-item hover-effect"
         slot="reference"
+        @click="visible = !visible"
       >
         <i class="el-icon-caret-bottom"
       /></i>
@@ -62,6 +68,11 @@ export default {
     AddCash,
     AddCheque,
     AddCat
+  },
+  data() {
+    return {
+      visible: false
+    };
   }
 };
 </script>
@@ -91,7 +102,6 @@ export default {
   }
 
   .avatar-container {
-
     .avatar-wrapper {
       margin-top: 5px;
       position: relative;
