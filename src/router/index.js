@@ -12,6 +12,7 @@ import AccountingRouter from './modules/Accounting'
 import InventoryRouter from './modules/inventory'
 import PurchasesRouter from './modules/Purchases'
 import SalesRouter from './modules/Sales'
+import CashPoolRouter from './modules/CashPool'
 import WorkShopsRouter from './modules/WorkShops'
 import SettingsRouter from './modules/Settings'
 import UploadData from './modules/UploadData'
@@ -132,6 +133,7 @@ export const asyncRoutes = [{
     GymRouter,
     SalesRouter,
     PurchasesRouter,
+    CashPoolRouter,
     WorkShopsRouter,
     InventoryRouter,
     AccountingRouter,

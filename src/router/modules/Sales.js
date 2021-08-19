@@ -47,14 +47,7 @@ const SalesRouter = {
         title: 'SalesItems', icon: 'shopping-cart (1)'
       },
     },
-    {
-      path: 'CashPool',
-      component: () => import('@/views/Sales/CashPool/index'),
-      name: 'CashPool',
-      meta: {
-        title: 'CashPool', icon: 'machine'
-      },
-    }
+
   ]
 }
 
