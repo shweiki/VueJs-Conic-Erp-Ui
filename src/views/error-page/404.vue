@@ -2,7 +2,11 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" src="@/assets/404_images/404.png" alt="404" />
+        <img
+          class="pic-404__parent"
+          src="@/assets/404_images/404.png"
+          alt="404"
+        />
         <img
           class="pic-404__child left"
           src="@/assets/404_images/404_cloud.png"
@@ -23,17 +27,15 @@
         <div class="bullshit__oops">OOPS!</div>
         <div class="bullshit__info">
           All rights reserved
-          <a style="color: #20a0ff" href="https://wallstreetcn.com" target="_blank"
-            >wallstreetcn</a
-          >
         </div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">
-          Please check that the URL you entered is correct, or click the button below to
-          return to the homepage.
+          Please check that the URL you entered is correct, or click the button
+          below to return to the homepage.
         </div>
-        <a :href="$store.getters.defulate_redirect" class="bullshit__return-home"
-          >Back to home</a
+        <el-button type="primary"
+          @click="$router.go(-1)"
+          >Back to home</el-button
         >
       </div>
     </div>
@@ -46,8 +48,8 @@ export default {
   computed: {
     message() {
       return "The webmaster said that you can not enter this page...";
-    },
-  },
+    }
+  }
 };
 </script>
 

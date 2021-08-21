@@ -9,19 +9,22 @@ const CashPoolRouter = {
   },
   children: [
     {
-      path: 'Create',
-      component: () => import('@/views/CashPool/Create'),
-      name: 'NewCashPool',
-      meta: { title: 'NewCashPool', icon: 'machine' }
+      path: 'Create/SaleInvoice',
+      component: () => import('@/views/CashPool/components/SaleInvoice'),
+      name: 'NewSaleInvoiceCashPool',
+      meta: { title: 'NewSaleInvoiceCashPool', icon: 'machine' }
     },
     {
-      path: 'Edit/:id(\\d+)',
-      component: () => import('@/views/CashPool/Edit'),
-      name: 'EditCashPool',
-      meta: {
-        title: 'EditCashPool', noCache: true, activeMenu: '/CashPool/List'
-      },
-      hidden: true,
+      path: 'Create/MembershipMovement',
+      component: () => import('@/views/CashPool/components/MembershipMovement'),
+      name: 'NewMembershipMovementCashPool',
+      meta: { title: 'NewMembershipMovementCashPool', icon: 'machine' }
+    },
+    {
+      path: 'Create/Payment',
+      component: () => import('@/views/CashPool/components/Payment'),
+      name: 'NewPaymentCashPool',
+      meta: { title: 'NewPaymentCashPool', icon: 'machine' }
     },
     {
       path: 'List',

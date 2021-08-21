@@ -6,7 +6,7 @@
       </el-col>
       <el-col :span="18">
         <el-card class="box-card">
-          <div slot="header" >
+          <div slot="header">
             <span>جميع اعدادات</span>
             <el-button type="success" @click="CheckUpdate"
               >Check UpDate</el-button
@@ -42,11 +42,16 @@
               >
                 <el-option label="Layout1" value="Layout1"> </el-option>
                 <el-option label="Layout2" value="Layout2"> </el-option>
-                <el-option label="Layout3" value="Layout3"> </el-option>
+                <el-option label="Restaurant" value="Restaurant"> </el-option>
                 <el-option label="Pharmacy" value="Pharmacy"> </el-option>
                 <el-option label="Gym" value="Gym"> </el-option>
-                                <el-option label="Public" value="Public"> </el-option>
-
+                <el-option label="Public" value="Public"> </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6">
+              <span>{{ $t("Settings.CashPoolLayout") }}</span>
+              <el-select v-model="CashPoolLayout" placeholder="CashPoolLayout">
+                <el-option label="Restaurant" value="Restaurant"> </el-option>
               </el-select>
             </el-col>
             <el-col :span="6">
@@ -291,6 +296,17 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "PointOfSaleLayout",
+          value: val
+        });
+      }
+    },
+    CashPoolLayout: {
+      get() {
+        return this.$store.state.settings.CashPoolLayout;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "CashPoolLayout",
           value: val
         });
       }

@@ -2,7 +2,7 @@
   <div>
     <el-col :span="4">
       <el-button
-        icon="el-icon-finished"
+        icon="fa fa-save"
         style="float: left"
         type="primary"
         @click="updateData()"

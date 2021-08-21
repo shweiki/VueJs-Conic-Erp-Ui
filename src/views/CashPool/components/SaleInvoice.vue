@@ -1,56 +1,29 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" >
-        <el-button
-          :disabled="EnableSave"
-          style="float: left"
-          type="success"
-          icon="fa fa-save"
-          @click="createData"
-          >{{ $t("CashPool.Save") }}</el-button
-        >
-        <span class="demonstration">{{ $t("NewPurchaseInvoice.Box") }}</span>
-        <el-select
-          disabled
-          v-model="CashAccount"
-          default-first-option
-          filterable
-          placeholder="صندوق"
-          autocomplete="off"
-        >
-          <el-option
-            v-for="item in CashAccounts"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-            <span style="float: right">{{ item.label }}</span>
-            <span style="float: left color: #8492a6 font-size: 12px">{{
-              item.value
-            }}</span>
-          </el-option>
-        </el-select>
-        <span class="demonstration">إيراد</span>
-        <el-select
-          disabled
-          v-model="InComeAccount"
-          filterable
-          placeholder="إيراد"
-          autocomplete="off"
-        >
-          <el-option
-            v-for="item in InComeAccounts"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-            <span style="float: right">{{ item.label }}</span>
-            <span style="float: left color: #8492a6 font-size: 12px">{{
-              item.value
-            }}</span>
-          </el-option>
-        </el-select>
+      <div slot="header">
+        <Cash-Pool-Dialog
+          :Total="Totals.Totals"
+          Type="SaleInvoice"
+          :Data="tableData"
+          :Open="OpenCashPoolDialog"
+          @Closed="
+            () => {
+              OpenCashPoolDialog = false;
+            }
+          "
+          @Done="createData()"
+        />
+        <el-row type="flex">
+          <el-col :span="12">
+            <span>{{ $t("NewPurchaseInvoice.Box") }}</span>
+            <Select-Cash-Accounts @Set="v => (CashAccount = v)" />
+          </el-col>
+          <el-col :span="12">
+            <span>{{ $t("Account.InCome") }}</span>
+            <Select-In-Come-Accounts @Set="v => (InComeAccount = v)" />
+          </el-col>
+        </el-row>
       </div>
 
       <el-divider direction="vertical"></el-divider>
@@ -165,14 +138,12 @@
               )
             }}
             <el-button
-              :disabled="EnableSave"
               style="float: left"
               icon="el-icon-printer"
               type="success"
               @click="printAllItemSale(ItemsMovements)"
             ></el-button>
             <el-button
-              :disabled="EnableSave"
               style="float: left"
               icon="el-icon-printer"
               type="success"
@@ -190,7 +161,6 @@
     <el-card class="box-card">
       <el-table
         height="250"
-        v-loading="loading"
         :data="tableData"
         fit
         border
@@ -203,14 +173,7 @@
             });
           }
         "
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column
-          v-if="checkPermission(['Admin'])"
-          type="selection"
-          width="55"
-          align="center"
-        ></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
@@ -343,30 +306,32 @@
 <script>
 import { GetByListQ } from "@/api/SaleInvoice";
 
-import { GetActiveCash } from "@/api/Cash";
-import { GetInComeAccounts } from "@/api/Account";
 import { CreateEntry } from "@/api/EntryAccounting";
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import { SaleInvoicesList } from "@/Report/SaleInvoice";
 import permission from "@/directive/permission/index.js";
 import checkPermission from "@/utils/permission";
-
+import CashPoolDialog from "./CashPoolDialog.vue";
 import printJS from "print-js";
+import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
+import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 
 export default {
   name: "SaleInvoice",
-  components: { DrawerPrint },
+  components: {
+    DrawerPrint,
+    CashPoolDialog,
+    SelectCashAccounts,
+    SelectInComeAccounts
+  },
   directives: { permission },
   data() {
     return {
-      loading: true,
-      EnableSave: true,
+      OpenCashPoolDialog: false,
       tableData: [],
       Selection: [],
       tempForm: {},
-      CashAccounts: [],
-      InComeAccounts: [],
       CashAccount: undefined,
       InComeAccount: undefined,
       Totals: {
@@ -383,74 +348,19 @@ export default {
       ItemsIngredients: []
     };
   },
-  created() {
+  mounted() {
     this.getdata();
   },
   methods: {
     checkPermission,
     SaleInvoicesList,
-    handleSelectionChange(val) {
-      this.Selection = val;
-      this.Totals.Receivables = this.Selection.reduce(
-        (a, b) =>
-          a +
-          (b["PaymentMethod"] == "Receivables"
-            ? b.InventoryMovements.reduce((prev, cur) => {
-                return prev + cur.Qty * cur.SellingPrice;
-              }, 0) - b.Discount
-            : 0),
-        0
-      );
-      this.Totals.Cash = this.Selection.reduce(
-        (a, b) =>
-          a +
-          (b["PaymentMethod"] == "Cash"
-            ? b.InventoryMovements.reduce((prev, cur) => {
-                return prev + cur.Qty * cur.SellingPrice;
-              }, 0) - b.Discount
-            : 0),
-        0
-      );
-      this.Totals.Visa = this.Selection.reduce(
-        (a, b) =>
-          a +
-          (b["PaymentMethod"] == "Visa"
-            ? b.InventoryMovements.reduce((prev, cur) => {
-                return prev + cur.Qty * cur.SellingPrice;
-              }, 0) - b.Discount
-            : 0),
-        0
-      );
-      this.Totals.TotalCost = this.Selection.reduce(
-        (a, b) =>
-          a +
-          b.InventoryMovements.reduce((prev, cur) => {
-            return prev + cur.CostPrice * cur.Qty;
-          }, 0),
-        0
-      );
-
-      this.Totals.Discount = this.Selection.reduce((a, b) => a + b.Discount, 0);
-      this.Totals.Totals =
-        this.Totals.Cash + this.Totals.Receivables + this.Totals.Visa;
-      this.Totals.Profit = this.Totals.Totals - this.Totals.TotalCost;
-
-      this.EnableSave = false;
-    },
 
     getdata() {
-      this.loading = true;
-      GetActiveCash().then(response => {
-        // handle success
-        //   console.log(response)
-        this.CashAccounts = response;
-        this.CashAccount = this.CashAccounts[0].value;
-        GetInComeAccounts().then(response => {
-          // handle success
-          //   console.log(response)
-          this.InComeAccounts = response;
-          this.InComeAccount = this.InComeAccounts[0].value;
-        });
+      const loading = this.$loading({
+        lock: true,
+        text: "Get Data",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
       });
       GetByListQ({
         Page: 1,
@@ -463,6 +373,7 @@ export default {
           // handle success
           console.log(response);
           this.tableData = response.items;
+          this.Totals = response.Totals;
           this.ItemsMovements = [];
           this.tableData.map(a => {
             return a.InventoryMovements.map(m => {
@@ -500,14 +411,44 @@ export default {
               }
             });
           });
+          loading.close();
+          this.OpenCashPoolDialog = true;
         })
         .catch(error => {
           // handle error
           console.log(error);
         });
-      this.loading = false;
     },
-
+    createData() {
+      CreateEntry(this.tempForm)
+        .then(res => {
+          if (res) {
+            ChangeArrObjStatus({
+              ObjsId: this.Selection.map(x => x.Id),
+              TableName: "SalesInvoice",
+              Status: 1,
+              Description: "فاتورة مؤكدة"
+            }).then(response => {
+              console.log(response);
+              this.$notify({
+                title: "تم الإضافة بنجاح",
+                message: "تم الإضافة بنجاح",
+                type: "success",
+                position: "top-left",
+                duration: 3000,
+                onClose: () => {
+                  Object.assign(this.$data, this.$options.data());
+                  this.getdata();
+                }
+              });
+            });
+          } else {
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     printItemsIngredients(data) {
       data = data.map(Item => ({
         العدد: Item.TotalCount,
@@ -580,37 +521,6 @@ export default {
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
         gridStyle: "border: 2px solid #3971A5; text-align: center;"
       });
-    },
-    createData() {
-      this.EnableSave = true;
-
-      console.log(this.tempForm);
-      CreateEntry(this.tempForm)
-        .then(response => {
-          ChangeArrObjStatus({
-            ObjsId: this.Selection.map(x => x.Id),
-            TableName: "SalesInvoice",
-            Status: 1,
-            Description: "فاتورة مؤكدة"
-          }).then(response => {
-            console.log(response);
-            this.EnableSave = false;
-            this.$notify({
-              title: "تم الإضافة بنجاح",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              position: "top-left",
-              duration: 3000,
-              onClose: () => {
-                Object.assign(this.$data, this.$options.data());
-                this.getdata();
-              }
-            });
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
     },
     formatDate(date) {
       let d = new Date(date),

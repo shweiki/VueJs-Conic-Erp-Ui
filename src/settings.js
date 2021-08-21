@@ -42,6 +42,7 @@ module.exports = {
     DateTimeFormat: 'yyyy-MM-dd HH:mm',
     StatusQuery: 0,
     PointOfSaleLayout: 'Layout1',
+    CashPoolLayout: 'Restaurant',
     PurchaseLayout: 'SuperMarket',
     WorkShopLayout: 'Layout1',
     datepickerQuery: [Date(), Date()], // start , End

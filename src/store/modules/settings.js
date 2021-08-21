@@ -5,47 +5,7 @@ import { toggleClass } from "@/utils";
 
 let Settings = {}
 
-const state = {
-    title: defaultSettings.title,
-    theme: defaultSettings.theme,
-    customtheme: defaultSettings.customtheme,
-    language: defaultSettings.language,
-    size: defaultSettings.size,
-    showSettings: defaultSettings.showSettings,
-    BusinessType: defaultSettings.BusinessType,
-    tagsView: defaultSettings.tagsView,
-    CashDrawerCOM: defaultSettings.CashDrawerCOM,
-    fixedHeader: defaultSettings.fixedHeader,
-    SidebarImage: defaultSettings.SidebarImage,
-    loginBackground: defaultSettings.loginBackground,
-    showSidebar: defaultSettings.showSidebar,
-    sidebarLogo: defaultSettings.sidebarLogo,
-    sidebarOpen: defaultSettings.sidebarOpen,
-    showNavbar: defaultSettings.showNavbar,
-    showBarcode: defaultSettings.showBarcode,
-    showRestOfBill: defaultSettings.showRestOfBill,
-    BarcodeIsId: defaultSettings.BarcodeIsId,
-    WithOutCheckItemIsExist: defaultSettings.WithOutCheckItemIsExist,
-    errorLog: defaultSettings.errorLog,
-    StatusQuery: defaultSettings.StatusQuery,
-    DateTimeFormat: defaultSettings.DateTimeFormat,
-    DateFormat: defaultSettings.DateFormat,
-    datepickerQuery: defaultSettings.datepickerQuery,
-    timeQuery: defaultSettings.timeQuery,
-    pickerOptions: defaultSettings.pickerOptions,
-    PointOfSaleLayout: defaultSettings.PointOfSaleLayout,
-    PurchaseLayout: defaultSettings.PurchaseLayout,
-    ToFixed: defaultSettings.ToFixed,
-    WorkShopLayout: defaultSettings.WorkShopLayout,
-    LimitQurey: defaultSettings.LimitQurey,
-    triger: defaultSettings.triger,
-    windowStyle: defaultSettings.windowStyle,
-    LimitGetInvoice: defaultSettings.LimitGetInvoice,
-    ItemMoveDec: defaultSettings.ItemMoveDec,
-    printers: defaultSettings.printers,
-    Sms: defaultSettings.Sms,
-    OutgoingMailServer: defaultSettings.OutgoingMailServer,
-}
+const state = defaultSettings
 
 const mutations = {
     CHANGE_SETTING: (state, { key, value }) => {

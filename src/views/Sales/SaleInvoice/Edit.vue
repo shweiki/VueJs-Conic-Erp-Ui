@@ -8,8 +8,8 @@
       v-if="$store.getters.settings.PointOfSaleLayout == 'Layout2'"
       :is-edit="true"
     />
-    <layout3
-      v-if="$store.getters.settings.PointOfSaleLayout == 'Layout3'"
+    <Restaurant
+      v-if="$store.getters.settings.PointOfSaleLayout == 'Restaurant'"
       :is-edit="true"
     />
     <Pharmacy
@@ -30,14 +30,14 @@
 <script>
 import Layout1 from "./components/Layout1";
 import Layout2 from "./components/Layout2";
-import Layout3 from "./components/Layout3";
+import Restaurant from "./components/Restaurant";
 import Pharmacy from "./components/Pharmacy.vue";
 import Gym from "./components/Gym.vue";
 import Public from "./components/Public.vue";
 
 export default {
   name: "EditInvoice",
-  components: { Layout1, Layout2, Layout3, Pharmacy, Gym, Public }
+  components: { Layout1, Layout2, Restaurant, Pharmacy, Gym, Public }
 };
 </script>
 
