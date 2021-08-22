@@ -7,6 +7,7 @@
       width="40%"
       center
       :show-close="false"
+      :before-close="handleClose"
     >
       <div slot="title" class="dialog-footer">
         <el-col :span="4">
@@ -23,40 +24,20 @@
       </div>
       <div style="text-align: center">
         <span style="color: #ff5722; font-size: x-large"
-          >النتيجة :
-          {{
-            tempForm.TotalCash +
-              tempForm.TotalVisa +
-              tempForm.TotalReject +
-              tempForm.TotalRestitution +
-              tempForm.TotalOutlay -
-              Total
-          }}
-          ({{
-            tempForm.TotalCash +
-              tempForm.TotalVisa +
-              tempForm.TotalReject +
-              tempForm.TotalRestitution +
-              tempForm.TotalOutlay -
-              Total >=
-            0
-              ? tempForm.TotalCash +
-                  tempForm.TotalVisa +
-                  tempForm.TotalReject +
-                  tempForm.TotalRestitution +
-                  tempForm.TotalOutlay -
-                  Total ==
-                0
-                ? "مطابق"
-                : "زيادة"
-              : "نقص"
-          }})</span
-        >
+          >النقد المطلوب :
+          {{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }}
+        </span>
+        <el-divider></el-divider>
+
+        <span style="color: #ff5722; font-size: x-large"
+          >الفيزا المطلوب :
+          {{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }}
+        </span>
         <el-divider></el-divider>
         <el-form ref="F-CashPool" :model="tempForm">
           <el-row type="flex">
             <el-col :span="12">
-              <span style="font-size: large">إجمالي مبلغ النقدي :</span>
+              <span style="font-size: large">إجمالي عد النقد :</span>
             </el-col>
             <el-col :span="12">
               <currency-input
@@ -65,6 +46,7 @@
                 @focus="$event.target.select()"
             /></el-col>
           </el-row>
+       
           <el-row type="flex">
             <el-col :span="12">
               <span style="font-size: large">إجمالي مبلغ فيزا :</span>
@@ -126,6 +108,39 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <span style="color: #ff5722; font-size: x-large"
+            >النتيجة :
+            {{
+              (
+                tempForm.TotalCash +
+                tempForm.TotalVisa +
+                tempForm.TotalReject +
+                tempForm.TotalRestitution +
+                tempForm.TotalOutlay -
+                Totals.Totals
+              ).toFixed($store.getters.settings.ToFixed)
+            }}
+            ({{
+              tempForm.TotalCash +
+                tempForm.TotalVisa +
+                tempForm.TotalReject +
+                tempForm.TotalRestitution +
+                tempForm.TotalOutlay -
+                Totals.Totals >=
+              0
+                ? tempForm.TotalCash +
+                    tempForm.TotalVisa +
+                    tempForm.TotalReject +
+                    tempForm.TotalRestitution +
+                    tempForm.TotalOutlay -
+                    Totals.Totals ==
+                  0
+                  ? "مطابق"
+                  : "زيادة"
+                : "نقص"
+            }})</span
+          >
+          <el-divider></el-divider>
         </el-form>
       </div>
     </el-dialog>
@@ -137,7 +152,7 @@ import { Create } from "@/api/CashPool";
 
 export default {
   components: { EditorsUser },
-  props: ["Data", "Open", "Total"],
+  props: ["Data", "Open", "Totals" ,"Type"],
   watch: {
     Open(val) {
       this.Show = val;
@@ -146,7 +161,6 @@ export default {
   data() {
     return {
       Show: false,
-
       tempForm: {
         Id: undefined,
         Type: this.Type,
@@ -163,12 +177,30 @@ export default {
     };
   },
   methods: {
+    restForm() {
+      this.tempForm = {
+        Id: undefined,
+        Type: this.Type,
+        TotalCash: 0,
+        TotalVisa: 0,
+        TotalReject: 0,
+        TotalOutlay: 0,
+        TotalRestitution: 0,
+        Status: 0,
+        Description: "",
+        TableName: this.Type,
+        Fktable: this.Data.map(x => x.Id)
+      };
+    },
     createData() {
       this.$refs["F-CashPool"].validate(valid => {
-        if (valid) {
+        if (valid && this.Data.length > 0) {
+          this.tempForm.TableName = this.Type;
+          this.tempForm.Fktable = this.Data.map(x => x.Id).toString();
+
           Create(this.tempForm).then(res => {
             if (res) {
-              this.$emit("Done");
+              this.$emit("Done", res);
             } else {
             }
           });
@@ -178,18 +210,14 @@ export default {
         }
       });
     },
-    onChange(input) {
-      this.RestOfBill = input;
-    },
-    onKeyPress(button) {
-      if (button == "{enter}") {
-        this.RestOfBill = 0;
-        this.$emit("Done");
-      }
-    },
-    onInputChange(input) {
-      //  console.log(input);
-      this.RestOfBill = input;
+    handleClose(done) {
+      this.$confirm("هل انت متاكد من الخروج")
+        .then(_ => {
+          this.Show = false;
+          this.$emit("Closed");
+          done();
+        })
+        .catch(_ => {});
     }
   }
 };

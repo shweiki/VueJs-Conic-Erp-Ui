@@ -35,18 +35,13 @@
         <el-row :gutter="24">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Cheque.From')" prop="VendorId">
-              <el-select
-                v-model="tempForm.VendorId"
-                filterable
-                placeholder="$t('Cheque.From')"
-              >
-                <el-option
-                  v-for="item in Vendors"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
+              <Account-Search-Any
+                @Set="
+                  v => {
+                    tempForm.VendorId = v.Id;
+                  }
+                "
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -138,13 +133,12 @@
 
 <script>
 import { Create } from "@/api/Cheque";
-import { GetVendor, GetVendorCheque } from "@/api/Vendor";
+import { GetVendorCheque } from "@/api/Vendor";
 export default {
   name: "Cheque",
   data() {
     return {
       dialogFormVisible: false,
-      Vendors: [],
       BanksNames: [
         {
           value: " العربي",
@@ -275,17 +269,9 @@ export default {
     };
   },
   created() {
-    this.getdata();
     this.resetTempForm();
   },
   methods: {
-    getdata() {
-      GetVendorCheque().then(response => {
-        // handle success
-        console.log(response);
-        this.Vendors = response;
-      });
-    },
     resetTempForm() {
       this.tempForm = {
         Id: undefined,

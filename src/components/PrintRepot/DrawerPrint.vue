@@ -1,12 +1,20 @@
 <template>
   <div>
-    <el-button
-      v-bind:disabled="Data != null ? false : true"
-      v-bind:style="Css"
-      icon="el-icon-printer"
-      type="info"
-      @click="getdata()"
-    ></el-button>
+    <el-tooltip
+      class="item"
+      effect="dark"
+      :content="Type"
+      placement="top-start"
+    >
+      <el-button
+        v-bind:disabled="Data != null ? false : true"
+        v-bind:style="Css"
+        icon="el-icon-printer"
+        type="info"
+        @click="getdata()"
+      ></el-button>
+    </el-tooltip>
+
     <el-drawer size="80%" :visible.sync="drawer" @opened="getdata()">
       <template slot="title">
         <ElTag type="success">{{ Type }}</ElTag>
@@ -87,12 +95,15 @@ import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
 import { ShawermaSheesh } from "@/Report/ShawermaSheesh";
 import Visualization from "@/Report/Visualization.js";
 import jsPDF from "jspdf";
+import { AmiriRegular } from "@/assets/custom-theme/fonts/Amiri-Regular.js";
 
 import printJS from "print-js";
 import JSPM from "jsprintmanager";
 import * as htmlToImage from "html-to-image";
 import { GetReportByType } from "@/api/Report";
 import { SendEmail } from "@/api/StmpEmail";
+
+import * as htmlPdf from "html-pdf-chrome";
 
 export default {
   name: "PrintButton",
@@ -212,6 +223,15 @@ export default {
         });
     },
     handleDownload(item) {
+      const html = "<p>Hello, world!</p>";
+      const options = {
+        port: 9222 // port Chrome is listening on
+      };
+      htmlPdf.create(html, options).then(pdf => pdf.toFile("test.pdf"));
+      htmlPdf.create(html, options).then(pdf => pdf.toBase64());
+      htmlPdf.create(html, options).then(pdf => pdf.toBuffer());
+      htmlPdf.create(html, options).then(pdf => pdf.toStream());
+      /*
       var oIframe = document.getElementById("Report-" + item.Id);
       var oDoc = oIframe.contentWindow || oIframe.contentDocument;
       if (oDoc.document) oDoc = oDoc.document;
@@ -219,17 +239,20 @@ export default {
       oDoc.write("</head><body >");
       oDoc.write(item.Html + "</body>");
       console.log(oDoc.body);
+
       htmlToImage
         .toPng(oDoc.body)
         .then(dataUrl => {
-          const pdf = new jsPDF();
-          pdf.addImage(dataUrl, "PNG", 0, 0);
+          var pdf = new jsPDF("p", "mm", "a4");
+          var width = pdf.internal.pageSize.getWidth();
+          var height = pdf.internal.pageSize.getHeight();
+          pdf.addImage(dataUrl, "PNG", 0, 0, width, height);
           pdf.save("Invoice #" + item.Id + ".pdf");
           oDoc.close();
         })
         .catch(error => {
           console.error("oops, something went wrong!", error);
-        });
+        });*/
     },
     JSPM(printer, item) {
       console.log("hi im here", printer);

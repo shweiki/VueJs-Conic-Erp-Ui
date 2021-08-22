@@ -2,8 +2,33 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
+        <el-button
+          icon="fa fa-save"
+          style="float: left"
+          type="primary"
+          @click="OpenCashPoolDialog = true"
+        />
+        <Drawer-Print style="float: left" Type="CashPool" :Data="Data" />
+        <Drawer-Print
+          style="float: left"
+          Type="ItemsSales"
+          :Data="{
+            Totals: Totals,
+            Items: ItemsSales,
+            Dates: [new Date(), new Date()]
+          }"
+        />
+
+        <Drawer-Print
+          style="float: left"
+          Type="ItemsIngredients"
+          :Data="{
+            Items: ItemsIngredients,
+            Dates: [new Date(), new Date()]
+          }"
+        />
         <Cash-Pool-Dialog
-          :Total="Totals.Totals"
+          :Totals="Totals"
           Type="SaleInvoice"
           :Data="tableData"
           :Open="OpenCashPoolDialog"
@@ -12,16 +37,16 @@
               OpenCashPoolDialog = false;
             }
           "
-          @Done="createData()"
+          @Done="v => createData(v)"
         />
         <el-row type="flex">
           <el-col :span="12">
             <span>{{ $t("NewPurchaseInvoice.Box") }}</span>
-            <Select-Cash-Accounts @Set="v => (CashAccount = v)" />
+            <Select-Cash-Accounts @Set="v => (CashAccountId = v.value)" />
           </el-col>
           <el-col :span="12">
             <span>{{ $t("Account.InCome") }}</span>
-            <Select-In-Come-Accounts @Set="v => (InComeAccount = v)" />
+            <Select-In-Come-Accounts @Set="v => (InComeAccountId = v.value)" />
           </el-col>
         </el-row>
       </div>
@@ -29,7 +54,7 @@
       <el-divider direction="vertical"></el-divider>
       <span>{{ $t("CashPool.Invoice") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Selection.length }}</span>
+      <span>{{ tableData.length }}</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Cash") }}</span>
@@ -92,7 +117,7 @@
       <span>{{ $t("CashPool.Note") }}</span>
       <el-table
         height="250"
-        :data="ItemsMovements"
+        :data="ItemsSales"
         fit
         border
         highlight-current-row
@@ -137,18 +162,6 @@
                 $store.getters.settings.ToFixed
               )
             }}
-            <el-button
-              style="float: left"
-              icon="el-icon-printer"
-              type="success"
-              @click="printAllItemSale(ItemsMovements)"
-            ></el-button>
-            <el-button
-              style="float: left"
-              icon="el-icon-printer"
-              type="success"
-              @click="printItemsIngredients(ItemsIngredients)"
-            ></el-button>
           </template>
           <template slot-scope="scope">{{
             (scope.row.AvgPrice * scope.row.TotalCount).toFixed(
@@ -186,12 +199,12 @@
         <el-table-column
           prop="FakeDate"
           v-bind:label="$t('CashPool.Date')"
-          width="120"
+          width="140"
           align="center"
         >
-          <template slot-scope="{ row }">{{
-            formatDate(row.FakeDate)
-          }}</template></el-table-column
+          <template slot-scope="{ row }">
+            <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+          </template></el-table-column
         >
         <el-table-column
           prop="Name"
@@ -242,17 +255,15 @@
         </el-table-column>
         <el-table-column width="60" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              icon="el-icon-printer"
-              type="success"
-              @click="
-                SaleInvoicesList({
-                  Totals: Totals,
-                  Items: Selection,
-                  Dates: [new Date(), new Date()]
-                })
-              "
-            ></el-button>
+            <Drawer-Print
+              style="float: left"
+              Type="SaleInvoicesList"
+              :Data="{
+                Totals: Totals,
+                Items: tableData,
+                Dates: [new Date(), new Date()]
+              }"
+            />
           </template>
           <template slot-scope="scope">
             <Drawer-Print Type="SaleInvoice" :Data="scope.row" />
@@ -308,14 +319,13 @@ import { GetByListQ } from "@/api/SaleInvoice";
 
 import { CreateEntry } from "@/api/EntryAccounting";
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
-import { SaleInvoicesList } from "@/Report/SaleInvoice";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import permission from "@/directive/permission/index.js";
 import checkPermission from "@/utils/permission";
 import CashPoolDialog from "./CashPoolDialog.vue";
-import printJS from "print-js";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
+import { parseTime } from "@/utils";
 
 export default {
   name: "SaleInvoice",
@@ -330,10 +340,9 @@ export default {
     return {
       OpenCashPoolDialog: false,
       tableData: [],
-      Selection: [],
-      tempForm: {},
-      CashAccount: undefined,
-      InComeAccount: undefined,
+      Data: undefined,
+      CashAccountId: undefined,
+      InComeAccountId: undefined,
       Totals: {
         Rows: 0,
         Totals: 0,
@@ -344,7 +353,7 @@ export default {
         TotalCost: 0,
         Discount: 0
       },
-      ItemsMovements: [],
+      ItemsSales: [],
       ItemsIngredients: []
     };
   },
@@ -353,8 +362,6 @@ export default {
   },
   methods: {
     checkPermission,
-    SaleInvoicesList,
-
     getdata() {
       const loading = this.$loading({
         lock: true,
@@ -372,17 +379,19 @@ export default {
         .then(response => {
           // handle success
           console.log(response);
+          this.Data = response;
+
           this.tableData = response.items;
           this.Totals = response.Totals;
-          this.ItemsMovements = [];
+          this.ItemsSales = [];
           this.tableData.map(a => {
             return a.InventoryMovements.map(m => {
-              var find = this.ItemsMovements.findIndex(
+              var find = this.ItemsSales.findIndex(
                 value => value.Name == m.Name
               );
-              if (find != -1) this.ItemsMovements[find].TotalCount += m.Qty;
+              if (find != -1) this.ItemsSales[find].TotalCount += m.Qty;
               else {
-                this.ItemsMovements.push({
+                this.ItemsSales.push({
                   Name: m.Name,
                   TotalCount: m.Qty,
                   AvgPrice: m.SellingPrice.toFixed(
@@ -396,7 +405,7 @@ export default {
           });
 
           this.ItemsIngredients = [];
-          this.ItemsMovements.map(a => {
+          this.ItemsSales.map(a => {
             return a.Ingredients.map(m => {
               var find = this.ItemsIngredients.findIndex(
                 value => value.Name == m.Name
@@ -412,24 +421,52 @@ export default {
             });
           });
           loading.close();
-          this.OpenCashPoolDialog = true;
         })
         .catch(error => {
           // handle error
           console.log(error);
         });
     },
-    createData() {
-      CreateEntry(this.tempForm)
+    createData(Id) {
+      CreateEntry({
+        Id: undefined,
+        FakeDate: new Date(),
+        Description: "",
+        Status: 0,
+        Type: "CashPool",
+        EntryMovements: [
+          {
+            Id: undefined,
+            AccountId: this.CashAccountId,
+            Debit: 0.0,
+            Credit: this.Totals.Totals,
+            Description: "اغلاق صندوق رقم " + Id + " ",
+            EntryId: undefined,
+            TableName: "CashPool",
+            Fktable: Id
+          },
+          {
+            Id: undefined,
+            AccountId: this.InComeAccountId,
+            Debit: this.Totals.Totals,
+            Credit: 0.0,
+            Description: "اغلاق صندوق رقم" + Id + " ",
+            EntryId: undefined,
+            TableName: "CashPool",
+            Fktable: Id
+          }
+        ]
+      })
         .then(res => {
           if (res) {
             ChangeArrObjStatus({
-              ObjsId: this.Selection.map(x => x.Id),
+              ObjsId: this.tableData.map(x => x.Id),
               TableName: "SalesInvoice",
               Status: 1,
               Description: "فاتورة مؤكدة"
             }).then(response => {
               console.log(response);
+              this.OpenCashPoolDialog = false;
               this.$notify({
                 title: "تم الإضافة بنجاح",
                 message: "تم الإضافة بنجاح",
@@ -448,89 +485,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
-    printItemsIngredients(data) {
-      data = data.map(Item => ({
-        العدد: Item.TotalCount,
-        الصنف: Item.Name
-      }));
-      printJS({
-        printable: data,
-        properties: ["العدد", "الصنف"],
-        type: "json",
-        header:
-          "<h3 style='float:right'>  التاريخ  : " +
-          this.formatDate(new Date()) +
-          "</h3>",
-        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;"
-      });
-    },
-    printAllItemSale(data) {
-      data = data.map(Item => ({
-        "المجموع البيع": (Item.TotalCount * Item.AvgPrice).toFixed(
-          this.$store.getters.settings.ToFixed
-        ),
-        "سعر البيع": Item.AvgPrice,
-        "المجموع التكلفة": (Item.TotalCount * Item.CostPrice).toFixed(
-          this.$store.getters.settings.ToFixed
-        ),
-        "سعر التكلفة": Item.CostPrice,
-        العدد: Item.TotalCount,
-        الصنف: Item.Name
-      }));
-      printJS({
-        printable: data,
-        properties: [
-          "المجموع البيع",
-          "سعر البيع",
-          "المجموع التكلفة",
-          "سعر التكلفة",
-          "العدد",
-          "الصنف"
-        ],
-        type: "json",
-        header:
-          "<center> <h2>" +
-          this.InComeAccounts.find(obj => {
-            return obj.value == this.InComeAccount;
-          }).label +
-          "</h2></center><h3 style='float:right'> الاجمالي النقدي " +
-          this.Totals.Cash.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي الفيزا : " +
-          this.Totals.Visa.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي الاجل : " +
-          this.Totals.Receivables.toFixed(
-            this.$store.getters.settings.ToFixed
-          ) +
-          //  " - صافي الربح : " +
-          //  this.Totals.Profit.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي خصم : " +
-          this.Totals.Discount.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي التكلفة : " +
-          this.Totals.TotalCost.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي :  " +
-          (
-            this.Totals.Cash +
-            this.Totals.Receivables +
-            this.Totals.Visa
-          ).toFixed(this.$store.getters.settings.ToFixed) +
-          "</h3><h3 style='float:right'>  التاريخ  : " +
-          this.formatDate(new Date()) +
-          "</h3>",
-        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;"
-      });
-    },
-    formatDate(date) {
-      let d = new Date(date),
-        day = "" + d.getDate(),
-        month = "" + (d.getMonth() + 1),
-        year = d.getFullYear();
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-
-      return [day, month, year].join("/");
     }
   }
 };

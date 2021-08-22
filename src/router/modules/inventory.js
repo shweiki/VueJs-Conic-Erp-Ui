@@ -16,12 +16,12 @@ const InventoryRouter = {
       name: 'Item',
       meta: { title: 'Items', icon: 'orderinv' },
       children: [
-        {
-          path: 'Create',
-          component: () => import('@/views/Inventory/Item/Create'),
-          name: 'NewItem',
-          meta: { title: 'NewItem', icon: 'box2' }
-        },
+        /*  {
+            path: 'Create',
+            component: () => import('@/views/Inventory/Item/Create'),
+            name: 'NewItem',
+            meta: { title: 'NewItem', icon: 'box2' }
+          },*/
 
         {
           path: 'Edit/:id(\\d+)',

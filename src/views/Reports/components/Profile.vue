@@ -82,13 +82,21 @@
       </el-row>
       <el-row type="flex">
         <el-col :span="18">
-          <tinymce
-            v-bind:id="'tinymce-' + 0"
-            v-model="tempForm.Html"
-          />
+          <tinymce v-bind:id="'tinymce-' + 0" v-model="tempForm.Html" />
         </el-col>
         <el-col :span="6">
           <Keys
+            @Add="
+              v => {
+                AddTinymce(v);
+              }
+            "
+          />
+        </el-col>
+      </el-row>
+      <el-row type="flex">
+        <el-col :span="24">
+          <Templates
             @Add="
               v => {
                 AddTinymce(v);
@@ -105,10 +113,11 @@ import { Create, Edit, GetReportById, GetTotal } from "@/api/Report";
 import Tinymce from "@/components/Tinymce";
 import Printers from "@/components/Printers/index.vue";
 import Keys from "./Keys.vue";
+import Templates from "./Templates.vue";
 
 export default {
   name: "Report",
-  components: { Tinymce, Printers, Keys },
+  components: { Tinymce, Printers, Keys, Templates },
   props: {
     isEdit: {
       type: Boolean,
@@ -144,10 +153,8 @@ export default {
   },
   methods: {
     AddTinymce(v) {
-      console.log(this.tempForm.Id)
-      window.tinymce
-        .get("tinymce-" + 0 + "")
-        .insertContent(`${v}`);
+      console.log(this.tempForm.Id);
+      window.tinymce.get("tinymce-" + 0 + "").insertContent(`${v}`);
     },
     handleSizeChange(val) {
       console.log(`${val} items per page`);
