@@ -94,7 +94,6 @@ import * as htmlPdf from "html-pdf-chrome";
 
 export default {
   name: "PrintButton",
-
   props: {
     Type: String,
     Css: String,
@@ -113,7 +112,7 @@ export default {
   },
   watch: {
     Data(val) {
-      if (val != null) {
+      if (val != null && val != undefined) {
         this.Reports.forEach((item, index) => {
           item.Html = this.Visualization(val, item.Html, "Set");
           if (item.AutoPrint && this.AutoPrint) {
@@ -124,7 +123,6 @@ export default {
       }
     },
   },
-
   methods: {
     getdata() {
       this.drawer = true;
@@ -217,7 +215,6 @@ export default {
       oDoc.write("</head><body >");
       oDoc.write(item.Html + "</body>");
       console.log(oDoc.body);
-
       htmlToImage
         .toPng(oDoc.body)
         .then((dataUrl) => {

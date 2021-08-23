@@ -11,14 +11,15 @@ export default function Visualization(Data, Html, Type) {
   let TimeConvert = TimeConvertX;
   let ToFixed = ToFixedX;
   Object.keys(Data).forEach(key => {
+    if (typeof Data[key] == "function") { Data[key] = Data[key]() }
     Html = Html.replaceAll("{{" + key + "}}", Data[key]);
-    if (Data[key] != null && typeof Data[key] == "object" ) {
+    if (Data[key] != null && typeof Data[key] == "object") {
       Object.keys(Data[key]).forEach(keyo => {
         Html = Html.replaceAll("{{" + key + "." + keyo + "}}", Data[key][keyo]);
       })
     }
     if (Array.isArray(Data[key])) {
-    //  console.log("isArray", key, Data[key])
+      //  console.log("isArray", key, Data[key])
       let res = Html.slice(
         Html.search('<tr id="' + key + '"'),
         Html.indexOf("</tr>", Html.search('<tr id="' + key + '"')) + 5

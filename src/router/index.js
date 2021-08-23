@@ -161,7 +161,7 @@ export const asyncRoutes = [{
             import('@/views/Reports/Edit'),
         name: 'EditReport',
         meta: {
-            title: 'EditInvoice',
+            title: 'EditReport',
             noCache: true,
             activeMenu: '/Reports/List'
         },

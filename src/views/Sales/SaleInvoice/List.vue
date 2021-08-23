@@ -5,7 +5,6 @@
         <el-input
           v-model="listQuery.Any"
           placeholder="Search By Any Acount Name Or Id"
-          
           class="filter-item"
           @keyup.enter.native="handleFilter"
         />
@@ -14,7 +13,7 @@
         <Search-By-Date
           :Value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
-            v => {
+            (v) => {
               listQuery.DateFrom = v[0];
               listQuery.DateTo = v[1];
               handleFilter();
@@ -25,7 +24,7 @@
       <el-col :span="3">
         <user-select
           @Set="
-            v => {
+            (v) => {
               listQuery.User = v;
               handleFilter();
             }
@@ -48,48 +47,85 @@
         </el-select>
       </el-col>
       <el-col :span="6">
-        <el-button
+        <Drawer-Print
           v-permission="['Admin']"
-          v-waves
-          class="filter-item"
-          icon="el-icon-printer"
-          type="primary"
-          @click="
-            SaleInvoicesList({
-              Totals: Totals,
-              Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo]
-            })
-          "
-        ></el-button>
-        <el-button
+          style="float: left"
+          Type="ItemsSales"
+          :Data="{
+            Totals: Totals,
+            Items() {
+              var res = [];
+              for (var i = 0; i < list.length; i++) {
+                list[i].InventoryMovements.map((m) => {
+                  var find = res.findIndex((value) => value.Name == m.Name);
+                  if (find != -1) res[find].TotalCount += m.Qty;
+                  else {
+                    res.push({
+                      Name: m.Name,
+                      TotalCount: m.Qty,
+                      AvgPrice: m.SellingPrice.toFixed($store.getters.settings.ToFixed),
+                      CostPrice: m.CostPrice,
+                      Ingredients: JSON.parse(m.Ingredients) || [],
+                    });
+                  }
+                });
+              }
+              return res;
+            },
+            Dates: [listQuery.DateFrom, listQuery.DateTo],
+          }"
+        />
+
+        <Drawer-Print
           v-permission="['Admin']"
-          v-waves
-          class="filter-item"
-          icon="el-icon-printer"
-          type="info"
-          @click="
-            SaleInvoicesItemsMovements({
-              Totals: Totals,
-              Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo]
-            })
-          "
-        ></el-button>
-        <el-button
+          style="float: left"
+          Type="ItemsIngredients"
+          :Data="{
+            Items() {
+              var res = [];
+              var res2 = [];
+              for (var i = 0; i < list.length; i++) {
+                list[i].InventoryMovements.map((m) => {
+                  var find = res.findIndex((value) => value.Name == m.Name);
+                  if (find != -1) res[find].TotalCount += m.Qty;
+                  else {
+                    res.push({
+                      Name: m.Name,
+                      TotalCount: m.Qty,
+                      AvgPrice: m.SellingPrice.toFixed($store.getters.settings.ToFixed),
+                      CostPrice: m.CostPrice,
+                      Ingredients: JSON.parse(m.Ingredients) || [],
+                    });
+                  }
+                });
+              }
+              for (var i = 0; i < res.length; i++) {
+                res[i].Ingredients.map((m) => {
+                  var find = res2.findIndex((value) => value.Name == m.Name);
+                  if (find != -1) res2[find].TotalCount += res[i].TotalCount * m.Qty;
+                  else {
+                    res2.push({
+                      Name: m.Name,
+                      TotalCount: res[i].TotalCount * m.Qty,
+                    });
+                  }
+                });
+              }
+              return res2;
+            },
+            Dates: [listQuery.DateFrom, listQuery.DateTo],
+          }"
+        />
+        <Drawer-Print
           v-permission="['Admin']"
-          v-waves
-          class="filter-item"
-          icon="el-icon-printer"
-          type="success"
-          @click="
-            SaleInvoicesItemsIngredients({
-              Totals: Totals,
-              Items: list,
-              dates: [listQuery.DateFrom, listQuery.DateTo]
-            })
-          "
-        ></el-button>
+          style="float: left"
+          Type="SaleInvoicesList"
+          :Data="{
+            Totals: Totals,
+            Items: list,
+            Dates: [listQuery.DateFrom, listQuery.DateTo],
+          }"
+        />
         <el-button
           v-waves
           v-permission="['Admin']"
@@ -116,7 +152,7 @@
         <Radio-Oprations
           TableName="SalesInvoice"
           @Set="
-            v => {
+            (v) => {
               listQuery.Status = v;
               handleFilter();
             }
@@ -131,44 +167,25 @@
 
         <span>{{ $t("CashPool.Cash") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span
-        >
+        <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>{{ $t("CashPool.Visa") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span
-        >
+        <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>الاجل</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Receivables.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.Receivables.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
         <span>الخصم</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Discount.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.Discount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Totals.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
       </el-col>
     </el-row>
@@ -182,15 +199,11 @@
       style="width: 100%"
       @sort-change="sortChange"
       @row-dblclick="
-        row => {
+        (row) => {
           let r = $router.resolve({
-            path: '/Sales/Edit/' + row.Id
+            path: '/Sales/Edit/' + row.Id,
           });
-          window.open(
-            r.href,
-            r.route.name,
-            $store.getters.settings.windowStyle
-          );
+          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }
       "
     >
@@ -206,21 +219,13 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Date')"
-        width="150px"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column
-        v-bind:label="$t('AddVendors.Name')"
-        prop="Name"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
       <el-table-column
         prop="PaymentMethod"
@@ -229,11 +234,7 @@
         width="150"
         align="center"
       ></el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Discount')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
         <template slot-scope="scope">{{
           scope.row.Discount.toFixed($store.getters.settings.ToFixed)
         }}</template>
@@ -245,22 +246,14 @@
         prop="Type"
       >
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Amountv')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.Total.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
 
-      <el-table-column
-        v-bind:label="$t('Sales.Status')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="SalesInvoice" />
         </template>
@@ -328,11 +321,6 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import {
-  SaleInvoicesList,
-  SaleInvoicesItemsMovements,
-  SaleInvoicesItemsIngredients
-} from "@/Report/SaleInvoice";
 import permission from "@/directive/permission/index.js";
 
 import waves from "@/directive/waves"; // waves directive
@@ -350,7 +338,7 @@ export default {
     Pagination,
     UserSelect,
     RadioOprations,
-    DialogActionLog
+    DialogActionLog,
   },
 
   directives: { waves, permission },
@@ -365,7 +353,7 @@ export default {
         Visa: 0,
         Profit: 0,
         TotalCost: 0,
-        Discount: 0
+        Discount: 0,
       },
       listLoading: false,
       listQuery: {
@@ -376,26 +364,23 @@ export default {
         User: undefined,
         DateFrom: "",
         DateTo: "",
-        Status: undefined
+        Status: undefined,
       },
       sortOptions: [
         { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
+        { label: "Id Descending", key: "-id" },
       ],
-      downloadLoading: false
+      downloadLoading: false,
     };
   },
   created() {
     // this.getList();
   },
   methods: {
-    SaleInvoicesList,
-    SaleInvoicesItemsMovements,
-    SaleInvoicesItemsIngredients,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then(response => {
+      GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -421,7 +406,7 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
@@ -429,16 +414,14 @@ export default {
           header: tHeader,
           data,
           filename:
-            window.location.pathname.split("/") +
-            "-" +
-            JSON.stringify(this.listQuery)
+            window.location.pathname.split("/") + "-" + JSON.stringify(this.listQuery),
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "InventoryMovements") {
             return JSON.stringify(v[j]);
           }
@@ -453,25 +436,25 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
     print(data) {
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
         Total: (Item.SellingPrice * Item.Qty).toFixed(
           this.$store.getters.settings.ToFixed
-        )
+        ),
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json"
+        type: "json",
       });
-    }
-  }
+    },
+  },
 };
 </script>

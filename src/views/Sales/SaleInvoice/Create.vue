@@ -1,45 +1,39 @@
 ﻿<template>
   <div>
-    <layout1
-      v-if="$store.getters.settings.PointOfSaleLayout == 'Layout1'"
+    <SuperMarket
+      v-if="$store.getters.settings.PointOfSale.Layout == 'SuperMarket'"
       :is-edit="false"
     />
-    <layout2
-      v-if="$store.getters.settings.PointOfSaleLayout == 'Layout2'"
+    <CarsSpare
+      v-if="$store.getters.settings.PointOfSale.Layout == 'CarsSpare'"
       :is-edit="false"
     />
     <Restaurant
-      v-if="$store.getters.settings.PointOfSaleLayout == 'Restaurant'"
+      v-if="$store.getters.settings.PointOfSale.Layout == 'Restaurant'"
       :is-edit="false"
     />
     <Pharmacy
-      v-if="$store.getters.settings.PointOfSaleLayout == 'Pharmacy'"
+      v-if="$store.getters.settings.PointOfSale.Layout == 'Pharmacy'"
       :is-edit="false"
     />
-    <Gym
-      v-if="$store.getters.settings.PointOfSaleLayout == 'Gym'"
+    <Gym v-if="$store.getters.settings.PointOfSale.Layout == 'Gym'" :is-edit="false" />
+    <Public
+      v-if="$store.getters.settings.PointOfSale.Layout == 'Public'"
       :is-edit="false"
     />
-        <Public
-      v-if="$store.getters.settings.PointOfSaleLayout == 'Public'"
-      :is-edit="false"
-    />
-    
   </div>
 </template>
 
 <script>
-import Layout1 from "./components/Layout1";
-import Layout2 from "./components/Layout2";
+import SuperMarket from "./components/SuperMarket";
+import CarsSpare from "./components/CarsSpare";
 import Restaurant from "./components/Restaurant";
 import Pharmacy from "./components/Pharmacy.vue";
 import Gym from "./components/Gym.vue";
 import Public from "./components/Public.vue";
 
-
 export default {
   name: "CreateInvoice",
-  components: { Layout1, Layout2, Restaurant, Pharmacy, Gym ,Public}
+  components: { SuperMarket, CarsSpare, Restaurant, Pharmacy, Gym, Public },
 };
 </script>
-

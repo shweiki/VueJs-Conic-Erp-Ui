@@ -46,7 +46,7 @@
                 @focus="$event.target.select()"
             /></el-col>
           </el-row>
-       
+
           <el-row type="flex">
             <el-col :span="12">
               <span style="font-size: large">إجمالي مبلغ فيزا :</span>
@@ -99,12 +99,12 @@
                   {
                     required: true,
                     message: 'لايمكن ترك محرر السند فارغ',
-                    trigger: 'blur'
-                  }
+                    trigger: 'blur',
+                  },
                 ]"
                 v-bind:label="$t('AddVendors.EditorName')"
               >
-                <Editors-User @Set="v => (tempForm.Description = v)" />
+                <Editors-User @Set="(v) => (tempForm.Description = v)" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -152,11 +152,11 @@ import { Create } from "@/api/CashPool";
 
 export default {
   components: { EditorsUser },
-  props: ["Data", "Open", "Totals" ,"Type"],
+  props: ["Data", "Open", "Totals", "Type"],
   watch: {
     Open(val) {
       this.Show = val;
-    }
+    },
   },
   data() {
     return {
@@ -172,8 +172,8 @@ export default {
         Status: 0,
         Description: "",
         TableName: this.Type,
-        Fktable: this.Data.map(x => x.Id)
-      }
+        Fktable: this.Data.map((x) => x.Id),
+      },
     };
   },
   methods: {
@@ -189,18 +189,19 @@ export default {
         Status: 0,
         Description: "",
         TableName: this.Type,
-        Fktable: this.Data.map(x => x.Id)
+        Fktable: this.Data.map((x) => x.Id),
       };
     },
     createData() {
-      this.$refs["F-CashPool"].validate(valid => {
+      this.$refs["F-CashPool"].validate((valid) => {
         if (valid && this.Data.length > 0) {
           this.tempForm.TableName = this.Type;
-          this.tempForm.Fktable = this.Data.map(x => x.Id).toString();
+          this.tempForm.Fktable = this.Data.map((x) => x.Id).toString();
 
-          Create(this.tempForm).then(res => {
+          Create(this.tempForm).then((res) => {
             if (res) {
-              this.$emit("Done", res);
+              this.tempForm.Id = res;
+              this.$emit("Done", this.tempForm);
             } else {
             }
           });
@@ -212,13 +213,13 @@ export default {
     },
     handleClose(done) {
       this.$confirm("هل انت متاكد من الخروج")
-        .then(_ => {
+        .then((_) => {
           this.Show = false;
           this.$emit("Closed");
           done();
         })
-        .catch(_ => {});
-    }
-  }
+        .catch((_) => {});
+    },
+  },
 };
 </script>

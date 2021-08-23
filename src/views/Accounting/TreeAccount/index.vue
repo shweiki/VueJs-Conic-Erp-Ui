@@ -10,8 +10,7 @@
         <el-col :span="24">
           <el-row type="flex">
             <el-col :span="10">
-              <el-input placeholder="بحث عن اسم الحساب" v-model="filterText">
-              </el-input>
+              <el-input placeholder="بحث عن اسم الحساب" v-model="filterText"> </el-input>
             </el-col>
             <el-col :span="4">
               <Entry-Movements-Dialog :AccountId="Selected.Id" />
@@ -21,9 +20,7 @@
             </el-col>
             <el-col :span="4">
               <Add-Account-Dialog
-                v-bind:Code="
-                  Selected.Code + '-0' + (Selected.children.length + 1)
-                "
+                v-bind:Code="Selected.Code + '-0' + (Selected.children.length + 1)"
                 :ParentId="Selected.Id"
                 @Done="getdata()"
               />
@@ -48,9 +45,7 @@
               ref="AccountTree"
             >
               <span class="custom-tree-node" slot-scope="{ data }">
-                <span style="color: black"
-                  >({{ data.Code }}) {{ data.Name }}
-                </span>
+                <span style="color: black">({{ data.Code }}) {{ data.Name }} </span>
 
                 <span>
                   <span style="color: red">{{
@@ -84,13 +79,13 @@ export default {
     AddAccountDialog,
     Create,
     EntryMovementsDialog,
-    DrawerPrint
+    DrawerPrint,
   },
   name: "TreeAccount",
   watch: {
     filterText(val) {
       this.$refs["AccountTree"].filter(val);
-    }
+    },
   },
   data() {
     return {
@@ -104,11 +99,11 @@ export default {
         TotalCredit: 0,
         TotalDebit: 0,
         Type: "",
-        children: []
+        children: [],
       },
       filterText: "",
       Tree: [],
-      search: ""
+      search: "",
     };
   },
   created() {
@@ -122,18 +117,17 @@ export default {
 
     getdata() {
       GetTreeAccount()
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.Tree = this.generateTree(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
     },
     Select(v) {
-      console.log("vvv", v);
       this.Selected = v;
     },
     generateTree(list) {
@@ -160,9 +154,9 @@ export default {
         }
       }
       //   return roots.reverse();
-      return roots.sort((a,b) => (a.Code > b.Code) ? 1 : ((b.Code > a.Code) ? -1 : 0));
-    }
-  }
+      return roots.sort((a, b) => (a.Code > b.Code ? 1 : b.Code > a.Code ? -1 : 0));
+    },
+  },
 };
 </script>
 

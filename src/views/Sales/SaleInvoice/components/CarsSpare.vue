@@ -42,7 +42,7 @@
                   :size="$store.getters.size"
                   type="primary"
                   icon="el-icon-s-claim"
-                  @click="$router.replace({ path: '/redirect' + '/Sales/CashPool' })"
+                  @click="$router.replace({ path: '/redirect' + '/CashPool/Create/SaleInvoice' })"
                 ></el-button>
                 <el-button
                   :size="$store.getters.size"

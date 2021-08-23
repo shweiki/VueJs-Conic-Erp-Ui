@@ -8,14 +8,14 @@
           type="primary"
           @click="OpenCashPoolDialog = true"
         />
-        <Drawer-Print style="float: left" Type="CashPool" :Data="Data" />
+        <Drawer-Print style="float: left" Type="CashPool" :Data="CashPool" />
         <Drawer-Print
           style="float: left"
           Type="ItemsSales"
           :Data="{
             Totals: Totals,
             Items: ItemsSales,
-            Dates: [new Date(), new Date()]
+            Dates: [new Date(), new Date()],
           }"
         />
 
@@ -24,7 +24,7 @@
           Type="ItemsIngredients"
           :Data="{
             Items: ItemsIngredients,
-            Dates: [new Date(), new Date()]
+            Dates: [new Date(), new Date()],
           }"
         />
         <Cash-Pool-Dialog
@@ -37,16 +37,16 @@
               OpenCashPoolDialog = false;
             }
           "
-          @Done="v => createData(v)"
+          @Done="(v) => createData(v)"
         />
         <el-row type="flex">
           <el-col :span="12">
             <span>{{ $t("NewPurchaseInvoice.Box") }}</span>
-            <Select-Cash-Accounts @Set="v => (CashAccountId = v.value)" />
+            <Select-Cash-Accounts @Set="(v) => (CashAccountId = v.value)" />
           </el-col>
           <el-col :span="12">
             <span>{{ $t("Account.InCome") }}</span>
-            <Select-In-Come-Accounts @Set="v => (InComeAccountId = v.value)" />
+            <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
           </el-col>
         </el-row>
       </div>
@@ -59,74 +59,41 @@
 
       <span>{{ $t("CashPool.Cash") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Visa") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.debt") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          Totals.Receivables.toFixed($store.getters.settings.ToFixed)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.Receivables.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
       <span>مجموع الخصم</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          Totals.Discount.toFixed($store.getters.settings.ToFixed)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.Discount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Amount") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
       <span>إجمالي التكلفة</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          Totals.TotalCost.toFixed($store.getters.settings.ToFixed)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.TotalCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>صافي الربح</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
     </el-card>
     <el-card v-permission="['Admin']" class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>
-      <el-table
-        height="250"
-        :data="ItemsSales"
-        fit
-        border
-        highlight-current-row
-      >
-        <el-table-column
-          prop="Name"
-          label="الصنف"
-          align="center"
-        ></el-table-column>
+      <el-table height="250" :data="ItemsSales" fit border highlight-current-row>
+        <el-table-column prop="Name" label="الصنف" align="center"></el-table-column>
         <el-table-column
           prop="TotalCount"
           label="العدد المباع"
@@ -148,10 +115,9 @@
             {{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }}
           </template>
           <template slot-scope="scope">{{
-            (
-              (scope.row.AvgPrice - scope.row.CostPrice) *
-              scope.row.TotalCount
-            ).toFixed($store.getters.settings.ToFixed)
+            ((scope.row.AvgPrice - scope.row.CostPrice) * scope.row.TotalCount).toFixed(
+              $store.getters.settings.ToFixed
+            )
           }}</template>
         </el-table-column>
         <el-table-column align="center">
@@ -180,9 +146,9 @@
         highlight-current-row
         ref="multipleTable"
         @row-dblclick="
-          row => {
+          (row) => {
             $router.replace({
-              path: '/Sales/Edit/' + row.Id
+              path: '/Sales/Edit/' + row.Id,
             });
           }
         "
@@ -212,17 +178,10 @@
           align="center"
         >
           <template slot-scope="scope">
-            <strong style="font-size: 10px; cursor: pointer">{{
-              scope.row.Name
-            }}</strong>
+            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('Type')"
-          width="80"
-          align="center"
-          prop="Type"
-        >
+        <el-table-column v-bind:label="$t('Type')" width="80" align="center" prop="Type">
         </el-table-column>
         <el-table-column
           prop="PaymentMethod"
@@ -239,11 +198,7 @@
             scope.row.Discount.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('CashPool.Amountv')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
           <template slot-scope="scope">
             {{
               scope.row.InventoryMovements.reduce((prev, cur) => {
@@ -261,7 +216,7 @@
               :Data="{
                 Totals: Totals,
                 Items: tableData,
-                Dates: [new Date(), new Date()]
+                Dates: [new Date(), new Date()],
               }"
             />
           </template>
@@ -283,20 +238,12 @@
                 v-bind:label="$t('CashPool.quantity')"
                 align="center"
               ></el-table-column>
-              <el-table-column
-                v-bind:label="$t('CashPool.Price')"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
                 <template slot-scope="scope">{{
-                  scope.row.SellingPrice.toFixed(
-                    $store.getters.settings.ToFixed
-                  )
+                  scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
                 }}</template>
               </el-table-column>
-              <el-table-column
-                v-bind:label="$t('CashPool.Total')"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
                 <template slot-scope="scope"
                   >{{
                     (scope.row.SellingPrice * scope.row.Qty).toFixed(
@@ -333,13 +280,14 @@ export default {
     DrawerPrint,
     CashPoolDialog,
     SelectCashAccounts,
-    SelectInComeAccounts
+    SelectInComeAccounts,
   },
   directives: { permission },
   data() {
     return {
       OpenCashPoolDialog: false,
       tableData: [],
+      CashPool: {},
       Data: undefined,
       CashAccountId: undefined,
       InComeAccountId: undefined,
@@ -351,10 +299,10 @@ export default {
         Visa: 0,
         Profit: 0,
         TotalCost: 0,
-        Discount: 0
+        Discount: 0,
       },
       ItemsSales: [],
-      ItemsIngredients: []
+      ItemsIngredients: [],
     };
   },
   mounted() {
@@ -367,16 +315,16 @@ export default {
         lock: true,
         text: "Get Data",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(0, 0, 0, 0.7)",
       });
       GetByListQ({
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitGetInvoice,
         Sort: "-id",
-        Status: 0
+        Status: 0,
       })
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.Data = response;
@@ -384,51 +332,47 @@ export default {
           this.tableData = response.items;
           this.Totals = response.Totals;
           this.ItemsSales = [];
-          this.tableData.map(a => {
-            return a.InventoryMovements.map(m => {
-              var find = this.ItemsSales.findIndex(
-                value => value.Name == m.Name
-              );
+          this.tableData.map((a) => {
+            return a.InventoryMovements.map((m) => {
+              var find = this.ItemsSales.findIndex((value) => value.Name == m.Name);
               if (find != -1) this.ItemsSales[find].TotalCount += m.Qty;
               else {
                 this.ItemsSales.push({
                   Name: m.Name,
                   TotalCount: m.Qty,
-                  AvgPrice: m.SellingPrice.toFixed(
-                    this.$store.getters.settings.ToFixed
-                  ),
+                  AvgPrice: m.SellingPrice.toFixed(this.$store.getters.settings.ToFixed),
                   CostPrice: m.CostPrice,
-                  Ingredients: JSON.parse(m.Ingredients) || []
+                  Ingredients: JSON.parse(m.Ingredients) || [],
                 });
               }
             });
           });
 
           this.ItemsIngredients = [];
-          this.ItemsSales.map(a => {
-            return a.Ingredients.map(m => {
-              var find = this.ItemsIngredients.findIndex(
-                value => value.Name == m.Name
-              );
+          this.ItemsSales.map((a) => {
+            return a.Ingredients.map((m) => {
+              var find = this.ItemsIngredients.findIndex((value) => value.Name == m.Name);
               if (find != -1)
                 this.ItemsIngredients[find].TotalCount += a.TotalCount * m.Qty;
               else {
                 this.ItemsIngredients.push({
                   Name: m.Name,
-                  TotalCount: a.TotalCount * m.Qty
+                  TotalCount: a.TotalCount * m.Qty,
                 });
               }
             });
           });
+
           loading.close();
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
     },
-    createData(Id) {
-      CreateEntry({
+    createData(v) {
+      this.CashPool = v;
+      var Entry = {
         Id: undefined,
         FakeDate: new Date(),
         Description: "",
@@ -439,32 +383,47 @@ export default {
             Id: undefined,
             AccountId: this.CashAccountId,
             Debit: 0.0,
-            Credit: this.Totals.Totals,
-            Description: "اغلاق صندوق رقم " + Id + " ",
+            Credit: this.Totals.Cash,
+            Description: "اغلاق صندوق رقم " + v.Id + " ",
             EntryId: undefined,
             TableName: "CashPool",
-            Fktable: Id
+            Fktable: v.Id,
           },
           {
             Id: undefined,
             AccountId: this.InComeAccountId,
             Debit: this.Totals.Totals,
             Credit: 0.0,
-            Description: "اغلاق صندوق رقم" + Id + " ",
+            Description: "اغلاق صندوق رقم" + v.Id + " ",
             EntryId: undefined,
             TableName: "CashPool",
-            Fktable: Id
-          }
-        ]
-      })
-        .then(res => {
+            Fktable: v.Id,
+          },
+        ],
+      };
+      this.tableData.forEach((x) => {
+        if (x.PaymentMethod == "Receivables") {
+          Entry.EntryMovements.push({
+            Id: undefined,
+            AccountId: x.AccountId,
+            Debit: 0.0,
+            Credit: x.Total,
+            Description: "فاتورة مبيعات رقم " + x.Id + " ",
+            EntryId: undefined,
+            TableName: "SaleInvoice",
+            Fktable: x.Id,
+          });
+        }
+      });
+      CreateEntry(Entry)
+        .then((res) => {
           if (res) {
             ChangeArrObjStatus({
-              ObjsId: this.tableData.map(x => x.Id),
+              ObjsId: this.tableData.map((x) => x.Id),
               TableName: "SalesInvoice",
               Status: 1,
-              Description: "فاتورة مؤكدة"
-            }).then(response => {
+              Description: "فاتورة مؤكدة",
+            }).then((response) => {
               console.log(response);
               this.OpenCashPoolDialog = false;
               this.$notify({
@@ -473,19 +432,17 @@ export default {
                 type: "success",
                 position: "top-left",
                 duration: 3000,
-                onClose: () => {
-                  Object.assign(this.$data, this.$options.data());
-                  this.getdata();
-                }
               });
+              Object.assign(this.$data, this.$options.data());
+              this.getdata();
             });
           } else {
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>

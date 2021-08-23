@@ -1,23 +1,9 @@
 <template>
-  <div class="app-container" style="direction : rtl ">
-    <el-table
-      height="500"
-      :data="ServiceInvoices"
-      fit
-      border
-      highlight-current-row
-    >
-      <el-table-column
-        prop="FakeDate"
-        label="التاريخ"
-        align="center"
-      ></el-table-column>
+  <div class="app-container" style="direction: rtl">
+    <el-table height="500" :data="ServiceInvoices" fit border highlight-current-row>
+      <el-table-column prop="FakeDate" label="التاريخ" align="center"></el-table-column>
 
-      <el-table-column
-        prop="Name"
-        label="الخدمة"
-        align="center"
-      ></el-table-column>
+      <el-table-column prop="Name" label="الخدمة" align="center"></el-table-column>
       <el-table-column label="الكلي" align="center">
         <template slot-scope="scope">
           {{ scope.row.InventoryMovements.length }}
@@ -25,16 +11,12 @@
       </el-table-column>
       <el-table-column label="المسحوب" align="center">
         <template slot-scope="scope">
-          {{
-            scope.row.InventoryMovements.filter(obj => obj.Status == 0).length
-          }}
+          {{ scope.row.InventoryMovements.filter((obj) => obj.Status == 0).length }}
         </template>
       </el-table-column>
       <el-table-column label="المتبقي" align="center">
         <template slot-scope="scope">
-          {{
-            scope.row.InventoryMovements.filter(obj => obj.Status == 1).length
-          }}
+          {{ scope.row.InventoryMovements.filter((obj) => obj.Status == 1).length }}
         </template>
       </el-table-column>
 
@@ -42,8 +24,7 @@
         <template slot-scope="scope">
           <el-button
             v-if="
-              scope.row.InventoryMovements.filter(obj => obj.Status == 1)
-                .length > 0
+              scope.row.InventoryMovements.filter((obj) => obj.Status == 1).length > 0
             "
             type="danger"
             icon="el-icon-minus"
@@ -72,14 +53,14 @@ export default {
       type: Array,
       default: () => {
         return null;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       Visible: false,
       InventoryMovementId: undefined,
-      SId: undefined
+      SId: undefined,
     };
   },
   methods: {
@@ -87,7 +68,7 @@ export default {
       this.Visible = true;
       let InventoryMovement = this.ServiceInvoices.find(
         ({ Id }) => Id == SId
-      ).InventoryMovements.filter(obj => obj.Status == 1);
+      ).InventoryMovements.filter((obj) => obj.Status == 1);
       this.InventoryMovementId = InventoryMovement[0].Id;
       this.SId = SId;
     },
@@ -96,26 +77,26 @@ export default {
         ObjId: this.InventoryMovementId,
         TableName: "InventoryMovement",
         Status: 0,
-        Description: "تم استلام حركة من المستودع"
+        Description: "تم استلام حركة من المستودع",
       })
-        .then(response => {
+        .then((response) => {
           this.InventoryMovementId = undefined;
           this.Visible = false;
           this.$notify({
             title: "تم  ",
             message: "تمت العملية بنجاح",
             type: "success",
-            duration: 2000
+            duration: 2000,
           });
           this.$nextTick(() => {
             InBody(this.ServiceInvoices.find(({ Id }) => Id == this.SId));
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

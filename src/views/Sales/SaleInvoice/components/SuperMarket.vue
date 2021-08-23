@@ -45,7 +45,7 @@
                   type="primary"
                   icon="el-icon-s-claim"
                   @click="
-                    $router.replace({ path: '/redirect' + '/Sales/CashPool' })
+                    $router.replace({ path: '/redirect' + '/CashPool/Create/SaleInvoice' })
                   "
                 ></el-button>
                 <el-button
