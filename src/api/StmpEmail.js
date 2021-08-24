@@ -44,7 +44,7 @@ var Email = {
         );
     }
 };
-export function SendEmail(To, Subject, Body) {
+export function SendEmail(To, Subject, Body, Attachments = []) {
     if (store.getters.settings.OutgoingMailServer.Host)
         Email.send({
             Host: store.getters.settings.OutgoingMailServer.Host,
@@ -53,7 +53,8 @@ export function SendEmail(To, Subject, Body) {
             To: To,
             From: store.getters.settings.OutgoingMailServer.From,
             Subject: Subject,
-            Body: Body
+            Body: Body,
+            Attachments: Attachments
         }).then(message =>
             console.log("mail sent has   " + message + ""));
 

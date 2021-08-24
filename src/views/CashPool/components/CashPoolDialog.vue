@@ -148,7 +148,6 @@
 </template>
 <script>
 import EditorsUser from "@/components/Gym/EditorsUser.vue";
-import { Create } from "@/api/CashPool";
 
 export default {
   components: { EditorsUser },
@@ -197,14 +196,7 @@ export default {
         if (valid && this.Data.length > 0) {
           this.tempForm.TableName = this.Type;
           this.tempForm.Fktable = this.Data.map((x) => x.Id).toString();
-
-          Create(this.tempForm).then((res) => {
-            if (res) {
-              this.tempForm.Id = res;
-              this.$emit("Done", this.tempForm);
-            } else {
-            }
-          });
+          this.$emit("Done", this.tempForm);
         } else {
           console.log(valid);
           return false;

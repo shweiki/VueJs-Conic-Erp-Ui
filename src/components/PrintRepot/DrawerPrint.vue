@@ -6,13 +6,27 @@
         v-bind:style="Css"
         icon="el-icon-printer"
         type="info"
-        @click="getdata()"
+        @click="drawer = true"
       ></el-button>
     </el-tooltip>
 
     <el-drawer size="80%" :visible.sync="drawer" @opened="getdata()">
       <template slot="title">
-        <ElTag type="success">{{ Type }}</ElTag>
+        <el-row type="flex">
+          <el-col :span="3">
+            <el-button
+              :size="$store.getters.size"
+              type="primary"
+              icon="el-icon-plus"
+              @click="
+                let r = $router.resolve({ path: '/Reports/Create' });
+                window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+              "
+          /></el-col>
+          <el-col :span="21">
+            <ElTag type="success">{{ Type }}</ElTag>
+          </el-col>
+        </el-row>
       </template>
       <el-col v-bind:span="24 / Reports.length" v-for="item in Reports" :key="item.Id">
         <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
@@ -70,7 +84,6 @@
           :srcdoc="item.Html"
           :title="item.Name"
         ></iframe>
-        <iframe id="ifrmPrint" class="iframeR"></iframe>
       </el-col>
     </el-drawer>
     <img id="qr_code" style="display: none" />
@@ -82,27 +95,15 @@ import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
 import { ShawermaSheesh } from "@/Report/ShawermaSheesh";
 import Visualization from "@/Report/Visualization.js";
 import jsPDF from "jspdf";
-import { AmiriRegular } from "@/assets/custom-theme/fonts/Amiri-Regular.js";
 
-import printJS from "print-js";
 import JSPM from "jsprintmanager";
 import * as htmlToImage from "html-to-image";
 import { GetReportByType } from "@/api/Report";
 import { SendEmail } from "@/api/StmpEmail";
 
-import * as htmlPdf from "html-pdf-chrome";
-
 export default {
   name: "PrintButton",
-  props: {
-    Type: String,
-    Css: String,
-    AutoPrint: Boolean,
-    Data: {
-      type: Object,
-      default: null,
-    },
-  },
+  props: ["Data", "Type", "Css"],
   data() {
     return {
       drawer: false,
@@ -115,28 +116,18 @@ export default {
       if (val != null && val != undefined) {
         this.Reports.forEach((item, index) => {
           item.Html = this.Visualization(val, item.Html, "Set");
-          if (item.AutoPrint && this.AutoPrint) {
-            //  this.Print(item);
-            //  this.JSPM(item.Printer, item);
-          }
         });
       }
     },
   },
   methods: {
     getdata() {
-      this.drawer = true;
       GetReportByType({
         Type: this.Type,
       }).then((res) => {
         this.Reports = res;
         this.Reports.forEach((item, index) => {
-          if (this.Data != null)
-            item.Html = this.Visualization(this.Data, item.Html, "Set");
-          console.log("AutoPrint", item.AutoPrint, this.AutoPrint);
-          if (item.AutoPrint && this.AutoPrint && this.drawer) {
-            this.Print(item);
-          }
+          item.Html = this.Visualization(this.Data, item.Html, "Set");
         });
       });
     },
@@ -144,7 +135,6 @@ export default {
     ShawermaSheesh,
     OrderReceipt,
     OrderReceipt2,
-    printJS,
     eval(funName, printer) {
       eval(
         "this." +
@@ -173,7 +163,7 @@ export default {
     SendEmail(item) {
       ///  To , Subject , Body
       SendEmail(
-        "tahashweiki@yahoo.com",
+        "hello@Conic-isv.com",
         "From Conic Erp App Invoice #" + item.Id + "",
         item.Html
       );
@@ -222,7 +212,7 @@ export default {
           var width = pdf.internal.pageSize.getWidth();
           var height = pdf.internal.pageSize.getHeight();
           pdf.addImage(dataUrl, "PNG", 0, 0, width, height);
-          pdf.save("Invoice #" + item.Id + ".pdf");
+          pdf.save("Invoice #" + this.Data.Id + ".pdf");
           oDoc.close();
         })
         .catch((error) => {
@@ -230,7 +220,6 @@ export default {
         });
     },
     JSPM(printer, item) {
-      console.log("hi im here", printer);
       if (printer) {
         var oIframe = document.getElementById("ifrmPrint");
         var oDoc = oIframe.contentWindow || oIframe.contentDocument;
@@ -249,7 +238,7 @@ export default {
             var my_file = new JSPM.PrintFilePDF(
               doc.output("blob"),
               JSPM.FileSourceType.BLOB,
-              item.Id + ".pdf",
+              this.Data.Id + ".pdf",
               1
             );
             cpj.files.push(my_file);

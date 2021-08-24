@@ -12,11 +12,9 @@
     />
     <div
       v-bind:class="
-        (this.$i18n.locale == 'ar'
-          ? 'main-container-arabic'
-          : 'main-container') +
-          ' ' +
-          (needTagsView == true ? 'hasTagsView' : '')
+        (this.$i18n.locale == 'ar' ? 'main-container-arabic' : 'main-container') +
+        ' ' +
+        (needTagsView == true ? 'hasTagsView' : '')
       "
     >
       <div
@@ -31,9 +29,7 @@
         <tags-view v-if="needTagsView" />
       </div>
       <app-main
-        v-bind:style="
-          this.$i18n.locale == 'ar' ? 'direction: rtl' : 'direction: ltr'
-        "
+        v-bind:style="this.$i18n.locale == 'ar' ? 'direction: rtl' : 'direction: ltr'"
       />
       <right-panel v-if="showSettings">
         <settings />
@@ -67,7 +63,7 @@ export default {
     Settings,
     Sidebar,
     TagsView,
-    BackToTop
+    BackToTop,
   },
   data() {
     return {
@@ -77,35 +73,35 @@ export default {
         height: "40px",
         "border-radius": "4px",
         "line-height": "45px", // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
-        background: "#e7eaf1" // 按钮的背景颜色 The background color of the button
-      }
+        background: "#e7eaf1", // 按钮的背景颜色 The background color of the button
+      },
     };
   },
   mixins: [ResizeMixin],
   computed: {
     ...mapState({
-      sidebar: state => state.app.sidebar,
-      device: state => state.app.device,
-      showSettings: state => state.settings.showSettings,
-      needTagsView: state => state.settings.tagsView,
-      fixedHeader: state => state.settings.fixedHeader,
-      showSidebar: state => state.settings.showSidebar,
-      showNavbar: state => state.settings.showNavbar
+      sidebar: (state) => state.app.sidebar,
+      device: (state) => state.app.device,
+      showSettings: (state) => state.settings.showSettings,
+      needTagsView: (state) => state.settings.tagsView,
+      fixedHeader: (state) => state.settings.fixedHeader,
+      showSidebar: (state) => state.settings.showSidebar,
+      showNavbar: (state) => state.settings.showNavbar,
     }),
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === "mobile"
+        mobile: this.device === "mobile",
       };
-    }
+    },
   },
   methods: {
     handleClickOutside() {
       this.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
-    }
-  }
+    },
+  },
 };
 </script>
 

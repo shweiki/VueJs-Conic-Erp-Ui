@@ -79,7 +79,16 @@
                 <el-button
                   type="primary"
                   icon="el-icon-plus"
-                  @click="OpenNewInvoice"
+                  @click="
+                    let r = $router.resolve({
+                      path: '/Sales/PonitOfSale',
+                    });
+                    window.open(
+                      r.href,
+                      r.route.name,
+                      $store.getters.settings.windowStyle
+                    );
+                  "
                 ></el-button>
               </el-col>
             </el-row>
@@ -142,10 +151,9 @@
                         </el-col>
                         <el-col :span="6">
                           <Drawer-Print
-                            v-if="OldInvoice == null ? false : true"
+                            v-bind:disabled="OldInvoice == null ? false : true"
                             Type="SaleInvoice"
                             :Data="OldInvoice"
-                            :AutoPrint="AutoPrint"
                           />
                         </el-col>
                       </el-row>
@@ -434,6 +442,7 @@ import VendorSelect from "@/components/Vendor/VendorSelect";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
 import FakeDate from "@/components/Date/FakeDate";
+import { PrintReport } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import { GetActiveInventory } from "@/api/InventoryItem";
@@ -546,25 +555,6 @@ export default {
     loading.close();
   },
   methods: {
-    OpenNewInvoice() {
-      window.open(
-        this.$router.resolve({
-          path: "/Sales/Create",
-        }).href,
-        this.$router.resolve({
-          path: "/Sales/Create",
-        }).name,
-        "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=" +
-          screen.availWidth +
-          ",height=" +
-          screen.availHeight +
-          ",top=" +
-          55 +
-          ",left=" +
-          500 +
-          ""
-      );
-    },
     restTempForm() {
       this.tempForm = {
         Id: undefined,
@@ -656,7 +646,10 @@ export default {
                 this.restTempForm();
                 this.DisabledSave = false;
                 this.OpenRestOfBill = false;
-                //  this.AutoPrint = true;
+                if (this.AutoPrint == true) {
+                  PrintReport("SaleInvoice", this.OldInvoice, true);
+                }
+
                 if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
                   SendSMS(
                     this.OldInvoice.PhoneNumber,

@@ -34,7 +34,7 @@
             </el-col>
             <el-col :span="6">
               <span>{{ $t("Settings.PointOfSaleLayout") }}</span>
-              <el-select v-model="PointOfSale.Layout" placeholder="PointOfSaleLayout">
+              <el-select v-model="PointOfSaleLayout" placeholder="PointOfSaleLayout">
                 <el-option label="SuperMarket" value="SuperMarket"> </el-option>
                 <el-option label="CarsSpare" value="CarsSpare"> </el-option>
                 <el-option label="Restaurant" value="Restaurant"> </el-option>
@@ -279,14 +279,16 @@ export default {
         });
       },
     },
-    PointOfSale: {
+    PointOfSaleLayout: {
       get() {
-        return this.$store.state.settings.PointOfSale;
+        return this.$store.state.settings.PointOfSale.Layout;
       },
       set(val) {
+        this.$store.state.settings.PointOfSale.Layout = val;
+
         this.$store.dispatch("settings/changeSetting", {
           key: "PointOfSale",
-          value: JSON.parse(val),
+          value: this.$store.state.settings.PointOfSale,
         });
       },
     },

@@ -76,7 +76,11 @@
                 <el-button
                   type="primary"
                   icon="el-icon-s-claim"
-                  @click="$router.replace({ path: '/redirect' + '/CashPool/Create/SaleInvoice' })"
+                  @click="
+                    $router.replace({
+                      path: '/redirect' + '/CashPool/Create/SaleInvoice',
+                    })
+                  "
                 ></el-button>
                 <el-button
                   type="primary"
@@ -144,7 +148,6 @@
                         <el-col :span="6">
                           <Drawer-Print
                             Type="SaleInvoice"
-                            :AutoPrint="AutoPrint"
                             :Data="OldInvoice"
                             Css="font-size: 12px"
                           />
@@ -436,6 +439,7 @@ import VendorSelect from "@/components/Vendor/VendorSelect";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
 import FakeDate from "@/components/Date/FakeDate";
+import { PrintReport } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import { GetActiveInventory } from "@/api/InventoryItem";
@@ -656,10 +660,12 @@ export default {
                 this.tempForm.Total = Total;
 
                 this.OldInvoice = this.tempForm;
+                if (this.AutoPrint == true) {
+                  PrintReport("SaleInvoice", this.OldInvoice);
+                }
                 this.restTempForm();
                 this.DisabledSave = false;
                 this.OpenRestOfBill = false;
-                //  this.AutoPrint = true;
               } else {
                 this.$notify.error({
                   title: "error",

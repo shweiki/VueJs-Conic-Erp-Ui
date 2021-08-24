@@ -51,6 +51,7 @@ const actions = {
     },
     changeSetting({ commit }, data) {
         return new Promise((resolve, reject) => {
+            console.log("setting data",data)
             Edit({
                 Id: 0,
                 Name: data.key,

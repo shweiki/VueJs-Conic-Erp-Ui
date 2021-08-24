@@ -3,6 +3,8 @@
     <el-card class="box-card">
       <div slot="header">
         <el-button
+          :size="$store.getters.size"
+          v-bind:disabled="tableData.length <= 0"
           icon="fa fa-save"
           style="float: left"
           type="primary"
@@ -18,7 +20,6 @@
             Dates: [new Date(), new Date()],
           }"
         />
-
         <Drawer-Print
           style="float: left"
           Type="ItemsIngredients"
@@ -39,6 +40,13 @@
           "
           @Done="(v) => createData(v)"
         />
+        <el-col :span="6">
+          <el-switch
+            v-model="AutoSent"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          ></el-switch>
+        </el-col>
         <el-row type="flex">
           <el-col :span="12">
             <span>{{ $t("NewPurchaseInvoice.Box") }}</span>
@@ -263,6 +271,7 @@
 
 <script>
 import { GetByListQ } from "@/api/SaleInvoice";
+import { Create as CreateCashPool } from "@/api/CashPool";
 
 import { CreateEntry } from "@/api/EntryAccounting";
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
@@ -273,6 +282,7 @@ import CashPoolDialog from "./CashPoolDialog.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import { parseTime } from "@/utils";
+import { SendReportByEmail } from "@/Report/FunctionalityReport";
 
 export default {
   name: "SaleInvoice",
@@ -289,6 +299,7 @@ export default {
       tableData: [],
       CashPool: {},
       Data: undefined,
+      AutoSent: true,
       CashAccountId: undefined,
       InComeAccountId: undefined,
       Totals: {
@@ -326,6 +337,8 @@ export default {
       })
         .then((response) => {
           // handle success
+          loading.text = "Calculate";
+
           console.log(response);
           this.Data = response;
 
@@ -371,77 +384,127 @@ export default {
         });
     },
     createData(v) {
-      this.CashPool = v;
-      var Entry = {
-        Id: undefined,
-        FakeDate: new Date(),
-        Description: "",
-        Status: 0,
-        Type: "CashPool",
-        EntryMovements: [
-          {
+      const loading = this.$loading({
+        lock: true,
+        text: "Create Cash Pool",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      CreateCashPool(v).then((res) => {
+        if (res) {
+          v.Id = res;
+          this.CashPool = v;
+          var Entry = {
             Id: undefined,
-            AccountId: this.CashAccountId,
-            Debit: 0.0,
-            Credit: this.Totals.Cash,
-            Description: "اغلاق صندوق رقم " + v.Id + " ",
-            EntryId: undefined,
-            TableName: "CashPool",
-            Fktable: v.Id,
-          },
-          {
-            Id: undefined,
-            AccountId: this.InComeAccountId,
-            Debit: this.Totals.Totals,
-            Credit: 0.0,
-            Description: "اغلاق صندوق رقم" + v.Id + " ",
-            EntryId: undefined,
-            TableName: "CashPool",
-            Fktable: v.Id,
-          },
-        ],
-      };
-      this.tableData.forEach((x) => {
-        if (x.PaymentMethod == "Receivables") {
-          Entry.EntryMovements.push({
-            Id: undefined,
-            AccountId: x.AccountId,
-            Debit: 0.0,
-            Credit: x.Total,
-            Description: "فاتورة مبيعات رقم " + x.Id + " ",
-            EntryId: undefined,
-            TableName: "SaleInvoice",
-            Fktable: x.Id,
+            FakeDate: new Date(),
+            Description: "",
+            Status: 0,
+            Type: "CashPool",
+            EntryMovements: [
+              {
+                Id: undefined,
+                AccountId: this.CashAccountId,
+                Debit: 0.0,
+                Credit: this.Totals.Cash,
+                Description: "اغلاق صندوق رقم " + v.Id + " ",
+                EntryId: undefined,
+                TableName: "CashPool",
+                Fktable: v.Id,
+              },
+              {
+                Id: undefined,
+                AccountId: this.InComeAccountId,
+                Debit: this.Totals.Totals,
+                Credit: 0.0,
+                Description: "اغلاق صندوق رقم" + v.Id + " ",
+                EntryId: undefined,
+                TableName: "CashPool",
+                Fktable: v.Id,
+              },
+            ],
+          };
+          this.tableData.forEach((x) => {
+            if (x.PaymentMethod == "Receivables") {
+              Entry.EntryMovements.push({
+                Id: undefined,
+                AccountId: x.AccountId,
+                Debit: 0.0,
+                Credit: x.Total,
+                Description: "فاتورة مبيعات رقم " + x.Id + " ",
+                EntryId: undefined,
+                TableName: "SaleInvoice",
+                Fktable: x.Id,
+              });
+            }
           });
+          loading.text = "Create Entry ";
+          CreateEntry(Entry)
+            .then((res) => {
+              if (res) {
+                loading.text = "Change Arr Obj Status ";
+                ChangeArrObjStatus({
+                  ObjsId: this.tableData.map((x) => x.Id),
+                  TableName: "SalesInvoice",
+                  Status: 1,
+                  Description: "فاتورة مؤكدة",
+                }).then((response) => {
+                  console.log(response);
+                  this.$notify({
+                    title: "تم الإضافة بنجاح",
+                    message: "تم الإضافة بنجاح",
+                    type: "success",
+                    position: "top-left",
+                    duration: 3000,
+                  });
+                  this.OpenCashPoolDialog = false;
+                  if (this.AutoSent) {
+                    loading.text = "Send Report By Email";
+                    SendReportByEmail(
+                      this.$store.getters.CompanyInfo.Email,
+                      "CashPool",
+                      this.CashPool
+                    );
+                    SendReportByEmail(
+                      this.$store.getters.CompanyInfo.Email,
+                      "ItemsSales",
+                      {
+                        Totals: this.Totals,
+                        Items: this.ItemsSales,
+                        Dates: [new Date(), new Date()],
+                      }
+                    );
+                    SendReportByEmail(
+                      this.$store.getters.CompanyInfo.Email,
+                      "ItemsIngredients",
+                      {
+                        Items: this.ItemsIngredients,
+                        Dates: [new Date(), new Date()],
+                      }
+                    );
+                    SendReportByEmail(
+                      this.$store.getters.CompanyInfo.Email,
+                      "SaleInvoicesList",
+                      {
+                        Totals: Totals,
+                        Items: tableData,
+                        Dates: [new Date(), new Date()],
+                      }
+                    );
+                  }
+                  loading.close();
+
+                  Object.assign(this.$data, this.$options.data());
+                });
+              } else {
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          loading.close();
         }
       });
-      CreateEntry(Entry)
-        .then((res) => {
-          if (res) {
-            ChangeArrObjStatus({
-              ObjsId: this.tableData.map((x) => x.Id),
-              TableName: "SalesInvoice",
-              Status: 1,
-              Description: "فاتورة مؤكدة",
-            }).then((response) => {
-              console.log(response);
-              this.OpenCashPoolDialog = false;
-              this.$notify({
-                title: "تم الإضافة بنجاح",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                position: "top-left",
-                duration: 3000,
-              });
-              Object.assign(this.$data, this.$options.data());
-              this.getdata();
-            });
-          } else {
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     },
   },
 };

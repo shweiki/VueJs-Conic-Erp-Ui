@@ -10,11 +10,7 @@
       >
         <el-row :gutter="24">
           <el-col :span="8">
-            <pan-thumb
-              :image="tempForm.Logo"
-              :height="'100px'"
-              :width="'100px'"
-            >
+            <pan-thumb :image="tempForm.Logo" :height="'100px'" :width="'100px'">
               <el-button
                 type="primary"
                 icon="el-icon-upload"
@@ -60,36 +56,24 @@
         </el-row>
         <el-row :gutter="24">
           <el-col :span="12">
-            <el-form-item
-              v-bind:label="$t('Company.PhoneNumber2')"
-              prop="PhoneNumber2"
-            >
+            <el-form-item v-bind:label="$t('Company.PhoneNumber2')" prop="PhoneNumber2">
               <el-input type="text" v-model="tempForm.PhoneNumber2"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-              v-bind:label="$t('Company.PhoneNumber1')"
-              prop="PhoneNumber1"
-            >
+            <el-form-item v-bind:label="$t('Company.PhoneNumber1')" prop="PhoneNumber1">
               <el-input type="text" v-model="tempForm.PhoneNumber1"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="24">
           <el-col :span="12">
-            <el-form-item
-              v-bind:label="$t('Company.TaxNumber')"
-              prop="TaxNumber"
-            >
+            <el-form-item v-bind:label="$t('Company.TaxNumber')" prop="TaxNumber">
               <el-input type="text" v-model="tempForm.TaxNumber"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-              v-bind:label="$t('Company.RateNumber')"
-              prop="RateNumber"
-            >
+            <el-form-item v-bind:label="$t('Company.RateNumber')" prop="RateNumber">
               <el-input type="text" v-model="tempForm.RateNumber"></el-input>
             </el-form-item>
           </el-col>
@@ -107,19 +91,10 @@
           </el-col>
         </el-row>
         <el-form-item
-          v-bind:label="$t('Company.FooterReport')"
-          prop="FooterReport"
-        >
-          <el-input type="textarea" v-model="tempForm.FooterReport"></el-input>
-        </el-form-item>
-        <el-form-item
           v-bind:label="$t('Company.BusinessDescription')"
           prop="BusinessDescription"
         >
-          <el-input
-            type="textarea"
-            v-model="tempForm.BusinessDescription"
-          ></el-input>
+          <el-input type="textarea" v-model="tempForm.BusinessDescription"></el-input>
         </el-form-item>
       </el-form>
 
@@ -127,7 +102,6 @@
         $t("AddVendors.Save")
       }}</el-button>
     </el-card>
-    <tinymce :width="900" :height="300" id="02s" v-model="tempForm.HeaderReport"  />
   </div>
 </template>
 
@@ -157,24 +131,22 @@ export default {
         Fax: "",
         Email: "",
         Website: "",
-        HeaderReport: "",
-        FooterReport: ""
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -195,33 +167,31 @@ export default {
     },
     getdata() {
       GetCompanyInfo()
-        .then(response => {
+        .then((response) => {
           // handle success
-          if(response)
-          this.tempForm = response;
+          if (response) this.tempForm = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
-          console.log(this.tempForm.HeaderReport);
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -229,8 +199,8 @@ export default {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -239,4 +209,3 @@ export default {
   margin-top: 20px;
 }
 </style>
-

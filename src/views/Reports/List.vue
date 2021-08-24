@@ -5,7 +5,6 @@
         <el-input
           v-model="listQuery.Any"
           placeholder="Search By Any Acount Name Or Id"
-          
           class="filter-item"
           @keyup.enter.native="handleFilter"
         />
@@ -55,7 +54,7 @@
       style="width: 100%"
       @sort-change="sortChange"
       @row-dblclick="
-        row => {
+        (row) => {
           $router.push({ path: `/Reports/Edit/${row.Id}` });
         }
       "
@@ -72,8 +71,8 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Name" prop="Name" align="center">
-      </el-table-column>
+      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
+      <el-table-column label="Type" prop="Type" align="center"> </el-table-column>
     </el-table>
     <pagination
       v-show="Totals.Rows > 0"
@@ -94,7 +93,7 @@ import Pagination from "@/components/Pagination"; // secondary package based on 
 export default {
   name: "ComplexTable",
   components: {
-    Pagination
+    Pagination,
   },
   directives: { waves },
   data() {
@@ -108,20 +107,20 @@ export default {
         Visa: 0,
         Profit: 0,
         TotalCost: 0,
-        Discount: 0
+        Discount: 0,
       },
       listLoading: false,
       listQuery: {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
-        Sort: "-id"
+        Sort: "-id",
       },
       sortOptions: [
         { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
+        { label: "Id Descending", key: "-id" },
       ],
-      downloadLoading: false
+      downloadLoading: false,
     };
   },
   created() {
@@ -131,7 +130,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then(response => {
+      GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -157,21 +156,21 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "ReportTemplet"
+          filename: "ReportTemplet",
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "timestamp") {
             return parseTime(v[j]);
           } else {
@@ -180,10 +179,10 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
-    }
-  }
+    },
+  },
 };
 </script>

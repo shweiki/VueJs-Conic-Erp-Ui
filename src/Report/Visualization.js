@@ -4,8 +4,6 @@ import { nArabicWords } from "./nArabicWords.js";
 let toFixed = store.getters.settings.ToFixed;
 
 export default function Visualization(Data, Html, Type) {
-  console.log("Data ", Data);
-
   let ConvetNumberToArabicWords = nArabicWords;
   let formatDate = formatDateX;
   let TimeConvert = TimeConvertX;

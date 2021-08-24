@@ -13,7 +13,7 @@
         <Search-By-Date
           :Value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
-            v => {
+            (v) => {
               listQuery.DateFrom = v[0];
               listQuery.DateTo = v[1];
               handleFilter();
@@ -24,7 +24,7 @@
       <el-col :span="3">
         <user-select
           @Set="
-            v => {
+            (v) => {
               listQuery.User = v;
               handleFilter();
             }
@@ -75,7 +75,7 @@
         <Radio-Oprations
           TableName="CashPool"
           @Set="
-            v => {
+            (v) => {
               listQuery.Status = v;
               handleFilter();
             }
@@ -83,51 +83,29 @@
       /></el-col>
       <el-col v-permission="['Admin']" :span="18">
         <el-divider direction="vertical"></el-divider>
-        <span>عدد الفواتير</span>
+        <span>عدد الاغلاقات</span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Rows }}</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>{{ $t("CashPool.Cash") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span
-        >
+        <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>{{ $t("CashPool.Visa") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span
-        >
+        <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>الاجل</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Receivables.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.Reject.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
-        <span>الخصم</span>
-        <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Discount.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
-        <el-divider direction="vertical"></el-divider>
+
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Totals.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
       </el-col>
     </el-row>
@@ -141,15 +119,11 @@
       style="width: 100%"
       @sort-change="sortChange"
       @row-dblclick="
-        row => {
+        (row) => {
           let r = $router.resolve({
-            path: '/Sales/Edit/' + row.Id
+            path: '/Sales/Edit/' + row.Id,
           });
-          window.open(
-            r.href,
-            r.route.name,
-            $store.getters.settings.windowStyle
-          );
+          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }
       "
     >
@@ -165,38 +139,19 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Date')"
-        width="150px"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.DateTime | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
-        v-bind:label="$t('AddVendors.Name')"
-        prop="Name"
+        v-bind:label="$t('AddVendors.Description')"
+        prop="Description"
         align="center"
       >
       </el-table-column>
-      <el-table-column
-        prop="PaymentMethod"
-        sortable
-        v-bind:label="$t('CashPool.Pay')"
-        width="150"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Discount')"
-        width="120"
-        align="center"
-      >
-        <template slot-scope="scope">{{
-          scope.row.Discount.toFixed($store.getters.settings.ToFixed)
-        }}</template>
-      </el-table-column>
+
       <el-table-column
         v-bind:label="$t('table.type')"
         width="80"
@@ -204,21 +159,49 @@
         prop="Type"
       >
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Amountv')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.TotalCash')" width="120" align="center">
         <template slot-scope="{ row }">
-          {{ row.Total.toFixed($store.getters.settings.ToFixed) }}
+          {{ row.TotalCash.toFixed($store.getters.settings.ToFixed) }}
+          JOD
+        </template>
+      </el-table-column>
+      <el-table-column v-bind:label="$t('CashPool.TotalVisa')" width="120" align="center">
+        <template slot-scope="{ row }">
+          {{ row.TotalVisa.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
       <el-table-column
-        v-bind:label="$t('Sales.Status')"
+        v-bind:label="$t('CashPool.TotalOutlay')"
         width="120"
         align="center"
       >
+        <template slot-scope="{ row }">
+          {{ row.TotalOutlay.toFixed($store.getters.settings.ToFixed) }}
+          JOD
+        </template>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('CashPool.TotalReject')"
+        width="120"
+        align="center"
+      >
+        <template slot-scope="{ row }">
+          {{ row.TotalReject.toFixed($store.getters.settings.ToFixed) }}
+          JOD
+        </template>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('CashPool.TotalRestitution')"
+        width="120"
+        align="center"
+      >
+        <template slot-scope="{ row }">
+          {{ row.TotalRestitution.toFixed($store.getters.settings.ToFixed) }}
+          JOD
+        </template>
+      </el-table-column>
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="CashPool" />
         </template>
@@ -272,7 +255,7 @@ export default {
     Pagination,
     UserSelect,
     RadioOprations,
-    DialogActionLog
+    DialogActionLog,
   },
 
   directives: { waves, permission },
@@ -284,11 +267,10 @@ export default {
         Rows: 0,
         Totals: 0,
         Cash: 0,
-        Receivables: 0,
+        Reject: 0,
         Visa: 0,
-        Profit: 0,
-        TotalCost: 0,
-        Discount: 0
+        Outlay: 0,
+        Restitution: 0,
       },
       listLoading: false,
       listQuery: {
@@ -299,13 +281,13 @@ export default {
         User: undefined,
         DateFrom: "",
         DateTo: "",
-        Status: undefined
+        Status: undefined,
       },
       sortOptions: [
         { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
+        { label: "Id Descending", key: "-id" },
       ],
-      downloadLoading: false
+      downloadLoading: false,
     };
   },
   created() {
@@ -315,7 +297,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then(response => {
+      GetByListQ(this.listQuery).then((response) => {
         this.Data = response;
         this.list = response.items;
         this.Totals = response.Totals;
@@ -342,7 +324,7 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
@@ -350,16 +332,14 @@ export default {
           header: tHeader,
           data,
           filename:
-            window.location.pathname.split("/") +
-            "-" +
-            JSON.stringify(this.listQuery)
+            window.location.pathname.split("/") + "-" + JSON.stringify(this.listQuery),
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "InventoryMovements") {
             return JSON.stringify(v[j]);
           }
@@ -374,25 +354,25 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
     print(data) {
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
         Total: (Item.SellingPrice * Item.Qty).toFixed(
           this.$store.getters.settings.ToFixed
-        )
+        ),
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json"
+        type: "json",
       });
-    }
-  }
+    },
+  },
 };
 </script>
