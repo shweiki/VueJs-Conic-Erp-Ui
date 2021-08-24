@@ -24,10 +24,7 @@
       <Shortcut-Add class="Right-Menu-item hover-effect" />
     </template>
 
-    <el-dropdown
-      class="avatar-container Right-Menu-item hover-effect"
-      trigger="click"
-    >
+    <el-dropdown class="avatar-container Right-Menu-item hover-effect" trigger="click">
       <!-- $store.getters.avatar -->
       <div class="avatar-wrapper">
         <img :src="$store.getters.avatar" class="user-avatar" />
@@ -44,10 +41,7 @@
             {{ $t("navbar.dashboard") }}
           </el-dropdown-item>
         </router-link>
-        <router-link
-          v-permission="['Developer']"
-          to="/Settings/ApplicationSetting"
-        >
+        <router-link v-permission="['Developer']" to="/Settings/ApplicationSetting">
           <el-dropdown-item>
             {{ $t("route.ApplicationSetting") }}
           </el-dropdown-item>
@@ -58,9 +52,7 @@
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span style="display: block" @click="logout">{{
-            $t("navbar.logOut")
-          }}</span>
+          <span style="display: block" @click="logout">{{ $t("navbar.logOut") }}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -77,17 +69,25 @@ import Search from "@/components/HeaderSearch";
 import Clock from "@/components/Clock";
 export default {
   directives: { permission },
-  components: { ErrorLog, Screenfull, SizeSelect, LangSelect, Search, Clock, ShortcutAdd },
+  components: {
+    ErrorLog,
+    Screenfull,
+    SizeSelect,
+    LangSelect,
+    Search,
+    Clock,
+    ShortcutAdd,
+  },
   methods: {
     async logout() {
       await this.$store.dispatch("user/logout");
       //  this.$router.push(`/login?redirect=${this.$route.fullPath}`);
       this.$router.push(`/login`);
-    }
-  }
+    },
+  },
 };
 </script>
-<style  lang="scss" scoped>
+<style lang="scss" scoped>
 .Right-Menu {
   height: 100%;
   line-height: 50px;
@@ -114,7 +114,6 @@ export default {
   }
 
   .avatar-container {
-
     .avatar-wrapper {
       margin-top: 5px;
       position: relative;

@@ -36,10 +36,3 @@ export function CreateEntry(data) {
         data: qs.stringify(data)
     })
 }
-export function CreateBehindEntry(data) {
-    return request({
-        url: '/EntryAccounting/Create',
-        method: 'post',
-        data: qs.stringify(data)
-    })
-}

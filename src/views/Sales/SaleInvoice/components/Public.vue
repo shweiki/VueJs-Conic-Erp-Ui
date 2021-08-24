@@ -277,21 +277,40 @@
           ></el-input>
         </el-form-item>
       </el-col>
+      <el-row type="flex">
+        <el-col :span="12">
+          <span>{{ $t("NewPurchaseInvoice.Box") }}</span>
+          <Select-Cash-Accounts @Set="(v) => (CashAccountId = v.value)" />
+        </el-col>
+        <el-col :span="12">
+          <span>{{ $t("Account.InCome") }}</span>
+          <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
+        </el-col>
+      </el-row>
     </el-form>
   </div>
 </template>
 <script>
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import FakeDate from "@/components/Date/FakeDate";
-import { CreateBehindEntry } from "@/api/EntryAccounting";
+import { CreateEntry } from "@/api/EntryAccounting";
 import { GetActiveInventory } from "@/api/InventoryItem";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
+import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
+import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 
 export default {
   name: "NewSalesInvoice",
-  components: { ItemsSearch, EditItem, FakeDate, VendorSearchAny },
+  components: {
+    ItemsSearch,
+    EditItem,
+    FakeDate,
+    VendorSearchAny,
+    SelectInComeAccounts,
+    SelectCashAccounts,
+  },
   props: {
     isEdit: {
       type: Boolean,
@@ -306,6 +325,8 @@ export default {
         Id: undefined,
         Name: "-",
         Tax: 0.0,
+        CashAccountId: undefined,
+        InComeAccountId: undefined,
         AccountInvoiceNumber: "",
         FakeDate: "",
         PaymentMethod: "Cash",
@@ -430,55 +451,63 @@ export default {
           this.DisabledSave = true;
           Create(this.tempForm)
             .then((response) => {
-              if (response) {
-                CreateBehindEntry({
-                  Id: undefined,
-                  FakeDate: this.tempForm.FakeDate,
-                  Description: "",
-                  Type: "Auto",
-                  EntryMovements: [
-                    {
-                      Id: undefined,
-                      AccountId: this.Vendor.AccountId,
-                      Debit: 0.0,
-                      Credit: Total,
-                      Description: "فاتورة مبيعات رقم" + response + " ",
-                      EntryId: undefined,
-                    },
-                    {
-                      Id: undefined,
-                      AccountId: this.Vendor.AccountId,
-                      Debit: Total,
-                      Credit: 0.0,
-                      Description: "فاتورة مبيعات رقم" + response + " ",
-                      EntryId: undefined,
-                      Tabel,
-                    },
-                  ],
-                });
-                this.$router.push({ path: `/Sales/List` });
-                this.$notify({
-                  title: "تم الإضافة بنجاح",
-                  message: "تم الإضافة بنجاح",
-                  type: "success",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                });
-              } else {
-                this.$notify({
-                  title: "مشكلة",
-                  message: "حصلت مشكلة في عملية الحفظ",
-                  type: "error",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                });
-              }
+              CreateEntry({
+                Id: undefined,
+                FakeDate: this.tempForm.FakeDate,
+                Description: "",
+                Type: "Auto",
+                EntryMovements: [
+                  {
+                    Id: undefined,
+                    AccountId: this.Vendor.AccountId,
+                    Debit: 0.0,
+                    Credit: Total,
+                    Description: "فاتورة مبيعات رقم" + response + " ",
+                    EntryId: undefined,
+                    TableName: "SaleInvoice",
+                    Fktable: response,
+                  },
+                  {
+                    Id: undefined,
+                    AccountId:
+                      this.tempForm.PaymentMethod == "Cash"
+                        ? this.CashAccountId
+                        : this.InComeAccountId,
+                    Debit: Total,
+                    Credit: 0.0,
+                    Description: "فاتورة مبيعات رقم" + response + " ",
+                    EntryId: undefined,
+                    TableName: "SaleInvoice",
+                    Fktable: response,
+                  },
+                ],
+              }).then((res) => {
+                if (res) {
+                  this.DisabledSave = false;
+
+                  this.$router.push({ path: `/Sales/List` });
+                  this.$notify({
+                    title: "تم الإضافة بنجاح",
+                    message: "تم الإضافة بنجاح",
+                    type: "success",
+                    position: "top-left",
+                    duration: 1000,
+                    showClose: false,
+                  });
+                } else {
+                  this.$notify({
+                    title: "مشكلة",
+                    message: "حصلت مشكلة في عملية الحفظ",
+                    type: "error",
+                    position: "top-left",
+                    duration: 1000,
+                    showClose: false,
+                  });
+                }
+              });
             })
             .catch((error) => {
               console.log(error);
-              this.DisabledSave = false;
             });
         } else {
           this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
