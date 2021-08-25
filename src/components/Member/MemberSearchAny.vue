@@ -39,6 +39,7 @@ export default {
       if (query !== "" && query.length > 2) {
         GetMemberByAny({ Any: query }).then((res) => {
           this.options = res;
+          if (res.length == 1) this.change(res[0]);
         });
       } else {
         this.options = [];

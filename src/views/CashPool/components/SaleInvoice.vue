@@ -360,7 +360,6 @@ export default {
               }
             });
           });
-
           this.ItemsIngredients = [];
           this.ItemsSales.map((a) => {
             return a.Ingredients.map((m) => {
