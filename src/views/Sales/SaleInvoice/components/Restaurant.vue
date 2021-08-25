@@ -317,7 +317,7 @@
                       >
                         <el-table-column width="60" label="#" align="center">
                           <template slot-scope="scope">
-                            <description
+                            <Description
                               @Set="
                                 (v) => {
                                   tempForm.InventoryMovements[

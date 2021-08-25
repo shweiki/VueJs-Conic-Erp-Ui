@@ -144,7 +144,12 @@
           <span>{{ row.DateTime | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column
+        v-bind:label="$t('AddVendors.EditorName')"
+        prop="EditorName"
+        align="center"
+      >
+      </el-table-column>
       <el-table-column
         v-bind:label="$t('AddVendors.Description')"
         prop="Description"
@@ -231,6 +236,8 @@
 
 <script>
 import { GetByListQ } from "@/api/CashPool";
+import { GetSaleInvoiceByListId } from "@/api/SaleInvoice";
+
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -301,6 +308,17 @@ export default {
         this.Data = response;
         this.list = response.items;
         this.Totals = response.Totals;
+        this.list.map((x) => {
+          GetSaleInvoiceByListId({ listid: x.Fktable }).then((res) => {
+            x.SaleInvoice = res;
+            x.Total = x.SaleInvoice.reduce((prev, cur) => {
+              return prev + cur.Total;
+            }, 0);
+          });
+        });
+        this.Totals.Totals = this.list.reduce((prev, cur) => {
+          return prev + cur.Total;
+        }, 0);
         this.listLoading = false;
       });
     },

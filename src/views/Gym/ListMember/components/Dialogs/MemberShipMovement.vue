@@ -7,18 +7,12 @@
       @click="Visibles = true"
       >اشتراك</el-button
     >
-    <el-dialog
-      style="margin-top: -13vh"
-      title="تسجيل اشتراك"
-      :visible.sync="Visibles"
-    >
+    <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك" :visible.sync="Visibles">
       <el-form :model="tempForm" ref="dataForm">
         <el-form-item
           label="الفترة"
           prop="Type"
-          :rules="[
-            { required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }
-          ]"
+          :rules="[{ required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }]"
         >
           <el-radio-group v-model="tempForm.Type" @change="calc">
             <el-radio label="Morning" border>Morning</el-radio>
@@ -32,13 +26,13 @@
             {
               required: true,
               message: 'الرجاء اختيار نوع اشتراك',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <Select-Memberships
             @Set="
-              v => {
+              (v) => {
                 Membership = v;
                 tempForm.MembershipId = v.Id;
                 calc();
@@ -53,14 +47,14 @@
             {
               required: true,
               message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <Fake-Date
             :Value="tempForm.StartDate"
             @Set="
-              v => {
+              (v) => {
                 tempForm.StartDate = v;
                 calc();
               }
@@ -74,14 +68,14 @@
             {
               required: true,
               message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <Fake-Date
             :Value="tempForm.EndDate"
             @Set="
-              v => {
+              (v) => {
                 tempForm.EndDate = v;
               }
             "
@@ -91,7 +85,7 @@
           <Select-Discount
             :Price="Price"
             @Set="
-              v => {
+              (v) => {
                 tempForm.Discount = v;
                 calc();
               }
@@ -105,8 +99,8 @@
             {
               required: true,
               message: 'لايمكن ترك الخصم فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <el-input
@@ -116,9 +110,7 @@
         </el-form-item>
 
         <el-form-item
-          :rules="[
-            { required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }
-          ]"
+          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -140,28 +132,27 @@
                 {
                   required: true,
                   message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <Editors-User @Set="v => (tempForm.EditorName = v)" />
+              <Editors-User @Set="(v) => (tempForm.EditorName = v)" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
-          $t("AddVendors.Cancel")
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button :disabled="EnableSave" type="primary" @click="createData()">{{
+          $t("AddVendors.Save")
         }}</el-button>
-        <el-button
-          :disabled="EnableSave"
-          type="primary"
-          @click="createData()"
-          >{{ $t("AddVendors.Save") }}</el-button
-        >
       </div>
+      <el-col :span="12">
+        <span>{{ $t("Account.InCome") }}</span>
+        <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
+      </el-col>
     </el-dialog>
   </div>
 </template>
@@ -175,6 +166,7 @@ import SelectDiscount from "@/components/Discount/SelectDiscount.vue";
 import { Create as CreateSaleInvoice } from "@/api/SaleInvoice";
 import { GetActiveService } from "@/api/Service";
 import { LocalDateTime, Instant } from "@js-joda/core";
+import { CreateEntry } from "@/api/EntryAccounting";
 
 export default {
   components: { FakeDate, EditorsUser, SelectMemberships, SelectDiscount },
@@ -183,23 +175,24 @@ export default {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
     MemberId: {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
     Enable: {
       type: Boolean,
       default: () => {
         return true;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
+      InComeAccountId: 2,
       tempForm: {
         Id: undefined,
         TotalAmmount: 0,
@@ -210,10 +203,10 @@ export default {
         VisitsUsed: 0,
         DiscountDescription: "",
         Description: "",
-        Status: 0,
+        Status: 1,
         EditorName: "",
         MemberId: undefined,
-        MembershipId: undefined
+        MembershipId: undefined,
       },
       EnableSave: false,
       Visibles: false,
@@ -230,40 +223,73 @@ export default {
         NumberDays: 30,
         Rate: 0,
         Status: 0,
-        Tax: 0.01
+        Tax: 0.01,
       },
       pickerOptions: {
         disabledDate(time) {
           console.log(time);
           return time.getTime() < Date.now() - 8.64e7;
-        }
-      }
+        },
+      },
     };
   },
   methods: {
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         this.calc();
         if (valid) {
           this.EnableSave = true;
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               if (response) {
                 //  if(this.Discount.ValueOfDays >0)
                 // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
-
-                this.Visibles = false;
-                this.EnableSave = false;
-                this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
-                this.$notify({
-                  title: "تم ",
-                  message: "تم الإضافة بنجاح",
-                  type: "success",
-                  duration: 2000
+                CreateEntry({
+                  Id: undefined,
+                  FakeDate: this.tempForm.FakeDate,
+                  Description: "",
+                  Type: "Auto",
+                  EntryMovements: [
+                    {
+                      Id: undefined,
+                      AccountId: this.AccountId,
+                      Debit: 0.0,
+                      Credit: Total,
+                      Description: "فاتورة مبيعات رقم" + response + " ",
+                      EntryId: undefined,
+                      TableName: "SaleInvoice",
+                      Fktable: response,
+                    },
+                    {
+                      Id: undefined,
+                      AccountId:
+                        this.tempForm.PaymentMethod == "Cash"
+                          ? this.CashAccountId
+                          : this.InComeAccountId,
+                      Debit: Total,
+                      Credit: 0.0,
+                      Description: "فاتورة مبيعات رقم" + response + " ",
+                      EntryId: undefined,
+                      TableName: "SaleInvoice",
+                      Fktable: response,
+                    },
+                  ],
+                }).then((res) => {
+                  if (res) {
+                    this.Visibles = false;
+                    this.EnableSave = false;
+                    this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
+                    this.$notify({
+                      title: "تم ",
+                      message: "تم الإضافة بنجاح",
+                      type: "success",
+                      duration: 2000,
+                    });
+                  }
                 });
               }
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -296,14 +322,14 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: this.Description,
-        MemberShipMovementId: MemberShipMovementId
+        MemberShipMovementId: MemberShipMovementId,
       };
       MembershipMovementOrder.EndDate = new Date(
         MembershipMovementOrder.EndDate.setTime(
           MembershipMovementOrder.StartDate.getTime() + 3600 * 1000 * 24 * Days
         )
       );
-      Create(MembershipMovementOrder).then(response => {
+      Create(MembershipMovementOrder).then((response) => {
         if (response) {
         }
       });
@@ -311,10 +337,10 @@ export default {
     OneInBodyFreeForeach30Days(NumberDays) {
       if (NumberDays < 30) return false;
       GetActiveService()
-        .then(response => {
+        .then((response) => {
           //   console.log(response);
           let Service = response.find(
-            obj => obj.Name == "One InBody Free Foreach 30 Days"
+            (obj) => obj.Name == "One InBody Free Foreach 30 Days"
           );
           let SaleInvoice = {
             Id: undefined,
@@ -327,7 +353,7 @@ export default {
             Description: "فاتورة خدمية ",
             MemberId: this.MemberId,
             IsPrime: true,
-            InventoryMovements: []
+            InventoryMovements: [],
           };
           for (var i = 0; i < NumberDays / 30; i++) {
             SaleInvoice.InventoryMovements.push({
@@ -340,32 +366,32 @@ export default {
               Tax: 0.0,
               Description: "",
               InventoryItemId: 1,
-              SalesInvoiceId: undefined
+              SalesInvoiceId: undefined,
             });
           }
           console.log(SaleInvoice);
           if (SaleInvoice.InventoryMovements.length > 0) {
             CreateSaleInvoice(SaleInvoice)
-              .then(response => {
+              .then((response) => {
                 if (response) {
                   this.$notify({
                     title: "تم ",
                     message: "تم الإضافة One InBody Free Foreach 30 Days بنجاح",
                     type: "success",
-                    duration: 2000
+                    duration: 2000,
                   });
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
               });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

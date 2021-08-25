@@ -189,7 +189,12 @@
             <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('table.type')" width="80" align="center" prop="Type">
+        <el-table-column
+          v-bind:label="$t('table.type')"
+          width="80"
+          align="center"
+          prop="Type"
+        >
         </el-table-column>
         <el-table-column
           prop="PaymentMethod"
@@ -461,7 +466,8 @@ export default {
                     SendReportByEmail(
                       this.$store.getters.CompanyInfo.Email,
                       "CashPool",
-                      this.CashPool
+                      this.CashPool,
+                      "من تاريخ " + new Date() + " - " + "لغاية  " + new Date()
                     );
                     SendReportByEmail(
                       this.$store.getters.CompanyInfo.Email,
@@ -470,7 +476,8 @@ export default {
                         Totals: this.Totals,
                         Items: this.ItemsSales,
                         Dates: [new Date(), new Date()],
-                      }
+                      },
+                      "من تاريخ " + new Date() + " - " + "لغاية  " + new Date()
                     );
                     SendReportByEmail(
                       this.$store.getters.CompanyInfo.Email,
@@ -478,21 +485,25 @@ export default {
                       {
                         Items: this.ItemsIngredients,
                         Dates: [new Date(), new Date()],
-                      }
+                      },
+                      "من تاريخ " + new Date() + " - " + "لغاية  " + new Date()
                     );
                     SendReportByEmail(
                       this.$store.getters.CompanyInfo.Email,
                       "SaleInvoicesList",
                       {
-                        Totals: Totals,
-                        Items: tableData,
+                        Totals: this.Totals,
+                        Items: this.tableData,
                         Dates: [new Date(), new Date()],
-                      }
+                      },
+                      "من تاريخ " + new Date() + " - " + "لغاية  " + new Date()
                     );
+                    loading.close();
+                    Object.assign(this.$data, this.$options.data());
+                  } else {
+                    loading.close();
+                    Object.assign(this.$data, this.$options.data());
                   }
-                  loading.close();
-
-                  Object.assign(this.$data, this.$options.data());
                 });
               } else {
               }

@@ -16,11 +16,9 @@ const mutations = {
 const actions = {
     CheckMembers() {
         return new Promise((resolve, reject) => {
-            CheckMembershipMovement().then(response => {
-                console.log(response)
-                CheckMemberLog().then(response => {
-                    console.log(response)
-                    CheckMembers().then(response => {
+            CheckMembers().then(response => {
+                CheckMembershipMovement().then(response => {
+                    CheckMemberLog().then(response => {
                         store.state.settings.triger.CheckMembers.LastRun = "" + Date() + ""
                         store.dispatch("settings/changeSetting", {
                             key: "triger",

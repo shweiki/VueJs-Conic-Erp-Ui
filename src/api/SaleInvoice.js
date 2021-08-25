@@ -45,6 +45,12 @@ export function GetSaleInvoiceById(query) {
     method: 'get',
     params: query
   })
+}export function GetSaleInvoiceByListId(query) {
+  return request({
+    url: '/SaleInvoice/GetSaleInvoiceByListId',
+    method: 'get',
+    params: query
+  })
 }
 export function GetSaleInvoiceByVendorId(query) {
   return request({

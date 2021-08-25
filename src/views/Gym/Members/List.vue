@@ -3,8 +3,8 @@
     <el-card class="box-card">
       <div class="filter-container">
         <el-button @click="FixPhoneNumber">FixPhoneNumber</el-button>
-        <el-button @click="CheckLastActionLogMembers"
-          >CheckLastActionLogMembers</el-button
+        <el-button @click="CheckBlackListActionLogMembers"
+          >CheckBlackListActionLogMembers</el-button
         >
         <el-popover placement="left" width="400">
           <p>ارسال عبر</p>
@@ -279,7 +279,7 @@
 import {
   GetByListQ,
   FixPhoneNumber,
-  CheckLastActionLogMembers
+  CheckBlackListActionLogMembers
 } from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -332,7 +332,7 @@ export default {
   },
   methods: {
     FixPhoneNumber,
-    CheckLastActionLogMembers,
+    CheckBlackListActionLogMembers,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);

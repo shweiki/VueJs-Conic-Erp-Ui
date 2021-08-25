@@ -56,14 +56,14 @@ export function JSPMPrintReport(Type, Data) {
     });
   });
 }
-export function SendReportByEmail(Email, Type, Data) {
+export function SendReportByEmail(Email, Type, Data, Subject ="") {
   GetReportByType({
     Type: Type,
   }).then((res) => {
     res.forEach((item, index) => {
       item.Html = Visualization(Data, item.Html, "Set");
 
-      SendEmail(Email, item.Name, item.Html, {
+      SendEmail(Email, item.Name + " - " + Subject, item.Html, {
         name: "smtpjs.png",
         path: "https://networkprogramming.files.wordpress.com/2017/11/smtpjs.png"
       })

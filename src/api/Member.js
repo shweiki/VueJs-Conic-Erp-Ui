@@ -99,9 +99,9 @@ export function CheckMembers() {
     method: 'get',
   })
 }
-export function CheckLastActionLogMembers() {
+export function CheckBlackListActionLogMembers() {
   return request({
-    url: '/Member/CheckLastActionLogMembers',
+    url: '/Member/CheckBlackListActionLogMembers',
     method: 'get',
   })
 }

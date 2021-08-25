@@ -23,21 +23,27 @@
         </el-col>
       </div>
       <div style="text-align: center">
-        <span style="color: #ff5722; font-size: x-large"
-          >النقد المطلوب :
+        <span style="color: #ff5722; font-size: large"
+          >مبيعات النقدية :
           {{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }}
         </span>
         <el-divider></el-divider>
 
-        <span style="color: #ff5722; font-size: x-large"
-          >الفيزا المطلوب :
+        <span style="color: #ff5722; font-size: large"
+          >مبيعات الفيزا :
           {{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }}
+        </span>
+        <el-divider></el-divider>
+
+        <span style="color: #ff5722; font-size: large"
+          >مجموع المبيعات :
+          {{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }}
         </span>
         <el-divider></el-divider>
         <el-form ref="F-CashPool" :model="tempForm">
           <el-row type="flex">
             <el-col :span="12">
-              <span style="font-size: large">إجمالي عد النقد :</span>
+              <span style="font-size: large"> إجمالي عد الورق :</span>
             </el-col>
             <el-col :span="12">
               <currency-input
@@ -46,7 +52,17 @@
                 @focus="$event.target.select()"
             /></el-col>
           </el-row>
-
+          <el-row type="flex">
+            <el-col :span="12">
+              <span style="font-size: large">إجمالي عد المعدن :</span>
+            </el-col>
+            <el-col :span="12">
+              <currency-input
+                class="currency-input"
+                v-model="tempForm.TotalCoins"
+                @focus="$event.target.select()"
+            /></el-col>
+          </el-row>
           <el-row type="flex">
             <el-col :span="12">
               <span style="font-size: large">إجمالي مبلغ فيزا :</span>
@@ -102,9 +118,26 @@
                     trigger: 'blur',
                   },
                 ]"
+                label="ملاحظات"
+              >
+                <Description @Set="(v) => (tempForm.Description = v)" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row type="flex">
+            <el-col :span="24">
+              <el-form-item
+                prop="EditorName"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'لايمكن ترك محرر السند فارغ',
+                    trigger: 'blur',
+                  },
+                ]"
                 v-bind:label="$t('AddVendors.EditorName')"
               >
-                <Editors-User @Set="(v) => (tempForm.Description = v)" />
+                <Editors-User @Set="(v) => (tempForm.EditorName = v)" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -113,6 +146,7 @@
             {{
               (
                 tempForm.TotalCash +
+                tempForm.TotalCoins +
                 tempForm.TotalVisa +
                 tempForm.TotalReject +
                 tempForm.TotalRestitution +
@@ -122,6 +156,7 @@
             }}
             ({{
               tempForm.TotalCash +
+                tempForm.TotalCoins +
                 tempForm.TotalVisa +
                 tempForm.TotalReject +
                 tempForm.TotalRestitution +
@@ -129,6 +164,7 @@
                 Totals.Totals >=
               0
                 ? tempForm.TotalCash +
+                    tempForm.TotalCoins +
                     tempForm.TotalVisa +
                     tempForm.TotalReject +
                     tempForm.TotalRestitution +
@@ -148,9 +184,10 @@
 </template>
 <script>
 import EditorsUser from "@/components/Gym/EditorsUser.vue";
+import Description from "@/components/Description/Input.vue";
 
 export default {
-  components: { EditorsUser },
+  components: { EditorsUser, Description },
   props: ["Data", "Open", "Totals", "Type"],
   watch: {
     Open(val) {
@@ -164,12 +201,14 @@ export default {
         Id: undefined,
         Type: this.Type,
         TotalCash: 0,
+        TotalCoins: 0,
         TotalVisa: 0,
         TotalReject: 0,
         TotalOutlay: 0,
         TotalRestitution: 0,
         Status: 0,
         Description: "",
+        EditorName: "",
         TableName: this.Type,
         Fktable: this.Data.map((x) => x.Id),
       },
@@ -181,12 +220,15 @@ export default {
         Id: undefined,
         Type: this.Type,
         TotalCash: 0,
+        TotalCoins: 0,
         TotalVisa: 0,
         TotalReject: 0,
         TotalOutlay: 0,
         TotalRestitution: 0,
         Status: 0,
         Description: "",
+        EditorName: "",
+
         TableName: this.Type,
         Fktable: this.Data.map((x) => x.Id),
       };
@@ -195,6 +237,8 @@ export default {
       this.$refs["F-CashPool"].validate((valid) => {
         if (valid && this.Data.length > 0) {
           this.tempForm.TableName = this.Type;
+          this.tempForm.Total = this.Totals.Totals;
+          this.tempForm.DateTime = new Date();
           this.tempForm.Fktable = this.Data.map((x) => x.Id).toString();
           this.$emit("Done", this.tempForm);
         } else {
