@@ -79,7 +79,15 @@ export default {
         ListItem: "List Item",
         Drivers: "Drivers",
         NewReport: "New Report",
-        ListReport: "Reports List"
+        ListReport: "Reports List",
+        NewPaymentCashPool :"New Payment Cash Pool",
+        ListCashPools :"Cash Pools List",
+        NewMembershipMovementCashPool :"New Membership Movement Cash Pool",
+        NewSaleInvoiceCashPool:"New Sale Invoice Cash Pool",
+        CashPools :"Cash Pools",
+        WorkShops :"WorkShops",
+        ListWorkShop :"WorkShops List",
+        NewWorkShop :"New WorkShop",
     },
     Settings: {
         settings: "Settings",
@@ -299,7 +307,12 @@ export default {
         Price: 'Price',
         Total: 'Total',
         Memberships: 'Memberships',
-        AccountInvoiceNumber: "Account Invoice Number"
+        AccountInvoiceNumber: "Account Invoice Number",
+        TotalCash :"Total Cash",
+        TotalVisa :"Total Visa",
+        TotalOutlay :"Total Outlay",
+        TotalReject :"Total Reject",
+        TotalRestitution :"Total Restitution",
     },
     ItemSales: {
         Name: 'Name',

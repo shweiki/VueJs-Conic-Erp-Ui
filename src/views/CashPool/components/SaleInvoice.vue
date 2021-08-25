@@ -189,7 +189,7 @@
             <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('Type')" width="80" align="center" prop="Type">
+        <el-table-column v-bind:label="$t('table.type')" width="80" align="center" prop="Type">
         </el-table-column>
         <el-table-column
           prop="PaymentMethod"

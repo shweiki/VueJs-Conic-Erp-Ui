@@ -83,7 +83,17 @@ export default {
         ListItem: "قائمة الأصناف",
         Drivers: "السائقين",
         NewReport: "تقرير جديد",
-        ListReport: "قائمة التقارير"
+        ListReport: "قائمة التقارير",
+        NewPaymentCashPool :"إغلاق فواتير المشتريات",
+        ListCashPools :"قائمة الاغلاقات",
+        NewMembershipMovementCashPool :"إغلاق تحركات الاشتراكات",
+        NewSaleInvoiceCashPool:"إغلاق فواتير البيع",
+        CashPools :"المجمعات النقدية",
+        WorkShops :"الورشات",
+        ListWorkShop :"قائمة الورش",
+        NewWorkShop :"ورشة جديدة",
+        Areas:"المناطق",
+        OrderInventoriesItems:"طلب أصناف الجرد"
     },
     Settings: {
         settings: "اعدادات",
@@ -319,6 +329,11 @@ export default {
         Total: 'المجموع',
         Memberships: 'الإشتراكات',
         AccountInvoiceNumber: "رقم حساب الفاتورة",
+        TotalCash :" إجمالي النقدي",
+        TotalVisa :"إجمالي الفيزا",
+        TotalOutlay :"إجمالي الإنفاق",
+        TotalReject :"إجمالي المرفوض",
+        TotalRestitution :"إجمالي المردودات",
     },
     ItemSales: {
         Name: "الإسم",
