@@ -228,7 +228,6 @@ export default {
         Status: 0,
         Description: "",
         EditorName: "",
-
         TableName: this.Type,
         Fktable: this.Data.map((x) => x.Id),
       };

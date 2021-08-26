@@ -287,7 +287,9 @@ import CashPoolDialog from "./CashPoolDialog.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import { parseTime } from "@/utils";
-import { SendReportByEmail } from "@/Report/FunctionalityReport";
+import { SendReportByEmail, VisualizationReportHtml } from "@/Report/FunctionalityReport";
+import { SendEmail } from "@/api/StmpEmail";
+import { async } from "vue-phone-number-input/dist/vue-phone-number-input.common";
 
 export default {
   name: "SaleInvoice",
@@ -451,7 +453,7 @@ export default {
                   TableName: "SalesInvoice",
                   Status: 1,
                   Description: "فاتورة مؤكدة",
-                }).then((response) => {
+                }).then(async (response) => {
                   console.log(response);
                   this.$notify({
                     title: "تم الإضافة بنجاح",
@@ -463,40 +465,41 @@ export default {
                   this.OpenCashPoolDialog = false;
                   if (this.AutoSent) {
                     loading.text = "Send Report By Email";
-                    SendReportByEmail(
-                      this.$store.getters.CompanyInfo.Email,
+
+                    const CashPool = await VisualizationReportHtml(
                       "CashPool",
-                      this.CashPool,
-                      "من تاريخ " + new Date() + " - " + "لغاية  " + new Date()
+                      this.CashPool
                     );
-                    SendReportByEmail(
-                      this.$store.getters.CompanyInfo.Email,
-                      "ItemsSales",
-                      {
-                        Totals: this.Totals,
-                        Items: this.ItemsSales,
-                        Dates: [new Date(), new Date()],
-                      },
-                      "من تاريخ " + new Date() + " - " + "لغاية  " + new Date()
-                    );
-                    SendReportByEmail(
-                      this.$store.getters.CompanyInfo.Email,
-                      "ItemsIngredients",
-                      {
-                        Items: this.ItemsIngredients,
-                        Dates: [new Date(), new Date()],
-                      },
-                      "من تاريخ " + new Date() + " - " + "لغاية  " + new Date()
-                    );
-                    SendReportByEmail(
-                      this.$store.getters.CompanyInfo.Email,
+                    const ItemsSales = await VisualizationReportHtml("ItemsSales", {
+                      Totals: this.Totals,
+                      Items: this.ItemsSales,
+                      Dates: [new Date(), new Date()],
+                    });
+                    const SaleInvoicesList = await VisualizationReportHtml(
                       "SaleInvoicesList",
                       {
                         Totals: this.Totals,
                         Items: this.tableData,
                         Dates: [new Date(), new Date()],
-                      },
-                      "من تاريخ " + new Date() + " - " + "لغاية  " + new Date()
+                      }
+                    );
+                    const ItemsIngredients = await VisualizationReportHtml(
+                      "ItemsIngredients",
+                      {
+                        Items: this.ItemsIngredients,
+                        Dates: [new Date(), new Date()],
+                      }
+                    );
+                    console.log("ItemsSales", ItemsSales);
+                    SendEmail(
+                      this.$store.getters.CompanyInfo.Email,
+                      "إغلاق صندوق " +
+                        "من تاريخ " +
+                        this.formatDate(new Date()) +
+                        " - " +
+                        "لغاية  " +
+                        this.formatDate(new Date()),
+                      CashPool + ItemsSales + SaleInvoicesList + ItemsIngredients
                     );
                     loading.close();
                     Object.assign(this.$data, this.$options.data());
@@ -515,6 +518,16 @@ export default {
           loading.close();
         }
       });
+    },
+    formatDate(date) {
+      let d = new Date(date),
+        day = "" + d.getDate(),
+        month = "" + (d.getMonth() + 1),
+        year = d.getFullYear();
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [day, month, year].join("/");
     },
   },
 };

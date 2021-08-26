@@ -1,84 +1,84 @@
 ﻿<template>
   <div class="app-container">
+    <div class="filter-container">
+      <el-row type="flex">
+        <el-col :span="4">
+          <el-input
+            v-model="listQuery.Any"
+            placeholder="Search By Any Acount Name Or Id"
+            class="filter-item"
+            @keyup.enter.native="handleFilter"
+          />
+        </el-col>
+        <el-col :span="8">
+          <Search-By-Date
+            :Value="[listQuery.DateFrom, listQuery.DateTo]"
+            @Set="
+              (v) => {
+                listQuery.DateFrom = v[0];
+                listQuery.DateTo = v[1];
+                handleFilter();
+              }
+            "
+          />
+        </el-col>
+        <el-col :span="3">
+          <user-select
+            @Set="
+              (v) => {
+                listQuery.User = v;
+                handleFilter();
+              }
+            "
+          />
+        </el-col>
+        <el-col :span="3">
+          <el-select
+            v-model="listQuery.Sort"
+            style="width: 140px"
+            class="filter-item"
+            @change="handleFilter"
+          >
+            <el-option
+              v-for="item in sortOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="6">
+          <el-button
+            v-waves
+            :loading="downloadLoading"
+            class="filter-item"
+            type="primary"
+            icon="el-icon-download"
+            @click="handleDownload"
+          >
+            Export </el-button
+          ><el-button
+            v-waves
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            @click="handleFilter"
+          >
+            Search
+          </el-button>
+        </el-col>
+      </el-row>
+    </div>
+    <Radio-Oprations
+      TableName="Payment"
+      @Set="
+        (v) => {
+          listQuery.Status = v;
+          handleFilter();
+        }
+      "
+    />
     <el-card class="box-card">
-      <div class="filter-container">
-        <el-row type="flex">
-          <el-col :span="4">
-            <el-input
-              v-model="listQuery.Any"
-              placeholder="Search By Any Acount Name Or Id"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
-          </el-col>
-          <el-col :span="8">
-            <Search-By-Date
-              :Value="[listQuery.DateFrom, listQuery.DateTo]"
-              @Set="
-                v => {
-                  listQuery.DateFrom = v[0];
-                  listQuery.DateTo = v[1];
-                  handleFilter();
-                }
-              "
-            />
-          </el-col>
-          <el-col :span="3">
-            <user-select
-              @Set="
-                v => {
-                  listQuery.User = v;
-                  handleFilter();
-                }
-              "
-            />
-          </el-col>
-          <el-col :span="3">
-            <el-select
-              v-model="listQuery.Sort"
-              style="width: 140px"
-              class="filter-item"
-              @change="handleFilter"
-            >
-              <el-option
-                v-for="item in sortOptions"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              />
-            </el-select>
-          </el-col>
-          <el-col :span="6">
-            <el-button
-              v-waves
-              :loading="downloadLoading"
-              class="filter-item"
-              type="primary"
-              icon="el-icon-download"
-              @click="handleDownload"
-            >
-              Export </el-button
-            ><el-button
-              v-waves
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleFilter"
-            >
-              Search
-            </el-button>
-          </el-col>
-        </el-row>
-      </div>
-      <Radio-Oprations
-        TableName="Payment"
-        @Set="
-          v => {
-            listQuery.Status = v;
-            handleFilter();
-          }
-        "
-      />
       <el-divider direction="vertical"></el-divider>
       <span>عدد مقبوضات</span>
       <el-divider direction="vertical"></el-divider>
@@ -87,30 +87,22 @@
 
       <span>{{ $t("CashPool.Cash") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Visa") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>شيكات</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Cheque.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Cheque.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Amount") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
       <el-button
         style="float: left"
@@ -129,7 +121,7 @@
       style="width: 100%"
       @sort-change="sortChange"
       @row-dblclick="
-        row => {
+        (row) => {
           $router.push({ path: `/Sales/Edit/${row.Id}` });
         }
       "
@@ -146,11 +138,7 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Date')"
-        width="150px"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
@@ -165,9 +153,7 @@
       <el-table-column prop="Name" label="المشترك" align="center">
         <template slot-scope="scope">
           <router-link :to="'/Gym/Edit/' + scope.row.accountId">
-            <strong style="font-size: 10px; cursor: pointer">{{
-              scope.row.Name
-            }}</strong>
+            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </router-link>
         </template>
       </el-table-column>
@@ -178,25 +164,16 @@
         width="150"
         align="center"
       ></el-table-column>
-      <el-table-column label="المحرر" prop="EditorName" align="center">
-      </el-table-column>
+      <el-table-column label="المحرر" prop="EditorName" align="center"> </el-table-column>
 
-      <el-table-column
-        v-bind:label="$t('CashPool.Amountv')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalAmmount.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
 
-      <el-table-column
-        v-bind:label="$t('Sales.Status')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Payment" />
         </template>
@@ -248,7 +225,7 @@ export default {
     Pagination,
     UserSelect,
     RadioOprations,
-    DialogActionLog
+    DialogActionLog,
   },
   directives: { waves },
   data() {
@@ -264,13 +241,13 @@ export default {
         User: undefined,
         DateFrom: "",
         DateTo: "",
-        Status: undefined
+        Status: undefined,
       },
       sortOptions: [
         { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
+        { label: "Id Descending", key: "-id" },
       ],
-      downloadLoading: false
+      downloadLoading: false,
     };
   },
   created() {
@@ -280,7 +257,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then(response => {
+      GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -306,21 +283,21 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list"
+          filename: "table-list",
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "timestamp") {
             return parseTime(v[j]);
           } else {
@@ -329,7 +306,7 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
@@ -342,7 +319,7 @@ export default {
           "Name",
           "FakeDate",
           "PaymentMethod",
-          "TotalAmmount"
+          "TotalAmmount",
         ],
         type: "json",
         header:
@@ -360,7 +337,7 @@ export default {
           this.formatDate(this.listQuery.DateTo) +
           "</h3>",
         gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;"
+        gridStyle: "border: 2px solid #3971A5; text-align: center;",
       });
     },
     formatDate(date) {
@@ -372,7 +349,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    }
-  }
+    },
+  },
 };
 </script>

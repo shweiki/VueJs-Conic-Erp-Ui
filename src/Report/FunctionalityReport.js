@@ -56,7 +56,7 @@ export function JSPMPrintReport(Type, Data) {
     });
   });
 }
-export function SendReportByEmail(Email, Type, Data, Subject ="") {
+export function SendReportByEmail(Email, Type, Data, Subject = "") {
   GetReportByType({
     Type: Type,
   }).then((res) => {
@@ -70,4 +70,18 @@ export function SendReportByEmail(Email, Type, Data, Subject ="") {
 
     });
   });
+}
+export function VisualizationReportHtml(Type, Data) {
+  return new Promise((resolve, reject) => {
+
+    GetReportByType({
+      Type: Type,
+    }).then((res) => {
+      res.forEach((item, index) => {
+        item.Html = Visualization(Data, item.Html, "Set");
+      });
+      resolve(res.map(x=>x.Html))
+
+    }).catch(err => { reject(err) });
+  })
 }
