@@ -1,56 +1,36 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" >
-        <el-button
-          :disabled="EnableSave"
-          style="float: left"
-          type="success"
-          icon="fa fa-save"
-          @click="createData('tempForm')"
-          >{{ $t("CashPool.Save") }}</el-button
-        >
-        <span class="demonstration">{{ $t("NewPurchaseInvoice.Box") }}</span>
-        <el-select
-          disabled
-          v-model="CashAccount"
-          default-first-option
-          filterable
-          placeholder="صندوق"
-          autocomplete="off"
-        >
-          <el-option
-            v-for="item in CashAccounts"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-            <span style="float: right">{{ item.label }}</span>
-            <span style="float: left color: #8492a6 font-size: 12px">{{
-              item.value
-            }}</span>
-          </el-option>
-        </el-select>
-        <span class="demonstration">إيراد</span>
-        <el-select
-          disabled
-          v-model="InComeAccount"
-          filterable
-          placeholder="إيراد"
-          autocomplete="off"
-        >
-          <el-option
-            v-for="item in InComeAccounts"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-            <span style="float: right">{{ item.label }}</span>
-            <span style="float: left color: #8492a6 font-size: 12px">{{
-              item.value
-            }}</span>
-          </el-option>
-        </el-select>
+      <div slot="header">
+        <Cash-Pool-Dialog
+          :Totals="Totals"
+          Type="Payment"
+          :Data="tableData"
+          :Open="OpenCashPoolDialog"
+          @Closed="
+            () => {
+              OpenCashPoolDialog = false;
+            }
+          "
+          @Done="(v) => createData(v)"
+        />
+        <el-col :span="6">
+          <el-switch
+            v-model="AutoSent"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          ></el-switch>
+        </el-col>
+        <el-row type="flex">
+          <el-col :span="12">
+            <span>{{ $t("NewPurchaseInvoice.Box") }}</span>
+            <Select-Cash-Accounts @Set="(v) => (CashAccountId = v.value)" />
+          </el-col>
+          <el-col :span="12">
+            <span>{{ $t("Account.InCome") }}</span>
+            <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
+          </el-col>
+        </el-row>
       </div>
 
       <el-divider direction="vertical"></el-divider>
@@ -92,7 +72,6 @@
 
       <el-table
         height="250"
-        v-loading="loading"
         :data="tableData"
         fit
         border
@@ -146,11 +125,7 @@
         </el-table-column>
         <el-table-column label="#" align="center">
           <template slot-scope="scope">
-            <el-button
-              icon="el-icon-printer"
-              type="primary"
-              @click="printPayment(scope.row)"
-            ></el-button>
+            <drawer-print :Data="scope.row" Type="Payment" />
           </template>
         </el-table-column>
 
@@ -172,29 +147,40 @@
 import checkPermission from "@/utils/permission";
 
 import { GetPaymentByStatus } from "@/api/Payment";
-import { GetInComeAccounts } from "@/api/Account";
-import { GetActiveCash } from "@/api/Cash";
+
 import { CreateEntry } from "@/api/EntryAccounting";
 import { PaymentMember } from "@/Report/PayPapar";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
+import CashPoolDialog from "./CashPoolDialog.vue";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
+import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
 import printJS from "print-js";
 
 export default {
   name: "Payment",
-  components: { NextOprations },
+  components: {
+    DrawerPrint,
+    NextOprations,
+    CashPoolDialog,
+    SelectCashAccounts,
+    SelectInComeAccounts,
+  },
   data() {
     return {
-      loading: true,
+      OpenCashPoolDialog: false,
       EnableSave: true,
       tableData: [],
+      Data: undefined,
+      Totals: { Cash: 0, Cheque: 0, Rows: 0, Totals: 0, Visa: 0 },
       Selection: [],
+      AutoSent: true,
       tempForm: {},
-      CashAccounts: [],
-      InComeAccounts: [],
-      CashAccount: undefined,
-      InComeAccount: undefined,
+      AutoSent: true,
+      CashAccountId: undefined,
+      InComeAccountId: undefined,
       TotalCash: 0,
       TotalCheque: 0,
       TotalVisa: 0,
@@ -256,23 +242,28 @@ export default {
       this.EnableSave = false;
     },
     getdata() {
-      this.loading = true;
-      GetActiveCash().then((response) => {
-        // handle success
-        //   console.log(response)
-        this.CashAccounts = response;
-        this.CashAccount = this.CashAccounts[0].value;
-        GetInComeAccounts().then((response) => {
-          this.InComeAccounts = response;
-          this.InComeAccount = this.InComeAccounts[2].value;
-        });
+      const loading = this.$loading({
+        lock: true,
+        text: "Get Data",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
       });
-      GetPaymentByStatus({ Status: 0 })
+      GetPaymentByStatus({
+        Page: 1,
+        limit: this.$store.getters.settings.LimitGetInvoice,
+        Sort: "-id",
+        Status: 0,
+      })
         .then((response) => {
+          loading.text = "Calculate";
+
           // handle success
           console.log(response);
-          this.tableData = response;
-          this.loading = false;
+          this.tableData = response.items;
+
+          this.Totals = response.Totals;
+
+          loading.close();
         })
         .catch((error) => {
           // handle error

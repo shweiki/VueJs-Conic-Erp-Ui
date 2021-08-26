@@ -287,9 +287,8 @@ import CashPoolDialog from "./CashPoolDialog.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import { parseTime } from "@/utils";
-import { SendReportByEmail, VisualizationReportHtml } from "@/Report/FunctionalityReport";
+import { VisualizationReportHtml } from "@/Report/FunctionalityReport";
 import { SendEmail } from "@/api/StmpEmail";
-import { async } from "vue-phone-number-input/dist/vue-phone-number-input.common";
 
 export default {
   name: "SaleInvoice",
