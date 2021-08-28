@@ -45,27 +45,30 @@ var Email = {
     }
 };
 export function SendEmail(To, Subject, Body, Attachments = []) {
-    if (store.getters.settings.OutgoingMailServer.SecureToken != "")
-        Email.send({
-            SecureToken: store.getters.settings.OutgoingMailServer.SecureToken,
-            To: To,
-            From: store.getters.settings.OutgoingMailServer.From,
-            Subject: Subject,
-            Body: Body
-        }).then(message =>
-            console.log("mail sent has   " + message + ""));
+    return new Promise((resolve, reject) => {
+        const SecureToken = store.getters.settings.OutgoingMailServer.SecureToken
+        const Host = store.getters.settings.OutgoingMailServer.Host
+        if (SecureToken != "" && SecureToken != undefined && SecureToken != null)
+            Email.send({
+                SecureToken: store.getters.settings.OutgoingMailServer.SecureToken,
+                To: To,
+                From: store.getters.settings.OutgoingMailServer.From,
+                Subject: Subject,
+                Body: " " + Body
+            }).then(message =>
+                resolve(message));
 
-    if (store.getters.settings.OutgoingMailServer.Host != "")
-        Email.send({
-            Host: store.getters.settings.OutgoingMailServer.Host,
-            Username: store.getters.settings.OutgoingMailServer.Username,
-            Password: store.getters.settings.OutgoingMailServer.Password,
-            To: To,
-            From: store.getters.settings.OutgoingMailServer.From,
-            Subject: Subject,
-            Body: Body,
-            Attachments: Attachments
-        }).then(message =>
-            console.log("mail sent has   " + message + ""));
-
+        if (Host != "" && Host != undefined && Host != null)
+            Email.send({
+                Host: store.getters.settings.OutgoingMailServer.Host,
+                Username: store.getters.settings.OutgoingMailServer.Username,
+                Password: store.getters.settings.OutgoingMailServer.Password,
+                To: To,
+                From: store.getters.settings.OutgoingMailServer.From,
+                Subject: Subject,
+                Body: " " + Body,
+                Attachments: Attachments
+            }).then(message =>
+                resolve(message));
+    })
 }

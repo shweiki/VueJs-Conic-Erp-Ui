@@ -28,6 +28,15 @@
               type="primary"
               @click="OpenCashPoolDialog = true"
             />
+            <drawer-print
+              style="float: left"
+              Type="PaymentList"
+              :Data="{
+                Totals: Totals,
+                Items: tableData,
+                Dates: [new Date(), new Date()],
+              }"
+            />
           </el-col>
         </el-row>
       </div>
@@ -57,22 +66,12 @@
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
-      <drawer-print
-        style="float: left"
-        Type="PaymentList"
-        :Data="{
-          Totals: Totals,
-          Items: tableData,
-          Dates: [new Date(), new Date()],
-        }"
-      />
     </el-card>
 
     <el-card class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>
-
       <el-table
-        height="250"
+        height="500"
         :data="tableData"
         fit
         border
@@ -277,30 +276,33 @@ export default {
                   Status: 1,
                   Description: "دفعة مؤكدة",
                 }).then(async (response) => {
-                  console.log(response);
-
                   this.OpenCashPoolDialog = false;
                   if (this.AutoSent) {
                     loading.text = "Send Report By Email";
+                    const CashPoolHtml = await VisualizationReportHtml(
+                      "CashPool",
+                      this.CashPool
+                    );
                     const PaymentList = await VisualizationReportHtml("PaymentList", {
                       Totals: this.Totals,
                       Items: this.tableData,
                       Dates: [new Date(), new Date()],
                     });
-
-                    SendEmail(
+                    const ResolveSendEmail = await SendEmail(
                       this.$store.getters.CompanyInfo.Email,
                       "إغلاق صندوق " +
+                        this.CashPool.Type +
+                        " - " +
                         "من تاريخ " +
                         this.formatDate(new Date()) +
                         " - " +
                         "لغاية  " +
                         this.formatDate(new Date()),
-                      PaymentList
+                      CashPoolHtml + PaymentList
                     );
                     this.$notify({
                       title: "تم الإضافة بنجاح",
-                      message: "تم الإضافة بنجاح",
+                      message: "تم الإضافة بنجاح" + ResolveSendEmail,
                       type: "success",
                       position: "top-left",
                       duration: 3000,

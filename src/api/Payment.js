@@ -29,6 +29,14 @@ export function GetPaymentsByVendorId(query) {
     params: query
   })
 }
+export function GetPaymentByListId(query) {
+  return request({
+    url: '/Payment/GetPaymentByListId',
+    method: 'get',
+    params: query
+  })
+}
+
 export function GetPaymentByStatus(query) {
   return request({
     url: '/Payment/GetPaymentByStatus',

@@ -29,52 +29,59 @@
         </el-row>
       </template>
       <el-col v-bind:span="24 / Reports.length" v-for="item in Reports" :key="item.Id">
-        <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
-
-        <el-button
-          class="filter-item"
-          type="primary"
-          icon="el-icon-download"
-          @click="handleDownload(item)"
-        >
-        </el-button>
-        <el-button
-          type="warning"
-          icon="el-icon-edit"
-          @click="
-            let r = $router.resolve({
-              path: '/Reports/Edit/' + item.Id,
-            });
-            window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-          "
-        />
-        <el-col :span="6">
-          <el-input
-            placeholder="Please input Email"
-            v-model="item.EmailSent"
-            class="input-with-select"
-          >
+        <el-row type="">
+          <el-col :span="2">
+            <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
+          </el-col>
+          <el-col v-permission="['Admin']" :span="2">
             <el-button
-              @click="SendEmail(item)"
-              slot="append"
-              icon="el-icon-s-promotion"
-            ></el-button>
-          </el-input>
-        </el-col>
-        <el-col :span="6">
-          <el-input
-            placeholder="Please input Number as 79xxxxxxx"
-            v-model="PhoneNumber"
-            class="input-with-select"
-          >
+              class="filter-item"
+              type="primary"
+              icon="el-icon-download"
+              @click="handleDownload(item)"
+            >
+            </el-button>
+          </el-col>
+          <el-col v-permission="['Admin']" :span="2">
             <el-button
-              @click="SendWhatsApp(item)"
-              slot="append"
-              icon="el-icon-chat-round"
-              type="success"
-            ></el-button>
-          </el-input>
-        </el-col>
+              type="warning"
+              icon="el-icon-edit"
+              @click="
+                let r = $router.resolve({
+                  path: '/Reports/Edit/' + item.Id,
+                });
+                window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+              "
+            />
+          </el-col>
+          <el-col v-permission="['Admin']" :span="6">
+            <el-input
+              placeholder="Please input Email"
+              v-model="item.EmailSent"
+              class="input-with-select"
+            >
+              <el-button
+                @click="SendEmail(item)"
+                slot="append"
+                icon="el-icon-s-promotion"
+              ></el-button>
+            </el-input>
+          </el-col>
+          <el-col v-permission="['Admin']" :span="6">
+            <el-input
+              placeholder="Please input Number as 79xxxxxxx"
+              v-model="PhoneNumber"
+              class="input-with-select"
+            >
+              <el-button
+                @click="SendWhatsApp(item)"
+                slot="append"
+                icon="el-icon-chat-round"
+                type="success"
+              ></el-button>
+            </el-input>
+          </el-col>
+        </el-row>
         <iframe
           height="500px"
           frameborder="0"
@@ -100,10 +107,12 @@ import JSPM from "jsprintmanager";
 import * as htmlToImage from "html-to-image";
 import { GetReportByType } from "@/api/Report";
 import { SendEmail } from "@/api/StmpEmail";
+import permission from "@/directive/permission/index.js";
 
 export default {
   name: "PrintButton",
   props: ["Data", "Type", "Css"],
+  directives: { permission },
   data() {
     return {
       drawer: false,
@@ -160,19 +169,26 @@ export default {
         self.print();
       }
     },
-    SendEmail(item) {
+    async SendEmail(item) {
       ///  To , Subject , Body
-      SendEmail(
-        "hello@Conic-isv.com",
-        "From Conic Erp App Invoice #" + item.Id + "",
+      const loading = this.$loading({
+        lock: true,
+        text: "Send Report By Email",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      const ResolveSendEmail = await SendEmail(
+        item.EmailSent,
+        "From Conic Erp App " + item.Name + "",
         item.Html
       );
       this.$notify({
         title: "تم ",
-        message: "تم ارسال بنجاح",
+        message: "تم ارسال " + ResolveSendEmail,
         type: "success",
         duration: 20000,
       });
+      loading.close();
     },
     SendWhatsApp(item) {
       var oIframe = document.getElementById("Report-" + item.Id);

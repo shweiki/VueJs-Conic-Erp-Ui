@@ -48,6 +48,15 @@
           </el-select>
         </el-col>
         <el-col :span="6">
+          <drawer-print
+            style="float: left"
+            Type="PaymentList"
+            :Data="{
+              Totals: Totals,
+              Items: list,
+              Dates: [listQuery.DateFrom, listQuery.DateTo],
+            }"
+          />
           <el-button
             v-waves
             :loading="downloadLoading"
@@ -104,12 +113,6 @@
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
-      <el-button
-        style="float: left"
-        icon="el-icon-printer"
-        type="success"
-        @click="print(list)"
-      ></el-button>
     </el-card>
 
     <el-table
@@ -309,46 +312,6 @@ export default {
     getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
-    },
-    print(data) {
-      printJS({
-        printable: data,
-        properties: [
-          "Id",
-          "AccountId",
-          "Name",
-          "FakeDate",
-          "PaymentMethod",
-          "TotalAmmount",
-        ],
-        type: "json",
-        header:
-          "<center> <h2> مقبوضات</h2></center><h3 style='float:right'> الاجمالي النقدي " +
-          this.Totals.Cash.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي الفيزا : " +
-          this.Totals.Visa.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي الشيكات : " +
-          this.Totals.Cheque.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي :  " +
-          this.Totals.Totals.toFixed(this.$store.getters.settings.ToFixed) +
-          "</h3><h3 style='float:right'>  الفترة  : " +
-          this.formatDate(this.listQuery.DateFrom) +
-          " - " +
-          this.formatDate(this.listQuery.DateTo) +
-          "</h3>",
-        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      });
-    },
-    formatDate(date) {
-      let d = new Date(date),
-        day = "" + d.getDate(),
-        month = "" + (d.getMonth() + 1),
-        year = d.getFullYear();
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-
-      return [day, month, year].join("/");
     },
   },
 };

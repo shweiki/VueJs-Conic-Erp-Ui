@@ -486,7 +486,7 @@ export default {
       OldInvoice: null,
       PriceMethod: "retail",
       DisabledSave: false,
-      AutoPrint: true,
+      AutoPrint: false,
       AutoSendSMS: true,
       OpenRestOfBill: false,
       tempForm: {

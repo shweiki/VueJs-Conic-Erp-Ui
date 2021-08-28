@@ -11,7 +11,7 @@
               <el-col :span="8">
                 <Right-Menu />
               </el-col>
-              <el-col :span="3">
+              <el-col :span="6">
                 <el-form-item
                   prop="VendorId"
                   :rules="[
@@ -36,9 +36,6 @@
                   <!--  <vendor-select @Set="v => (tempForm.Vendor = v)" />-->
                 </el-form-item>
               </el-col>
-              <el-col :span="1">
-                <edit-vendor :VendorId="tempForm.VendorId" />
-              </el-col>
               <el-col v-permission="['Admin']" :span="4">
                 <el-form-item
                   prop="FakeDate"
@@ -56,8 +53,7 @@
                   />
                 </el-form-item>
               </el-col>
-
-              <el-col :span="8">
+              <el-col :span="6">
                 <el-button
                   type="primary"
                   icon="el-icon-s-home"
@@ -608,69 +604,68 @@ export default {
     },
     createData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
-        this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
-        this.tempForm.Tax = parseInt(this.tempForm.Tax);
-        let Total =
-          this.tempForm.InventoryMovements.reduce((prev, cur) => {
-            return prev + cur.Qty * cur.SellingPrice;
-          }, 0) - this.tempForm.Discount;
-        if (
-          Total > 0 &&
-          this.tempForm.InventoryMovements.length > 0 &&
-          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
-        ) {
-          this.DisabledSave = true;
-          //  this.tempForm.Type == "Delivery"
-          //   ? (this.tempForm.Status = 0)
-          //    : (this.tempForm.Status = 2);
-          Create(this.tempForm)
-            .then((response) => {
-              if (response) {
-                this.$notify({
-                  title: "تم الإضافة بنجاح",
-                  message: "تم الإضافة بنجاح - " + this.tempForm.PhoneNumber + " ",
-                  type: "success",
-                  position: "top-left",
-                });
-                this.tempForm.Id = response;
-                this.tempForm.Total = Total;
-                this.OldInvoice = this.tempForm;
-                this.restTempForm();
-                this.DisabledSave = false;
-                this.OpenRestOfBill = false;
-                if (this.AutoPrint == true) {
-                  PrintReport("SaleInvoice", this.OldInvoice, true);
+        if (valid) {
+          this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
+          this.tempForm.Tax = parseInt(this.tempForm.Tax);
+          let Total =
+            this.tempForm.InventoryMovements.reduce((prev, cur) => {
+              return prev + cur.Qty * cur.SellingPrice;
+            }, 0) - this.tempForm.Discount;
+          if (
+            Total > 0 &&
+            this.tempForm.InventoryMovements.length > 0 &&
+            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
+          ) {
+            this.DisabledSave = true;
+            Create(this.tempForm)
+              .then((response) => {
+                if (response) {
+                  this.$notify({
+                    title: "تم الإضافة بنجاح",
+                    message: "تم الإضافة بنجاح - " + this.tempForm.PhoneNumber + " ",
+                    type: "success",
+                    position: "top-left",
+                  });
+                  this.ValidateDescription = "";
+                  this.tempForm.Id = response;
+                  this.tempForm.Total = Total;
+                  this.OldInvoice = this.tempForm;
+                  this.restTempForm();
+                  this.DisabledSave = false;
+                  this.OpenRestOfBill = false;
+                  if (this.AutoPrint == true) {
+                    PrintReport("SaleInvoice", this.OldInvoice, true);
+                  }
+                  if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
+                    SendSMS(
+                      this.OldInvoice.PhoneNumber,
+                      "شكرا لإختياركم شاورما شيش , طلب رقم (" +
+                        this.OldInvoice.Id.toString().slice(-4) +
+                        ") القيمة مع التوصيل " +
+                        (
+                          this.OldInvoice.DeliveryPrice +
+                          this.OldInvoice.InventoryMovements.reduce((prev, cur) => {
+                            return prev + cur.Qty * cur.SellingPrice;
+                          }, 0) -
+                          this.OldInvoice.Discount
+                        ).toFixed(2) +
+                        " JD"
+                    );
+                } else {
+                  this.$notify.error({
+                    title: "error",
+                    message: "حصلت مشكلة في ترحيل",
+                    position: "top-left",
+                  });
                 }
-
-                if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
-                  SendSMS(
-                    this.OldInvoice.PhoneNumber,
-                    "شكرا لإختياركم شاورما شيش , طلب رقم (" +
-                      this.OldInvoice.Id.toString().slice(-4) +
-                      ") القيمة مع التوصيل " +
-                      (
-                        this.OldInvoice.DeliveryPrice +
-                        this.OldInvoice.InventoryMovements.reduce((prev, cur) => {
-                          return prev + cur.Qty * cur.SellingPrice;
-                        }, 0) -
-                        this.OldInvoice.Discount
-                      ).toFixed(2) +
-                      " JD"
-                  );
-              } else {
-                this.$notify.error({
-                  title: "error",
-                  message: "حصلت مشكلة في ترحيل",
-                  position: "top-left",
-                });
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          this.OpenRestOfBill = false;
-          return false;
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          } else {
+            this.OpenRestOfBill = false;
+            return false;
+          }
         }
       });
     },
@@ -691,30 +686,58 @@ export default {
             this.DisabledSave = true;
             Edit(this.tempForm)
               .then((response) => {
-                this.$notify({
-                  title: "تم تعديل بنجاح",
-                  message: "تم تعديل بنجاح",
-                  type: "success",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                  onClose: () => {
-                    this.ValidateDescription = "";
-                    this.tempForm.Total = Total;
-                    this.OldInvoice = this.tempForm;
-                    this.$nextTick(() => {
-                      this.OpenRestOfBill = false;
+                if (response) {
+                  this.$notify({
+                    title: "تم تعديل بنجاح",
+                    message: "تم تعديل بنجاح",
+                    type: "success",
+                    position: "top-left",
+                    duration: 1000,
+                    showClose: false,
+                  });
+                  this.ValidateDescription = "";
+                  this.tempForm.Total = Total;
+                  this.OldInvoice = this.tempForm;
+                  this.DisabledSave = false;
+                  this.OpenRestOfBill = false;
+                  if (this.AutoPrint == true) {
+                    PrintReport("SaleInvoice", this.OldInvoice, true);
+                  }
+                  if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
+                    SendSMS(
+                      this.OldInvoice.PhoneNumber,
+                      "شكرا لإختياركم شاورما شيش , طلب رقم (" +
+                        this.OldInvoice.Id.toString().slice(-4) +
+                        ") القيمة مع التوصيل " +
+                        (
+                          this.OldInvoice.DeliveryPrice +
+                          this.OldInvoice.InventoryMovements.reduce((prev, cur) => {
+                            return prev + cur.Qty * cur.SellingPrice;
+                          }, 0) -
+                          this.OldInvoice.Discount
+                        ).toFixed(2) +
+                        " JD"
+                    );
+                  this.$confirm("هل تريد العودة ")
+                    .then((_) => {
                       this.$router.go(-1);
-                    });
-                  },
-                });
+                    })
+                    .catch((_) => {});
+                } else {
+                  this.$notify.error({
+                    title: "error",
+                    message: "حصلت مشكلة في ترحيل",
+                    position: "top-left",
+                  });
+                }
               })
               .catch((error) => {
                 console.log(error);
               });
-          } else
+          } else {
             this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
-          this.OpenRestOfBill = false;
+            this.OpenRestOfBill = false;
+          }
         } else {
           console.log("error submit!!");
           return false;

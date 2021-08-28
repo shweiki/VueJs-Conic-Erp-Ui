@@ -1,5 +1,6 @@
 <template>
   <el-select
+    v-bind:disabled="!checkPermission(['Admin'])"
     v-model="value"
     @change="SetVal"
     placeholder="إيراد"
@@ -14,38 +15,40 @@
 </template>
 <script>
 import { GetInComeAccounts } from "@/api/Account";
+import checkPermission from "@/utils/permission";
 
 export default {
   props: ["CashId"],
   data() {
     return {
       options: [],
-      value: 2
+      value: 2,
     };
   },
   watch: {
     CashId(val) {
       if (val) this.SetVal(val);
-    }
+    },
   },
   created() {
     GetInComeAccounts()
-      .then(response => {
+      .then((response) => {
         this.options = response;
         this.SetVal(response[0].value);
       })
-      .catch(error => {
+      .catch((error) => {
         reject(error);
       });
   },
   methods: {
+    checkPermission,
     SetVal(val) {
       this.$emit(
         "Set",
-        this.options.find(obj => obj.value == val)
+        this.options.find((obj) => obj.value == val)
       );
       this.value = val;
-    }
-  }
+    },
+  },
 };
 </script>

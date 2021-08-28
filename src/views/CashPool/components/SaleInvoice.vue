@@ -13,6 +13,15 @@
         <Drawer-Print style="float: left" Type="CashPool" :Data="CashPool" />
         <Drawer-Print
           style="float: left"
+          Type="SaleInvoicesList"
+          :Data="{
+            Totals: Totals,
+            Items: tableData,
+            Dates: [new Date(), new Date()],
+          }"
+        />
+        <Drawer-Print
+          style="float: left"
           Type="ItemsSales"
           :Data="{
             Totals: Totals,
@@ -147,7 +156,7 @@
     </el-card>
     <el-card class="box-card">
       <el-table
-        height="250"
+        height="600"
         :data="tableData"
         fit
         border
@@ -221,18 +230,7 @@
             JOD
           </template>
         </el-table-column>
-        <el-table-column width="60" align="center">
-          <template slot="header" slot-scope="{}">
-            <Drawer-Print
-              style="float: left"
-              Type="SaleInvoicesList"
-              :Data="{
-                Totals: Totals,
-                Items: tableData,
-                Dates: [new Date(), new Date()],
-              }"
-            />
-          </template>
+        <el-table-column width="60" label="#" align="center">
           <template slot-scope="scope">
             <Drawer-Print Type="SaleInvoice" :Data="scope.row" />
           </template>
@@ -454,17 +452,9 @@ export default {
                   Description: "فاتورة مؤكدة",
                 }).then(async (response) => {
                   console.log(response);
-                  this.$notify({
-                    title: "تم الإضافة بنجاح",
-                    message: "تم الإضافة بنجاح",
-                    type: "success",
-                    position: "top-left",
-                    duration: 3000,
-                  });
                   this.OpenCashPoolDialog = false;
                   if (this.AutoSent) {
                     loading.text = "Send Report By Email";
-
                     const CashPool = await VisualizationReportHtml(
                       "CashPool",
                       this.CashPool
@@ -490,9 +480,11 @@ export default {
                       }
                     );
                     console.log("ItemsSales", ItemsSales);
-                    SendEmail(
+                    const ResolveSendEmail = await SendEmail(
                       this.$store.getters.CompanyInfo.Email,
                       "إغلاق صندوق " +
+                        this.CashPool.Type +
+                        " - " +
                         "من تاريخ " +
                         this.formatDate(new Date()) +
                         " - " +
@@ -500,6 +492,13 @@ export default {
                         this.formatDate(new Date()),
                       CashPool + ItemsSales + SaleInvoicesList + ItemsIngredients
                     );
+                    this.$notify({
+                      title: "تم الإضافة بنجاح",
+                      message: "تم الإضافة بنجاح" + ResolveSendEmail,
+                      type: "success",
+                      position: "top-left",
+                      duration: 3000,
+                    });
                     loading.close();
                     Object.assign(this.$data, this.$options.data());
                   } else {

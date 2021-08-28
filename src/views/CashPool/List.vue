@@ -47,7 +47,7 @@
         </el-select>
       </el-col>
       <el-col :span="6">
-        <Drawer-Print Type="CashPoolList" :Data="Data" />
+        <Drawer-Print style="float: left" Type="CashPoolList" :Data="Data" />
 
         <el-button
           v-waves
@@ -164,6 +164,12 @@
         prop="Type"
       >
       </el-table-column>
+      <el-table-column label="المطلوب" width="120" align="center">
+        <template slot-scope="{ row }">
+          {{ row.Total.toFixed($store.getters.settings.ToFixed) }}
+          JOD
+        </template>
+      </el-table-column>
       <el-table-column v-bind:label="$t('CashPool.TotalCash')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalCash.toFixed($store.getters.settings.ToFixed) }}
@@ -237,6 +243,7 @@
 <script>
 import { GetByListQ } from "@/api/CashPool";
 import { GetSaleInvoiceByListId } from "@/api/SaleInvoice";
+import { GetPaymentByListId } from "@/api/Payment";
 
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -264,7 +271,6 @@ export default {
     RadioOprations,
     DialogActionLog,
   },
-
   directives: { waves, permission },
   data() {
     return {
@@ -309,12 +315,20 @@ export default {
         this.list = response.items;
         this.Totals = response.Totals;
         this.list.map((x) => {
-          GetSaleInvoiceByListId({ listid: x.Fktable }).then((res) => {
-            x.SaleInvoice = res;
-            x.Total = x.SaleInvoice.reduce((prev, cur) => {
-              return prev + cur.Total;
-            }, 0);
-          });
+          if (x.Type == "SaleInvoice")
+            GetSaleInvoiceByListId({ listid: x.Fktable }).then((res) => {
+              x.SaleInvoice = res;
+              x.Total = x.SaleInvoice.reduce((prev, cur) => {
+                return prev + cur.Total;
+              }, 0);
+            });
+          if (x.Type == "Payment")
+            GetPaymentByListId({ listid: x.Fktable }).then((res) => {
+              x.Payment = res;
+              x.Total = x.Payment.reduce((prev, cur) => {
+                return prev + cur.TotalAmmount;
+              }, 0);
+            });
         });
         this.Totals.Totals = this.list.reduce((prev, cur) => {
           return prev + cur.Total;
@@ -375,21 +389,6 @@ export default {
     getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
-    },
-    print(data) {
-      data = data.map((Item) => ({
-        Name: Item.Name,
-        Qty: Item.Qty,
-        SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(
-          this.$store.getters.settings.ToFixed
-        ),
-      }));
-      printJS({
-        printable: data,
-        properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json",
-      });
     },
   },
 };

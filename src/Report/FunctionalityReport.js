@@ -46,12 +46,10 @@ export function PrintReport(Type, Data, JSPM = false) {
   });
 }
 export function JSPMPrintReport(Type, Data) {
-
   GetReportByType({
     Type: Type,
   }).then((res) => {
     res.forEach((item, index) => {
-
 
     });
   });
@@ -59,28 +57,29 @@ export function JSPMPrintReport(Type, Data) {
 export function SendReportByEmail(Email, Type, Data, Subject = "") {
   GetReportByType({
     Type: Type,
-  }).then((res) => {
-    res.forEach((item, index) => {
+  }).then( (res) => {
+    res.forEach(async(item, index) => {
       item.Html = Visualization(Data, item.Html, "Set");
-
-      SendEmail(Email, item.Name + " - " + Subject, item.Html, {
-        name: "smtpjs.png",
-        path: "https://networkprogramming.files.wordpress.com/2017/11/smtpjs.png"
-      })
-
+      const ResolveSendEmail = await SendEmail(Email, item.Name + " - " + Subject, item.Html)
+      this.$notify({
+        title: "تم الإضافة بنجاح",
+        message: "تم ارسال " + ResolveSendEmail,
+        type: "success",
+        position: "top-left",
+        duration: 3000,
+      });
     });
   });
 }
 export function VisualizationReportHtml(Type, Data) {
   return new Promise((resolve, reject) => {
-
     GetReportByType({
       Type: Type,
     }).then((res) => {
       res.forEach((item, index) => {
         item.Html = Visualization(Data, item.Html, "Set");
       });
-      resolve(res.map(x=>x.Html))
+      resolve(res.map(x => x.Html))
 
     }).catch(err => { reject(err) });
   })
