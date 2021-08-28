@@ -8,17 +8,19 @@
       class="demo-ruleForm"
     >
       <el-card class="box-card">
-        <div slot="header" >
-          <el-input
-            prop="Name"
-            placeholder="اسم الورشة"
-            style="width: 20%"
-            v-model="tempForm.Name"
-          ></el-input>
-          <el-tag>{{ tempForm.Name }}</el-tag>
-          <el-tag>{{ VendorName }}</el-tag>
-          <el-col :span="12">
-            <el-form-item v-bind:label="$t('WorkShop.TAmount')">
+        <div slot="header">
+          <el-row type="flex">
+            <el-col :span="12">
+              <el-input
+                prop="Name"
+                placeholder="اسم الورشة"
+                v-model="tempForm.Name"
+              ></el-input>
+            </el-col>
+            <el-col :span="2">
+              <span>{{ $t("WorkShop.TAmount") }}</span>
+            </el-col>
+            <el-col :span="6">
               <currency-input
                 :rules="[
                   {
@@ -32,16 +34,30 @@
                 :value-range="{ min: 0.0, max: 100000 }"
                 @focus="$event.target.select()"
               />
-            </el-form-item>
-          </el-col>
-          <el-button
-            :disabled="DisabledSave"
-            style="float: left"
-            type="success"
-            icon="fa fa-save"
-            @click="isEdit != true ? createData() : updateData()"
-            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-          >
+            </el-col>
+            <el-col :span="3"
+              >صافي الربح :
+              {{
+                (
+                  tempForm.TotalAmmount -
+                  (tempForm.InventoryMovements.reduce((prev, cur) => {
+                    return prev + cur.Qty * cur.SellingPrice;
+                  }, 0) -
+                    tempForm.Discount)
+                ).toFixed($store.getters.settings.ToFixed)
+              }}</el-col
+            >
+            <el-col :span="3">
+              <el-button
+                :disabled="DisabledSave"
+                style="float: left"
+                type="success"
+                icon="fa fa-save"
+                @click="isEdit != true ? createData() : updateData()"
+                >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
+              >
+            </el-col>
+          </el-row>
         </div>
         <el-row type="flex">
           <el-col :span="6" align="center">
@@ -62,7 +78,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="8" align="right">
+          <el-col :span="12" align="right">
             <el-form-item
               label="الى حساب"
               align="center"
@@ -76,10 +92,8 @@
               ]"
             >
               <Vendor-Search-Any
-                align="right"
                 @Set="
                   (v) => {
-                    VendorName = v.Name;
                     tempForm.VendorId = v.Id;
                   }
                 "
@@ -213,7 +227,6 @@
           </el-table-column>
         </el-table>
       </el-card>
-
       <el-row type="flex">
         <el-col :span="24">
           <el-card shadow="hover">
@@ -260,16 +273,16 @@
               JOD</span
             >
             <el-divider direction="vertical"></el-divider>
-            <el-form-item>
-              <el-input
-                v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
-                type="textarea"
-                v-model="tempForm.Description"
-              ></el-input>
-            </el-form-item>
           </el-card>
         </el-col>
       </el-row>
+      <el-form-item>
+        <el-input
+          v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
+          type="textarea"
+          v-model="tempForm.Description"
+        ></el-input>
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -277,7 +290,6 @@
 import { Create, Edit, GetWorkShopById } from "@/api/WorkShop";
 import FakeDate from "@/components/Date/FakeDate";
 
-import { GetActiveInventory } from "@/api/InventoryItem";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
 import ExpDate from "@/components/Date/ExpDate";
@@ -328,7 +340,6 @@ export default {
       }
     };
     return {
-      VendorName: "",
       TotalQty: 0,
       TotalItems: 0,
       ValidateNote: "",
@@ -345,8 +356,7 @@ export default {
         LowCost: 0,
         Description: "",
         Status: 0,
-        VendorId: undefined,
-
+        VendorId: 2,
         InventoryMovements: [],
       },
       rules: {
@@ -359,7 +369,6 @@ export default {
           },
         ],
       },
-      InventoryItems: [],
       CashAccounts: [],
       tempRoute: {},
     };
@@ -369,17 +378,28 @@ export default {
       this.getdata(this.$route.params && this.$route.params.id);
     }
     this.tempRoute = Object.assign({}, this.$route);
-
-    GetActiveInventory().then((response) => {
-      console.log(response);
-      this.InventoryItems = response;
-    });
-
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
   },
   methods: {
+    restTempForm() {
+      this.tempForm = {
+        Id: undefined,
+        Name: "",
+        Tax: 0.0,
+        FakeDate: "",
+        PaymentMethod: "Receivables",
+        TotalAmmount: 0,
+        Discount: 0,
+        DeliveryDate: "",
+        LowCost: 0,
+        Description: "",
+        Status: 0,
+        VendorId: 2,
+        InventoryMovements: [],
+      };
+    },
     getdata(val) {
       GetWorkShopById({ Id: val })
         .then((response) => {
@@ -413,7 +433,6 @@ export default {
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
     },
-
     updateData() {
       this.$refs["tempForm"].validate((valid) => {
         if (valid) {
@@ -434,6 +453,7 @@ export default {
                   showClose: false,
                   onClose: () => {
                     if (response) {
+                      this.restTempForm();
                       this.$router.push({ path: `/WorkShop/List` });
                     }
                   },
@@ -463,16 +483,27 @@ export default {
 
             Create(this.tempForm)
               .then((response) => {
-                this.$router.push({ path: `/WorkShop/List` });
-
-                this.$notify({
-                  title: "تم الإضافة بنجاح",
-                  message: "تم الإضافة بنجاح",
-                  type: "success",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                });
+                if (response) {
+                  this.$notify({
+                    title: "تم الإضافة بنجاح",
+                    message: "تم الإضافة بنجاح",
+                    type: "success",
+                    position: "top-left",
+                    duration: 1000,
+                    showClose: false,
+                  });
+                  this.restTempForm();
+                  this.$router.push({ path: `/WorkShop/List` });
+                } else {
+                  this.$notify({
+                    title: "مشكلة",
+                    message: "حصلت مشكلة في عملية الحفظ",
+                    type: "error",
+                    position: "top-left",
+                    duration: 1000,
+                    showClose: false,
+                  });
+                }
               })
               .catch((error) => {
                 console.log(error);

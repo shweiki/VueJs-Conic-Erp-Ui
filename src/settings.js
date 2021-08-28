@@ -32,6 +32,7 @@ module.exports = {
         AccPass: "", //'D7!cT5!SgU0'
     },
     OutgoingMailServer: {
+        SecureToken:"",//b713dae2-4536-43e1-99d7-fb7bfc9bff7a
         Host: "", //mail.privateemail.com
         Username: "", // hello@conic-isv.com
         Password: "", // *****
@@ -47,7 +48,7 @@ module.exports = {
     },
     CashPoolLayout: 'Restaurant',
     PurchaseLayout: 'SuperMarket',
-    WorkShopLayout: 'Layout1',
+    WorkShopLayout: 'Pubilc',
     datepickerQuery: [Date(), Date()], // start , End
     timeQuery: ['00:00:00', '23:59:59'],
     printers: ['Casher', 'WorkTable1', 'WorkTable2'],

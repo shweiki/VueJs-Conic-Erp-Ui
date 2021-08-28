@@ -433,9 +433,7 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 // report
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { GetActiveInventory } from "@/api/InventoryItem";
 import { GetActiveMenuItem } from "@/api/MenuItem";
-import { GetActiveVendor } from "@/api/Vendor";
 
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
@@ -519,9 +517,6 @@ export default {
           label: "ضريبة 16 %",
         },
       ],
-      InventoryItems: [],
-      MenuItems: [],
-      Vendor: [],
     };
   },
   created() {
@@ -536,17 +531,7 @@ export default {
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0, 0.7)",
     });
-    GetActiveInventory().then((response) => {
-      this.InventoryItems = response;
-    });
-    GetActiveMenuItem().then((response) => {
-      this.MenuItems = response;
-    });
-
-    GetActiveVendor().then((response) => {
-      this.Vendor = response;
-      loading.close();
-    });
+    loading.close();
   },
   mounted() {
     this.focusBarcode();

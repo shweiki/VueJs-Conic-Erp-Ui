@@ -442,7 +442,6 @@ import FakeDate from "@/components/Date/FakeDate";
 import { PrintReport } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { GetActiveInventory } from "@/api/InventoryItem";
 import { GetActiveMenuItem } from "@/api/MenuItem";
 
 //import { GetActiveMember } from "@/api/Member";
@@ -526,7 +525,6 @@ export default {
           label: "ضريبة 16 %",
         },
       ],
-      InventoryItems: [],
       MenuItems: [],
     };
   },
@@ -542,9 +540,7 @@ export default {
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0, 0.7)",
     });
-    GetActiveInventory().then((response) => {
-      this.InventoryItems = response;
-    });
+
     GetActiveMenuItem().then((response) => {
       this.MenuItems = response;
     });

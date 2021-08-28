@@ -14,7 +14,6 @@ const mutations = {
         }
     }
 }
-
 const actions = {
     GetSetting({ commit }) {
         return new Promise((resolve, reject) => {
@@ -55,7 +54,7 @@ const actions = {
             Edit({
                 Id: 0,
                 Name: data.key,
-                value: data.value,
+                value: typeof data.value !="object"? data.value : JSON.stringify(data.value),
                 Type: typeof data.value,
                 state: 0,
                 Description: JSON.stringify(data)

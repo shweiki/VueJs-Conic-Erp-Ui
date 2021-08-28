@@ -9,7 +9,7 @@
       class="demo-ruleForm"
     >
       <el-card class="box-card">
-        <div slot="header" >
+        <div slot="header">
           <el-button
             style="float: left"
             type=" "
@@ -38,17 +38,13 @@
                 {
                   required: true,
                   message: 'يجب تحديد نوع سند',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-radio-group v-model="tempForm.OrderType">
-                <el-radio-button
-                  label="ادخال بضاعة اول المدة / بونص"
-                ></el-radio-button>
-                <el-radio-button
-                  label="اخراج: هدايا / عروض / تالف"
-                ></el-radio-button>
+                <el-radio-button label="ادخال بضاعة اول المدة / بونص"></el-radio-button>
+                <el-radio-button label="اخراج: هدايا / عروض / تالف"></el-radio-button>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -60,8 +56,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-date-picker
@@ -77,10 +73,7 @@
               prop="Description"
               v-bind:label="$t('OrderInventories.Statement')"
             >
-              <el-input
-                type="textarea"
-                v-model="tempForm.Description"
-              ></el-input>
+              <el-input type="textarea" v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -105,9 +98,7 @@
               >
               <template slot-scope="scope">
                 {{ tempForm.InventoryMovements[scope.$index].Name }}
-                <edit-item
-                  :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
-                />
+                <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
               </template>
             </el-table-column>
 
@@ -147,7 +138,7 @@
               <template slot-scope="scope">
                 <Select-Item-Exp-Column
                   @SetVal="
-                    v => {
+                    (v) => {
                       tempForm.InventoryMovements[scope.$index].EXP = v;
                     }
                   "
@@ -161,18 +152,14 @@
                 $t("OrderInventories.Store")
               }}</template>
               <template slot-scope="scope">
-                <el-radio-group
-                  v-model="
-                    tempForm.InventoryMovements[scope.$index].InventoryItemId
+                <radio-active-inventory
+                  :InventoryId="tempForm.InventoryMovements[scope.$index].InventoryItemId"
+                  @Set="
+                    (v) =>
+                      (tempForm.InventoryMovements[scope.$index].InventoryItemId =
+                        v.value)
                   "
-                >
-                  <el-radio-button
-                    v-for="(item, index) in InventoryItems"
-                    :key="index"
-                    :label="item.value"
-                    >{{ item.label }}</el-radio-button
-                  >
-                </el-radio-group>
+                />
               </template>
             </el-table-column>
             <el-table-column
@@ -185,9 +172,7 @@
                   :prop="'InventoryMovements.' + scope.$index + '.Description'"
                 >
                   <el-input
-                    v-model="
-                      tempForm.InventoryMovements[scope.$index].Description
-                    "
+                    v-model="tempForm.InventoryMovements[scope.$index].Description"
                     required
                     class="input-with-select"
                   >
@@ -224,23 +209,28 @@
 </template>
 <script>
 import { Create, Edit, GetOrderInventoryById } from "@/api/OrderInventory";
-import { GetActiveInventory } from "@/api/InventoryItem";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
 import ExpDate from "@/components/Date/ExpDate.vue";
 import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
+import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
 
 export default {
   name: "NewOrderInventories",
-  components: { ItemsSearch, EditItem, ExpDate, SelectItemExpColumn },
+  components: {
+    ItemsSearch,
+    EditItem,
+    ExpDate,
+    SelectItemExpColumn,
+    RadioActiveInventory,
+  },
   props: {
     isEdit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
-    
     return {
       ValidateNote: "",
       tempForm: {
@@ -248,7 +238,7 @@ export default {
         FakeDate: new Date(),
         OrderType: "ادخال: بضاعة اول المدة / بونص",
         Description: "",
-        InventoryMovements: []
+        InventoryMovements: [],
       },
       rules: {
         InventoryMovements: [
@@ -256,12 +246,11 @@ export default {
             type: "array",
             required: true,
             message: "لا يمكن إستكمال عملية مخزن من غير إضافة أصناف",
-            trigger: "change"
-          }
-        ]
+            trigger: "change",
+          },
+        ],
       },
-      InventoryItems: [],
-      Items: []
+      Items: [],
     };
   },
   created() {
@@ -269,15 +258,9 @@ export default {
       this.getdata(this.$route.params && this.$route.params.id);
     }
     this.tempRoute = Object.assign({}, this.$route);
-
-    GetActiveInventory().then(response => {
-      console.log(response);
-      this.InventoryItems = response;
-    });
   },
   methods: {
     AddItem(item) {
-      console.log(item);
       this.tempForm.InventoryMovements.unshift({
         Id: undefined,
         TypeMove: "In",
@@ -289,7 +272,7 @@ export default {
         Description: "",
         InventoryItemId: 1,
         Name: item.Name,
-        OrderInventoryId: undefined
+        OrderInventoryId: undefined,
       });
     },
 
@@ -301,7 +284,7 @@ export default {
     },
     getdata(val) {
       GetOrderInventoryById({ Id: val })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.tempForm = response;
 
@@ -311,7 +294,7 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -319,10 +302,10 @@ export default {
       this.tempForm.InventoryMovements.splice(index, 1);
     },
     createData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.$notify({
                 title: "تم الإضافة بنجاح",
                 message: "تم الإضافة بنجاح",
@@ -338,10 +321,10 @@ export default {
                       });
                     });*/
                   }
-                }
+                },
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -351,10 +334,10 @@ export default {
       });
     },
     updateData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.$notify({
                 title: "تم تعديل  بنجاح",
                 message: "تم تعديل بنجاح",
@@ -370,10 +353,10 @@ export default {
                       });
                     });*/
                   }
-                }
+                },
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -385,14 +368,14 @@ export default {
     setTagsViewTitle() {
       const title = "Edit Order Inventory";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`
+        title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Order Inventory";
       document.title = `${title} - ${this.tempForm.Id}`;
-    }
-  }
+    },
+  },
 };
 </script>

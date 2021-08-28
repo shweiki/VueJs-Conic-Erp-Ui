@@ -15,9 +15,8 @@
           inactive-color="#ff4949"
         ></el-switch>
       </el-col>
-
-      <el-col :span="8">
-        <Item-Search-Any @Set="v => AddItem(v, 1)" />
+      <el-col v-bind:span="WithBarCode ? 8 : 16">
+        <Item-Search-Any @Set="(v) => AddItem(v, 1)" />
       </el-col>
       <el-col v-if="WithBarCode" :span="8">
         <el-input
@@ -44,9 +43,7 @@
     >
       <el-row>
         <el-col :span="3">
-          <el-button type="success" icon="el-plus" @click="AddItemByQty"
-            >Add</el-button
-          >
+          <el-button type="success" icon="el-plus" @click="AddItemByQty">Add</el-button>
         </el-col>
 
         <el-col :span="12">
@@ -55,8 +52,8 @@
             :precision="2"
             :step="1"
             :min="0.0"
-            :max="1000000"                            @focus="$event.target.select()"
-
+            :max="1000000"
+            @focus="$event.target.select()"
           ></el-input-number>
         </el-col>
       </el-row>
@@ -72,7 +69,7 @@ import permission from "@/directive/permission/index.js";
 
 export default {
   name: "ItemsSearch",
-    props: ["WithBarCode"],
+  props: ["WithBarCode"],
 
   components: { AddItem, DialogSearchItem, ItemSearchAny },
   directives: { permission },
@@ -87,7 +84,7 @@ export default {
       Barcode: "",
 
       searchPool: [],
-      fuse: undefined
+      fuse: undefined,
     };
   },
   created() {
@@ -118,7 +115,7 @@ export default {
     },
     AddItemByQty() {
       var find = this.Items.findIndex(
-        value => value.Barcode == this.Barcode || value.id == this.Barcode
+        (value) => value.Barcode == this.Barcode || value.id == this.Barcode
       );
       if (find != -1) {
         this.AddItem(this.Items[find], this.Qty);
@@ -132,11 +129,11 @@ export default {
       this.OpenAddItem = false;
 
       if (this.Barcode != "" || this.Barcode) {
-        GetItemByBarcode({ BarCode: this.Barcode }).then(res => {
+        GetItemByBarcode({ BarCode: this.Barcode }).then((res) => {
           if (res) this.AddItem(res, 1);
           else {
             if (this.$store.getters.settings.BarcodeIsId == true) {
-              GetItemById({ Id: this.Barcode }).then(res => {
+              GetItemById({ Id: this.Barcode }).then((res) => {
                 if (res) this.AddItem(res, 1);
                 else this.OpenAddItem = true;
               });
@@ -144,7 +141,7 @@ export default {
           }
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>

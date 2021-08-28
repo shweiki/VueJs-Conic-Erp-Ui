@@ -59,7 +59,7 @@
             <el-col :span="6">
               <span>{{ $t("Settings.WorkShopLayout") }}</span>
               <el-select v-model="WorkShopLayout" placeholder="WorkShopLayout">
-                <el-option label="Layout1" value="Layout1"> </el-option>
+                <el-option label="Pubilc" value="Pubilc"> </el-option>
               </el-select>
             </el-col>
             <el-col :span="6">

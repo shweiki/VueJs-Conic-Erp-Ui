@@ -49,7 +49,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item
               label="الى حساب"
               prop="VendorId"
@@ -72,17 +72,12 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="طريقة الدفع" prop="PaymentMethod">
-              <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
-                <el-radio label="Cash" border>{{
-                  $t("NewPurchaseInvoice.Cash")
-                }}</el-radio>
-
-                <el-radio v-if="tempForm.VendorId != 2" label="Receivables" border>{{
-                  $t("NewPurchaseInvoice.Receivables")
-                }}</el-radio>
-              </el-radio-group>
+              <radio-payment-method
+                :VendorId="tempForm.VendorId"
+                @Set="(v) => (tempForm.PaymentMethod = v)"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -99,7 +94,7 @@
           </el-col>
         </el-row>
         <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-          <items-search :WithBarCode="true" @add="AddItem" />
+          <items-search :WithBarCode="false" @add="AddItem" />
         </el-card>
         <el-table :data="tempForm.InventoryMovements" fit border>
           <el-table-column align="center" prop="Name">
@@ -166,16 +161,13 @@
               $t("NewPurchaseInvoice.Inventory")
             }}</template>
             <template slot-scope="scope">
-              <el-radio-group
-                v-model="tempForm.InventoryMovements[scope.$index].InventoryItemId"
-              >
-                <el-radio-button
-                  v-for="(item, index) in InventoryItems"
-                  :key="index"
-                  :label="item.value"
-                  >{{ item.label }}</el-radio-button
-                >
-              </el-radio-group>
+              <radio-active-inventory
+                :InventoryId="tempForm.InventoryMovements[scope.$index].InventoryItemId"
+                @Set="
+                  (v) =>
+                    (tempForm.InventoryMovements[scope.$index].InventoryItemId = v.value)
+                "
+              />
             </template>
           </el-table-column>
           <el-table-column
@@ -294,12 +286,13 @@
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import FakeDate from "@/components/Date/FakeDate";
 import { CreateEntry } from "@/api/EntryAccounting";
-import { GetActiveInventory } from "@/api/InventoryItem";
-import ItemsSearch from "@/components/Item/ItemsSearch";
+import ItemsSearch from "@/components/Item/ItemsSearch.vue";
 import EditItem from "@/components/Item/EditItem";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
+import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
+import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
 
 export default {
   name: "NewSalesInvoice",
@@ -310,6 +303,8 @@ export default {
     VendorSearchAny,
     SelectInComeAccounts,
     SelectCashAccounts,
+    RadioActiveInventory,
+    RadioPaymentMethod,
   },
   props: {
     isEdit: {
@@ -323,7 +318,7 @@ export default {
       DisabledSave: false,
       tempForm: {
         Id: undefined,
-        Name: "-",
+        Name: "",
         Tax: 0.0,
         CashAccountId: undefined,
         InComeAccountId: undefined,
@@ -345,7 +340,6 @@ export default {
           },
         ],
       },
-      InventoryItems: [],
       CashAccounts: [],
       Vendor: undefined,
       tempRoute: {},
@@ -356,13 +350,24 @@ export default {
       this.getdata(this.$route.params && this.$route.params.id);
     }
     this.tempRoute = Object.assign({}, this.$route);
-
-    GetActiveInventory().then((response) => {
-      console.log(response);
-      this.InventoryItems = response;
-    });
   },
   methods: {
+    restTempForm() {
+      this.tempForm = {
+        Id: undefined,
+        Name: "",
+        Tax: 0.0,
+        CashAccountId: undefined,
+        InComeAccountId: undefined,
+        AccountInvoiceNumber: "",
+        FakeDate: "",
+        PaymentMethod: "Cash",
+        Discount: 0,
+        VendorId: 2,
+        Status: 0,
+        InventoryMovements: [],
+      };
+    },
     getdata(val) {
       GetSaleInvoiceById({ Id: val })
         .then((response) => {
@@ -397,7 +402,6 @@ export default {
     },
     updateData() {
       this.$refs["tempForm"].validate((valid) => {
-        this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
         this.tempForm.Tax = parseInt(this.tempForm.Tax);
         let Total =
           this.tempForm.InventoryMovements.reduce((prev, cur) => {
@@ -411,19 +415,18 @@ export default {
         ) {
           Edit(this.tempForm)
             .then((response) => {
-              this.$notify({
-                title: "تم تعديل  بنجاح",
-                message: "تم تعديل بنجاح",
-                type: "success",
-                position: "top-left",
-                duration: 1000,
-                showClose: false,
-                onClose: () => {
-                  if (response) {
-                    this.$router.push({ path: `/Sales/List` });
-                  }
-                },
-              });
+              if (response) {
+                this.$notify({
+                  title: "تم تعديل  بنجاح",
+                  message: "تم تعديل بنجاح",
+                  type: "success",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                });
+                this.restTempForm();
+                this.$router.push({ path: `/Sales/List` });
+              }
             })
             .catch((error) => {
               console.log(error);
@@ -436,7 +439,6 @@ export default {
     },
     createData() {
       this.$refs["tempForm"].validate((valid) => {
-        this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
         this.tempForm.Tax = parseInt(this.tempForm.Tax);
         let Total =
           this.tempForm.InventoryMovements.reduce((prev, cur) => {
@@ -451,60 +453,69 @@ export default {
           this.DisabledSave = true;
           Create(this.tempForm)
             .then((response) => {
-              CreateEntry({
-                Id: undefined,
-                FakeDate: this.tempForm.FakeDate,
-                Description: "",
-                Type: "Auto",
-                EntryMovements: [
-                  {
-                    Id: undefined,
-                    AccountId: this.Vendor.AccountId,
-                    Debit: 0.0,
-                    Credit: Total,
-                    Description: "فاتورة مبيعات رقم" + response + " ",
-                    EntryId: undefined,
-                    TableName: "SaleInvoice",
-                    Fktable: response,
-                  },
-                  {
-                    Id: undefined,
-                    AccountId:
-                      this.tempForm.PaymentMethod == "Cash"
-                        ? this.CashAccountId
-                        : this.InComeAccountId,
-                    Debit: Total,
-                    Credit: 0.0,
-                    Description: "فاتورة مبيعات رقم" + response + " ",
-                    EntryId: undefined,
-                    TableName: "SaleInvoice",
-                    Fktable: response,
-                  },
-                ],
-              }).then((res) => {
-                if (res) {
-                  this.DisabledSave = false;
-
-                  this.$router.push({ path: `/Sales/List` });
-                  this.$notify({
-                    title: "تم الإضافة بنجاح",
-                    message: "تم الإضافة بنجاح",
-                    type: "success",
-                    position: "top-left",
-                    duration: 1000,
-                    showClose: false,
-                  });
-                } else {
-                  this.$notify({
-                    title: "مشكلة",
-                    message: "حصلت مشكلة في عملية الحفظ",
-                    type: "error",
-                    position: "top-left",
-                    duration: 1000,
-                    showClose: false,
-                  });
-                }
-              });
+              if (response && this.tempForm.PaymentMethod == "Receivables") {
+                CreateEntry({
+                  Id: undefined,
+                  FakeDate: this.tempForm.FakeDate,
+                  Description: "",
+                  Type: "Auto",
+                  EntryMovements: [
+                    {
+                      Id: undefined,
+                      AccountId: this.Vendor.AccountId,
+                      Debit: 0.0,
+                      Credit: Total,
+                      Description: "فاتورة مبيعات ذمم رقم" + response + " ",
+                      EntryId: undefined,
+                      TableName: "SaleInvoice",
+                      Fktable: response,
+                    },
+                    {
+                      Id: undefined,
+                      AccountId: this.InComeAccountId,
+                      Debit: Total,
+                      Credit: 0.0,
+                      Description: "فاتورة مبيعات ذمم رقم" + response + " ",
+                      EntryId: undefined,
+                      TableName: "SaleInvoice",
+                      Fktable: response,
+                    },
+                  ],
+                }).then((res) => {
+                  if (res) {
+                    this.$notify({
+                      message: "تم تسجيل الفاتورة مع قيد محاسبي بنجاح",
+                      title: "تم الإضافة بنجاح",
+                      type: "success",
+                      position: "top-left",
+                      duration: 1000,
+                      showClose: false,
+                    });
+                    this.restTempForm();
+                    this.$router.push({ path: `/Sales/List` });
+                  }
+                });
+              } else if (response) {
+                this.$notify({
+                  title: "تم إضافة  بنجاح",
+                  message: "تم إضافة بنجاح",
+                  type: "success",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                });
+                this.restTempForm();
+                this.$router.push({ path: `/Sales/List` });
+              } else {
+                this.$notify({
+                  title: "مشكلة",
+                  message: "حصلت مشكلة في عملية الحفظ",
+                  type: "error",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                });
+              }
             })
             .catch((error) => {
               console.log(error);

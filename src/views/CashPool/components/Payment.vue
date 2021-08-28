@@ -2,33 +2,32 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
-        <Cash-Pool-Dialog
-          :Totals="Totals"
-          Type="Payment"
-          :Data="tableData"
-          :Open="OpenCashPoolDialog"
-          @Closed="
-            () => {
-              OpenCashPoolDialog = false;
-            }
-          "
-          @Done="(v) => createData(v)"
-        />
-        <el-col :span="6">
-          <el-switch
-            v-model="AutoSent"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-          ></el-switch>
-        </el-col>
         <el-row type="flex">
-          <el-col :span="12">
+          <el-col :span="10">
+            <span>{{ $t("Account.InCome") }}</span>
+            <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
+          </el-col>
+          <el-col :span="10">
             <span>{{ $t("NewPurchaseInvoice.Box") }}</span>
             <Select-Cash-Accounts @Set="(v) => (CashAccountId = v.value)" />
           </el-col>
-          <el-col :span="12">
-            <span>{{ $t("Account.InCome") }}</span>
-            <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
+          <el-col :span="2">
+            <el-switch
+              v-model="AutoSent"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+            ></el-switch>
+          </el-col>
+
+          <el-col :span="2">
+            <el-button
+              :size="$store.getters.size"
+              v-bind:disabled="tableData.length <= 0"
+              icon="fa fa-save"
+              style="float: left"
+              type="primary"
+              @click="OpenCashPoolDialog = true"
+            />
           </el-col>
         </el-row>
       </div>
@@ -36,35 +35,37 @@
       <el-divider direction="vertical"></el-divider>
       <span>عدد مقبوضات</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Selection.length }}</span>
+      <span>{{ Totals.Rows }}</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Cash") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalCash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Visa") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalVisa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>شيكات</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ TotalCheque.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span>{{ Totals.Cheque.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("CashPool.Amount") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Total.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
-      <el-button
-        :disabled="EnableSave"
+      <drawer-print
         style="float: left"
-        icon="el-icon-printer"
-        type="success"
-        @click="print(tableData)"
-      ></el-button>
+        Type="PaymentList"
+        :Data="{
+          Totals: Totals,
+          Items: tableData,
+          Dates: [new Date(), new Date()],
+        }"
+      />
     </el-card>
 
     <el-card class="box-card">
@@ -77,9 +78,7 @@
         border
         highlight-current-row
         ref="multipleTable"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
@@ -141,23 +140,37 @@
         </el-table-column>
       </el-table>
     </el-card>
+
+    <cash-pool-dialog
+      :Totals="Totals"
+      Type="Payment"
+      :Data="tableData"
+      :Open="OpenCashPoolDialog"
+      @Closed="
+        () => {
+          OpenCashPoolDialog = false;
+        }
+      "
+      @Done="(v) => createData(v)"
+    />
   </div>
 </template>
 <script>
 import checkPermission from "@/utils/permission";
 
 import { GetPaymentByStatus } from "@/api/Payment";
+import { Create as CreateCashPool } from "@/api/CashPool";
 
 import { CreateEntry } from "@/api/EntryAccounting";
-import { PaymentMember } from "@/Report/PayPapar";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import CashPoolDialog from "./CashPoolDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
+import { VisualizationReportHtml } from "@/Report/FunctionalityReport";
+import { SendEmail } from "@/api/StmpEmail";
 
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
-import printJS from "print-js";
 
 export default {
   name: "Payment",
@@ -171,20 +184,13 @@ export default {
   data() {
     return {
       OpenCashPoolDialog: false,
-      EnableSave: true,
       tableData: [],
+      CashPool: {},
       Data: undefined,
-      Totals: { Cash: 0, Cheque: 0, Rows: 0, Totals: 0, Visa: 0 },
-      Selection: [],
-      AutoSent: true,
-      tempForm: {},
       AutoSent: true,
       CashAccountId: undefined,
       InComeAccountId: undefined,
-      TotalCash: 0,
-      TotalCheque: 0,
-      TotalVisa: 0,
-      Total: 0,
+      Totals: { Cash: 0, Cheque: 0, Rows: 0, Totals: 0, Visa: 0 },
     };
   },
   created() {
@@ -192,55 +198,6 @@ export default {
   },
   methods: {
     checkPermission,
-    handleSelectionChange(val) {
-      this.Selection = val;
-      this.tempForm = {
-        Id: undefined,
-        FakeDate: new Date(),
-        Description: "قيد اغلاق مقبوضات",
-        Type: "ClosePayment",
-        EntryMovements: [
-          {
-            Id: undefined,
-            AccountId: this.InComeAccount,
-            Debit: 0.0,
-            Credit: this.Total,
-            Description:
-              "قيد اغلاق  (" +
-              this.CashAccounts.find((obj) => {
-                return obj.value == this.CashAccount;
-              }).label,
-            EntryId: undefined,
-          },
-        ],
-      };
-      this.Selection.forEach((i) => {
-        this.tempForm.EntryMovements.push({
-          Id: undefined,
-          AccountId: i.AccountId,
-          Debit: i.TotalAmmount,
-          Credit: 0.0,
-          Description: "سند قبض رقم " + i.Id + " ",
-          EntryId: undefined,
-        });
-      });
-
-      this.TotalCheque = this.Selection.reduce(
-        (a, b) => a + (b["PaymentMethod"] == "Cheque" ? b.TotalAmmount : 0),
-        0
-      );
-      this.TotalCash = this.Selection.reduce(
-        (a, b) => a + (b["PaymentMethod"] == "Cash" ? b.TotalAmmount : 0),
-        0
-      );
-      this.TotalVisa = this.Selection.reduce(
-        (a, b) => a + (b["PaymentMethod"] == "Visa" ? b.TotalAmmount : 0),
-        0
-      );
-
-      this.Total = this.TotalCash + this.TotalVisa + this.TotalCheque;
-      this.EnableSave = false;
-    },
     getdata() {
       const loading = this.$loading({
         lock: true,
@@ -256,13 +213,10 @@ export default {
       })
         .then((response) => {
           loading.text = "Calculate";
-
           // handle success
           console.log(response);
           this.tableData = response.items;
-
           this.Totals = response.Totals;
-
           loading.close();
         })
         .catch((error) => {
@@ -270,74 +224,106 @@ export default {
           console.log(error);
         });
     },
-    createData() {
-      this.EnableSave = true;
-      console.log(this.tempForm);
-      CreateEntry(this.tempForm)
-        .then((response) => {
-          console.log(response);
-          ChangeArrObjStatus({
-            ObjsId: this.Selection.map((x) => x.Id),
-            TableName: "Payment",
-            Status: 1,
-            Description: "دفعة مؤكدة",
-          }).then((response) => {
-            this.EnableSave = false;
-            console.log(response);
-            this.$notify({
-              title: "تم الإضافة بنجاح",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              position: "top-left",
-              duration: 1000,
+    createData(v) {
+      const loading = this.$loading({
+        lock: true,
+        text: "Create Cash Pool",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      CreateCashPool(v)
+        .then(async (res) => {
+          if (res) {
+            v.Id = res;
+            this.CashPool = v;
+            var Entry = {
+              Id: undefined,
+              FakeDate: new Date(),
+              Description: "",
+              Status: 0,
+              Type: "CashPool",
+              EntryMovements: [
+                {
+                  Id: undefined,
+                  AccountId: this.CashAccountId,
+                  Debit: 0.0,
+                  Credit: this.Totals,
+                  Description: "اغلاق صندوق رقم " + v.Id + " ",
+                  EntryId: undefined,
+                  TableName: "CashPool",
+                  Fktable: v.Id,
+                },
+              ],
+            };
+            await this.tableData.forEach((x) => {
+              Entry.EntryMovements.push({
+                Id: undefined,
+                AccountId: x.AccountId,
+                Debit: x.TotalAmmount,
+                Credit: 0,
+                Description: "سند قبض رقم " + x.Id + " ",
+                EntryId: undefined,
+                TableName: "Payment",
+                Fktable: x.Id,
+              });
             });
-            this.getdata();
-          });
+            loading.text = "Create Entry ";
+            CreateEntry(Entry).then((res) => {
+              if (res) {
+                loading.text = "Change Arr Obj Status ";
+                ChangeArrObjStatus({
+                  ObjsId: this.tableData.map((x) => x.Id),
+                  TableName: "Payment",
+                  Status: 1,
+                  Description: "دفعة مؤكدة",
+                }).then(async (response) => {
+                  console.log(response);
+
+                  this.OpenCashPoolDialog = false;
+                  if (this.AutoSent) {
+                    loading.text = "Send Report By Email";
+                    const PaymentList = await VisualizationReportHtml("PaymentList", {
+                      Totals: this.Totals,
+                      Items: this.tableData,
+                      Dates: [new Date(), new Date()],
+                    });
+
+                    SendEmail(
+                      this.$store.getters.CompanyInfo.Email,
+                      "إغلاق صندوق " +
+                        "من تاريخ " +
+                        this.formatDate(new Date()) +
+                        " - " +
+                        "لغاية  " +
+                        this.formatDate(new Date()),
+                      PaymentList
+                    );
+                    this.$notify({
+                      title: "تم الإضافة بنجاح",
+                      message: "تم الإضافة بنجاح",
+                      type: "success",
+                      position: "top-left",
+                      duration: 3000,
+                    });
+                    loading.close();
+                    Object.assign(this.$data, this.$options.data());
+                  } else {
+                    loading.close();
+                    Object.assign(this.$data, this.$options.data());
+                  }
+                });
+              } else {
+              }
+            });
+          } else {
+            loading.close();
+          }
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    print(data) {
-      printJS({
-        printable: data,
-        properties: [
-          "Id",
-          "ObjectId",
-          "Name",
-          "FakeDate",
-          "PaymentMethod",
-          "TotalAmmount",
-        ],
-        type: "json",
-        header:
-          "<center> <h2>" +
-          this.InComeAccounts.find((obj) => {
-            return obj.value == this.InComeAccount;
-          }).label +
-          "</h2></center><h3 style='float:right'> الاجمالي النقدي " +
-          this.TotalCash.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي الفيزا : " +
-          this.TotalVisa.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي الشيكات : " +
-          this.TotalCheque.toFixed(this.$store.getters.settings.ToFixed) +
-          " - الاجمالي :  " +
-          this.Total.toFixed(this.$store.getters.settings.ToFixed) +
-          "</h3><h3 style='float:right'>  التاريخ  : " +
-          this.formatDate(new Date()) +
-          "</h3>",
-        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      });
-    },
-    printPayment(data) {
-      printJS({
-        printable: PaymentMember(data),
-        type: "pdf",
-        base64: true,
-        showModal: true,
-      });
-    },
+
     formatDate(date) {
       let d = new Date(date),
         day = "" + d.getDate(),

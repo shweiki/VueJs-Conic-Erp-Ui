@@ -1,14 +1,14 @@
 ﻿<template>
   <div>
-    <Layout1 v-if="$store.getters.settings.WorkShopLayout == 'Layout1'" :is-edit="true" />
+    <Pubilc v-if="$store.getters.settings.WorkShopLayout == 'Pubilc'" :is-edit="true" />
   </div>
 </template>
 
 <script>
-import Layout1 from "./components/Layout1.vue";
+import Pubilc from "./components/Pubilc.vue";
 
 export default {
   name: "EditInvoice",
-  components: { Layout1 },
+  components: { Pubilc },
 };
 </script>

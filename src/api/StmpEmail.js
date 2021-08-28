@@ -45,7 +45,17 @@ var Email = {
     }
 };
 export function SendEmail(To, Subject, Body, Attachments = []) {
-    if (store.getters.settings.OutgoingMailServer.Host)
+    if (store.getters.settings.OutgoingMailServer.SecureToken != "")
+        Email.send({
+            SecureToken: store.getters.settings.OutgoingMailServer.SecureToken,
+            To: To,
+            From: store.getters.settings.OutgoingMailServer.From,
+            Subject: Subject,
+            Body: Body
+        }).then(message =>
+            console.log("mail sent has   " + message + ""));
+
+    if (store.getters.settings.OutgoingMailServer.Host != "")
         Email.send({
             Host: store.getters.settings.OutgoingMailServer.Host,
             Username: store.getters.settings.OutgoingMailServer.Username,

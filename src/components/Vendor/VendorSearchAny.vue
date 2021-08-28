@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-col :span="2">
+    <el-col :span="4">
       <add-vendor
         :Phone="NewPhone"
         @Set="
@@ -51,8 +51,8 @@
         </el-select>
       </div>
     </el-col>
-    <el-col :span="6">
-      <edit-vendor v-if="VendorId != 2" :VendorId="VendorId" />
+    <el-col :span="4">
+      <edit-vendor :VendorId="VendorId" />
     </el-col>
   </div>
 </template>
@@ -82,6 +82,10 @@ export default {
       if (val != "") this.search = val;
       //else this.SetVal(new Date());
     },
+    VendorId(val) {
+      if (val != "") this.search = val;
+      //else this.SetVal(new Date());
+    },
     show(value) {
       if (value) {
         document.body.addEventListener("click", this.close);
@@ -104,7 +108,7 @@ export default {
         GetVendorByAny({ Any: query }).then((res) => {
           this.options = res;
           if (res.length == 0) this.NewPhone = query;
-          if (res.length == 1) this.change(res[0]);
+          //   if (res.length == 1) this.change(res[0]);
         });
       } else {
         this.options = [];

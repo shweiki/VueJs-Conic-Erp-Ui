@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow: hidden;">
+  <div style="overflow: hidden">
     <el-form ref="F-SaleInvoice" :rules="rules" :model="tempForm">
       <div
         @dblclick="focusBarcode"
@@ -42,7 +42,11 @@
                   :size="$store.getters.size"
                   type="primary"
                   icon="el-icon-s-claim"
-                  @click="$router.replace({ path: '/redirect' + '/CashPool/Create/SaleInvoice' })"
+                  @click="
+                    $router.replace({
+                      path: '/redirect' + '/CashPool/Create/SaleInvoice',
+                    })
+                  "
                 ></el-button>
                 <el-button
                   :size="$store.getters.size"
@@ -128,7 +132,11 @@
                 <split-pane split="horizontal" :min-percent="88" :default-percent="88">
                   <template slot="paneL">
                     <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-                      <items-search :WithBarCode="true" @add="AddItem" @focus="focusBarcode" />
+                      <items-search
+                        :WithBarCode="true"
+                        @add="AddItem"
+                        @focus="focusBarcode"
+                      />
                     </el-card>
                     <el-form-item prop="InventoryMovements">
                       <el-table
@@ -142,7 +150,9 @@
                         <el-table-column prop="ItemsId" align="center">
                           <template slot="header" slot-scope="{}"
                             >{{ $t("NewPurchaseInvoice.Items") }} ({{
-                              tempForm.InventoryMovements.length.toFixed($store.getters.settings.ToFixed)
+                              tempForm.InventoryMovements.length.toFixed(
+                                $store.getters.settings.ToFixed
+                              )
                             }}
                             )</template
                           >
@@ -151,8 +161,12 @@
                               {{ scope.row.Name }}
                               <el-tag type="primary" effect="plain">{{
                                 PriceMethod == "wholesale"
-                                  ? scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed)
-                                  : scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
+                                  ? scope.row.OtherPrice.toFixed(
+                                      $store.getters.settings.ToFixed
+                                    )
+                                  : scope.row.SellingPrice.toFixed(
+                                      $store.getters.settings.ToFixed
+                                    )
                               }}</el-tag>
                               <edit-item
                                 @focus="focusBarcode"
@@ -182,8 +196,8 @@
                               :precision="2"
                               :step="1"
                               :min="0"
-                              :max="1000000"                            @focus="$event.target.select()"
-
+                              :max="1000000"
+                              @focus="$event.target.select()"
                             ></el-input-number>
                           </template>
                         </el-table-column>
@@ -260,19 +274,17 @@
                           align="center"
                         >
                           <template slot-scope="scope">
-                            <el-radio-group
-                              @change="focusBarcode"
-                              v-model="
+                            <radio-active-inventory
+                              :InventoryId="
                                 tempForm.InventoryMovements[scope.$index].InventoryItemId
                               "
-                            >
-                              <el-radio-button
-                                v-for="(item, index) in InventoryItems"
-                                :key="index"
-                                :label="item.value"
-                                >{{ item.label }}</el-radio-button
-                              >
-                            </el-radio-group>
+                              @Set="
+                                (v) =>
+                                  (tempForm.InventoryMovements[
+                                    scope.$index
+                                  ].InventoryItemId = v.value)
+                              "
+                            />
                           </template>
                         </el-table-column>
                         <el-table-column label="#" width="75" align="center">
@@ -391,8 +403,8 @@
                             :precision="2"
                             :step="1"
                             :min="0.0"
-                            :max="100"                            @focus="$event.target.select()"
-
+                            :max="100"
+                            @focus="$event.target.select()"
                           ></el-input-number>
                         </el-col>
                         <el-col :span="6" class="TotalAmmount" style="font-size: small">{{
@@ -460,7 +472,6 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 // report
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { GetActiveInventory } from "@/api/InventoryItem";
 import { GetActiveMenuItem } from "@/api/MenuItem";
 import { GetActiveVendor } from "@/api/Vendor";
 
@@ -566,7 +577,6 @@ export default {
           label: "ضريبة 16 %",
         },
       ],
-      InventoryItems: [],
       MenuItems: [],
       Vendor: [],
     };
@@ -582,9 +592,6 @@ export default {
       text: "تحميل",
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0, 0.7)",
-    });
-    GetActiveInventory().then((response) => {
-      this.InventoryItems = response;
     });
     GetActiveMenuItem().then((response) => {
       this.MenuItems = response;
@@ -673,7 +680,7 @@ export default {
           Description: "",
           InventoryItemId: 1,
           Name: Item.Name,
-          OtherPrice : Item.OtherPrice,
+          OtherPrice: Item.OtherPrice,
           SalesInvoiceId: undefined,
           InventoryQty: 0,
         });

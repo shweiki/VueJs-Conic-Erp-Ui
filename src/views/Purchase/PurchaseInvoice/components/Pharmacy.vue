@@ -8,7 +8,7 @@
       class="demo-ruleForm"
     >
       <el-card class="box-card">
-        <div slot="header" >
+        <div slot="header">
           <el-button
             :disabled="DisabledSave"
             style="float: left"
@@ -34,13 +34,13 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <Fake-Date
                 :Value="tempForm.FakeDate"
-                @Set="v => (tempForm.FakeDate = v)"
+                @Set="(v) => (tempForm.FakeDate = v)"
               />
             </el-form-item>
           </el-col>
@@ -53,14 +53,14 @@
                 {
                   required: true,
                   message: 'لايمكن ترك حساب فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <Vendor-Search-Any
                 :Value="tempForm.Name"
                 @Set="
-                  v => {
+                  (v) => {
                     tempForm.Name = v.Name;
                     tempForm.VendorId = v.Id;
                   }
@@ -70,20 +70,14 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="طريقة الدفع" prop="PaymentMethod">
-              <el-radio-group
-                v-model="tempForm.PaymentMethod"
-                text-color="#f78123"
-              >
+              <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
                 <el-radio label="Cash" border>{{
                   $t("NewPurchaseInvoice.Cash")
                 }}</el-radio>
 
-                <el-radio
-                  v-if="tempForm.VendorId != 2"
-                  label="Receivables"
-                  border
-                  >{{ $t("NewPurchaseInvoice.Receivables") }}</el-radio
-                >
+                <el-radio v-if="tempForm.VendorId != 2" label="Receivables" border>{{
+                  $t("NewPurchaseInvoice.Receivables")
+                }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -95,13 +89,13 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <Fake-Date
                 :Value="tempForm.InvoicePurchaseDate"
-                @Set="v => (tempForm.InvoicePurchaseDate = v)"
+                @Set="(v) => (tempForm.InvoicePurchaseDate = v)"
               />
             </el-form-item>
           </el-col>
@@ -133,16 +127,14 @@
             >
             <template slot-scope="scope">
               {{ tempForm.InventoryMovements[scope.$index].Name }}
-              <edit-item
-                :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
-              />
+              <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
             </template>
           </el-table-column>
           <el-table-column label="EXP" width="175" align="center">
             <template slot-scope="scope">
               <Select-Item-Exp-Column
                 @SetVal="
-                  v => {
+                  (v) => {
                     tempForm.InventoryMovements[scope.$index].EXP = v;
                   }
                 "
@@ -200,18 +192,13 @@
               $t("NewPurchaseInvoice.Inventory")
             }}</template>
             <template slot-scope="scope">
-              <el-radio-group
-                v-model="
-                  tempForm.InventoryMovements[scope.$index].InventoryItemId
+              <radio-active-inventory
+                :InventoryId="tempForm.InventoryMovements[scope.$index].InventoryItemId"
+                @Set="
+                  (v) =>
+                    (tempForm.InventoryMovements[scope.$index].InventoryItemId = v.value)
                 "
-              >
-                <el-radio-button
-                  v-for="(item, index) in InventoryItems"
-                  :key="index"
-                  :label="item.value"
-                  >{{ item.label }}</el-radio-button
-                >
-              </el-radio-group>
+              />
             </template>
           </el-table-column>
           <el-table-column
@@ -220,13 +207,9 @@
             align="center"
           >
             <template slot-scope="scope">
-              <el-form-item
-                :prop="'InventoryMovements.' + scope.$index + '.Description'"
-              >
+              <el-form-item :prop="'InventoryMovements.' + scope.$index + '.Description'">
                 <el-input
-                  v-model="
-                    tempForm.InventoryMovements[scope.$index].Description
-                  "
+                  v-model="tempForm.InventoryMovements[scope.$index].Description"
                   required
                   class="input-with-select"
                 >
@@ -264,9 +247,7 @@
             <el-divider direction="vertical"></el-divider>
             <span>{{ $t("NewPurchaseInvoice.Items") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{
-              TotalItems.toFixed($store.getters.settings.ToFixed)
-            }}</span>
+            <span>{{ TotalItems.toFixed($store.getters.settings.ToFixed) }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.QuantityAmount") }}</span>
@@ -291,12 +272,7 @@
 
             <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span
-              >{{
-                TotalAmmount.toFixed($store.getters.settings.ToFixed)
-              }}
-              JOD</span
-            >
+            <span>{{ TotalAmmount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
             <el-divider direction="vertical"></el-divider>
           </el-card>
         </el-col>
@@ -324,12 +300,12 @@
 import { Create, Edit, GetPurchaseInvoiceById } from "@/api/PurchaseInvoice";
 import FakeDate from "@/components/Date/FakeDate";
 
-import { GetActiveInventory } from "@/api/InventoryItem";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
 import ExpDate from "@/components/Date/ExpDate";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
+import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
 
 export default {
   name: "NewPurchaseInvoice",
@@ -339,13 +315,14 @@ export default {
     FakeDate,
     ExpDate,
     VendorSearchAny,
-    SelectItemExpColumn
+    SelectItemExpColumn,
+    RadioActiveInventory,
   },
   props: {
     isEdit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -365,7 +342,7 @@ export default {
         Discount: 0,
         VendorId: 2,
         Status: 0,
-        InventoryMovements: []
+        InventoryMovements: [],
       },
       rules: {
         InventoryMovements: [
@@ -373,13 +350,12 @@ export default {
             type: "array",
             required: true,
             message: "لا يمكن إستكمال عملية الشراء من غير إضافة أصناف",
-            trigger: "change"
-          }
-        ]
+            trigger: "change",
+          },
+        ],
       },
-      InventoryItems: [],
       CashAccounts: [],
-      tempRoute: {}
+      tempRoute: {},
     };
   },
   created() {
@@ -387,12 +363,6 @@ export default {
       this.getdata(this.$route.params && this.$route.params.id);
     }
     this.tempRoute = Object.assign({}, this.$route);
-
-    GetActiveInventory().then(response => {
-      console.log(response);
-      this.InventoryItems = response;
-    });
-
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
@@ -400,7 +370,7 @@ export default {
   methods: {
     getdata(val) {
       GetPurchaseInvoiceById({ Id: val })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.tempForm = response;
           this.SumTotalAmmount();
@@ -410,7 +380,7 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -426,7 +396,7 @@ export default {
         InventoryItemId: 1,
         Name: item.Name,
         PurchaseInvoiceId: undefined,
-        Description: ""
+        Description: "",
       });
       this.SumTotalAmmount();
     },
@@ -440,28 +410,20 @@ export default {
         (a, b) => a + (b["Qty"] || 0),
         0
       );
-      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function(
-        prev,
-        cur
-      ) {
+      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function (prev, cur) {
         return prev + cur.Qty * cur.SellingPrice;
-      },
-      0);
+      }, 0);
       this.TotalAmmount -= this.tempForm.Discount;
       document.getElementById("barcode").focus();
     },
 
     updateData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          if (
-            this.TotalAmmount > 0 &&
-            this.TotalItems > 0 &&
-            this.TotalQty > 0
-          ) {
+          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
             Edit(this.tempForm)
-              .then(response => {
+              .then((response) => {
                 this.$notify({
                   title: "تم تعديل  بنجاح",
                   message: "تم تعديل بنجاح",
@@ -473,10 +435,10 @@ export default {
                     if (response) {
                       this.$router.push({ path: `/Purchase/List` });
                     }
-                  }
+                  },
                 });
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
               });
           } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
@@ -487,19 +449,15 @@ export default {
       });
     },
     createData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
 
-          if (
-            this.TotalAmmount > 0 &&
-            this.TotalItems > 0 &&
-            this.TotalQty > 0
-          ) {
+          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
             this.DisabledSave = true;
 
             Create(this.tempForm)
-              .then(response => {
+              .then((response) => {
                 this.$router.push({ path: `/Purchase/List` });
 
                 this.$notify({
@@ -508,10 +466,10 @@ export default {
                   type: "success",
                   position: "top-left",
                   duration: 1000,
-                  showClose: false
+                  showClose: false,
                 });
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
                 this.DisabledSave = false;
               });
@@ -531,14 +489,14 @@ export default {
     setTagsViewTitle() {
       const title = "Edit Purchase";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`
+        title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Purchase";
       document.title = `${title} - ${this.tempForm.Id}`;
-    }
-  }
+    },
+  },
 };
 </script>

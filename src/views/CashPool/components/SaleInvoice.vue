@@ -395,7 +395,7 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      CreateCashPool(v).then((res) => {
+      CreateCashPool(v).then(async (res) => {
         if (res) {
           v.Id = res;
           this.CashPool = v;
@@ -428,7 +428,7 @@ export default {
               },
             ],
           };
-          this.tableData.forEach((x) => {
+          await this.tableData.forEach((x) => {
             if (x.PaymentMethod == "Receivables") {
               Entry.EntryMovements.push({
                 Id: undefined,

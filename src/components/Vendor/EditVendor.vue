@@ -4,6 +4,7 @@
       type="success"
       icon="el-icon-edit"
       @click="getdata()"
+      v-bind:disabled="VendorId == 2"
       :size="$store.getters.size"
     ></el-button>
 
@@ -43,11 +44,7 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input
-                type="text"
-                ref="Name"
-                v-model="tempForm.Name"
-              ></el-input>
+              <el-input type="text" ref="Name" v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -60,8 +57,8 @@
                 {
                   required: false,
                   message: 'لايمكن ترك الرقم الوطني فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-input
@@ -78,19 +75,16 @@
                 {
                   required: false,
                   message: 'Please input email address',
-                  trigger: 'blur'
+                  trigger: 'blur',
                 },
                 {
                   type: 'email',
                   message: 'Please input correct email address',
-                  trigger: ['blur', 'change']
-                }
+                  trigger: ['blur', 'change'],
+                },
               ]"
             >
-              <el-input
-                type="text"
-                v-model="tempForm.Email"
-              ></el-input> </el-form-item
+              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
           ></el-col>
         </el-row>
 
@@ -103,14 +97,11 @@
                 {
                   required: false,
                   message: 'لايمكن ترك الرقم الهاتف فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
-              <el-input
-                v-model="tempForm.PhoneNumber1"
-                placeholder="رقم الهاتف"
-              />
+              <el-input v-model="tempForm.PhoneNumber1" placeholder="رقم الهاتف" />
               <!--
               <VuePhoneNumberInput
                 :translations="{
@@ -128,10 +119,7 @@
               v-bind:label="$t('AddVendors.PhoneNumber2')"
               prop="PhoneNumber2"
             >
-              <el-input
-                v-model="tempForm.PhoneNumber2"
-                placeholder="رقم الهاتف"
-              />
+              <el-input v-model="tempForm.PhoneNumber2" placeholder="رقم الهاتف" />
               <!--
               <VuePhoneNumberInput
                 :translations="{
@@ -145,10 +133,7 @@
             ></el-col
           >
         </el-row>
-        <el-form-item
-          v-bind:label="$t('AddVendors.CreditLimit')"
-          prop="CreditLimit"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.CreditLimit')" prop="CreditLimit">
           <el-input-number
             v-model="tempForm.CreditLimit"
             :precision="2"
@@ -162,7 +147,7 @@
           <select-region
             :Value="tempForm.Region"
             @SetRegion="
-              v => {
+              (v) => {
                 tempForm.Region = v;
               }
             "
@@ -173,10 +158,7 @@
         <el-form-item v-bind:label="$t('AddVendors.Fax')" prop="Fax">
           <el-input type="text" v-model="tempForm.Fax"></el-input>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -196,8 +178,8 @@ export default {
   props: {
     VendorId: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   components: { VuePhoneNumberInput, SelectRegion },
   data() {
@@ -215,29 +197,29 @@ export default {
         CreditLimit: 0.0,
         Description: "",
         IsPrime: false,
-        Type: "Customer"
+        Type: "Customer",
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
 
   methods: {
     getdata() {
-      GetById({ Id: this.VendorId }).then(response => {
+      GetById({ Id: this.VendorId }).then((response) => {
         // handle success
         this.tempForm = response;
 
@@ -245,19 +227,19 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.Visible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم تعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -265,7 +247,7 @@ export default {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

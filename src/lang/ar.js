@@ -84,7 +84,7 @@ export default {
         Drivers: "السائقين",
         NewReport: "تقرير جديد",
         ListReport: "قائمة التقارير",
-        NewPaymentCashPool :"إغلاق فواتير المشتريات",
+        NewPaymentCashPool :"إغلاق المقبوضات",
         ListCashPools :"قائمة الاغلاقات",
         NewMembershipMovementCashPool :"إغلاق تحركات الاشتراكات",
         NewSaleInvoiceCashPool:"إغلاق فواتير البيع",
@@ -351,6 +351,7 @@ export default {
         PaymentMethod: 'طريقة الدفع',
         Cash: 'نقدي',
         Receivables: 'الاجل ',
+        Cheque:'شيك',
         Box: 'الصندوق',
         ToPr: 'الى حساب المورد',
         Acc: 'حساب',
@@ -573,6 +574,8 @@ export default {
         AccType: "نوع الحساب",
         Save: "حفظ",
         cancel: "إلغاء",
+        InCome:"إيراد"
+
     },
     AddMembers: {
         Female: "أنثى",
