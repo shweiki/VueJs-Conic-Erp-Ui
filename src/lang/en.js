@@ -313,6 +313,8 @@ export default {
         TotalOutlay: "Total Outlay",
         TotalReject: "Total Reject",
         TotalRestitution: "Total Restitution",
+        SaleInvoice :"Sale Invoice"
+
     },
     ItemSales: {
         Name: 'Name',

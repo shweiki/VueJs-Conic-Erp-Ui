@@ -8,6 +8,7 @@ export default function Visualization(Data, Html, Type) {
   let formatDate = formatDateX;
   let TimeConvert = TimeConvertX;
   let ToFixed = ToFixedX;
+  let tr = (v) => this.$t(v);
   Object.keys(Data).forEach(key => {
     if (typeof Data[key] == "function") { Data[key] = Data[key]() }
     Html = Html.replaceAll("{{" + key + "}}", Data[key]);
@@ -77,6 +78,11 @@ export default function Visualization(Data, Html, Type) {
     //  Html += nArabicWords(2000)
     return Html;
   }
+}
+
+export function translate(tag) {
+  console.log($t('route.Members'))
+  return this.$t(tag);
 }
 export function ToFixedX(num) {
   return num.toFixed(3);

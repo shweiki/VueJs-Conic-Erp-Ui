@@ -139,7 +139,7 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
+      <el-table-column v-bind:label="$t('Sales.Date')" width="120" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.DateTime | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
@@ -166,7 +166,7 @@
       </el-table-column>
       <el-table-column label="المطلوب" width="120" align="center">
         <template slot-scope="{ row }">
-          {{ row.Total.toFixed($store.getters.settings.ToFixed) }}
+          {{ row.Totals.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
@@ -307,31 +307,27 @@ export default {
     // this.getList();
   },
   methods: {
-    getList() {
+    async getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then((response) => {
+      await GetByListQ(this.listQuery).then((response) => {
         this.Data = response;
         this.list = response.items;
         this.Totals = response.Totals;
         this.list.map((x) => {
           if (x.Type == "SaleInvoice")
             GetSaleInvoiceByListId({ listid: x.Fktable }).then((res) => {
-              x.SaleInvoice = res;
-              x.Total = x.SaleInvoice.reduce((prev, cur) => {
-                return prev + cur.Total;
-              }, 0);
+              x.SaleInvoice = res.items;
+              x.Totals = res.Totals;
             });
           if (x.Type == "Payment")
             GetPaymentByListId({ listid: x.Fktable }).then((res) => {
               x.Payment = res;
-              x.Total = x.Payment.reduce((prev, cur) => {
-                return prev + cur.TotalAmmount;
-              }, 0);
+              x.Totals = res.Totals;
             });
         });
         this.Totals.Totals = this.list.reduce((prev, cur) => {
-          return prev + cur.Total;
+          return prev + cur.Totals.Totals;
         }, 0);
         this.listLoading = false;
       });

@@ -18,7 +18,6 @@ const messages = {
     ...enLocale,
     ...elementEnLocale
   }
-
 }
 export function getLanguage() {
   const chooseLanguage = Cookies.get('language') || 'ar'

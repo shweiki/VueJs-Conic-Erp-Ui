@@ -334,6 +334,8 @@ export default {
         TotalOutlay :"إجمالي الإنفاق",
         TotalReject :"إجمالي المرفوض",
         TotalRestitution :"إجمالي المردودات",
+        SaleInvoice :"فواتير المبيعات"
+
     },
     ItemSales: {
         Name: "الإسم",

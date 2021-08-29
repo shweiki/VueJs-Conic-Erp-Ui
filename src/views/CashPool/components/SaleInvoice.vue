@@ -230,8 +230,10 @@
             JOD
           </template>
         </el-table-column>
+
         <el-table-column width="60" label="#" align="center">
           <template slot-scope="scope">
+            <edit-payment-method Type="SaleInvoice" :ID="scope.row.Id" />
             <Drawer-Print Type="SaleInvoice" :Data="scope.row" />
           </template>
         </el-table-column>
@@ -279,6 +281,8 @@ import { Create as CreateCashPool } from "@/api/CashPool";
 import { CreateEntry } from "@/api/EntryAccounting";
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import EditPaymentMethod from "@/components/PaymentMethod/EditPaymentMethod.vue";
+
 import permission from "@/directive/permission/index.js";
 import checkPermission from "@/utils/permission";
 import CashPoolDialog from "./CashPoolDialog.vue";
@@ -295,6 +299,7 @@ export default {
     CashPoolDialog,
     SelectCashAccounts,
     SelectInComeAccounts,
+    EditPaymentMethod,
   },
   directives: { permission },
   data() {

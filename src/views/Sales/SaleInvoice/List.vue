@@ -11,6 +11,7 @@
       </el-col>
       <el-col :span="8">
         <Search-By-Date
+          v-permission="['Admin']"
           :Value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
             (v) => {
@@ -23,6 +24,7 @@
       </el-col>
       <el-col :span="3">
         <user-select
+          v-permission="['Admin']"
           @Set="
             (v) => {
               listQuery.User = v;
@@ -33,6 +35,7 @@
       </el-col>
       <el-col :span="3">
         <el-select
+          v-permission="['Admin']"
           v-model="listQuery.Sort"
           style="width: 140px"
           class="filter-item"
@@ -224,7 +227,6 @@
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-
       <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
       <el-table-column
@@ -252,7 +254,6 @@
           JOD
         </template>
       </el-table-column>
-
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="SalesInvoice" />
@@ -439,21 +440,6 @@ export default {
     getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
-    },
-    print(data) {
-      data = data.map((Item) => ({
-        Name: Item.Name,
-        Qty: Item.Qty,
-        SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(
-          this.$store.getters.settings.ToFixed
-        ),
-      }));
-      printJS({
-        printable: data,
-        properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json",
-      });
     },
   },
 };
