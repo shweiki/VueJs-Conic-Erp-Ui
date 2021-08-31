@@ -83,7 +83,10 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="باسم" prop="Name">
-              <el-input placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
+              <el-input
+                placeholder="اسم المستلم"
+                v-model="tempForm.Name"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -106,7 +109,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+            <el-form-item
+              v-bind:label="$t('AddVendors.Description')"
+              prop="Description"
+            >
               <el-input v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
@@ -268,7 +274,10 @@ export default {
           this.DisabledSave = true;
           Create(this.tempForm)
             .then((response) => {
-              if (response && this.$store.getters.settings.Payment.CreateEntry == true) {
+              if (
+                response &&
+                this.$store.getters.settings.Payment.CreateEntry == true
+              ) {
                 CreateEntry({
                   Id: undefined,
                   FakeDate: this.tempForm.FakeDate,
@@ -278,8 +287,8 @@ export default {
                     {
                       Id: undefined,
                       AccountId: this.AccountId,
-                      Debit: 0.0,
                       Credit: this.tempForm.TotalAmmount,
+                      Debit: 0.0,
                       Description: "سند قبض رقم " + response + " ",
                       EntryId: undefined,
                       TableName: "Payment",
@@ -288,8 +297,8 @@ export default {
                     {
                       Id: undefined,
                       AccountId: this.CashAccountId,
-                      Debit: this.tempForm.TotalAmmount,
-                      Credit: 0.0,
+                      Debit: 0.0,
+                      Credit: this.tempForm.TotalAmmount,
                       Description: "سند قبض رقم " + response + " ",
                       EntryId: undefined,
                       TableName: "Payment",
