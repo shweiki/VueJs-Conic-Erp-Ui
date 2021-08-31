@@ -1,50 +1,58 @@
 <template>
-  <el-select
-    v-model="value"
-    @change="SetVal"
-    :v-bind:placeholder="$t('NewPurchaseInvoice.Inventory')"
-  >
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"
-    ></el-option>
-  </el-select>
+  <el-popover placement="right" width="400" trigger="click">
+    <el-radio-group v-model="value" text-color="#f78123">
+      <el-radio label="Cash" border>{{ $t("NewPurchaseInvoice.Cash") }}</el-radio>
+      <el-radio label="Visa" border>{{ $t("NewPurchaseInvoice.Visa") }}</el-radio>
+    </el-radio-group>
+    <el-button
+      :size="$store.getters.size"
+      icon="fa fa-save"
+      type="primary"
+      @click="SetVal(value)"
+    />
+    <el-button circle icon="el-icon-edit" slot="reference"></el-button>
+  </el-popover>
 </template>
 <script>
-import { GetActiveInventory } from "@/api/InventoryItem";
+import { EditPaymentMethod as EditSalePaymentMethod } from "@/api/SaleInvoice";
+import { EditPaymentMethod as EditPaymentPaymentMethod } from "@/api/Payment";
 
 export default {
-  props: ["ID", "Type"],
+  props: ["ID", "Type", "Value", "VendorId"],
   data() {
     return {
-      options: [],
-      value: 2,
+      value: "",
     };
   },
-  watch: {
-    InventoryId(val) {
-      if (val) this.SetVal(val);
-    },
-  },
   created() {
-    GetActiveInventory()
-      .then((response) => {
-        this.options = response;
-        this.SetVal(response[0].value);
-      })
-      .catch((error) => {
-        reject(error);
-      });
+    this.value = this.Value;
   },
   methods: {
     SetVal(val) {
-      this.$emit(
-        "Set",
-        this.options.find((obj) => obj.value == val)
-      );
-      this.value = val;
+      if (this.Type == "SaleInvoice") {
+        EditSalePaymentMethod({
+          ID: this.ID,
+          PaymentMethod: val,
+        })
+          .then((response) => {
+            if (response) this.$emit("Done", val);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      }
+      if (this.Type == "Payment") {
+        EditPaymentPaymentMethod({
+          ID: this.ID,
+          PaymentMethod: val,
+        })
+          .then((response) => {
+            if (response) this.$emit("Done", val);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      }
     },
   },
 };

@@ -68,7 +68,7 @@
 <script>
 import { GetTreeAccount } from "@/api/Account";
 import EditAccount from "./EditAccount.vue";
-import AddAccountDialog from "./AddAccountDialog.vue";
+import AddAccountDialog from "@/components/TreeAccount/AddAccountDialog.vue";
 import Create from "../EntryAccounting/Create.vue";
 import EntryMovementsDialog from "./EntryMovementsDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";

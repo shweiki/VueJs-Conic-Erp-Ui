@@ -32,14 +32,6 @@ const SalesRouter = {
       },
     },
     {
-      path: 'SaleInvoiceStatus',
-      component: () => import('@/views/Sales/SaleInvoice/SaleInvoiceStatus'),
-      name: 'SaleInvoiceStatus',
-      meta: {
-        title: 'SaleInvoiceStatus', icon: 'cost'
-      },
-    },
-    {
       path: 'SalesItems',
       component: () => import('@/views/Sales/SalesItems'),
       name: 'SalesItems',

@@ -56,7 +56,20 @@ export function GetInComeAccounts() {
     method: 'get',
   })
 }
-
+export function GetPayables(query) {
+  return request({
+    url: '/Account/GetPayables',
+    method: 'get',
+    params: query
+  })
+} 
+export function GetReceivables(query) {
+  return request({
+    url: '/Account/GetReceivables',
+    method: 'get',
+    params: query
+  })
+}
 export function Create(data) {
   return request({
     url: '/Account/Create',

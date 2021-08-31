@@ -11,37 +11,37 @@
 <script>
 export default {
   props: {
-    Value: String
+    Value: String,
   },
   data: () => {
     return {
       List: [
         {
           label: "رئيسي",
-          value: "Main"
+          value: "Main",
         },
         {
           label: "عميل | مورد",
-          value: "Vendor"
+          value: "Vendor",
         },
         {
           label: "مشترك",
-          value: "Member"
+          value: "Member",
         },
         {
           label: "ايراد",
-          value: "InCome"
+          value: "InCome",
         },
         {
           label: "خزينة كاش",
-          value: "Cash"
+          value: "Cash",
         },
         {
           label: "بنك",
-          value: "Bank"
-        }
+          value: "Bank",
+        },
       ],
-      value: "Main"
+      value: "Main",
     };
   },
 
@@ -52,13 +52,13 @@ export default {
     Value(v) {
       console.log(v);
       this.SetVal(v);
-    }
+    },
   },
   methods: {
     SetVal(value) {
       this.value = value;
       this.$emit("Set", value);
-    }
-  }
+    },
+  },
 };
 </script>

@@ -70,5 +70,6 @@ export function SendEmail(To, Subject, Body, Attachments = []) {
                 Attachments: Attachments
             }).then(message =>
                 resolve(message));
+                else resolve("No Out Coming is entered")
     })
 }

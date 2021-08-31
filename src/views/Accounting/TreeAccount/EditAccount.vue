@@ -36,7 +36,7 @@
         <el-form-item v-bind:label="$t('Account.AccType')" prop="Type">
           <select-accounts-type
             :Value="tempForm.Type"
-            @Set="v => (tempForm.Type = v)"
+            @Set="(v) => (tempForm.Type = v)"
           />
         </el-form-item>
         <el-form-item v-bind:label="$t('Account.AccName')" prop="Name">
@@ -49,7 +49,7 @@
           <Select-Parent
             :Value="tempForm.ParentId"
             @Set="
-              v => {
+              (v) => {
                 tempForm.ParentId = v;
               }
             "
@@ -60,9 +60,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{
-          $t("Account.cancel")
-        }}</el-button>
+        <el-button @click="Visible = false">{{ $t("Account.cancel") }}</el-button>
         <el-button type="primary" @click="updateData()">{{
           $t("Account.Save")
         }}</el-button>
@@ -73,7 +71,7 @@
 
 <script>
 import { Edit, GetById } from "@/api/Account";
-import SelectAccountsType from "./SelectAccountsType.vue";
+import SelectAccountsType from "@/components/TreeAccount/SelectAccountsType.vue";
 import SelectParent from "./SelectParent.vue";
 
 export default {
@@ -81,8 +79,8 @@ export default {
   props: {
     AccountId: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   data() {
     return {
@@ -94,47 +92,47 @@ export default {
         Code: "",
         Type: undefined,
         Description: "",
-        ParentId: 0
+        ParentId: 0,
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
     getdata() {
-      GetById({ Id: this.AccountId }).then(response => {
+      GetById({ Id: this.AccountId }).then((response) => {
         // handle success
         this.tempForm = response;
         this.Visible = true;
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.Visible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم تعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -142,7 +140,7 @@ export default {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

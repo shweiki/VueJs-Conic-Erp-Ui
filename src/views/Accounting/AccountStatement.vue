@@ -1,16 +1,6 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header">
-        <router-link
-          class="pan-btn tiffany-btn"
-          style="float: left; padding: 10px 15px; border-radius: 6px"
-          icon="el-icon-plus"
-          to="/EntryAccounting/Create"
-          >{{ $t("Accounting.NewAccountingEntry") }}</router-link
-        >
-        <span>{{ $t("Accounting.AccountingEntryinquiries") }}</span>
-      </div>
       <div class="filter-container">
         <el-row type="flex"
           ><el-col :span="18">
@@ -27,15 +17,7 @@
           >
         </el-row>
         <el-row type="flex">
-          <el-col :span="4">
-            <el-input
-              v-model="listQuery.Any"
-              placeholder="Search By Any Acount Name Or Id"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
-          </el-col>
-          <el-col :span="8">
+          <el-col :span="10">
             <Search-By-Date
               :Value="[listQuery.DateFrom, listQuery.DateTo]"
               @Set="
@@ -47,18 +29,8 @@
               "
             />
           </el-col>
-          <el-col :span="3">
-            <user-select
-              @Set="
-                (v) => {
-                  listQuery.User = v;
-                  handleFilter();
-                }
-              "
-            />
-          </el-col>
 
-          <el-col :span="5">
+          <el-col :span="9">
             <el-button
               v-waves
               :loading="downloadLoading"
@@ -86,7 +58,7 @@
                 Id: Accountx.Id,
                 DateFrom: listQuery.DateFrom,
                 DateTo: listQuery.DateTo,
-                InventoryMovements: list,
+                EntryMovement: list,
                 TotalCredit: Totals.Credit,
                 TotalDebit: Totals.Debit,
                 TotalDebitCredit: Totals.Totals,
@@ -95,15 +67,7 @@
           /></el-col>
         </el-row>
       </div>
-      <Radio-Oprations
-        TableName="EntryAccounting"
-        @Set="
-          (v) => {
-            listQuery.Status = v;
-            handleFilter();
-          }
-        "
-      />
+
       <el-divider direction="vertical"></el-divider>
       <span>عدد القيود</span>
       <el-divider direction="vertical"></el-divider>
@@ -155,6 +119,16 @@
           prop="Description"
           align="center"
         ></el-table-column>
+        <el-table-column
+          label="رقم الحركة"
+          prop="Fktable"
+          align="center"
+        ></el-table-column>
+        <el-table-column label="نوع الحركة" prop="TableName" align="center">
+          <template slot-scope="scope">{{
+            $t("AccountStatement." + scope.row.TableName)
+          }}</template></el-table-column
+        >
         <el-table-column label="مدين" prop="Credit" width="100" align="center">
           <template slot-scope="scope">{{
             scope.row.Credit.toFixed($store.getters.settings.ToFixed)
@@ -175,49 +149,26 @@
             <Status-Tag :Status="scope.row.Status" TableName="EntryAccounting" />
           </template>
         </el-table-column>
-        <el-table-column width="180" align="center">
-          <template slot-scope="scope">
-            <Next-Oprations
-              :ObjId="scope.row.Id"
-              :Status="scope.row.Status"
-              TableName="EntryAccounting"
-              @Done="handleFilter"
-            />
-            <Drawer-Print Type="EntryAccounting" :Data="scope.row" />
-          </template>
-        </el-table-column>
       </el-table>
     </el-card>
   </div>
 </template>
 <script>
-import { GetByListQ } from "@/api/EntryAccounting";
-import NextOprations from "@/components/Oprationsys/NextOprations";
+import { GetAccountStatement } from "@/api/EntryAccounting";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-import UserSelect from "@/components/User/UserSelect";
-import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import printJS from "print-js";
 import permission from "@/directive/permission/index.js";
 import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
-
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
-  name: "EntryAccounting",
+  name: "AccountStatement",
   components: {
     StatusTag,
-    NextOprations,
     SearchByDate,
     DrawerPrint,
-    Pagination,
-    UserSelect,
-    RadioOprations,
-    DialogActionLog,
     AccountSearchAny,
   },
   directives: { waves, permission },
@@ -228,14 +179,9 @@ export default {
       Totals: { Rows: 0, Totals: 0, Debit: 0, Credit: 0 },
       listLoading: false,
       listQuery: {
-        Page: 1,
-        Any: "",
-        limit: this.$store.getters.settings.LimitQurey,
-        User: undefined,
         DateFrom: "",
         DateTo: "",
-        Status: undefined,
-        AccountId: 2,
+        AccountId: undefined,
       },
       downloadLoading: false,
     };
@@ -245,7 +191,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then((response) => {
+      GetAccountStatement(this.listQuery).then((response) => {
         this.list = response.items.map((curr, i, array) => {
           curr.TotalRow = array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
           return curr;
@@ -255,10 +201,8 @@ export default {
       });
     },
     handleFilter() {
-      this.listQuery.Page = 1;
       this.getList();
     },
-
     handleDownload() {
       this.downloadLoading = true;
       import("@/Report/Excel/Export2Excel").then((excel) => {
@@ -283,21 +227,6 @@ export default {
           }
         })
       );
-    },
-    getSortClass: function (key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}` ? "ascending" : "descending";
-    },
-
-    formatDate(date) {
-      let d = new Date(date),
-        day = "" + d.getDate(),
-        month = "" + (d.getMonth() + 1),
-        year = d.getFullYear();
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-
-      return [day, month, year].join("/");
     },
   },
 };

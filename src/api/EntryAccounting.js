@@ -15,6 +15,13 @@ export function GetByListQ(data) {
         data: qs.stringify(data)
     })
 }
+export function GetAccountStatement(data) {
+    return request({
+        url: '/EntryAccounting/GetAccountStatement',
+        method: 'post',
+        data: qs.stringify(data)
+    })
+}
 export function GetEntryById(query) {
     return request({
         url: '/EntryAccounting/GetEntryById',

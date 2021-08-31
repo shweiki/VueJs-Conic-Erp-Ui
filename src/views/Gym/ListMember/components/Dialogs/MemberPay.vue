@@ -10,17 +10,8 @@
         ></el-col
       ></el-row
     >
-    <el-dialog
-      style="margin-top: -13vh"
-      title="تسجيل قبض"
-      :visible.sync="Visibles"
-    >
-      <el-form
-        :model="Payment"
-        ref="Form"
-        label-position="top"
-        class="demo-form-inline"
-      >
+    <el-dialog style="margin-top: -13vh" title="تسجيل قبض" :visible.sync="Visibles">
+      <el-form :model="tempForm" ref="Form" label-position="top" class="demo-form-inline">
         <el-row>
           <el-col :span="12">
             <el-form-item label="القيمة المقبوضة">
@@ -29,11 +20,11 @@
                   {
                     required: true,
                     message: 'لايمكن ترك القيمة فارغ',
-                    trigger: 'blur'
-                  }
+                    trigger: 'blur',
+                  },
                 ]"
                 class="currency-input"
-                v-model="Payment.TotalAmmount"
+                v-model="tempForm.TotalAmmount"
                 :value-range="{ min: 0.01, max: 1000 }"
                 @focus="$event.target.select()"
               />
@@ -47,40 +38,30 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
-              <el-date-picker
-                v-model="Payment.FakeDate"
-                type="date"
-                format="dd/MM/yyyy"
-              ></el-date-picker>
+              <Fake-Date
+                :Value="tempForm.FakeDate"
+                @Set="(v) => (tempForm.FakeDate = v)"
+              />
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row>
           <el-col :span="12">
             <el-form-item prop="PaymentMethod" label="طريقة الدفع">
-              <el-radio-group
-                v-model="Payment.PaymentMethod"
-                text-color="#f78123"
-              >
-                <el-radio label="Cash" border>{{
-                  $t("NewPurchaseInvoice.Cash")
-                }}</el-radio>
-                <el-radio label="Visa" border>Visa</el-radio>
-                <el-radio label="Cheque" border>Cheque</el-radio>
-              </el-radio-group>
+              <radio-payment-method
+                Type="Payment"
+                :VendorId="tempForm.MemberId"
+                @Set="(v) => (tempForm.PaymentMethod = v)"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-              v-bind:label="$t('AddVendors.Description')"
-              prop="Description"
-            >
-              <el-input v-model="Payment.Description"></el-input>
+            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+              <el-input v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -92,20 +73,18 @@
                 {
                   required: true,
                   message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <editors-user @Set="v => (Payment.EditorName = v)" />
+              <editors-user @Set="(v) => (tempForm.EditorName = v)" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
         <el-button type="primary" @click="create()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -115,42 +94,43 @@
 </template>
 
 <script>
-import { CreatePayment } from "@/api/Payment";
+import { Create as CreatePayment } from "@/api/Payment";
 // report
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-
+import FakeDate from "@/components/Date/FakeDate";
+import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
 import EditorsUser from "@/components/Gym/EditorsUser";
 import { SendSMS } from "@/api/SMS";
 
 export default {
-  components: { EditorsUser, DrawerPrint },
+  components: { EditorsUser, DrawerPrint, FakeDate, RadioPaymentMethod },
   props: {
     MemberId: {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
     NumberPhone1: {
       type: String,
       default: () => {
         return undefined;
-      }
+      },
     },
     Name: {
       type: String,
       default: () => {
         return undefined;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       OldPayment: null,
-      Payment: {
+      tempForm: {
         Id: undefined,
         Name: "",
-        FakeDate: new Date(),
+        FakeDate: "",
         PaymentMethod: "Cash",
         TotalAmmount: 0,
         Description: "",
@@ -159,22 +139,22 @@ export default {
         IsPrime: true,
         MemberId: undefined,
         EditorName: "",
-        Type: ""
+        Type: "",
       },
-      Visibles: false
+      Visibles: false,
     };
   },
   methods: {
     create() {
-      this.$refs["Form"].validate(valid => {
+      this.$refs["Form"].validate((valid) => {
         if (valid) {
-          this.Payment.MemberId = this.MemberId;
-          CreatePayment(this.Payment)
-            .then(response => {
-              this.Payment.Name = this.Name;
+          this.tempForm.MemberId = this.MemberId;
+          CreatePayment(this.tempForm)
+            .then((response) => {
+              this.tempForm.Name = this.Name;
               this.Visibles = false;
-              this.Payment.Id = response;
-              this.OldPayment = this.Payment;
+              this.tempForm.Id = response;
+              this.OldPayment = this.tempForm;
               this.OldPayment.ObjectId = this.MemberId;
               SendSMS(
                 this.NumberPhone1,
@@ -191,15 +171,15 @@ export default {
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

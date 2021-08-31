@@ -51,6 +51,7 @@
         />
         <el-col :span="6">
           <el-switch
+            v-bind:disabled="!checkPermission(['Admin'])"
             v-model="AutoSent"
             active-color="#13ce66"
             inactive-color="#ff4949"
@@ -63,7 +64,10 @@
           </el-col>
           <el-col :span="12">
             <span>{{ $t("Account.InCome") }}</span>
-            <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
+            <Select-In-Come-Accounts
+              Value="مبيعات"
+              @Set="(v) => (InComeAccountId = v.value)"
+            />
           </el-col>
         </el-row>
       </div>
@@ -208,9 +212,24 @@
         <el-table-column
           prop="PaymentMethod"
           v-bind:label="$t('CashPool.Pay')"
-          width="150"
+          width="100"
           align="center"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <edit-payment-method
+              :VendorId="scope.row.VendorId"
+              :Value="scope.row.PaymentMethod"
+              Type="SaleInvoice"
+              :ID="scope.row.Id"
+              @Done="
+                (v) => {
+                  getdata();
+                }
+              "
+            />
+            {{ $t("NewPurchaseInvoice." + scope.row.PaymentMethod + "") }}</template
+          >
+        </el-table-column>
         <el-table-column
           v-bind:label="$t('CashPool.Discount')"
           width="120"
@@ -233,7 +252,6 @@
 
         <el-table-column width="60" label="#" align="center">
           <template slot-scope="scope">
-            <edit-payment-method Type="SaleInvoice" :ID="scope.row.Id" />
             <Drawer-Print Type="SaleInvoice" :Data="scope.row" />
           </template>
         </el-table-column>
@@ -484,7 +502,6 @@ export default {
                         Dates: [new Date(), new Date()],
                       }
                     );
-                    console.log("ItemsSales", ItemsSales);
                     const ResolveSendEmail = await SendEmail(
                       this.$store.getters.CompanyInfo.Email,
                       "إغلاق صندوق " +
@@ -499,7 +516,7 @@ export default {
                     );
                     this.$notify({
                       title: "تم الإضافة بنجاح",
-                      message: "تم الإضافة بنجاح" + ResolveSendEmail,
+                      message: "تم الإضافة بنجاح  " + ResolveSendEmail,
                       type: "success",
                       position: "top-left",
                       duration: 3000,

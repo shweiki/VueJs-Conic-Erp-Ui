@@ -50,7 +50,7 @@
         <el-col :span="6">
           <drawer-print
             style="float: left"
-            Type="PaymentList"
+            Type="ReceiveList"
             :Data="{
               Totals: Totals,
               Items: list,
@@ -79,7 +79,7 @@
       </el-row>
     </div>
     <Radio-Oprations
-      TableName="Payment"
+      TableName="Receive"
       @Set="
         (v) => {
           listQuery.Status = v;
@@ -125,7 +125,7 @@
       @sort-change="sortChange"
       @row-dblclick="
         (row) => {
-          $router.push({ path: `/Sales/Edit/${row.Id}` });
+          $router.push({ path: `/Receive/Edit/${row.Id}` });
         }
       "
     >
@@ -146,24 +146,20 @@
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column
-        prop="MemberId"
-        label="رقم المشترك"
-        align="center"
-      ></el-table-column>
-
-      <el-table-column prop="Name" label="المشترك" align="center">
-        <template slot-scope="scope">
-          <router-link :to="'/Gym/Edit/' + scope.row.accountId">
-            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
+      <el-table-column prop="Name" label="الاسم" align="center">
+        <template slot-scope="{ row }">
+          <router-link v-if="row.MemberId != null" :to="'/Gym/Edit/' + row.ObjectId">
+            <strong style="font-size: 10px; cursor: pointer">{{ row.Name }}</strong>
+          </router-link>
+          <router-link v-if="row.VendorId != null" :to="'/Vendor/Edit/' + row.ObjectId">
+            <strong style="font-size: 10px; cursor: pointer">{{ row.Name }}</strong>
           </router-link>
         </template>
       </el-table-column>
       <el-table-column
-        prop="PaymentMethod"
+        prop="ReceiveMethod"
         sortable
-        v-bind:label="$t('CashPool.Pay')"
+        label="طريقة الصرف"
         width="150"
         align="center"
       ></el-table-column>
@@ -178,7 +174,7 @@
 
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="Payment" />
+          <Status-Tag :Status="scope.row.Status" TableName="Receive" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
@@ -186,11 +182,11 @@
           <Next-Oprations
             :ObjId="scope.row.Id"
             :Status="scope.row.Status"
-            TableName="Payment"
+            TableName="Receive"
             @Done="handleFilter"
           />
-          <Dialog-Action-Log TableName="Payment" :ObjId="scope.row.Id" />
-          <Drawer-Print Type="Payment" :Data="scope.row" />
+          <Dialog-Action-Log TableName="Receive" :ObjId="scope.row.Id" />
+          <Drawer-Print Type="Receive" :Data="scope.row" />
         </template>
       </el-table-column>
     </el-table>
@@ -205,7 +201,7 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/Payment";
+import { GetByListQ } from "@/api/Receive";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";

@@ -319,7 +319,7 @@ import { GetByListQ } from "@/api/SaleInvoice";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import permission from "@/directive/permission/index.js";
@@ -341,7 +341,6 @@ export default {
     RadioOprations,
     DialogActionLog,
   },
-
   directives: { waves, permission },
   data() {
     return {

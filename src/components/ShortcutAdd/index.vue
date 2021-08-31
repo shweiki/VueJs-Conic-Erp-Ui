@@ -1,11 +1,6 @@
 <template>
   <div>
-    <el-popover
-      v-model="visible"
-      placement="bottom"
-      width="250"
-      trigger="manual"
-    >
+    <el-popover v-model="visible" placement="bottom" width="250" trigger="manual">
       <el-row>
         <el-col :span="12"><Add-Item /></el-col>
         <el-col :span="12">صنف جديد</el-col>
@@ -39,6 +34,7 @@
         <el-col :span="12"> إضافة شيك </el-col>
       </el-row>
       <i
+        v-permission="['Admin']"
         class="el-icon-plus avatar-container Right-Menu-item hover-effect"
         slot="reference"
         @click="visible = !visible"
@@ -58,7 +54,10 @@ import AddMembership from "../Gym/AddMembership.vue";
 import AddCash from "../Add/AddCash.vue";
 import AddCheque from "../Add/AddCheque.vue";
 import AddCat from "../Add/AddCat.vue";
+import permission from "@/directive/permission/index.js";
+
 export default {
+  directives: { permission },
   components: {
     AddItem,
     AddMember,
@@ -67,16 +66,16 @@ export default {
     AddMembership,
     AddCash,
     AddCheque,
-    AddCat
+    AddCat,
   },
   data() {
     return {
-      visible: false
+      visible: false,
     };
-  }
+  },
 };
 </script>
-<style  lang="scss" scoped>
+<style lang="scss" scoped>
 .Right-Menu {
   height: 100%;
   line-height: 50px;

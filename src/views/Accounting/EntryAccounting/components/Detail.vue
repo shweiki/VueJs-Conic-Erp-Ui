@@ -249,6 +249,8 @@ export default {
         Credit: 0.0,
         Description: "",
         EntryId: undefined,
+        TableName: "Manual",
+        Fktable: undefined,
       });
     },
     RemoveEntryMovements(index) {
@@ -272,6 +274,7 @@ export default {
         Id: undefined,
         FakeDate: new Date(),
         Description: "",
+        Type: "Manual",
         EntryMovements: [],
       };
     },

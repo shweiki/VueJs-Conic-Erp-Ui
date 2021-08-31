@@ -7,7 +7,6 @@
         <el-input
           v-model="listQuery.Any"
           placeholder="Search By Any Acount Name Or Id"
-          
           class="filter-item"
           @keyup.enter.native="handleFilter"
         />
@@ -55,7 +54,7 @@
         <Radio-Oprations
           TableName="Account"
           @Set="
-            v => {
+            (v) => {
               listQuery.Status = v;
               handleFilter();
             }
@@ -70,32 +69,17 @@
 
         <span>مجموع المدين (لك)</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span> (عليك) مجموع الدائن </span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>الرصيد</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Totals.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
       </el-col>
     </el-row>
@@ -143,22 +127,14 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Account.funds')"
-        width="100"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Account.funds')" width="100" align="center">
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
           )
         }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Account.Status')"
-        align="center"
-        width="70"
-      >
+      <el-table-column v-bind:label="$t('Account.Status')" align="center" width="70">
         <template slot-scope="scope">
           <Edit-Account :AccountId="scope.row.Id" />
           <Status-Tag :Status="scope.row.Status" TableName="Account" />
@@ -196,7 +172,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import permission from "@/directive/permission/index.js";
-import AddAccountDialog from "./AddAccountDialog.vue";
+import AddAccountDialog from "@/components/TreeAccount/AddAccountDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import EditAccount from "./EditAccount.vue";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
@@ -211,7 +187,7 @@ export default {
     AddAccountDialog,
     DrawerPrint,
     EditAccount,
-    DialogActionLog
+    DialogActionLog,
   },
   directives: { waves, permission },
   data() {
@@ -221,7 +197,7 @@ export default {
         Rows: 0,
         Totals: 0,
         TotalCredit: 0,
-        TotalDebit: 0
+        TotalDebit: 0,
       },
       listLoading: false,
       listQuery: {
@@ -231,23 +207,23 @@ export default {
         Sort: "+id",
         User: undefined,
 
-        Status: undefined
+        Status: undefined,
       },
       sortOptions: [
         { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
+        { label: "Id Descending", key: "-id" },
       ],
       downloadLoading: false,
       TypeAccounts: [
         {
           label: "حساب",
-          value: "Vendor"
+          value: "Vendor",
         },
         {
           label: "خزينة كاش",
-          value: "Cash"
-        }
-      ]
+          value: "Cash",
+        },
+      ],
     };
   },
   created() {
@@ -257,7 +233,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then(response => {
+      GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -283,7 +259,7 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
@@ -291,16 +267,14 @@ export default {
           header: tHeader,
           data,
           filename:
-            window.location.pathname.split("/") +
-            "-" +
-            JSON.stringify(this.listQuery)
+            window.location.pathname.split("/") + "-" + JSON.stringify(this.listQuery),
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "InventoryMovements") {
             return JSON.stringify(v[j]);
           }
@@ -315,10 +289,10 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
-    }
-  }
+    },
+  },
 };
 </script>

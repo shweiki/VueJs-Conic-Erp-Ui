@@ -62,7 +62,7 @@
               ]"
             >
               <Vendor-Search-Any
-                :Value="tempForm.Name"
+                :VendorId="tempForm.VendorId"
                 @Set="
                   (v) => {
                     Vendor = v;
@@ -276,7 +276,10 @@
         </el-col>
         <el-col :span="12">
           <span>{{ $t("Account.InCome") }}</span>
-          <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
+          <Select-In-Come-Accounts
+            Value="مبيعات"
+            @Set="(v) => (InComeAccountId = v.value)"
+          />
         </el-col>
       </el-row>
     </el-form>

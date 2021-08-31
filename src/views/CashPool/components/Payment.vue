@@ -4,15 +4,12 @@
       <div slot="header">
         <el-row type="flex">
           <el-col :span="10">
-            <span>{{ $t("Account.InCome") }}</span>
-            <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
-          </el-col>
-          <el-col :span="10">
             <span>{{ $t("NewPurchaseInvoice.Box") }}</span>
             <Select-Cash-Accounts @Set="(v) => (CashAccountId = v.value)" />
           </el-col>
           <el-col :span="2">
             <el-switch
+              v-bind:disabled="!checkPermission(['Admin'])"
               v-model="AutoSent"
               active-color="#13ce66"
               inactive-color="#ff4949"
@@ -67,7 +64,6 @@
       <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
     </el-card>
-
     <el-card class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>
       <el-table
@@ -115,9 +111,24 @@
         <el-table-column
           prop="PaymentMethod"
           v-bind:label="$t('CashPool.Pay')"
-          width="150"
+          width="100"
           align="center"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <edit-payment-method
+              :VendorId="scope.row.VendorId"
+              :Value="scope.row.PaymentMethod"
+              Type="Payment"
+              :ID="scope.row.Id"
+              @Done="
+                (v) => {
+                  getdata();
+                }
+              "
+            />
+            {{ $t("NewPurchaseInvoice." + scope.row.PaymentMethod + "") }}</template
+          >
+        </el-table-column>
         <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
           <template slot-scope="scope">{{ scope.row.TotalAmmount }} JOD</template>
         </el-table-column>
@@ -139,7 +150,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-
     <cash-pool-dialog
       :Totals="Totals"
       Type="Payment"
@@ -168,6 +178,7 @@ import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue"
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import { VisualizationReportHtml } from "@/Report/FunctionalityReport";
 import { SendEmail } from "@/api/StmpEmail";
+import EditPaymentMethod from "@/components/PaymentMethod/EditPaymentMethod.vue";
 
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
 
@@ -179,6 +190,7 @@ export default {
     CashPoolDialog,
     SelectCashAccounts,
     SelectInComeAccounts,
+    EditPaymentMethod,
   },
   data() {
     return {

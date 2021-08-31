@@ -56,9 +56,9 @@
 </template>
 <script>
 import { Create } from "@/api/Account";
-import SelectAccountsType from "./SelectAccountsType.vue";
+import SelectAccountsType from "@/components/TreeAccount/SelectAccountsType.vue";
 
-import SelectParent from "./SelectParent.vue";
+import SelectParent from "../../views/Accounting/TreeAccount/SelectParent.vue";
 export default {
   components: { SelectParent, SelectAccountsType },
   props: ["ParentId", "Code"],

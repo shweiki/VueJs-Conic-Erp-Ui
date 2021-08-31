@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-  <div id="progressBar"></div>
-<div id="progressBarContainer"></div>
+    <div id="progressBar"></div>
+    <div id="progressBarContainer"></div>
     <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: "App"
+  name: "App",
 };
 </script>
 <style>
@@ -26,7 +26,9 @@ export default {
   background: rgba(255, 255, 255, 0.05);
 }
 
-
+.v-modal {
+  width: 0;
+}
 #progressBar {
   position: fixed;
   top: 0;

@@ -7,7 +7,7 @@
     />
     <el-table
       @row-dblclick="
-        row => {
+        (row) => {
           $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
         }
       "
@@ -16,13 +16,8 @@
       border
       highlight-current-row
     >
-      <el-table-column
-        prop="Id"
-        label="Id"
-        width="120"
-        align="center"
-      ></el-table-column>
-      <el-table-column label="التاريخ" align="center" width="200">
+      <el-table-column prop="Id" label="Id" width="80" align="center"></el-table-column>
+      <el-table-column label="التاريخ" align="center" width="140">
         <template slot-scope="scope">
           <el-date-picker
             format="dd/MM/yyyy"
@@ -34,11 +29,7 @@
       <el-table-column label="البيان" align="center">
         <template slot-scope="scope">{{ scope.row.Description }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Account.Credit')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Account.Credit')" width="100" align="center">
         <template slot-scope="scope">{{
           scope.row.Credit.toFixed($store.getters.settings.ToFixed)
         }}</template>
@@ -46,11 +37,16 @@
       <el-table-column
         v-bind:label="$t('Account.Debit')"
         prop="totalDebit"
-        width="120"
+        width="100"
         align="center"
       >
         <template slot-scope="scope">{{
           scope.row.Debit.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column label="الرصيد" prop="TotalRow" width="100" align="center">
+        <template slot-scope="scope">{{
+          scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
       <!--<el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
@@ -71,13 +67,13 @@ export default {
       type: Array,
       default: () => {
         return null;
-      }
+      },
     },
     AccountId: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
-  methods: { checkPermission }
+  methods: { checkPermission },
 };
 </script>

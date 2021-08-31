@@ -151,7 +151,10 @@
       </div>
       <el-col :span="12">
         <span>{{ $t("Account.InCome") }}</span>
-        <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
+        <Select-In-Come-Accounts
+          Value="اشتراكات"
+          @Set="(v) => (InComeAccountId = v.value)"
+        />
       </el-col>
     </el-dialog>
   </div>
@@ -167,9 +170,16 @@ import { Create as CreateSaleInvoice } from "@/api/SaleInvoice";
 import { GetActiveService } from "@/api/Service";
 import { LocalDateTime, Instant } from "@js-joda/core";
 import { CreateEntry } from "@/api/EntryAccounting";
+import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 
 export default {
-  components: { FakeDate, EditorsUser, SelectMemberships, SelectDiscount },
+  components: {
+    FakeDate,
+    EditorsUser,
+    SelectMemberships,
+    SelectDiscount,
+    SelectInComeAccounts,
+  },
   props: {
     AccountId: {
       type: Number,
@@ -254,23 +264,20 @@ export default {
                       Id: undefined,
                       AccountId: this.AccountId,
                       Debit: 0.0,
-                      Credit: Total,
-                      Description: "فاتورة مبيعات رقم" + response + " ",
+                      Credit: this.tempForm.TotalAmmount,
+                      Description: "اشتراك رقم " + response + " ",
                       EntryId: undefined,
-                      TableName: "SaleInvoice",
+                      TableName: "MembershipMovement",
                       Fktable: response,
                     },
                     {
                       Id: undefined,
-                      AccountId:
-                        this.tempForm.PaymentMethod == "Cash"
-                          ? this.CashAccountId
-                          : this.InComeAccountId,
-                      Debit: Total,
+                      AccountId: this.InComeAccountId,
+                      Debit: this.tempForm.TotalAmmount,
                       Credit: 0.0,
-                      Description: "فاتورة مبيعات رقم" + response + " ",
+                      Description: "اشتراك رقم " + response + " ",
                       EntryId: undefined,
-                      TableName: "SaleInvoice",
+                      TableName: "MembershipMovement",
                       Fktable: response,
                     },
                   ],

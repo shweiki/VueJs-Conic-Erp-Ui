@@ -80,7 +80,6 @@ export function VisualizationReportHtml(Type, Data) {
         item.Html = Visualization(Data, item.Html, "Set");
       });
       resolve(res.map(x => x.Html))
-
     }).catch(err => { reject(err) });
   })
 }

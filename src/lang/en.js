@@ -11,7 +11,10 @@ export default {
         RolePermission: 'Role Permission',
         DirectivePermission: 'Directive Permission',
         Settings: 'Settings',
-        Payment: 'Payment',
+        Payment: "Payment",
+        ListPayment: 'Payment',
+        NewPayment: 'New Payment',
+        EditPayment: 'Edit Payment',
         Oprationsys: 'Oprations',
         CompanyInfo: 'Company Info',
         Classifications: 'Classifications',
@@ -21,6 +24,7 @@ export default {
         SalesInvoice: 'Sales Invoice',
         SalesItems: 'Sales Items',
         CashPool: 'Cash Pool',
+        AccountStatement: "Account Statement",
         NewPurchaseInvoice: 'New Purchase Invoice',
         ListPurchaseInvoice: 'List Purchase Invoice',
         PurchaseItems: 'Purchase Items',
@@ -60,6 +64,7 @@ export default {
         UnitItem: 'Unit Item',
         All: 'All',
         Accounting: 'Accounting',
+        AccountReceivablesPayables:"Receivables & Payables",
         NewStock: 'New Stock',
         StockItem: 'Stock Item',
         TableAccount: "Table Account",
@@ -289,6 +294,15 @@ export default {
         Total: 'Total Amount',
         Status: 'Status',
     },
+    AccountStatement: {
+        SaleInvoice: 'Sale Invoice',
+        Purchase: 'Purchase',
+        Payment: 'Payment',
+        Receive: 'Receive',
+        Manual: 'Manual',
+        BalanceCarried: "Balance Carried",
+        null: ""
+    },
     CashPool: {
         Save: 'Save',
         Note: 'Note: Upon posting to accounting, an accounting entry will be issued with the specified total value only',
@@ -313,8 +327,8 @@ export default {
         TotalOutlay: "Total Outlay",
         TotalReject: "Total Reject",
         TotalRestitution: "Total Restitution",
-        SaleInvoice :"Sale Invoice"
-
+        SaleInvoice: "Sale Invoice",
+        Payment: "Payment"
     },
     ItemSales: {
         Name: 'Name',
@@ -331,6 +345,7 @@ export default {
         Date: 'Date',
         PaymentMethod: 'Payment Method',
         Cash: 'Cash',
+        Visa: 'Visa',
         Receivables: 'Deferred ',
         Cheque: 'Cheque',
         Box: 'Box',
@@ -448,6 +463,10 @@ export default {
         Credit: 'Credit',
         Debit: 'Debit',
         funds: 'Funds',
+        Receivables: 'Receivables',
+        Payables: 'Payables',
+        Id: "Account Id",
+        Name: "Account Name"
     },
     TreeAccount: {
         TreeAccount: 'TreeAccount',
@@ -553,7 +572,7 @@ export default {
         AccType: "AccType",
         Save: "Save",
         cancel: "Cancel",
-        InCome:"In Come"
+        InCome: "In Come"
 
 
     },

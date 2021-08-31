@@ -23,6 +23,7 @@
                   ]"
                 >
                   <Vendor-Search-Any
+                    :VendorId="tempForm.VendorId"
                     @Set="
                       (v) => {
                         tempForm.Name = v.Name;
@@ -32,7 +33,6 @@
                       }
                     "
                   />
-
                   <!--  <vendor-select @Set="v => (tempForm.Vendor = v)" />-->
                 </el-form-item>
               </el-col>
@@ -53,7 +53,8 @@
                   />
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+
+              <el-col :span="2">
                 <el-button
                   type="primary"
                   icon="el-icon-s-home"
@@ -63,6 +64,8 @@
                     })
                   "
                 ></el-button>
+              </el-col>
+              <el-col :span="2">
                 <el-button
                   type="primary"
                   icon="el-icon-s-claim"
@@ -72,6 +75,8 @@
                     })
                   "
                 ></el-button>
+              </el-col>
+              <el-col :span="2">
                 <el-button
                   type="primary"
                   icon="el-icon-plus"
@@ -103,7 +108,10 @@
                   <template slot="paneL">
                     <el-card class="card" :body-style="{ padding: '4px' }">
                       <el-row>
-                        <el-col :span="6">
+                        <el-col :span="3">
+                          <drawer-search-invoice />
+                        </el-col>
+                        <el-col :span="3">
                           <el-switch
                             v-model="AutoPrint"
                             active-color="#13ce66"
@@ -441,7 +449,6 @@ import FakeDate from "@/components/Date/FakeDate";
 import { PrintReport } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { GetActiveMenuItem } from "@/api/MenuItem";
 
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
@@ -449,7 +456,8 @@ import splitPane from "vue-splitpane";
 import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
-import EditVendor from "@/components/Vendor/EditVendor";
+import DrawerSearchInvoice from "@/components/Sales/DrawerSearchInvoice.vue";
+
 import { SendSMS } from "@/api/SMS";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
@@ -473,7 +481,7 @@ export default {
     Description,
     DeliveryEl,
     VendorSearchAny,
-    EditVendor,
+    DrawerSearchInvoice,
   },
   props: {
     isEdit: {

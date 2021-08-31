@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row v-if="tempForm">
       <el-col :span="24" :xs="24" v-loading="loading">
-        <Vendor-Search />
+        <Vendor-Search :VendorId="tempForm.Id" />
         <el-card
           class="box-card"
           v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
@@ -20,7 +20,7 @@
                     icon="el-icon-zoom-in"
                     @click="
                       $router.replace({
-                        path: '/redirect' + '/Vendor/ListVendor'
+                        path: '/redirect' + '/Vendor/ListVendor',
                       })
                     "
                     >جميع العملاء</el-button
@@ -34,7 +34,9 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="24"> </el-col>
+                <el-col :span="24"
+                  ><Vendor-Receive :VendorId="tempForm.Id" :Name="tempForm.Name" />
+                </el-col>
               </el-row>
               <el-row>
                 <el-col :span="24">
@@ -49,11 +51,7 @@
           </el-row>
         </el-card>
         <el-card class="box-card">
-          <el-tabs
-            v-model="activeTab"
-            tab-position="right"
-            @tab-click="tabClick"
-          >
+          <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
             <el-tab-pane label="بيانات" name="Details">
               <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
               <User-Card :Vendor="tempForm" />
@@ -70,12 +68,13 @@
               <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
               <Payment :VendorId="tempForm.Id" />
             </el-tab-pane>
+            <el-tab-pane label="مصروفات" name="Receive">
+              <span slot="label"><i class="el-icon-refresh"></i> مصروفات</span>
+              <Receive :VendorId="tempForm.Id" />
+            </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-              <Account
-                :EntryMovements="EntryMovements"
-                :AccountId="tempForm.AccountId"
-              />
+              <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
             </el-tab-pane>
             <el-tab-pane label="تواصل" name="communication">
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
@@ -91,11 +90,14 @@
 <script>
 import Details from "./Details.vue";
 import UserCard from "./UserCard.vue";
+import VendorReceive from "./Dialogs/VendorReceive.vue";
 
 import VendorPay from "./Dialogs/VendorPay.vue";
 import VendorSearch from "./VendorSearch.vue";
 
 import Payment from "./Payment.vue";
+import Receive from "./Receive.vue";
+
 import SaleInvoice from "./SaleInvoice.vue";
 import PurchaseInvoice from "./PurchaseInvoice.vue";
 
@@ -115,18 +117,20 @@ export default {
     UserCard,
     Account,
     Payment,
+    Receive,
     VendorPay,
     Massage,
     VendorSearch,
     Communication,
     SaleInvoice,
-    PurchaseInvoice
+    PurchaseInvoice,
+    VendorReceive,
   },
   props: {
     isEdit: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
@@ -134,8 +138,7 @@ export default {
       loading: true,
       tempRoute: {},
       tempForm: null,
-      Payments: [],
-      EntryMovements: []
+      EntryMovements: [],
     };
   },
   created() {
@@ -148,7 +151,7 @@ export default {
   methods: {
     getdata(val) {
       GetById({ Id: val })
-        .then(response => {
+        .then((response) => {
           this.tempForm = response;
           this.GetImage(this.tempForm.Id);
           this.loading = false;
@@ -156,41 +159,44 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     tabClick(tab, event) {
       if (tab.label == "مالية")
         GetEntryMovementsByAccountId({
-          AccountId: this.tempForm.AccountId
-        }).then(response => {
-          console.log("log :", response);
-          this.EntryMovements = response.reverse();
+          AccountId: this.tempForm.AccountId,
+        }).then((response) => {
+          this.EntryMovements = response.map((curr, i, array) => {
+            curr.TotalRow =
+              array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
+            return curr;
+          });
         });
     },
     GetImage(Id) {
       GetFileByObjId({ TableName: "Vendor", ObjId: Id })
-        .then(response => {
+        .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     setTagsViewTitle() {
-      const title = "Vendor";
+      const title = "";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Name}`
+        title: `${title}-${this.tempForm.Name}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Vendor";
+      const title = "";
       document.title = `${title} - ${this.tempForm.Name}`;
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

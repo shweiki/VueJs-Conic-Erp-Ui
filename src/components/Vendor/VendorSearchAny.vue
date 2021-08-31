@@ -12,7 +12,7 @@
     </el-col>
     <el-col :span="16">
       <div :class="{ show: show }" class="vendor-search">
-        <el-input :disabled="true" v-model="name" class="input-with-select">
+        <el-input :disabled="true" v-model="Vendor.Name" class="input-with-select">
           <svg-icon
             slot="append"
             class-name="search-icon"
@@ -20,7 +20,6 @@
             @click.stop="click"
           />
         </el-input>
-
         <el-select
           ref="VendorSearchSelect"
           v-model="search"
@@ -52,17 +51,18 @@
       </div>
     </el-col>
     <el-col :span="4">
-      <edit-vendor :VendorId="VendorId" />
+      <edit-vendor :VendorId="Vendor.Id" />
     </el-col>
   </div>
 </template>
 <script>
-import { GetVendorByAny } from "@/api/Vendor";
+import { GetVendorByAny, GetById } from "@/api/Vendor";
+
 import AddVendor from "@/components/Vendor/AddVendor.vue";
 import EditVendor from "@/components/Vendor/EditVendor.vue";
 
 export default {
-  props: ["Value"],
+  props: ["VendorId"],
   components: { AddVendor, EditVendor },
   data() {
     return {
@@ -70,21 +70,16 @@ export default {
       options: [],
       NewPhone: "",
       show: false,
-      name: "زبون نقدي",
-      VendorId: 2,
+      Vendor: { Id: 2, Name: "زبون نقدي", AccountId: 6 },
     };
   },
-  mounted() {
-    this.querySearch(this.name);
-  },
   watch: {
-    Value(val) {
-      if (val != "") this.search = val;
-      //else this.SetVal(new Date());
-    },
-    VendorId(val) {
-      if (val != "") this.search = val;
-      //else this.SetVal(new Date());
+    VendorId(value) {
+      if (value != null && value != undefined && value != "" && value > 0) {
+        GetById({ Id: value }).then((res) => {
+          this.change(res);
+        });
+      }
     },
     show(value) {
       if (value) {
@@ -98,8 +93,7 @@ export default {
     change(val) {
       this.search = "";
       this.options = [];
-      this.VendorId = val.Id;
-      this.name = val.Name;
+      this.Vendor = val;
       this.show = false;
       this.$emit("Set", val);
     },
@@ -108,7 +102,7 @@ export default {
         GetVendorByAny({ Any: query }).then((res) => {
           this.options = res;
           if (res.length == 0) this.NewPhone = query;
-          //   if (res.length == 1) this.change(res[0]);
+          //  if (res.length == 1) this.change(res[0]);
         });
       } else {
         this.options = [];

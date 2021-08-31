@@ -10,6 +10,22 @@ const AccountingRouter = {
   },
   children: [
     {
+      path: 'AccountReceivablesPayables',
+      component: () => import('@/views/Accounting/AccountReceivablesPayables'),
+      name: 'AccountReceivablesPayables',
+      meta: {
+        title: 'AccountReceivablesPayables', icon: 'cost'
+      },
+    },
+    {
+      path: 'AccountStatement',
+      component: () => import('@/views/Accounting/AccountStatement'),
+      name: 'AccountStatement',
+      meta: {
+        title: 'AccountStatement', icon: 'cost'
+      },
+    },
+    {
       path: '/EntryAccounting',
       component: () => import('@/views/Accounting/EntryAccounting/index'),
       redirect: '/EntryAccounting/List',
@@ -57,16 +73,6 @@ const AccountingRouter = {
         title: 'TableAccount', icon: 'cost'
       },
     },
-    {
-      path: 'Payment',
-      component: () => import('@/views/Accounting/Payment/List'),
-      name: 'Payment',
-      meta: {
-        title: 'Payment', icon: 'accounts'
-      },
-    },
-
-
     {
       path: 'Banks',
       component: () => import('@/views/Accounting/Bank/index'),

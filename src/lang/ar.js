@@ -11,7 +11,10 @@ export default {
         rolePermission: 'صلاحيات الوظائف',
         directivePermission: 'اذن التوجيه',
         Settings: 'اعدادات',
-        Payment: 'مقبوضات',
+        Payment:"مقبوضات",
+        ListPayment: 'مقبوضات',
+        NewPayment: 'انشاء قبض',
+        EditPayment: 'تعديل قبض',
         Oprationsys: 'عمليات النظام',
         CompanyInfo: 'معلومات الشركة',
         Classifications: 'التصنيفات',
@@ -23,6 +26,7 @@ export default {
         CashPool: 'اغلاق صندوق',
         NewPurchaseInvoice: 'انشاء فاتورة شراء',
         NewEntryAccounting: 'انشاء قيد جديد',
+        AccountStatement:"كشف حساب",
         EditEntryAccounting: 'تعديل القيود',
         ListEntryAccounting: 'قائمة القيود',
         ListPurchaseInvoice: 'فواتير شراء',
@@ -50,6 +54,7 @@ export default {
         Inventories: 'مخازن',
         Inventory: 'مخزن',
         TreeAccount: 'شجرة الحسابات',
+        AccountReceivablesPayables:"ذمم مدينة / دائنة",
         EntryAccounting: 'قيود',
         NewAccountingEntry: 'قيد جديد',
         Sales: 'مبيعات',
@@ -300,6 +305,15 @@ export default {
         Region: "المنطقة",
 
     },
+    AccountStatement: {
+        SaleInvoice: 'مبيعات',
+        Purchase: 'مشترايات',
+        Payment: 'قبض',
+        Receive: 'صرف',
+        Manual: 'يدوي',
+        BalanceCarried:"رصيد مدور",
+        null:""
+    },
     Sales: {
         ByDate: 'بحث حسب التاريخ',
         until: 'لغاية',
@@ -334,7 +348,9 @@ export default {
         TotalOutlay :"إجمالي الإنفاق",
         TotalReject :"إجمالي المرفوض",
         TotalRestitution :"إجمالي المردودات",
-        SaleInvoice :"فواتير المبيعات"
+        SaleInvoice :"فواتير المبيعات",
+        Payment :"سندات القبض"
+
 
     },
     ItemSales: {
@@ -352,6 +368,7 @@ export default {
         Date: 'التاريخ',
         PaymentMethod: 'طريقة الدفع',
         Cash: 'نقدي',
+        Visa: 'فيزا',
         Receivables: 'الاجل ',
         Cheque:'شيك',
         Box: 'الصندوق',
@@ -470,6 +487,11 @@ export default {
         Credit: 'مدين',
         Debit: 'دائن',
         funds: 'رصيد',
+        Receivables: 'الذمم المدينة',
+        Payables: 'الذمم دائنة',
+        Id:"رقم الحساب",
+        Name:"اسم الحساب"
+
     },
     TreeAccount: {
         TreeAccount: 'شجرة الحسابات',

@@ -327,7 +327,7 @@ export default {
             });
         });
         this.Totals.Totals = this.list.reduce((prev, cur) => {
-          return prev + cur.Totals.Totals;
+          return prev + cur.Totals;
         }, 0);
         this.listLoading = false;
       });

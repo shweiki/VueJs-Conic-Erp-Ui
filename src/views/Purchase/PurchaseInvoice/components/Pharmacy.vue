@@ -58,7 +58,7 @@
               ]"
             >
               <Vendor-Search-Any
-                :Value="tempForm.Name"
+                :VendorId="tempForm.VendorId"
                 @Set="
                   (v) => {
                     tempForm.Name = v.Name;

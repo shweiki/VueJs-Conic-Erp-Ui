@@ -6,6 +6,7 @@
         v-bind:style="Css"
         icon="el-icon-printer"
         type="info"
+        :size="$store.getters.size"
         @click="drawer = true"
       ></el-button>
     </el-tooltip>

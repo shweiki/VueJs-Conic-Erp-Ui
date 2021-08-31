@@ -15,12 +15,6 @@ const CashPoolRouter = {
       meta: { title: 'NewSaleInvoiceCashPool', icon: 'machine' }
     },
     {
-      path: 'Create/MembershipMovement',
-      component: () => import('@/views/CashPool/components/MembershipMovement'),
-      name: 'NewMembershipMovementCashPool',
-      meta: { title: 'NewMembershipMovementCashPool', icon: 'machine' }
-    },
-    {
       path: 'Create/Payment',
       component: () => import('@/views/CashPool/components/Payment'),
       name: 'NewPaymentCashPool',

@@ -18,7 +18,7 @@ import { GetInComeAccounts } from "@/api/Account";
 import checkPermission from "@/utils/permission";
 
 export default {
-  props: ["CashId"],
+  props: ["CashId", "Value"],
   data() {
     return {
       options: [],
@@ -34,7 +34,7 @@ export default {
     GetInComeAccounts()
       .then((response) => {
         this.options = response;
-        this.SetVal(response[0].value);
+        this.SetVal(this.options.find((obj) => obj.label == this.Value).value);
       })
       .catch((error) => {
         reject(error);

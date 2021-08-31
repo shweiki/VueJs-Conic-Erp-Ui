@@ -11,13 +11,12 @@
         >
         <span>{{ $t("CashDrawer.CashDrawer") }}</span>
       </div> -->
-      <Add-Cash/>
+      <Add-Cash />
       <el-table
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
-              !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -43,10 +42,7 @@
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('CashDrawer.Name')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('CashDrawer.Name')" />
           </template>
         </el-table-column>
         <el-table-column
@@ -67,11 +63,7 @@
           width="120"
           align="center"
         ></el-table-column>
-        <el-table-column
-          v-bind:label="$t('Items.Status')"
-          align="center"
-          width="100"
-        >
+        <el-table-column v-bind:label="$t('Items.Status')" align="center" width="100">
           <template slot-scope="scope">
             <Status-Tag :Status="scope.row.Status" TableName="Cash" />
           </template>
@@ -124,7 +116,7 @@
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
-      <!-- <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{
           $t("Classification.cancel")
         }}</el-button>
@@ -133,7 +125,7 @@
           @click="dialogFormStatus === 'create' ? createData() : updateData()"
           >{{ $t("AddVendors.Save") }}</el-button
         >
-      </div> -->
+      </div>
     </el-dialog>
     <el-dialog
       style="margin-top: -13vh"
@@ -153,18 +145,13 @@
           v-bind:label="$t('Classification.OperationNote')"
           prop="Description"
         >
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button
-          :type="textOpration.ClassName"
-          @click="createOprationData()"
-          >{{ textOpration.OprationDescription }}</el-button
-        >
+        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
+          textOpration.OprationDescription
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -189,13 +176,13 @@ export default {
       search: "",
       textMapForm: {
         update: "تعديل",
-        create: "إضافة"
+        create: "إضافة",
       },
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: ""
+        ClassName: "",
       },
       tempForm: {
         Id: undefined,
@@ -203,29 +190,29 @@ export default {
         PCIP: "",
         Description: "",
         BTCash: "",
-        IsPrime: false
+        IsPrime: false,
       },
       rulesForm: {},
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: ""
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 احرف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -235,13 +222,13 @@ export default {
     getdata() {
       this.loading = true;
       GetCash()
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
@@ -253,7 +240,7 @@ export default {
         PCIP: "",
         Description: "",
         BTCash: "",
-        IsPrime: false
+        IsPrime: false,
       };
     },
     handleCreate() {
@@ -277,8 +264,7 @@ export default {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -287,20 +273,20 @@ export default {
       this.tempOpration.Description = "";
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -310,20 +296,20 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -333,25 +319,25 @@ export default {
       });
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
             ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationId,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -359,7 +345,7 @@ export default {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
