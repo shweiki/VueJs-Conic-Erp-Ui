@@ -16,7 +16,7 @@
               <Entry-Movements-Dialog :AccountId="Selected.Id" />
             </el-col>
             <el-col :span="4">
-              <Edit-Account :AccountId="Selected.Id" />
+              <Edit-Account :AccountId="Selected.Id" @Done="getdata()" />
             </el-col>
             <el-col :span="4">
               <Add-Account-Dialog

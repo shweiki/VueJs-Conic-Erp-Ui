@@ -15,6 +15,10 @@ export default {
         ListPayment: 'مقبوضات',
         NewPayment: 'انشاء قبض',
         EditPayment: 'تعديل قبض',
+        Receive:"مصروفات",
+        ListReceive: 'مصروفات',
+        NewReceive: 'انشاء صرف',
+        EditReceive: 'تعديل صرف',
         Oprationsys: 'عمليات النظام',
         CompanyInfo: 'معلومات الشركة',
         Classifications: 'التصنيفات',
@@ -349,9 +353,8 @@ export default {
         TotalReject :"إجمالي المرفوض",
         TotalRestitution :"إجمالي المردودات",
         SaleInvoice :"فواتير المبيعات",
-        Payment :"سندات القبض"
-
-
+        Payment :"سندات القبض",
+        Receive :"سندات الصرف"
     },
     ItemSales: {
         Name: "الإسم",

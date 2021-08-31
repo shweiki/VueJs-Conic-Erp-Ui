@@ -276,10 +276,7 @@
         </el-col>
         <el-col :span="12">
           <span>{{ $t("Account.InCome") }}</span>
-          <Select-In-Come-Accounts
-            Value="مبيعات"
-            @Set="(v) => (InComeAccountId = v.value)"
-          />
+          <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
         </el-col>
       </el-row>
     </el-form>
@@ -323,8 +320,6 @@ export default {
         Id: undefined,
         Name: "",
         Tax: 0.0,
-        CashAccountId: undefined,
-        InComeAccountId: undefined,
         AccountInvoiceNumber: "",
         FakeDate: "",
         PaymentMethod: "Cash",
@@ -343,7 +338,8 @@ export default {
           },
         ],
       },
-      CashAccounts: [],
+      CashAccountId: undefined,
+      InComeAccountId: undefined,
       Vendor: undefined,
       tempRoute: {},
     };
@@ -456,7 +452,11 @@ export default {
           this.DisabledSave = true;
           Create(this.tempForm)
             .then((response) => {
-              if (response && this.tempForm.PaymentMethod == "Receivables") {
+              if (
+                response &&
+                this.tempForm.PaymentMethod == "Receivables" &&
+                this.$store.getters.settings.PointOfSale.CreateEntry == true
+              ) {
                 CreateEntry({
                   Id: undefined,
                   FakeDate: this.tempForm.FakeDate,

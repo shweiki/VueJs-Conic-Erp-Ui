@@ -124,6 +124,7 @@ export default {
         if (valid) {
           Edit(this.tempForm)
             .then((response) => {
+              this.$emit("Done");
               this.Visible = false;
               this.$notify({
                 title: "تم ",

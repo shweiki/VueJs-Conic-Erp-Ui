@@ -47,7 +47,6 @@ router.beforeEach(async (to, from, next) => {
                     // hack method to ensure that addRoutes is complete
                     // set the replace: true, so the navigation will not leave a history record
                     store.dispatch("CompanyInfo/GetCompanyInfo");
-
                     if (store.state.settings.BusinessType == 'GymManagment') {
                         var now = new Date();
                         var d = new Date(store.state.settings.triger.CheckMembers.LastRun)
@@ -59,7 +58,7 @@ router.beforeEach(async (to, from, next) => {
                         store.dispatch("Devices/ConnectZtkDoor");
                     }
                     getPrinterDevice();
-
+                    
                     document.onkeydown = capturekey;
                     document.onkeypress = capturekey;
                     document.onkeyup = capturekey;
