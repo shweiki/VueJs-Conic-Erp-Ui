@@ -277,8 +277,8 @@ export default {
                     {
                       Id: undefined,
                       AccountId: this.AccountId,
-                      Debit: this.tempForm.TotalAmmount,
-                      Credit: 0.0,
+                      Debit: 0.0,
+                      Credit: this.tempForm.TotalAmmount,
                       Description: "سند صرف رقم " + response + " ",
                       EntryId: undefined,
                       TableName: "Receive",
@@ -287,8 +287,8 @@ export default {
                     {
                       Id: undefined,
                       AccountId: this.CashAccountId,
-                      Debit: 0.0,
-                      Credit: this.tempForm.TotalAmmount,
+                      Debit: this.tempForm.TotalAmmount,
+                      Credit: 0.0,
                       Description: "سند صرف رقم " + response + " ",
                       EntryId: undefined,
                       TableName: "Receive",
