@@ -31,7 +31,7 @@
         <i class="el-icon-caret-bottom" />
       </div>
       <el-dropdown-menu slot="dropdown">
-        <router-link :to="$store.getters.defulate_redirect">
+        <router-link to="/index">
           <el-dropdown-item>
             {{ $t("navbar.Profile") }}
           </el-dropdown-item>

@@ -25,7 +25,7 @@
           Type="ItemsSales"
           :Data="{
             Totals: Totals,
-            Items: ItemsSales,
+            Items: ItemsSales(tableData),
             Dates: [new Date(), new Date()],
           }"
         />
@@ -33,7 +33,7 @@
           style="float: left"
           Type="ItemsIngredients"
           :Data="{
-            Items: ItemsIngredients,
+            Items: ItemsIngredients(tableData),
             Dates: [new Date(), new Date()],
           }"
         />
@@ -64,10 +64,7 @@
           </el-col>
           <el-col :span="12">
             <span>{{ $t("Account.InCome") }}</span>
-            <Select-In-Come-Accounts
-              Value="مبيعات"
-              @Set="(v) => (InComeAccountId = v.value)"
-            />
+            <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
           </el-col>
         </el-row>
       </div>
@@ -113,7 +110,13 @@
     </el-card>
     <el-card v-permission="['Admin']" class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>
-      <el-table height="250" :data="ItemsSales" fit border highlight-current-row>
+      <el-table
+        height="250"
+        v-bind:data="ItemsSales(tableData)"
+        fit
+        border
+        highlight-current-row
+      >
         <el-table-column prop="Name" label="الصنف" align="center"></el-table-column>
         <el-table-column
           prop="TotalCount"
@@ -294,7 +297,7 @@
 
 <script>
 import { GetByListQ } from "@/api/SaleInvoice";
-import { Create as CreateCashPool } from "@/api/CashPool";
+import { Create as CreateCashPool, GetCashPoolById } from "@/api/CashPool";
 
 import { CreateEntry } from "@/api/EntryAccounting";
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
@@ -307,7 +310,7 @@ import CashPoolDialog from "./CashPoolDialog.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import { parseTime } from "@/utils";
-import { VisualizationReportHtml } from "@/Report/FunctionalityReport";
+import { VisualizationReportHtml, PrintReport } from "@/Report/FunctionalityReport";
 import { SendEmail } from "@/api/StmpEmail";
 
 export default {
@@ -318,6 +321,12 @@ export default {
     SelectCashAccounts,
     SelectInComeAccounts,
     EditPaymentMethod,
+  },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
   },
   directives: { permission },
   data() {
@@ -339,22 +348,35 @@ export default {
         TotalCost: 0,
         Discount: 0,
       },
-      ItemsSales: [],
-      ItemsIngredients: [],
     };
   },
-  mounted() {
-    this.getdata();
+  created() {
+    if (this.isEdit) {
+      this.getdata(this.$route.params && this.$route.params.id);
+    } else {
+      this.getdata();
+    }
+
+    this.tempRoute = Object.assign({}, this.$route);
   },
   methods: {
     checkPermission,
-    getdata() {
+    getdata(val = null) {
       const loading = this.$loading({
         lock: true,
         text: "Get Data",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
+      if (val != null) {
+        GetCashPoolById({ Id: val }).then((res) => {
+          this.CashPool = res;
+          GetSaleInvoiceByListId({ listid: res.Fktable }).then((res) => {
+            this.tableData = res.items;
+            this.Totals = res.Totals;
+          });
+        });
+      }
       GetByListQ({
         Page: 1,
         Any: "",
@@ -371,36 +393,6 @@ export default {
 
           this.tableData = response.items;
           this.Totals = response.Totals;
-          this.ItemsSales = [];
-          this.tableData.map((a) => {
-            return a.InventoryMovements.map((m) => {
-              var find = this.ItemsSales.findIndex((value) => value.Name == m.Name);
-              if (find != -1) this.ItemsSales[find].TotalCount += m.Qty;
-              else {
-                this.ItemsSales.push({
-                  Name: m.Name,
-                  TotalCount: m.Qty,
-                  AvgPrice: m.SellingPrice.toFixed(this.$store.getters.settings.ToFixed),
-                  CostPrice: m.CostPrice,
-                  Ingredients: JSON.parse(m.Ingredients) || [],
-                });
-              }
-            });
-          });
-          this.ItemsIngredients = [];
-          this.ItemsSales.map((a) => {
-            return a.Ingredients.map((m) => {
-              var find = this.ItemsIngredients.findIndex((value) => value.Name == m.Name);
-              if (find != -1)
-                this.ItemsIngredients[find].TotalCount += a.TotalCount * m.Qty;
-              else {
-                this.ItemsIngredients.push({
-                  Name: m.Name,
-                  TotalCount: a.TotalCount * m.Qty,
-                });
-              }
-            });
-          });
 
           loading.close();
         })
@@ -522,6 +514,7 @@ export default {
                       duration: 3000,
                     });
                     loading.close();
+                    PrintReport("CashPool", this.CashPool);
                     Object.assign(this.$data, this.$options.data());
                   } else {
                     loading.close();
@@ -539,6 +532,57 @@ export default {
         }
       });
     },
+    ItemsSales(list) {
+      var res = [];
+      for (var i = 0; i < list.length; i++) {
+        list[i].InventoryMovements.map((m) => {
+          var find = res.findIndex((value) => value.Name == m.Name);
+          if (find != -1) res[find].TotalCount += m.Qty;
+          else {
+            res.push({
+              Name: m.Name,
+              TotalCount: m.Qty,
+              AvgPrice: m.SellingPrice.toFixed(this.$store.getters.settings.ToFixed),
+              CostPrice: m.CostPrice,
+              Ingredients: JSON.parse(m.Ingredients) || [],
+            });
+          }
+        });
+      }
+      return res;
+    },
+    ItemsIngredients(list) {
+      var res = [];
+      var res2 = [];
+      for (var i = 0; i < list.length; i++) {
+        list[i].InventoryMovements.map((m) => {
+          var find = res.findIndex((value) => value.Name == m.Name);
+          if (find != -1) res[find].TotalCount += m.Qty;
+          else {
+            res.push({
+              Name: m.Name,
+              TotalCount: m.Qty,
+              AvgPrice: m.SellingPrice.toFixed(this.$store.getters.settings.ToFixed),
+              CostPrice: m.CostPrice,
+              Ingredients: JSON.parse(m.Ingredients) || [],
+            });
+          }
+        });
+      }
+      for (var i = 0; i < res.length; i++) {
+        res[i].Ingredients.map((m) => {
+          var find = res2.findIndex((value) => value.Name == m.Name);
+          if (find != -1) res2[find].TotalCount += res[i].TotalCount * m.Qty;
+          else {
+            res2.push({
+              Name: m.Name,
+              TotalCount: res[i].TotalCount * m.Qty,
+            });
+          }
+        });
+      }
+      return res2;
+    },
     formatDate(date) {
       let d = new Date(date),
         day = "" + d.getDate(),
@@ -548,6 +592,17 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
+    },
+    setTagsViewTitle() {
+      const title = "Edit Sales";
+      const route = Object.assign({}, this.tempRoute, {
+        title: `${title}-${this.tempForm.Id}`,
+      });
+      this.$store.dispatch("tagsView/updateVisitedView", route);
+    },
+    setPageTitle() {
+      const title = "Edit Sales";
+      document.title = `${title} - ${this.tempForm.Id}`;
     },
   },
 };

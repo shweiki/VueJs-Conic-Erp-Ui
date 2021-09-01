@@ -85,7 +85,6 @@ export const constantRoutes = [{
         import('@/views/error-page/401'),
     hidden: true
 },
-
 {
     path: '/',
     component: Layout,
@@ -98,9 +97,7 @@ export const constantRoutes = [{
         name: 'Profile',
         meta: { title: 'Profile', icon: 'user', noCache: true }
     }]
-},
-
-]
+}]
 
 /**
  * asyncRoutes
@@ -118,7 +115,6 @@ export const asyncRoutes = [{
         meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
     }]
 },
-    VendorRouter,
 {
     path: '/Sales/PonitOfSale',
     component: () =>
@@ -132,6 +128,7 @@ export const asyncRoutes = [{
 
     /** when your routing map is too long, you can split it into small modules **/
     //componentsRouter,
+    VendorRouter,
     GymRouter,
     SalesRouter,
     PurchasesRouter,

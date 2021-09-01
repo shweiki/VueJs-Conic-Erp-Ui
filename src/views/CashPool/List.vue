@@ -77,7 +77,6 @@
           @Set="
             (v) => {
               listQuery.Status = v;
-              handleFilter();
             }
           "
       /></el-col>
@@ -121,7 +120,7 @@
       @row-dblclick="
         (row) => {
           let r = $router.resolve({
-            path: '/Sales/Edit/' + row.Id,
+            path: '/CashPool/Edit/' + row.Id,
           });
           window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }
@@ -166,7 +165,7 @@
       </el-table-column>
       <el-table-column label="المطلوب" width="120" align="center">
         <template slot-scope="{ row }">
-          {{ row.Totals.toFixed($store.getters.settings.ToFixed) }}
+          {{ row.Totals.Totals }}
           JOD
         </template>
       </el-table-column>
@@ -310,25 +309,28 @@ export default {
     async getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      await GetByListQ(this.listQuery).then((response) => {
-        this.Data = response;
+      await GetByListQ(this.listQuery).then(async (response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        this.list.map((x) => {
-          if (x.Type == "SaleInvoice")
+        await this.list.map((x) => {
+          if (x.Type == "SaleInvoice") {
             GetSaleInvoiceByListId({ listid: x.Fktable }).then((res) => {
               x.SaleInvoice = res.items;
               x.Totals = res.Totals;
             });
-          if (x.Type == "Payment")
+          }
+          if (x.Type == "Payment") {
             GetPaymentByListId({ listid: x.Fktable }).then((res) => {
               x.Payment = res;
               x.Totals = res.Totals;
             });
+          }
         });
+
         this.Totals.Totals = this.list.reduce((prev, cur) => {
-          return prev + cur.Totals;
+          return prev + parseFloat(cur.Totals.Totals);
         }, 0);
+        console.log("this.Totals.Totals", this.Totals);
         this.listLoading = false;
       });
     },

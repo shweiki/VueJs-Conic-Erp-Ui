@@ -96,11 +96,6 @@
         border
         highlight-current-row
         style="width: 100%"
-        @row-dblclick="
-          (row) => {
-            $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
-          }
-        "
       >
         <el-table-column
           v-bind:label="$t('Accounting.EntryId')"
@@ -125,9 +120,40 @@
           align="center"
         ></el-table-column>
         <el-table-column label="نوع الحركة" prop="TableName" align="center">
-          <template slot-scope="scope">{{
-            $t("AccountStatement." + scope.row.TableName)
-          }}</template></el-table-column
+          <template slot-scope="{ row }">
+            <router-link
+              v-if="row.TableName == 'Manual'"
+              :to="'/EntryAccounting/Edit/' + row.EntryId"
+            >
+              <strong style="font-size: 10px; cursor: pointer">{{
+                $t("AccountStatement." + row.TableName)
+              }}</strong>
+            </router-link>
+            <router-link
+              v-if="row.TableName == 'Receive'"
+              :to="'/Receive/Edit/' + row.Fktable"
+            >
+              <strong style="font-size: 10px; cursor: pointer">{{
+                $t("AccountStatement." + row.TableName)
+              }}</strong>
+            </router-link>
+            <router-link
+              v-if="row.TableName == 'Payment'"
+              :to="'/Payment/Edit/' + row.Fktable"
+            >
+              <strong style="font-size: 10px; cursor: pointer">{{
+                $t("AccountStatement." + row.TableName)
+              }}</strong>
+            </router-link>
+            <router-link
+              v-if="row.TableName == 'SaleInvoice'"
+              :to="'/Sales/Edit/' + row.Fktable"
+            >
+              <strong style="font-size: 10px; cursor: pointer">{{
+                $t("AccountStatement." + row.TableName)
+              }}</strong>
+            </router-link>
+          </template></el-table-column
         >
         <el-table-column label="مدين" prop="Credit" width="100" align="center">
           <template slot-scope="scope">{{

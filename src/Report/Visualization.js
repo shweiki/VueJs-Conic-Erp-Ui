@@ -1,5 +1,6 @@
 import store from "@/store";
 import { nArabicWords } from "./nArabicWords.js";
+import i18n from "@/lang";
 
 let toFixed = store.getters.settings.ToFixed;
 
@@ -8,7 +9,7 @@ export default function Visualization(Data, Html, Type) {
   let formatDate = formatDateX;
   let TimeConvert = TimeConvertX;
   let ToFixed = ToFixedX;
-  let tr = (v) => this.$t(v);
+  let tr = (v) => i18n.t(v);
   Object.keys(Data).forEach(key => {
     if (typeof Data[key] == "function") { Data[key] = Data[key]() }
     Html = Html.replaceAll("{{" + key + "}}", Data[key]);
@@ -80,10 +81,6 @@ export default function Visualization(Data, Html, Type) {
   }
 }
 
-export function translate(tag) {
-  console.log($t('route.Members'))
-  return this.$t(tag);
-}
 export function ToFixedX(num) {
   return num.toFixed(3);
 }

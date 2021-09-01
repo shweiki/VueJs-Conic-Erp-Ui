@@ -45,7 +45,7 @@
           <printers
             :Value="tempForm.Printer"
             @change="
-              v => {
+              (v) => {
                 tempForm.Printer = v;
               }
             "
@@ -68,37 +68,37 @@
               {
                 required: false,
                 message: 'Please input email address',
-                trigger: 'blur'
+                trigger: 'blur',
               },
               {
                 type: 'email',
                 message: 'Please input correct email address',
-                trigger: ['blur', 'change']
-              }
+                trigger: ['blur', 'change'],
+              },
             ]"
           >
             <el-input v-model="tempForm.EmailSent"></el-input> </el-form-item
         ></el-col>
       </el-row>
       <el-row type="flex">
-        <el-col :span="18">
+        <el-col :span="24">
           <tinymce v-bind:id="'tinymce-' + 0" v-model="tempForm.Html" />
         </el-col>
+      </el-row>
+      <el-row type="flex">
         <el-col :span="6">
           <Keys
             @Add="
-              v => {
+              (v) => {
                 AddTinymce(v);
               }
             "
           />
         </el-col>
-      </el-row>
-      <el-row type="flex">
-        <el-col :span="24">
+        <el-col :span="18">
           <Templates
             @Add="
-              v => {
+              (v) => {
                 AddTinymce(v);
               }
             "
@@ -121,8 +121,8 @@ export default {
   props: {
     isEdit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -138,8 +138,8 @@ export default {
         Printer: "",
         EmailSent: "",
         Html: "",
-        Icon: ""
-      }
+        Icon: "",
+      },
     };
   },
   created() {
@@ -147,7 +147,7 @@ export default {
       this.getdata(this.$route.params && this.$route.params.id);
     }
     this.tempRoute = Object.assign({}, this.$route);
-    GetTotal().then(r => {
+    GetTotal().then((r) => {
       this.Total = r;
     });
   },
@@ -165,7 +165,7 @@ export default {
     },
     getdata(val) {
       GetReportById({ Id: val })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.tempForm = response;
           // set tagsview title
@@ -174,26 +174,26 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
 
     updateData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.$notify({
                 title: "تم تعديل  بنجاح",
                 message: "تم تعديل بنجاح",
                 type: "success",
                 position: "top-left",
                 duration: 1000,
-                showClose: false
+                showClose: false,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -203,12 +203,12 @@ export default {
       });
     },
     createData() {
-      this.$refs["tempForm"].validate(valid => {
+      this.$refs["tempForm"].validate((valid) => {
         if (valid) {
           this.DisabledSave = true;
           this.tempForm.Id = undefined;
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               if (response)
                 this.$notify({
                   title: "تم الإضافة بنجاح",
@@ -216,7 +216,7 @@ export default {
                   type: "success",
                   position: "top-left",
                   duration: 1000,
-                  showClose: false
+                  showClose: false,
                 });
               else {
                 this.$notify({
@@ -225,12 +225,12 @@ export default {
                   type: "error",
                   position: "top-left",
                   duration: 1000,
-                  showClose: false
+                  showClose: false,
                 });
                 this.DisabledSave = false;
               }
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
               this.DisabledSave = false;
             });
@@ -243,14 +243,14 @@ export default {
     setTagsViewTitle() {
       const title = "Edit Report";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`
+        title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Edit Report";
       document.title = `${title} - ${this.tempForm.Id}`;
-    }
-  }
+    },
+  },
 };
 </script>

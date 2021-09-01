@@ -6,7 +6,6 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 import { OpenCashDrawer } from "@/api/Device";
-import getPrinterDevice from "@/utils/get-printers";
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -57,7 +56,6 @@ router.beforeEach(async (to, from, next) => {
                         store.dispatch("Devices/GetDevice");
                         store.dispatch("Devices/ConnectZtkDoor");
                     }
-                    getPrinterDevice();
                     
                     document.onkeydown = capturekey;
                     document.onkeypress = capturekey;

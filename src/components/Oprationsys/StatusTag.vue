@@ -25,10 +25,26 @@ export default {
   },
   methods: {
     getdata() {
-    //  console.log("  this.Opration ", this.Status);
+      //  console.log("  this.Opration ", this.Status);
       this.Opration = this.$store.getters.Oprations.find((obj) => {
         return obj.TableName == this.TableName && obj.Status == this.Status;
       });
+      this.Opration == undefined
+        ? (this.Opration = {
+            ArabicOprationDescription: "-",
+            ClassName: "success",
+            Color: null,
+            ControllerName: "-",
+            IconClass: "el-icon-finished",
+            Id: 0,
+            OprationDescription: "- ",
+            OprationName: "-",
+            ReferenceStatus: null,
+            RoleName: null,
+            Status: 0,
+            TableName: "-",
+          })
+        : this.Opration;
     },
   },
 };

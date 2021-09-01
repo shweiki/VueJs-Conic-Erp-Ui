@@ -34,7 +34,7 @@ export default {
     GetInComeAccounts()
       .then((response) => {
         this.options = response;
-        this.SetVal(this.options[0]);
+        this.SetVal(this.options[0].value);
       })
       .catch((error) => {
         reject(error);

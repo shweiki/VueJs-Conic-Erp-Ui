@@ -15,6 +15,16 @@ const CashPoolRouter = {
       meta: { title: 'NewSaleInvoiceCashPool', icon: 'machine' }
     },
     {
+      path: 'Edit/SaleInvoice/:id(\\d+)',
+      component: () => import('@/views/CashPool/components/SaleInvoice'),
+      name: 'EditSaleInvoiceCashPool',
+      meta: {
+        title: 'EditSaleInvoiceCashPool', noCache: true, activeMenu: '/CashPool/List'
+      },
+      hidden: true,
+
+    },
+    {
       path: 'Create/Payment',
       component: () => import('@/views/CashPool/components/Payment'),
       name: 'NewPaymentCashPool',

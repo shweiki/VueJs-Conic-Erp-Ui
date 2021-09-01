@@ -30,7 +30,7 @@
         </el-row>
       </template>
       <el-col v-bind:span="24 / Reports.length" v-for="item in Reports" :key="item.Id">
-        <el-row type="">
+        <el-row type="flex">
           <el-col :span="2">
             <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
           </el-col>
@@ -55,7 +55,7 @@
               "
             />
           </el-col>
-          <el-col v-permission="['Admin']" :span="6">
+          <el-col v-permission="['Admin']" :span="9">
             <el-input
               placeholder="Please input Email"
               v-model="item.EmailSent"
@@ -68,7 +68,7 @@
               ></el-button>
             </el-input>
           </el-col>
-          <el-col v-permission="['Admin']" :span="6">
+          <el-col v-permission="['Admin']" :span="9">
             <el-input
               placeholder="Please input Number as 79xxxxxxx"
               v-model="PhoneNumber"
@@ -84,12 +84,12 @@
           </el-col>
         </el-row>
         <iframe
-          height="500px"
+          height="800px"
           frameborder="0"
           style="overflow: hidden; width: 100%"
           v-bind:id="'Report-' + item.Id"
           class="iframeR"
-          :srcdoc="item.Html"
+          :srcdoc="'<head><style> body {zoom: 60%;}</style></head>' + item.Html"
           :title="item.Name"
         ></iframe>
       </el-col>
@@ -280,8 +280,5 @@ export default {
   font-size: 30px;
   color: #24292e;
   cursor: pointer;
-}
-.iframeR {
-  border: none;
 }
 </style>

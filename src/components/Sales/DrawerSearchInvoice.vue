@@ -24,16 +24,6 @@
             @keyup.enter.native="handleFilter"
           />
         </el-col>
-        <Search-By-Date
-          v-permission="['Admin']"
-          @Set="
-            (v) => {
-              listQuery.DateFrom = v[0];
-              listQuery.DateTo = v[1];
-              handleFilter();
-            }
-          "
-        />
         <el-col :span="4">
           <el-button
             v-waves
@@ -124,7 +114,6 @@
 </template>
 
 <script>
-import SearchByDate from "@/components/Date/SearchByDate";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import { GetByAny } from "@/api/SaleInvoice";
@@ -133,7 +122,7 @@ import { parseTime } from "@/utils";
 import permission from "@/directive/permission/index.js";
 
 export default {
-  components: { DrawerPrint, StatusTag, SearchByDate },
+  components: { DrawerPrint, StatusTag },
   directives: { waves, permission },
   data() {
     return {
@@ -143,8 +132,7 @@ export default {
       listQuery: {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
-        DateFrom: "",
-        DateTo: "",
+        Status: 0,
       },
     };
   },

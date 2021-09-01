@@ -236,7 +236,7 @@ export default {
       this.$refs["F-CashPool"].validate((valid) => {
         if (valid && this.Data.length > 0) {
           this.tempForm.TableName = this.Type;
-          this.tempForm.Total = this.Totals.Totals;
+          this.tempForm.Totals = this.Totals;
           this.tempForm.DateTime = new Date();
           this.tempForm.Fktable = this.Data.map((x) => x.Id).toString();
           this.$emit("Done", this.tempForm);

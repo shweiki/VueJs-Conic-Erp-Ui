@@ -12,6 +12,9 @@
             <el-button type="success" @click="RestSetting"
               >Rest Defualt Setting</el-button
             >
+            <el-button type="success" @click="getPrinterDevice"
+              >get Printer Device</el-button
+            >
           </div>
           <el-row type="flex">
             <el-col :span="6">
@@ -121,6 +124,7 @@
 import { CheckUpdate, RestDefualtSetting } from "@/api/Setting";
 import Settings from "@/layout/components/Settings/index";
 import JsonEditor from "@/components/JsonEditor";
+import getPrinterDevice from "@/utils/get-printers";
 
 export default {
   components: { Settings, JsonEditor },
@@ -327,6 +331,7 @@ export default {
     },
   },
   methods: {
+    getPrinterDevice,
     SaveJson() {
       var JsonSettings = JSON.parse(this.JsonSettings);
       Object.keys(JsonSettings).forEach((key) => {
