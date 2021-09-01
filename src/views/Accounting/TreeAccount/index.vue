@@ -25,7 +25,7 @@
                 @Done="getdata()"
               />
             </el-col>
-            <drawer-print Type="" :Data="{}" />
+            <Drawer-Print Type="" :Data="{}" />
             <el-col :span="4">
               <el-button
                 type="primary"

@@ -2,7 +2,7 @@
   <div>
     <el-row>
       <el-col :span="6">
-        <drawer-print :Data="OldPayment" Type="Payment" />
+        <Drawer-Print :Data="OldPayment" Type="Payment" />
       </el-col>
       <el-col :span="18">
         <el-button

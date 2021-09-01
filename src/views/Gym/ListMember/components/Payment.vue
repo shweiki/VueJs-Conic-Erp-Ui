@@ -40,7 +40,7 @@
       </el-table-column>
       <el-table-column label="#" align="center">
         <template slot-scope="scope">
-          <drawer-print Type="Payment" :Data="scope.row" />
+          <Drawer-Print Type="Payment" :Data="scope.row" />
         </template>
       </el-table-column>
       <el-table-column label="الحالة" align="center">

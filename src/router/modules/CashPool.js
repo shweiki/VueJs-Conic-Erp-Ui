@@ -22,13 +22,21 @@ const CashPoolRouter = {
         title: 'EditSaleInvoiceCashPool', noCache: true, activeMenu: '/CashPool/List'
       },
       hidden: true,
-
     },
     {
       path: 'Create/Payment',
       component: () => import('@/views/CashPool/components/Payment'),
       name: 'NewPaymentCashPool',
       meta: { title: 'NewPaymentCashPool', icon: 'machine' }
+    },
+    {
+      path: 'Edit/Payment/:id(\\d+)',
+      component: () => import('@/views/CashPool/components/Payment'),
+      name: 'EditPaymentCashPool',
+      meta: {
+        title: 'EditPaymentCashPool', noCache: true, activeMenu: '/CashPool/List'
+      },
+      hidden: true,
     },
     {
       path: 'List',

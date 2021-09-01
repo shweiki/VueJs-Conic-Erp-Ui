@@ -48,7 +48,7 @@
           </el-select>
         </el-col>
         <el-col :span="6">
-          <drawer-print
+          <Drawer-Print
             style="float: left"
             Type="PaymentList"
             :Data="{
@@ -164,7 +164,6 @@
         align="center"
       ></el-table-column>
       <el-table-column label="المحرر" prop="EditorName" align="center"> </el-table-column>
-
       <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalAmmount.toFixed($store.getters.settings.ToFixed) }}

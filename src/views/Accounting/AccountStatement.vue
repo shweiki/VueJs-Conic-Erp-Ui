@@ -51,7 +51,7 @@
             </el-button>
           </el-col>
           <el-col :span="1">
-            <drawer-print
+            <Drawer-Print
               Type="AccountStatement"
               :Data="{
                 Name: Accountx.Name,

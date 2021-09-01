@@ -48,7 +48,7 @@
           </el-select>
         </el-col>
         <el-col :span="6">
-          <drawer-print
+          <Drawer-Print
             style="float: left"
             Type="ReceiveList"
             :Data="{

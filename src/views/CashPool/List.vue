@@ -117,14 +117,6 @@
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
-      @row-dblclick="
-        (row) => {
-          let r = $router.resolve({
-            path: '/CashPool/Edit/' + row.Id,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-        }
-      "
     >
       <el-table-column
         v-bind:label="$t('Vendors.ID')"
@@ -158,10 +150,28 @@
 
       <el-table-column
         v-bind:label="$t('table.type')"
-        width="80"
+        width="100"
         align="center"
         prop="Type"
       >
+        <template slot-scope="{ row }">
+          <router-link
+            v-if="row.Type == 'SaleInvoice'"
+            :to="'/CashPool/Edit/SaleInvoice/' + row.Id"
+          >
+            <strong style="font-size: 10px; cursor: pointer">{{
+              $t("CashPool." + row.Type)
+            }}</strong>
+          </router-link>
+          <router-link
+            v-if="row.Type == 'Payment'"
+            :to="'/CashPool/Edit/Payment/' + row.Id"
+          >
+            <strong style="font-size: 10px; cursor: pointer">{{
+              $t("CashPool." + row.Type)
+            }}</strong>
+          </router-link>
+        </template>
       </el-table-column>
       <el-table-column label="المطلوب" width="120" align="center">
         <template slot-scope="{ row }">

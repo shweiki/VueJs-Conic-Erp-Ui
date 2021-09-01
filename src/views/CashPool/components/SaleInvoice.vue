@@ -4,7 +4,9 @@
       <div slot="header">
         <el-button
           :size="$store.getters.size"
-          v-bind:disabled="tableData.length <= 0"
+          v-bind:disabled="
+            tableData.length <= 0 || (this.$route.params && this.$route.params.id) != null
+          "
           icon="fa fa-save"
           style="float: left"
           type="primary"
@@ -296,7 +298,7 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/SaleInvoice";
+import { GetByListQ, GetSaleInvoiceByListId } from "@/api/SaleInvoice";
 import { Create as CreateCashPool, GetCashPoolById } from "@/api/CashPool";
 
 import { CreateEntry } from "@/api/EntryAccounting";
@@ -351,7 +353,7 @@ export default {
     };
   },
   created() {
-    if (this.isEdit) {
+    if (this.$route.params && this.$route.params.id) {
       this.getdata(this.$route.params && this.$route.params.id);
     } else {
       this.getdata();
@@ -372,34 +374,37 @@ export default {
         GetCashPoolById({ Id: val }).then((res) => {
           this.CashPool = res;
           GetSaleInvoiceByListId({ listid: res.Fktable }).then((res) => {
+            loading.text = "Calculate";
+            console.log(res);
+            this.Data = res;
             this.tableData = res.items;
+            this.CashPool.Totals = res.Totals;
             this.Totals = res.Totals;
+            loading.close();
           });
         });
-      }
-      GetByListQ({
-        Page: 1,
-        Any: "",
-        limit: this.$store.getters.settings.LimitGetInvoice,
-        Sort: "-id",
-        Status: 0,
-      })
-        .then((response) => {
-          // handle success
-          loading.text = "Calculate";
-
-          console.log(response);
-          this.Data = response;
-
-          this.tableData = response.items;
-          this.Totals = response.Totals;
-
-          loading.close();
+      } else {
+        GetByListQ({
+          Page: 1,
+          Any: "",
+          limit: this.$store.getters.settings.LimitGetInvoice,
+          Sort: "-id",
+          Status: 0,
         })
-        .catch((error) => {
-          // handle error
-          console.log(error);
-        });
+          .then((res) => {
+            // handle success
+            loading.text = "Calculate";
+            console.log(res);
+            this.Data = res;
+            this.tableData = res.items;
+            this.Totals = res.Totals;
+            loading.close();
+          })
+          .catch((error) => {
+            // handle error
+            console.log(error);
+          });
+      }
     },
     createData(v) {
       const loading = this.$loading({
@@ -476,7 +481,7 @@ export default {
                     );
                     const ItemsSales = await VisualizationReportHtml("ItemsSales", {
                       Totals: this.Totals,
-                      Items: this.ItemsSales,
+                      Items: this.ItemsSales(this.tableData),
                       Dates: [new Date(), new Date()],
                     });
                     const SaleInvoicesList = await VisualizationReportHtml(
@@ -490,7 +495,7 @@ export default {
                     const ItemsIngredients = await VisualizationReportHtml(
                       "ItemsIngredients",
                       {
-                        Items: this.ItemsIngredients,
+                        Items: this.ItemsIngredients(this.tableData),
                         Dates: [new Date(), new Date()],
                       }
                     );

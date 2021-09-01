@@ -414,7 +414,11 @@ export default {
         ) {
           Edit(this.tempForm)
             .then((response) => {
-              if (response) {
+              if (
+                response &&
+                this.tempForm.PaymentMethod == "Receivables" &&
+                this.$store.getters.settings.PointOfSale.CreateEntry == true
+              ) {
                 this.$notify({
                   title: "تم تعديل  بنجاح",
                   message: "تم تعديل بنجاح",

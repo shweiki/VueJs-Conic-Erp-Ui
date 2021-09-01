@@ -19,13 +19,16 @@
           <el-col :span="2">
             <el-button
               :size="$store.getters.size"
-              v-bind:disabled="tableData.length <= 0"
+              v-bind:disabled="
+                tableData.length <= 0 ||
+                (this.$route.params && this.$route.params.id) != null
+              "
               icon="fa fa-save"
               style="float: left"
               type="primary"
               @click="OpenCashPoolDialog = true"
             />
-            <drawer-print
+            <Drawer-Print
               style="float: left"
               Type="PaymentList"
               :Data="{
@@ -88,24 +91,20 @@
           label="رقم المشترك"
           align="center"
         ></el-table-column>
-
-        <el-table-column prop="Name" label="المشترك" align="center">
-          <template slot-scope="scope">
-            <router-link :to="'/Gym/Edit/' + scope.row.ObjectId">
-              <strong style="font-size: 10px; cursor: pointer">{{
-                scope.row.Name
-              }}</strong>
+        <el-table-column prop="Name" label="الاسم" align="center">
+          <template slot-scope="{ row }">
+            <router-link v-if="row.MemberId != null" :to="'/Gym/Edit/' + row.ObjectId">
+              <strong style="font-size: 10px; cursor: pointer">{{ row.Name }}</strong>
+            </router-link>
+            <router-link v-if="row.VendorId != null" :to="'/Vendor/Edit/' + row.ObjectId">
+              <strong style="font-size: 10px; cursor: pointer">{{ row.Name }}</strong>
             </router-link>
           </template>
         </el-table-column>
 
-        <el-table-column label="التاريخ" align="center">
-          <template slot-scope="scope">
-            <el-date-picker
-              format="dd/MM/yyyy"
-              disabled
-              v-model="scope.row.FakeDate"
-            ></el-date-picker>
+        <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
+          <template slot-scope="{ row }">
+            <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -129,16 +128,18 @@
             {{ $t("NewPurchaseInvoice." + scope.row.PaymentMethod + "") }}</template
           >
         </el-table-column>
-        <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-          <template slot-scope="scope">{{ scope.row.TotalAmmount }} JOD</template>
+        <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
+          <template slot-scope="{ row }">
+            {{ row.TotalAmmount.toFixed($store.getters.settings.ToFixed) }}
+            JOD
+          </template>
         </el-table-column>
         <el-table-column label="#" align="center">
           <template slot-scope="scope">
-            <drawer-print :Data="scope.row" Type="Payment" />
+            <Drawer-Print :Data="scope.row" Type="Payment" />
           </template>
         </el-table-column>
-
-        <el-table-column width="180" align="center" v-if="checkPermission(['Admin'])">
+        <el-table-column align="center" v-if="checkPermission(['Admin'])">
           <template slot-scope="scope">
             <Next-Oprations
               :ObjId="scope.row.Id"
@@ -167,8 +168,8 @@
 <script>
 import checkPermission from "@/utils/permission";
 
-import { GetPaymentByStatus } from "@/api/Payment";
-import { Create as CreateCashPool } from "@/api/CashPool";
+import { GetPaymentByStatus, GetPaymentByListId } from "@/api/Payment";
+import { Create as CreateCashPool, GetCashPoolById } from "@/api/CashPool";
 
 import { CreateEntry } from "@/api/EntryAccounting";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
@@ -205,35 +206,55 @@ export default {
     };
   },
   created() {
-    this.getdata();
+    if (this.$route.params && this.$route.params.id) {
+      this.getdata(this.$route.params && this.$route.params.id);
+    } else {
+      this.getdata();
+    }
+
+    this.tempRoute = Object.assign({}, this.$route);
   },
   methods: {
     checkPermission,
-    getdata() {
+    getdata(val = null) {
       const loading = this.$loading({
         lock: true,
         text: "Get Data",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      GetPaymentByStatus({
-        Page: 1,
-        limit: this.$store.getters.settings.LimitGetInvoice,
-        Sort: "-id",
-        Status: 0,
-      })
-        .then((response) => {
-          loading.text = "Calculate";
-          // handle success
-          console.log(response);
-          this.tableData = response.items;
-          this.Totals = response.Totals;
-          loading.close();
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error);
+      if (val != null) {
+        GetCashPoolById({ Id: val }).then((res) => {
+          this.CashPool = res;
+          GetPaymentByListId({ listid: res.Fktable }).then((res) => {
+            loading.text = "Calculate";
+            console.log(res);
+            this.tableData = res.items;
+            this.CashPool.Totals = res.Totals;
+            this.Totals = res.Totals;
+            loading.close();
+          });
         });
+      } else {
+        GetPaymentByStatus({
+          Page: 1,
+          limit: this.$store.getters.settings.LimitGetInvoice,
+          Sort: "-id",
+          Status: 0,
+        })
+          .then((response) => {
+            loading.text = "Calculate";
+            // handle success
+            console.log(response);
+            this.tableData = response.items;
+            this.Totals = response.Totals;
+            loading.close();
+          })
+          .catch((error) => {
+            // handle error
+            console.log(error);
+          });
+      }
     },
     createData(v) {
       const loading = this.$loading({
