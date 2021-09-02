@@ -195,13 +195,7 @@
 </template>
 
 <script>
-import {
-  GetUsers,
-  Register,
-  AddRoleUser,
-  DeleteRoleUser,
-  UnLockout
-} from "@/api/User";
+import { GetUsers, Register, AddRoleUser, DeleteRoleUser, UnLockout } from "@/api/User";
 import { getRoutes, GetRoles, AddRole, DeleteRole, Edit } from "@/api/Role";
 
 import PanThumb from "@/components/PanThumb";

@@ -30,6 +30,17 @@
             </el-form-item>
           </el-col>
         </el-row>
+          <!-- <el-row type="flex">
+          <el-col :span="24">
+            <el-form-item label="الإسم اللاتيني (إسم المستخدم)" prop="UserName">
+              <el-input
+                type="text"
+                ref="DriverUserName"
+                v-model="userTempForm.UserName"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row> -->
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item
@@ -165,6 +176,20 @@
         >
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
+         <el-form-item label="password" prop="Pass">
+          <el-input
+            type="password"
+            v-model="tempForm.Pass"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <!-- <el-form-item label="Confirm" prop="ConfirmPassword">
+          <el-input
+            type="password"
+            v-model="userTempForm.ConfirmPassword"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>  -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="Visible = false">{{
@@ -179,12 +204,13 @@
 </template>
 
 <script>
-import { Create, CheckDriverIsExist } from "@/api/Driver";
+import { Create, CheckDriverIsExist, Register } from "@/api/Driver";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
-
+import { AddUserRouter} from "@/api/Role";
+//import { GetUsers, Register, AddRoleUser } from "@/api/User";
 export default {
   name: "Driver",
   components: { VuePhoneNumberInput, birthDatepicker },
@@ -198,12 +224,21 @@ export default {
         DateofBirth: "",
         Email: "",
         Status: 0,
+        Company: "",
         PhoneNumber1: "",
         PhoneNumber2: "",
         Description: "",
         Type: "New",
+        DriverUserId: "",
+        Pass: "",
         Tag: null
       },
+      // userTempForm: {
+      //   UserName: "",
+      //   Email: "",
+      //   Password: "",
+      //   PhoneNumber: "",
+      //   ConfirmPassword: ""},
       rulesForm: {
         Name: [
           {
@@ -222,7 +257,7 @@ export default {
     };
   },
   created() {
-    this.resetTempForm();
+    //this.resetTempForm();
   },
   methods: {
     resetTempForm() {
@@ -233,12 +268,14 @@ export default {
         DateofBirth: "",
         Email: "",
         Status: 0,
+        Company: "",
         PhoneNumber1: "",
         PhoneNumber2: "",
         Description: "",
         Type: "New",
-        Company: "",
-        Tag: ""
+        DriverUserId: "",
+        Pass: "",
+        Tag: null
       };
     },
     createData() {
@@ -251,6 +288,8 @@ export default {
             console.log(res);
             if (!res) {
               this.tempForm.DateofBirth = new Date(this.tempForm.DateofBirth);
+              //this.userTempForm.PhoneNumber = this.tempForm.PhoneNumber1;
+              //this.userTempForm.Email = this.tempForm.Email;
               Create(this.tempForm)
                 .then(response => {
                   this.Visible = false;

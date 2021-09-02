@@ -449,6 +449,7 @@ import FakeDate from "@/components/Date/FakeDate";
 import { PrintReport } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
+import { CreateDelivery} from "@/api/OrderDelivery";
 
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
@@ -512,6 +513,20 @@ export default {
         Region: "",
         PhoneNumber: "",
         InventoryMovements: [],
+      },
+      deliveryData:  {
+        Id: undefined,
+        Name: "",
+        DriverName: "",
+        TotalPrice: 0,
+        Status: 0,
+        Description: "",
+        FakeDate: "",
+        IsPrime: false,
+        Region:"",
+        DeliveryPrice: 0,
+        TotalPill :0,
+        VendorId : undefined
       },
       rules: {
         InventoryMovements: [
@@ -613,19 +628,29 @@ export default {
     createData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
         if (valid) {
+          this.deliveryData.Name = this.tempForm.Name;
+          this.deliveryData.FakeDate = this.tempForm.FakeDate;
+          this.deliveryData.Region = this.tempForm.Region;
+          this.deliveryData.Description = this.tempForm.Description;
+          this.deliveryData.VendorId = this.tempForm.VendorId;
+          this.deliveryData.DeliveryPrice = this.tempForm.DeliveryPrice;
           this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
           let Total =
             this.tempForm.InventoryMovements.reduce((prev, cur) => {
               return prev + cur.Qty * cur.SellingPrice;
             }, 0) - this.tempForm.Discount;
+            this.deliveryData.TotalPill = Total;
+            this.deliveryData.TotalPrice = this.tempForm.DeliveryPrice + Total;
           if (
             Total > 0 &&
             this.tempForm.InventoryMovements.length > 0 &&
             this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
             this.DisabledSave = true;
-            Create(this.tempForm)
+            CreateDelivery(this.deliveryData)
+            
+            .then(Create(this.tempForm))
               .then((response) => {
                 if (response) {
                   this.$notify({

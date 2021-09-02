@@ -85,14 +85,16 @@ export default {
         Drivers: "Drivers",
         NewReport: "New Report",
         ListReport: "Reports List",
-        NewPaymentCashPool: "New Payment Cash Pool",
-        ListCashPools: "Cash Pools List",
-        NewMembershipMovementCashPool: "New Membership Movement Cash Pool",
-        NewSaleInvoiceCashPool: "New Sale Invoice Cash Pool",
-        CashPools: "Cash Pools",
-        WorkShops: "WorkShops",
-        ListWorkShop: "WorkShops List",
-        NewWorkShop: "New WorkShop",
+        NewPaymentCashPool :"New Payment Cash Pool",
+        ListCashPools :"Cash Pools List",
+        NewMembershipMovementCashPool :"New Membership Movement Cash Pool",
+        NewSaleInvoiceCashPool:"New Sale Invoice Cash Pool",
+        CashPools :"Cash Pools",
+        WorkShops :"WorkShops",
+        ListWorkShop :"WorkShops List",
+        NewWorkShop :"New WorkShop",
+        Areas:"Areas",
+        OrderInventoriesItems:"Order Inventories Items"
     },
     Settings: {
         settings: "Settings",
@@ -266,7 +268,6 @@ export default {
         CreditLimit: 'Credit Limit',
         Description: 'Description',
         Status: 'Status',
-
     },
     AddVendors: {
         Customer: 'Customer',
@@ -322,11 +323,11 @@ export default {
         Total: 'Total',
         Memberships: 'Memberships',
         AccountInvoiceNumber: "Account Invoice Number",
-        TotalCash: "Total Cash",
-        TotalVisa: "Total Visa",
-        TotalOutlay: "Total Outlay",
-        TotalReject: "Total Reject",
-        TotalRestitution: "Total Restitution",
+        TotalCash :"Total Cash",
+        TotalVisa :"Total Visa",
+        TotalOutlay :"Total Outlay",
+        TotalReject :"Total Reject",
+        TotalRestitution :"Total Restitution",
         SaleInvoice: "Sale Invoice",
         Payment: "Payment"
     },
@@ -573,8 +574,6 @@ export default {
         Save: "Save",
         cancel: "Cancel",
         InCome: "In Come"
-
-
     },
     AddMembers: {
         Female: "Female",
@@ -644,6 +643,7 @@ export default {
         City: "City",
         Address1: "Address 1",
         Address2: "Address 2",
-        DelievryPrice: "Delievry Price"
+        DelievryPrice: "Delievry Price",
+        TotalPill:"Total Pill"
     }
 }

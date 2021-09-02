@@ -96,6 +96,8 @@ export default {
       this.routes = this.generateRoutes(res);
     },
     confirmRouter() {
+      console.log( "routerxxxxx",
+      this.$refs.tree.getCheckedKeys());
       AddUserRouter({
         UserId: this.UserId,
         Router: JSON.stringify(this.$refs.tree.getCheckedKeys()),
