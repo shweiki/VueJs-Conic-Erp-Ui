@@ -70,45 +70,46 @@
           </el-col>
         </el-row>
       </div>
+      <div v-permission="['Admin']">
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.Invoice") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ tableData.length }}</span>
+        <el-divider direction="vertical"></el-divider>
 
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ $t("CashPool.Invoice") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ tableData.length }}</span>
-      <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.Cash") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
 
-      <span>{{ $t("CashPool.Cash") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.Visa") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
 
-      <span>{{ $t("CashPool.Visa") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.debt") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Receivables.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>مجموع الخصم</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Discount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
 
-      <span>{{ $t("CashPool.debt") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Receivables.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>مجموع الخصم</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Discount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.Amount") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>إجمالي التكلفة</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.TotalCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
 
-      <span>{{ $t("CashPool.Amount") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>إجمالي التكلفة</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.TotalCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
-
-      <span>صافي الربح</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+        <span>صافي الربح</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+      </div>
     </el-card>
     <el-card v-permission="['Admin']" class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>

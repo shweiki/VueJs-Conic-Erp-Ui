@@ -40,32 +40,33 @@
           </el-col>
         </el-row>
       </div>
+      <div v-permission="['Admin']">
+        <el-divider direction="vertical"></el-divider>
+        <span>عدد مقبوضات</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Rows }}</span>
+        <el-divider direction="vertical"></el-divider>
 
-      <el-divider direction="vertical"></el-divider>
-      <span>عدد مقبوضات</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Rows }}</span>
-      <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.Cash") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
 
-      <span>{{ $t("CashPool.Cash") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.Visa") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
 
-      <span>{{ $t("CashPool.Visa") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+        <span>شيكات</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Cheque.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
 
-      <span>شيكات</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Cheque.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
-
-      <span>{{ $t("CashPool.Amount") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("CashPool.Amount") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+      </div>
     </el-card>
     <el-card class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>

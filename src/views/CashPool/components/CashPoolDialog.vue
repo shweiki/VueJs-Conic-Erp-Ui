@@ -23,23 +23,25 @@
         </el-col>
       </div>
       <div style="text-align: center">
-        <span style="color: #ff5722; font-size: large"
-          >مبيعات النقدية :
-          {{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }}
-        </span>
-        <el-divider></el-divider>
+        <div v-permission="['Admin']">
+          <span style="color: #ff5722; font-size: large"
+            >مبيعات النقدية :
+            {{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }}
+          </span>
+          <el-divider></el-divider>
 
-        <span style="color: #ff5722; font-size: large"
-          >مبيعات الفيزا :
-          {{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }}
-        </span>
-        <el-divider></el-divider>
+          <span style="color: #ff5722; font-size: large"
+            >مبيعات الفيزا :
+            {{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }}
+          </span>
+          <el-divider></el-divider>
 
-        <span style="color: #ff5722; font-size: large"
-          >مجموع المبيعات :
-          {{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }}
-        </span>
-        <el-divider></el-divider>
+          <span style="color: #ff5722; font-size: large"
+            >مجموع المبيعات :
+            {{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }}
+          </span>
+          <el-divider></el-divider>
+        </div>
         <el-form ref="F-CashPool" :model="tempForm">
           <el-row type="flex">
             <el-col :span="12">
@@ -141,7 +143,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <span style="color: #ff5722; font-size: x-large"
+          <span v-permission="['Admin']" style="color: #ff5722; font-size: x-large"
             >النتيجة :
             {{
               (
@@ -185,6 +187,7 @@
 <script>
 import EditorsUser from "@/components/Gym/EditorsUser.vue";
 import Description from "@/components/Description/Input.vue";
+import permission from "@/directive/permission/index.js";
 
 export default {
   components: { EditorsUser, Description },
@@ -194,6 +197,8 @@ export default {
       this.Show = val;
     },
   },
+  directives: { permission },
+
   data() {
     return {
       Show: false,
