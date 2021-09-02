@@ -85,3 +85,10 @@ export function Edit(data) {
     data: qs.stringify(data)
   })
 }
+export function Delete(data) {
+  return request({
+    url: '/Account/Delete',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}

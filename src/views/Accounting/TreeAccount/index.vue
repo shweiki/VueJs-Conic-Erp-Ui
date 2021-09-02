@@ -12,11 +12,14 @@
             <el-col :span="10">
               <el-input placeholder="بحث عن اسم الحساب" v-model="filterText"> </el-input>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="3">
               <Entry-Movements-Dialog :AccountId="Selected.Id" />
             </el-col>
-            <el-col :span="4">
+            <el-col :span="3">
               <Edit-Account :AccountId="Selected.Id" @Done="getdata()" />
+            </el-col>
+            <el-col :span="3">
+              <Delete-Account :AccountId="Selected.Id" @Done="getdata()" />
             </el-col>
             <el-col :span="4">
               <Add-Account-Dialog
@@ -72,6 +75,7 @@ import AddAccountDialog from "@/components/TreeAccount/AddAccountDialog.vue";
 import Create from "../EntryAccounting/Create.vue";
 import EntryMovementsDialog from "./EntryMovementsDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import DeleteAccount from "./DeleteAccount.vue";
 
 export default {
   components: {
@@ -80,6 +84,7 @@ export default {
     Create,
     EntryMovementsDialog,
     DrawerPrint,
+    DeleteAccount,
   },
   name: "TreeAccount",
   watch: {
@@ -130,6 +135,7 @@ export default {
     Select(v) {
       this.Selected = v;
     },
+
     generateTree(list) {
       var map = {},
         node,
