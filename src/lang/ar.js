@@ -671,6 +671,7 @@ export default {
         City: "المدينة",
         Address1: "العنوان 1",
         Address2: "العنوان 2",
-        DelievryPrice: "سعر التوصيل"
+        DelievryPrice: "سعر التوصيل",
+        TotalPill:"اجمالي الفاتورة"
     }
 }

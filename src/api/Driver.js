@@ -84,6 +84,13 @@ export function Create(data) {
   })
 }
 
+export function Register(data) {
+  return request({
+    url: '/Driver/Register',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 
 export function Edit(data) {
   return request({

@@ -131,7 +131,7 @@
         align="center"
       ></el-table-column>
       <el-table-column
-        v-bind:label="$t('Vendors.Id')"
+        v-bind:label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"
@@ -142,9 +142,9 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashDrawer.Company')" prop="Company" align="center">
-      </el-table-column>
       <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
+      </el-table-column>
+      <el-table-column v-bind:label="$t('CashDrawer.Company')" prop="Company" align="center">
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
@@ -192,13 +192,11 @@ import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import permission from "@/directive/permission/index.js";
-
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import AddDriver from "@/components/Drivers/AddDriver.vue";
 import { SendMultiSMS } from "@/api/SMS";
-
 export default {
   name: "ComplexTable",
   components: {
