@@ -28,7 +28,7 @@
 
 export default {
   name: 'OrderDetails',
- props: ["oid", "IsPrime"],
+ props: ["oid", "IsPrime", "status"],
   data () {
     
     return {

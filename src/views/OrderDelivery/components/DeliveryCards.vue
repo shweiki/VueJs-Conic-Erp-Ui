@@ -57,6 +57,7 @@
              :IsPrime="option.IsPrime" />
                 <order-details
                 :oid="option.id"
+                :status="option.status"
                 :IsPrime="option.IsPrime" />
           </el-row>
       </div>
