@@ -210,7 +210,7 @@ import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
 import { AddUserRouter} from "@/api/Role";
-//import { GetUsers, Register, AddRoleUser } from "@/api/User";
+//import { UnLockout } from "@/api/User";
 export default {
   name: "Driver",
   components: { VuePhoneNumberInput, birthDatepicker },
@@ -233,12 +233,6 @@ export default {
         Pass: "",
         Tag: null
       },
-      // userTempForm: {
-      //   UserName: "",
-      //   Email: "",
-      //   Password: "",
-      //   PhoneNumber: "",
-      //   ConfirmPassword: ""},
       rulesForm: {
         Name: [
           {
@@ -257,12 +251,12 @@ export default {
     };
   },
   created() {
-    //this.resetTempForm();
+    this.resetTempForm();
   },
   methods: {
     resetTempForm() {
       this.tempForm = {
-        Id: undefined,
+       Id: undefined,
         Name: "",
         Ssn: "",
         DateofBirth: "",
