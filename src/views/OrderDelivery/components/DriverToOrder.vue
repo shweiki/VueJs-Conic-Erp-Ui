@@ -1,7 +1,7 @@
 <template>
 <div>
     <el-col :span="12">
-      <el-button
+      <el-button v-if ="IsPrime"
           style="float: left"
           type="success"
           size="medium"
@@ -20,7 +20,7 @@
 
 export default {
   name: 'DriverToOrder',
-  props: ["oid"],
+  props: ["oid", "IsPrime"],
    data () {
     
     return {

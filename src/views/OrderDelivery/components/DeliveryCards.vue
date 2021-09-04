@@ -52,10 +52,12 @@
           </el-row>
           <br>
            <el-row :gutter="24">
-             <driver-to-order :oid="option.id" />
+             <driver-to-order 
+             :oid="option.id"
+             :IsPrime="option.IsPrime" />
                 <order-details
                 :oid="option.id"
-                :status="option.status" />
+                :IsPrime="option.IsPrime" />
           </el-row>
       </div>
     </el-col>
@@ -93,6 +95,7 @@ components: {
           id: "102",
           totalPrice: "05.75",
           status: "New Order",
+          IsPrime:1
         },
         {
           icon: 'deliverytruck',
@@ -102,7 +105,8 @@ components: {
           phone:"0781234567",
           id: "103",
           totalPrice: "12.00",
-          status: "in the way",
+          status: "With Driver",
+          IsPrime:0
         },
          {
           icon: 'checked',
@@ -112,7 +116,8 @@ components: {
           phone:"0781234567",
           id: "1024",
           totalPrice: "02.50",
-          status: "done",
+          status: "Done",
+          IsPrime:0
         },
         {
           icon: 'cancel',
@@ -122,11 +127,16 @@ components: {
           phone:"0781234567",
           id: "1025",
           totalPrice: "12.00",
-          status: "cancel",
+          status: "Canceled",
+          IsPrime:0
         },
 
-      ]
+      ],
+
     }
+  },
+  methods: {
+  
   }
 }
 

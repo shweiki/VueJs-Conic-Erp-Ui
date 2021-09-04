@@ -1,7 +1,16 @@
 <template>
 <div>
-           <el-col :span="12">
-             <el-button
+           <el-col :span="12" v-if ="IsPrime">
+             <el-button 
+          style="float: right"
+          icon="el-icon-info"
+          type="primary"
+          size="medium"
+          @click="dialogFormVisible = true"
+          >التفاصيل </el-button>
+          </el-col> 
+          <el-col :span="24" v-else>
+             <el-button 
           style="float: right"
           icon="el-icon-info"
           type="primary"
@@ -19,7 +28,7 @@
 
 export default {
   name: 'OrderDetails',
- props: ["oid", "status"],
+ props: ["oid", "IsPrime"],
   data () {
     
     return {
