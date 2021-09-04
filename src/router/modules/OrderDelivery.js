@@ -19,11 +19,19 @@ const OrderDeliveryRouter = {
     //   hidden: true,
     // },
     {
-      path: 'List',
-      component: () => import('@/views/OrderDelivery/List'),
-      name: 'ListDelivery',
+      path: 'DeliveryHistory',
+      component: () => import('@/views/OrderDelivery/DeliveryHistory'),
+      name: 'DeliveryHistory',
       meta: {
-        title: 'ListDelivery', icon: 'accounts'
+        title: 'DeliveryHistory', icon: 'accounts'
+      },
+    },
+    {
+      path: 'DeliveryManager',
+      component: () => import('@/views/OrderDelivery/DeliveryManager'),
+      name: 'DeliveryManager',
+      meta: {
+        title: 'DeliveryManager', icon: 'accounts'
       },
     },
 

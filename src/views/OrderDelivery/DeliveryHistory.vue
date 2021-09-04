@@ -101,11 +101,6 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
-        </template>
-      </el-table-column>
       <el-table-column prop="Name" v-bind:label="$t('AddVendors.Name')" align="center">
       </el-table-column>
       <el-table-column
@@ -115,8 +110,12 @@
         width="150"
         align="center"
       ></el-table-column>
+      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
+        <template slot-scope="{ row }">
+          <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+        </template>
+      </el-table-column>
       <el-table-column v-bind:label="$t('Vendors.Description')" prop="Description" align="center"> </el-table-column>
-
       <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalPrice.toFixed($store.getters.settings.ToFixed) }}
