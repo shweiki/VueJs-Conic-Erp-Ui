@@ -449,7 +449,7 @@ import FakeDate from "@/components/Date/FakeDate";
 import { PrintReport } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { CreateDelivery} from "@/api/OrderDelivery";
+import { CreateDelivery } from "@/api/OrderDelivery";
 
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
@@ -514,7 +514,7 @@ export default {
         PhoneNumber: "",
         InventoryMovements: [],
       },
-      deliveryData:  {
+      deliveryData: {
         Id: undefined,
         Name: "",
         DriverName: "",
@@ -523,10 +523,10 @@ export default {
         Description: "",
         FakeDate: "",
         IsPrime: false,
-        Region:"",
+        Region: "",
         DeliveryPrice: 0,
-        TotalPill :0,
-        VendorId : undefined
+        TotalPill: 0,
+        VendorId: undefined,
       },
       rules: {
         InventoryMovements: [
@@ -640,17 +640,16 @@ export default {
             this.tempForm.InventoryMovements.reduce((prev, cur) => {
               return prev + cur.Qty * cur.SellingPrice;
             }, 0) - this.tempForm.Discount;
-            this.deliveryData.TotalPill = Total;
-            this.deliveryData.TotalPrice = this.tempForm.DeliveryPrice + Total;
+          this.deliveryData.TotalPill = Total;
+          this.deliveryData.TotalPrice = this.tempForm.DeliveryPrice + Total;
           if (
             Total > 0 &&
             this.tempForm.InventoryMovements.length > 0 &&
             this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
             this.DisabledSave = true;
-            CreateDelivery(this.deliveryData)
-            
-            .then(Create(this.tempForm))
+
+            Create(this.tempForm)
               .then((response) => {
                 if (response) {
                   this.$notify({
@@ -666,6 +665,9 @@ export default {
                   this.restTempForm();
                   this.DisabledSave = false;
                   this.OpenRestOfBill = false;
+                  CreateDelivery(this.deliveryData).then((res) => {
+                    console.log("CreateDelivery is ", res);
+                  });
                   if (this.AutoPrint == true) {
                     PrintReport("SaleInvoice", this.OldInvoice, true);
                   }

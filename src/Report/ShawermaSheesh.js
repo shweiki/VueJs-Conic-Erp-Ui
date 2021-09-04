@@ -131,6 +131,7 @@ export function ShawermaSheesh(temp, printer = undefined) {
     doc.addImage(document.querySelector('img#qr_code'), "jpeg", 22, startY += 5, 35, 35)
   }
   if (printer) {
+
     let cpj = new JSPM.ClientPrintJob();
     cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
     var my_file = new JSPM.PrintFilePDF(

@@ -2,9 +2,9 @@ import store from "@/store";
 import { GetReportByType } from "@/api/Report";
 import Visualization from "./Visualization";
 import * as htmlToImage from "html-to-image";
-import JSPM from "jsprintmanager";
 import jsPDF from "jspdf";
 import { SendEmail } from "@/api/StmpEmail";
+import JSPM from "jsprintmanager";
 
 import { ShawermaSheesh as ShawermaSheeshx } from "@/Report/ShawermaSheesh";
 import { OrderReceipt as OrderReceiptx } from "@/Report/OrderReceipt";
