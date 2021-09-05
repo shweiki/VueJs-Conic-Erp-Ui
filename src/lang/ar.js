@@ -279,7 +279,7 @@ export default {
         Purchases: 'المشتريات'
     },
     Vendors: {
-        ID: "الرقم",
+        Id: "الرقم",
         Vendor: 'العملاء و الموردون',
         Add: 'إضافة',
         Search: 'البحث بحسب الإسم',

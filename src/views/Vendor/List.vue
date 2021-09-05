@@ -1,51 +1,15 @@
 ﻿<template>
   <div class="app-container">
     <div class="filter-container">
-      <el-popover placement="left" width="400">
-        <p>ارسال عبر</p>
-        <div style="text-align: right; margin: 0">
-          <el-input
-            type="textarea"
-            v-model="SmsBody"
-            :rules="[
-              {
-                required: true,
-                message: 'لايمكن ترك الخصم فارغ',
-                trigger: 'blur'
-              }
-            ]"
-          ></el-input>
-          <el-button
-            icon="el-icon-circle-plus"
-            type="primary"
-            :size="$store.getters.size"
-            @click="SendSms()"
-            >SMS</el-button
-          >
-          <el-button
-            icon="el-icon-circle-plus"
-            type="primary"
-            :size="$store.getters.size"
-            @click="SendEmail()"
-            >Email</el-button
-          >
-        </div>
-        <el-button icon="el-icon-circle-plus" slot="reference"
-          >ارسال رسالة</el-button
-        >
-      </el-popover>
-      <add-vendor />
       <el-row type="flex">
-        <el-col :span="12">
+        <el-col :span="8">
           <el-input
             v-model="listQuery.Any"
             placeholder="Search By Any Acount Name Or Id"
-            
             class="filter-item"
             @keyup.enter.native="handleFilter"
           />
         </el-col>
-
         <el-col :span="3">
           <el-select
             v-model="listQuery.Sort"
@@ -81,13 +45,58 @@
             Search
           </el-button>
         </el-col>
+        <el-col :span="2">
+          <el-popover placement="left" width="400">
+            <p>ارسال عبر</p>
+            <div style="text-align: right; margin: 0">
+              <el-input
+                type="textarea"
+                v-model="SmsBody"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'لايمكن ترك الخصم فارغ',
+                    trigger: 'blur',
+                  },
+                ]"
+              ></el-input>
+              <el-button
+                icon="el-icon-circle-plus"
+                type="primary"
+                :size="$store.getters.size"
+                @click="SendSms()"
+                >SMS</el-button
+              >
+              <el-button
+                icon="el-icon-circle-plus"
+                type="primary"
+                :size="$store.getters.size"
+                @click="SendEmail()"
+                >Email</el-button
+              >
+            </div>
+            <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
+          </el-popover>
+        </el-col>
+        <el-col :span="1">
+          <add-vendor />
+        </el-col>
+        <el-col :span="1">
+          <drawer-print
+            Type="VendorList"
+            :Data="{
+              Totals: Totals,
+              Items: list,
+            }"
+          />
+        </el-col>
       </el-row>
     </div>
     <el-card class="box-card">
       <Radio-Oprations
         TableName="Vendor"
         @Set="
-          v => {
+          (v) => {
             listQuery.Status = v;
             handleFilter();
           }
@@ -101,29 +110,17 @@
 
       <span>مجموع المدين (لك)</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span> (عليك) مجموع الدائن </span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>الرصيد</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
     </el-card>
 
@@ -139,23 +136,15 @@
       ref="multipleTable"
       @selection-change="handleSelectionChange"
       @row-dblclick="
-        row => {
+        (row) => {
           let r = $router.resolve({
-            path: '/Vendor/Edit/' + row.Id
+            path: '/Vendor/Edit/' + row.Id,
           });
-          window.open(
-            r.href,
-            r.route.name,
-            $store.getters.settings.windowStyle
-          );
+          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }
       "
     >
-      <el-table-column
-        type="selection"
-        width="55"
-        align="center"
-      ></el-table-column>
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
         v-bind:label="$t('Vendors.Id')"
         prop="Id"
@@ -199,22 +188,14 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Account.funds')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
           )
         }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Status')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Vendor" />
         </template>
@@ -254,6 +235,7 @@ import Pagination from "@/components/Pagination"; // secondary package based on 
 import AddVendor from "@/components/Vendor/AddVendor.vue";
 import EditVendor from "@/components/Vendor/EditVendor.vue";
 import { SendMultiSMS } from "@/api/SMS";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
   name: "ComplexTable",
@@ -263,7 +245,8 @@ export default {
     Pagination,
     RadioOprations,
     AddVendor,
-    EditVendor
+    EditVendor,
+    DrawerPrint,
   },
   directives: { waves, permission },
   data() {
@@ -278,13 +261,13 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
-        Status: undefined
+        Status: undefined,
       },
       sortOptions: [
         { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
+        { label: "Id Descending", key: "-id" },
       ],
-      downloadLoading: false
+      downloadLoading: false,
     };
   },
   created() {
@@ -294,7 +277,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then(response => {
+      GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -320,21 +303,21 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list"
+          filename: "table-list",
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "timestamp") {
             return parseTime(v[j]);
           } else {
@@ -343,7 +326,7 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
@@ -352,7 +335,7 @@ export default {
     },
     SendSms() {
       if (this.Selection.length > 0) {
-        let numbers = this.Selection.map(element => {
+        let numbers = this.Selection.map((element) => {
           return element.PhoneNumber1;
         });
         SendMultiSMS(numbers, this.SmsBody);
@@ -360,17 +343,17 @@ export default {
           title: "تم ",
           message: "تم ارسال بنجاح",
           type: "success",
-          duration: 2000
+          duration: 2000,
         });
       } else {
         this.$notify({
           title: "تم ",
           message: "الرجاء تحديد المشتركين",
           type: "error",
-          duration: 2000
+          duration: 2000,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>

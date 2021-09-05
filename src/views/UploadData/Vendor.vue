@@ -1,9 +1,6 @@
 <template>
   <div class="app-container">
-    <upload-excel-component
-      :on-success="handleSuccess"
-      :before-upload="beforeUpload"
-    />
+    <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
     <el-button @click="AddVendor" plain :disabled="isDisabled" type="success"
       >Push</el-button
     >
@@ -13,7 +10,7 @@
       :data="tableData"
       border
       highlight-current-row
-      style="width: 100%;margin-top:20px;"
+      style="width: 100%; margin-top: 20px"
     >
       <el-table-column
         v-for="item of tableHeader"
@@ -38,7 +35,7 @@ export default {
       loading: false,
       tableData: [],
       data: [],
-      tableHeader: []
+      tableHeader: [],
     };
   },
   methods: {
@@ -47,7 +44,7 @@ export default {
       this.isDisabled = true;
 
       Create(this.data[0])
-        .then(response => {
+        .then((response) => {
           console.log("tag", "" + response);
           this.data.splice(0, 1);
           if (this.data.length != 0) {
@@ -59,11 +56,11 @@ export default {
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           //this.AddVendor(100), 1000);
         });
@@ -78,7 +75,7 @@ export default {
 
       this.$message({
         message: "Please do not upload files larger than 8m in size.",
-        type: "warning"
+        type: "warning",
       });
       return false;
     },
@@ -86,7 +83,7 @@ export default {
       this.loading = true;
       this.tableData = results;
       console.log(this.tableData);
-      this.data = this.tableData.map(x => {
+      this.data = this.tableData.map((x) => {
         /*    let Phone1 = x.Description.toString().match(/\d+/);
         let Name = x.Description.toString().replace(/[0-9]/g, "");
 
@@ -123,11 +120,11 @@ export default {
           CreditLimit: x.CreditLimit,
           Description: x.Description,
           IsPrime: false,
-          Type: x.Type
+          Type: x.Type,
         };
       });
       const seen = new Set();
-      this.data = this.data.filter(el => {
+      this.data = this.data.filter((el) => {
         const duplicate = seen.has(el.PhoneNumber1);
         seen.add(el.PhoneNumber1);
         return !duplicate;
@@ -160,7 +157,7 @@ export default {
         minutes,
         seconds
       );
-    }
-  }
+    },
+  },
 };
 </script>

@@ -5,6 +5,7 @@ import i18n from "@/lang";
 let toFixed = store.getters.settings.ToFixed;
 
 export default function Visualization(Data, Html, Type) {
+  console.log("Visualization Data : =>", Data);
   let ConvetNumberToArabicWords = nArabicWords;
   let formatDate = formatDateX;
   let TimeConvert = TimeConvertX;

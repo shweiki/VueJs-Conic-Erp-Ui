@@ -22,11 +22,7 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input
-                type="text"
-                ref="MemberName"
-                v-model="tempForm.Name"
-              ></el-input>
+              <el-input type="text" ref="MemberName" v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -39,8 +35,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-date-picker
@@ -72,8 +68,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك الرقم الوطني فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-input
@@ -90,19 +86,16 @@
                 {
                   required: false,
                   message: 'Please input email address',
-                  trigger: 'blur'
+                  trigger: 'blur',
                 },
                 {
                   type: 'email',
                   message: 'Please input correct email address',
-                  trigger: ['blur', 'change']
-                }
+                  trigger: ['blur', 'change'],
+                },
               ]"
             >
-              <el-input
-                type="text"
-                v-model="tempForm.Email"
-              ></el-input> </el-form-item
+              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
           ></el-col>
         </el-row>
 
@@ -115,15 +108,15 @@
                 {
                   required: true,
                   message: 'لايمكن ترك الرقم الهاتف فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <VuePhoneNumberInput
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
                   countrySelectorError: 'تاكد من رقم',
-                  phoneNumberLabel: 'رقم الهاتف'
+                  phoneNumberLabel: 'رقم الهاتف',
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber1"
@@ -138,7 +131,7 @@
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
                   countrySelectorError: 'تاكد من رقم',
-                  phoneNumberLabel: 'رقم الهاتف'
+                  phoneNumberLabel: 'رقم الهاتف',
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber2"
@@ -146,17 +139,12 @@
           ></el-col>
         </el-row>
 
-        <el-form-item
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
+        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
         <el-button type="primary" @click="createData()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -167,7 +155,7 @@
 
 <script>
 import { Create, CheckMemberIsExist } from "@/api/Member";
-import VuePhoneNumberInput from "vue-phone-number-input";
+import VuePhoneNumberInput, { async } from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
@@ -190,23 +178,23 @@ export default {
         Description: "",
         Type: "New",
         Tag: null,
-        Status: -1
+        Status: -1,
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -224,53 +212,68 @@ export default {
         PhoneNumber2: "",
         Description: "",
         Type: "New",
-        Status: -1
+        Status: -1,
       };
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate(async (valid) => {
         if (valid) {
-          CheckMemberIsExist({
-            Ssn: this.tempForm.Ssn,
-            PhoneNumber: this.tempForm.PhoneNumber1
-          }).then(res => {
-            console.log(res);
-            if (!res) {
-              this.tempForm.DateofBirth = new Date(this.tempForm.DateofBirth);
-              Create(this.tempForm)
-                .then(response => {
-                  this.Visible = false;
-                  this.$notify({
-                    title: "تم ",
-                    message: "تم الإضافة بنجاح",
-                    type: "success",
-                    duration: 2000
-                  });
-                  this.$router.push({ path: `/Gym/Edit/${response}` });
-                  SendSMS(
-                    this.tempForm.PhoneNumber1,
-                    "عزيزي " +
-                      this.tempForm.Name +
-                      " نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح "
-                  );
-                })
-                .catch(error => {
-                  console.log(error);
+          var IsExist = false;
+          if (this.$store.getters.settings.Member.CheckMemberIsExist) {
+            var IsExist = await this.CheckMemberIsExist(
+              this.tempForm.Ssn,
+              this.tempForm.PhoneNumber1
+            );
+          }
+          if (!IsExist) {
+            this.tempForm.DateofBirth = new Date(this.tempForm.DateofBirth);
+            Create(this.tempForm)
+              .then((response) => {
+                this.Visible = false;
+                this.$notify({
+                  title: "تم ",
+                  message: "تم الإضافة بنجاح",
+                  type: "success",
+                  duration: 2000,
                 });
-            } else {
-              this.$notify({
-                position: "top-left",
-                title: "تم ",
-                message: "يوجد عضو يحمل نفس رقم الهاتف او الرقم الوطني",
-                type: "warning",
-                duration: 20000
+                this.$router.push({ path: `/Gym/Edit/${response}` });
+                SendSMS(
+                  this.tempForm.PhoneNumber1,
+                  "عزيزي " +
+                    this.tempForm.Name +
+                    " نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح "
+                );
+              })
+              .catch((error) => {
+                console.log(error);
               });
-            }
-          });
+          } else {
+            this.$notify({
+              position: "top-left",
+              title: "تم ",
+              message: "يوجد عضو يحمل نفس رقم الهاتف او الرقم الوطني",
+              type: "warning",
+              duration: 20000,
+            });
+          }
         } else {
           console.log("error submit!!");
           return false;
         }
+      });
+    },
+    CheckMemberIsExist(Ssn, PhoneNumber1) {
+      return new Promise((resolve, reject) => {
+        CheckMemberIsExist({
+          Ssn: Ssn,
+          PhoneNumber: PhoneNumber1,
+        })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
       });
     },
     getAge(BD) {
@@ -283,7 +286,7 @@ export default {
       }
 
       return age;
-    }
-  }
+    },
+  },
 };
 </script>

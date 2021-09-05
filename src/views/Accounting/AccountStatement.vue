@@ -56,6 +56,7 @@
               :Data="{
                 Name: Accountx.Name,
                 Id: Accountx.Id,
+                Code: Accountx.Code,
                 DateFrom: listQuery.DateFrom,
                 DateTo: listQuery.DateTo,
                 EntryMovement: list,

@@ -42,6 +42,9 @@ module.exports = {
     DateFormat: 'yyyy-MM-dd',
     DateTimeFormat: 'yyyy-MM-dd HH:mm',
     StatusQuery: 0,
+    Member: {
+        CheckMemberIsExist: true,
+    },
     PointOfSale: {
         Layout: 'Public',
         WithImage: false,
@@ -57,6 +60,10 @@ module.exports = {
     Receive: {
         Layout: 'Public',
         CreateEntry: true
+    },
+    Visit: {
+        Layout: 'Public',
+        CreateEntry: false
     },
     datepickerQuery: [Date(), Date()], // start , End
     timeQuery: ['00:00:00', '23:59:59'],
