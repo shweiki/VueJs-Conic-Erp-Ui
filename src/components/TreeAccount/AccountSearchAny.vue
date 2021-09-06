@@ -5,52 +5,71 @@
         <Add-Account-Dialog @Done="getdata()" />
       </el-col>
       <el-col :span="16">
-        <el-select
-          wi
-          v-model="search"
-          :remote-method="querySearch"
-          filterable
-          default-first-option
-          remote
-          placeholder="البحث بحسب الاسم / الكود "
-          @change="change"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.Id"
-            :label="item.Name"
-            :value="item"
+        <div :class="{ show: show }" class="account-search">
+          <el-input :disabled="true" v-model="Account.Name" class="input-with-select">
+            <svg-icon
+              slot="append"
+              class-name="search-icon"
+              icon-class="search"
+              @click.stop="click"
+            />
+          </el-input>
+          <el-select
+            ref="AccountSearchSelect"
+            v-model="search"
+            :remote-method="querySearch"
+            filterable
+            default-first-option
+            remote
+            placeholder="البحث بحسب الاسم / الكود "
+            @change="change"
+            class="account-search-select"
           >
-            <span style="float: right">{{ item.Id }}</span>
-            <span style="float: left color: #8492a6 font-size: 13px">{{
-              item.Name
-            }}</span>
-          </el-option>
-        </el-select>
+            <el-option
+              v-for="item in options"
+              :key="item.Id"
+              :value="item"
+              :label="item.Name"
+            >
+              <span style="float: right">{{ item.Id }}</span>
+              <span style="float: left color: #8492a6 font-size: 13px">{{
+                item.Name
+              }}</span>
+            </el-option>
+          </el-select>
+        </div>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
-import { GetAccountByAny } from "@/api/Account";
+import { GetAccountByAny, GetById } from "@/api/Account";
 import AddAccountDialog from "@/components/TreeAccount/AddAccountDialog.vue";
 
 export default {
-  components: { AddAccountDialog },
   props: ["AccountId"],
+  components: { AddAccountDialog },
   data() {
     return {
-      value: {},
       search: "",
       options: [],
+      show: false,
+      Account: { Id: 6, Name: "زبون نقدي" },
     };
   },
   watch: {
-    AccountId(val) {
-      if (val) {
-        console.log(val);
-        this.search = val;
-        //  this.querySearch(val);
+    AccountId(value) {
+      if (value != null && value != undefined && value != "" && value > 0) {
+        GetById({ Id: value }).then((res) => {
+          this.change(res);
+        });
+      }
+    },
+    show(value) {
+      if (value) {
+        document.body.addEventListener("click", this.close);
+      } else {
+        document.body.removeEventListener("click", this.close);
       }
     },
   },
@@ -58,7 +77,8 @@ export default {
     change(val) {
       this.search = "";
       this.options = [];
-      this.value = val;
+      this.Account = val;
+      this.show = false;
       this.$emit("Set", val);
     },
     querySearch(query) {
@@ -70,6 +90,56 @@ export default {
         this.options = [];
       }
     },
+    click() {
+      this.show = !this.show;
+      if (this.show) {
+        this.$refs.AccountSearchSelect && this.$refs.AccountSearchSelect.focus();
+      }
+    },
+    close() {
+      this.$refs.AccountSearchSelect && this.$refs.AccountSearchSelect.blur();
+      this.options = [];
+      this.show = false;
+    },
   },
 };
 </script>
+<style lang="scss" scoped>
+.account-search {
+  font-size: 0 !important;
+
+  .search-icon {
+    cursor: pointer;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+
+  .account-search-select {
+    font-size: 18px;
+    transition: width 0.2s;
+    width: 0;
+    overflow: hidden;
+    background: transparent;
+    border-radius: 0;
+    display: inline-block;
+    vertical-align: middle;
+
+    /deep/ .el-input__inner {
+      border-radius: 0;
+      border: 0;
+      padding-left: 0;
+      padding-right: 0;
+      box-shadow: none !important;
+      border-bottom: 1px solid #d9d9d9;
+      vertical-align: middle;
+    }
+  }
+
+  &.show {
+    .account-search-select {
+      width: 210px;
+      margin-left: 10px;
+    }
+  }
+}
+</style>

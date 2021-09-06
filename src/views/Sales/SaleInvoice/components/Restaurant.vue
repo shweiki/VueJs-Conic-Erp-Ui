@@ -449,7 +449,7 @@ import FakeDate from "@/components/Date/FakeDate";
 import { PrintReport } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { CreateDelivery } from "@/api/OrderDelivery";
+import { Create as CreateDelivery } from "@/api/OrderDelivery";
 
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
@@ -513,20 +513,6 @@ export default {
         Region: "",
         PhoneNumber: "",
         InventoryMovements: [],
-      },
-      deliveryData: {
-        Id: undefined,
-        Name: "",
-        DriverName: "",
-        TotalPrice: 0,
-        Status: 0,
-        Description: "",
-        FakeDate: "",
-        IsPrime: false,
-        Region: "",
-        DeliveryPrice: 0,
-        TotalPill: 0,
-        VendorId: undefined,
       },
       rules: {
         InventoryMovements: [
@@ -628,46 +614,47 @@ export default {
     createData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
         if (valid) {
-          this.deliveryData.Name = this.tempForm.Name;
-          this.deliveryData.FakeDate = this.tempForm.FakeDate;
-          this.deliveryData.Region = this.tempForm.Region;
-          this.deliveryData.Description = this.tempForm.Description;
-          this.deliveryData.VendorId = this.tempForm.VendorId;
-          this.deliveryData.DeliveryPrice = this.tempForm.DeliveryPrice;
           this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
           let Total =
             this.tempForm.InventoryMovements.reduce((prev, cur) => {
               return prev + cur.Qty * cur.SellingPrice;
             }, 0) - this.tempForm.Discount;
-          this.deliveryData.TotalPill = Total;
-          this.deliveryData.TotalPrice = this.tempForm.DeliveryPrice + Total;
           if (
             Total > 0 &&
             this.tempForm.InventoryMovements.length > 0 &&
             this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
             this.DisabledSave = true;
-
             Create(this.tempForm)
               .then((response) => {
                 if (response) {
-                  this.$notify({
-                    title: "تم الإضافة بنجاح",
-                    message: "تم الإضافة بنجاح - " + this.tempForm.PhoneNumber + " ",
-                    type: "success",
-                    position: "top-left",
-                  });
                   this.ValidateDescription = "";
                   this.tempForm.Id = response;
                   this.tempForm.Total = Total;
                   this.OldInvoice = this.tempForm;
-                  this.restTempForm();
-                  this.DisabledSave = false;
-                  this.OpenRestOfBill = false;
-                  CreateDelivery(this.deliveryData).then((res) => {
-                    console.log("CreateDelivery is ", res);
-                  });
+
+                  if (
+                    this.OldInvoice.Type == "Delivery" &&
+                    this.$store.getters.settings.PointOfSale.CreateDelivery == true
+                  ) {
+                    CreateDelivery({
+                      Id: undefined,
+                      Name: this.tempForm.Name,
+                      TotalPrice: this.tempForm.DeliveryPrice + Total,
+                      Status: 0,
+                      Description: this.tempForm.Description,
+                      FakeDate: this.tempForm.FakeDate,
+                      PhoneNumber: this.tempForm.PhoneNumber,
+                      Region: this.tempForm.Region,
+                      DeliveryPrice: this.tempForm.DeliveryPrice,
+                      TotalPill: Total,
+                      Content: JSON.stringify(this.tempForm.InventoryMovements),
+                    }).then((res) => {
+                      console.log("CreateDelivery is ", res);
+                    });
+                  }
+
                   if (this.AutoPrint == true) {
                     PrintReport("SaleInvoice", this.OldInvoice, true);
                   }
@@ -686,6 +673,15 @@ export default {
                         ).toFixed(2) +
                         " JD"
                     );
+                  this.$notify({
+                    title: "تم الإضافة بنجاح",
+                    message: "تم الإضافة بنجاح - " + this.tempForm.PhoneNumber + " ",
+                    type: "success",
+                    position: "top-left",
+                  });
+                  this.restTempForm();
+                  this.DisabledSave = false;
+                  this.OpenRestOfBill = false;
                 } else {
                   this.$notify.error({
                     title: "error",

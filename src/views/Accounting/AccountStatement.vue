@@ -5,16 +5,14 @@
         <el-row type="flex"
           ><el-col :span="18">
             <Account-Search-Any
+              :AccountId="listQuery.AccountId"
               @Set="
                 (v) => {
+                  Account = v;
                   listQuery.AccountId = v.Id;
-                  Accountx = v;
                 }
               "
           /></el-col>
-          <el-col :span="6">
-            <ElTag type="success">{{ Accountx.Name }}</ElTag></el-col
-          >
         </el-row>
         <el-row type="flex">
           <el-col :span="10">
@@ -54,9 +52,9 @@
             <Drawer-Print
               Type="AccountStatement"
               :Data="{
-                Name: Accountx.Name,
-                Id: Accountx.Id,
-                Code: Accountx.Code,
+                Name: Account.Name,
+                Id: Account.Id,
+                Code: Account.Code,
                 DateFrom: listQuery.DateFrom,
                 DateTo: listQuery.DateTo,
                 EntryMovement: list,
@@ -201,7 +199,6 @@ export default {
   directives: { waves, permission },
   data() {
     return {
-      Accountx: { Name: "" },
       list: [],
       Totals: { Rows: 0, Totals: 0, Debit: 0, Credit: 0 },
       listLoading: false,
@@ -210,6 +207,7 @@ export default {
         DateTo: "",
         AccountId: undefined,
       },
+      Account: {},
       downloadLoading: false,
     };
   },

@@ -18,13 +18,10 @@
               @Set="
                 (v) => {
                   listQuery.AccountId = v.Id;
-                  Accountx = v;
+                  Account = v;
                 }
               "
           /></el-col>
-          <el-col :span="6">
-            <ElTag type="success">{{ Accountx.Name }}</ElTag></el-col
-          >
         </el-row>
         <el-row type="flex">
           <el-col :span="4">
@@ -82,8 +79,8 @@
             <Drawer-Print
               Type="AccountStatement"
               :Data="{
-                Name: Accountx.Name,
-                Id: Accountx.Id,
+                Name: Account.Name,
+                Id: Account.Id,
                 DateFrom: listQuery.DateFrom,
                 DateTo: listQuery.DateTo,
                 InventoryMovements: list,
@@ -223,7 +220,7 @@ export default {
   directives: { waves, permission },
   data() {
     return {
-      Accountx: { Name: "" },
+      Account: {},
       list: [],
       Totals: { Rows: 0, Totals: 0, Debit: 0, Credit: 0 },
       listLoading: false,

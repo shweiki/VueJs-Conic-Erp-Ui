@@ -1,5 +1,4 @@
-﻿
-<template>
+﻿<template>
   <div class="app-container">
     <div class="filter-container">
       <el-row type="flex">
@@ -23,7 +22,7 @@
             "
           />
         </el-col>
-        
+
         <el-col :span="3">
           <el-select
             v-model="listQuery.Sort"
@@ -70,7 +69,7 @@
         </el-col>
       </el-row>
     </div>
-   <Radio-Oprations
+    <Radio-Oprations
       TableName="OrderDelivery"
       @Set="
         (v) => {
@@ -104,7 +103,7 @@
       <el-table-column prop="Name" v-bind:label="$t('AddVendors.Name')" align="center">
       </el-table-column>
       <el-table-column
-        prop="Region "
+        prop="Region"
         sortable
         v-bind:label="$t('AddVendors.Region')"
         width="150"
@@ -115,14 +114,20 @@
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Vendors.Description')" prop="Description" align="center"> </el-table-column>
+      <el-table-column label="Content" prop="Content" align="center"> </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Vendors.Description')"
+        prop="Description"
+        align="center"
+      >
+      </el-table-column>
       <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalPrice.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
-        <el-table-column v-bind:label="$t('Area.TotalPill')" width="120" align="center">
+      <el-table-column v-bind:label="$t('Area.TotalPill')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalPill.toFixed($store.getters.settings.ToFixed) }}
           JOD
@@ -130,7 +135,7 @@
       </el-table-column>
       <el-table-column v-bind:label="$t('Area.DelievryPrice')" width="120" align="center">
         <template slot-scope="{ row }">
-          {{ row.DeliveryPrice .toFixed($store.getters.settings.ToFixed) }}
+          {{ row.DeliveryPrice.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
@@ -142,7 +147,6 @@
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-         
           <Dialog-Action-Log TableName="OrderDelivery" :ObjId="scope.row.Id" />
           <Drawer-Print Type="OrderDelivery" :Data="scope.row" />
         </template>
@@ -159,7 +163,7 @@
 </template>
 
 <script>
-import { GetOrderDeliveryByListQ } from "@/api/OrderDelivery";
+import { GetByListQ } from "@/api/OrderDelivery";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -179,7 +183,7 @@ export default {
     DrawerPrint,
     Pagination,
     DialogActionLog,
-    RadioOprations
+    RadioOprations,
   },
   directives: { waves },
   data() {
@@ -211,7 +215,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetOrderDeliveryByListQ(this.listQuery).then((response) => {
+      GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;

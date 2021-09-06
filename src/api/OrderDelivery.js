@@ -1,19 +1,18 @@
 import request from '@/utils/RequestApi'
 import qs from 'qs';
+import store from '@/store'
 
-export function GetOrderDeliveryByListQ(data) {
+export function GetByListQ(data) {
   return request({
-    url: '/OrderDelivery/GetOrderDeliveryByListQ',
+    url: '/OrderDelivery/GetByListQ',
     method: 'post',
     data: qs.stringify(data)
   })
 }
 
-
-
-export function CreateDelivery(data) {
+export function Create(data) {
   return request({
-    url: '/OrderDelivery/CreateDelivery',
+    url: store.getters.settings.PointOfSale.DeliveryUrl,
     method: 'post',
     data: qs.stringify(data)
   })

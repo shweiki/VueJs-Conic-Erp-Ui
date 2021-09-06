@@ -48,7 +48,9 @@ module.exports = {
     PointOfSale: {
         Layout: 'Public',
         WithImage: false,
-        CreateEntry: false
+        CreateEntry: false,
+        CreateDelivery: false,
+        DeliveryUrl:'http://localhost:8090/OrderDelivery/Create'
     },
     CashPoolLayout: 'Restaurant',
     PurchaseLayout: 'SuperMarket',
