@@ -57,6 +57,13 @@ export default {
       Account: { Id: 6, Name: "زبون نقدي" },
     };
   },
+  mounted() {
+    document.body.addEventListener("copy", (event) => {
+      const selection = document.getSelection();
+      event.clipboardData.setData("text/plain", selection.toString().toUpperCase());
+      event.preventDefault();
+    });
+  },
   watch: {
     AccountId(value) {
       if (value != null && value != undefined && value != "" && value > 0) {

@@ -9,11 +9,12 @@
   >
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
-        <router-view
+        <router-view :key="key" id="thisview"></router-view>
+        <!--  <router-view
           :key="key"
           @contextmenu.prevent.native="openMenu(key, $event)"
           id="thisview"
-        ></router-view>
+        ></router-view>-->
       </keep-alive>
     </transition>
     <ul
@@ -40,7 +41,7 @@ export default {
   name: "AppMain",
   components: { Clock },
   directives: {
-    clipboard
+    clipboard,
   },
   computed: {
     visitedViews() {
@@ -51,7 +52,7 @@ export default {
     },
     key() {
       return this.$route.path;
-    }
+    },
   },
   watch: {
     visible(value) {
@@ -60,7 +61,7 @@ export default {
       } else {
         document.body.removeEventListener("click", this.closeMenu);
       }
-    }
+    },
   },
   data() {
     return {
@@ -68,7 +69,7 @@ export default {
       top: 0,
       left: 0,
       FullPath: "",
-      affixTags: []
+      affixTags: [],
     };
   },
   methods: {
@@ -76,7 +77,7 @@ export default {
       const fullPath = this.FullPath;
 
       this.$router.replace({
-        path: "/redirect" + fullPath
+        path: "/redirect" + fullPath,
       });
     },
     Back() {
@@ -88,7 +89,6 @@ export default {
     },
     Copy() {
       window.document.execCommand("copy");
-      //  clip(selRange, event);
 
       // do stuff with the range
     },
@@ -120,8 +120,22 @@ export default {
     },
     closeMenu() {
       this.visible = false;
-    }
-  }
+    },
+    GetSelection() {
+      if (window.getSelection) {
+        // all browsers, except IE before version 9
+        var selectionRange = window.getSelection();
+        alert("The text content of the selection:\n" + selectionRange.toString());
+      } else {
+        if (document.selection.type == "None") {
+          alert("No content is selected, or the selected content is not available!");
+        } else {
+          var textRange = document.selection.createRange();
+          alert("The text content of the selection:\n" + textRange.text);
+        }
+      }
+    },
+  },
 };
 </script>
 
