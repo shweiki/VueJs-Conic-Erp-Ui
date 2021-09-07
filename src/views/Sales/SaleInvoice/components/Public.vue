@@ -466,8 +466,11 @@ export default {
                       duration: 1000,
                       showClose: false,
                     });
-                    this.restTempForm();
-                    this.$router.back();
+                    this.$confirm("هل تريد العودة ")
+                      .then((_) => {
+                        this.$router.back();
+                      })
+                      .catch((_) => {});
                   }
                 });
               } else if (response) {
@@ -565,7 +568,11 @@ export default {
                       showClose: false,
                     });
                     this.restTempForm();
-                    this.$router.push({ path: `/Sales/List` });
+                    this.$confirm("هل تريد العودة ")
+                      .then((_) => {
+                        this.$router.back();
+                      })
+                      .catch((_) => {});
                   }
                 });
               } else if (response) {

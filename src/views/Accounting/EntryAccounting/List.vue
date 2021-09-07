@@ -12,17 +12,6 @@
         <span>{{ $t("Accounting.AccountingEntryinquiries") }}</span>
       </div>
       <div class="filter-container">
-        <el-row type="flex"
-          ><el-col :span="18">
-            <Account-Search-Any
-              @Set="
-                (v) => {
-                  listQuery.AccountId = v.Id;
-                  Account = v;
-                }
-              "
-          /></el-col>
-        </el-row>
         <el-row type="flex">
           <el-col :span="4">
             <el-input
@@ -77,7 +66,7 @@
           </el-col>
           <el-col :span="1">
             <Drawer-Print
-              Type="AccountStatement"
+              Type="EntryAccountingList"
               :Data="{
                 Name: Account.Name,
                 Id: Account.Id,
@@ -174,6 +163,7 @@
         </el-table-column>
         <el-table-column width="180" align="center">
           <template slot-scope="scope">
+            <Dialog-Action-Log TableName="EntryAccounting" :ObjId="scope.row.Id" />
             <Next-Oprations
               :ObjId="scope.row.Id"
               :Status="scope.row.Status"
@@ -195,9 +185,7 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import printJS from "print-js";
 import permission from "@/directive/permission/index.js";
-import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -215,7 +203,6 @@ export default {
     UserSelect,
     RadioOprations,
     DialogActionLog,
-    AccountSearchAny,
   },
   directives: { waves, permission },
   data() {
@@ -232,7 +219,6 @@ export default {
         DateFrom: "",
         DateTo: "",
         Status: undefined,
-        AccountId: 2,
       },
       downloadLoading: false,
     };

@@ -284,10 +284,9 @@ export default {
                       duration: 1000,
                       showClose: false,
                     });
-                    this.restTempForm();
                     this.$confirm("هل تريد العودة ")
                       .then((_) => {
-                        this.$router.push({ path: `/Payment/List` });
+                        this.$router.back();
                       })
                       .catch((_) => {});
                   }
