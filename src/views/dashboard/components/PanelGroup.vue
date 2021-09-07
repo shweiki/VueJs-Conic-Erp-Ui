@@ -1,6 +1,6 @@
 <template>
-  <el-row :gutter="20" class="panel-group" style="  margin: 20px 2px;">
-    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
+  <el-row :gutter="20" class="panel-group" style="margin: 20px 2px">
+    <el-col v-if="Shows.MembersActive" :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -17,7 +17,7 @@
       </div>
     </el-col>
 
-    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
+    <el-col v-if="Shows.MsgCredit" :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="message" class-name="card-panel-icon" />
@@ -33,7 +33,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
+    <el-col v-if="Shows.Members" :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -49,7 +49,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
+    <el-col v-if="Shows.Items" :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -65,7 +65,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
+    <el-col v-if="Shows.Clients" :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -82,7 +82,7 @@
       </div>
     </el-col>
 
-    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
+    <el-col v-if="Shows.Suppliers" :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="message" class-name="card-panel-icon" />
@@ -98,7 +98,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
+    <el-col v-if="Shows.Purchases" :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
@@ -114,7 +114,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
+    <el-col v-if="Shows.Sales" :xs="6" :sm="6" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="shopping" class-name="card-panel-icon" />
@@ -144,6 +144,7 @@ export default {
   data() {
     return {
       Totals: {},
+      Shows: this.$store.getters.settings.Dashboard.ShowPanelGroup,
     };
   },
   mounted() {
@@ -165,7 +166,6 @@ export default {
 
 <style lang="scss" scoped>
 .panel-group {
-
   .card-panel-col {
     margin-bottom: 5px;
   }

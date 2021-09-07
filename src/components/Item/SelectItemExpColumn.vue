@@ -6,7 +6,7 @@
     :size="$store.getters.size"
     placeholder="تاريخ الانتهاء"
     :picker-options="pickerOptions"
-    :format="$store.getters.settings.DateFormat"
+    :format="$store.getters.settings.DateTimeFormat"
   >
   </el-date-picker>
 </template>
@@ -17,12 +17,12 @@ import {
   LocalDate,
   LocalTime,
   DateTimeFormatter,
-  Instant
+  Instant,
 } from "@js-joda/core";
 export default {
   props: {
     Value: String,
-    ItemId: { type: Number, default: undefined }
+    ItemId: { type: Number, default: undefined },
   },
   created() {
     this.getdata();
@@ -38,32 +38,32 @@ export default {
         disabledDate(time) {
           return time.getTime() < Date.now();
         },
-        shortcuts: []
-      }
+        shortcuts: [],
+      },
     };
   },
   methods: {
     SetVal(val) {
-      if(val){
-      val = new Date(val);
-      val = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
-        DateTimeFormatter.ofPattern(this.$store.getters.settings.DateFormat)
-      );
-      this.$emit("SetVal", val);
+      if (val) {
+        val = new Date(val);
+        val = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
+          DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        );
+        this.$emit("SetVal", val);
       }
     },
     getdata() {
-      GetInventoryItemEXP({ Id: this.ItemId }).then(response => {
+      GetInventoryItemEXP({ Id: this.ItemId }).then((response) => {
         // handle success
         //  console.log(response);
-        response.forEach(x => {
+        response.forEach((x) => {
           this.date = x.Exp;
           this.SetVal(this.date);
           this.pickerOptions.shortcuts.push({
             text: this.formatDate(x.Exp),
             onClick(picker) {
               picker.$emit("pick", x.Exp);
-            }
+            },
           });
         });
       });
@@ -77,7 +77,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    }
-  }
+    },
+  },
 };
 </script>

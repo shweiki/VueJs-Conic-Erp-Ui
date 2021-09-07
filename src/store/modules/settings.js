@@ -27,7 +27,7 @@ const actions = {
                                     const end = new Date();
                                     const start = new Date();
                                     start.setTime(start.getTime() - 3600 * 1000 * 24 * OP.days);
-                                    picker.$emit("pick", [start, end]);
+                                    picker.$emit("pick", [start.setHours(0, 0, 0, 0), end.setHours(23, 59, 59, 999)]);
                                 }
                             })
                         }

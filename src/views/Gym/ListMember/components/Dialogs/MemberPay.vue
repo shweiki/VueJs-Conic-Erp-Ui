@@ -54,6 +54,7 @@
             <el-form-item prop="PaymentMethod" label="طريقة الدفع">
               <radio-payment-method
                 Type="Payment"
+                :Value="tempForm.PaymentMethod"
                 :VendorId="tempForm.MemberId"
                 @Set="(v) => (tempForm.PaymentMethod = v)"
               />

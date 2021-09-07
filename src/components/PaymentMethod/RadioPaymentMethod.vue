@@ -13,20 +13,21 @@
 </template>
 <script>
 export default {
-  props: ["VendorId", "Type"],
+  props: ["VendorId", "Type", "Value"],
   data() {
     return {
       value: "Cash",
     };
   },
   watch: {
-    value(v) {
-      this.SetVal(v);
+    Value(v) {
+      if (v == null || v != "") this.SetVal(v);
+      else {
+        this.SetVal(this.value);
+      }
     },
   },
-  created() {
-    this.SetVal(this.value);
-  },
+
   methods: {
     SetVal(val) {
       this.$emit("Set", val);

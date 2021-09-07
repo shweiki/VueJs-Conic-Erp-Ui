@@ -76,6 +76,7 @@
             <el-form-item label="طريقة الدفع" prop="PaymentMethod">
               <radio-payment-method
                 :VendorId="tempForm.VendorId"
+                :Value="tempForm.PaymentMethod"
                 @Set="(v) => (tempForm.PaymentMethod = v)"
               />
             </el-form-item>
@@ -285,7 +286,7 @@
 <script>
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import FakeDate from "@/components/Date/FakeDate";
-import { CreateEntry } from "@/api/EntryAccounting";
+import { CreateEntry, EditEntryByFktable } from "@/api/EntryAccounting";
 import ItemsSearch from "@/components/Item/ItemsSearch.vue";
 import EditItem from "@/components/Item/EditItem";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
@@ -419,9 +420,60 @@ export default {
                 this.tempForm.PaymentMethod == "Receivables" &&
                 this.$store.getters.settings.PointOfSale.CreateEntry == true
               ) {
+                EditEntryByFktable({
+                  TableName: "SaleInvoice",
+                  Fktable: this.tempForm.Id,
+                  collection: {
+                    Id: undefined,
+                    FakeDate: this.tempForm.FakeDate,
+                    Description: "",
+                    Type: "Auto",
+                    EntryMovements: [
+                      {
+                        Id: undefined,
+                        AccountId: this.Vendor.AccountId,
+                        Debit: 0.0,
+                        Credit: Total,
+                        Description: "فاتورة مبيعات ذمم رقم " + this.tempForm.Id + " ",
+                        EntryId: undefined,
+                        TableName: "SaleInvoice",
+                        Fktable: this.tempForm.Id,
+                      },
+                      {
+                        Id: undefined,
+                        AccountId: this.InComeAccountId,
+                        Debit: Total,
+                        Credit: 0.0,
+                        Description:
+                          "فاتورة مبيعات " +
+                          this.Vendor.Name +
+                          "  ذمم رقم " +
+                          this.tempForm.Id +
+                          " ",
+                        EntryId: undefined,
+                        TableName: "SaleInvoice",
+                        Fktable: this.tempForm.Id,
+                      },
+                    ],
+                  },
+                }).then((res) => {
+                  if (res) {
+                    this.$notify({
+                      message: "تم تعديل الفاتورة مع قيد محاسبي بنجاح",
+                      title: "تم الإضافة بنجاح",
+                      type: "success",
+                      position: "top-left",
+                      duration: 1000,
+                      showClose: false,
+                    });
+                    this.restTempForm();
+                    this.$router.back();
+                  }
+                });
+              } else if (response) {
                 this.$notify({
-                  title: "تم تعديل  بنجاح",
-                  message: "تم تعديل بنجاح",
+                  title: "تم إضافة  بنجاح",
+                  message: "تم إضافة بنجاح",
                   type: "success",
                   position: "top-left",
                   duration: 1000,
@@ -429,6 +481,15 @@ export default {
                 });
                 this.restTempForm();
                 this.$router.push({ path: `/Sales/List` });
+              } else {
+                this.$notify({
+                  title: "مشكلة",
+                  message: "حصلت مشكلة في عملية الحفظ",
+                  type: "error",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                });
               }
             })
             .catch((error) => {
@@ -482,7 +543,12 @@ export default {
                       AccountId: this.InComeAccountId,
                       Debit: Total,
                       Credit: 0.0,
-                      Description: "فاتورة مبيعات ذمم رقم" + response + " ",
+                      Description:
+                        "فاتورة مبيعات " +
+                        this.Vendor.Name +
+                        "  ذمم رقم " +
+                        response +
+                        " ",
                       EntryId: undefined,
                       TableName: "SaleInvoice",
                       Fktable: response,

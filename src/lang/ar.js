@@ -493,8 +493,8 @@ export default {
         Receivables: 'الذمم المدينة',
         Payables: 'الذمم دائنة',
         Id:"رقم الحساب",
-        Name:"اسم الحساب"
-
+        Name:"اسم الحساب",
+        FktableDescription:"ملاحظات الحركة"
     },
     TreeAccount: {
         TreeAccount: 'شجرة الحسابات',

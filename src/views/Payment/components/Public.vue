@@ -76,6 +76,7 @@
             <el-form-item label="طريقة الدفع" prop="PaymentMethod">
               <radio-payment-method
                 Type="Payment"
+                :Value="tempForm.PaymentMethod"
                 :VendorId="tempForm.VendorId"
                 @Set="(v) => (tempForm.PaymentMethod = v)"
               />
@@ -150,7 +151,7 @@
 <script>
 import { Create, Edit, GetById } from "@/api/Payment";
 import FakeDate from "@/components/Date/FakeDate";
-import { CreateEntry } from "@/api/EntryAccounting";
+import { CreateEntry, EditEntryByFktable } from "@/api/EntryAccounting";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
@@ -236,10 +237,65 @@ export default {
         if (valid && this.tempForm.TotalAmmount > 0) {
           Edit(this.tempForm)
             .then((response) => {
-              if (response) {
+              if (response && this.$store.getters.settings.Payment.CreateEntry == true) {
+                EditEntryByFktable({
+                  TableName: "Payment",
+                  Fktable: this.tempForm.Id,
+                  collection: {
+                    Id: undefined,
+                    FakeDate: this.tempForm.FakeDate,
+                    Description: "",
+                    Type: "Auto",
+                    EntryMovements: [
+                      {
+                        Id: undefined,
+                        AccountId: this.AccountId,
+                        Credit: 0.0,
+                        Debit: this.tempForm.TotalAmmount,
+                        Description: "سند قبض رقم " + this.tempForm.Id + " ",
+                        EntryId: undefined,
+                        TableName: "Payment",
+                        Fktable: this.tempForm.Id,
+                      },
+                      {
+                        Id: undefined,
+                        AccountId: this.CashAccountId,
+                        Debit: 0.0,
+                        Credit: this.tempForm.TotalAmmount,
+                        Description:
+                          "سند قبض من  " +
+                          this.tempForm.Name +
+                          "   رقم " +
+                          this.tempForm.Id +
+                          " ",
+                        EntryId: undefined,
+                        TableName: "Payment",
+                        Fktable: this.tempForm.Id,
+                      },
+                    ],
+                  },
+                }).then((res) => {
+                  if (res) {
+                    this.$notify({
+                      message: "تم تسجيل سند قبض مع قيد محاسبي بنجاح",
+                      title: "تم الإضافة بنجاح",
+                      type: "success",
+                      position: "top-left",
+                      duration: 1000,
+                      showClose: false,
+                    });
+                    this.restTempForm();
+                    this.$confirm("هل تريد العودة ")
+                      .then((_) => {
+                        this.$router.push({ path: `/Payment/List` });
+                      })
+                      .catch((_) => {});
+                  }
+                });
+              } else if (response) {
                 this.$notify({
-                  title: "تم تعديل  بنجاح",
-                  message: "تم تعديل بنجاح",
+                  title: "تم إضافة  بنجاح",
+                  message: "تم إضافة بنجاح",
                   type: "success",
                   position: "top-left",
                   duration: 1000,
@@ -248,9 +304,18 @@ export default {
                 this.restTempForm();
                 this.$confirm("هل تريد العودة ")
                   .then((_) => {
-                    this.$router.push({ path: `/Payment/List` });
+                    this.$router.back();
                   })
                   .catch((_) => {});
+              } else {
+                this.$notify({
+                  title: "مشكلة",
+                  message: "حصلت مشكلة في عملية الحفظ",
+                  type: "error",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                });
               }
             })
             .catch((error) => {
@@ -299,7 +364,7 @@ export default {
                 }).then((res) => {
                   if (res) {
                     this.$notify({
-                      message: "تم تسجيل الفاتورة مع قيد محاسبي بنجاح",
+                      message: "تم تسجيل سند قبض مع قيد محاسبي بنجاح",
                       title: "تم الإضافة بنجاح",
                       type: "success",
                       position: "top-left",
@@ -309,7 +374,7 @@ export default {
                     this.restTempForm();
                     this.$confirm("هل تريد العودة ")
                       .then((_) => {
-                        this.$router.push({ path: `/Payment/List` });
+                        this.$router.back();
                       })
                       .catch((_) => {});
                   }

@@ -467,7 +467,9 @@ export default {
         Receivables: 'Receivables',
         Payables: 'Payables',
         Id: "Account Id",
-        Name: "Account Name"
+        Name: "Account Name",
+        FktableDescription:"Description Movement"
+
     },
     TreeAccount: {
         TreeAccount: 'TreeAccount',

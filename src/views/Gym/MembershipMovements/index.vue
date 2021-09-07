@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" >
+      <div slot="header">
         <el-row type="flex">
           <el-col :span="3">
             <span>{{ $t("Members.Member") }}</span>
@@ -28,7 +28,7 @@
         >
       </div>
       <el-button
-        style="width: 100px;"
+        style="width: 100px"
         type="primary"
         icon="el-icon-plus"
         @click="Visibles = true"
@@ -45,11 +45,7 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column
-          type="selection"
-          width="55"
-          align="center"
-        ></el-table-column>
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             Ids
@@ -67,34 +63,16 @@
           label="المشترك"
           align="center"
         ></el-table-column>
-        <el-table-column
-          prop="Type"
-          label="الفترة"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="Type" label="الفترة" align="center"></el-table-column>
 
-        <el-table-column
-          prop="StartDate"
-          label="تاريخ البدء"
-          align="center"
-          sortable
-        >
+        <el-table-column prop="StartDate" label="تاريخ البدء" align="center" sortable>
         </el-table-column>
-        <el-table-column
-          prop="EndDate"
-          label="تاريخ الانتهاء"
-          align="center"
-          sortable
-        >
+        <el-table-column prop="EndDate" label="تاريخ الانتهاء" align="center" sortable>
         </el-table-column>
       </el-table>
     </el-card>
     <div>
-      <el-dialog
-        style="margin-top: -13vh"
-        title="تسجيل تجميد"
-        :visible.sync="Visibles"
-      >
+      <el-dialog style="margin-top: -13vh" title="تسجيل تجميد" :visible.sync="Visibles">
         <el-form label-position="top" class="demo-form-inline">
           <el-row>
             <el-col :span="24">
@@ -109,7 +87,7 @@
                   v-bind:start-placeholder="$t('Sales.From')"
                   v-bind:end-placeholder="$t('Sales.To')"
                   :default-time="['00:00:00', '23:59:59']"
-                  style="width:80%"
+                  style="width: 80%"
                 ></el-date-picker>
               </el-form-item>
             </el-col>
@@ -137,9 +115,7 @@
           </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="Visibles = false">{{
-            $t("AddVendors.Cancel")
-          }}</el-button>
+          <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
           <el-button type="primary" @click="createFreeze()">{{
             $t("AddVendors.Save")
           }}</el-button>
@@ -152,7 +128,7 @@
 <script>
 import {
   GetMembershipMovementByStatus,
-  GetMembershipMovementByDateIn
+  GetMembershipMovementByDateIn,
 } from "@/api/MembershipMovement";
 import { CreateMulti } from "@/api/MembershipMovementOrder";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
@@ -161,7 +137,7 @@ import {
   LocalDate,
   LocalTime,
   DateTimeFormatter,
-  Instant
+  Instant,
 } from "@js-joda/core";
 export default {
   name: "Member",
@@ -176,7 +152,7 @@ export default {
       Days: 0,
       loading: false,
       search: "",
-      DateIn: ""
+      DateIn: "",
     };
   },
 
@@ -184,7 +160,7 @@ export default {
     getdata(val) {
       console.log(val);
       this.loading = true;
-      GetMembershipMovementByStatus({ Status: val }).then(response => {
+      GetMembershipMovementByStatus({ Status: val }).then((response) => {
         //console.log(response)
         this.tableData = response;
         this.loading = false;
@@ -194,14 +170,10 @@ export default {
       this.loading = true;
       let date = LocalDate.ofInstant(Instant.ofEpochMilli(val))
         .atStartOfDay()
-        .format(
-          DateTimeFormatter.ofPattern(
-            this.$store.getters.settings.DateTimeFormat
-          )
-        );
+        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
       GetMembershipMovementByDateIn({
-        DateIn: date
-      }).then(response => {
+        DateIn: date,
+      }).then((response) => {
         //console.log(response)
         this.tableData = response;
         this.loading = false;
@@ -220,25 +192,17 @@ export default {
         }
       }
 
-      createFreeze100.forEach(element => {
+      createFreeze100.forEach((element) => {
         let date = [
           LocalDate.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[0]))
             .atStartOfDay()
-            .format(
-              DateTimeFormatter.ofPattern(
-                this.$store.getters.settings.DateTimeFormat
-              )
-            ),
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
           LocalDate.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[1]))
             .atTime(LocalTime.MAX)
-            .format(
-              DateTimeFormatter.ofPattern(
-                this.$store.getters.settings.DateTimeFormat
-              )
-            )
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
         ];
         CreateMulti({
-          collection: element.map(x => {
+          collection: element.map((x) => {
             return {
               Id: undefined,
               Type: "Freeze",
@@ -246,22 +210,22 @@ export default {
               EndDate: date[1],
               Status: 2,
               Description: this.Description,
-              MemberShipMovementId: x.Id
+              MemberShipMovementId: x.Id,
             };
-          })
-        }).then(response => {
+          }),
+        }).then((response) => {
           if (response) {
             this.Visibles = false;
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
           }
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -18,10 +18,6 @@
           </div>
           <el-row type="flex">
             <el-col :span="6">
-              <span>{{ $t("Settings.DateFormat") }}</span>
-              <el-input v-model="DateFormat" />
-            </el-col>
-            <el-col :span="6">
               <span>{{ $t("Settings.DateTimeFormat") }}</span>
               <el-input v-model="DateTimeFormat" />
             </el-col>
@@ -145,17 +141,6 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "title",
-          value: val,
-        });
-      },
-    },
-    DateFormat: {
-      get() {
-        return this.$store.state.settings.DateFormat;
-      },
-      set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "DateFormat",
           value: val,
         });
       },
