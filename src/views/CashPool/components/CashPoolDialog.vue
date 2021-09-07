@@ -12,6 +12,7 @@
       <div slot="title" class="dialog-footer">
         <el-col :span="4">
           <el-button
+            :loading="createLoading"
             icon="fa fa-save"
             style="float: left"
             type="primary"
@@ -202,6 +203,7 @@ export default {
   data() {
     return {
       Show: false,
+      createLoading: false,
       tempForm: {
         Id: undefined,
         Type: this.Type,
@@ -240,11 +242,13 @@ export default {
     createData() {
       this.$refs["F-CashPool"].validate((valid) => {
         if (valid && this.Data.length > 0) {
+          this.createLoading = true;
           this.tempForm.TableName = this.Type;
           this.tempForm.Totals = this.Totals;
           this.tempForm.DateTime = new Date();
           this.tempForm.Fktable = this.Data.map((x) => x.Id).toString();
           this.$emit("Done", this.tempForm);
+          this.createLoading = false;
         } else {
           console.log(valid);
           return false;

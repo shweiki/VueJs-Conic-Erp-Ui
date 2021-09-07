@@ -15,7 +15,6 @@
               inactive-color="#ff4949"
             ></el-switch>
           </el-col>
-
           <el-col :span="2">
             <el-button
               :size="$store.getters.size"
@@ -168,6 +167,7 @@
 </template>
 <script>
 import checkPermission from "@/utils/permission";
+import permission from "@/directive/permission/index.js";
 
 import { GetPaymentByStatus, GetPaymentByListId } from "@/api/Payment";
 import { Create as CreateCashPool, GetCashPoolById } from "@/api/CashPool";
@@ -178,7 +178,7 @@ import CashPoolDialog from "./CashPoolDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
-import { VisualizationReportHtml } from "@/Report/FunctionalityReport";
+import { VisualizationReportHtml, PrintReport } from "@/Report/FunctionalityReport";
 import { SendEmail } from "@/api/StmpEmail";
 import EditPaymentMethod from "@/components/PaymentMethod/EditPaymentMethod.vue";
 
@@ -194,6 +194,8 @@ export default {
     SelectInComeAccounts,
     EditPaymentMethod,
   },
+  directives: { permission },
+
   data() {
     return {
       OpenCashPoolDialog: false,
@@ -246,7 +248,6 @@ export default {
           .then((response) => {
             loading.text = "Calculate";
             // handle success
-            console.log(response);
             this.tableData = response.items;
             this.Totals = response.Totals;
             loading.close();
@@ -280,7 +281,7 @@ export default {
                   Id: undefined,
                   AccountId: this.CashAccountId,
                   Debit: 0.0,
-                  Credit: this.Totals,
+                  Credit: this.Totals.Totals,
                   Description: "اغلاق صندوق رقم " + v.Id + " ",
                   EntryId: undefined,
                   TableName: "PaymentCashPool",
@@ -293,7 +294,7 @@ export default {
                 Id: undefined,
                 AccountId: x.AccountId,
                 Debit: x.TotalAmmount,
-                Credit: 0,
+                Credit: 0.0,
                 Description: "سند قبض رقم " + x.Id + " ",
                 EntryId: undefined,
                 TableName: "PaymentCashPool",

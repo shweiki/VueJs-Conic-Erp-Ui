@@ -39,18 +39,7 @@
             Dates: [new Date(), new Date()],
           }"
         />
-        <Cash-Pool-Dialog
-          :Totals="Totals"
-          Type="SaleInvoice"
-          :Data="tableData"
-          :Open="OpenCashPoolDialog"
-          @Closed="
-            () => {
-              OpenCashPoolDialog = false;
-            }
-          "
-          @Done="(v) => createData(v)"
-        />
+
         <el-col :span="6">
           <el-switch
             v-bind:disabled="!checkPermission(['Admin'])"
@@ -295,6 +284,18 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <Cash-Pool-Dialog
+      :Totals="Totals"
+      Type="SaleInvoice"
+      :Data="tableData"
+      :Open="OpenCashPoolDialog"
+      @Closed="
+        () => {
+          OpenCashPoolDialog = false;
+        }
+      "
+      @Done="(v) => createData(v)"
+    />
   </div>
 </template>
 

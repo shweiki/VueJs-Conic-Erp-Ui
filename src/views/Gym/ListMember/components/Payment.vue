@@ -1,13 +1,9 @@
 <template>
-  <div class="app-container" style="direction : rtl ">
+  <div class="app-container" style="direction: rtl">
     <el-table height="500" :data="Payments" fit border highlight-current-row>
       <el-table-column label="#" prop="Id" align="center">
         <template slot="header" slot-scope="{}">
-          <el-button
-            type="primary"
-            icon="el-icon-refresh"
-            @click="getdata()"
-          ></el-button>
+          <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -15,7 +11,6 @@
         label="رقم المشترك"
         align="center"
       ></el-table-column>
-
       <el-table-column label="التاريخ" align="center" width="150">
         <template slot-scope="scope">
           <el-date-picker
@@ -48,11 +43,7 @@
           <Status-Tag :Status="scope.row.Status" TableName="Payment" />
         </template>
       </el-table-column>
-      <el-table-column
-        label="محرر"
-        align="center"
-        prop="EditorName"
-      ></el-table-column>
+      <el-table-column label="محرر" align="center" prop="EditorName"></el-table-column>
     </el-table>
   </div>
 </template>
@@ -72,8 +63,8 @@ export default {
       type: Array,
       default: () => {
         return null;
-      }
-    }
+      },
+    },
   },
   methods: {
     checkPermission,
@@ -82,10 +73,9 @@ export default {
         printable: PaymentMember(data),
         type: "pdf",
         base64: true,
-        showModal: true
+        showModal: true,
       });
-    }
-  }
+    },
+  },
 };
 </script>
-

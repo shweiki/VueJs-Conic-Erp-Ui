@@ -10,7 +10,12 @@
         ></el-col
       ></el-row
     >
-    <el-dialog style="margin-top: -13vh" title="تسجيل قبض" :visible.sync="Visibles">
+    <el-dialog
+      @opened="resetTempForm()"
+      style="margin-top: -13vh"
+      title="تسجيل قبض"
+      :visible.sync="Visibles"
+    >
       <el-form :model="tempForm" ref="Form" label-position="top" class="demo-form-inline">
         <el-row>
           <el-col :span="12">
@@ -79,7 +84,10 @@
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <editors-user @Set="(v) => (tempForm.EditorName = v)" />
+              <editors-user
+                :Value="tempForm.EditorName"
+                @Set="(v) => (tempForm.EditorName = v)"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -100,7 +108,7 @@ import { Create as CreatePayment } from "@/api/Payment";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import FakeDate from "@/components/Date/FakeDate";
 import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
-import EditorsUser from "@/components/Gym/EditorsUser";
+import EditorsUser from "@/components/Gym/EditorsUser.vue";
 import { SendSMS } from "@/api/SMS";
 
 export default {
@@ -146,6 +154,22 @@ export default {
     };
   },
   methods: {
+    resetTempForm() {
+      this.tempForm = {
+        Id: undefined,
+        Name: "",
+        FakeDate: "",
+        PaymentMethod: "Cash",
+        TotalAmmount: 0,
+        Description: "",
+        Status: 0,
+        VendorId: undefined,
+        IsPrime: true,
+        MemberId: undefined,
+        EditorName: "",
+        Type: "",
+      };
+    },
     create() {
       this.$refs["Form"].validate((valid) => {
         if (valid) {

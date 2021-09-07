@@ -2,6 +2,7 @@
   <div class="dashboard-editor-container">
     <router-menu />
     <panel-group />
+    <account-receivables-payables />
   </div>
 </template>
 
@@ -9,12 +10,13 @@
 import PanelGroup from "./PanelGroup";
 
 import RouterMenu from "@/components/RouterMenu";
-
+import AccountReceivablesPayables from "@/views/Accounting/AccountReceivablesPayables.vue";
 export default {
   name: "DashboardAdmin",
   components: {
     RouterMenu,
     PanelGroup,
+    AccountReceivablesPayables,
   },
 };
 </script>

@@ -31,8 +31,7 @@ export default {
   },
   watch: {
     Value(val) {
-      console.log(" eee  " + val);
-      if (val) this.SetVal(val);
+      this.SetVal(val);
     },
   },
   methods: {

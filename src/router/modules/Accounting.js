@@ -10,22 +10,6 @@ const AccountingRouter = {
   },
   children: [
     {
-      path: 'AccountReceivablesPayables',
-      component: () => import('@/views/Accounting/AccountReceivablesPayables'),
-      name: 'AccountReceivablesPayables',
-      meta: {
-        title: 'AccountReceivablesPayables', icon: 'cost'
-      },
-    },
-    {
-      path: 'AccountStatement',
-      component: () => import('@/views/Accounting/AccountStatement'),
-      name: 'AccountStatement',
-      meta: {
-        title: 'AccountStatement', icon: 'cost'
-      },
-    },
-    {
       path: '/EntryAccounting',
       component: () => import('@/views/Accounting/EntryAccounting/index'),
       redirect: '/EntryAccounting/List',
@@ -56,6 +40,22 @@ const AccountingRouter = {
           },
         }
       ]
+    },
+    {
+      path: 'AccountReceivablesPayables',
+      component: () => import('@/views/Accounting/AccountReceivablesPayables'),
+      name: 'AccountReceivablesPayables',
+      meta: {
+        title: 'AccountReceivablesPayables', icon: 'cost'
+      },
+    },
+    {
+      path: 'AccountStatement',
+      component: () => import('@/views/Accounting/AccountStatement'),
+      name: 'AccountStatement',
+      meta: {
+        title: 'AccountStatement', icon: 'cost'
+      },
     },
     {
       path: 'TreeAccount',

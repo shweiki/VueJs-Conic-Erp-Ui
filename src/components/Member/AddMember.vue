@@ -145,7 +145,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button type="primary" @click="createData()">{{
+        <el-button :loading="createLoading" type="primary" @click="createData()">{{
           $t("AddVendors.Save")
         }}</el-button>
       </div>
@@ -167,6 +167,7 @@ export default {
   data() {
     return {
       Visible: false,
+      createLoading: false,
       tempForm: {
         Id: undefined,
         Name: "",
@@ -218,6 +219,7 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(async (valid) => {
         if (valid) {
+          this.createLoading = true;
           var IsExist = false;
           if (this.$store.getters.settings.Member.CheckMemberIsExist) {
             var IsExist = await this.CheckMemberIsExist(
@@ -230,6 +232,7 @@ export default {
             Create(this.tempForm)
               .then((response) => {
                 this.Visible = false;
+                this.createLoading = false;
                 this.$notify({
                   title: "تم ",
                   message: "تم الإضافة بنجاح",

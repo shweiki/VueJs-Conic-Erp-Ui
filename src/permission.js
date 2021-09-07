@@ -52,7 +52,7 @@ router.beforeEach(async (to, from, next) => {
                         var d = new Date(store.state.settings.triger.CheckMembers.LastRun)
                         d.setTime(d.getTime() + (store.state.settings.triger.CheckMembers.OnClock * 60 * 60 * 1000))
                         if (d.getTime() < now.getTime()) {
-                            const CheckMembers = await store.dispatch("Members/CheckMembers")
+                            const CheckMembers =  store.dispatch("Members/CheckMembers")
                         }
                         store.dispatch("Devices/GetDevice");
                         store.dispatch("Devices/ConnectZtkDoor");

@@ -125,7 +125,7 @@
         </el-table-column>
         <el-table-column
           v-bind:label="$t('Accounting.FktableDescription')"
-          prop="FktableDescription"
+          prop="FkDescription"
           align="center"
         ></el-table-column>
         <el-table-column

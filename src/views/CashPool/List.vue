@@ -97,14 +97,23 @@
         <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
-        <span>الاجل</span>
+        <span>الملغي</span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Reject.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <span
+          >{{
+            list
+              .reduce((prev, cur) => {
+                return prev + cur.Totals;
+              }, 0)
+              .toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
         <el-divider direction="vertical"></el-divider>
       </el-col>
     </el-row>
@@ -175,7 +184,7 @@
       </el-table-column>
       <el-table-column label="المطلوب" width="120" align="center">
         <template slot-scope="{ row }">
-          {{ row.Totals.Totals }}
+          {{ row.Totals.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
@@ -320,27 +329,22 @@ export default {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
       await GetByListQ(this.listQuery).then(async (response) => {
-        this.list = response.items;
         this.Totals = response.Totals;
-        await this.list.map((x) => {
+        this.list = await response.items.map((x) => {
           if (x.Type == "SaleInvoice") {
             GetSaleInvoiceByListId({ listid: x.Fktable }).then((res) => {
               x.SaleInvoice = res.items;
-              x.Totals = res.Totals;
+              x.Totals = res.Totals.Totals;
             });
           }
           if (x.Type == "Payment") {
             GetPaymentByListId({ listid: x.Fktable }).then((res) => {
-              x.Payment = res;
-              x.Totals = res.Totals;
+              x.Payment = res.items;
+              x.Totals = res.Totals.Totals;
             });
           }
+          return x;
         });
-
-        this.Totals.Totals = this.list.reduce((prev, cur) => {
-          return prev + parseFloat(cur.Totals.Totals);
-        }, 0);
-        console.log("this.Totals.Totals", this.Totals);
         this.listLoading = false;
       });
     },

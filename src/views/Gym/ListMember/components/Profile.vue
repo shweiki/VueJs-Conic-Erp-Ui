@@ -6,7 +6,6 @@
       </el-col>
       <el-col :span="18" :xs="24" v-loading="loading">
         <Member-Search />
-
         <el-card
           class="box-card"
           v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
@@ -22,9 +21,7 @@
                     style="width: 100px"
                     type="info"
                     icon="el-icon-zoom-in"
-                    @click="
-                      $router.replace({ path: '/redirect' + '/Gym/ListMember' })
-                    "
+                    @click="$router.replace({ path: '/redirect' + '/Gym/ListMember' })"
                     >جميع مشتركين</el-button
                   >
                 </el-col>
@@ -37,9 +34,7 @@
                     :AccountId="tempForm.AccountId"
                     :Name="tempForm.Name"
                     :Enable="
-                      tempForm.TotalCredit - tempForm.TotalDebit > 0
-                        ? true
-                        : false
+                      tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false
                     "
                   />
                 </el-col>
@@ -61,9 +56,7 @@
                     :Name="tempForm.Name"
                     :NumberPhone1="tempForm.PhoneNumber1"
                     :Enable="
-                      tempForm.TotalCredit - tempForm.TotalDebit > 0
-                        ? true
-                        : false
+                      tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false
                     "
                   />
                 </el-col>
@@ -82,7 +75,7 @@
                   />
                 </el-col>
               </el-row>
-              <el-row v-if="tempForm.MembershipsCount > 0">
+              <el-row v-if="tempForm.MembershipsCount > 0 || checkPermission(['Admin'])">
                 <el-col :span="24">
                   <Send-To-Device :ObjectId="tempForm.Id" />
                 </el-col>
@@ -91,11 +84,7 @@
           </el-row>
         </el-card>
         <el-card class="box-card">
-          <el-tabs
-            v-model="activeTab"
-            tab-position="right"
-            @tab-click="tabClick"
-          >
+          <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
             <el-tab-pane label="بيانات" name="Details">
               <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
               <User-Card :Member="tempForm" />
@@ -116,10 +105,7 @@
             </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-              <Account
-                :EntryMovements="EntryMovements"
-                :AccountId="tempForm.AccountId"
-              />
+              <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
             </el-tab-pane>
             <el-tab-pane label="خدمات" name="Service">
               <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
@@ -165,6 +151,7 @@ import { GetPaymentsByMemberId } from "@/api/Payment";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
 import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
 import SendToDevice from "@/components/Device/SendToDevice.vue";
+import checkPermission from "@/utils/permission";
 
 import Massage from "@/components/Massage/index.vue";
 
@@ -186,13 +173,13 @@ export default {
     MemberLog,
     Massage,
     MemberSearch,
-    SendToDevice
+    SendToDevice,
   },
   props: {
     isEdit: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
@@ -204,7 +191,7 @@ export default {
       Payments: [],
       EntryMovements: [],
       ServiceInvoices: [],
-      log: []
+      log: [],
     };
   },
   created() {
@@ -215,9 +202,10 @@ export default {
     this.tempRoute = Object.assign({}, this.$route);
   },
   methods: {
+    checkPermission,
     getdata(val) {
       GetMemberById({ Id: val })
-        .then(response => {
+        .then((response) => {
           this.tempForm = response;
           this.GetImageMember(this.tempForm.Id);
           this.getAge();
@@ -227,36 +215,36 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     tabClick(tab, event) {
       if (tab.label == "زيارات")
         GetMemberLogById({
-          Id: this.tempForm.Id
-        }).then(response => {
+          Id: this.tempForm.Id,
+        }).then((response) => {
           //  console.log("log :", response);
           this.log = response.reverse();
         });
       if (tab.label == "اشتراكات")
         GetMembershipMovementByMemberId({
-          MemberId: this.tempForm.Id
-        }).then(response => {
+          MemberId: this.tempForm.Id,
+        }).then((response) => {
           //    console.log("log :", response);
           this.MembershipMovements = response.reverse();
         });
       if (tab.label == "مقبوضات")
         GetPaymentsByMemberId({
-          MemberId: this.tempForm.Id
-        }).then(response => {
+          MemberId: this.tempForm.Id,
+        }).then((response) => {
           //   console.log("log :", response);
           this.Payments = response.reverse();
         });
       if (tab.label == "مالية")
         GetEntryMovementsByAccountId({
-          AccountId: this.tempForm.AccountId
-        }).then(response => {
+          AccountId: this.tempForm.AccountId,
+        }).then((response) => {
           this.EntryMovements = response.map((curr, i, array) => {
             curr.TotalRow =
               array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
@@ -265,19 +253,19 @@ export default {
         });
       if (tab.label == "خدمات")
         GetSaleInvoiceByMemberId({
-          Id: this.tempForm.Id
-        }).then(response => {
+          Id: this.tempForm.Id,
+        }).then((response) => {
           console.log("log :", response);
           this.ServiceInvoices = response.reverse();
         });
     },
     GetImageMember(Id) {
       GetFileByObjId({ TableName: "Member", ObjId: Id })
-        .then(response => {
+        .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -295,8 +283,8 @@ export default {
     GetMemberLogFromDevices(MemberId) {
       GetUserLog({
         DeviceId: this.$store.getters.Devices[0].Id,
-        UserId: MemberId
-      }).then(response => {
+        UserId: MemberId,
+      }).then((response) => {
         if (response) {
           console.log(response);
           this.$notify({
@@ -308,12 +296,12 @@ export default {
               response +
               "",
             type: "success",
-            duration: 2000
+            duration: 2000,
           });
           GetUserLog({
             DeviceId: this.$store.getters.Devices[1].Id,
-            UserId: MemberId
-          }).then(response => {
+            UserId: MemberId,
+          }).then((response) => {
             if (response) {
               console.log(response);
               this.$notify({
@@ -325,7 +313,7 @@ export default {
                   response +
                   "",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             }
           });
@@ -335,15 +323,15 @@ export default {
     setTagsViewTitle() {
       const title = "مشترك";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`
+        title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "مشترك";
       document.title = `${title} - ${this.tempForm.Id}`;
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
