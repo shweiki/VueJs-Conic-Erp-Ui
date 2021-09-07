@@ -36,6 +36,13 @@ export function Edit(data) {
         data: qs.stringify(data)
     })
 }
+export function EditEntryByFktable(data) {
+    return request({
+        url: '/EntryAccounting/EditEntryByFktable',
+        method: 'post',
+        data: qs.stringify(data)
+    })
+}
 export function CreateEntry(data) {
     return request({
         url: '/EntryAccounting/Create',

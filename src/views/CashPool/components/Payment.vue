@@ -274,7 +274,7 @@ export default {
               FakeDate: new Date(),
               Description: "",
               Status: 0,
-              Type: "CashPool",
+              Type: "PaymentCashPool",
               EntryMovements: [
                 {
                   Id: undefined,
@@ -283,7 +283,7 @@ export default {
                   Credit: this.Totals,
                   Description: "اغلاق صندوق رقم " + v.Id + " ",
                   EntryId: undefined,
-                  TableName: "CashPool",
+                  TableName: "PaymentCashPool",
                   Fktable: v.Id,
                 },
               ],
@@ -296,7 +296,7 @@ export default {
                 Credit: 0,
                 Description: "سند قبض رقم " + x.Id + " ",
                 EntryId: undefined,
-                TableName: "Payment",
+                TableName: "PaymentCashPool",
                 Fktable: x.Id,
               });
             });

@@ -432,7 +432,7 @@ export default {
                 Credit: this.Totals.Cash,
                 Description: "اغلاق صندوق رقم " + v.Id + " ",
                 EntryId: undefined,
-                TableName: "CashPool",
+                TableName: "SaleInvoiceCashPool",
                 Fktable: v.Id,
               },
               {
@@ -442,7 +442,7 @@ export default {
                 Credit: 0.0,
                 Description: "اغلاق صندوق رقم" + v.Id + " ",
                 EntryId: undefined,
-                TableName: "CashPool",
+                TableName: "SaleInvoiceCashPool",
                 Fktable: v.Id,
               },
             ],
@@ -456,7 +456,7 @@ export default {
                 Credit: x.Total,
                 Description: "فاتورة مبيعات رقم " + x.Id + " ",
                 EntryId: undefined,
-                TableName: "SaleInvoice",
+                TableName: "SaleInvoiceCashPool",
                 Fktable: x.Id,
               });
             }

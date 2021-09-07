@@ -39,18 +39,30 @@ module.exports = {
         From: "", // hello@conic-isv.com
     },
     errorLog: 'production',
-    DateFormat: 'yyyy-MM-dd',
     DateTimeFormat: 'yyyy-MM-dd HH:mm',
     StatusQuery: 0,
     Member: {
         CheckMemberIsExist: true,
+    },
+    Dashboard: {
+        Layout: 'Public',
+        ShowPanelGroup :{
+            Items :true,
+            Members :true,
+            MembersActive :true,
+            MsgCredit :true,
+            Clients :true,
+            Suppliers :true,
+            Purchases :true,
+            Sales :true,
+        }
     },
     PointOfSale: {
         Layout: 'Public',
         WithImage: false,
         CreateEntry: false,
         CreateDelivery: false,
-        DeliveryUrl:'http://localhost:8090/OrderDelivery/Create'
+        DeliveryUrl: 'http://localhost:8090/OrderDelivery/Create'
     },
     CashPoolLayout: 'Restaurant',
     PurchaseLayout: 'SuperMarket',
@@ -67,7 +79,6 @@ module.exports = {
         Layout: 'Public',
         CreateEntry: false
     },
-    datepickerQuery: [Date(), Date()], // start , End
     timeQuery: ['00:00:00', '23:59:59'],
     printers: ['Casher', 'WorkTable1', 'WorkTable2'],
     triger: {
@@ -83,26 +94,33 @@ module.exports = {
         shortcuts: [{
             text: "اليوم",
             days: 0,
+            default: false,
+
         },
         {
             text: "البارحة",
             days: 1,
+            default: true,
         },
         {
             text: "قبل أسبوع",
             days: 7,
+            default: false,
         },
         {
             text: "قبل شهر",
             days: 30,
+            default: false,
         },
         {
             text: "قبل 3 أشهر",
             days: 90,
+            default: false,
         },
         {
             text: "قبل 1 سنة",
             days: 365,
+            default: false,
         },
         ],
     },

@@ -41,7 +41,7 @@ export default {
   methods: {
     SetVal(val) {
       val = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
-        DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
       );
       this.date = val;
       this.$emit("Set", val);

@@ -13,6 +13,21 @@
                 }
               "
           /></el-col>
+          <el-col :span="2">
+            <el-popover placement="right" width="400" trigger="click">
+              <Account-Search-Any
+                @Set="
+                  (v) => {
+                    //  Account = v;
+                    listQuery.MergeAccountId = v.Id;
+                  }
+                "
+              />
+              <el-button type="primary" icon="fa fa-object-group" slot="reference">
+                دمج
+              </el-button>
+            </el-popover>
+          </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="10">
@@ -109,6 +124,11 @@
           </template>
         </el-table-column>
         <el-table-column
+          v-bind:label="$t('Accounting.FktableDescription')"
+          prop="FktableDescription"
+          align="center"
+        ></el-table-column>
+        <el-table-column
           v-bind:label="$t('Accounting.Notes')"
           prop="Description"
           align="center"
@@ -147,6 +167,22 @@
             <router-link
               v-if="row.TableName == 'SaleInvoice'"
               :to="'/Sales/Edit/' + row.Fktable"
+            >
+              <strong style="font-size: 10px; cursor: pointer">{{
+                $t("AccountStatement." + row.TableName)
+              }}</strong>
+            </router-link>
+            <router-link
+              v-if="row.TableName == 'SaleInvoiceCashPool'"
+              :to="'/CashPool/Edit/SaleInvoice/' + row.Fktable"
+            >
+              <strong style="font-size: 10px; cursor: pointer">{{
+                $t("AccountStatement." + row.TableName)
+              }}</strong>
+            </router-link>
+            <router-link
+              v-if="row.TableName == 'PaymentCashPool'"
+              :to="'/CashPool/Edit/Payment/' + row.Fktable"
             >
               <strong style="font-size: 10px; cursor: pointer">{{
                 $t("AccountStatement." + row.TableName)
@@ -206,6 +242,7 @@ export default {
         DateFrom: "",
         DateTo: "",
         AccountId: undefined,
+        MergeAccountId: undefined,
       },
       Account: {},
       downloadLoading: false,

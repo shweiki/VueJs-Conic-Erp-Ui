@@ -5,7 +5,9 @@
       v-model="date"
       :size="$store.getters.size"
       :format="$store.getters.settings.DateTimeFormat"
-      type="datetimerange"
+      v-bind:type="
+        $store.getters.settings.DateTimeFormat.length > 10 ? 'datetimerange' : 'daterange'
+      "
       align="right"
       v-bind:range-separator="$t('Sales.until')"
       v-bind:start-placeholder="$t('Sales.From')"
@@ -32,21 +34,28 @@ export default {
     };
   },
   created() {
-    this.SetVal([new Date().setHours(0, 0, 0, 0), new Date().setHours(23, 59, 59, 999)]);
+    const { shortcuts } = this.$store.getters.settings.pickerOptions;
+    let start = new Date();
+    start = new Date(
+      start.setTime(
+        start.getTime() -
+          3600 * 1000 * 24 * shortcuts.find((obj) => obj.default == true).days
+      )
+    );
+    let end = new Date();
+    this.SetVal([start.setHours(0, 0, 0, 0), end.setHours(23, 59, 59, 999)]);
     //  this.date = [new Date(), new Date()];
   },
   methods: {
     SetVal(val) {
-      console.log(val);
       val = [
         LocalDateTime.ofInstant(Instant.ofEpochMilli(val[0])).format(
-          DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
+          DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         ),
         LocalDateTime.ofInstant(Instant.ofEpochMilli(val[1])).format(
-          DateTimeFormatter.ofPattern(this.$store.getters.settings.DateTimeFormat)
+          DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         ),
       ];
-      console.log(val);
       this.date = val;
       this.$emit("Set", val);
     },

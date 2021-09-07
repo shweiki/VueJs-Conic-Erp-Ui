@@ -22,7 +22,7 @@
           label="طلبات التجميد و اضافي"
           name="MembershipmentOrdar"
         >
-          <membershipment-ordar />
+          <Membershipment-Ordar />
         </el-tab-pane>
       </el-tabs>
     </el-card>
@@ -30,12 +30,12 @@
 </template>
 
 <script>
-import PanelGroup from "./components/PanelGroup";
-import MembershipmentOrdar from "./components/MembershipmentOrdar";
-import Receivables from "./components/Receivables";
-import Payable from "./components/Payable";
-import LowOrderItem from "./components/LowOrderItem.vue";
-import EXPItem from "./components/EXPItem.vue";
+import PanelGroup from "./PanelGroup";
+import MembershipmentOrdar from "@/components/Gym/MembershipmentOrdar";
+import Receivables from "@/components/Gym/Receivables";
+import Payable from "@/components/Gym/Payable";
+import LowOrderItem from "@/components/Item/LowOrderItem.vue";
+import EXPItem from "@/components/Item/EXPItem.vue";
 
 import RouterMenu from "@/components/RouterMenu";
 
@@ -48,13 +48,13 @@ export default {
     Receivables,
     Payable,
     LowOrderItem,
-    EXPItem
+    EXPItem,
   },
   data() {
     return {
-      activeTab: "Receivables"
+      activeTab: "Receivables",
     };
-  }
+  },
 };
 </script>
 

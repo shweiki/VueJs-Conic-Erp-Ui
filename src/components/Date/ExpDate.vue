@@ -7,7 +7,7 @@
     v-model="date"
     type="date"
     v-bind:placeholder="$t('CashPool.Date')"
-    :format="$store.getters.settings.DateFormat"
+    :format="$store.getters.settings.DateTimeFormat"
   ></el-date-picker>
 </template>
 <script>
@@ -16,15 +16,15 @@ import {
   LocalDate,
   LocalTime,
   DateTimeFormatter,
-  Instant
+  Instant,
 } from "@js-joda/core";
 export default {
   props: {
-    Value: String
+    Value: String,
   },
   data() {
     return {
-      date: ""
+      date: "",
     };
   },
   created() {
@@ -35,15 +35,15 @@ export default {
       console.log(val);
       if (val != "") this.SetVal(new Date(val));
       else this.SetVal(new Date());
-    }
+    },
   },
   methods: {
     SetVal(val) {
       this.date = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
-        DateTimeFormatter.ofPattern(this.$store.getters.settings.DateFormat)
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
       );
       this.$emit("Set", this.date);
-    }
-  }
+    },
+  },
 };
 </script>
