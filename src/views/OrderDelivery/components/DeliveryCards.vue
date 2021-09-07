@@ -3,27 +3,27 @@
     <div class="container">
       <div class="row">
 <el-row :gutter="20" class="panel-group" style="  margin: 20px 2px;">
-  <div v-for="(option,index) in OrderData" :key="index">
+  <div v-for="(option,index) in DeliveryData" :key="index">
 
 
     
  <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
       <div class="card-panel">
         <el-row :gutter="20">
-            <el-col :span="6">
+             <el-col :span="6">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon :icon-class="option.icon" class-name="card-panel-icon" />
+          <svg-icon icon-class="neworder" class-name="card-panel-icon" />
         </div>
-          </el-col>
+          </el-col> 
             <el-col :span="8">
                <br>
             <div class="card-panel-description">
-           <div class="card-panel-id"> {{option.id}} </div> </div>
+           <div class="card-panel-id"> {{option.Id}} </div> </div>
           </el-col> 
            <el-col :span="10">
         <div class="card-panel-description">
            <br> 
-          <div class="card-panel-time">{{ option.time }}</div>
+          <div class="card-panel-time">{{ option.FakeDate }}</div>
         </div>
           </el-col>
         </el-row>
@@ -31,11 +31,11 @@
         <el-row :gutter="24">
            <el-col :span="8">
             <div class="card-panel-description">
-           <div class="card-panel-phone"> {{option.phone}} </div> </div>
+           <div class="card-panel-phone"> {{option.PhoneNumber}} </div> </div>
           </el-col>  
           <el-col :span="16">
             <div class="card-panel-description">
-           <div class="card-panel-name"> {{option.name}} </div> </div>
+           <div class="card-panel-name"> {{option.Name}} </div> </div>
           </el-col>  
                 
           </el-row>
@@ -43,11 +43,11 @@
            <el-row :gutter="24">
             <el-col :span="8">
             <div class="card-panel-description">
-           <div class="card-panel-id"> {{option.totalPrice}} JOD </div> </div>
+           <div class="card-panel-id"> {{option.TotalPrice}} JOD </div> </div>
           </el-col> 
           <el-col :span="16">
             <div class="card-panel-description">
-           <div class="card-panel-name"> {{option.address}} </div> </div>
+           <div class="card-panel-name"> {{option.Region}} </div> </div>
           </el-col>          
           </el-row>
           <br>
@@ -80,12 +80,14 @@
 <script>
 import OrderDetails from "./OrderDetails.vue";
 import DriverToOrder from "./DriverToOrder.vue";
+import { GetOrderDelivery } from "@/api/OrderDelivery";
 export default {
   name: 'DeliveryCards',
 components: {
     OrderDetails, DriverToOrder },
   data () {
     return {
+      DeliveryData: [],
       OrderData: [
         {
           icon: 'neworder',
@@ -136,8 +138,24 @@ components: {
 
     }
   },
+  created() {
+     this.getdata();
+  },
   methods: {
-  
+     getdata() {
+      this.loading = true;
+      GetOrderDelivery()
+        .then((response) => {
+          // handle success
+          console.log("order data",response);
+          this.DeliveryData = response;
+          this.loading = false;
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error);
+        });
+    },
   }
 }
 

@@ -10,6 +10,14 @@ export function GetByListQ(data) {
   })
 }
 
+export function GetOrderDelivery(query) {
+  return request({
+    url: '/OrderDelivery/GetOrderDelivery',
+    method: 'get',
+    params: query
+  })
+}
+
 export function Create(data) {
   return request({
     url: store.getters.settings.PointOfSale.DeliveryUrl,

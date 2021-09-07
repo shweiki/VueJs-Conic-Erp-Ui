@@ -21,14 +21,23 @@
           <el-dialog
           style="margin-top: -13vh"
       :show-close="false"
-      :visible.sync="dialogFormVisible"> <div> {{oid}} <br> Status: {{status}}</div></el-dialog>
+      :visible.sync="dialogFormVisible"> 
+      <div> {{oid}} 
+        <br>Customer Name: {{Name}}
+        <br>Region: {{Region}}
+        <br>TotalPill: {{TotalPill}}
+        <br>TotalPrice: {{TotalPrice}}
+        <br>FakeDate: {{FakeDate}}
+      </div>
+      
+      </el-dialog>
 </div>
 </template>
 <script>
 
 export default {
   name: 'OrderDetails',
- props: ["oid", "IsPrime", "status"],
+ props: ["oid", "Name", "TotalPill","TotalPrice","FakeDate","Region"],
   data () {
     
     return {

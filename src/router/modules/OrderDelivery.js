@@ -19,11 +19,11 @@ const OrderDeliveryRouter = {
     //   hidden: true,
     // },
     {
-      path: 'DeliveryHistory',
-      component: () => import('@/views/OrderDelivery/DeliveryHistory'),
-      name: 'DeliveryHistory',
+      path: 'DeliveryList',
+      component: () => import('@/views/OrderDelivery/DeliveryList'),
+      name: 'DeliveryList',
       meta: {
-        title: 'DeliveryHistory', icon: 'accounts'
+        title: 'DeliveryList', icon: 'accounts'
       },
     },
     {
@@ -32,6 +32,14 @@ const OrderDeliveryRouter = {
       name: 'DeliveryManager',
       meta: {
         title: 'DeliveryManager', icon: 'accounts'
+      },
+    },
+    {
+      path: 'Drivers',
+      component: () => import('@/views/Driver/List'),
+      name: 'Drivers',
+      meta: {
+        title: 'AddDrivers', icon: 'cost'
       },
     },
 
