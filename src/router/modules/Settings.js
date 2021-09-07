@@ -84,8 +84,16 @@ const SettingsRouter = {
         title: 'ApplicationSetting',
         icon: 'key',
       },
+    },
+    {
+      path: 'JsonEditorSetting',
+      component: () => import('@/views/Settings/ApplicationSetting/JsonEditor'),
+      name: 'JsonEditorSetting',
+      meta: {
+        title: 'JsonEditorSetting',
+        icon: 'key',
+      },
     }
-    
 
   ]
 }

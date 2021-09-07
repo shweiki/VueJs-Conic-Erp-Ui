@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button
-      style="width: 100px;"
+      style="width: 100px"
       type="success"
       icon="el-icon-plus"
       @click="Visibles = true"
@@ -14,7 +14,7 @@
     >
       <el-form
         label-position="top"
-        :model="MembershipMovementOrder"
+        :model="tempForm"
         ref="dataForm"
         class="demo-form-inline"
       >
@@ -24,8 +24,8 @@
               <el-input-number
                 v-model="Extra"
                 :min="1"
-                :max="100"                            @focus="$event.target.select()"
-
+                :max="100"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -38,14 +38,12 @@
                 {
                   required: true,
                   message: 'لايمكن ترك ملاحظات فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
               v-bind:label="$t('AddVendors.Description')"
             >
-              <el-input
-                v-model="MembershipMovementOrder.Description"
-              ></el-input>
+              <el-input v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -57,22 +55,21 @@
                 {
                   required: true,
                   message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <editors-user
-                @Set="v => (MembershipMovementOrder.EditorName = v)"
+              <Editors-User
+                :Value="tempForm.EditorName"
+                @Set="(v) => (tempForm.EditorName = v)"
               />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
         <el-button :disabled="EnableSave" type="primary" @click="create()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -83,22 +80,22 @@
 
 <script>
 import { Create } from "@/api/MembershipMovementOrder";
-import EditorsUser from "@/components/Gym/EditorsUser"
+import EditorsUser from "@/components/Gym/EditorsUser";
 export default {
-  components :{EditorsUser},
+  components: { EditorsUser },
   props: {
     MemberShipMovementId: {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
-    EndDate: null
+    EndDate: null,
   },
   data() {
     return {
       EnableSave: false,
-      MembershipMovementOrder: {
+      tempForm: {
         Id: undefined,
         Type: "Extra",
         StartDate: new Date(this.EndDate),
@@ -106,47 +103,43 @@ export default {
         Status: 0,
         Description: "",
         EditorName: "",
-        MemberShipMovementId: this.MemberShipMovementId
+        MemberShipMovementId: this.MemberShipMovementId,
       },
       Extra: 0,
       Description: "",
-      Visibles: false
+      Visibles: false,
     };
   },
   methods: {
     create() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           this.EnableSave = true;
-          console.log(this.EndDate);
-
-          this.MembershipMovementOrder.EndDate = new Date(
-            this.MembershipMovementOrder.EndDate.setTime(
-              this.MembershipMovementOrder.StartDate.getTime() +
-                3600 * 1000 * 24 * this.Extra
+          this.tempForm.EndDate = new Date(
+            this.tempForm.EndDate.setTime(
+              this.tempForm.StartDate.getTime() + 3600 * 1000 * 24 * this.Extra
             )
           );
-          Create(this.MembershipMovementOrder).then(response => {
+          Create(this.tempForm).then((response) => {
             if (response) {
               this.Visibles = false;
               this.EnableSave = false;
-
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
               this.$nextTick(() => {
                 this.$router.replace({
-                  path: "/redirect" + this.$route.fullPath
+                  path: "/redirect" + this.$route.fullPath,
                 });
               });
             }
           });
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

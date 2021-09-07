@@ -1,5 +1,3 @@
-const start = new Date();
-
 module.exports = {
     theme: '#74b9ff',
     title: 'High  Fit',
@@ -75,6 +73,9 @@ module.exports = {
         Layout: 'Public',
         CreateEntry: true
     },
+    MembershipMovement: {
+        InComeAccountId: 2,
+    },
     Visit: {
         Layout: 'Public',
         CreateEntry: false
@@ -87,7 +88,6 @@ module.exports = {
             LastRun: "July 21, 1983 01:15:00",
             OnClock: 7 /// 24 base
         }
-
     },
     windowStyle: 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=55,left=500',
     pickerOptions: {

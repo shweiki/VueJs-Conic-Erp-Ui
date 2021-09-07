@@ -84,7 +84,7 @@
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <editors-user
+              <Editors-User
                 :Value="tempForm.EditorName"
                 @Set="(v) => (tempForm.EditorName = v)"
               />

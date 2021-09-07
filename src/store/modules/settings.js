@@ -3,43 +3,49 @@ import { Edit, GetSetting } from '@/api/Setting'
 import store from '@/store'
 import { toggleClass } from "@/utils";
 
-let Settings = {}
+const state = {};
 
-const state = defaultSettings
 
 const mutations = {
     CHANGE_SETTING: (state, { key, value }) => {
-        if (state.hasOwnProperty(key)) {
-            state[key] = value
-        }
+        state[key] = value
+
+        /*  if (state.hasOwnProperty(key)) {
+              state[key] = value
+          }*/
     }
 }
 const actions = {
     GetSetting({ commit }) {
         return new Promise((resolve, reject) => {
             GetSetting().then(response => {
-                 // console.log(response.length, Object.keys(defaultSettings
-                    response.map(x => {
-                        var obj = JSON.parse(x.Description);
-                        if (obj.key === "pickerOptions") {
-                            obj.value.shortcuts.map(OP => {
-                                OP.onClick = function (picker) {
-                                    const end = new Date();
-                                    const start = new Date();
-                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * OP.days);
-                                    picker.$emit("pick", [start.setHours(0, 0, 0, 0), end.setHours(23, 59, 59, 999)]);
-                                }
-                            })
-                        }
-                        if (obj.key === "customtheme" && obj.value) {
-                            toggleClass(document.body, "custom-theme")
-                        }
-
-                        commit('CHANGE_SETTING', obj)
-                    })
-                
+                response.map(x => {
+                    var obj = JSON.parse(x.Description);
+                    if (obj.key === "pickerOptions") {
+                        obj.value.shortcuts.map(OP => {
+                            OP.onClick = function (picker) {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * OP.days);
+                                picker.$emit("pick", [start.setHours(0, 0, 0, 0), end.setHours(23, 59, 59, 999)]);
+                            }
+                        })
+                    }
+                    if (obj.key === "customtheme" && obj.value) {
+                        toggleClass(document.body, "custom-theme")
+                    }
+                    commit('CHANGE_SETTING', obj)
+                })
+                Object.keys(defaultSettings).forEach(key => {
+                    if (!state.hasOwnProperty(key)) {
+                        console.log(defaultSettings[key])
+                        store.dispatch("settings/changeSetting", {
+                            key: key,
+                            value: defaultSettings[key]
+                        });
+                    }
+                })
                 resolve(response)
-
             }).catch(error => {
                 console.log("response")
                 reject(error)
@@ -48,18 +54,16 @@ const actions = {
     },
     changeSetting({ commit }, data) {
         return new Promise((resolve, reject) => {
-            console.log("setting data",data)
             Edit({
                 Id: 0,
                 Name: data.key,
-                value: typeof data.value !="object"? data.value : JSON.stringify(data.value),
+                value: typeof data.value != "object" ? data.value : JSON.stringify(data.value),
                 Type: typeof data.value,
                 state: 0,
                 Description: JSON.stringify(data)
             }).then(response => {
-                //  console.log(response)
                 commit('CHANGE_SETTING', data)
-
+                store.dispatch("settings/GetSetting");
                 resolve(response)
             }).catch(error => {
                 reject(error)
@@ -67,21 +71,6 @@ const actions = {
         })
 
     },
-    SetSettingDefault(DBSettings) {
-        Object.keys(defaultSettings).forEach(key => {
-            const found = DBSettings.find(
-                element => element.Name == key
-            );
-            if (!found) {
-                store.dispatch("settings/changeSetting", {
-                    key: key,
-                    value: defaultSettings['' + key + '']
-                });
-                location.reload()
-            }
-        })
-
-    }
 }
 
 export default {

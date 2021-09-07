@@ -107,28 +107,19 @@
             </el-col>
           </el-row>
         </el-card>
-      </el-col> </el-row
-    ><el-row
-      ><el-col :span="24">
-        <el-button type="success" @click="SaveJson">Save</el-button>
-        <json-editor ref="jsonEditor" v-model="JsonSettings" /> </el-col
-    ></el-row>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
 import { CheckUpdate, RestDefualtSetting } from "@/api/Setting";
 import Settings from "@/layout/components/Settings/index";
-import JsonEditor from "@/components/JsonEditor";
 import getPrinterDevice from "@/utils/get-printers";
 
 export default {
-  components: { Settings, JsonEditor },
-  data() {
-    return {
-      JsonSettings: this.$store.state.settings,
-    };
-  },
+  components: { Settings },
+
   computed: {
     isShowJob() {
       return this.$store.getters.settings.language;
@@ -317,15 +308,6 @@ export default {
   },
   methods: {
     getPrinterDevice,
-    SaveJson() {
-      var JsonSettings = JSON.parse(this.JsonSettings);
-      Object.keys(JsonSettings).forEach((key) => {
-        this.$store.dispatch("settings/changeSetting", {
-          key: key,
-          value: JsonSettings["" + key + ""],
-        });
-      });
-    },
     RestSetting() {
       RestDefualtSetting().then((res) => {
         if (res) location.reload();

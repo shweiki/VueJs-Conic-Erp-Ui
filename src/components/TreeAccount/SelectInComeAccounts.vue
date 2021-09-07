@@ -14,11 +14,11 @@
   </el-select>
 </template>
 <script>
-import { GetInComeAccounts } from "@/api/Account";
+import { GetInComeAccounts, GetById } from "@/api/Account";
 import checkPermission from "@/utils/permission";
 
 export default {
-  props: ["CashId", "Value"],
+  props: ["InComeAccountId"],
   data() {
     return {
       options: [],
@@ -26,8 +26,12 @@ export default {
     };
   },
   watch: {
-    CashId(val) {
-      if (val) this.SetVal(val);
+    InComeAccountId(value) {
+      if (value != null && value != undefined && value != "" && value > 0) {
+        GetById({ Id: value }).then((res) => {
+          this.SetVal(res.Id);
+        });
+      }
     },
   },
   created() {

@@ -140,7 +140,10 @@
                 ]"
                 v-bind:label="$t('AddVendors.EditorName')"
               >
-                <Editors-User @Set="(v) => (tempForm.EditorName = v)" />
+                <Editors-User
+                  :Value="tempForm.EditorName"
+                  @Set="(v) => (tempForm.EditorName = v)"
+                />
               </el-form-item>
             </el-col>
           </el-row>

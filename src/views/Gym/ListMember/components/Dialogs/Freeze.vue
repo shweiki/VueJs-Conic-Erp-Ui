@@ -1,25 +1,20 @@
 <template>
   <div>
     <el-button
-      style="width: 100px;"
+      style="width: 100px"
       type="primary"
       icon="el-icon-plus"
       @click="Visibles = true"
       >تجميد</el-button
     >
-    <el-dialog
-      style="margin-top: -13vh"
-      title="تسجيل تجميد"
-      :visible.sync="Visibles"
-    >
+    <el-dialog style="margin-top: -13vh" title="تسجيل تجميد" :visible.sync="Visibles">
       <el-form
-        :model="MembershipMovementOrder"
+        :model="tempForm"
         ref="dataForm"
         label-position="top"
         class="demo-form-inline"
       >
-        عدد الايام المسموحة لتجميد : من {{ MinFreezeLimit }} الى
-        {{ MaxFreezeLimit }} ايام
+        عدد الايام المسموحة لتجميد : من {{ MinFreezeLimit }} الى {{ MaxFreezeLimit }} ايام
         <el-row>
           <el-col :span="24">
             <el-form-item prop="FreezeBetween" label="الفترة">
@@ -34,7 +29,7 @@
                 v-bind:start-placeholder="$t('Sales.From')"
                 v-bind:end-placeholder="$t('Sales.To')"
                 :default-time="['00:00:00', '23:59:59']"
-                style="width:80%"
+                style="width: 80%"
               ></el-date-picker>
             </el-form-item>
           </el-col>
@@ -47,14 +42,12 @@
                 {
                   required: true,
                   message: 'لايمكن ترك ملاحظات فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
               v-bind:label="$t('AddVendors.Description')"
             >
-              <el-input
-                v-model="MembershipMovementOrder.Description"
-              ></el-input>
+              <el-input v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -66,13 +59,14 @@
                 {
                   required: true,
                   message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
               v-bind:label="$t('AddVendors.EditorName')"
             >
-              <editors-user
-                @Set="v => (MembershipMovementOrder.EditorName = v)"
+              <Editors-User
+                :Value="tempForm.EditorName"
+                @Set="(v) => (tempForm.EditorName = v)"
               />
             </el-form-item>
           </el-col>
@@ -92,15 +86,13 @@
           </el-col>
         </el-row>
         <el-col>
-          <span style="color: #F56C6C; font-size: 16px; text-align: center;">{{
+          <span style="color: #f56c6c; font-size: 16px; text-align: center">{{
             ValidateNote
           }}</span>
         </el-col>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
         <el-button :disabled="EnableSave" type="primary" @click="create()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -121,25 +113,25 @@ export default {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
     MinFreezeLimit: {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
     MaxFreezeLimit: {
       type: Number,
       default: () => {
         return undefined;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       EnableSave: false,
-      MembershipMovementOrder: {
+      tempForm: {
         Id: undefined,
         Type: "Freeze",
         StartDate: "",
@@ -147,7 +139,7 @@ export default {
         Status: 0,
         EditorName: "",
         Description: "",
-        MemberShipMovementId: this.MemberShipMovementId
+        MemberShipMovementId: this.MemberShipMovementId,
       },
       FreezeBetween: "",
       Visibles: false,
@@ -157,8 +149,8 @@ export default {
         disabledDate(time) {
           console.log(time);
           return time.getTime() < Date.now() - 8.64e7;
-        }
-      }
+        },
+      },
     };
   },
   methods: {
@@ -170,36 +162,31 @@ export default {
         )
       );
       console.log(this.Days);
-      if (
-        this.Days >= this.MinFreezeLimit &&
-        this.Days <= this.MaxFreezeLimit
-      ) {
-        this.$refs["dataForm"].validate(valid => {
+      if (this.Days >= this.MinFreezeLimit && this.Days <= this.MaxFreezeLimit) {
+        this.$refs["dataForm"].validate((valid) => {
           if (valid) {
             this.EnableSave = true;
-            this.MembershipMovementOrder.StartDate = this.FreezeBetween[0];
-            this.MembershipMovementOrder.EndDate = this.FreezeBetween[1];
-
-            Create(this.MembershipMovementOrder)
-              .then(response => {
+            this.tempForm.StartDate = this.FreezeBetween[0];
+            this.tempForm.EndDate = this.FreezeBetween[1];
+            Create(this.tempForm)
+              .then((response) => {
                 if (response) {
                   this.Visibles = false;
                   this.EnableSave = false;
-
                   this.$notify({
                     title: "تم ",
                     message: "تم الإضافة بنجاح",
                     type: "success",
-                    duration: 2000
+                    duration: 2000,
                   });
                   this.$nextTick(() => {
                     this.$router.replace({
-                      path: "/redirect" + this.$route.fullPath
+                      path: "/redirect" + this.$route.fullPath,
                     });
                   });
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
               });
           }
@@ -207,7 +194,7 @@ export default {
       } else {
         this.ValidateNote = "عدد الايام المطلوب تجميدها غير المسموح بها";
       }
-    }
-  }
+    },
+  },
 };
 </script>
