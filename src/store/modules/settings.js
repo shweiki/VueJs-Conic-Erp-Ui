@@ -18,9 +18,7 @@ const actions = {
     GetSetting({ commit }) {
         return new Promise((resolve, reject) => {
             GetSetting().then(response => {
-                 // console.log(response.length, Object.keys(defaultSettings).length)
-                if (response.length != Object.keys(defaultSettings).length) actions.SetSettingDefault(response)
-                else {
+                 // console.log(response.length, Object.keys(defaultSettings
                     response.map(x => {
                         var obj = JSON.parse(x.Description);
                         if (obj.key === "pickerOptions") {
@@ -39,7 +37,7 @@ const actions = {
 
                         commit('CHANGE_SETTING', obj)
                     })
-                }
+                
                 resolve(response)
 
             }).catch(error => {
