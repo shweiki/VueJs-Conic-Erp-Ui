@@ -9,7 +9,14 @@
   >
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
-        <router-view :key="key" id="thisview"></router-view>
+        <el-scrollbar
+          :style="{
+            backgroundImage: 'url(' + $store.getters.settings.SidebarImage + ')',
+          }"
+          wrap-class="scrollbar-wrapper"
+        >
+          <router-view :key="key" id="thisview"></router-view>
+        </el-scrollbar>
         <!--  <router-view
           :key="key"
           @contextmenu.prevent.native="openMenu(key, $event)"

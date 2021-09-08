@@ -22,6 +22,7 @@
         "@dangvanthanh/vue-clock": "^0.2.1",
         "@js-joda/core": "^3.2.0",
         "@microsoft/signalr": "^5.0.9",
+        "aos": "^3.0.0-beta.6",
         "axios": "^0.18.1",
         "clipboard": "^2.0.4",
         "codemirror": "^5.45.0",

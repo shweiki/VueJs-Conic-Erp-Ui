@@ -17,7 +17,10 @@ import VueBarcodeScanner from 'vue-barcode-scanner'
 import OpenCashSound from '@/assets/Sounds/PointOfSaleOpenCashDrawer.wav'
 import BarCodeSound from '@/assets/Sounds/BarCode.wav'
 
-
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // You can also use <link> for styles
+// ..
+AOS.init();
 const pluginOptions = {
   /* see config reference */
   globalOptions: { currency: 'JOD' },

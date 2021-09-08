@@ -3,7 +3,7 @@
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar
       :style="{
-        backgroundImage: 'url(' + $store.getters.settings.SidebarImage + ')'
+        backgroundImage: 'url(' + $store.getters.settings.SidebarImage + ')',
       }"
       wrap-class="scrollbar-wrapper"
     >
@@ -30,7 +30,7 @@
 <script>
 import { mapGetters } from "vuex";
 import Logo from "./Logo";
-import SidebarItem from "./SidebarItem";
+import SidebarItem from "./SidebarItem.vue";
 import variables from "@/styles/variables.scss";
 
 export default {
@@ -54,8 +54,8 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened;
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
