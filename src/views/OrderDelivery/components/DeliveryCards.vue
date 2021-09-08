@@ -7,33 +7,35 @@
 
 
     
- <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
+ <el-col :xs="24" :sm="12" :lg="12" class="card-panel-col">
       <div class="card-panel">
         <el-row :gutter="20">
-             <el-col :span="6">
+             <el-col :xs="0" :sm="6" :lg="6">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="neworder" class-name="card-panel-icon" />
         </div>
           </el-col> 
-            <el-col :span="8">
+          
+            <el-col :xs="24" :sm="8" :lg="8">
                <br>
             <div class="card-panel-description">
            <div class="card-panel-id"> {{option.Id}} </div> </div>
           </el-col> 
-           <el-col :span="10">
+          
+           <el-col :xs="24" :sm="10" :lg="10">
         <div class="card-panel-description">
            <br> 
-          <div class="card-panel-time">{{ option.FakeDate }}</div>
+          <div class="card-panel-time">{{ option.FakeDate | parseTime("{m}-{d} {h}:{i}")}}</div>
         </div>
           </el-col>
         </el-row>
 
         <el-row :gutter="24">
-           <el-col :span="8">
+           <el-col :xs="0" :sm="8" :lg="8">
             <div class="card-panel-description">
            <div class="card-panel-phone"> {{option.PhoneNumber}} </div> </div>
           </el-col>  
-          <el-col :span="16">
+          <el-col :xs="24" :sm="16" :lg="16">
             <div class="card-panel-description">
            <div class="card-panel-name"> {{option.Name}} </div> </div>
           </el-col>  
@@ -41,20 +43,27 @@
           </el-row>
 
            <el-row :gutter="24">
-            <el-col :span="8">
+            <el-col :xs="24" :sm="8" :lg="8">
             <div class="card-panel-description">
            <div class="card-panel-id"> {{option.TotalPrice}} JOD </div> </div>
           </el-col> 
-          <el-col :span="16">
+          <el-col :xs="24" :sm="16" :lg="16">
             <div class="card-panel-description">
            <div class="card-panel-name"> {{option.Region}} </div> </div>
           </el-col>          
           </el-row>
           <br>
            <el-row :gutter="24">
+             <el-col :xs="0" :sm="24" :md="24" :lg="24" :xl="24" >
              <driver-to-order 
-             :Id="option.Id"
-             :Status="option.Status" />
+                :Id="option.Id"
+                :Status="option.Status"
+                :TotalPill="option.TotalPill"
+                :TotalPrice="option.TotalPrice"
+                :FakeDate="option.FakeDate"
+                :Region="option.Region"
+                :DeliveryPrice="option.DeliveryPrice"
+                 />
                 <order-details
                 :Id="option.Id"
                 :Status="option.Status"
@@ -69,17 +78,35 @@
                 :Driver="option.Driver"
                 :Content="option.Content"
                  />
+             </el-col>
+                 <el-col :xs="24" :sm="0" :md="0" :lg="0" :xl="0">
+             <driver-to-order-mobile 
+                :Id="option.Id"
+                :Status="option.Status"
+                :TotalPill="option.TotalPill"
+                :TotalPrice="option.TotalPrice"
+                :FakeDate="option.FakeDate"
+                :Region="option.Region"
+                :DeliveryPrice="option.DeliveryPrice"
+                 />
+                <order-details-mobile
+                :Id="option.Id"
+                :Status="option.Status"
+                :Name="option.Name"
+                :PhoneNumber="option.PhoneNumber"
+                :TotalPill="option.TotalPill"
+                :TotalPrice="option.TotalPrice"
+                :Description="option.Description"
+                :FakeDate="option.FakeDate"
+                :Region="option.Region"
+                :DeliveryPrice="option.DeliveryPrice"
+                :Driver="option.Driver"
+                :Content="option.Content"
+                 />
+             </el-col>
           </el-row>
       </div>
     </el-col>
-<!-- <delivery-card
-                :icon="option.icon"
-                :name="option.name"
-                :time="option.time"
-                :totalPrice="option.totalPrice"
-                :address="option.address"
-                :phone="option.phone"
-                :id="option.id"></delivery-card> -->
   </div>
 </el-row> 
 
@@ -90,63 +117,16 @@
 <script>
 import OrderDetails from "./OrderDetails.vue";
 import DriverToOrder from "./DriverToOrder.vue";
+import DriverToOrderMobile from "./DriverToOrderMobile.vue";
+import OrderDetailsMobile from "./OrderDetailsMobile.vue";
 import { GetOrderDelivery } from "@/api/OrderDelivery";
 export default {
   name: 'DeliveryCards',
-  props: ["drivers"],
 components: {
-    OrderDetails, DriverToOrder },
+    OrderDetails, DriverToOrder, OrderDetailsMobile, DriverToOrderMobile },
   data () {
     return {
       DeliveryData: [],
-      OrderData: [
-        {
-          icon: 'neworder',
-          time: "02/08/2021 05:22",
-          name: "اسم الزبون",
-          address:"عنوان الزبون",
-          phone:"0781234567",
-          id: "102",
-          totalPrice: "05.75",
-          status: "New Order",
-          IsPrime:1
-        },
-        {
-          icon: 'deliverytruck',
-          time: "02/08/2021 05:22",
-          name: "اسم الزبون",
-          address:"عنوان الزبون",
-          phone:"0781234567",
-          id: "103",
-          totalPrice: "12.00",
-          status: "With Driver",
-          IsPrime:0
-        },
-         {
-          icon: 'checked',
-          time: "02/08/2021 05:22",
-          name: "اسم الزبون",
-          address:"عنوان الزبون",
-          phone:"0781234567",
-          id: "1024",
-          totalPrice: "02.50",
-          status: "Done",
-          IsPrime:0
-        },
-        {
-          icon: 'cancel',
-          time: "02/08/2021 05:22",
-          name: "اسم الزبون",
-          address:"عنوان الزبون",
-          phone:"0781234567",
-          id: "1025",
-          totalPrice: "12.00",
-          status: "Canceled",
-          IsPrime:0
-        },
-
-      ],
-
     }
   },
   created() {
@@ -178,6 +158,7 @@ components: {
 
   .card-panel-col {
     margin-bottom: 5px;
+    
   }
 
   .card-panel {
@@ -248,30 +229,33 @@ components: {
         color: rgb(0, 0, 0);
         font-size: 24px;
         }
-
-      .card-panel-num {
-        font-size: 20px;
-      }
     }
+  }
+ 
+}
+
+@media only screen and (max-width: 767px)
+{
+.el-col-xs-24 {
+  .card-panel{
+    height: 300px;
+   .card-panel-description{
+     float: none;
+        .card-panel-id {
+          text-align: center;
+          line-height: 10px;
+        }
+        .card-panel-name{
+          text-align: center;
+          line-height: 10px;
+        }
+        .card-panel-time {
+          text-align: center;
+          line-height: 10px;
+        }
+  }
   }
 }
 
-@media (max-width: 550px) {
-  .card-panel-description {
-    display: none;
-  }
-
-  .card-panel-icon-wrapper {
-    float: none !important;
-    width: 100%;
-    height: 100%;
-    margin: 0 !important;
-
-    .svg-icon {
-      display: block;
-      margin: 14px auto !important;
-      float: none !important;
-    }
-  }
 }
 </style>
