@@ -1,28 +1,19 @@
 <template>
   <div>
-    <el-button
-      type="warning"
-      icon="el-icon-circle-plus"
-      @click="dialogFormVisible = true"
-      :size="$store.getters.size"
-    ></el-button>
+    <el-button icon="el-icon-edit" circle @click="getdata()"></el-button>
 
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      :visible.sync="dialogFormVisible"
-    >
+    <el-dialog style="margin-top: -13vh" :show-close="false" :visible.sync="Visibles">
       <div slot="title" class="dialog-footer">
         <el-col :span="4">
           <el-button
             icon="fa fa-save"
             style="float: left"
             type="primary"
-            @click="createData()"
+            @click="updateData()"
           />
         </el-col>
         <el-col :span="20">
-          <el-divider> إضافة جهاز </el-divider>
+          <el-divider> تعديل جهاز {{ tempForm.Id }}</el-divider>
         </el-col>
       </div>
       <el-form
@@ -59,21 +50,19 @@
 </template>
 
 <script>
-import { Create } from "@/api/Device";
+import { Edit, GetById } from "@/api/Device";
+
 export default {
+  props: {
+    DeviceId: {
+      type: Number,
+      default: undefined,
+    },
+  },
   data() {
     return {
-      dialogFormVisible: false,
-      tempForm: {
-        Id: undefined,
-        Name: "",
-        Ip: "",
-        Port: "",
-        Status: 0,
-        Feel: false,
-        LastSetDateTime: new Date(),
-        Description: "",
-      },
+      Visibles: false,
+      tempForm: {},
       rulesForm: {
         Name: [
           {
@@ -91,32 +80,24 @@ export default {
       },
     };
   },
-  created() {
-    this.resetTempForm();
-  },
   methods: {
-    resetTempForm() {
-      this.tempForm = {
-        Id: undefined,
-        Name: "",
-        Ip: "",
-        Port: "",
-        Status: 0,
-        Feel: false,
-        LastSetDateTime: "",
-        Description: "",
-      };
+    getdata() {
+      GetById({ Id: this.DeviceId }).then((response) => {
+        // handle success
+        this.tempForm = response;
+
+        this.Visibles = true;
+      });
     },
-    createData() {
+    updateData() {
       this.$refs["dataForm"].validate((valid) => {
         if (valid) {
-          console.log(this.tempForm);
-          Create(this.tempForm)
+          Edit(this.tempForm)
             .then((response) => {
-              this.dialogFormVisible = false;
+              this.Visibles = false;
               this.$notify({
                 title: "تم ",
-                message: "تم الإضافة بنجاح",
+                message: "تم تعديل بنجاح",
                 type: "success",
                 duration: 2000,
               });

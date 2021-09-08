@@ -4,8 +4,10 @@
       <el-col :span="6" :xs="24">
         <Member-Log />
       </el-col>
+
       <el-col :span="18" :xs="24" v-loading="loading">
         <Member-Search />
+
         <el-card
           class="box-card"
           v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
@@ -14,6 +16,7 @@
             <el-col :span="19">
               <Details :Member="tempForm" />
             </el-col>
+
             <el-col :span="5" v-if="tempForm.Status != -2">
               <el-row>
                 <el-col :span="24">
@@ -39,6 +42,7 @@
                   />
                 </el-col>
               </el-row>
+
               <el-row>
                 <el-col :span="24">
                   <Member-Pay
@@ -48,6 +52,7 @@
                   />
                 </el-col>
               </el-row>
+
               <el-row>
                 <el-col :span="24">
                   <Member-Ship-Movement-With-Pay
@@ -61,11 +66,13 @@
                   />
                 </el-col>
               </el-row>
+
               <el-row>
                 <el-col :span="24">
                   <Service-Invoice :MemberId="tempForm.Id" />
                 </el-col>
               </el-row>
+
               <el-row>
                 <el-col :span="24">
                   <Massage
@@ -75,6 +82,7 @@
                   />
                 </el-col>
               </el-row>
+
               <el-row v-if="tempForm.MembershipsCount > 0 || checkPermission(['Admin'])">
                 <el-col :span="24">
                   <Send-To-Device :ObjectId="tempForm.Id" />
@@ -83,36 +91,48 @@
             </el-col>
           </el-row>
         </el-card>
+
         <el-card class="box-card">
           <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
             <el-tab-pane label="بيانات" name="Details">
               <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
+
               <User-Card :Member="tempForm" />
             </el-tab-pane>
+
             <el-tab-pane label="اشتراكات" name="activity">
               <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
+
               <Activity :MembershipMovements="MembershipMovements" />
             </el-tab-pane>
+
             <el-tab-pane label="مقبوضات" name="Payment">
               <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
 
               <Payment :Payments="Payments" />
             </el-tab-pane>
+
             <el-tab-pane label="زيارات" name="timeline">
               <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
 
               <Timeline :timeline="log" :MemberId="tempForm.Id" />
             </el-tab-pane>
+
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
+
               <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
             </el-tab-pane>
+
             <el-tab-pane label="خدمات" name="Service">
               <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
+
               <Service :ServiceInvoices="ServiceInvoices" />
             </el-tab-pane>
+
             <el-tab-pane label="تواصل" name="communication">
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
+
               <Communication />
             </el-tab-pane>
           </el-tabs>
@@ -339,17 +359,21 @@ export default {
 .el-input__inner {
   width: 100%;
 }
+
 .el-col-8 {
   margin-left: 15px;
 }
+
 /*
 .el-input.is-disabled .el-input__inner {
   color: #3399a5;
   font-weight: 650;
 }*/
+
 .BlackList {
   background: #ff1100;
 }
+
 .el-tabs__content {
   max-height: 700px;
 }

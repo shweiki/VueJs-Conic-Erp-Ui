@@ -1,36 +1,18 @@
-import { GetUserLog, GetDevice, CheckDevice } from "@/api/Device";
+import { FeelDevice } from "@/api/Device";
 
 const state = {
-    AllDevices: [],
-    ZtkDoor : true
-
+    FeelDevice: true
 }
 const mutations = {
-    SET_Devices: (state, response) => {
-        state.AllDevices = response
-    },
-    SET_ZtkDoor: (state, response) => {
-        state.ZtkDoor = !response
+    SET_FEEl_DEVICE: (state, response) => {
+        state.FeelDevice = !response
     }
 }
 const actions = {
-
-    GetDevice({ commit }) {
+    FeelDevice({ commit }) {
         return new Promise((resolve, reject) => {
-            GetDevice().then(response => {
-                console.log(response)
-                commit('SET_Devices', response)
-                resolve(response)
-            }).catch(error => {
-                reject(error)
-            })
-        })
-    },
-    ConnectZtkDoor({ commit }) {
-        return new Promise((resolve, reject) => {
-            CheckDevice({ Id:3 }).then(response => {
-                console.log(response)
-                commit('SET_ZtkDoor', response)
+            FeelDevice().then(response => {
+                commit('SET_FEEl_DEVICE', response)
                 resolve(response)
 
             }).catch(error => {
@@ -38,10 +20,7 @@ const actions = {
             })
         })
     }
-
-
 }
-
 export default {
     namespaced: true,
     state,

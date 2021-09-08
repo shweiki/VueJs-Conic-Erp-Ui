@@ -11,7 +11,7 @@
       <el-button
         type="primary"
         icon="el-icon-unlock"
-        :disabled="$store.getters.ZtkDoor"
+        :disabled="$store.getters.FeelDevice"
       ></el-button>
     </el-col>
     <el-col :span="2">

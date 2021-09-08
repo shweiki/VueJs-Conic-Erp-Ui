@@ -54,10 +54,9 @@ router.beforeEach(async (to, from, next) => {
                         if (d.getTime() < now.getTime()) {
                             const CheckMembers =  store.dispatch("Members/CheckMembers")
                         }
-                        store.dispatch("Devices/GetDevice");
-                        store.dispatch("Devices/ConnectZtkDoor");
                     }
-                    
+                    store.dispatch("Devices/FeelDevice");
+
                     document.onkeydown = capturekey;
                     document.onkeypress = capturekey;
                     document.onkeyup = capturekey;

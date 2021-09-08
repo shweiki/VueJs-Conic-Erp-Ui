@@ -11,8 +11,7 @@
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
-              !search || data.Name.toLowerCase().includes(search.toLowerCase())
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
         fit
@@ -32,24 +31,22 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input
-              v-model="search"
-              v-bind:placeholder="$t('Classification.Name')"
-            />
+            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
         <el-table-column prop="Ip" label="IP" align="center"></el-table-column>
-        <el-table-column
-          prop="Port"
-          label="Port"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="Port" label="Port" align="center"></el-table-column>
         <el-table-column
           v-bind:label="$t('Classification.Notes')"
           prop="Description"
           width="220"
           align="center"
         ></el-table-column>
+        <el-table-column label="Edit" width="220" align="center">
+          <template slot-scope="scope">
+            <edit-device :DeviceId="scope.row.Id" />
+          </template>
+        </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot-scope="scope">
             <el-button
@@ -105,18 +102,20 @@ import {
   SetAllMembers,
   ClearUserLog,
   ClearAdministrators,
-  RestartDevice
+  RestartDevice,
 } from "@/api/Device";
 import AddDevice from "@/components/Device/AddDevice.vue";
+import EditDevice from "@/components/Device/EditDevice.vue";
+
 export default {
   name: "Device",
-  components: { AddDevice },
+  components: { AddDevice, EditDevice },
   data() {
     return {
       tableData: [],
       loading: true,
       search: "",
-      response: ""
+      response: "",
     };
   },
   created() {
@@ -126,13 +125,13 @@ export default {
     getdata() {
       this.loading = true;
       GetDevice()
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
           console.log(error);
@@ -140,13 +139,13 @@ export default {
     },
     SetAllMember(id) {
       SetAllMembers({ DeviceId: id })
-        .then(response => {
+        .then((response) => {
           // handle success
           this.response = response;
 
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
@@ -155,13 +154,13 @@ export default {
     },
     ClearAdministrators(id) {
       ClearAdministrators({ DeviceId: id })
-        .then(response => {
+        .then((response) => {
           // handle success
           this.response = response;
 
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
@@ -170,13 +169,13 @@ export default {
     },
     GetAllFaceMember(id) {
       GetAllFaceMembers({ DeviceId: id })
-        .then(response => {
+        .then((response) => {
           // handle success
           this.response = response;
 
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
@@ -185,13 +184,13 @@ export default {
     },
     GetAllLogMember(id) {
       GetAllLogMembers({ DeviceId: id })
-        .then(response => {
+        .then((response) => {
           // handle success
           this.response = response;
 
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
@@ -200,13 +199,13 @@ export default {
     },
     ClearUserLog(id) {
       ClearUserLog({ DeviceId: id })
-        .then(response => {
+        .then((response) => {
           // handle success
           this.response = response;
 
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
@@ -215,18 +214,18 @@ export default {
     },
     RestartDevice(id) {
       RestartDevice({ DeviceId: id })
-        .then(response => {
+        .then((response) => {
           // handle success
           this.response = response;
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           this.response = error;
 
           console.log(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>

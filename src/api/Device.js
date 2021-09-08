@@ -14,7 +14,21 @@ export function CheckDevice(query) {
     params: query
   })
 }
+export function FeelDevice(query) {
+  return request({
+    url: '/Device/FeelDevice',
+    method: 'get',
+    params: query
+  })
+}
 
+export function StartEnrollUser(query) {
+  return request({
+    url: '/Device/StartEnrollUser',
+    method: 'get',
+    params: query
+  })
+}
 export function SetUser(query) {
   return request({
     url: '/Device/SetUser',
@@ -30,6 +44,13 @@ export function GetUserLog(query) {
   })
 }
 
+export function GetById(query) {
+  return request({
+    url: '/Device/GetById',
+    method: 'get',
+    params: query
+  })
+}
 export function Create(data) {
   return request({
     url: '/Device/Create',

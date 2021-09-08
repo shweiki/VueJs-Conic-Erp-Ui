@@ -28,20 +28,12 @@
       </div>
 
       <el-form ref="dataForm" :rules="rulesForm" :model="tempForm">
-        <el-collapse
-          style="display:  table-row-group;"
-          v-model="activeNames"
-          accordion
-        >
+        <el-collapse style="display: table-row-group" v-model="activeNames" accordion>
           <el-collapse-item title="Info" name="Info">
             <el-row>
               <el-col :span="16">
                 <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
-                  <el-input
-                    ref="ItemName"
-                    type="text"
-                    v-model="tempForm.Name"
-                  ></el-input>
+                  <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
                   <el-checkbox v-model="tempForm.IsPrime"
                     >اظهار على شاشة المبيعات</el-checkbox
                   >
@@ -83,55 +75,43 @@
                     :step="0.1"
                     :min="0.0"
                     :max="1500"
-                                                @focus="$event.target.select()"
-
+                    @focus="$event.target.select()"
                   ></el-input-number>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item
-                  v-bind:label="$t('Items.PurchaseCost')"
-                  prop="OtherPrice"
-                >
+                <el-form-item v-bind:label="$t('Items.PurchaseCost')" prop="OtherPrice">
                   <el-input-number
                     v-model="tempForm.OtherPrice"
                     :precision="2"
                     :step="0.1"
                     :min="0.0"
                     :max="1500"
-                                                @focus="$event.target.select()"
-
+                    @focus="$event.target.select()"
                   ></el-input-number>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item
-                  v-bind:label="$t('Items.SellingPrice')"
-                  prop="SellingPrice"
-                >
+                <el-form-item v-bind:label="$t('Items.SellingPrice')" prop="SellingPrice">
                   <el-input-number
                     v-model="tempForm.SellingPrice"
                     :precision="2"
                     :step="0.1"
                     :min="0.0"
                     :max="1500"
-                                                @focus="$event.target.select()"
-
+                    @focus="$event.target.select()"
                   ></el-input-number>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item
-                  v-bind:label="$t('Items.LowerOrder')"
-                  prop="LowOrder"
-                >
+                <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
                   <el-input-number
                     v-model="tempForm.LowOrder"
                     :min="1"
-                    :max="100000000"                            @focus="$event.target.select()"
-
+                    :max="100000000"
+                    @focus="$event.target.select()"
                   ></el-input-number>
                 </el-form-item>
               </el-col>
@@ -142,8 +122,8 @@
                     :precision="2"
                     :step="0.01"
                     :min="0.01"
-                    :max="1"                            @focus="$event.target.select()"
-
+                    :max="1"
+                    @focus="$event.target.select()"
                   />
                 </el-form-item>
               </el-col>
@@ -158,14 +138,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item
-                  v-bind:label="$t('Items.Notes')"
-                  prop="Description"
-                >
-                  <el-input
-                    type="textarea"
-                    v-model="tempForm.Description"
-                  ></el-input>
+                <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
+                  <el-input type="textarea" v-model="tempForm.Description"></el-input>
                 </el-form-item>
               </el-col> </el-row
           ></el-collapse-item>
@@ -176,7 +150,7 @@
             <category
               :Value="tempForm.Category"
               @Set="
-                v => {
+                (v) => {
                   tempForm.Category = v;
                 }
               "
@@ -213,8 +187,8 @@ export default {
   props: {
     ItemId: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   directives: { permission, elDragDialog },
   data() {
@@ -229,21 +203,21 @@ export default {
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
     getdata() {
-      GetItemById({ Id: this.ItemId }).then(response => {
+      GetItemById({ Id: this.ItemId }).then((response) => {
         // handle success
         this.tempForm = response;
         this.GetImageItem(this.tempForm.Id);
@@ -255,19 +229,19 @@ export default {
       this.$emit("focus");
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.Visibles = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -278,11 +252,11 @@ export default {
     },
     GetImageItem(ID) {
       GetFileByObjId({ TableName: "Item", ObjId: ID })
-        .then(response => {
+        .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -292,8 +266,8 @@ export default {
     },
     close() {
       this.imagecropperShow = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
