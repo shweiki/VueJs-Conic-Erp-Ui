@@ -1,13 +1,15 @@
 ﻿
 <template>
   <div class="app-container">
-   <delivery-cards/>
+   <delivery-cards
+   :drivers="this.drivers">
+   </delivery-cards>
   </div>
 </template>
 
 <script>
 import DeliveryCards from "./components/DeliveryCards.vue";
-
+import { GetDriversLabel } from "@/api/Driver";
 
 export default {
   name: "ComplexTable",
@@ -17,14 +19,29 @@ export default {
   data() {
     return {
       list: [],
-     
+     drivers: [],
      
     };
   },
   created() {
-    // this.getList();
+     this.getdata();
   },
   methods: {
+
+        getdata() {
+      this.loading = true;
+      GetDriversLabel()
+        .then(response => {
+          // handle success
+          console.log("drivers", response)
+          this.drivers = response;
+          this.loading = false;
+        })
+        .catch(error => {
+          // handle error
+          console.log(error);
+        });
+    },
     // getList() {
     //   this.listLoading = true;
     //   GetOrderDeliveryByListQ(this.listQuery).then((response) => {

@@ -7,6 +7,13 @@ export function GetDriver(query) {
     params: query
   })
 }
+export function GetDriversLabel(query) {
+  return request({
+    url: '/Driver/GetDriver',
+    method: 'get',
+    params: query
+  })
+}
 export function GetDriverByAny(query) {
   return request({
     url: '/Driver/GetDriverByAny',

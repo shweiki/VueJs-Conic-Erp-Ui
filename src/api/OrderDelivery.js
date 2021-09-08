@@ -25,3 +25,11 @@ export function Create(data) {
     data: qs.stringify(data)
   })
 }
+
+export function SetDriver(data) {
+  return request({
+    url: '/OrderDelivery/SetDriver',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}

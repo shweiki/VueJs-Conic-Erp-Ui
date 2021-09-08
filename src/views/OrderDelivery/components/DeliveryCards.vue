@@ -53,12 +53,22 @@
           <br>
            <el-row :gutter="24">
              <driver-to-order 
-             :oid="option.id"
-             :IsPrime="option.IsPrime" />
+             :Id="option.Id"
+             :Status="option.Status" />
                 <order-details
-                :oid="option.id"
-                :status="option.status"
-                :IsPrime="option.IsPrime" />
+                :Id="option.Id"
+                :Status="option.Status"
+                :Name="option.Name"
+                :PhoneNumber="option.PhoneNumber"
+                :TotalPill="option.TotalPill"
+                :TotalPrice="option.TotalPrice"
+                :Description="option.Description"
+                :FakeDate="option.FakeDate"
+                :Region="option.Region"
+                :DeliveryPrice="option.DeliveryPrice"
+                :Driver="option.Driver"
+                :Content="option.Content"
+                :drivers="this.drivers" />
           </el-row>
       </div>
     </el-col>
@@ -83,6 +93,7 @@ import DriverToOrder from "./DriverToOrder.vue";
 import { GetOrderDelivery } from "@/api/OrderDelivery";
 export default {
   name: 'DeliveryCards',
+  props: ["drivers"],
 components: {
     OrderDetails, DriverToOrder },
   data () {
@@ -157,6 +168,7 @@ components: {
         });
     },
   }
+  
 }
 
 </script>
