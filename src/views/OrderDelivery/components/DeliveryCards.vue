@@ -68,7 +68,7 @@
                 :DeliveryPrice="option.DeliveryPrice"
                 :Driver="option.Driver"
                 :Content="option.Content"
-                :drivers="this.drivers" />
+                 />
           </el-row>
       </div>
     </el-col>
