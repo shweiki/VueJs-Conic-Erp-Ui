@@ -1,24 +1,24 @@
 ﻿
 <template>
   <div class="app-container">
-   <delivery-cards
-   >
-   </delivery-cards>
+   <driver-card/>
   </div>
 </template>
 
 <script>
-import DeliveryCards from "./components/DeliveryCards.vue";
+import DriverCard from "./components/DriverCard.vue";
 export default {
-  name: "DeliveryManager",
+  name: "DeliveryPage",
   components: {
-    DeliveryCards
+    DriverCard
   },
   data() {
     return {
       list: [],
-     
-     
+      Driver:{
+        Id:1,
+        Name:"driver name",
+      },
     };
   },
   created() {

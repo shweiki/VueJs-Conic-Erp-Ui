@@ -22,10 +22,10 @@
           style="margin-top: -13vh"
           :show-close="false"
           title="معلومات طلب التوصيل"
-          width="60%"
+          width="100%"
           :visible.sync="dialogFormVisible"> 
    
-       <el-descriptions class="margin-top" title="معلومات الزبون" :column="2" border>
+       <el-descriptions class="margin-top" title="معلومات الزبون" :column="1" border>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-user"></i>
@@ -57,7 +57,7 @@
   
   </el-descriptions>
   <br>
-  <el-descriptions class="margin-top" title="معلومات الطلب" :column="2" border>
+  <el-descriptions class="margin-top" title="معلومات الطلب" :column="1" border>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-star-off"></i>

@@ -14,10 +14,11 @@
           ref="dataForm"
           style="margin-top: -13vh"
           title="Set Driver"
+          width="100%"
           :show-close="false"
           :visible.sync="dialogFormVisible"> 
           <el-row>
-  <el-descriptions class="margin-top" title="معلومات الطلب" :column="2" border>
+  <el-descriptions class="margin-top" title="معلومات الطلب" :column="1" border>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-star-off"></i>

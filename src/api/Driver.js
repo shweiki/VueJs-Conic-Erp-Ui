@@ -9,7 +9,7 @@ export function GetDriver(query) {
 }
 export function GetDriversLabel(query) {
   return request({
-    url: '/Driver/GetDriver',
+    url: '/Driver/GetDriversLabel',
     method: 'get',
     params: query
   })
