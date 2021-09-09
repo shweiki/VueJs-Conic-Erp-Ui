@@ -31,6 +31,8 @@
               :value="item"
               :label="item.Name"
             >
+              <span style="">{{ item.Code }}</span>
+
               <span style="float: right">{{ item.Id }}</span>
               <span style="float: left color: #8492a6 font-size: 13px">{{
                 item.Name
