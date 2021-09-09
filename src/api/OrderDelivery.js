@@ -18,6 +18,14 @@ export function GetOrderDelivery(query) {
   })
 }
 
+export function GetDriverOrder(query) {
+  return request({
+    url: '/OrderDelivery/GetDriverOrder',
+    method: 'get',
+    params: query
+  })
+}
+
 export function Create(data) {
   return request({
     url: store.getters.settings.PointOfSale.DeliveryUrl,

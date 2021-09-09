@@ -20,7 +20,12 @@
            <el-row>
             <div class="card-panel-description">
            <div class="card-panel-name"> {{option.Region}} </div> </div>
-           </el-row><el-row>
+           </el-row>
+           <el-row>
+            <div class="card-panel-description">
+           <div class="card-panel-name">{{option.TotalPrice}} </div> </div>
+           </el-row>
+           <el-row>
               <order-details
                 :Id="option.Id"
                 :Status="option.Status"
@@ -51,7 +56,8 @@
 <script>
 import OrderDetails from "./OrderDetails.vue";
 import DriverToOrder from "./DriverToOrder.vue";
-import { GetOrderDelivery } from "@/api/OrderDelivery";
+import { GetDriverOrder } from "@/api/OrderDelivery";
+import { mapGetters } from "vuex";
 export default {
   name: 'DeliveryCards',
 components: {
@@ -59,15 +65,22 @@ components: {
   data () {
     return {
       DeliveryData: [],
+      user: {},
     }
+  },
+  computed: {
+    ...mapGetters(["Id", "name"]),
   },
   created() {
      this.getdata();
   },
   methods: {
      getdata() {
+       this.user = {
+        Id: this.Id,
+        name: this.name}
       this.loading = true;
-      GetOrderDelivery()
+      GetDriverOrder({ id: this.user.Id, name: this.user.name})
         .then((response) => {
           // handle success
           console.log("order data",response);

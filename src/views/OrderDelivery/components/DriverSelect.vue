@@ -3,7 +3,9 @@
  
          <el-row> 
            <el-col :span="14"> 
-             <el-tooltip :content="'إضافة سائق'" placement="top">
+             <el-tooltip 
+             v-bind:content="$t('Delivery.AddDriver')"
+              placement="top">
     <add-driver />
     </el-tooltip>
     </el-col> 
@@ -12,7 +14,7 @@
         @change="SetVal"
         v-model="Driver"
         filterable
-        placeholder="السائق"
+        :v-bind:placeholder="$t('Delivery.Driver')"
       >
         <el-option
           v-for="item in Drivers"
@@ -32,7 +34,7 @@
       type="success"
       icon="fa fa-save"
       @click="AssignDriver()"
-      >تعيين</el-button>
+      >{{$t("Delivery.Assign")}}</el-button>
     </el-col>
     </el-row>
           

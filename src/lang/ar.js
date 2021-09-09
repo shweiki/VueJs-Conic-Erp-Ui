@@ -687,5 +687,22 @@ export default {
     Delivery: {
         DriverName: "إسم السائق",
         Content : "المحتوى",
+        AddDriver : "إضافة سائق",
+        Driver :"السائق",
+        Assign:"تعيين",
+        AssignDriver:"تعيين سائق",
+        OrderInfo:"معلومات الطلب",
+        SetDriver:"تعيين سائق للطلب",
+        OrderNo:"رقم الطلب",
+        DeliveryPrice:"سعر التوصيل",
+        TotalAmmount: "المبلغ الإجمالي",
+        ReceiptTotal:"اجمالي الفاتورة",
+        Details:"التفاصيل",
+        CustomerInfo:"معلومات الزبون",
+        CustomerName:"إاسم الزبون",
+        Phone:"رقم الهاتف",
+        DOrderInfo:"معلومات طلب التوصيل",
+        
+
     }
 }

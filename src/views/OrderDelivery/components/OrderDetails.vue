@@ -7,7 +7,7 @@
           type="primary"
           size="medium"
           @click="dialogFormVisible = true"
-          >التفاصيل </el-button>
+          >{{$t("Delivery.Details")}} </el-button>
           </el-col> 
           <el-col :span="24" v-else>
              <el-button 
@@ -16,94 +16,94 @@
           type="primary"
           size="medium"
           @click="dialogFormVisible = true"
-          >التفاصيل </el-button>
+          >{{$t("Delivery.Details")}} </el-button>
           </el-col> 
           <el-dialog
           style="margin-top: -13vh"
           :show-close="false"
-          title="معلومات طلب التوصيل"
+          :title="$t('Delivery.DOrderInfo')"
           width="60%"
           :visible.sync="dialogFormVisible"> 
    
-       <el-descriptions class="margin-top" title="معلومات الزبون" :column="2" border>
+       <el-descriptions class="margin-top" :title="$t('Delivery.CustomerInfo')" :column="2" border>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-user"></i>
-        إسم الزبون
+        {{$t("Delivery.CustomerName")}}
       </template>
       <el-tag size="small">{{Name}}</el-tag>
     </el-descriptions-item>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-location-outline"></i>
-        المنطقة
+        {{$t("AddVendors.Region")}}
       </template>
       <el-tag size="small">{{Region}}</el-tag>
     </el-descriptions-item>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-mobile-phone"></i>
-        رقم الهاتف
+         {{$t("Delivery.Phone")}}
       </template>
       <el-tag size="small">{{PhoneNumber}}</el-tag>
     </el-descriptions-item>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-tickets"></i>
-        ملاحظات
+        {{$t("Items.Notes")}}
       </template>
       <el-tag size="small">{{Description}}</el-tag>
     </el-descriptions-item>
   
   </el-descriptions>
   <br>
-  <el-descriptions class="margin-top" title="معلومات الطلب" :column="2" border>
+  <el-descriptions class="margin-top" :title="$t('Delivery.OrderInfo')" :column="2" border>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-star-off"></i>
-        رقم الطلب
+        {{$t("Delivery.OrderNo")}}
       </template>
       <el-tag size="small">{{Id}}</el-tag>
     </el-descriptions-item>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-date"></i>
-        التاريخ
+        {{$t("Sales.Date")}}
       </template>
       <el-tag size="small">{{ FakeDate | parseTime("{m}-{d} {h}:{i}") }}</el-tag>
     </el-descriptions-item>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-s-flag"></i>
-        الحالة
+        {{$t("OrderInventories.Status")}}
       </template>
       <el-tag size="small">{{Status}}</el-tag>
     </el-descriptions-item>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-money"></i>
-        سعر التوصيل
+        {{$t("Delivery.DeliveryPrice")}}
       </template>
       <el-tag size="small">{{DeliveryPrice}}</el-tag>
     </el-descriptions-item>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-money"></i>
-        قيمة الفاتورة
+        {{$t("Delivery.ReceiptTotal")}} 
       </template>
       <el-tag size="small">{{TotalPill}}</el-tag>
     </el-descriptions-item>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-money"></i>
-        المبلغ الاجمالي
+         {{$t("Delivery.TotalAmmount")}}
       </template>
       <el-tag size="small">{{TotalPrice}}</el-tag>
     </el-descriptions-item>
      <el-descriptions-item v-if="Status != 0" :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-user-solid"></i>
-        اسم السائق
+        {{$t("Delivery.DriverName")}}
       </template>
       <el-tag size="small">{{Driver.Name}}</el-tag>
     </el-descriptions-item>
@@ -122,7 +122,7 @@
 <script>
 export default {
   name: 'OrderDetails',
- props: ["Id", "Name", "PhoneNumber","TotalPill","TotalPrice","FakeDate","Region", "Status", "Description", "DeliveryPrice", "Driver", "Content" ],
+ props: ["Id", "Name", "PhoneNumber","TotalPill","TotalPrice","FakeDate","Region", "Status", "Description", "DeliveryPrice", "Driver", "Content"],
   data () {
     
     return {

@@ -657,5 +657,24 @@ export default {
         Address2: "Address 2",
         DelievryPrice: "Delievry Price",
         TotalPill:"Total Pill"
+    },
+    Delivery: {
+        DriverName: "Driver Name",
+        Content : "Content",
+        AddDriver : "Add Driver",
+        Driver : "Driver",
+        Assign: "Assign",
+        AssignDriver:"Assign Driver",
+        OrderInfo:"Order Information",
+        SetDriver:"Set Driver to Order",
+        OrderNo:"Order Number",
+        DeliveryPrice:"Delivery Price",
+        ReceiptTotal:"Receipt Total",
+        TotalAmmount:"Total Ammount",
+        Details:"Details",
+        CustomerInfo:"Customer Information",
+        CustomerName:"Customer Name",
+        Phone:"Phone Number",
+        DOrderInfo:"Delivery Order Information",
     }
 }
