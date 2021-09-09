@@ -94,7 +94,17 @@ export default {
         ListWorkShop :"WorkShops List",
         NewWorkShop :"New WorkShop",
         Areas:"Areas",
-        OrderInventoriesItems:"Order Inventories Items"
+        OrderInventoriesItems:"Order Inventories Items",
+        NewVendor : "New Client or Vendor",
+        Visits:"Visits",
+        NewVisit:"New Visit",
+        ListVisit:"Visits List",
+        OrderDelivery:"Delivery Order",
+        DeliveryList:"Delivery List",
+        DeliveryManager:"Delivery Manager",
+        AddDrivers:"Add Drivers",
+        DriverPage:"Driver Page",
+        JsonEditorSetting:"Json Editor Setting"
     },
     Settings: {
         settings: "Settings",

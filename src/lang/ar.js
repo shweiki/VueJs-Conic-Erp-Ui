@@ -102,7 +102,17 @@ export default {
         ListWorkShop :"قائمة الورش",
         NewWorkShop :"ورشة جديدة",
         Areas:"المناطق",
-        OrderInventoriesItems:"طلب أصناف الجرد"
+        OrderInventoriesItems:"طلب أصناف الجرد",
+        NewVendor :"عميل أو مورد جديد",
+        Visits:"الزيارات",
+        NewVisit:"زيارة جديدة",
+        ListVisit:"قائمة الزيارات",
+        OrderDelivery:"طلبات التوصيل",
+        DeliveryList:"قائمة طلبات التوصيل",
+        DeliveryManager:"ادارة طلبات التوصيل",
+        AddDrivers:"إضافة سائق",
+        DriverPage:"صفحة السائق",
+        JsonEditorSetting:"تعديل الاعدادات بجيسون"
     },
     Settings: {
         settings: "اعدادات",
@@ -673,5 +683,9 @@ export default {
         Address2: "العنوان 2",
         DelievryPrice: "سعر التوصيل",
         TotalPill:"اجمالي الفاتورة"
+    },
+    Delivery: {
+        DriverName: "إسم السائق",
+        Content : "المحتوى",
     }
 }
