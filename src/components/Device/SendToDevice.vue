@@ -1,18 +1,21 @@
 <template>
-  <el-popover placement="top-start" width="200" trigger="hover">
-    <el-button
-      v-for="item in options"
-      :key="item.Id"
-      @click="SetOnDevice(item.Id, item.Name)"
-      >send to {{ item.Name }}</el-button
-    >
-    <el-button
-      v-for="item in options"
-      :key="item.Id"
-      @click="StartEnrollUserOnDevice(item.Id, item.Name)"
-      >Start Enroll to {{ item.Name }}</el-button
-    >
-    <el-button type="info" slot="reference">ارسال الى جهاز البصمة</el-button>
+  <el-popover placement="left-start" width="500" trigger="hover">
+    <el-button-group v-for="item in options" :key="item.Id">
+      <el-button
+        @click="SetOnDevice(item.Id, item.Name)"
+        type="primary"
+        icon="el-icon-arrow-left"
+        >ارسال البيانات الى{{ item.Name }}</el-button
+      >
+      <el-button
+        @click="StartEnrollUserOnDevice(item.Id, item.Name)"
+        type="primary"
+        icon="el-icon-arrow-right"
+        >انشاء بصمة وجه {{ item.Name }}</el-button
+      >
+    </el-button-group>
+
+    <el-button type="info" slot="reference"> جهاز البصمة</el-button>
   </el-popover>
 </template>
 <script>

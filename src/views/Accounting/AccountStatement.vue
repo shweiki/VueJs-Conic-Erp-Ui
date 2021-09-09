@@ -37,7 +37,6 @@
                 (v) => {
                   listQuery.DateFrom = v[0];
                   listQuery.DateTo = v[1];
-                  handleFilter();
                 }
               "
             />
@@ -255,6 +254,7 @@ export default {
       //    console.log("sdsad", this.listQuery);
       GetAccountStatement(this.listQuery).then((response) => {
         this.list = response.items.map((curr, i, array) => {
+          console.log(curr.TotalRow);
           curr.TotalRow = array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
           return curr;
         });
