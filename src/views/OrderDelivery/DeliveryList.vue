@@ -100,11 +100,16 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="Name" v-bind:label="$t('AddVendors.Name')" align="center">
+      <el-table-column sortable prop="Name" v-bind:label="$t('AddVendors.Name')" align="center">
       </el-table-column>
       <el-table-column
+      prop="PhoneNumber"
+        v-bind:label="$t('MemberList.Phone')"
+        width="120"
+        align="center"
+      ></el-table-column>
+      <el-table-column
         prop="Region"
-        sortable
         v-bind:label="$t('AddVendors.Region')"
         width="150"
         align="center"
@@ -113,13 +118,6 @@
         <template slot-scope="{ row }">
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
-      </el-table-column>
-      <el-table-column label="Content" prop="Content" align="center"> </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Vendors.Description')"
-        prop="Description"
-        align="center"
-      >
       </el-table-column>
       <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="{ row }">
@@ -139,7 +137,17 @@
           JOD
         </template>
       </el-table-column>
-
+<el-table-column v-bind:label="$t('Delivery.Content')" prop="Content" align="center"> </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Vendors.Description')"
+        prop="Description"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Delivery.DriverName')"
+        prop="Driver.Name"
+        align="center">
+      </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="OrderDelivery" />
