@@ -101,12 +101,45 @@
                   </el-col>
                   <el-col :span="12">
                     <div class="card-panel-description">
-                      <div class="card-panel-name">{{ option.Region }}</div>
+                      <div class="card-panel-region">{{ option.Region }}</div>
                     </div>
                   </el-col>
                 </el-row>
                 <el-row :gutter="24">
-                    <order-details-mobile :Temp="option" />
+                    <order-details-mobile :Temp="option" caller="Driver" />
+                 <el-col :span="12" style="padding-top: 10px;">
+                  <div v-if="option.Status == 1">  
+                  <el-popconfirm
+                    confirm-button-text='نعم'
+                    cancel-button-text='لا, شكرا'
+                    icon="el-icon-info"
+                    :title= "` ${option.Id} تأكيد استلام طلب رقم`"
+                    @confirm="HasReceived(option.Id)"
+                    > 
+                   <el-button 
+                   slot="reference"
+                          type="success"
+                          :size="$store.getters.size"
+                          >استلام الطلب </el-button>
+                  </el-popconfirm>
+                        </div>
+                          <div v-if="option.Status == 2">  
+                  <el-popconfirm
+                    confirm-button-text='نعم'
+                    cancel-button-text='لا, شكرا'
+                    confirm-button-type="warning"
+                    icon="el-icon-info"
+                    :title= "` ${option.Id} تأكيد توصيل طلب رقم`"
+                    @confirm="HasDelivered(option.Id)"
+                    > 
+                   <el-button 
+                   slot="reference"
+                          type="warning"
+                          :size="$store.getters.size"
+                          >توصيل الطلب </el-button>
+                  </el-popconfirm>
+                        </div>
+                        </el-col>
                 </el-row>
                 <!-- <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
                     <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
@@ -129,7 +162,7 @@
 </template>
 <script>
 import OrderDetailsMobile from "./OrderDetailsMobile.vue";
-import { GetDriverOrder } from "@/api/OrderDelivery";
+import { GetDriverOrder, OrderReceived,OrderDelivered } from "@/api/OrderDelivery";
 import { mapGetters } from "vuex";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
@@ -149,7 +182,6 @@ export default {
   directives: { waves },
   data() {
     return {
-      //DeliveryData: [],
       list: [],
       Totals: { Rows: 0 },
       user: {},
@@ -193,6 +225,14 @@ export default {
       this.listQuery.Page = 1;
       this.getdata();
     },
+    HasReceived(id){
+    OrderReceived({id:id});
+    this.getdata();
+    },
+    HasDelivered(id){
+    OrderDelivered({id:id});
+    this.getdata();
+    }
   
   },
 };
@@ -243,27 +283,32 @@ export default {
       margin-left: 0px;
 
       .card-panel-name {
-        line-height: 20px;
+        line-height: 32px;
         color: rgba(0, 0, 0, 0.8);
         font-size: 12px;
         text-align: right;
       }
+        .card-panel-region {
+        line-height: 32px;
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 12px;
+        text-align: right;
+        margin-bottom: 4px;
+      }
       .card-panel-time {
-        line-height: 20px;
+        line-height: 32px;
         color: rgba(0, 0, 0, 0.45);
-        font-size: 14px;
+        font-size: 12px;
         margin-bottom: 4px;
         text-align: right;
       }
       .card-panel-phone {
-        text-align: left;
-        line-height: 20px;
+        line-height: 32px;
         color: rgba(0, 0, 0, 0.8);
         font-size: 12px;
       }
       .card-panel-id {
-        text-align: left;
-        line-height: 20px;
+        line-height: 32px;
         color: rgb(0, 0, 0);
         font-size: 14px;
       }
@@ -271,27 +316,4 @@ export default {
   }
 }
 
-@media only screen and (max-width: 767px) {
-  .el-col-xs-24 {
-    .card-panel {
-      height: 190px;
-      padding-top: 5px;
-      .card-panel-description {
-        float: none;
-        .card-panel-id {
-          text-align: center;
-          line-height: 25px;
-        }
-        .card-panel-name {
-          text-align: center;
-          line-height: 25px;
-        }
-        .card-panel-time {
-          text-align: center;
-          line-height: 25px;
-        }
-      }
-    }
-  }
-}
 </style>

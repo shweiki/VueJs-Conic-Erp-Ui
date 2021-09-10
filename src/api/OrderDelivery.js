@@ -41,3 +41,31 @@ export function SetDriver(data) {
     data: qs.stringify(data)
   })
 }
+export function OrderReceived(data) {
+  return request({
+    url: '/OrderDelivery/OrderReceived',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+export function OrderDelivered(data) {
+  return request({
+    url: '/OrderDelivery/OrderDelivered',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+export function OrderDone(data) {
+  return request({
+    url: '/OrderDelivery/OrderDone',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+export function GetByListQByDriver(data) {
+  return request({
+    url: '/OrderDelivery/GetByListQByDriver',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}

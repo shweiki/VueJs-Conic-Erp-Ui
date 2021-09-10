@@ -50,6 +50,14 @@ const OrderDeliveryRouter = {
         title: 'DriverPage', icon: 'cost'
       },
     },
+    {
+      path: 'DriverDeliveryList',
+      component: () => import('@/views/OrderDelivery/DriverDeliveryList'),
+      name: 'DriverDeliveryList',
+      meta: {
+        title: 'DriverDeliveryList', icon: 'accounts'
+      },
+    },
 
   ]
 }

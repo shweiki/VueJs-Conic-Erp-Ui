@@ -1,6 +1,6 @@
 <template>
 <div>
-           <el-col :span="12" v-if="Temp.Status == 0" style="padding-top: 10px;">
+           <el-col :span="12" v-if="Temp.Status == 0 || Temp.Status == 3 || caller=='Driver'" style="padding-top: 10px;">
              <el-button 
           style="float: right"
           icon="el-icon-info"
@@ -9,7 +9,7 @@
           @click="dialogFormVisible = true"
           >{{$t("Delivery.Details")}} </el-button>
           </el-col> 
-          <el-col :span="24" v-else >
+          <el-col :span="24" v-else-if="Temp.Status == 1 || Temp.Status == 2" >
              <el-button 
           style="float: right; "
           icon="el-icon-info"
@@ -23,6 +23,7 @@
           :show-close="false"
           :title="$t('Delivery.DOrderInfo')"
           width="100%"
+          center
           :visible.sync="dialogFormVisible"> 
    
        <el-descriptions class="margin-top" :title="$t('Delivery.CustomerInfo')" :column="1" border>
@@ -102,7 +103,7 @@
       </template>
       <el-tag size="small">{{Temp.TotalPrice}}</el-tag>
     </el-descriptions-item>
-     <el-descriptions-item v-if="Temp.Status != 0" :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
+     <el-descriptions-item v-if="Temp.Status != 0 && caller=='Manager'" :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-user-solid"></i>
          {{$t("Delivery.DriverName")}}
@@ -117,14 +118,19 @@
       <el-tag size="small">{{Content}}</el-tag>
     </el-descriptions-item> -->
   </el-descriptions>
-    
+  <span slot="footer" class="dialog-footer">
+    <el-button 
+    size="medium"
+          @click="dialogFormVisible = false"
+    type="danger">الغاء</el-button>
+  </span>
       </el-dialog>
 </div>
 </template>
 <script>
 export default {
   name: 'OrderDetailsMobile',
- props: ["Temp" ],
+ props: ["Temp", "caller" ],
   data () {
     
     return {

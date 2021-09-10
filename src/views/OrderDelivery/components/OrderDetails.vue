@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-col :span="12" v-if="Temp.Status == 0" style="padding-top: 10px;">
+    <el-col :span="12" v-if="Temp.Status == 0 || Temp.Status == 3" style="padding-top: 10px;">
      <el-button
       style="float: right"
       icon="el-icon-info"
@@ -10,7 +10,7 @@
       >{{ $t("Delivery.Details") }}
     </el-button> 
     </el-col> 
-     <el-col :span="24" v-else style="padding-top: 10px;">
+     <el-col :span="24" v-else-if="Temp.Status == 1 || Temp.Status == 2" style="padding-top: 10px;">
              <el-button 
           style="float: right"
           icon="el-icon-info"
