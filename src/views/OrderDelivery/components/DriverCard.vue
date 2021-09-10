@@ -112,7 +112,7 @@
                     confirm-button-text='نعم'
                     cancel-button-text='لا, شكرا'
                     icon="el-icon-info"
-                    :title= "` ${option.Id} هل انت متأكد من استلام طلب رقم`"
+                    :title= "` ${option.Id} تأكيد استلام طلب رقم`"
                     @confirm="HasReceived(option.Id)"
                     > 
                    <el-button 
@@ -121,6 +121,22 @@
                           type="success"
                           :size="$store.getters.size"
                           >استلام الطلب </el-button>
+                  </el-popconfirm>
+                        </div>
+                          <div v-if="option.Status == 2">  
+                  <el-popconfirm
+                    confirm-button-text='نعم'
+                    cancel-button-text='لا, شكرا'
+                    icon="el-icon-info"
+                    :title= "` ${option.Id} تأكيد توصيل طلب رقم`"
+                    @confirm="HasDelivered(option.Id)"
+                    > 
+                   <el-button 
+                   slot="reference"
+                          style="float: right; "
+                          type="success"
+                          :size="$store.getters.size"
+                          >توصيل الطلب </el-button>
                   </el-popconfirm>
                         </div>
                 </el-row>
@@ -145,7 +161,7 @@
 </template>
 <script>
 import OrderDetailsMobile from "./OrderDetailsMobile.vue";
-import { GetDriverOrder, OrderReceived } from "@/api/OrderDelivery";
+import { GetDriverOrder, OrderReceived,OrderDelivered } from "@/api/OrderDelivery";
 import { mapGetters } from "vuex";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
@@ -210,6 +226,10 @@ export default {
     },
     HasReceived(id){
     OrderReceived({id:id});
+    this.getdata();
+    },
+    HasDelivered(id){
+    OrderDelivered({id:id});
     this.getdata();
     }
   

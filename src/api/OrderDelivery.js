@@ -48,3 +48,10 @@ export function OrderReceived(data) {
     data: qs.stringify(data)
   })
 }
+export function OrderDelivered(data) {
+  return request({
+    url: '/OrderDelivery/OrderDelivered',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
