@@ -104,63 +104,23 @@
       >
       </el-table-column>
       <el-table-column
-        prop="PhoneNumber"
-        v-bind:label="$t('MemberList.Phone')"
-        width="120"
-        align="center"
-      ></el-table-column>
-      <el-table-column
         prop="Region"
         v-bind:label="$t('AddVendors.Region')"
-        width="150"
+        
         align="center"
       ></el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
+      <el-table-column v-bind:label="$t('Sales.Date')"  align="center">
         <template slot-scope="{ row }">
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
-        <template slot-scope="{ row }">
-          {{ row.TotalPrice.toFixed($store.getters.settings.ToFixed) }}
-          JOD
-        </template>
-      </el-table-column>
-      <el-table-column v-bind:label="$t('Area.TotalPill')" width="120" align="center">
-        <template slot-scope="{ row }">
-          {{ row.TotalPill.toFixed($store.getters.settings.ToFixed) }}
-          JOD
-        </template>
-      </el-table-column>
-      <el-table-column v-bind:label="$t('Area.DelievryPrice')" width="120" align="center">
-        <template slot-scope="{ row }">
-          {{ row.DeliveryPrice.toFixed($store.getters.settings.ToFixed) }}
-          JOD
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Vendors.Description')"
-        prop="Description"
-        align="center"
-      >
-      </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Delivery.DriverName')"
-        prop="Driver.Name"
-        align="center"
-      >
-      </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      
+      <el-table-column v-bind:label="$t('Sales.Status')" width="160" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="OrderDelivery" />
         </template>
       </el-table-column>
-      <el-table-column width="180" align="center">
-        <template slot-scope="scope">
-          <Dialog-Action-Log TableName="OrderDelivery" :ObjId="scope.row.Id" />
-          <Drawer-Print Type="OrderDelivery" :Data="scope.row" />
-        </template>
-      </el-table-column>
+     
     </el-table>
     <pagination
       v-show="Totals.Rows > 0"
