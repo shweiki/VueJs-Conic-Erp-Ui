@@ -107,7 +107,22 @@
                 </el-row>
                 <el-row :gutter="24">
                     <order-details-mobile :Temp="option" caller="Driver" />
-
+                  <div v-if="option.Status == 1">  
+                  <el-popconfirm
+                    confirm-button-text='نعم'
+                    cancel-button-text='لا, شكرا'
+                    icon="el-icon-info"
+                    :title= "` ${option.Id} هل انت متأكد من استلام طلب رقم`"
+                    @confirm="HasReceived(option.Id)"
+                    > 
+                   <el-button 
+                   slot="reference"
+                          style="float: right; "
+                          type="success"
+                          :size="$store.getters.size"
+                          >استلام الطلب </el-button>
+                  </el-popconfirm>
+                        </div>
                 </el-row>
                 <!-- <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
                     <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
@@ -130,7 +145,7 @@
 </template>
 <script>
 import OrderDetailsMobile from "./OrderDetailsMobile.vue";
-import { GetDriverOrder } from "@/api/OrderDelivery";
+import { GetDriverOrder, OrderReceived } from "@/api/OrderDelivery";
 import { mapGetters } from "vuex";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
@@ -193,6 +208,10 @@ export default {
       this.listQuery.Page = 1;
       this.getdata();
     },
+    HasReceived(id){
+    OrderReceived({id:id});
+    this.getdata();
+    }
   
   },
 };
