@@ -124,7 +124,7 @@
                 </el-row>
                 <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
                     <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
-                    <order-details-mobile :Temp="option" />
+                    <order-details-mobile :Temp="option" caller="Manager" />
                 </el-row>
               </div>
             </el-col>

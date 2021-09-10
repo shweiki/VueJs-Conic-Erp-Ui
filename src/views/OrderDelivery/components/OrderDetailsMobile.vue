@@ -11,12 +11,14 @@
           </el-col> 
           <el-col :span="24" v-else >
              <el-button 
+             slot="reference"
           style="float: right; "
           icon="el-icon-info"
           type="primary"
           :size="$store.getters.size"
           @click="dialogFormVisible = true"
           >{{$t("Delivery.Details")}} </el-button>
+
           </el-col> 
           <el-dialog
           style="margin-top: -13vh"
@@ -102,7 +104,7 @@
       </template>
       <el-tag size="small">{{Temp.TotalPrice}}</el-tag>
     </el-descriptions-item>
-     <el-descriptions-item v-if="Temp.Status != 0" :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
+     <el-descriptions-item v-if="Temp.Status != 0 && caller=='Manager'" :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-user-solid"></i>
          {{$t("Delivery.DriverName")}}
@@ -124,7 +126,7 @@
 <script>
 export default {
   name: 'OrderDetailsMobile',
- props: ["Temp" ],
+ props: ["Temp", "caller" ],
   data () {
     
     return {
