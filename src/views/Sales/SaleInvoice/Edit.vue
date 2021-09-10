@@ -17,6 +17,10 @@
       :is-edit="true"
     />
     <Gym v-if="$store.getters.settings.PointOfSale.Layout == 'Gym'" :is-edit="true" />
+    <KidsPlayArea
+      v-if="$store.getters.settings.PointOfSale.Layout == 'KidsPlayArea'"
+      :is-edit="true"
+    />
     <Public
       v-if="$store.getters.settings.PointOfSale.Layout == 'Public'"
       :is-edit="true"
@@ -30,10 +34,12 @@ import CarsSpare from "./components/CarsSpare";
 import Restaurant from "./components/Restaurant";
 import Pharmacy from "./components/Pharmacy.vue";
 import Gym from "./components/Gym.vue";
+import KidsPlayArea from "./components/KidsPlayArea.vue";
+
 import Public from "./components/Public.vue";
 
 export default {
   name: "EditInvoice",
-  components: { SuperMarket, CarsSpare, Restaurant, Pharmacy, Gym, Public },
+  components: { SuperMarket, CarsSpare, Restaurant, Pharmacy, Gym, Public, KidsPlayArea },
 };
 </script>

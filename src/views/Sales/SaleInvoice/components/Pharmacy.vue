@@ -433,7 +433,6 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 // report
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { GetActiveMenuItem } from "@/api/MenuItem";
 
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";

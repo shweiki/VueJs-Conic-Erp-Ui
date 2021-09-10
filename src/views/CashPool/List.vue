@@ -101,20 +101,20 @@
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Reject.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
-
+        <!--
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
         <span
           >{{
             list
               .reduce((prev, cur) => {
-                return prev + cur.Totals;
+                return prev + cur.Totals.Totals;
               }, 0)
               .toFixed($store.getters.settings.ToFixed)
           }}
           JOD</span
         >
-        <el-divider direction="vertical"></el-divider>
+        <el-divider direction="vertical"></el-divider> -->
       </el-col>
     </el-row>
 
@@ -183,8 +183,8 @@
         </template>
       </el-table-column>
       <el-table-column label="المطلوب" width="120" align="center">
-        <template slot-scope="{ row }">
-          {{ row.Totals.toFixed($store.getters.settings.ToFixed) }}
+        <template slot-scope="{ Totals }">
+          {{ Totals.Totals }}
           JOD
         </template>
       </el-table-column>
@@ -328,24 +328,35 @@ export default {
     async getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      await GetByListQ(this.listQuery).then(async (response) => {
+      GetByListQ(this.listQuery).then(async (response) => {
         this.Totals = response.Totals;
-        this.list = await response.items.map((x) => {
-          if (x.Type == "SaleInvoice") {
-            GetSaleInvoiceByListId({ listid: x.Fktable }).then((res) => {
-              x.SaleInvoice = res.items;
-              x.Totals = res.Totals.Totals;
-            });
-          }
-          if (x.Type == "Payment") {
-            GetPaymentByListId({ listid: x.Fktable }).then((res) => {
-              x.Payment = res.items;
-              x.Totals = res.Totals.Totals;
-            });
-          }
-          return x;
+        this.list = response.items;
+        this.list = this.list.map((x) => {
+          return this.GetListId(x);
         });
+        console.log("sdsad", this.list);
+
         this.listLoading = false;
+      });
+    },
+    GetListId(item) {
+      return new Promise(async (resolve, reject) => {
+        if (item.Type == "SaleInvoice") {
+          GetSaleInvoiceByListId({ listid: item.Fktable }).then((res) => {
+            item.Totals = res.Totals;
+            item.SaleInvoice = res.items;
+            resolve(item);
+
+            console.log((item.Totals, res.Totals));
+          });
+        }
+        if (item.Type == "Payment") {
+          GetPaymentByListId({ listid: x.Fktable }).then((res) => {
+            item.Totals = res.Totals;
+            item.Payment = res.items;
+            resolve(item);
+          });
+        }
       });
     },
     handleFilter() {

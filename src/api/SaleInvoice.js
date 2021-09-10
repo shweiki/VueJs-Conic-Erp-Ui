@@ -60,11 +60,11 @@ export function GetSaleInvoiceById(query) {
     params: query
   })
 }
-export function GetSaleInvoiceByListId(query) {
+export function GetSaleInvoiceByListId(data) {
   return request({
     url: '/SaleInvoice/GetSaleInvoiceByListId',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: qs.stringify(data)
   })
 }
 export function GetSaleInvoiceByVendorId(query) {
