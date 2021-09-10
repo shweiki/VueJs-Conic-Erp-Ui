@@ -107,6 +107,7 @@
                 </el-row>
                 <el-row :gutter="24">
                     <order-details-mobile :Temp="option" caller="Driver" />
+                 <el-col :span="12" style="padding-top: 10px;">
                   <div v-if="option.Status == 1">  
                   <el-popconfirm
                     confirm-button-text='نعم'
@@ -117,7 +118,6 @@
                     > 
                    <el-button 
                    slot="reference"
-                          style="float: right; "
                           type="success"
                           :size="$store.getters.size"
                           >استلام الطلب </el-button>
@@ -127,18 +127,19 @@
                   <el-popconfirm
                     confirm-button-text='نعم'
                     cancel-button-text='لا, شكرا'
+                    confirm-button-type="warning"
                     icon="el-icon-info"
                     :title= "` ${option.Id} تأكيد توصيل طلب رقم`"
                     @confirm="HasDelivered(option.Id)"
                     > 
                    <el-button 
                    slot="reference"
-                          style="float: right; "
-                          type="success"
+                          type="warning"
                           :size="$store.getters.size"
                           >توصيل الطلب </el-button>
                   </el-popconfirm>
                         </div>
+                        </el-col>
                 </el-row>
                 <!-- <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
                     <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />

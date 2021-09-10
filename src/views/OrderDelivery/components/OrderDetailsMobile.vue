@@ -1,6 +1,6 @@
 <template>
 <div>
-           <el-col :span="12" v-if="Temp.Status == 0 || caller=='Driver'" style="padding-top: 10px;">
+           <el-col :span="12" v-if="Temp.Status == 0 || Temp.Status == 3 || caller=='Driver'" style="padding-top: 10px;">
              <el-button 
           style="float: right"
           icon="el-icon-info"
@@ -9,7 +9,7 @@
           @click="dialogFormVisible = true"
           >{{$t("Delivery.Details")}} </el-button>
           </el-col> 
-          <el-col :span="24" v-else-if="caller=='Manager'" >
+          <el-col :span="24" v-else-if="Temp.Status == 1 || Temp.Status == 2" >
              <el-button 
           style="float: right; "
           icon="el-icon-info"
@@ -23,6 +23,7 @@
           :show-close="false"
           :title="$t('Delivery.DOrderInfo')"
           width="100%"
+          center
           :visible.sync="dialogFormVisible"> 
    
        <el-descriptions class="margin-top" :title="$t('Delivery.CustomerInfo')" :column="1" border>
@@ -117,7 +118,12 @@
       <el-tag size="small">{{Content}}</el-tag>
     </el-descriptions-item> -->
   </el-descriptions>
-    
+  <span slot="footer" class="dialog-footer">
+    <el-button 
+    size="medium"
+          @click="dialogFormVisible = false"
+    type="danger">الغاء</el-button>
+  </span>
       </el-dialog>
 </div>
 </template>

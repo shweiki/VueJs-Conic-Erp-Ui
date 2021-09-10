@@ -55,6 +55,13 @@ export function OrderDelivered(data) {
     data: qs.stringify(data)
   })
 }
+export function OrderDone(data) {
+  return request({
+    url: '/OrderDelivery/OrderDone',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function GetByListQByDriver(data) {
   return request({
     url: '/OrderDelivery/GetByListQByDriver',
