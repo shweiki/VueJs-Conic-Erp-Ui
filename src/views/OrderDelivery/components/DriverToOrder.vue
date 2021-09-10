@@ -1,15 +1,16 @@
 <template>
   <div>
+    <el-col :span="12" v-if="Temp.Status == 0" style="padding-top: 10px;">
     <el-button
-      v-if="Temp.Status == 0"
+      
       style="float: left"
       type="success"
       :size="$store.getters.size"
       icon="el-icon-plus"
       @click="dialogFormVisible = true"
     >
-      {{ $t("Delivery.AssignDriver") }}</el-button
-    >
+      {{ $t("Delivery.AssignDriver") }}</el-button>
+    </el-col>
     <el-dialog
       ref="dataForm"
       style="margin-top: -13vh"

@@ -1,14 +1,24 @@
 <template>
   <div>
-    <el-button
-      v-if="Temp.Status == 0"
+    <el-col :span="12" v-if="Temp.Status == 0" style="padding-top: 10px;">
+     <el-button
       style="float: right"
       icon="el-icon-info"
       type="primary"
       :size="$store.getters.size"
       @click="dialogFormVisible = true"
       >{{ $t("Delivery.Details") }}
-    </el-button>
+    </el-button> 
+    </el-col> 
+     <el-col :span="24" v-else style="padding-top: 10px;">
+             <el-button 
+          style="float: right"
+          icon="el-icon-info"
+          type="primary"
+          :size="$store.getters.size"
+          @click="dialogFormVisible = true"
+          >{{$t("Delivery.Details")}} </el-button>
+          </el-col> 
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
@@ -50,7 +60,9 @@
             <i class="el-icon-mobile-phone"></i>
             {{ $t("Delivery.Phone") }}
           </template>
-          <el-tag size="small">{{ Temp.PhoneNumber }}</el-tag>
+          <el-tag size="small" type="success">
+      <a :href="`tel:+${ Temp.PhoneNumber }`"> {{ Temp.PhoneNumber }} </a>
+      </el-tag>
         </el-descriptions-item>
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"

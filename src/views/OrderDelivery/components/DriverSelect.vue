@@ -17,7 +17,7 @@
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="3">
+      <el-col v-if="$store.getters.device != 'mobile'" :span="3">
         <el-tooltip v-bind:content="$t('Delivery.AddDriver')" placement="top">
           <add-driver />
         </el-tooltip>

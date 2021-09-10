@@ -45,10 +45,10 @@
       </el-col>
     </el-row>
     <div v-loading="listLoading" class="container">
-      <div class="row">
+      <div class="row" >
         <el-row :gutter="20" class="panel-group" style="margin: 20px 2px">
           <div v-for="(option, index) in list" :key="index">
-            <el-col :xs="12" :sm="8" :lg="6" class="card-panel-col">
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" class="card-panel-col">
               <div class="card-panel">
                 <el-row :gutter="20">
                   <el-col :span="8">
@@ -101,11 +101,14 @@
                     </div>
                   </el-col>
                 </el-row>
-                <el-row v-if="option.Driver != null" :gutter="24">
+                <el-row :gutter="24" >
                   <el-col :span="12">
                     <div class="card-panel-description">
-                      <div class="card-panel-id">
+                      <div class="card-panel-id" v-if="option.Driver != null">
                         {{ option.Driver.Name }}
+                      </div>
+                       <div class="card-panel-id" v-else >
+                        لا يوجد سائق
                       </div>
                     </div>
                   </el-col>
@@ -116,20 +119,12 @@
                   </el-col>
                 </el-row>
                 <el-row v-if="$store.getters.device != 'mobile'" :gutter="24">
-                  <el-col :span="12">
                     <driver-to-order :Temp="option" @Done="handleFilter()" />
-                  </el-col>
-                  <el-col :span="12">
                     <order-details :Temp="option" />
-                  </el-col>
                 </el-row>
                 <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
-                  <el-col :span="12">
-                    <driver-to-order :Temp="option" @Done="handleFilter()" />
-                  </el-col>
-                  <el-col :span="12">
-                    <order-details :Temp="option" />
-                  </el-col>
+                    <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
+                    <order-details-mobile :Temp="option" />
                 </el-row>
               </div>
             </el-col>
@@ -155,6 +150,8 @@ import Pagination from "@/components/Pagination"; // secondary package based on 
 import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
+import DriverToOrderMobile from "./DriverToOrderMobile.vue";
+import OrderDetailsMobile from "./OrderDetailsMobile.vue";
 
 export default {
   name: "DeliveryCards",
@@ -165,6 +162,8 @@ export default {
     SortOptions,
     RadioOprations,
     StatusIcon,
+    DriverToOrderMobile,
+    OrderDetailsMobile,
   },
   directives: { waves },
   data() {
@@ -190,7 +189,6 @@ export default {
       GetOrderDelivery(this.listQuery)
         .then((res) => {
           // handle success
-          console.log("order data", res);
           this.list = res.items;
           this.Totals = res.Totals;
           this.listLoading = false;
@@ -215,7 +213,7 @@ export default {
   }
 
   .card-panel {
-    height: 140px;
+    height: 170px;
     cursor: pointer;
     font-size: 14px;
     position: relative;
@@ -225,6 +223,7 @@ export default {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
     padding-left: 15px;
     padding-right: 10px;
+    padding-top: 5px;
 
     &:hover {
       .card-panel-icon-wrapper {
@@ -252,13 +251,13 @@ export default {
       margin-left: 0px;
 
       .card-panel-name {
-        line-height: 18px;
+        line-height: 20px;
         color: rgba(0, 0, 0, 0.8);
         font-size: 12px;
         text-align: right;
       }
       .card-panel-time {
-        line-height: 18px;
+        line-height: 20px;
         color: rgba(0, 0, 0, 0.45);
         font-size: 14px;
         margin-bottom: 4px;
@@ -266,13 +265,13 @@ export default {
       }
       .card-panel-phone {
         text-align: left;
-        line-height: 18px;
+        line-height: 20px;
         color: rgba(0, 0, 0, 0.8);
         font-size: 12px;
       }
       .card-panel-id {
         text-align: left;
-        line-height: 18px;
+        line-height: 20px;
         color: rgb(0, 0, 0);
         font-size: 14px;
       }
@@ -283,20 +282,21 @@ export default {
 @media only screen and (max-width: 767px) {
   .el-col-xs-24 {
     .card-panel {
-      height: 300px;
+      height: 190px;
+      padding-top: 5px;
       .card-panel-description {
         float: none;
         .card-panel-id {
           text-align: center;
-          line-height: 10px;
+          line-height: 25px;
         }
         .card-panel-name {
           text-align: center;
-          line-height: 10px;
+          line-height: 25px;
         }
         .card-panel-time {
           text-align: center;
-          line-height: 10px;
+          line-height: 25px;
         }
       }
     }
