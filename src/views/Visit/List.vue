@@ -140,17 +140,6 @@
       <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
 
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.InvoiceVisitDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.AccountInvoiceNumber')"
-        width="120"
-        align="center"
-        prop="AccountInvoiceNumber"
-      ></el-table-column>
       <el-table-column
         v-bind:label="$t('CashPool.Pay')"
         width="120"
@@ -184,38 +173,6 @@
             @Done="handleFilter"
           />
           <Drawer-Print Type="Visit" :Data="scope.row" />
-        </template>
-      </el-table-column>
-      <el-table-column type="expand" align="center">
-        <template slot-scope="props">
-          <el-table :data="props.row.InventoryMovements">
-            <el-table-column
-              prop="Name"
-              v-bind:label="$t('CashPool.Items')"
-              width="130"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="Qty"
-              v-bind:label="$t('CashPool.quantity')"
-              align="center"
-            ></el-table-column>
-            <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
-              <template slot-scope="scope">{{
-                scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
-              }}</template>
-            </el-table-column>
-            <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-              <template slot-scope="scope"
-                >{{
-                  (scope.row.SellingPrice * scope.row.Qty).toFixed(
-                    $store.getters.settings.ToFixed
-                  )
-                }}
-                JOD</template
-              >
-            </el-table-column>
-          </el-table>
         </template>
       </el-table-column>
     </el-table>
