@@ -144,7 +144,7 @@
           ></el-input-number>
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.Region')" prop="Region">
-          <select-region
+          <Select-Region
             :Value="tempForm.Region"
             @SetRegion="
               (v) => {
@@ -152,8 +152,6 @@
               }
             "
           />
-
-          \ <el-input type="text" v-model="tempForm.Region"></el-input>
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.Fax')" prop="Fax">
           <el-input type="text" v-model="tempForm.Fax"></el-input>
@@ -171,7 +169,7 @@ import { Edit, GetById } from "@/api/Vendor";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
-import SelectRegion from "@/components/Regions/SelectRegion";
+import SelectRegion from "@/components/Regions/SelectRegion.vue";
 
 export default {
   name: "Vendor",

@@ -4,8 +4,13 @@
     <el-button @click="AddVendor" plain :disabled="isDisabled" type="success"
       >Push</el-button
     >
+    <el-radio-group v-model="radio">
+      <el-radio label="Create">Create</el-radio>
+      <el-radio label="CreateWithCheck">Create With Check </el-radio>
+      <el-radio label="9">Option C</el-radio>
+    </el-radio-group>
     <el-table
-      height="250"
+      height="500"
       v-loading="loading"
       :data="tableData"
       border
@@ -24,7 +29,7 @@
 
 <script>
 import UploadExcelComponent from "@/components/UploadExcel/index.vue";
-import { Create } from "@/api/Vendor";
+import { Create, CheckIsExist } from "@/api/Vendor";
 
 export default {
   name: "Vendor",
@@ -32,6 +37,7 @@ export default {
   data() {
     return {
       isDisabled: true,
+      radio: "Create",
       loading: false,
       tableData: [],
       data: [],
@@ -39,33 +45,54 @@ export default {
     };
   },
   methods: {
-    AddVendor() {
+    async AddVendor() {
       this.loading = true;
       this.isDisabled = true;
+      if (this.radio == "Create") this.CreateVendor(this.data[0]);
 
-      Create(this.data[0])
+      if (this.radio == "CreateWithCheck") {
+        var found = await this.Check(this.data[0].Name, this.data[0].PhoneNumber1);
+        if (!found) {
+          this.CreateVendor(this.data[0]);
+        } else {
+          console.log("tag", "يوجد شخص يحمل نفس الاسم / رقم الهاتف");
+        }
+      }
+
+      this.data.splice(0, 1);
+      if (this.data.length != 0) {
+        this.AddVendor();
+      } else {
+        this.loading = false;
+        this.tableData = [];
+        this.$notify({
+          title: "تم ",
+          message: "تم الإضافة بنجاح",
+          type: "success",
+          duration: 2000,
+        });
+      }
+    },
+    CreateVendor(temp) {
+      Create(temp)
         .then((response) => {
           console.log("tag", "" + response);
-          this.data.splice(0, 1);
-          if (this.data.length != 0) {
-            this.AddVendor();
-          } else {
-            this.loading = false;
-            this.tableData = [];
-            this.$notify({
-              title: "تم ",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              duration: 2000,
-            });
-          }
         })
         .catch((error) => {
           console.log(error);
           //this.AddVendor(100), 1000);
         });
     },
-
+    Check(Name, PhoneNumber, Region) {
+      return new Promise((resolve) => {
+        CheckIsExist({
+          Name: Name,
+          PhoneNumber: PhoneNumber,
+        }).then((res) => {
+          resolve(res);
+        });
+      });
+    },
     beforeUpload(file) {
       const isLt1M = file.size / 1024 / 1024 < 8;
 
@@ -84,7 +111,7 @@ export default {
       this.tableData = results;
       console.log(this.tableData);
       this.data = this.tableData.map((x) => {
-        /*    let Phone1 = x.Description.toString().match(/\d+/);
+        let Phone1 = x.Description.toString().match(/\d+/);
         let Name = x.Description.toString().replace(/[0-9]/g, "");
 
         if (Phone1 == null || Phone1[0].length != 10) {
@@ -106,9 +133,9 @@ export default {
           CreditLimit: 0.0,
           Description: "",
           IsPrime: false,
-          Type: "Customer"
+          Type: "Customer",
         };
-        */
+        /*
         return {
           Id: undefined,
           Name: x.Name,
@@ -122,6 +149,7 @@ export default {
           IsPrime: false,
           Type: x.Type,
         };
+        */
       });
       const seen = new Set();
       this.data = this.data.filter((el) => {
@@ -133,6 +161,7 @@ export default {
       this.isDisabled = false;
       this.loading = false;
     },
+
     ExcelDateToJSDate(serial) {
       var utc_days = Math.floor(serial - 25569);
       var utc_value = utc_days * 86400;

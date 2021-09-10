@@ -8,8 +8,10 @@
         })"
         :key="op.Id"
         v-bind:label="op.Status"
-        >{{ op.OprationDescription }}</el-radio-button
-      >
+        :fill="op.Color"
+        >{{ op.OprationDescription }}
+        <i v-if="op.IconClass != null" :class="op.IconClass"></i>
+      </el-radio-button>
     </el-radio-group>
   </div>
 </template>

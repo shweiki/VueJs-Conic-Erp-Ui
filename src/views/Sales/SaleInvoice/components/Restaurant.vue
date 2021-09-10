@@ -446,7 +446,7 @@ import VendorSelect from "@/components/Vendor/VendorSelect";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
 import FakeDate from "@/components/Date/FakeDate";
-import { PrintReport } from "@/Report/FunctionalityReport";
+import { PrintReport, VisualizationReportHtml } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import { Create as CreateDelivery } from "@/api/OrderDelivery";
@@ -458,6 +458,7 @@ import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
 import DrawerSearchInvoice from "@/components/Sales/DrawerSearchInvoice.vue";
+import { Create as CreateVendor, CheckIsExist as CheckVendorIsExist } from "@/api/Vendor";
 
 import { SendSMS } from "@/api/SMS";
 
@@ -548,7 +549,6 @@ export default {
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0, 0.7)",
     });
-
     loading.close();
   },
   methods: {
@@ -633,26 +633,17 @@ export default {
                   this.tempForm.Id = response;
                   this.tempForm.Total = Total;
                   this.OldInvoice = this.tempForm;
+                  this.CheckVendor(
+                    this.tempForm.Name,
+                    this.tempForm.PhoneNumber,
+                    this.tempForm.Region
+                  );
 
                   if (
                     this.OldInvoice.Type == "Delivery" &&
                     this.$store.getters.settings.PointOfSale.CreateDelivery == true
                   ) {
-                    CreateDelivery({
-                      Id: undefined,
-                      Name: this.tempForm.Name,
-                      TotalPrice: this.tempForm.DeliveryPrice + Total,
-                      Status: 0,
-                      Description: this.tempForm.Description,
-                      FakeDate: this.tempForm.FakeDate,
-                      PhoneNumber: this.tempForm.PhoneNumber,
-                      Region: this.tempForm.Region,
-                      DeliveryPrice: this.tempForm.DeliveryPrice,
-                      TotalPill: Total,
-                      Content: JSON.stringify(this.tempForm.InventoryMovements),
-                    }).then((res) => {
-                      console.log("CreateDelivery is ", res);
-                    });
+                    this.CreateDelivery(this.OldInvoice);
                   }
 
                   if (this.AutoPrint == true) {
@@ -697,6 +688,82 @@ export default {
             this.OpenRestOfBill = false;
             return false;
           }
+        }
+      });
+    },
+    async CreateDelivery(temp) {
+      let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
+      CreateDelivery({
+        Id: undefined,
+        Name: temp.Name,
+        TotalPrice: temp.DeliveryPrice + temp.Total,
+        Status: 0,
+        Description: temp.Description,
+        FakeDate: temp.FakeDate,
+        PhoneNumber: temp.PhoneNumber,
+        Region: temp.Region,
+        DeliveryPrice: temp.DeliveryPrice,
+        TotalPill: temp.Total,
+        Content: " " + ReportContentHtml,
+      }).then((res) => {
+        if (res) {
+          this.$notify({
+            title: "تم ",
+            message: "تم ارسال الطلب لشركة التوصيل بنجاح",
+            type: "success",
+            duration: 2000,
+          });
+        } else {
+          this.$notify({
+            position: "top-left",
+            title: "تم ",
+            message: " حصلت مشكلة في عملية ارسال طلب التوصيل",
+            type: "error",
+            duration: 20000,
+          });
+        }
+      });
+    },
+    CheckVendor(Name, PhoneNumber, Region) {
+      CheckVendorIsExist({
+        Name: Name,
+        //  Ssn: this.tempForm.Ssn,
+        PhoneNumber: PhoneNumber,
+      }).then((res) => {
+        if (!res) {
+          CreateVendor({
+            Id: undefined,
+            Name: Name,
+            Ssn: "",
+            Region: Region,
+            Email: "",
+            PhoneNumber1: PhoneNumber,
+            PhoneNumber2: "",
+            Fax: "0",
+            CreditLimit: 0.0,
+            Description: "",
+            IsPrime: false,
+            Type: "Customer",
+          })
+            .then((response) => {
+              this.$notify({
+                title: "تم ",
+                message: "تم الإضافة بنجاح",
+                type: "success",
+                duration: 2000,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          this.$notify({
+            position: "top-left",
+            title: "تم ",
+            message: " يوجد شخص يحمل نفس رقم الهاتف او الاسم",
+            type: "warning",
+            duration: 20000,
+          });
         }
       });
     },

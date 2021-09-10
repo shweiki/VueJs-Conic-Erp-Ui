@@ -2,53 +2,56 @@
   <section class="overview-block-ptb">
     <div class="container">
       <div class="row">
-<el-row :gutter="24" class="panel-group" style="  margin: 20px 2px;">
-  <div v-for="(option,index) in DeliveryData" :key="index">
-<el-col :span="24" class="card-panel-col">
-  <div class="card-panel">
-<el-col>
-  <el-row>
-   <div class="card-panel-description">
-           
-          <div class="card-panel-time">{{ option.FakeDate | parseTime("{m}-{d} {h}:{i}") }}</div>
-        </div>
+        <el-row :gutter="24" class="panel-group" style="margin: 20px 2px">
+          <div v-for="(option, index) in DeliveryData" :key="index">
+            <el-col :span="24" class="card-panel-col">
+              <div class="card-panel">
+                <el-col>
+                  <el-row>
+                    <div class="card-panel-description">
+                      <div class="card-panel-time">
+                        {{ option.FakeDate | parseTime("{m}-{d} {h}:{i}") }}
+                      </div>
+                    </div>
+                  </el-row>
+                  <el-row>
+                    <div class="card-panel-description">
+                      <div class="card-panel-name">{{ option.Name }}</div>
+                    </div>
+                  </el-row>
+                  <el-row>
+                    <div class="card-panel-description">
+                      <div class="card-panel-name">{{ option.Region }}</div>
+                    </div>
+                  </el-row>
+                  <el-row>
+                    <div class="card-panel-description">
+                      <div class="card-panel-name">{{ option.TotalPrice }}</div>
+                    </div>
+                  </el-row>
+                  <el-row>
+                    <order-details
+                      :Id="option.Id"
+                      :Status="option.Status"
+                      :Name="option.Name"
+                      :PhoneNumber="option.PhoneNumber"
+                      :TotalPill="option.TotalPill"
+                      :TotalPrice="option.TotalPrice"
+                      :Description="option.Description"
+                      :FakeDate="option.FakeDate"
+                      :Region="option.Region"
+                      :DeliveryPrice="option.DeliveryPrice"
+                      :Driver="option.Driver"
+                      :Content="option.Content"
+                    />
+                  </el-row>
+                </el-col>
+                <el-col></el-col>
+                <el-col></el-col>
+              </div>
+            </el-col>
+          </div>
         </el-row>
-        <el-row>
-        <div class="card-panel-description">
-           <div class="card-panel-name"> {{option.Name}} </div> </div>
-           </el-row>
-           <el-row>
-            <div class="card-panel-description">
-           <div class="card-panel-name"> {{option.Region}} </div> </div>
-           </el-row>
-           <el-row>
-            <div class="card-panel-description">
-           <div class="card-panel-name">{{option.TotalPrice}} </div> </div>
-           </el-row>
-           <el-row>
-              <order-details
-                :Id="option.Id"
-                :Status="option.Status"
-                :Name="option.Name"
-                :PhoneNumber="option.PhoneNumber"
-                :TotalPill="option.TotalPill"
-                :TotalPrice="option.TotalPrice"
-                :Description="option.Description"
-                :FakeDate="option.FakeDate"
-                :Region="option.Region"
-                :DeliveryPrice="option.DeliveryPrice"
-                :Driver="option.Driver"
-                :Content="option.Content"
-                 />
-                 </el-row>
-</el-col>
-<el-col></el-col>
-<el-col></el-col>
-</div>
-</el-col>
-  </div>
-</el-row> 
-
       </div>
     </div>
   </section>
@@ -59,31 +62,34 @@ import DriverToOrder from "./DriverToOrder.vue";
 import { GetDriverOrder } from "@/api/OrderDelivery";
 import { mapGetters } from "vuex";
 export default {
-  name: 'DeliveryCards',
-components: {
-    OrderDetails, DriverToOrder },
-  data () {
+  name: "DeliveryCards",
+  components: {
+    OrderDetails,
+    DriverToOrder,
+  },
+  data() {
     return {
       DeliveryData: [],
       user: {},
-    }
+    };
   },
   computed: {
     ...mapGetters(["Id", "name"]),
   },
   created() {
-     this.getdata();
+    this.getdata();
   },
   methods: {
-     getdata() {
-       this.user = {
+    getdata() {
+      this.user = {
         Id: this.Id,
-        name: this.name}
+        name: this.name,
+      };
       this.loading = true;
-      GetDriverOrder({ id: this.user.Id, name: this.user.name})
+      GetDriverOrder({ id: this.user.Id, name: this.user.name })
         .then((response) => {
           // handle success
-          console.log("order data",response);
+          console.log("order data", response);
           this.DeliveryData = response;
           this.loading = false;
         })
@@ -92,15 +98,12 @@ components: {
           console.log(error);
         });
     },
-  }
-  
-}
-
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .panel-group {
-
   .card-panel-col {
     margin-bottom: 10px;
   }
@@ -123,9 +126,7 @@ components: {
         color: #fff;
         background: #1b3459;
       }
-
     }
-
 
     .card-panel-icon-wrapper {
       color: #36a3f7;
@@ -147,9 +148,9 @@ components: {
       margin: 10px;
       margin-left: 0px;
 
-       .card-panel-name {
+      .card-panel-name {
         line-height: 18px;
-        color: rgba(0, 0, 0, 0.80);
+        color: rgba(0, 0, 0, 0.8);
         font-size: 16px;
         margin-bottom: 12px;
         text-align: right;
@@ -162,17 +163,17 @@ components: {
         text-align: right;
       }
       .card-panel-phone {
-      text-align: left;
-      line-height: 18px;
-        color: rgba(0, 0, 0, 0.80);
+        text-align: left;
+        line-height: 18px;
+        color: rgba(0, 0, 0, 0.8);
         font-size: 20px;
-        }
-        .card-panel-id {
-      text-align: left;
-      line-height: 18px;
+      }
+      .card-panel-id {
+        text-align: left;
+        line-height: 18px;
         color: rgb(0, 0, 0);
         font-size: 24px;
-        }
+      }
 
       .card-panel-num {
         font-size: 20px;

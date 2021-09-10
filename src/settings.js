@@ -1,16 +1,16 @@
 module.exports = {
-    theme: '#74b9ff',
-    title: 'High  Fit',
-    language: 'ar',
+    theme: "#74b9ff",
+    title: "High  Fit",
+    language: "ar",
     size: "mini",
     customtheme: false,
     showSettings: true,
     BusinessType: "SuperMarkit",
     tagsView: true,
-    CashDrawerCOM: { COM: "COM7", OpenKeyBoard: 'F4' },
+    CashDrawerCOM: { COM: "COM7", OpenKeyBoard: "F4" },
     fixedHeader: false,
-    SidebarImage: '', // require("@/assets/Sidebar_images/sidebar-1.jpg"),
-    loginBackground: '', // require("@/assets/Login_images/Login-1.jpg"),  
+    SidebarImage: "", // require("@/assets/Sidebar_images/sidebar-1.jpg"),
+    loginBackground: "", // require("@/assets/Login_images/Login-1.jpg"),  
     showSidebar: true,
     sidebarLogo: true,
     sidebarOpen: true,
@@ -25,9 +25,9 @@ module.exports = {
     Sms: {
         baseURLSendSingleMessage: "",
         baseURLSendBulkMessages: "",
-        senderid: "", //'High Fit'
-        AccName: "", //'highfit',
-        AccPass: "", //'D7!cT5!SgU0'
+        senderid: "", //"High Fit"
+        AccName: "", //"highfit",
+        AccPass: "", //"D7!cT5!SgU0"
     },
     OutgoingMailServer: {
         SecureToken: "",//b713dae2-4536-43e1-99d7-fb7bfc9bff7a
@@ -36,52 +36,52 @@ module.exports = {
         Password: "", // *****
         From: "", // hello@conic-isv.com
     },
-    errorLog: 'production',
-    DateTimeFormat: 'yyyy-MM-dd HH:mm',
+    errorLog: "production",
+    DateTimeFormat: "yyyy-MM-dd HH:mm",
     StatusQuery: 0,
     Member: {
         CheckMemberIsExist: true,
     },
     Dashboard: {
-        Layout: 'Public',
-        ShowPanelGroup :{
-            Items :true,
-            Members :true,
-            MembersActive :true,
-            MsgCredit :true,
-            Clients :true,
-            Suppliers :true,
-            Purchases :true,
-            Sales :true,
+        Layout: "Public",
+        ShowPanelGroup: {
+            Items: true,
+            Members: true,
+            MembersActive: true,
+            MsgCredit: true,
+            Clients: true,
+            Suppliers: true,
+            Purchases: true,
+            Sales: true,
         }
     },
     PointOfSale: {
-        Layout: 'Public',
+        Layout: "Public",
         WithImage: false,
         CreateEntry: false,
         CreateDelivery: false,
-        DeliveryUrl: 'http://localhost:8090/OrderDelivery/Create'
+        DeliveryUrl: "http://localhost:8090/OrderDelivery/Create"
     },
-    CashPoolLayout: 'Restaurant',
-    PurchaseLayout: 'SuperMarket',
-    WorkShopLayout: 'Pubilc',
+    CashPoolLayout: "Restaurant",
+    PurchaseLayout: "SuperMarket",
+    WorkShopLayout: "Pubilc",
     Payment: {
-        Layout: 'Public',
+        Layout: "Public",
         CreateEntry: true
     },
     Receive: {
-        Layout: 'Public',
+        Layout: "Public",
         CreateEntry: true
     },
     MembershipMovement: {
         InComeAccountId: 2,
     },
     Visit: {
-        Layout: 'Public',
+        Layout: "Public",
         CreateEntry: false
     },
-    timeQuery: ['00:00:00', '23:59:59'],
-    printers: ['Casher', 'WorkTable1', 'WorkTable2'],
+    timeQuery: ["00:00:00", "23:59:59"],
+    printers: ["Casher", "WorkTable1", "WorkTable2"],
     triger: {
         "CheckMembers": {
             lock: false,
@@ -89,7 +89,7 @@ module.exports = {
             OnClock: 7 /// 24 base
         }
     },
-    windowStyle: 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=55,left=500',
+    windowStyle: "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=55,left=500",
     pickerOptions: {
         shortcuts: [{
             text: "اليوم",

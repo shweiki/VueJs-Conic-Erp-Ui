@@ -5,7 +5,7 @@
         @click="SetOnDevice(item.Id, item.Name)"
         type="primary"
         icon="el-icon-arrow-left"
-        >ارسال البيانات الى{{ item.Name }}</el-button
+        >تحديث البيانات الى{{ item.Name }}</el-button
       >
       <el-button
         @click="StartEnrollUserOnDevice(item.Id, item.Name)"

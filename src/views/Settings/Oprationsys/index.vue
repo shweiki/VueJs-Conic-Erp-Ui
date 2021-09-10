@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" >
+      <div slot="header">
         <el-button
           style="float: left"
           type="success"
@@ -15,9 +15,8 @@
       <el-table
         :data="
           tableData.filter(
-            data =>
-              !search ||
-              data.TableName.toLowerCase().includes(search.toLowerCase())
+            (data) =>
+              !search || data.TableName.toLowerCase().includes(search.toLowerCase())
           )
         "
         style="width: 100%"
@@ -95,33 +94,24 @@
       :title="textMapForm[dialogFormStatus]"
       :visible.sync="dialogFormVisible"
     >
-      <el-form
-        ref="dataForm"
-        :rules="rulesForm"
-        :model="tempForm"
-        label-position="right"
-      >
-        <el-form-item
-          v-bind:label="$t('OperationSys.TableName')"
-          prop="TableName"
-        >
+      <el-form ref="dataForm" :rules="rulesForm" :model="tempForm" label-position="right">
+        <el-form-item v-bind:label="$t('OperationSys.TableName')" prop="TableName">
           <el-input type="text" v-model="tempForm.TableName"></el-input>
         </el-form-item>
         <el-form-item v-bind:label="$t('OperationSys.Color')" prop="Color">
-          <el-color-picker v-model="tempForm.Color"></el-color-picker>
+          <el-color-picker
+            v-model="tempForm.Color"
+            show-alpha
+            :predefine="predefineColors"
+          >
+          </el-color-picker>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('OperationSys.OprationName')"
-          prop="OprationName"
-        >
+        <el-form-item v-bind:label="$t('OperationSys.OprationName')" prop="OprationName">
           <el-input type="text" v-model="tempForm.OprationName"></el-input>
         </el-form-item>
         <div class="row">
           <div class="col">
-            <el-form-item
-              v-bind:label="$t('OperationSys.Status')"
-              prop="Status"
-            >
+            <el-form-item v-bind:label="$t('OperationSys.Status')" prop="Status">
               <el-input-number
                 v-model="tempForm.Status"
                 :step="1"
@@ -144,35 +134,23 @@
             </el-form-item>
           </div>
         </div>
-        <el-form-item
-          v-bind:label="$t('OperationSys.IconClass')"
-          prop="IconClass"
-        >
+        <el-form-item v-bind:label="$t('OperationSys.IconClass')" prop="IconClass">
           <el-input type="text" v-model="tempForm.IconClass"></el-input>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('OperationSys.ClassName')"
-          prop="ClassName"
-        >
+        <el-form-item v-bind:label="$t('OperationSys.ClassName')" prop="ClassName">
           <el-input type="text" v-model="tempForm.ClassName"></el-input>
         </el-form-item>
         <el-form-item
           v-bind:label="$t('OperationSys.ArabicOprationDescription')"
           prop="ArabicOprationDescription"
         >
-          <el-input
-            type="text"
-            v-model="tempForm.ArabicOprationDescription"
-          ></el-input>
+          <el-input type="text" v-model="tempForm.ArabicOprationDescription"></el-input>
         </el-form-item>
         <el-form-item
           v-bind:label="$t('OperationSys.OprationDescription')"
           prop="OprationDescription"
         >
-          <el-input
-            type="text"
-            v-model="tempForm.OprationDescription"
-          ></el-input>
+          <el-input type="text" v-model="tempForm.OprationDescription"></el-input>
         </el-form-item>
         <el-form-item
           v-bind:label="$t('OperationSys.ControllerName')"
@@ -180,10 +158,7 @@
         >
           <el-input type="text" v-model="tempForm.ControllerName"></el-input>
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('OperationSys.RoleName')"
-          prop="RoleName"
-        >
+        <el-form-item v-bind:label="$t('OperationSys.RoleName')" prop="RoleName">
           <el-input type="text" v-model="tempForm.RoleName"></el-input>
         </el-form-item>
       </el-form>
@@ -214,7 +189,7 @@ export default {
       tableData: [],
       textMapForm: {
         update: "تعديل",
-        create: "إضافة"
+        create: "إضافة",
       },
       tempForm: {
         Id: undefined,
@@ -228,23 +203,33 @@ export default {
         ReferenceStatus: null,
         IconClass: "",
         ClassName: "",
-        Color: ""
+        Color: "",
       },
       rulesForm: {
         TableName: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
+      predefineColors: [
+        "#ff4500",
+        "#ff8c00",
+        "#ffd700",
+        "#90ee90",
+        "#00ced1",
+        "#1e90ff",
+        "#c71585",
+        "#c7158577",
+      ],
     };
   },
   created() {
@@ -254,13 +239,13 @@ export default {
     getdata() {
       this.loading = true;
       GetOpration()
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
@@ -278,7 +263,7 @@ export default {
         ReferenceStatus: undefined,
         IconClass: "",
         ClassName: "",
-        Color: ""
+        Color: "",
       };
     },
     handleCreate() {
@@ -310,20 +295,20 @@ export default {
       });
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -333,20 +318,20 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -354,8 +339,7 @@ export default {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
-

@@ -24,19 +24,15 @@
         </el-col>
 
         <el-col :span="3">
-          <el-select
-            v-model="listQuery.Sort"
-            style="width: 140px"
-            class="filter-item"
-            @change="handleFilter"
-          >
-            <el-option
-              v-for="item in sortOptions"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
-            />
-          </el-select>
+          <Sort-Options
+            :Value="listQuery.Sort"
+            @Set="
+              (v) => {
+                listQuery.Sort = v;
+                handleFilter();
+              }
+            "
+          />
         </el-col>
         <el-col :span="6">
           <!-- <drawer-print
@@ -100,10 +96,15 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="Name" v-bind:label="$t('AddVendors.Name')" align="center">
+      <el-table-column
+        sortable
+        prop="Name"
+        v-bind:label="$t('AddVendors.Name')"
+        align="center"
+      >
       </el-table-column>
       <el-table-column
-      prop="PhoneNumber"
+        prop="PhoneNumber"
         v-bind:label="$t('MemberList.Phone')"
         width="120"
         align="center"
@@ -137,16 +138,17 @@
           JOD
         </template>
       </el-table-column>
-<el-table-column v-bind:label="$t('Delivery.Content')" prop="Content" align="center"> </el-table-column>
       <el-table-column
         v-bind:label="$t('Vendors.Description')"
         prop="Description"
-        align="center">
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Delivery.DriverName')"
         prop="Driver.Name"
-        align="center">
+        align="center"
+      >
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
@@ -173,7 +175,7 @@
 <script>
 import { GetByListQ } from "@/api/OrderDelivery";
 import NextOprations from "@/components/Oprationsys/NextOprations";
-import SearchByDate from "@/components/Date/SearchByDate";
+import SearchByDate from "@/components/Date/SearchByDate.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
@@ -181,6 +183,7 @@ import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
 
 export default {
   name: "ComplexTable",
@@ -190,6 +193,7 @@ export default {
     SearchByDate,
     DrawerPrint,
     Pagination,
+    SortOptions,
     DialogActionLog,
     RadioOprations,
   },
@@ -209,10 +213,7 @@ export default {
         DateTo: "",
         Status: undefined,
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" },
-      ],
+
       downloadLoading: false,
     };
   },

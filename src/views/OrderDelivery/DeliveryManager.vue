@@ -1,9 +1,6 @@
-﻿
-<template>
+﻿<template>
   <div class="app-container">
-   <delivery-cards
-   >
-   </delivery-cards>
+    <delivery-cards />
   </div>
 </template>
 
@@ -12,20 +9,16 @@ import DeliveryCards from "./components/DeliveryCards.vue";
 export default {
   name: "DeliveryManager",
   components: {
-    DeliveryCards
+    DeliveryCards,
   },
   data() {
     return {
       list: [],
-     
-     
     };
   },
   created() {
-     //this.getdata();
+    //this.getdata();
   },
-  methods: {
-
-  },
+  methods: {},
 };
 </script>

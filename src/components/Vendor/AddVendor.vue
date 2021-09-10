@@ -233,7 +233,6 @@ export default {
             //  Ssn: this.tempForm.Ssn,
             PhoneNumber: this.tempForm.PhoneNumber1,
           }).then((res) => {
-            console.log(res);
             if (!res) {
               Create(this.tempForm)
                 .then((response) => {

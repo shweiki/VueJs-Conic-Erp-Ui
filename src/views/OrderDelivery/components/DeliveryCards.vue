@@ -1,173 +1,225 @@
 <template>
   <section class="overview-block-ptb">
-    <div class="container">
+    <el-row type="flex">
+      <el-col :span="4">
+        <el-input
+          v-model="listQuery.Any"
+          placeholder="Search By Any  Name Or Id"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+      </el-col>
+
+      <el-col :span="3">
+        <Sort-Options
+          :Value="listQuery.Sort"
+          @Set="
+            (v) => {
+              listQuery.Sort = v;
+              handleFilter();
+            }
+          "
+        />
+      </el-col>
+      <el-col :span="10">
+        <Radio-Oprations
+          TableName="OrderDelivery"
+          @Set="
+            (v) => {
+              listQuery.Status = v;
+              handleFilter();
+            }
+          "
+        />
+      </el-col>
+      <el-col :span="6">
+        <el-button
+          v-waves
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          @click="handleFilter"
+        >
+          Search
+        </el-button>
+      </el-col>
+    </el-row>
+    <div v-loading="listLoading" class="container">
       <div class="row">
-<el-row :gutter="20" class="panel-group" style="  margin: 20px 2px;">
-  <div v-for="(option,index) in DeliveryData" :key="index">
+        <el-row :gutter="20" class="panel-group" style="margin: 20px 2px">
+          <div v-for="(option, index) in list" :key="index">
+            <el-col :xs="12" :sm="8" :lg="6" class="card-panel-col">
+              <div class="card-panel">
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <div class="card-panel-icon-wrapper icon-people">
+                      <Status-Icon
+                        class="card-panel-icon"
+                        :Status="option.Status"
+                        TableName="OrderDelivery"
+                      />
+                    </div>
+                  </el-col>
+                  <el-col :span="4">
+                    <div class="card-panel-description">
+                      <div class="card-panel-id">{{ option.Id }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="card-panel-description">
+                      <div class="card-panel-time">
+                        {{ option.FakeDate | parseTime("{m}-{d} {h}:{i}") }}
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
 
-
-    
- <el-col :xs="24" :sm="12" :lg="12" class="card-panel-col">
-      <div class="card-panel">
-        <el-row :gutter="20">
-             <el-col :xs="0" :sm="6" :lg="6">
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="neworder" class-name="card-panel-icon" />
-        </div>
-          </el-col> 
-          
-            <el-col :xs="24" :sm="8" :lg="8">
-               <br>
-            <div class="card-panel-description">
-           <div class="card-panel-id"> {{option.Id}} </div> </div>
-          </el-col> 
-          
-           <el-col :xs="24" :sm="10" :lg="10">
-        <div class="card-panel-description">
-           <br> 
-          <div class="card-panel-time">{{ option.FakeDate | parseTime("{m}-{d} {h}:{i}")}}</div>
-        </div>
-          </el-col>
+                <el-row :gutter="24">
+                  <el-col :span="12">
+                    <div class="card-panel-description">
+                      <div class="card-panel-phone">{{ option.PhoneNumber }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="card-panel-description">
+                      <div class="card-panel-name">{{ option.Name }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="24">
+                  <el-col :span="12">
+                    <div class="card-panel-description">
+                      <div class="card-panel-id">
+                        {{ option.TotalPrice.toFixed($store.getters.settings.ToFixed) }}
+                        JOD
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="card-panel-description">
+                      <div class="card-panel-name">{{ option.Region }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row v-if="option.Driver != null" :gutter="24">
+                  <el-col :span="12">
+                    <div class="card-panel-description">
+                      <div class="card-panel-id">
+                        {{ option.Driver.Name }}
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="card-panel-description">
+                      <div class="card-panel-name">اسم السائق</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row v-if="$store.getters.device != 'mobile'" :gutter="24">
+                  <el-col :span="12">
+                    <driver-to-order :Temp="option" @Done="handleFilter()" />
+                  </el-col>
+                  <el-col :span="12">
+                    <order-details :Temp="option" />
+                  </el-col>
+                </el-row>
+                <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
+                  <el-col :span="12">
+                    <driver-to-order :Temp="option" @Done="handleFilter()" />
+                  </el-col>
+                  <el-col :span="12">
+                    <order-details :Temp="option" />
+                  </el-col>
+                </el-row>
+              </div>
+            </el-col>
+          </div>
         </el-row>
-
-        <el-row :gutter="24">
-           <el-col :xs="0" :sm="8" :lg="8">
-            <div class="card-panel-description">
-           <div class="card-panel-phone"> {{option.PhoneNumber}} </div> </div>
-          </el-col>  
-          <el-col :xs="24" :sm="16" :lg="16">
-            <div class="card-panel-description">
-           <div class="card-panel-name"> {{option.Name}} </div> </div>
-          </el-col>  
-                
-          </el-row>
-
-           <el-row :gutter="24">
-            <el-col :xs="24" :sm="8" :lg="8">
-            <div class="card-panel-description">
-           <div class="card-panel-id"> {{option.TotalPrice}} JOD </div> </div>
-          </el-col> 
-          <el-col :xs="24" :sm="16" :lg="16">
-            <div class="card-panel-description">
-           <div class="card-panel-name"> {{option.Region}} </div> </div>
-          </el-col>          
-          </el-row>
-          <br>
-           <el-row :gutter="24">
-             <el-col :xs="0" :sm="24" :md="24" :lg="24" :xl="24" >
-             <driver-to-order 
-                :Id="option.Id"
-                :Status="option.Status"
-                :TotalPill="option.TotalPill"
-                :TotalPrice="option.TotalPrice"
-                :FakeDate="option.FakeDate"
-                :Region="option.Region"
-                :DeliveryPrice="option.DeliveryPrice"
-                 />
-                <order-details
-                :Id="option.Id"
-                :Status="option.Status"
-                :Name="option.Name"
-                :PhoneNumber="option.PhoneNumber"
-                :TotalPill="option.TotalPill"
-                :TotalPrice="option.TotalPrice"
-                :Description="option.Description"
-                :FakeDate="option.FakeDate"
-                :Region="option.Region"
-                :DeliveryPrice="option.DeliveryPrice"
-                :Driver="option.Driver"
-                :Content="option.Content"
-                 />
-             </el-col>
-                 <el-col :xs="24" :sm="0" :md="0" :lg="0" :xl="0">
-             <driver-to-order-mobile 
-                :Id="option.Id"
-                :Status="option.Status"
-                :TotalPill="option.TotalPill"
-                :TotalPrice="option.TotalPrice"
-                :FakeDate="option.FakeDate"
-                :Region="option.Region"
-                :DeliveryPrice="option.DeliveryPrice"
-                 />
-                <order-details-mobile
-                :Id="option.Id"
-                :Status="option.Status"
-                :Name="option.Name"
-                :PhoneNumber="option.PhoneNumber"
-                :TotalPill="option.TotalPill"
-                :TotalPrice="option.TotalPrice"
-                :Description="option.Description"
-                :FakeDate="option.FakeDate"
-                :Region="option.Region"
-                :DeliveryPrice="option.DeliveryPrice"
-                :Driver="option.Driver"
-                :Content="option.Content"
-                 />
-             </el-col>
-          </el-row>
-      </div>
-    </el-col>
-  </div>
-</el-row> 
-
       </div>
     </div>
+    <pagination
+      v-show="Totals.Rows > 0"
+      :total="Totals.Rows"
+      :page.sync="listQuery.Page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
   </section>
 </template>
 <script>
 import OrderDetails from "./OrderDetails.vue";
 import DriverToOrder from "./DriverToOrder.vue";
-import DriverToOrderMobile from "./DriverToOrderMobile.vue";
-import OrderDetailsMobile from "./OrderDetailsMobile.vue";
 import { GetOrderDelivery } from "@/api/OrderDelivery";
+import waves from "@/directive/waves"; // waves directive
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
+import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
+import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
+
 export default {
-  name: 'DeliveryCards',
-components: {
-    OrderDetails, DriverToOrder, OrderDetailsMobile, DriverToOrderMobile },
-  data () {
+  name: "DeliveryCards",
+  components: {
+    OrderDetails,
+    DriverToOrder,
+    Pagination,
+    SortOptions,
+    RadioOprations,
+    StatusIcon,
+  },
+  directives: { waves },
+  data() {
     return {
-      DeliveryData: [],
-    }
+      list: [],
+      Totals: { Rows: 0 },
+      listLoading: false,
+      listQuery: {
+        Page: 1,
+        Any: "",
+        limit: this.$store.getters.settings.LimitQurey,
+        Sort: "+id",
+        Status: undefined,
+      },
+    };
   },
   created() {
-     this.getdata();
+    this.handleFilter();
   },
   methods: {
-     getdata() {
-      this.loading = true;
-      GetOrderDelivery()
-        .then((response) => {
+    getList() {
+      this.listLoading = true;
+      GetOrderDelivery(this.listQuery)
+        .then((res) => {
           // handle success
-          console.log("order data",response);
-          this.DeliveryData = response;
-          this.loading = false;
+          console.log("order data", res);
+          this.list = res.items;
+          this.Totals = res.Totals;
+          this.listLoading = false;
         })
         .catch((error) => {
           // handle error
           console.log(error);
         });
     },
-  }
-  
-}
-
+    handleFilter() {
+      this.listQuery.Page = 1;
+      this.getList();
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .panel-group {
-
   .card-panel-col {
     margin-bottom: 5px;
-    
   }
 
   .card-panel {
-    height: 280px;
+    height: 140px;
     cursor: pointer;
     font-size: 14px;
     position: relative;
     overflow: hidden;
-    color: #009432;
     background: #fff;
     border-color: rgba(0, 0, 0, 0.05);
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
@@ -176,76 +228,69 @@ components: {
 
     &:hover {
       .card-panel-icon-wrapper {
-        color: #fff;
         background: #1b3459;
       }
-
     }
-
 
     .card-panel-icon-wrapper {
       color: #36a3f7;
       float: left;
-      margin: 14px 0 0 14px;
-      padding: 16px;
+      padding: 5px;
       transition: all 0.38s ease-out;
       border-radius: 6px;
     }
 
     .card-panel-icon {
       float: left;
-      font-size: 50px;
+      font-size: 30px;
     }
 
     .card-panel-description {
       float: right;
       font-weight: bold;
-      margin: 10px;
+      margin: 3px;
       margin-left: 0px;
 
-       .card-panel-name {
+      .card-panel-name {
         line-height: 18px;
-        color: rgba(0, 0, 0, 0.80);
-        font-size: 16px;
-        margin-bottom: 12px;
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 12px;
         text-align: right;
       }
       .card-panel-time {
         line-height: 18px;
         color: rgba(0, 0, 0, 0.45);
-        font-size: 16px;
-        margin-bottom: 12px;
+        font-size: 14px;
+        margin-bottom: 4px;
         text-align: right;
       }
       .card-panel-phone {
-      text-align: left;
-      line-height: 18px;
-        color: rgba(0, 0, 0, 0.80);
-        font-size: 20px;
-        }
-        .card-panel-id {
-      text-align: left;
-      line-height: 18px;
+        text-align: left;
+        line-height: 18px;
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 12px;
+      }
+      .card-panel-id {
+        text-align: left;
+        line-height: 18px;
         color: rgb(0, 0, 0);
-        font-size: 24px;
-        }
+        font-size: 14px;
+      }
     }
   }
- 
 }
 
-@media only screen and (max-width: 767px)
-{
-.el-col-xs-24 {
-  .card-panel{
-    height: 300px;
-   .card-panel-description{
-     float: none;
+@media only screen and (max-width: 767px) {
+  .el-col-xs-24 {
+    .card-panel {
+      height: 300px;
+      .card-panel-description {
+        float: none;
         .card-panel-id {
           text-align: center;
           line-height: 10px;
         }
-        .card-panel-name{
+        .card-panel-name {
           text-align: center;
           line-height: 10px;
         }
@@ -253,9 +298,8 @@ components: {
           text-align: center;
           line-height: 10px;
         }
+      }
+    }
   }
-  }
-}
-
 }
 </style>
