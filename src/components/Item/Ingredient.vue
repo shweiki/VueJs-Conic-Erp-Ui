@@ -7,7 +7,7 @@
       <el-table-column prop="Qty" label="Qty" width="180">
         <template slot-scope="scope">
           <el-input-number
-            size="mini"
+            :size="$store.getters.size"
             v-model="value[scope.$index].Qty"
             :precision="2"
             :step="1"

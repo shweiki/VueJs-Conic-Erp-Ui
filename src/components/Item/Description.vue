@@ -33,7 +33,7 @@
 -->
       <el-button
         style="float:left"
-        size="mini"
+        :size="$store.getters.size"
         type="success"
         icon="el-icon-s-order"
         slot="reference"

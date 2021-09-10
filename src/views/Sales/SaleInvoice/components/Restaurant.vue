@@ -317,7 +317,7 @@
                         height="300"
                         :data="tempForm.InventoryMovements"
                         style="width: 100%"
-                        size="mini"
+                        :size="$store.getters.size"
                       >
                         <el-table-column width="60" label="#" align="center">
                           <template slot-scope="scope">
@@ -352,7 +352,7 @@
                               {{ tempForm.InventoryMovements[scope.$index].SellingPrice }}
                               X
                               <el-input-number
-                                size="mini"
+                                :size="$store.getters.size"
                                 style="width: 37.5%"
                                 v-model="tempForm.InventoryMovements[scope.$index].Qty"
                                 :precision="0"
@@ -726,7 +726,7 @@ export default {
     },
     CheckVendor(Name, PhoneNumber, Region) {
       CheckVendorIsExist({
-        Name: Name,
+        // Name: Name,
         //  Ssn: this.tempForm.Ssn,
         PhoneNumber: PhoneNumber,
       }).then((res) => {

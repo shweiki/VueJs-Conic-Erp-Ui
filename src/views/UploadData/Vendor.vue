@@ -86,7 +86,7 @@ export default {
     Check(Name, PhoneNumber, Region) {
       return new Promise((resolve) => {
         CheckIsExist({
-          Name: Name,
+          //  Name: Name,
           PhoneNumber: PhoneNumber,
         }).then((res) => {
           resolve(res);

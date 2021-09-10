@@ -309,7 +309,7 @@
                         height="300"
                         :data="tempForm.InventoryMovements"
                         style="width: 100%"
-                        size="mini"
+                        :size="$store.getters.size"
                       >
                         <el-table-column width="60" label="#" align="center">
                           <template slot-scope="scope">
@@ -347,7 +347,7 @@
                               }}</el-tag>
                               X
                               <el-input-number
-                                size="mini"
+                                :size="$store.getters.size"
                                 style="width: 37.5%"
                                 v-model="tempForm.InventoryMovements[scope.$index].Qty"
                                 :precision="0"
