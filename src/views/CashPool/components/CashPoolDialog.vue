@@ -88,7 +88,8 @@
                 @focus="$event.target.select()"
             /></el-col>
           </el-row>
-          <el-row type="flex">
+
+          <el-row v-permission="['Admin']" type="flex">
             <el-col :span="12">
               <span style="font-size: large">إجمالي سحوبات :</span>
             </el-col>

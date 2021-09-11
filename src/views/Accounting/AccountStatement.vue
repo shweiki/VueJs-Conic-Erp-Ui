@@ -113,7 +113,7 @@
         <el-table-column
           v-bind:label="$t('Accounting.EntryId')"
           prop="EntryId"
-          width="120"
+          width="80"
           align="center"
         >
         </el-table-column>
@@ -136,6 +136,7 @@
           label="رقم الحركة"
           prop="Fktable"
           align="center"
+          width="80"
         ></el-table-column>
         <el-table-column label="نوع الحركة" prop="TableName" align="center">
           <template slot-scope="{ row }">
@@ -189,22 +190,22 @@
             </router-link>
           </template></el-table-column
         >
-        <el-table-column label="مدين" prop="Credit" width="100" align="center">
+        <el-table-column label="مدين" prop="Credit" width="80" align="center">
           <template slot-scope="scope">{{
             scope.row.Credit.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column label="دائن" prop="Debit" width="100" align="center">
+        <el-table-column label="دائن" prop="Debit" width="80" align="center">
           <template slot-scope="scope">{{
             scope.row.Debit.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column label="الرصيد" prop="TotalRow" width="100" align="center">
+        <el-table-column label="الرصيد" prop="TotalRow" width="80" align="center">
           <template slot-scope="scope">{{
             scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+        <el-table-column v-bind:label="$t('Sales.Status')" width="100" align="center">
           <template slot-scope="scope">
             <Status-Tag :Status="scope.row.Status" TableName="EntryAccounting" />
           </template>
@@ -254,8 +255,14 @@ export default {
       //    console.log("sdsad", this.listQuery);
       GetAccountStatement(this.listQuery).then((response) => {
         this.list = response.items.map((curr, i, array) => {
+          let Total = curr.Credit - curr.Debit;
+          let lastTotal = i != 0 ? array[i - 1].TotalRow : 0;
+          console.log("lastTotal", lastTotal);
+
+          curr.TotalRow += lastTotal;
+
           console.log(curr.TotalRow);
-          curr.TotalRow = array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
+
           return curr;
         });
         this.Totals = response.Totals;
