@@ -126,28 +126,9 @@
                   <el-popconfirm
                     confirm-button-text='ترحيل'
                     cancel-button-text='لا, شكرا'
-                    icon="el-icon-info"
-                    :title= "`تأكيد الطلب رقم  ${option.Id} وترحيله`"
-                    @confirm="HasDone(option.Id)"
-                    > 
-                   <el-button 
-                   slot="reference"
-                          style="float: right; "
-                          type="success"
-                          :size="$store.getters.size"
-                          >ترحيل الطلب </el-button>
-                  </el-popconfirm>
-                        </div>
-                        </el-col>
-                </el-row>
-                <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
-                     <el-col :span="12"> <div v-if="option.Status == 3">  
-                  <el-popconfirm
-                    confirm-button-text='ترحيل'
-                    cancel-button-text='لا, شكرا'
                     confirm-button-type='warning'
                     icon="el-icon-info"
-                    :title= "`وترحيله ${option.Id} تأكيد الطلب رقم`"
+                    :title= "`تأكيد الطلب رقم  ${option.Id} وترحيله`"
                     @confirm="HasDone(option.Id)"
                     > 
                    <el-button 
@@ -158,6 +139,26 @@
                           >ترحيل الطلب </el-button>
                   </el-popconfirm>
                         </div>
+                        </el-col>
+                </el-row>
+                <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
+                     <el-col :span="12" v-if="option.Status == 3" style="padding-top: 18px;">
+                  <el-popconfirm
+                    confirm-button-text='ترحيل'
+                    cancel-button-text='لا, شكرا'
+                    confirm-button-type='warning'
+                    icon="el-icon-info"
+                    :title= "`تأكيد الطلب رقم  ${option.Id} وترحيله`"
+                    @confirm="HasDone(option.Id)"
+                    > 
+                   <el-button 
+                   slot="reference"
+                          style="float: right; "
+                          type="warning"
+                          :size="$store.getters.size"
+                          >ترحيل الطلب </el-button>
+                  </el-popconfirm>
+                        
                             </el-col>
                     <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
                     <order-details-mobile :Temp="option" caller="Manager" />

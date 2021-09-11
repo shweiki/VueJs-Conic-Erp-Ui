@@ -70,7 +70,6 @@
           <el-table-column align="right" width="200">
           <template slot-scope="scope">
             <el-button
-              
               icon="el-icon-edit"
               circle
               @click="handleUpdate(scope.row)"
@@ -81,6 +80,7 @@
                 TableName="Area"
                 @Done="getdata"
             />
+             <Dialog-Action-Log TableName="Area" :ObjId="scope.row.Id" />
          
              
           </template>
@@ -164,9 +164,10 @@ import AddDialog from "@/views/Settings/Areas/AddDialog.vue";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 export default {
   name: "Area",
-  components: { StatusTag, NextOprations, AddDialog },
+  components: { StatusTag, NextOprations, AddDialog, DialogActionLog },
   data() {
     return {
       tableData: [],

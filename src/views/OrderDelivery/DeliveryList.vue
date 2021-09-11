@@ -159,6 +159,12 @@
         <template slot-scope="scope">
           <Dialog-Action-Log TableName="OrderDelivery" :ObjId="scope.row.Id" />
           <Drawer-Print Type="OrderDelivery" :Data="scope.row" />
+           <Next-Oprations
+                :ObjId="scope.row.Id"
+                :Status="scope.row.Status"
+                TableName="OrderDelivery"
+                @Done="getList"
+            />
         </template>
       </el-table-column>
     </el-table>
@@ -184,7 +190,6 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
-
 export default {
   name: "ComplexTable",
   components: {

@@ -1,15 +1,6 @@
 <template>
 <div>
-           <el-col :span="12" v-if="Temp.Status == 0 || Temp.Status == 3 || caller=='Driver'" style="padding-top: 10px;">
-             <el-button 
-          style="float: right"
-          icon="el-icon-info"
-          type="primary"
-          :size="$store.getters.size"
-          @click="dialogFormVisible = true"
-          >{{$t("Delivery.Details")}} </el-button>
-          </el-col> 
-          <el-col :span="24" v-else-if="Temp.Status == 1 || Temp.Status == 2" >
+   <el-col :span="24" v-if="Temp.Status == 2 && caller !='Driver'">
              <el-button 
           style="float: right; "
           icon="el-icon-info"
@@ -18,6 +9,16 @@
           @click="dialogFormVisible = true"
           >{{$t("Delivery.Details")}} </el-button>
           </el-col> 
+           <el-col :span="12" v-else style="padding-top: 10px;">
+             <el-button 
+          style="float: right"
+          icon="el-icon-info"
+          type="primary"
+          :size="$store.getters.size"
+          @click="dialogFormVisible = true"
+          >{{$t("Delivery.Details")}} </el-button>
+          </el-col> 
+         
           <el-dialog
           style="margin-top: -13vh"
           :show-close="false"
@@ -80,7 +81,7 @@
         <i class="el-icon-s-flag"></i>
         {{$t("OrderInventories.Status")}}
       </template>
-      <el-tag size="small">{{Temp.Status}}</el-tag>
+      <Status-Tag :Status="Temp.Status" TableName="OrderDelivery" />
     </el-descriptions-item>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
@@ -122,13 +123,16 @@
     <el-button 
     size="medium"
           @click="dialogFormVisible = false"
-    type="danger">الغاء</el-button>
+    type="danger">إغلاق</el-button>
   </span>
       </el-dialog>
 </div>
 </template>
 <script>
+import StatusTag from "@/components/Oprationsys/StatusTag";
 export default {
+  components: {
+    StatusTag,},
   name: 'OrderDetailsMobile',
  props: ["Temp", "caller" ],
   data () {

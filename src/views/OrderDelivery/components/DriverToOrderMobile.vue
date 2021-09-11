@@ -8,7 +8,13 @@
           icon="el-icon-plus"
           @click="dialogFormVisible = true"
           >{{$t("Delivery.AssignDriver")}} </el-button>
-            
+             <el-button v-if="Temp.Status == 1"
+          style="float: left"
+          type="success"
+          :size="$store.getters.size"
+          icon="el-icon-plus"
+          @click="dialogFormVisible = true"
+          >Delivery </el-button>
           </el-col>  
    <el-dialog
           ref="dataForm"

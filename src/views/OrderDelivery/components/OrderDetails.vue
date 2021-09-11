@@ -1,6 +1,15 @@
 <template>
   <div>
-    <el-col :span="12" v-if="Temp.Status == 0 || Temp.Status == 3" style="padding-top: 10px;">
+     <el-col :span="24" v-if="Temp.Status == 2" style="padding-top: 10px;">
+             <el-button 
+          style="float: right"
+          icon="el-icon-info"
+          type="primary"
+          :size="$store.getters.size"
+          @click="dialogFormVisible = true"
+          >{{$t("Delivery.Details")}} </el-button>
+          </el-col> 
+    <el-col :span="12" v-else style="padding-top: 10px;">
      <el-button
       style="float: right"
       icon="el-icon-info"
@@ -10,15 +19,7 @@
       >{{ $t("Delivery.Details") }}
     </el-button> 
     </el-col> 
-     <el-col :span="24" v-else-if="Temp.Status == 1 || Temp.Status == 2" style="padding-top: 10px;">
-             <el-button 
-          style="float: right"
-          icon="el-icon-info"
-          type="primary"
-          :size="$store.getters.size"
-          @click="dialogFormVisible = true"
-          >{{$t("Delivery.Details")}} </el-button>
-          </el-col> 
+    
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
@@ -110,7 +111,7 @@
             <i class="el-icon-s-flag"></i>
             {{ $t("OrderInventories.Status") }}
           </template>
-          <el-tag size="small">{{ Temp.Status }}</el-tag>
+          <Status-Tag :Status="Temp.Status" TableName="OrderDelivery" />
         </el-descriptions-item>
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
@@ -161,11 +162,27 @@
       <el-tag size="small">{{Content}}</el-tag>
     </el-descriptions-item> -->
       </el-descriptions>
+      <div>
+      <el-col v-if="Temp.Status == 1">
+           <driver-select
+      @Set="
+        (v) => {
+          SetDriver(v.value, Temp.Id);
+        }
+      "
+    />
+      </el-col>
+      </div>
     </el-dialog>
   </div>
 </template>
 <script>
+import DriverSelect from "./DriverSelect.vue"
+import StatusTag from "@/components/Oprationsys/StatusTag";
+import { SetDriver } from "@/api/OrderDelivery";
 export default {
+  components: {
+    StatusTag, DriverSelect},
   name: "OrderDetails",
   props: ["Temp"],
   data() {
@@ -173,5 +190,16 @@ export default {
       dialogFormVisible: false,
     };
   },
+   methods: {
+    SetDriver(driverid, orderid) {
+      SetDriver({ DriverId: driverid, OrderId: orderid }).then((res) => {
+        if (res) {
+          this.dialogFormVisible = false;
+          this.$emit("Done");
+        }
+      });
+    },     
+      
+    },
 };
 </script>

@@ -104,7 +104,8 @@ export default {
         DeliveryManager:"Delivery Manager",
         AddDrivers:"Add Drivers",
         DriverPage:"Driver Page",
-        JsonEditorSetting:"Json Editor Setting"
+        JsonEditorSetting:"Json Editor Setting",
+        DriverDeliveryList:"Driver Delivery List"
     },
     Settings: {
         settings: "Settings",
