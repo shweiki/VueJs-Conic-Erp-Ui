@@ -112,7 +112,8 @@ export default {
         DeliveryManager:"ادارة طلبات التوصيل",
         AddDrivers:"إضافة سائق",
         DriverPage:"صفحة السائق",
-        JsonEditorSetting:"تعديل الاعدادات بجيسون"
+        JsonEditorSetting:"تعديل الاعدادات بجيسون",
+        DriverDeliveryList:"قائمة طلبات السائق"
     },
     Settings: {
         settings: "اعدادات",
