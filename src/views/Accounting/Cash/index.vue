@@ -68,9 +68,9 @@
             <Status-Tag :Status="scope.row.Status" TableName="Cash" />
           </template>
         </el-table-column>
-        <el-table-column width="120" align="center">
+        <el-table-column width="150" align="center">
           <template slot-scope="scope">
-            <el-col :span="12">
+            <el-col :span="8">
               <el-button
                 icon="el-icon-edit"
                 :size="$store.getters.size"
@@ -78,13 +78,16 @@
                 @click="handleUpdate(scope.row)"
               ></el-button>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="8">
               <Next-Oprations
                 :ObjId="scope.row.Id"
                 :Status="scope.row.Status"
                 TableName="Cash"
                 @Done="getdata"
             /></el-col>
+             <el-col :span="8">
+               <Dialog-Action-Log TableName="Cash" :ObjId="scope.row.Id" />
+               </el-col>
           </template>
         </el-table-column>
       </el-table>
@@ -162,10 +165,11 @@ import { ChangeObjStatus } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import AddCash from "@/components/Add/AddCash";
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
   name: "Cash",
-  components: { StatusTag, NextOprations, AddCash },
+  components: { StatusTag, NextOprations, AddCash, DialogActionLog },
   data() {
     return {
       tableData: [],
