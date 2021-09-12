@@ -98,6 +98,12 @@ export function GetAllLogMembers(query) {
     method: 'get',
     params: query
   })
+}export function TurnOff(query) {
+  return request({
+    url: '/Device/TurnOff',
+    method: 'get',
+    params: query
+  })
 }
 export function ClearAdministrators(query) {
   return request({

@@ -82,6 +82,12 @@
               >مسح سجلات المشتركين</el-button
             >
             <el-button
+              @click="TurnOff(scope.row.Id)"
+              :size="$store.getters.size"
+              type="danger"
+              >إيقاف تشغيل الجهاز</el-button
+            >
+            <el-button
               @click="RestartDevice(scope.row.Id)"
               :size="$store.getters.size"
               type="success"
@@ -103,6 +109,7 @@ import {
   ClearUserLog,
   ClearAdministrators,
   RestartDevice,
+  TurnOff,
 } from "@/api/Device";
 import AddDevice from "@/components/Device/AddDevice.vue";
 import EditDevice from "@/components/Device/EditDevice.vue";
@@ -214,6 +221,20 @@ export default {
     },
     RestartDevice(id) {
       RestartDevice({ DeviceId: id })
+        .then((response) => {
+          // handle success
+          this.response = response;
+          console.log(response);
+        })
+        .catch((error) => {
+          // handle error
+          this.response = error;
+
+          console.log(error);
+        });
+    },
+    TurnOff(id) {
+      TurnOff({ DeviceId: id })
         .then((response) => {
           // handle success
           this.response = response;
