@@ -9,14 +9,14 @@ const HumanResource = {
     title: 'HumanResource', icon: 'acc'
   },
   children: [
-    {
-      path: 'ListEmployee',
-      component: () => import('@/views/HumanResource/ListEmployee/index'),
-      name: 'ListEmployee',
-      meta: {
-        title: 'ListEmployee', icon: 'cost'
-      },
-    },
+    // {
+    //   path: 'ListEmployee',
+    //   component: () => import('@/views/HumanResource/ListEmployee/index'),
+    //   name: 'ListEmployee',
+    //   meta: {
+    //     title: 'ListEmployee', icon: 'cost'
+    //   },
+    // },
     {
       path: 'Edit/:id(\\d+)',
       component: () => import('@/views/HumanResource/ListEmployee/Edit'),
