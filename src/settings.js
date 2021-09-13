@@ -42,6 +42,9 @@ module.exports = {
     Member: {
         CheckMemberIsExist: true,
     },
+    Employee: {
+        CheckEmployeeIsExist: true,
+    },
     Dashboard: {
         Layout: "Public",
         ShowPanelGroup: {
