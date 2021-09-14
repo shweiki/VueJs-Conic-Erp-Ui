@@ -20,6 +20,7 @@ import WorkShopsRouter from './modules/WorkShops'
 import SettingsRouter from './modules/Settings'
 import UploadData from './modules/UploadData'
 import OrderDeliveryRouter from './modules/OrderDelivery'
+import HumanResource from './modules/HumanResource'
 
 /* Router Modules */
 //import componentsRouter from './modules/components'
@@ -132,6 +133,7 @@ export const asyncRoutes = [{
     //componentsRouter,
     VendorRouter,
     GymRouter,
+    HumanResource,
     SalesRouter,
     PurchasesRouter,
     VisitsRouter,

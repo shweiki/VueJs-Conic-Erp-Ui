@@ -360,9 +360,9 @@ export default {
         AccountInvoiceNumber: "رقم حساب الفاتورة",
         TotalCash :" إجمالي النقدي",
         TotalVisa :"إجمالي الفيزا",
-        TotalOutlay :"إجمالي الإنفاق",
-        TotalReject :"إجمالي المرفوض",
-        TotalRestitution :"إجمالي المردودات",
+        TotalOutlay :"إجمالي السحوبات",
+        TotalReject :"إجمالي ملغي",
+        TotalRestitution :"إجمالي التعويضات",
         SaleInvoice :"فواتير المبيعات",
         Payment :"سندات القبض",
         Receive :"سندات الصرف"

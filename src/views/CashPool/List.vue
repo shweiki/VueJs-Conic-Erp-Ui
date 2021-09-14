@@ -69,9 +69,8 @@
         </el-button>
       </el-col>
     </el-row>
-
-    <el-row type="flex">
-      <el-col :span="6">
+    <el-row>
+      <el-col :span="24">
         <Radio-Oprations
           TableName="CashPool"
           @Set="
@@ -80,7 +79,9 @@
             }
           "
       /></el-col>
-      <el-col v-permission="['Admin']" :span="18">
+    </el-row>
+    <el-row type="flex">
+      <el-col v-permission="['Admin']" :span="24">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الاغلاقات</span>
         <el-divider direction="vertical"></el-divider>
@@ -92,6 +93,11 @@
         <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
+        <span> اجمالي عد المعدن</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Coins.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+
         <span>{{ $t("CashPool.Visa") }}</span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
@@ -101,20 +107,25 @@
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Reject.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
-        <!--
+        <span>السحوبات</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Outlay.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>التعويضات</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Restitution.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
         <span
           >{{
-            list
-              .reduce((prev, cur) => {
-                return prev + cur.Totals.Totals;
-              }, 0)
-              .toFixed($store.getters.settings.ToFixed)
+            list.reduce((prev, cur) => {
+              return prev + cur.Totals;
+            }, 0)
           }}
           JOD</span
         >
-        <el-divider direction="vertical"></el-divider> -->
+        <el-divider direction="vertical"></el-divider>
       </el-col>
     </el-row>
 
@@ -139,7 +150,7 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Date')" width="120" align="center">
+      <el-table-column v-bind:label="$t('Sales.Date')" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.DateTime | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
@@ -182,60 +193,55 @@
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column label="المطلوب" width="120" align="center">
-        <template slot-scope="{ Totals }">
-          {{ Totals.Totals }}
+      <el-table-column label="المطلوب" align="center">
+        <template slot-scope="{ row }">
+          {{ row.Totals.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.TotalCash')" width="120" align="center">
+      <el-table-column v-bind:label="$t('CashPool.TotalCash')" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalCash.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.TotalVisa')" width="120" align="center">
+      <el-table-column label="العد المعدن" align="center">
+        <template slot-scope="{ row }">
+          {{ row.TotalCoins.toFixed($store.getters.settings.ToFixed) }}
+          JOD
+        </template>
+      </el-table-column>
+      <el-table-column v-bind:label="$t('CashPool.TotalVisa')" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalVisa.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.TotalOutlay')"
-        width="120"
-        align="center"
-      >
-        <template slot-scope="{ row }">
-          {{ row.TotalOutlay.toFixed($store.getters.settings.ToFixed) }}
-          JOD
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.TotalReject')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.TotalReject')" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalReject.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.TotalRestitution')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.TotalOutlay')" align="center">
+        <template slot-scope="{ row }">
+          {{ row.TotalOutlay.toFixed($store.getters.settings.ToFixed) }}
+          JOD
+        </template>
+      </el-table-column>
+
+      <el-table-column v-bind:label="$t('CashPool.TotalRestitution')" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalRestitution.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      <el-table-column v-bind:label="$t('Sales.Status')" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="CashPool" />
         </template>
       </el-table-column>
-      <el-table-column width="180" align="center">
+      <el-table-column align="center">
         <template slot-scope="scope">
           <Next-Oprations
             :ObjId="scope.row.Id"
@@ -276,6 +282,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
+import { async } from "vue-phone-number-input/dist/vue-phone-number-input.common";
 
 export default {
   name: "ComplexTable",
@@ -298,6 +305,7 @@ export default {
         Rows: 0,
         Totals: 0,
         Cash: 0,
+        Coins: 0,
         Reject: 0,
         Visa: 0,
         Outlay: 0,
@@ -330,33 +338,33 @@ export default {
       //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then(async (response) => {
         this.Totals = response.Totals;
-        this.list = response.items;
-        this.list = this.list.map((x) => {
-          return this.GetListId(x);
+        await response.items.forEach(async (element) => {
+          element.Totals = await this.GetListId(element);
         });
-        console.log("sdsad", this.list);
-
+        this.list = response.items;
+        //console.log("sdsad", this.list);
         this.listLoading = false;
       });
     },
     GetListId(item) {
       return new Promise(async (resolve, reject) => {
+        let total = 0;
         if (item.Type == "SaleInvoice") {
-          GetSaleInvoiceByListId({ listid: item.Fktable }).then((res) => {
-            item.Totals = res.Totals;
+          await GetSaleInvoiceByListId({ listid: item.Fktable }).then((res) => {
+            item.Totals = res.Totals.Totals;
             item.SaleInvoice = res.items;
-            resolve(item);
-
-            console.log((item.Totals, res.Totals));
+            total = res.Totals.Totals;
+            // console.log((item.Totals, res.Totals));
           });
         }
         if (item.Type == "Payment") {
-          GetPaymentByListId({ listid: x.Fktable }).then((res) => {
+          await GetPaymentByListId({ listid: item.Fktable }).then((res) => {
             item.Totals = res.Totals;
             item.Payment = res.items;
-            resolve(item);
+            total = res.Totals.Totals;
           });
         }
+        resolve(total);
       });
     },
     handleFilter() {
