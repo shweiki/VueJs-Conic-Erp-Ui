@@ -15,7 +15,7 @@
         class="demo-form-inline"
       >
         <el-row>
-          <el-col :span="24">
+          <el-col :span="12">
             <el-form-item prop="MemberId" label="المشترك">
               <Member-Search-Any
                 @Set="
@@ -25,6 +25,9 @@
                 "
               />
             </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <select-device @Set="(v) => (Temp.DeviceId = v.Id)" />
           </el-col>
         </el-row>
 
@@ -74,7 +77,7 @@ export default {
         Type: "Manual",
         MemberId: undefined,
         DateTime: "",
-        DeviceId: 3,
+        DeviceId: 1,
         Status: 0,
         Description: "Manual User Register Member  Log",
       },

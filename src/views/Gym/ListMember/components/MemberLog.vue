@@ -35,13 +35,9 @@
               @click="
                 () => {
                   let r = $router.resolve({
-                    path: '/Gym/Edit/' + Log.MemberId
+                    path: '/Gym/Edit/' + Log.MemberId,
                   });
-                  window.open(
-                    r.href,
-                    r.route.name,
-                    $store.getters.settings.windowStyle
-                  );
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
                 }
               "
               :color="Log.Style.Color"
@@ -52,14 +48,10 @@
             <Status-Tag :Status="Log.Status" TableName="Member"> </Status-Tag>
             <el-tag
               v-if="Log.ActiveMemberShip != null"
-              v-bind:type="
-                Log.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'
-              "
+              v-bind:type="Log.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'"
               >{{ Log.ActiveMemberShip.Type }}</el-tag
             >
-            <el-tag v-if="Log.TotalCredit - Log.TotalDebit > 0" type="info"
-              >مدين</el-tag
-            >
+            <el-tag v-if="Log.TotalCredit - Log.TotalDebit > 0" type="info">مدين</el-tag>
             <el-time-picker
               :size="$store.getters.size"
               v-model="Log.DateTime"
@@ -76,7 +68,7 @@
 <script>
 import { GetMemberLogByStatus, RemoveDuplicate } from "@/api/MemberLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import AddMemberLog from "./Dialogs/AddMemberLog";
+import AddMemberLog from "./Dialogs/AddMemberLog.vue";
 
 export default {
   name: "MemberLog",
@@ -85,7 +77,7 @@ export default {
   data() {
     return {
       MembersLogs: [],
-      reverse: false
+      reverse: false,
     };
   },
   created() {
@@ -94,7 +86,7 @@ export default {
   methods: {
     getdata() {
       GetMemberLogByStatus({ Status: 0 })
-        .then(response => {
+        .then((response) => {
           if (response.length != this.MembersLogs.length) {
             this.MembersLogs = response.sort(
               (a, b) => new Date(b.DateTime) - new Date(a.DateTime)
@@ -102,10 +94,10 @@ export default {
             RemoveDuplicate();
           }
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>
