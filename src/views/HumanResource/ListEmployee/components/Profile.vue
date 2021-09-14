@@ -15,54 +15,6 @@
             </el-col>
 
             <el-col :span="5" v-if="tempForm.Status != -2">
-              <!-- <el-row>
-                <el-col :span="24">
-                  <el-button
-                    style="width: 100px"
-                    type="info"
-                    icon="el-icon-zoom-in"
-                    @click="$router.replace({ path: '/redirect' + '/Gym/ListMember' })"
-                    >جميع مشتركين</el-button
-                  >
-                </el-col>
-              </el-row> -->
-
-              <!-- <el-row>
-                <el-col :span="24">
-                  <Member-Ship-Movement
-                    :MemberId="tempForm.Id"
-                    :AccountId="tempForm.AccountId"
-                    :Name="tempForm.Name"
-                    :Enable="
-                      tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false
-                    "
-                  />
-                </el-col>
-              </el-row> -->
-
-              <!-- <el-row>
-                <el-col :span="24">
-                  <Member-Pay
-                    :MemberId="tempForm.Id"
-                    :Name="tempForm.Name"
-                    :NumberPhone1="tempForm.PhoneNumber1"
-                  />
-                </el-col>
-              </el-row> -->
-
-              <!-- <el-row>
-                <el-col :span="24">
-                  <Member-Ship-Movement-With-Pay
-                    :MemberId="tempForm.Id"
-                    :AccountId="tempForm.AccountId"
-                    :Name="tempForm.Name"
-                    :NumberPhone1="tempForm.PhoneNumber1"
-                    :Enable="
-                      tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false
-                    "
-                  />
-                </el-col>
-              </el-row> -->
 
               <el-row>
                 <el-col :span="24">
@@ -70,6 +22,18 @@
                     :NumberPhone1="tempForm.PhoneNumber1"
                     :NumberPhone2="tempForm.PhoneNumber2"
                     :Email="tempForm.Email"
+                  />
+                </el-col>
+              </el-row>
+                <el-row>
+                <el-col :span="24">
+                  <employee-login
+                  />
+                </el-col>
+              </el-row>
+                <el-row>
+                <el-col :span="24">
+                  <employee-logout
                   />
                 </el-col>
               </el-row>
@@ -81,19 +45,21 @@
           <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
             <el-tab-pane label="بيانات" name="Details">
               <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
-
               <User-Card :Employee="tempForm" />
+            </el-tab-pane>
+
+         <el-tab-pane label="زيارات" name="timeline">
+              <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
+              <Timeline :timeline="log" :EmployeeId="tempForm.Id" />
             </el-tab-pane>
 
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-
-              <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
+              <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name"/>
             </el-tab-pane>
 
             <el-tab-pane label="تواصل" name="communication">
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
-
               <Communication />
             </el-tab-pane>
           </el-tabs>
@@ -109,16 +75,17 @@
 import Details from "./Details.vue";
 import UserCard from "./UserCard.vue";
 import MemberSearch from "./MemberSearch.vue";
-
-
+import EmployeeLogin from "./Dialogs/EmployeeLogin";
+import EmployeeLogout from "./Dialogs/EmployeeLogout";
 import Account from "./Account.vue";
 import Communication from "./Communication.vue";
-
+import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetFileByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
 import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
 import checkPermission from "@/utils/permission";
+import { GetEmployeeLogById } from "@/api/WorkingHoursLog";
 
 import Massage from "@/components/Massage/index.vue";
 
@@ -127,10 +94,12 @@ export default {
   components: {
     Details,
     UserCard,
-    
+    EmployeeLogin,
+    EmployeeLogout,
     Account,
     Communication,
     Massage,
+    Timeline
   },
   props: {
     isEdit: {
@@ -174,7 +143,13 @@ export default {
         });
     },
     tabClick(tab, event) {
-    
+     if (tab.label == "زيارات")
+        GetEmployeeLogById({
+          Id: this.tempForm.Id,
+        }).then((response) => {
+          //  console.log("log :", response);
+          this.log = response.reverse();
+        });
       if (tab.label == "مالية")
         GetEntryMovementsByAccountId({
           AccountId: this.tempForm.AccountId,

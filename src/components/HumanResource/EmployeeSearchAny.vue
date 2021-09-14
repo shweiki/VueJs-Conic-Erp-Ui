@@ -19,7 +19,7 @@
   </el-select>
 </template>
 <script>
-import { GetMemberByAny } from "@/api/Member";
+import { GetEmployeeByAny } from "@/api/Employee";
 
 export default {
   data() {
@@ -37,7 +37,7 @@ export default {
 
     querySearch(query) {
       if (query !== "" && query.length > 2) {
-        GetMemberByAny({ Any: query }).then((res) => {
+        GetEmployeeByAny({ Any: query }).then((res) => {
           this.options = res;
           if (res.length == 1) this.change(res[0]);
         });

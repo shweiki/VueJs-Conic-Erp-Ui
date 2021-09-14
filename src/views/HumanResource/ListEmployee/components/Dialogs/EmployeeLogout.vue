@@ -2,49 +2,46 @@
   <div>
     <el-button
       v-permission="['Admin']"
-      type="primary"
-      icon="el-icon-plus"
+      type="danger"
+      icon="el-icon-top"
       @click="Visibles = true"
-    />
-
-    <el-dialog style="margin-top: -13vh" title="تسجيل دخول" :visible.sync="Visibles">
+    >
+    Logout
+    </el-button>
+    <el-dialog style="margin-top: -13vh" title="تسجيل خروج" :visible.sync="Visibles">
       <el-form
         :model="Temp"
-        ref="MemberLogForm"
+        ref="EmployeeLogForm"
         label-position="top"
         class="demo-form-inline"
       >
         <el-row>
-          <el-col :span="12">
-            <el-form-item prop="MemberId" label="المشترك">
-              <Member-Search-Any
+          <el-col :span="24">
+            <el-form-item prop="EmployeeId" label="المشترك">
+              <Employee-Search-Any
                 @Set="
                   (v) => {
-                    Temp.MemberId = v.Id;
+                    Temp.EmployeeId = v.Id;
                   }
                 "
               />
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <select-device @Set="(v) => (Temp.DeviceId = v.Id)" />
           </el-col>
         </el-row>
-
         <el-row>
-          <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="DateTime">
+           <el-col :span="12">
+            <el-form-item label="وقت الخروج" prop="EndDateTime">
               <Fake-Date
-                :Value="Temp.DateTime"
+                :Value="Temp.EndDateTime"
                 @Set="
                   (v) => {
-                    Temp.DateTime = v;
+                    Temp.EndDateTime = v;
                   }
                 "
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+           <el-col :span="12">
             <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
               <el-input v-model="Temp.Description"></el-input>
             </el-form-item>
@@ -62,33 +59,33 @@
 </template>
 
 <script>
-import { Create } from "@/api/MemberLog";
-import MemberSearchAny from "@/components/Member/MemberSearchAny";
+import { Logout } from "@/api/WorkingHoursLog";
+import EmployeeSearchAny from "@/components/HumanResource/EmployeeSearchAny";
 import permission from "@/directive/permission/index.js";
 import FakeDate from "@/components/Date/FakeDate.vue";
 export default {
-  components: { MemberSearchAny, FakeDate },
+  components: { EmployeeSearchAny, FakeDate },
   directives: { permission },
 
   data() {
     return {
       Temp: {
         Id: undefined,
-        Type: "Manual",
-        MemberId: undefined,
-        DateTime: "",
+        EmployeeId: undefined,
+        StartDateTime: "",
+        EndDateTime: "",
         DeviceId: 1,
         Status: 0,
-        Description: "Manual User Register Member  Log",
+        Description: "Manual User Register Employee Logout",
       },
       Visibles: false,
     };
   },
   methods: {
     create() {
-      this.$refs["MemberLogForm"].validate((valid) => {
+      this.$refs["EmployeeLogForm"].validate((valid) => {
         if (valid) {
-          Create(this.Temp)
+          Logout(this.Temp)
             .then((response) => {
               this.Visibles = false;
               this.$notify({

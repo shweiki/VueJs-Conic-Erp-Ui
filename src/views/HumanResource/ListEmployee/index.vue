@@ -1,12 +1,8 @@
 <template>
   <div class="app-container">
     <el-row>
-      <el-col :span="6" :xs="24">
-        <member-log />
-      </el-col>
       <el-col :span="18" :xs="24" v-loading="loading">
         <member-search />
-
         <el-col
           style="padding: 1.5px"
           :xs="8"
@@ -17,21 +13,13 @@
         >
           <el-card :body-style="{ padding: '0px' }" class="box-card" shadow="always">
             <div slot="header" >
-              <router-link :to="'/Gym/Edit/' + member.MemberId">
+              <router-link :to="'/HumanResource/Edit/' + member.MemberId">
                 <strong style="font-size: 10px; cursor: pointer">{{
                   member.Name.split(" ").slice(0, 4).join(" ")
                 }}</strong>
               </router-link>
             </div>
-            <el-row>
-              <el-col :span="12"
-                >{{ $t("MemberList.MembershipType") }}{{ member.MembershipName }}</el-col
-              >
-              <el-col :span="12">
-                <span>اخر زيارة</span>
-                <last-log-member :MemberId="member.MemberId" />
-              </el-col>
-            </el-row>
+           
             <el-col :span="24">
               <el-input disabled v-model="member.PhoneNumber1"></el-input>
             </el-col>
@@ -47,14 +35,13 @@ import permission from "@/directive/permission/index.js";
 import MemberSearch from "./components/MemberSearch.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
-import LastLogMember from "@/components/Gym/LastLogMember.vue";
 
 //import { GetActiveMember } from "@/api/Member";
 
 export default {
   name: "MemberList",
   directives: { permission },
-  components: { MemberSearch, PanThumb, WebCam, LastLogMember },
+  components: { MemberSearch, PanThumb, WebCam},
   data() {
     return {
       loading: true,
@@ -75,7 +62,6 @@ export default {
     this.ActiveMembers = this.Members;
   },
   created() {
-    // this.getdata();
     this.getdata();
   },
   methods: {

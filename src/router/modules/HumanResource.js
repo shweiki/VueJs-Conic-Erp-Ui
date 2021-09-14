@@ -34,6 +34,14 @@ const HumanResource = {
         title: 'Employees', icon: 'cost'
       },
     },
+    {
+      path: 'Adjustment',
+      component: () => import('@/views/HumanResource/Adjustment/List'),
+      name: 'Adjustment',
+      meta: {
+        title: 'Adjustment', icon: 'cost'
+      },
+    },
   
    
    

@@ -1,10 +1,21 @@
 <template>
   <div class="app-container" style="direction: rtl">
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <el-row :gutter="20">
+      <el-col :span="12">
     <add-entry
       v-if="checkPermission(['Admin'])"
       :AccountId1="3"
       :AccountId2="AccountId"
     />
+      </el-col>
+      <el-col :span="12">
+    <add-salary :EmployeeId="EmployeeId" :EmployeeName="EmployeeName" />
+      </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
     <el-table
       @row-dblclick="
         row => {
@@ -72,9 +83,9 @@
 <script>
 import AddEntry from "@/views/Accounting/EntryAccounting/components/AddEntry.vue";
 import checkPermission from "@/utils/permission";
-
+import AddSalary from "./Dialogs/AddSalary";
 export default {
-  components: { AddEntry },
+  components: { AddEntry, AddSalary },
   props: {
     EntryMovements: {
       type: Array,
@@ -85,7 +96,14 @@ export default {
     AccountId: {
       type: Number,
       default: undefined
-    }
+    },
+    EmployeeId:{
+      type: Number,
+      default: undefined
+    },
+     EmployeeName:{
+      type: String,
+    },
   },
   methods: { checkPermission }
 };

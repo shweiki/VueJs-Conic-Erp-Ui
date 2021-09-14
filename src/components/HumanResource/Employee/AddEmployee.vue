@@ -5,14 +5,13 @@
       icon="el-icon-circle-plus"
       @click="Visible = true"
     ></el-button>
-
-    <el-dialog
+ <el-dialog
       style="margin-top: -13vh"
       title="موظف جديد"
       :visible.sync="Visible"
       @opened="$refs['EmployeeName'].focus()"
     >
-      <el-form
+   <el-form
         :model="tempForm"
         :rules="rulesForm"
         ref="dataForm"
@@ -98,7 +97,6 @@
               <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
           ></el-col>
         </el-row>
-
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item
@@ -138,7 +136,6 @@
               /> </el-form-item
           ></el-col>
         </el-row>
-
         <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
@@ -241,7 +238,7 @@ export default {
                   type: "success",
                   duration: 2000,
                 });
-                this.$router.push({ path: `/Employee/Edit/${response}` });
+                this.$router.push({ path: `/HumanResource/Edit/${response}` });
                 SendSMS(
                   this.tempForm.PhoneNumber1,
                   "عزيزي " +

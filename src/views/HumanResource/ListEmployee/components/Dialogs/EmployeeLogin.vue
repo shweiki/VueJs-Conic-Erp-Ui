@@ -2,46 +2,46 @@
   <div>
     <el-button
       v-permission="['Admin']"
-      type="primary"
-      icon="el-icon-plus"
+      type="info"
+      icon="el-icon-bottom"
       @click="Visibles = true"
-    />
-
+    >
+    Login
+    </el-button>
     <el-dialog style="margin-top: -13vh" title="تسجيل دخول" :visible.sync="Visibles">
       <el-form
         :model="Temp"
-        ref="MemberLogForm"
+        ref="EmployeeLogForm"
         label-position="top"
         class="demo-form-inline"
       >
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="MemberId" label="المشترك">
-              <Member-Search-Any
+            <el-form-item prop="EmployeeId" label="المشترك">
+              <Employee-Search-Any
                 @Set="
                   (v) => {
-                    Temp.MemberId = v.Id;
+                    Temp.EmployeeId = v.Id;
                   }
                 "
               />
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+            <el-form-item label="وقت الدخول" prop="StartDateTime">
               <Fake-Date
-                :Value="Temp.DateTime"
+                :Value="Temp.StartDateTime"
                 @Set="
                   (v) => {
-                    Temp.DateTime = v;
+                    Temp.StartDateTime = v;
                   }
                 "
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+           <el-col :span="12">
             <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
               <el-input v-model="Temp.Description"></el-input>
             </el-form-item>
@@ -59,31 +59,31 @@
 </template>
 
 <script>
-import { Create } from "@/api/MemberLog";
-import MemberSearchAny from "@/components/Member/MemberSearchAny";
+import { Create } from "@/api/WorkingHoursLog";
+import EmployeeSearchAny from "@/components/HumanResource/EmployeeSearchAny";
 import permission from "@/directive/permission/index.js";
 import FakeDate from "@/components/Date/FakeDate.vue";
 export default {
-  components: { MemberSearchAny, FakeDate },
+  components: { EmployeeSearchAny, FakeDate },
   directives: { permission },
 
   data() {
     return {
       Temp: {
         Id: undefined,
-        Type: "Manual",
-        MemberId: undefined,
-        DateTime: "",
-        DeviceId: 3,
+        EmployeeId: undefined,
+        StartDateTime: "",
+        EndDateTime: "",
+        DeviceId: 1,
         Status: 0,
-        Description: "Manual User Register Member  Log",
+        Description: "Manual User Register Employee Login",
       },
       Visibles: false,
     };
   },
   methods: {
     create() {
-      this.$refs["MemberLogForm"].validate((valid) => {
+      this.$refs["EmployeeLogForm"].validate((valid) => {
         if (valid) {
           Create(this.Temp)
             .then((response) => {
