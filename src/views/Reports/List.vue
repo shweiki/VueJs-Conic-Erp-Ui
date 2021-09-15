@@ -9,21 +9,16 @@
           @keyup.enter.native="handleFilter"
         />
       </el-col>
-
       <el-col :span="3">
-        <el-select
-          v-model="listQuery.Sort"
-          style="width: 140px"
-          class="filter-item"
-          @change="handleFilter"
-        >
-          <el-option
-            v-for="item in sortOptions"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          />
-        </el-select>
+        <Sort-Options
+          :Value="listQuery.Sort"
+          @Set="
+            (v) => {
+              listQuery.Sort = v;
+              handleFilter();
+            }
+          "
+        />
       </el-col>
       <el-col :span="6">
         <el-button
@@ -89,11 +84,13 @@ import { GetByListQ } from "@/api/Report";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import SortOptions from "@/components/SortOptions";
 
 export default {
   name: "ComplexTable",
   components: {
     Pagination,
+    SortOptions,
   },
   directives: { waves },
   data() {
@@ -116,10 +113,6 @@ export default {
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" },
-      ],
       downloadLoading: false,
     };
   },

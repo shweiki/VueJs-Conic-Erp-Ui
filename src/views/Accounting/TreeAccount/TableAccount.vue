@@ -11,21 +11,16 @@
           @keyup.enter.native="handleFilter"
         />
       </el-col>
-
       <el-col :span="3">
-        <el-select
-          v-model="listQuery.Sort"
-          style="width: 140px"
-          class="filter-item"
-          @change="handleFilter"
-        >
-          <el-option
-            v-for="item in sortOptions"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          />
-        </el-select>
+        <Sort-Options
+          :Value="listQuery.Sort"
+          @Set="
+            (v) => {
+              listQuery.Sort = v;
+              handleFilter();
+            }
+          "
+        />
       </el-col>
       <el-col :span="6">
         <el-button
@@ -176,6 +171,7 @@ import AddAccountDialog from "@/components/TreeAccount/AddAccountDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import EditAccount from "./EditAccount.vue";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
+import SortOptions from "@/components/SortOptions";
 
 export default {
   name: "TableAccount",
@@ -188,6 +184,7 @@ export default {
     DrawerPrint,
     EditAccount,
     DialogActionLog,
+    SortOptions,
   },
   directives: { waves, permission },
   data() {
@@ -209,10 +206,6 @@ export default {
 
         Status: undefined,
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" },
-      ],
       downloadLoading: false,
       TypeAccounts: [
         {

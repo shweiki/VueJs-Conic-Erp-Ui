@@ -6,25 +6,20 @@
           <el-input
             v-model="listQuery.Any"
             v-bind:placeholder="$t('MinOrd.SBy')"
-            
             class="filter-item"
             @keyup.enter.native="handleFilter"
           />
         </el-col>
         <el-col :span="3">
-          <el-select
-            v-model="listQuery.Sort"
-            style="width: 140px"
-            class="filter-item"
-            @change="handleFilter"
-          >
-            <el-option
-              v-for="item in sortOptions"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
-            />
-          </el-select>
+          <Sort-Options
+            :Value="listQuery.Sort"
+            @Set="
+              (v) => {
+                listQuery.Sort = v;
+                handleFilter();
+              }
+            "
+          />
         </el-col>
         <el-col :span="6">
           <el-button
@@ -55,29 +50,29 @@
     <Radio-Oprations
       TableName="Item"
       @Set="
-        v => {
+        (v) => {
           listQuery.Status = v;
           handleFilter();
         }
       "
     />
     <el-divider direction="vertical"></el-divider>
-    <span>{{$t("MinOrd.Qty")}} </span>
+    <span>{{ $t("MinOrd.Qty") }} </span>
     <el-divider direction="vertical"></el-divider>
     <span>{{ Totals.Rows }}</span>
     <el-divider direction="vertical"></el-divider>
 
-    <span>{{$t("MinOrd.TotalIn")}}</span>
+    <span>{{ $t("MinOrd.TotalIn") }}</span>
     <el-divider direction="vertical"></el-divider>
     <span>{{ Totals.TotalIn.toFixed($store.getters.settings.ToFixed) }} </span>
     <el-divider direction="vertical"></el-divider>
 
-    <span>{{$t("MinOrd.TotalOut")}}</span>
+    <span>{{ $t("MinOrd.TotalOut") }}</span>
     <el-divider direction="vertical"></el-divider>
     <span>{{ Totals.TotalOut.toFixed($store.getters.settings.ToFixed) }} </span>
     <el-divider direction="vertical"></el-divider>
 
-    <span>{{$t("MinOrd.Balance")}}</span>
+    <span>{{ $t("MinOrd.Balance") }}</span>
     <el-divider direction="vertical"></el-divider>
     <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} </span>
     <el-divider direction="vertical"></el-divider>
@@ -93,24 +88,16 @@
       ref="multipleTable"
       @selection-change="handleSelectionChange"
       @row-dblclick="
-        row => {
+        (row) => {
           //  $emit('dblclick', row);
           let r = $router.resolve({
-            path: '/Item/Edit/' + row.Id
+            path: '/Item/Edit/' + row.Id,
           });
-          window.open(
-            r.href,
-            r.route.name,
-            $store.getters.settings.windowStyle
-          );
+          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }
       "
     >
-      <el-table-column
-        type="selection"
-        width="55"
-        align="center"
-      ></el-table-column>
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
         label="Id"
         prop="Id"
@@ -124,8 +111,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center">
-      </el-table-column>
+      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
       <el-table-column
         v-bind:label="$t('Items.Barcode')"
         prop="Barcode"
@@ -141,11 +127,7 @@
           <item-qty :ItemId="scope.row.Id" />
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Items.Category')"
-        align="center"
-        width="120"
-      >
+      <el-table-column v-bind:label="$t('Items.Category')" align="center" width="120">
         <template slot-scope="scope">
           <el-tag
             v-for="item of Array.from((scope.row.Category || '').split(','))"
@@ -155,11 +137,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Status')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Item" />
         </template>
@@ -185,27 +163,19 @@
             <el-table-column v-bind:label="$t('Items.Cost')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{
-                  scope.row.CostPrice.toFixed($store.getters.settings.ToFixed)
-                }}
+                {{ scope.row.CostPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
             <el-table-column v-bind:label="$t('Items.Packeges')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{
-                  scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed)
-                }}
+                {{ scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
             <el-table-column v-bind:label="$t('Items.Retail')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{
-                  scope.row.SellingPrice.toFixed(
-                    $store.getters.settings.ToFixed
-                  )
-                }}
+                {{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
             <el-table-column
@@ -259,6 +229,7 @@ import AddItem from "@/components/Item/AddItem.vue";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import SortOptions from "@/components/SortOptions";
 
 export default {
   name: "ComplexTable",
@@ -270,7 +241,8 @@ export default {
     RadioOprations,
     ItemQty,
     EditItem,
-    AddItem
+    AddItem,
+    SortOptions,
   },
   directives: { waves },
   data() {
@@ -284,13 +256,10 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
-        Status: undefined
+        Status: undefined,
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
-      ],
-      downloadLoading: false
+
+      downloadLoading: false,
     };
   },
   created() {
@@ -302,7 +271,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetLowOrder(this.listQuery).then(response => {
+      GetLowOrder(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -328,21 +297,21 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list"
+          filename: "table-list",
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "timestamp") {
             return parseTime(v[j]);
           } else {
@@ -351,13 +320,13 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
     handleSelectionChange(val) {
       this.Selection = val;
-    }
-  }
+    },
+  },
 };
 </script>

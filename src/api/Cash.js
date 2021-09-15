@@ -7,9 +7,9 @@ export function GetCash(query) {
     params: query
   })
 }
-export function GetActiveCash(query) {
+export function GetActive(query) {
   return request({
-    url: '/Cash/GetActiveCash',
+    url: '/Cash/GetActive',
     method: 'get',
     params: query
   })

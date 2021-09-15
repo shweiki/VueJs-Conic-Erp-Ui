@@ -34,6 +34,17 @@
             />
           </el-col>
           <el-col :span="3">
+            <Sort-Options
+              :Value="listQuery.Sort"
+              @Set="
+                (v) => {
+                  listQuery.Sort = v;
+                  handleFilter();
+                }
+              "
+            />
+          </el-col>
+          <el-col :span="3">
             <user-select
               @Set="
                 (v) => {
@@ -120,13 +131,13 @@
         style="width: 100%"
         @row-dblclick="
           (row) => {
-            $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
+            $router.push({ path: `/EntryAccounting/Edit/${row.Id}` });
           }
         "
       >
         <el-table-column
           v-bind:label="$t('Accounting.EntryId')"
-          prop="EntryId"
+          prop="Id"
           width="120"
           align="center"
         >
@@ -141,21 +152,6 @@
           prop="Description"
           align="center"
         ></el-table-column>
-        <el-table-column label="مدين" prop="Credit" width="100" align="center">
-          <template slot-scope="scope">{{
-            scope.row.Credit.toFixed($store.getters.settings.ToFixed)
-          }}</template>
-        </el-table-column>
-        <el-table-column label="دائن" prop="Debit" width="100" align="center">
-          <template slot-scope="scope">{{
-            scope.row.Debit.toFixed($store.getters.settings.ToFixed)
-          }}</template>
-        </el-table-column>
-        <el-table-column label="الرصيد" prop="TotalRow" width="100" align="center">
-          <template slot-scope="scope">{{
-            scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
-          }}</template>
-        </el-table-column>
         <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
           <template slot-scope="scope">
             <Status-Tag :Status="scope.row.Status" TableName="EntryAccounting" />
@@ -171,6 +167,44 @@
               @Done="handleFilter"
             />
             <Drawer-Print Type="EntryAccounting" :Data="scope.row" />
+          </template>
+        </el-table-column>
+        <el-table-column type="expand" align="center">
+          <template slot-scope="props">
+            <el-table :data="props.row.EntryMovements">
+              <el-table-column
+                v-bind:label="$t('Accounting.EntryId')"
+                prop="Id"
+                align="center"
+              >
+              </el-table-column>
+              <el-table-column
+                v-bind:label="$t('Accounting.AccountId')"
+                prop="AccountId"
+                align="center"
+              >
+              </el-table-column>
+              <el-table-column
+                v-bind:label="$t('Accounting.Name')"
+                prop="Name"
+                align="center"
+              >
+              </el-table-column>
+              <el-table-column label="مدين" prop="Credit" align="center">
+                <template slot-scope="scope">{{
+                  scope.row.Credit.toFixed($store.getters.settings.ToFixed)
+                }}</template>
+              </el-table-column>
+              <el-table-column label="دائن" prop="Debit" align="center">
+                <template slot-scope="scope">{{
+                  scope.row.Debit.toFixed($store.getters.settings.ToFixed)
+                }}</template>
+              </el-table-column>
+              <el-table-column label="TableName" prop="TableName" align="center">
+              </el-table-column>
+              <el-table-column label="Fktable" prop="Fktable" align="center">
+              </el-table-column>
+            </el-table>
           </template>
         </el-table-column>
       </el-table>
@@ -191,6 +225,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
+import SortOptions from "@/components/SortOptions";
 
 export default {
   name: "EntryAccounting",
@@ -202,6 +237,7 @@ export default {
     Pagination,
     UserSelect,
     RadioOprations,
+    SortOptions,
     DialogActionLog,
   },
   directives: { waves, permission },
@@ -229,10 +265,7 @@ export default {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
-        this.list = response.items.map((curr, i, array) => {
-          curr.TotalRow = array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
-          return curr;
-        });
+        this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
       });

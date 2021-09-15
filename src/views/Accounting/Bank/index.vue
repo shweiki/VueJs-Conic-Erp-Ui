@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" >
+      <div slot="header">
         <el-button
           style="float: left"
           type="success"
@@ -89,21 +89,11 @@
         <el-table-column width="120" align="center">
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.Opration.Status != -1"
               icon="el-icon-edit"
               :size="$store.getters.size"
               circle
               @click="handleUpdate(scope.row)"
             ></el-button>
-            <el-button
-              v-for="(NOprations, index) in scope.row.NextOprations"
-              :key="index"
-              :type="NOprations.ClassName"
-              :size="$store.getters.size"
-              round
-              @click="handleOprationsys(scope.row.Id, NOprations)"
-              >{{ NOprations.OprationDescription }}</el-button
-            >
           </template>
         </el-table-column>
       </el-table>
@@ -178,38 +168,10 @@
         >
       </div>
     </el-dialog>
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      :title="textOpration.OprationDescription"
-      :visible.sync="dialogOprationVisible"
-    >
-      <el-form
-        ref="dataOpration"
-        :rules="rulesOpration"
-        :model="tempOpration"
-        label-position="top"
-        label-width="70px"
-        style="width: 400px margin-left:50px"
-      >
-        <el-form-item
-          v-bind:label="$t('Classification.OperationNote')"
-          prop="Description"
-        >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button :type="textOpration.ClassName" @click="createOprationData()">{{
-          textOpration.OprationDescription
-        }}</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
-import { GetBanks, Create, Edit } from "@/api/Bank";
-import { ChangeObjStatus } from "@/api/Oprationsys";
+import { Get, Create, Edit } from "@/api/Bank";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 
 export default {
@@ -220,7 +182,6 @@ export default {
       tableData: [],
       loading: true,
       dialogFormVisible: false,
-      dialogOprationVisible: false,
       dialogFormStatus: "",
       search: "",
       BanksNames: [
@@ -364,16 +325,6 @@ export default {
           label: " حساب نوع اخر ",
         },
       ],
-      textMapForm: {
-        update: "تعديل",
-        create: "إضافة",
-      },
-      textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: "",
-      },
       tempForm: {
         Id: undefined,
         IBAN: "",
@@ -384,6 +335,7 @@ export default {
         AccountType: "",
         Currency: "",
         BranchName: "",
+        Status: 0,
         IsPrime: false,
       },
       rulesForm: {
@@ -401,25 +353,9 @@ export default {
           },
         ],
       },
-      tempOpration: {
-        ObjId: undefined,
-        OprationId: undefined,
-        Description: "",
-      },
-      rulesOpration: {
-        Description: [
-          {
-            required: true,
-            message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
-          },
-          {
-            minlength: 5,
-            maxlength: 150,
-            message: "الرجاء إدخال إسم لا يقل عن 5 احرف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
+      textMapForm: {
+        update: "تعديل",
+        create: "إضافة",
       },
     };
   },
@@ -429,7 +365,7 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
-      GetBanks()
+      Get()
         .then((response) => {
           // handle success
           console.log(response);
@@ -452,6 +388,7 @@ export default {
         AccountType: "",
         Currency: "",
         BranchName: "",
+        Status: 0,
         IsPrime: false,
       };
     },
@@ -459,7 +396,6 @@ export default {
       this.resetTempForm();
       this.dialogFormStatus = "create";
       this.dialogFormVisible = true;
-      this.$refs["dataForm"].clearValidate();
     },
     handleUpdate(row) {
       console.log(row);
@@ -468,19 +404,6 @@ export default {
       this.tempForm.Description = row.Description;
       this.dialogFormStatus = "update";
       this.dialogFormVisible = true;
-      this.$refs["dataForm"].clearValidate();
-    },
-    handleOprationsys(ObjId, Opration) {
-      this.dialogOprationVisible = true;
-      // text
-      this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
-      this.textOpration.IconClass = Opration.IconClass;
-      this.textOpration.ClassName = Opration.ClassName;
-      /// temp
-      this.tempOpration.ObjId = ObjId;
-      this.tempOpration.OprationId = Opration.Id;
-      this.tempOpration.Description = "";
     },
     createData() {
       this.$refs["dataForm"].validate((valid) => {
@@ -515,34 +438,6 @@ export default {
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
-                type: "success",
-                duration: 2000,
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
-        if (valid) {
-          console.log(this.tempOpration);
-          ChangeObjStatus({
-            ObjId: this.tempOpration.ObjId,
-            OprationId: this.tempOpration.OprationId,
-            Description: this.tempOpration.Description,
-          })
-            .then((response) => {
-              this.getdata();
-              this.dialogOprationVisible = false;
-              this.$notify({
-                title: "تم  ",
-                message: "تمت العملية بنجاح",
                 type: "success",
                 duration: 2000,
               });

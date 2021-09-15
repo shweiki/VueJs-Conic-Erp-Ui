@@ -1,6 +1,6 @@
 ﻿<template>
   <div class="app-container">
-    <el-card class="box-card">
+    <el-card v-loading="loading" class="box-card">
       <div slot="header">
         <el-col :span="24">
           <span>{{ $t("Account.Account") }}</span>
@@ -49,7 +49,6 @@
             >
               <span class="custom-tree-node" slot-scope="{ data }">
                 <span style="color: black">({{ data.Code }}) {{ data.Name }} </span>
-
                 <span>
                   <span style="color: red">{{
                     (data.TotalCredit - data.TotalDebit).toFixed(
@@ -94,6 +93,8 @@ export default {
   },
   data() {
     return {
+      loading: false,
+
       Selected: {
         Code: "0",
         Description: "",
@@ -121,14 +122,18 @@ export default {
     },
 
     getdata() {
+      this.loading = true;
       GetTreeAccount()
         .then((response) => {
           // handle success
           console.log(response);
           this.Tree = this.generateTree(response);
+          this.loading = false;
         })
         .catch((error) => {
           // handle error
+          this.loading = false;
+
           console.log(error);
         });
     },

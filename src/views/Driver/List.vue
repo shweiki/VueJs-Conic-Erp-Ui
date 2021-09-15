@@ -12,8 +12,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك الخصم فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             ></el-input>
             <el-button
@@ -31,9 +31,7 @@
               >Email</el-button
             >
           </div>
-          <el-button icon="el-icon-circle-plus" slot="reference"
-            >ارسال رسالة</el-button
-          >
+          <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
         </el-popover>
         <el-row type="flex">
           <el-col :span="3">
@@ -43,25 +41,20 @@
             <el-input
               v-model="listQuery.Any"
               placeholder="Search By Any Acount Name Or Id"
-              
               class="filter-item"
               @keyup.enter.native="handleFilter"
             />
           </el-col>
           <el-col :span="3">
-            <el-select
-              v-model="listQuery.Sort"
-              style="width: 140px"
-              class="filter-item"
-              @change="handleFilter"
-            >
-              <el-option
-                v-for="item in sortOptions"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              />
-            </el-select>
+            <Sort-Options
+              :Value="listQuery.Sort"
+              @Set="
+                (v) => {
+                  listQuery.Sort = v;
+                  handleFilter();
+                }
+              "
+            />
           </el-col>
           <el-col :span="6">
             <el-button
@@ -88,7 +81,7 @@
       <Radio-Oprations
         TableName="Driver"
         @Set="
-          v => {
+          (v) => {
             listQuery.Status = v;
             handleFilter();
           }
@@ -113,23 +106,15 @@
       ref="multipleTable"
       @selection-change="handleSelectionChange"
       @row-dblclick="
-        row => {
+        (row) => {
           let r = $router.resolve({
-            path: '/Driver/Edit/' + row.Id
+            path: '/Driver/Edit/' + row.Id,
           });
-          window.open(
-            r.href,
-            r.route.name,
-            $store.getters.settings.windowStyle
-          );
+          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }
       "
     >
-      <el-table-column
-        type="selection"
-        width="55"
-        align="center"
-      ></el-table-column>
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
         v-bind:label="$t('Vendors.ID')"
         prop="Id"
@@ -144,7 +129,11 @@
       </el-table-column>
       <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashDrawer.Company')" prop="Company" align="center">
+      <el-table-column
+        v-bind:label="$t('CashDrawer.Company')"
+        prop="Company"
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
@@ -156,11 +145,7 @@
         prop="PhoneNumber2"
         width="120"
       ></el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Status')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Driver" />
         </template>
@@ -197,6 +182,8 @@ import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import AddDriver from "@/components/Drivers/AddDriver.vue";
 import { SendMultiSMS } from "@/api/SMS";
+import SortOptions from "@/components/SortOptions";
+
 export default {
   name: "ComplexTable",
   components: {
@@ -204,7 +191,8 @@ export default {
     NextOprations,
     Pagination,
     RadioOprations,
-    AddDriver
+    AddDriver,
+    SortOptions,
   },
   directives: { waves, permission },
   data() {
@@ -219,13 +207,10 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
-        Status: undefined
+        Status: undefined,
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
-      ],
-      downloadLoading: false
+
+      downloadLoading: false,
     };
   },
   created() {
@@ -235,7 +220,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then(response => {
+      GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -261,21 +246,21 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list"
+          filename: "table-list",
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "timestamp") {
             return parseTime(v[j]);
           } else {
@@ -284,7 +269,7 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
@@ -293,7 +278,7 @@ export default {
     },
     SendSms() {
       if (this.Selection.length > 0) {
-        let numbers = this.Selection.map(element => {
+        let numbers = this.Selection.map((element) => {
           return element.PhoneNumber1;
         });
         SendMultiSMS(numbers, this.SmsBody);
@@ -301,17 +286,17 @@ export default {
           title: "تم ",
           message: "تم ارسال بنجاح",
           type: "success",
-          duration: 2000
+          duration: 2000,
         });
       } else {
         this.$notify({
           title: "تم ",
           message: "الرجاء تحديد المشتركين",
           type: "error",
-          duration: 2000
+          duration: 2000,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>

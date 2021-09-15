@@ -5,13 +5,12 @@
         <el-input
           v-model="listQuery.Any"
           placeholder="Search By Any Acount Name Or Id"
-          
           class="filter-item"
           @keyup.enter.native="handleFilter"
         />
         <Item-Search-Any
           @Set="
-            v => {
+            (v) => {
               ItemName = v.Name;
               listQuery.ItemId = v.Id;
               handleFilter();
@@ -24,7 +23,7 @@
         <Search-By-Date
           :Value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
-            v => {
+            (v) => {
               listQuery.DateFrom = v[0];
               listQuery.DateTo = v[1];
               handleFilter();
@@ -35,7 +34,7 @@
       <el-col :span="3">
         <user-select
           @Set="
-            v => {
+            (v) => {
               listQuery.User = v;
               handleFilter();
             }
@@ -43,19 +42,15 @@
         />
       </el-col>
       <el-col :span="3">
-        <el-select
-          v-model="listQuery.Sort"
-          style="width: 140px"
-          class="filter-item"
-          @change="handleFilter"
-        >
-          <el-option
-            v-for="item in sortOptions"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          />
-        </el-select>
+        <Sort-Options
+          :Value="listQuery.Sort"
+          @Set="
+            (v) => {
+              listQuery.Sort = v;
+              handleFilter();
+            }
+          "
+        />
       </el-col>
       <el-col :span="6">
         <el-button
@@ -68,7 +63,7 @@
             SaleInvoicesList({
               Totals: Totals,
               Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo]
+              Dates: [listQuery.DateFrom, listQuery.DateTo],
             })
           "
         ></el-button>
@@ -82,7 +77,7 @@
             SaleInvoicesItemsMovements({
               Totals: Totals,
               Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo]
+              Dates: [listQuery.DateFrom, listQuery.DateTo],
             })
           "
         ></el-button>
@@ -96,7 +91,7 @@
             SaleInvoicesItemsIngredients({
               Totals: Totals,
               Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo]
+              Dates: [listQuery.DateFrom, listQuery.DateTo],
             })
           "
         ></el-button>
@@ -126,7 +121,7 @@
         <Radio-Oprations
           TableName="SalesInvoice"
           @Set="
-            v => {
+            (v) => {
               listQuery.Status = v;
               handleFilter();
             }
@@ -141,36 +136,22 @@
 
         <span>{{ $t("CashPool.Cash") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span
-        >
+        <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>{{ $t("CashPool.Visa") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span
-        >
+        <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>الاجل</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Receivables.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.Receivables.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            Totals.Totals.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</span
-        >
+        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
       </el-col>
     </el-row>
@@ -184,15 +165,11 @@
       style="width: 100%"
       @sort-change="sortChange"
       @row-dblclick="
-        row => {
+        (row) => {
           let r = $router.resolve({
-            path: '/Sales/Edit/' + row.SalesInvoiceId
+            path: '/Sales/Edit/' + row.SalesInvoiceId,
           });
-          window.open(
-            r.href,
-            r.route.name,
-            $store.getters.settings.windowStyle
-          );
+          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }
       "
     >
@@ -208,21 +185,13 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Date')"
-        width="150px"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column
-        v-bind:label="$t('AddVendors.Name')"
-        prop="Name"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
       <el-table-column
         prop="PaymentMethod"
@@ -231,11 +200,7 @@
         width="150"
         align="center"
       ></el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Discount')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
         <template slot-scope="scope">{{
           scope.row.Discount.toFixed($store.getters.settings.ToFixed)
         }}</template>
@@ -247,22 +212,14 @@
         prop="Type"
       >
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Amountv')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.Total.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
 
-      <el-table-column
-        v-bind:label="$t('Sales.Status')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="SalesInvoice" />
         </template>
@@ -333,7 +290,7 @@ import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import {
   SaleInvoicesList,
   SaleInvoicesItemsMovements,
-  SaleInvoicesItemsIngredients
+  SaleInvoicesItemsIngredients,
 } from "@/Report/SaleInvoice";
 import permission from "@/directive/permission/index.js";
 
@@ -342,6 +299,7 @@ import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 import ItemSearchAny from "@/components/Item/ItemSearchAny";
+import SortOptions from "@/components/SortOptions";
 
 export default {
   name: "ComplexTable",
@@ -354,7 +312,8 @@ export default {
     UserSelect,
     RadioOprations,
     DialogActionLog,
-    ItemSearchAny
+    ItemSearchAny,
+    SortOptions,
   },
 
   directives: { waves, permission },
@@ -370,7 +329,7 @@ export default {
         Visa: 0,
         Profit: 0,
         TotalCost: 0,
-        Discount: 0
+        Discount: 0,
       },
       listLoading: false,
       listQuery: {
@@ -382,13 +341,9 @@ export default {
         User: undefined,
         DateFrom: "",
         DateTo: "",
-        Status: undefined
+        Status: undefined,
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
-      ],
-      downloadLoading: false
+      downloadLoading: false,
     };
   },
   created() {
@@ -401,7 +356,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByItem(this.listQuery).then(response => {
+      GetByItem(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -427,7 +382,7 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
@@ -435,16 +390,14 @@ export default {
           header: tHeader,
           data,
           filename:
-            window.location.pathname.split("/") +
-            "-" +
-            JSON.stringify(this.listQuery)
+            window.location.pathname.split("/") + "-" + JSON.stringify(this.listQuery),
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "InventoryMovements") {
             return JSON.stringify(v[j]);
           }
@@ -459,25 +412,25 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
     print(data) {
-      data = data.map(Item => ({
+      data = data.map((Item) => ({
         Name: Item.Name,
         Qty: Item.Qty,
         SellingPrice: Item.SellingPrice,
         Total: (Item.SellingPrice * Item.Qty).toFixed(
           this.$store.getters.settings.ToFixed
-        )
+        ),
       }));
       printJS({
         printable: data,
         properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json"
+        type: "json",
       });
-    }
-  }
+    },
+  },
 };
 </script>

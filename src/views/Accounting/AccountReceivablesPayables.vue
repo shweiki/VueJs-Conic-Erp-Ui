@@ -19,20 +19,16 @@
             >
             </el-switch>
           </el-col>
-          <el-col :span="4">
-            <el-select
-              v-model="listQuery.Sort"
-              style="width: 140px"
-              class="filter-item"
-              @change="handleFilter"
-            >
-              <el-option
-                v-for="item in sortOptions"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              />
-            </el-select>
+          <el-col :span="3">
+            <Sort-Options
+              :Value="listQuery.Sort"
+              @Set="
+                (v) => {
+                  listQuery.Sort = v;
+                  handleFilter();
+                }
+              "
+            />
           </el-col>
           <el-col :span="9">
             <el-button
@@ -152,6 +148,7 @@ import permission from "@/directive/permission/index.js";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import SortOptions from "@/components/SortOptions";
 
 export default {
   name: "AccountReceivablesPayables",
@@ -159,6 +156,7 @@ export default {
     StatusTag,
     DrawerPrint,
     Pagination,
+    SortOptions,
   },
   directives: { waves, permission },
   data() {
@@ -174,10 +172,6 @@ export default {
         Sort: "-id",
         limit: this.$store.getters.settings.LimitQurey,
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" },
-      ],
       downloadLoading: false,
     };
   },

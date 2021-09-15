@@ -8,28 +8,24 @@
       class="demo-ruleForm"
     >
       <el-card class="box-card">
-        <div slot="header">
-          <el-button
-            :disabled="DisabledSave"
-            style="float: left"
-            type="success"
-            icon="fa fa-save"
-            @click="isEdit != true ? createData() : updateData()"
-            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
+        <el-row type="flex" slot="header">
+          <el-col :span="20">
+            <Drawer-Print
+              v-bind:disabled="OldInvoice == null ? false : true"
+              Type="SaleInvoice"
+              :Data="OldInvoice"
+            />
+          </el-col>
+          <el-col :span="4">
+            <el-button
+              :disabled="DisabledSave"
+              type="success"
+              icon="fa fa-save"
+              @click="confirmData()"
+              >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
+            ></el-col
           >
-          <router-link
-            class="pan-btn tiffany-btn"
-            style="
-              float: right;
-              margin-left: 20px;
-              padding: 10px 15px;
-              border-radius: 6px;
-            "
-            icon="el-icon-plus"
-            to="/Sales/List"
-            >{{ $t("route.ListSalesInvoice") }}</router-link
-          >
-        </div>
+        </el-row>
         <el-row type="flex">
           <el-col :span="4">
             <el-form-item
@@ -61,7 +57,7 @@
                 },
               ]"
             >
-              <Vendor-Search-Any
+              <vendor-search-any
                 :VendorId="tempForm.VendorId"
                 @Set="
                   (v) => {
@@ -73,10 +69,21 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="طريقة الدفع" prop="PaymentMethod">
+            <el-form-item
+              label="طريقة الدفع"
+              prop="PaymentMethod"
+              :rules="[
+                {
+                  required: true,
+                  message: 'Please Choose Payment Method',
+                  trigger: 'blur',
+                },
+              ]"
+            >
               <radio-payment-method
-                :VendorId="tempForm.VendorId"
                 :Value="tempForm.PaymentMethod"
+                :VendorId="tempForm.VendorId"
+                Type="SaleInvoice"
                 @Set="(v) => (tempForm.PaymentMethod = v)"
               />
             </el-form-item>
@@ -279,6 +286,10 @@
           <span>{{ $t("Account.InCome") }}</span>
           <Select-In-Come-Accounts @Set="(v) => (InComeAccountId = v.value)" />
         </el-col>
+        <el-col :span="12">
+          <span>{{ $t("Account.Bank") }}</span>
+          <Select-Bank-Accounts @Set="(v) => (BankAccountId = v.value)" />
+        </el-col>
       </el-row>
     </el-form>
   </div>
@@ -286,14 +297,16 @@
 <script>
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import FakeDate from "@/components/Date/FakeDate";
-import { CreateEntry, EditEntryByFktable } from "@/api/EntryAccounting";
+import { EditEntryByFktable, GenerateSaleInvoiceEntry } from "@/api/EntryAccounting";
 import ItemsSearch from "@/components/Item/ItemsSearch.vue";
 import EditItem from "@/components/Item/EditItem";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
+import SelectBankAccounts from "@/components/TreeAccount/SelectBankAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
 import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
   name: "NewSalesInvoice",
@@ -306,6 +319,8 @@ export default {
     SelectCashAccounts,
     RadioActiveInventory,
     RadioPaymentMethod,
+    SelectBankAccounts,
+    DrawerPrint,
   },
   props: {
     isEdit: {
@@ -315,6 +330,7 @@ export default {
   },
   data() {
     return {
+      OldInvoice: null,
       ValidateNote: "",
       DisabledSave: false,
       tempForm: {
@@ -323,7 +339,7 @@ export default {
         Tax: 0.0,
         AccountInvoiceNumber: "",
         FakeDate: "",
-        PaymentMethod: "Cash",
+        PaymentMethod: "Receivables",
         Discount: 0,
         VendorId: 2,
         Status: 0,
@@ -341,6 +357,7 @@ export default {
       },
       CashAccountId: undefined,
       InComeAccountId: undefined,
+      BankAccountId: undefined,
       Vendor: undefined,
       tempRoute: {},
     };
@@ -361,7 +378,7 @@ export default {
         InComeAccountId: undefined,
         AccountInvoiceNumber: "",
         FakeDate: "",
-        PaymentMethod: "Cash",
+        PaymentMethod: "Receivables",
         Discount: 0,
         VendorId: 2,
         Status: 0,
@@ -400,208 +417,104 @@ export default {
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
     },
-    updateData() {
-      this.$refs["tempForm"].validate((valid) => {
+    confirmData() {
+      this.$refs["tempForm"].validate(async (valid) => {
         this.tempForm.Tax = parseInt(this.tempForm.Tax);
-        let Total =
+        this.tempForm.Total =
           this.tempForm.InventoryMovements.reduce((prev, cur) => {
             return prev + cur.Qty * cur.SellingPrice;
           }, 0) - this.tempForm.Discount;
         if (
           valid &&
-          Total > 0 &&
+          this.tempForm.Total > 0 &&
           this.tempForm.InventoryMovements.length > 0 &&
           this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
         ) {
-          Edit(this.tempForm)
-            .then((response) => {
-              if (
-                response &&
-                this.tempForm.PaymentMethod == "Receivables" &&
-                this.$store.getters.settings.PointOfSale.CreateEntry == true
-              ) {
-                EditEntryByFktable({
-                  TableName: "SaleInvoice",
-                  Fktable: this.tempForm.Id,
-                  collection: {
-                    Id: undefined,
-                    FakeDate: this.tempForm.FakeDate,
-                    Description: "",
-                    Type: "Auto",
-                    EntryMovements: [
-                      {
-                        Id: undefined,
-                        AccountId: this.Vendor.AccountId,
-                        Debit: 0.0,
-                        Credit: Total,
-                        Description: "فاتورة مبيعات ذمم رقم " + this.tempForm.Id + " ",
-                        EntryId: undefined,
-                        TableName: "SaleInvoice",
-                        Fktable: this.tempForm.Id,
-                      },
-                      {
-                        Id: undefined,
-                        AccountId: this.InComeAccountId,
-                        Debit: Total,
-                        Credit: 0.0,
-                        Description:
-                          "فاتورة مبيعات " +
-                          this.Vendor.Name +
-                          "  ذمم رقم " +
-                          this.tempForm.Id +
-                          " ",
-                        EntryId: undefined,
-                        TableName: "SaleInvoice",
-                        Fktable: this.tempForm.Id,
-                      },
-                    ],
-                  },
-                }).then((res) => {
-                  if (res) {
-                    this.$notify({
-                      message: "تم تعديل الفاتورة مع قيد محاسبي بنجاح",
-                      title: "تم الإضافة بنجاح",
-                      type: "success",
-                      position: "top-left",
-                      duration: 1000,
-                      showClose: false,
-                    });
-                    this.$confirm("هل تريد العودة ")
-                      .then((_) => {
-                        this.$router.back();
-                      })
-                      .catch((_) => {});
-                  }
-                });
-              } else if (response) {
-                this.$notify({
-                  title: "تم إضافة  بنجاح",
-                  message: "تم إضافة بنجاح",
-                  type: "success",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                });
-                this.restTempForm();
-                this.$router.push({ path: `/Sales/List` });
-              } else {
-                this.$notify({
-                  title: "مشكلة",
-                  message: "حصلت مشكلة في عملية الحفظ",
-                  type: "error",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                });
-              }
+          let Done;
+          if (this.isEdit != true) {
+            Done = await Create(this.tempForm)
+              .then((res) => {
+                if (res) {
+                  this.tempForm.Id = res;
+                  return res;
+                } else return false;
+              })
+              .catch((error) => {
+                return false;
+              });
+          } else {
+            Done = await Edit(this.tempForm)
+              .then((res) => {
+                if (res) return res;
+                else return false;
+              })
+              .catch((error) => {
+                return false;
+              });
+          }
+
+          if (Done && this.$store.getters.settings.PointOfSale.CreateEntry == true) {
+            EditEntryByFktable({
+              TableName: "SaleInvoice",
+              Fktable: this.tempForm.Id,
+              collection: await GenerateSaleInvoiceEntry(
+                this.tempForm,
+                this.Vendor,
+                this.InComeAccountId,
+                this.CashAccountId,
+                this.BankAccountId
+              ),
             })
-            .catch((error) => {
-              console.log(error);
+              .then((res) => {
+                if (res) {
+                  this.$notify({
+                    title: "تم " + this.isEdit ? "تعديل" : "إضافة" + " ",
+                    message:
+                      "تم " + this.isEdit
+                        ? "تعديل"
+                        : "إضافة" + " الفاتورة مع قيد محاسبي بنجاح",
+                    type: "success",
+                    position: "top-left",
+                    duration: 1000,
+                    showClose: false,
+                  });
+                  return res;
+                } else return false;
+              })
+              .catch((error) => {
+                return false;
+              });
+          }
+          if (Done) {
+            this.OldInvoice = this.tempForm;
+            this.$notify({
+              title: "تم " + this.isEdit ? "تعديل" : "إضافة" + "  بنجاح",
+              message: "تم " + this.isEdit ? "تعديل" : "إضافة" + " ",
+              type: "success",
+              position: "top-left",
+              duration: 1000,
+              showClose: false,
             });
+            this.$confirm("هل تريد العودة ")
+              .then((_) => {
+                this.$router.back();
+              })
+              .catch((_) => {});
+          } else {
+            this.$notify({
+              title: "مشكلة",
+              message: "حصلت مشكلة في عملية الحفظ",
+              type: "error",
+              position: "top-left",
+              duration: 1000,
+              showClose: false,
+            });
+          }
+          this.restTempForm();
+          this.DisabledSave = false;
         } else {
           this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
-          return false;
-        }
-      });
-    },
-    createData() {
-      this.$refs["tempForm"].validate((valid) => {
-        this.tempForm.Tax = parseInt(this.tempForm.Tax);
-        let Total =
-          this.tempForm.InventoryMovements.reduce((prev, cur) => {
-            return prev + cur.Qty * cur.SellingPrice;
-          }, 0) - this.tempForm.Discount;
-        if (
-          valid &&
-          Total > 0 &&
-          this.tempForm.InventoryMovements.length > 0 &&
-          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
-        ) {
-          this.DisabledSave = true;
-          Create(this.tempForm)
-            .then((response) => {
-              if (
-                response &&
-                this.tempForm.PaymentMethod == "Receivables" &&
-                this.$store.getters.settings.PointOfSale.CreateEntry == true
-              ) {
-                CreateEntry({
-                  Id: undefined,
-                  FakeDate: this.tempForm.FakeDate,
-                  Description: "",
-                  Type: "Auto",
-                  EntryMovements: [
-                    {
-                      Id: undefined,
-                      AccountId: this.Vendor.AccountId,
-                      Debit: 0.0,
-                      Credit: Total,
-                      Description: "فاتورة مبيعات ذمم رقم" + response + " ",
-                      EntryId: undefined,
-                      TableName: "SaleInvoice",
-                      Fktable: response,
-                    },
-                    {
-                      Id: undefined,
-                      AccountId: this.InComeAccountId,
-                      Debit: Total,
-                      Credit: 0.0,
-                      Description:
-                        "فاتورة مبيعات " +
-                        this.Vendor.Name +
-                        "  ذمم رقم " +
-                        response +
-                        " ",
-                      EntryId: undefined,
-                      TableName: "SaleInvoice",
-                      Fktable: response,
-                    },
-                  ],
-                }).then((res) => {
-                  if (res) {
-                    this.$notify({
-                      message: "تم تسجيل الفاتورة مع قيد محاسبي بنجاح",
-                      title: "تم الإضافة بنجاح",
-                      type: "success",
-                      position: "top-left",
-                      duration: 1000,
-                      showClose: false,
-                    });
-                    this.restTempForm();
-                    this.$confirm("هل تريد العودة ")
-                      .then((_) => {
-                        this.$router.back();
-                      })
-                      .catch((_) => {});
-                  }
-                });
-              } else if (response) {
-                this.$notify({
-                  title: "تم إضافة  بنجاح",
-                  message: "تم إضافة بنجاح",
-                  type: "success",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                });
-                this.restTempForm();
-                this.$router.push({ path: `/Sales/List` });
-              } else {
-                this.$notify({
-                  title: "مشكلة",
-                  message: "حصلت مشكلة في عملية الحفظ",
-                  type: "error",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                });
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
+          this.DisabledSave = false;
           return false;
         }
       });

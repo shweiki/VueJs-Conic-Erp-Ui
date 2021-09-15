@@ -51,7 +51,7 @@
       </div>
     </el-col>
     <el-col :span="4">
-      <edit-vendor :VendorId="Vendor.Id" />
+      <edit-vendor :VendorId="VendorId" />
     </el-col>
   </div>
 </template>
@@ -70,8 +70,20 @@ export default {
       options: [],
       NewPhone: "",
       show: false,
-      Vendor: { Id: 2, Name: "زبون نقدي", AccountId: 6 },
+      Vendor: {},
     };
+  },
+  created() {
+    if (
+      this.VendorId != null &&
+      this.VendorId != undefined &&
+      this.VendorId != "" &&
+      this.VendorId > 0
+    ) {
+      GetById({ Id: this.VendorId }).then((res) => {
+        this.change(res);
+      });
+    }
   },
   watch: {
     VendorId(value) {
@@ -79,6 +91,8 @@ export default {
         GetById({ Id: value }).then((res) => {
           this.change(res);
         });
+      } else {
+        this.change({ Id: 2, Name: "زبون نقدي", AccountId: 6 });
       }
     },
     show(value) {

@@ -140,10 +140,6 @@ export default {
         DateTo: "",
         Status: undefined,
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" },
-      ],
       downloadLoading: false,
     };
   },

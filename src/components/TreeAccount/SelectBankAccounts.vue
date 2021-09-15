@@ -3,7 +3,7 @@
     v-bind:disabled="!checkPermission(['Admin'])"
     v-model="value"
     @change="SetVal"
-    placeholder="الصندوق"
+    placeholder="البنك"
   >
     <el-option
       v-for="item in options"
@@ -14,13 +14,13 @@
   </el-select>
 </template>
 <script>
-import { GetActive } from "@/api/Cash";
+import { GetActive } from "@/api/Bank";
 import permission from "@/directive/permission/index.js";
 import checkPermission from "@/utils/permission";
 
 export default {
   directives: { permission },
-  props: ["CashId"],
+  props: ["BankId"],
   data() {
     return {
       options: [],
@@ -28,7 +28,7 @@ export default {
     };
   },
   watch: {
-    CashId(val) {
+    BankId(val) {
       if (val) this.SetVal(val);
     },
   },

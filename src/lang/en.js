@@ -243,6 +243,12 @@ export default {
         TotalOut: "Total Out",
         Balance: "Balance",
     },
+    PaymentMethod: {
+        Cash: 'Cash',
+        Visa: 'Visa',
+        Receivables: 'Receivables',
+        Cheque: 'Cheque',
+    },
     settings: {
         title: 'Page style setting',
         theme: 'Theme Color',

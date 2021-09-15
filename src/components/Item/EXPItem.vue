@@ -6,7 +6,6 @@
           <el-input
             v-model="listQuery.Any"
             placeholder="البحث بحسب رقم / الاسم / الباركود  / التصنيف"
-            
             class="filter-item"
             @keyup.enter.native="handleFilter"
           />
@@ -15,7 +14,7 @@
           <Search-By-Date
             :Value="[listQuery.DateFrom, listQuery.DateTo]"
             @Set="
-              v => {
+              (v) => {
                 listQuery.DateFrom = v[0];
                 listQuery.DateTo = v[1];
                 handleFilter();
@@ -24,19 +23,15 @@
           />
         </el-col>
         <el-col :span="3">
-          <el-select
-            v-model="listQuery.Sort"
-            style="width: 140px"
-            class="filter-item"
-            @change="handleFilter"
-          >
-            <el-option
-              v-for="item in sortOptions"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
-            />
-          </el-select>
+          <Sort-Options
+            :Value="listQuery.Sort"
+            @Set="
+              (v) => {
+                listQuery.Sort = v;
+                handleFilter();
+              }
+            "
+          />
         </el-col>
         <el-col :span="6">
           <el-button
@@ -67,7 +62,7 @@
     <Radio-Oprations
       TableName="Item"
       @Set="
-        v => {
+        (v) => {
           listQuery.Status = v;
           handleFilter();
         }
@@ -105,24 +100,16 @@
       ref="multipleTable"
       @selection-change="handleSelectionChange"
       @row-dblclick="
-        row => {
+        (row) => {
           //  $emit('dblclick', row);
           let r = $router.resolve({
-            path: '/Item/Edit/' + row.Id
+            path: '/Item/Edit/' + row.Id,
           });
-          window.open(
-            r.href,
-            r.route.name,
-            $store.getters.settings.windowStyle
-          );
+          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }
       "
     >
-      <el-table-column
-        type="selection"
-        width="55"
-        align="center"
-      ></el-table-column>
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
         label="Id"
         prop="Id"
@@ -136,8 +123,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center">
-      </el-table-column>
+      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
       <el-table-column
         v-bind:label="$t('Items.Barcode')"
         prop="Barcode"
@@ -158,11 +144,7 @@
           <Select-Item-Exp-Column :ItemId="scope.row.Id" />
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Status')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Item" />
         </template>
@@ -188,27 +170,19 @@
             <el-table-column v-bind:label="$t('Items.Cost')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{
-                  scope.row.CostPrice.toFixed($store.getters.settings.ToFixed)
-                }}
+                {{ scope.row.CostPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
             <el-table-column v-bind:label="$t('Items.Packeges')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{
-                  scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed)
-                }}
+                {{ scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
             <el-table-column v-bind:label="$t('Items.Retail')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{
-                  scope.row.SellingPrice.toFixed(
-                    $store.getters.settings.ToFixed
-                  )
-                }}
+                {{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
             <el-table-column
@@ -264,6 +238,7 @@ import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
+import SortOptions from "@/components/SortOptions";
 
 export default {
   name: "ComplexTable",
@@ -277,7 +252,8 @@ export default {
     EditItem,
     AddItem,
     SelectItemExpColumn,
-    SearchByDate
+    SearchByDate,
+    SortOptions,
   },
   directives: { waves },
   data() {
@@ -293,13 +269,9 @@ export default {
         Sort: "-id",
         DateFrom: "",
         DateTo: "",
-        Status: undefined
+        Status: undefined,
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" }
-      ],
-      downloadLoading: false
+      downloadLoading: false,
     };
   },
   created() {
@@ -311,7 +283,7 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetEXP(this.listQuery).then(response => {
+      GetEXP(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -337,21 +309,21 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then(excel => {
+      import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list"
+          filename: "table-list",
         });
         this.downloadLoading = false;
       });
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "timestamp") {
             return parseTime(v[j]);
           } else {
@@ -360,13 +332,13 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
     handleSelectionChange(val) {
       this.Selection = val;
-    }
-  }
+    },
+  },
 };
 </script>

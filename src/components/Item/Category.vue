@@ -1,11 +1,6 @@
 <template>
   <div>
-    <el-drag-select
-      @change="SetVal"
-      v-model="value"
-      multiple
-      placeholder="تصنيفات"
-    >
+    <el-drag-select @change="SetVal" v-model="value" multiple placeholder="تصنيفات">
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -25,50 +20,27 @@ export default {
   data() {
     return {
       value: [],
-      options: [
-        // {
-        //   value: "ساندويش",
-        //   label: "ساندويش"
-        // },
-        // {
-        //   value: "وجبات",
-        //   label: "وجبات"
-        // },
-        // {
-        //   value: "مشروبات",
-        //   label: "مشروبات"
-        // },
-        // {
-        //   value: "إضافات",
-        //   label: "إضافات"
-        // },
-        // { value: "لحم", label: "لحم" },
-        // { value: "دجاج", label: "دجاج" },
-        // { value: "عادي", label: "عادي" },
-        // { value: "سوبر", label: "سوبر" },
-        // { value: "دبل", label: "دبل" },
-        // { value: "تربل", label: "تربل" },
-        // { value: "توفير", label: "توفير" }
-      ]
+      options: [],
     };
   },
   created() {
     if (this.Value) this.value = Array.from(this.Value.split(","));
-     GetActiveMenuItem()  .then((response) => {
-          // handle success
-          console.log(response);
-          this.options = response;
-          this.loading = false;
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error);
-        })
+    GetActiveMenuItem()
+      .then((response) => {
+        // handle success
+        console.log(response);
+        this.options = response;
+        this.loading = false;
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      });
   },
   methods: {
     SetVal(val) {
       this.$emit("Set", val.toString());
-    }
-  }
+    },
+  },
 };
 </script>

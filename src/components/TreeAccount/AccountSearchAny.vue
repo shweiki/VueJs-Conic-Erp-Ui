@@ -59,7 +59,6 @@ export default {
       Account: { Id: 6, Name: "زبون نقدي" },
     };
   },
-
   watch: {
     AccountId(value) {
       if (value != null && value != undefined && value != "" && value > 0) {

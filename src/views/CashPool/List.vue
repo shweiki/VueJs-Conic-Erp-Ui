@@ -32,19 +32,15 @@
         />
       </el-col>
       <el-col :span="3">
-        <el-select
-          v-model="listQuery.Sort"
-          style="width: 140px"
-          class="filter-item"
-          @change="handleFilter"
-        >
-          <el-option
-            v-for="item in sortOptions"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          />
-        </el-select>
+        <Sort-Options
+          :Value="listQuery.Sort"
+          @Set="
+            (v) => {
+              listQuery.Sort = v;
+              handleFilter();
+            }
+          "
+        />
       </el-col>
       <el-col :span="6">
         <Drawer-Print style="float: left" Type="CashPoolList" :Data="Data" />
@@ -120,7 +116,7 @@
         <span
           >{{
             list.reduce((prev, cur) => {
-              return prev + cur.Totals;
+              return prev + cur.Totals.Totals;
             }, 0)
           }}
           JOD</span
@@ -195,7 +191,7 @@
       </el-table-column>
       <el-table-column label="المطلوب" align="center">
         <template slot-scope="{ row }">
-          {{ row.Totals.toFixed($store.getters.settings.ToFixed) }}
+          {{ row.Totals.Totals }}
           JOD
         </template>
       </el-table-column>
@@ -282,7 +278,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
-import { async } from "vue-phone-number-input/dist/vue-phone-number-input.common";
+import SortOptions from "@/components/SortOptions";
 
 export default {
   name: "ComplexTable",
@@ -295,6 +291,7 @@ export default {
     UserSelect,
     RadioOprations,
     DialogActionLog,
+    SortOptions,
   },
   directives: { waves, permission },
   data() {
@@ -322,10 +319,6 @@ export default {
         DateTo: "",
         Status: undefined,
       },
-      sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" },
-      ],
       downloadLoading: false,
     };
   },
@@ -336,12 +329,14 @@ export default {
     async getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then(async (response) => {
+      await GetByListQ(this.listQuery).then(async (response) => {
         this.Totals = response.Totals;
         await response.items.forEach(async (element) => {
           element.Totals = await this.GetListId(element);
         });
-        this.list = response.items;
+
+        this.list = await response.items;
+
         //console.log("sdsad", this.list);
         this.listLoading = false;
       });
@@ -351,9 +346,10 @@ export default {
         let total = 0;
         if (item.Type == "SaleInvoice") {
           await GetSaleInvoiceByListId({ listid: item.Fktable }).then((res) => {
-            item.Totals = res.Totals.Totals;
+            item.Totals = res.Totals;
             item.SaleInvoice = res.items;
-            total = res.Totals.Totals;
+            total = res.Totals;
+            total.Totals = total.Totals.toFixed(this.$store.getters.settings.ToFixed);
             // console.log((item.Totals, res.Totals));
           });
         }
@@ -361,7 +357,8 @@ export default {
           await GetPaymentByListId({ listid: item.Fktable }).then((res) => {
             item.Totals = res.Totals;
             item.Payment = res.items;
-            total = res.Totals.Totals;
+            total = res.Totals;
+            total.Totals = total.Totals.toFixed(this.$store.getters.settings.ToFixed);
           });
         }
         resolve(total);

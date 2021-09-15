@@ -1,8 +1,16 @@
 import request from '@/utils/RequestApi'
 import qs from 'qs';
-export function GetBanks(query) {
+
+export function Get(query) {
   return request({
-    url: '/Banks/GetBanks',
+    url: '/Bank/Get',
+    method: 'get',
+    params: query
+  })
+}
+export function GetActive(query) {
+  return request({
+    url: '/Bank/GetActive',
     method: 'get',
     params: query
   })
@@ -11,7 +19,7 @@ export function GetBanks(query) {
 
 export function Create(data) {
   return request({
-    url: '/Banks/Create',
+    url: '/Bank/Create',
     method: 'post',
     data: qs.stringify(data)
   })
@@ -19,7 +27,7 @@ export function Create(data) {
 
 export function Edit(data) {
   return request({
-    url: '/Banks/Edit',
+    url: '/Bank/Edit',
     method: 'post',
     data: qs.stringify(data)
   })

@@ -16,6 +16,7 @@
           <el-col :span="2">
             <el-popover placement="right" width="400" trigger="click">
               <Account-Search-Any
+                :AccountId="listQuery.MergeAccountId"
                 @Set="
                   (v) => {
                     //  Account = v;
@@ -248,7 +249,6 @@ export default {
       downloadLoading: false,
     };
   },
-
   methods: {
     getList() {
       this.listLoading = true;
