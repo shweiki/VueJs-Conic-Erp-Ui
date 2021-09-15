@@ -58,6 +58,16 @@
               <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name"/>
             </el-tab-pane>
 
+             <el-tab-pane label="رواتب" name="salary">
+              <span slot="label"><i class="el-icon-refresh"></i> رواتب</span>
+              <Salary :SalaryPayment="SalaryPayment" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name"/>
+            </el-tab-pane>
+
+            <el-tab-pane label="التسويات" name="Adjustment">
+              <span slot="label"><i class="el-icon-refresh"></i> التسويات</span>
+              <Working-Adjustment/>
+            </el-tab-pane>
+
             <el-tab-pane label="تواصل" name="communication">
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
               <Communication />
@@ -78,15 +88,17 @@ import MemberSearch from "./MemberSearch.vue";
 import EmployeeLogin from "./Dialogs/EmployeeLogin";
 import EmployeeLogout from "./Dialogs/EmployeeLogout";
 import Account from "./Account.vue";
+import Salary from "./Salary.vue";
+import WorkingAdjustment from "./WorkingAdjustment.vue";
 import Communication from "./Communication.vue";
 import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetFileByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
+import { GetSalaryById } from "@/api/Salary";
 import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
 import checkPermission from "@/utils/permission";
 import { GetEmployeeLogById } from "@/api/WorkingHoursLog";
-
 import Massage from "@/components/Massage/index.vue";
 
 export default {
@@ -97,9 +109,11 @@ export default {
     EmployeeLogin,
     EmployeeLogout,
     Account,
+    Salary,
     Communication,
     Massage,
-    Timeline
+    Timeline,
+    WorkingAdjustment,
   },
   props: {
     isEdit: {
@@ -114,6 +128,7 @@ export default {
       tempRoute: {},
       tempForm: null,
       EntryMovements: [],
+      SalaryPayment:[],
       log: [],
     };
   },
@@ -141,6 +156,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+     
     },
     tabClick(tab, event) {
      if (tab.label == "زيارات")
@@ -160,6 +176,12 @@ export default {
             return curr;
           });
         });
+         if (tab.label == "رواتب")
+        GetSalaryById({
+          EmployeeId: this.tempForm.Id,
+        }).then((response) => {
+          this.SalaryPayment = response.reverse();
+          });
      
     },
     GetImageMember(Id) {

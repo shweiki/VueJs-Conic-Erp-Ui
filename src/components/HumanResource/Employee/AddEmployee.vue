@@ -178,6 +178,7 @@ export default {
         Type: "New",
         Tag: null,
         Status: -1,
+        EmployeeUserId:""
       },
       rulesForm: {
         Name: [

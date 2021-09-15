@@ -4,8 +4,8 @@
               type="primary"
               icon="el-icon-plus"
               @click="Visibles = true"
-            >اضافة راتب</el-button>
-    <el-dialog style="margin-top: -13vh" title="إضافة راتب" :visible.sync="Visibles">
+            >تعديل الراتب</el-button>
+    <el-dialog style="margin-top: -13vh" title="تعديل الراتب" :visible.sync="Visibles">
       <el-form
         :model="Temp"
         ref="SalaryForm"
@@ -48,7 +48,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button type="primary" @click="create()">{{
+        <el-button type="primary" @click="update()">{{
           $t("AddVendors.Save")
         }}</el-button>
       </div>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { Create } from "@/api/Salary";
+import { Update } from "@/api/Salary";
 import EmployeeSearchAny from "@/components/HumanResource/EmployeeSearchAny";
 import permission from "@/directive/permission/index.js";
 import FakeDate from "@/components/Date/FakeDate.vue";
@@ -65,6 +65,12 @@ export default {
   components: { EmployeeSearchAny, FakeDate },
   directives: { permission },
   props:{
+       SalaryPayment: {
+      type: Array,
+      default: () => {
+        return null;
+      }
+    },
     EmployeeId:{
       type: Number,
       default: undefined
@@ -87,11 +93,11 @@ export default {
     };
   },
   methods: {
-    create() {
+    update() {
       this.$refs["SalaryForm"].validate((valid) => {
         if (valid) {
           this.Temp.EmployeeId = this.EmployeeId;
-          Create(this.Temp)
+          Update(this.Temp)
             .then((response) => {
               this.Visibles = false;
               this.$notify({

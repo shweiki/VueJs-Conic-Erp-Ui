@@ -21,7 +21,7 @@
           />
         </el-col>
         <el-col :span="20">
-          <el-divider> إضافة شيك </el-divider>
+          <el-divider> إضافة تسوية </el-divider>
         </el-col>
       </div>
       <el-form
@@ -32,223 +32,90 @@
         label-width="70px"
       >
         <el-row :gutter="24">
+           <el-col :span="24">
+           <el-form-item
+          
+          prop="ChequeNumber"
+        >
+         <el-row :gutter="20" type="flex">
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Cheque.From')" prop="VendorId">
-              <Account-Search-Any
-                @Set="
-                  v => {
-                    tempForm.VendorId = v.Id;
-                  }
-                "
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-bind:label="$t('Cheque.BankName')" prop="BankName">
-              <el-select
-                v-model="tempForm.BankName"
-                filterable
-                placeholder="BankName"
-              >
-                <el-option
-                  v-for="item in BanksNames"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+        <el-divider content-position="right"> إسم التسوية </el-divider>
+        </el-col>
         </el-row>
-        <el-row :gutter="24">
+          <el-input type="text" v-model="tempForm.Name"></el-input>
+        </el-form-item>
+           </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex">
           <el-col :span="12">
+        <el-divider content-position="right"> نوع التسوية </el-divider>
+        </el-col>
+        </el-row>
+<el-row :gutter="20">
+  <el-col :span="24">
+    <el-radio-group v-model="type">
+      <el-radio-button label="1"> زيادة</el-radio-button>
+      <el-radio-button label="2"> خصم</el-radio-button>
+    </el-radio-group>
+  </el-col>
+  <br><br>
+  </el-row>
+<el-row :gutter="20">
+  <el-col :span="24">
+         <el-radio v-model="radio" label="1" >بالقيمة النقدية</el-radio>
+         <el-radio v-model="radio" label="2" >بالقيمة المئوية</el-radio>
+  </el-col>
+  <br><br>
+  </el-row>
+
+        <el-row :gutter="20" >
+          <el-col :span="23" v-if="radio == 1">
             <el-form-item
-              v-bind:label="$t('Cheque.ChequeAmount')"
-              prop="ChequeAmount"
+              prop="AdjustmentAmount"
             >
               <el-input-number
-                v-model="tempForm.ChequeAmount"
+                v-model="tempForm.AdjustmentAmount"
                 :precision="2"
-                :step="0.1"
+                :step="1"
                 :min="0.0"
                 :max="1500"
                 @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+            <el-col :span="23" v-if="radio == 2">
             <el-form-item
-              prop="FakeDate"
-              v-bind:label="$t('Cheque.FakeDate')"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
-              ]"
+              prop="AdjustmentPercentage"
             >
-              <el-date-picker
-                v-model="tempForm.FakeDate"
-                type="date"
-                v-bind:placeholder="$t('NewPurchaseInvoice.Date')"
-                format="dd/MM/yyyy"
-              ></el-date-picker>
+              <el-input-number
+                v-model="tempForm.AdjustmentPercentage"
+                :precision="2"
+                :step="0.01"
+                :min="0.01"
+                :max="0.99"
+                @focus="$event.target.select()"
+              ></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item
-          v-bind:label="$t('Cheque.ChequeNumber')"
-          prop="ChequeNumber"
-        >
-          <el-input type="text" v-model="tempForm.ChequeNumber"></el-input>
-        </el-form-item>
-        <el-form-item v-bind:label="$t('Cheque.Payee')" prop="Payee">
-          <el-input type="text" v-model="tempForm.Payee"></el-input>
-        </el-form-item>
-        <el-form-item v-bind:label="$t('Cheque.Currency')" prop="Currency">
-          <el-input type="text" v-model="tempForm.Currency"></el-input>
-        </el-form-item>
-        <el-form-item
-          v-bind:label="$t('Cheque.PaymentType')"
-          prop="PaymentType"
-        >
-          <el-input type="text" v-model="tempForm.PaymentType"></el-input>
-        </el-form-item>
-
-        <el-form-item
-          v-bind:label="$t('Cheque.BankAddress')"
-          prop="BankAddress"
-        >
-          <el-input type="textarea" v-model="tempForm.BankAddress"></el-input>
-        </el-form-item>
-        <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
-          <el-input type="textarea" v-model="tempForm.Description"></el-input>
-        </el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
-
 <script>
-import { Create } from "@/api/Cheque";
-import { GetVendorCheque } from "@/api/Vendor";
+import { Create } from "@/api/Adjustment";
 export default {
-  name: "Cheque",
+  name: "Adjustment",
   data() {
     return {
+      radio: '1',
+      type:'1',
       dialogFormVisible: false,
-      BanksNames: [
-        {
-          value: " العربي",
-          label: " العربي"
-        },
-        {
-          value: "المؤسسة العربية المصرفية",
-          label: "المؤسسة العربية المصرفية "
-        },
-        {
-          value: " الاردن",
-          label: " الاردن"
-        },
-        {
-          value: " القاهرة عمان",
-          label: " القاهرة عمان"
-        },
-        {
-          value: " المال الأردني",
-          label: " المال الأردني"
-        },
-        {
-          value: " التجاري الأردني",
-          label: " التجاري الأردني"
-        },
-        {
-          value: " الاردني الكويتي",
-          label: " الاردني الكويتي"
-        },
-        {
-          value: " الاهلي الاردني",
-          label: " الاهلي الاردني"
-        },
-        {
-          value: " الاسكان للتجارة والتمويل",
-          label: " الاسكان للتجارة والتمويل"
-        },
-        {
-          value: " الاستثمار العربي الاردني",
-          label: " الاستثمار العربي الاردني"
-        },
-        {
-          value: "الاستثماري",
-          label: "الاستثماري"
-        },
-        {
-          value: "سوسيته جنرال",
-          label: "سوسيته جنرال"
-        },
-        {
-          value: "الاتحاد",
-          label: "الاتحاد"
-        },
-        {
-          value: "ستاندرد تشارترد",
-          label: "ستاندرد تشارترد"
-        },
-        {
-          value: " العقاري المصري العربي",
-          label: " العقاري المصري العربي"
-        },
-        {
-          value: "سيتي بنك إن . إيه",
-          label: "سيتي بنك إن . إيه"
-        },
-        {
-          value: "الرافدين",
-          label: "الرافدين"
-        },
-        {
-          value: " الكويت الوطني",
-          label: " الكويت الوطني"
-        },
-        {
-          value: " لبنان والمهجر",
-          label: " لبنان والمهجر"
-        },
-        {
-          value: "عوده ش.م.ل",
-          label: "عوده ش.م.ل"
-        },
-        {
-          value: " العربي الاسلامي الدولي",
-          label: " العربي الاسلامي الدولي"
-        },
-        {
-          value: " الاسلامي الاردني",
-          label: " الاسلامي الاردني"
-        },
-        {
-          value: " صفوة الإسلامي",
-          label: " صفوة الإسلامي"
-        },
-        {
-          value: "مصرف الراجحي",
-          label: "مصرف الراجحي"
-        }
-      ],
       tempForm: {
         Id: undefined,
-        BankAddress: "",
-        BankName: "",
-        ChequeAmount: "",
-        FakeDate: new Date(),
-        Payee: "",
-        PaymentType: "",
-        ChequeNumber: "",
-        Currency: "",
-        Description: "",
-        IsPrime: false,
-        VendorId: undefined
+        Name: "",
+        AdjustmentAmount:1.00,
+        AdjustmentPercentage: 0.01,
       },
       rulesForm: {
         Name: [
@@ -274,23 +141,29 @@ export default {
     resetTempForm() {
       this.tempForm = {
         Id: undefined,
-        BankAddress: "",
-        BankName: "",
-        ChequeAmount: "",
-        FakeDate: new Date(),
-        Payee: "",
-        PaymentType: "",
-        ChequeNumber: "",
-        Currency: "",
-        Description: "",
-        IsPrime: false,
-        VendorId: undefined
+        Name: "",
+        AdjustmentAmount:0.0,
+        AdjustmentPercentage: 0,
       };
     },
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          console.log(this.tempForm);
+          if (this.type==2){
+            if(this.radio==1){
+              this.tempForm.AdjustmentPercentage=0;
+              this.tempForm.AdjustmentAmount= -this.tempForm.AdjustmentAmount;
+            };
+            if(this.radio==2){
+              this.tempForm.AdjustmentAmount=0;
+              this.tempForm.AdjustmentPercentage = -this.tempForm.AdjustmentPercentage;
+              };
+          }
+          if (this.type==1){
+            if(this.radio==1){this.tempForm.AdjustmentPercentage=0;};
+            if(this.radio==2){this.tempForm.AdjustmentAmount=0;};
+          }
+          
           Create(this.tempForm)
             .then(response => {
               this.dialogFormVisible = false;
@@ -309,7 +182,8 @@ export default {
           return false;
         }
       });
-    }
+    },
+    
   }
 };
 </script>

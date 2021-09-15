@@ -16,4 +16,12 @@ export function Create(data) {
     data: qs.stringify(data)
   })
 }
+export function GetAdjustmentLabel(query) {
+  return request({
+    url: '/Adjustment/GetAdjustmentLabel',
+    method: 'get',
+    params: query
+  })
+}
+
 
