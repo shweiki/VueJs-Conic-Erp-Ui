@@ -7,18 +7,8 @@
       label-width="70px"
       class="demo-ruleForm"
     >
-      <el-row type="flex">
-        <el-col :span="6">
-          <el-button
-            :disabled="DisabledSave"
-            style="float: left"
-            type="success"
-            icon="fa fa-save"
-            @click="isEdit != true ? createData() : updateData()"
-            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-          >
-        </el-col>
-        <el-col :span="6">
+      <el-row class="card" type="flex">
+        <el-col :span="18">
           <Drawer-Print
             v-bind:disabled="OldVisit == null ? false : true"
             Type="Visit"
@@ -31,6 +21,16 @@
             active-color="#13ce66"
             inactive-color="#ff4949"
           ></el-switch>
+        </el-col>
+        <el-col :span="3">
+          <el-button
+            :disabled="DisabledSave"
+            style="float: left"
+            type="success"
+            icon="fa fa-save"
+            @click="isEdit != true ? createData() : updateData()"
+            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
+          >
         </el-col>
       </el-row>
       <el-row type="flex">
@@ -61,7 +61,17 @@
       </el-row>
       <el-row type="flex">
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Visit.Name')" prop="Name">
+          <el-form-item
+            v-bind:label="$t('Visit.Name')"
+            prop="Name"
+            :rules="[
+              {
+                required: true,
+                message: 'لايمكن ترك التاريخ فارغ',
+                trigger: 'blur',
+              },
+            ]"
+          >
             <el-input
               required
               v-model="tempForm.Name"
@@ -195,6 +205,7 @@ import FakeDate from "@/components/Date/FakeDate";
 import checkPermission from "@/utils/permission";
 import { PrintReport } from "@/Report/FunctionalityReport";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import { Now, addMinutes } from "@/utils";
 
 export default {
   name: "Visit",
@@ -210,7 +221,7 @@ export default {
   },
   data() {
     return {
-      OldVisit: {},
+      OldVisit: null,
       AutoPrint: true,
       ValidateNote: "",
       DisabledSave: false,
@@ -343,6 +354,9 @@ export default {
           ).toFixed(this.$store.getters.settings.ToFixed);
           if (Total > 0) {
             this.DisabledSave = true;
+            this.tempForm.FakeDate = Now();
+            this.tempForm.TimeOut = addMinutes(new Date(), this.tempForm.HourCount);
+
             Create(this.tempForm)
               .then((res) => {
                 if (res) {
@@ -398,5 +412,11 @@ export default {
   font-size: 22px;
   border: dotted;
   font-weight: 700;
+}
+.el-row--flex {
+  padding: 0.5px;
+}
+.el-form-item {
+  margin-bottom: 7px;
 }
 </style>

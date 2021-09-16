@@ -362,7 +362,7 @@
             </split-pane>
           </template>
           <template slot="paneR">
-            <split-pane split="horizontal" :min-percent="60" :default-percent="65">
+            <split-pane split="horizontal" :min-percent="50" :default-percent="55">
               <template slot="paneR">
                 <VisitIn />
               </template>

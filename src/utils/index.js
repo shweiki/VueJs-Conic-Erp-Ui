@@ -1,14 +1,35 @@
 /**
  * Created by PanJiaChen on 16/11/18.
  */
+import {
+  LocalDateTime,
+  LocalDate,
+  LocalTime,
+  DateTimeFormatter,
+  Instant,
+} from "@js-joda/core";
 
+
+export function Now() {
+  let val = LocalDateTime.ofInstant(Instant.ofEpochMilli(Date.now())).format(
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+  );
+  return val
+
+}
+export function addMinutes(dt, minutes) {
+  let val = LocalDateTime.ofInstant(Instant.ofEpochMilli(dt)).plusMinutes(minutes * 60).format(
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+  );
+  return val
+}
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
  * @param {string} cFormat
  * @returns {string | null}
  */
- export function TimeConvert(time) {
+export function TimeConvert(time) {
   let date
   if (typeof time === 'object') {
     date = time
@@ -60,7 +81,7 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -183,12 +204,12 @@ export function param2Obj(url) {
   }
   return JSON.parse(
     '{"' +
-      decodeURIComponent(search)
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"')
-        .replace(/\+/g, ' ') +
-      '"}'
+    decodeURIComponent(search)
+      .replace(/"/g, '\\"')
+      .replace(/&/g, '","')
+      .replace(/=/g, '":"')
+      .replace(/\+/g, ' ') +
+    '"}'
   )
 }
 
@@ -267,7 +288,7 @@ export function getTime(type) {
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
-  const later = function() {
+  const later = function () {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp
 
@@ -284,7 +305,7 @@ export function debounce(func, wait, immediate) {
     }
   }
 
-  return function(...args) {
+  return function (...args) {
     context = this
     timestamp = +new Date()
     const callNow = immediate && !timeout

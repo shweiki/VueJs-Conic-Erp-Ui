@@ -111,6 +111,8 @@ export default {
       }).then((response) => {
         console.log(response);
         this.$emit("Done");
+        this.dialogOprationVisible = false;
+
         this.$notify({
           title: "تم ",
           message: "تم الإضافة بنجاح",

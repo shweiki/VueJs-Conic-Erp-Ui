@@ -16,7 +16,7 @@
       <el-col :span="12">
         <Button-Oprations
           TableName="Visit"
-          :ArrObjIds="Selection"
+          :ArrObjIds="Selection.map((x) => x.Id)"
           :Status="1"
           @Done="
             (v) => {
@@ -31,6 +31,7 @@
       border
       fit
       highlight-current-row
+      height="250"
       style="width: 100%"
       @selection-change="handleSelectionChange"
       :row-class-name="tableRowClassName"
