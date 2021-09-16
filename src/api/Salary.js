@@ -9,11 +9,18 @@ export function GetSalaries(query) {
 }
 
 
-export function Create(data) {
+export function Update(data) {
   return request({
-    url: '/Salary/Create',
+    url: '/Salary/Update',
     method: 'post',
     data: qs.stringify(data)
   })
 }
 
+export function GetSalaryById(query) {
+  return request({
+    url: '/Salary/GetSalaryById',
+    method: 'get',
+    params: query
+  })
+}

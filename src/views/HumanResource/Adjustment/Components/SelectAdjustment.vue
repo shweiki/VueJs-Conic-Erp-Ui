@@ -1,19 +1,19 @@
 <template>
   <div>
     <el-col :span="6">
-      <add-dialog @Done="getdata" />
+      <add-adjustment/>
     </el-col>
     <el-col :span="18">
-      <el-select @change="SetVal" v-model="Region" filterable placeholder="المنطقة">
+      <el-select @change="SetVal" v-model="AdTemp" filterable placeholder="التسوية">
         <el-option
-          v-for="item in Regions"
+          v-for="item in AdTemps"
           :key="item.value"
           :label="item.label"
           :value="item.value"
         >
           <span style="float: left">{{ item.label }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{
-            item.price
+            item.value
           }}</span>
         </el-option>
       </el-select>
@@ -21,15 +21,16 @@
   </div>
 </template>
 <script>
-import AddDialog from "@/views/Settings/Areas/AddDialog.vue";
-import { GetAreasLabel } from "@/api/Area";
+import AddAdjustment from "./AddAdjustment.vue";
+import { GetAdjustmentLabel } from "@/api/Adjustment";
 export default {
-  components: { AddDialog },
+  components: { AddAdjustment },
   props: ["Value"],
   data() {
     return {
-      Region: 1,
-      Regions: [],
+      
+      AdTemp: 1,
+      AdTemps: [],
       Price: 0.0,
     };
   },
@@ -38,8 +39,8 @@ export default {
       console.log("select", val);
 
       if (val != null && val != undefined) {
-        this.Region = this.Regions.find((element) => element.label == val).value;
-        this.SetVal(this.Region);
+        this.AdTemp = this.AdTemps.find((element) => element.label == val).value;
+        this.SetVal(this.AdTemp);
       }
     },
   },
@@ -49,14 +50,10 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
-      GetAreasLabel()
-        .then((response) => {
-          // handle success
-          console.log(response);
-          this.Regions = response;
-          this.SetVal(this.Region);
-
-          this.loading = false;
+       GetAdjustmentLabel().then(res => {
+        this.AdTemps = res;
+        this.SetVal(this.AdTemp);
+        this.loading = false;
         })
         .catch((error) => {
           // handle error
@@ -66,13 +63,13 @@ export default {
     SetVal(val) {
       if (val) {
         this.$emit(
-          "SetRegion",
-          this.Regions.find((element) => element.value == val).label
+          "SetAdjustment",
+          this.AdTemps.find((element) => element.value == val).label
         );
-        this.$emit(
-          "SetDeliveryPrice",
-          this.Regions.find((element) => element.value == val).price
-        );
+        // this.$emit(
+        //   "SetAdjustmentAmount",
+        //   this.AdTemps.find((element) => element.value == val).amount
+        // );
       }
     },
   },

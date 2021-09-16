@@ -2,18 +2,11 @@
   <div class="app-container" style="direction: rtl">
     <el-row :gutter="20">
       <el-col :span="8">
-        <el-row :gutter="20">
-      <el-col :span="12">
     <add-entry
       v-if="checkPermission(['Admin'])"
       :AccountId1="3"
       :AccountId2="AccountId"
     />
-      </el-col>
-      <el-col :span="12">
-    <add-salary :EmployeeId="EmployeeId" :EmployeeName="EmployeeName" />
-      </el-col>
-        </el-row>
       </el-col>
     </el-row>
     <el-table
