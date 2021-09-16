@@ -373,6 +373,8 @@ export default {
         TotalJD: 'Total JD',
         CouponId: 'Coupon Id',
         CouponNoteId: 'Coupon Note Id',
+        In: 'In',
+        Out: 'Out',
     },
     NewPurchaseInvoice: {
         PurchaseInvoice: 'Purchase Invoice',

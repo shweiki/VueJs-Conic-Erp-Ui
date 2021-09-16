@@ -8,6 +8,29 @@
  * @param {string} cFormat
  * @returns {string | null}
  */
+ export function TimeConvert(time) {
+  let date
+  if (typeof time === 'object') {
+    date = time
+  } else {
+    if ((typeof time === 'string') && (/^[0-9]+$/.test(time))) {
+      time = parseInt(time)
+    }
+    if ((typeof time === 'number') && (time.toString().length === 10)) {
+      time = time * 1000
+    }
+    date = new Date(time)
+  }
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  let strTime = " " + hours + ":" + minutes + "  " + ampm;
+  return strTime;
+}
+
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null

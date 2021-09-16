@@ -2,14 +2,15 @@
   <div>
     <el-button-group>
       <el-button
-        v-for="op in $store.getters.Oprations.filter(Item => {
-          return Item.TableName == TableName;
+        v-for="op in $store.getters.Oprations.filter((Item) => {
+          return Item.TableName == TableName && Item.Status == Status;
         })"
         :key="op.Id"
         v-bind:label="op.Status"
         v-bind:type="op.ClassName"
         v-bind:icon="op.IconClass"
         @click="handleOprationsys(op)"
+        v-bind:disabled="ArrObjIds.length < 1"
         >{{ op.OprationDescription }}</el-button
       >
     </el-button-group>
@@ -28,10 +29,7 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item label="ملاحظات للعملية " prop="Description">
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -48,7 +46,8 @@ import { ChangeArrObjStatus } from "@/api/Oprationsys";
 export default {
   props: {
     TableName: String,
-    ArrObjIds: Array
+    ArrObjIds: Array,
+    Status: Number,
   },
   data() {
     return {
@@ -60,43 +59,38 @@ export default {
         ArabicOprationDescription: "",
         IconClass: "",
         ClassName: "",
-        Status: 0
+        Status: 0,
       },
       tempOpration: {
         //  ObjId: undefined,
         OprationId: undefined,
         Description: "",
-        Status: 0
+        Status: 0,
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 5,
             maxlength: 150,
             message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {},
   methods: {
-    SetVal(val) {
-      this.Status = val;
-      this.$emit("Set", this.Status);
-    },
     handleOprationsys(Opration) {
       this.dialogOprationVisible = true;
       // text
       this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription =
-        Opration.ArabicOprationDescription;
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
       this.textOpration.IconClass = Opration.IconClass;
       this.textOpration.ClassName = Opration.ClassName;
       /// temp
@@ -107,27 +101,24 @@ export default {
       //     this.tempOpration.Description = "";
     },
     approval() {
-      if (this.ArrObjIds.length > 0)
-        ChangeArrObjStatus({
-          ObjsId: this.ArrObjIds,
-          TableName: this.TableName,
-          Status: this.tempOpration.Status,
-          Description: this.tempOpration.Description
-        }).then(response => {
-          console.log(response);
-          this.$notify({
-            title: "تم ",
-            message: "تم الإضافة بنجاح",
-            type: "success",
-            duration: 2000
-          });
-          this.$nextTick(() => {
-            this.$router.replace({
-              path: "/redirect" + this.$route.fullPath
-            });
-          });
+      console.log("here");
+
+      ChangeArrObjStatus({
+        ObjsId: this.ArrObjIds,
+        TableName: this.TableName,
+        Status: this.tempOpration.Status,
+        Description: this.tempOpration.Description,
+      }).then((response) => {
+        console.log(response);
+        this.$emit("Done");
+        this.$notify({
+          title: "تم ",
+          message: "تم الإضافة بنجاح",
+          type: "success",
+          duration: 2000,
         });
-    }
-  }
+      });
+    },
+  },
 };
 </script>

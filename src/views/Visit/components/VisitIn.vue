@@ -1,35 +1,26 @@
 ﻿<template>
   <div class="app-container">
     <el-row type="flex">
-      <el-col :span="18">
+      <el-col :span="12">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الزيارات</span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Rows }}</span>
         <el-divider direction="vertical"></el-divider>
-
-        <span>{{ $t("CashPool.Cash") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <span>عدد اشخاص</span>
         <el-divider direction="vertical"></el-divider>
-
-        <span>{{ $t("CashPool.Visa") }}</span>
+        <span>{{ Totals.TotalPerson }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-        <el-divider direction="vertical"></el-divider>
-
-        <span>{{ $t("CashPool.Amount") }}</span>
-        <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-        <el-divider direction="vertical"></el-divider
-      ></el-col>
-      <el-col :span="6">
+      </el-col>
+      <el-col :span="12">
         <Button-Oprations
           TableName="Visit"
           :ArrObjIds="Selection"
-          @Set="
+          :Status="1"
+          @Done="
             (v) => {
-              handleFilter();
+              getList();
             }
           "
       /></el-col>
@@ -41,25 +32,19 @@
       fit
       highlight-current-row
       style="width: 100%"
-      @sort-change="sortChange"
       @selection-change="handleSelectionChange"
+      :row-class-name="tableRowClassName"
     >
       <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column
-        label="Id"
-        prop="Id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.Id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+      <el-table-column label="Id" prop="Id" align="center" width="80">
+        <template slot="header" slot-scope="{}">
+          <el-button
+            circle
+            type="success"
+            icon="el-icon-refresh"
+            @click="getList()"
+            :size="$store.getters.size"
+          ></el-button>
         </template>
       </el-table-column>
 
@@ -67,38 +52,20 @@
       </el-table-column>
 
       <el-table-column
-        v-bind:label="$t('CashPool.Pay')"
-        width="120"
+        v-bind:label="$t('Visit.PersonCount')"
+        prop="PersonCount"
         align="center"
-        prop="PaymentMethod"
+        width="100px"
       >
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
-        <template slot-scope="scope">{{
-          scope.row.Discount.toFixed($store.getters.settings.ToFixed)
-        }}</template>
-      </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
+      <el-table-column v-bind:label="$t('Visit.In')" width="100px" align="center">
         <template slot-scope="{ row }">
-          {{ row.Total.toFixed($store.getters.settings.ToFixed) }}
-          JOD
+          <span>{{ TimeConvert(row.FakeDate) }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
-        <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="Visit" />
-        </template>
-      </el-table-column>
-      <el-table-column width="180" align="center">
-        <template slot-scope="scope">
-          <Next-Oprations
-            :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="Visit"
-            @Done="handleFilter"
-          />
-          <Drawer-Print Type="Visit" :Data="scope.row" />
+      <el-table-column v-bind:label="$t('Visit.Out')" width="100px" align="center">
+        <template slot-scope="{ row }">
+          <span>{{ TimeConvert(row.TimeOut) }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -106,21 +73,15 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/Visit";
-import NextOprations from "@/components/Oprationsys/NextOprations";
-import StatusTag from "@/components/Oprationsys/StatusTag";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import { GetByStatus } from "@/api/Visit";
 import ButtonOprations from "@/components/Oprationsys/ButtonOprations.vue";
 
 import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
+import { parseTime, TimeConvert } from "@/utils";
 
 export default {
   name: "ComplexTable",
   components: {
-    StatusTag,
-    NextOprations,
-    DrawerPrint,
     ButtonOprations,
   },
   directives: { waves },
@@ -128,29 +89,24 @@ export default {
     return {
       Selection: [],
       list: [],
-      Totals: { Rows: 0, Totals: 0, Cash: 0, Visa: 0 },
+      Totals: { Rows: 0, TotalPerson: 0 },
       listLoading: false,
       listQuery: {
-        Page: 1,
-        Any: "",
-        limit: this.$store.getters.settings.LimitQurey,
-        Sort: "-id",
-        User: undefined,
         DateFrom: "",
         DateTo: "",
-        Status: undefined,
+        Status: 0,
       },
-      downloadLoading: false,
     };
   },
   created() {
-    // this.getList();
+    this.getList();
   },
   methods: {
+    TimeConvert,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQ(this.listQuery).then((response) => {
+      GetByStatus(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
@@ -159,53 +115,30 @@ export default {
     handleSelectionChange(val) {
       this.Selection = val;
     },
-    handleFilter() {
-      this.listQuery.Page = 1;
-      this.getList();
-    },
-    sortChange(data) {
-      const { prop, order } = data;
-      if (prop === "id") {
-        this.sortById(order);
-      }
-    },
-    sortById(order) {
-      if (order === "ascending") {
-        this.listQuery.sort = "+id";
+    tableRowClassName({ row, rowIndex }) {
+      var now = new Date();
+      let TimeOut = new Date(row.TimeOut);
+      console.log(now.getTime(), TimeOut.getTime());
+
+      if (now.getTime() > TimeOut.getTime()) {
+        return "warning-row";
       } else {
-        this.listQuery.sort = "-id";
+        return "success-row";
       }
-      this.handleFilter();
-    },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.list[0]);
-        const filterVal = Object.keys(this.list[0]);
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "table-list",
-        });
-        this.downloadLoading = false;
-      });
-    },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
-    },
-    getSortClass: function (key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}` ? "ascending" : "descending";
     },
   },
 };
 </script>
+<style>
+.el-table .warning-row {
+  background: #f44336;
+  color: #000000;
+  font-weight: 700;
+}
+
+.el-table .success-row {
+  background: #4caf50;
+  color: #000000;
+  font-weight: 700;
+}
+</style>

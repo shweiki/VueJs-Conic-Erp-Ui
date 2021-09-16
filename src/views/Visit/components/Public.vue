@@ -66,6 +66,7 @@
               required
               v-model="tempForm.Name"
               :size="$store.getters.size"
+              suffix-icon="fa fa-child"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -75,6 +76,7 @@
               required
               v-model="tempForm.PhoneNumber"
               :size="$store.getters.size"
+              suffix-icon="fa fa-mobile-alt"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -90,7 +92,8 @@
               :min="1"
               :max="1000000"
               @focus="$event.target.select()"
-            ></el-input-number>
+            >
+            </el-input-number>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -128,15 +131,17 @@
               :size="$store.getters.size"
               v-model="tempForm.CouponId"
               @focus="$event.target.select()"
+              suffix-icon="fa fa-ticket-alt"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Visit.CouponId')" prop="CouponNoteId">
+          <el-form-item v-bind:label="$t('Visit.CouponNoteId')" prop="CouponNoteId">
             <el-input
               :size="$store.getters.size"
               v-model="tempForm.CouponNoteId"
               @focus="$event.target.select()"
+              suffix-icon="fa fa-book"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -168,7 +173,7 @@
             ></el-input-number>
           </el-form-item>
         </el-col>
-        <el-col :span="8" class="TotalAmmount">
+        <el-col :span="8" class="TotalAmmount card">
           <span>{{ $t("Visit.TotalJD") }}</span>
           <span
             >{{
@@ -389,7 +394,9 @@ export default {
   color: white;
 }
 .TotalAmmount {
-  font-size: 18px;
-  font-weight: 600;
+  padding: 25px;
+  font-size: 22px;
+  border: dotted;
+  font-weight: 700;
 }
 </style>

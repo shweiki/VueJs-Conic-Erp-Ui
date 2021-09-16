@@ -15,9 +15,9 @@ export function GetByAny(data) {
     data: qs.stringify(data)
   })
 }
-export function GetVisitByStatus(query) {
+export function GetByStatus(query) {
   return request({
-    url: '/Visit/GetVisitByStatus',
+    url: '/Visit/GetByStatus',
     method: 'get',
     params: query
   })

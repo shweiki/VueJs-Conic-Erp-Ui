@@ -398,6 +398,9 @@ export default {
         TotalJD: 'الإجمالي ',
         CouponId: 'رقم الكوبون ',
         CouponNoteId: 'رقم الدفتر ',
+        In: 'الدخول',
+        Out: 'الخاروج',
+
     },
     NewPurchaseInvoice: {
         PurchaseInvoice: 'فاتورة مشتريات',

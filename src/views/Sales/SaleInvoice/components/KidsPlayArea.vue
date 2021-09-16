@@ -34,15 +34,13 @@
                             OpenRestOfBill = false;
                           }
                         "
-                        @Done="isEdit != true ? createData() : updateData()"
+                        @Done="confirmData()"
                       />
                       <el-button
                         :disabled="DisabledSave"
                         @click="
                           $store.state.settings.showRestOfBill != true
-                            ? isEdit != true
-                              ? createData()
-                              : updateData()
+                            ? confirmData()
                             : (OpenRestOfBill = true)
                         "
                         type="success"
@@ -222,14 +220,6 @@
                                 <el-radio-button label="Visa" border
                                   ><i class="el-icon-bank-card"></i>بطاقة
                                 </el-radio-button>
-                                <!--
-                            <el-radio-button
-                              v-if="tempForm.VendorId != 2"
-                              label="Receivables"
-                              border
-                              ><i class="el-icon-s-custom"></i
-                              >ذمم</el-radio-button
-                            > -->
                               </el-radio-group>
                             </el-form-item>
                           </el-col>
@@ -372,7 +362,7 @@
             </split-pane>
           </template>
           <template slot="paneR">
-            <split-pane split="horizontal" :min-percent="65" :default-percent="70">
+            <split-pane split="horizontal" :min-percent="60" :default-percent="65">
               <template slot="paneR">
                 <VisitIn />
               </template>
@@ -406,25 +396,19 @@ import VisitCreate from "@/views/Visit/Create.vue";
 import VisitIn from "@/views/Visit/components/VisitIn";
 
 // report
-import VendorSelect from "@/components/Vendor/VendorSelect";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
 import FakeDate from "@/components/Date/FakeDate";
 import { PrintReport, VisualizationReportHtml } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { Create as CreateDelivery } from "@/api/OrderDelivery";
 
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
 //import { NumericInput } from "numeric-keyboard";
 import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
-import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
 import DrawerSearchInvoice from "@/components/Sales/DrawerSearchInvoice.vue";
-import { Create as CreateVendor, CheckIsExist as CheckVendorIsExist } from "@/api/Vendor";
-
-import { SendSMS } from "@/api/SMS";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 
@@ -443,9 +427,7 @@ export default {
     RestOfBill,
     RightMenu,
     FakeDate,
-    VendorSelect,
     Description,
-    DeliveryEl,
     VendorSearchAny,
     DrawerSearchInvoice,
     VisitCreate,
@@ -475,7 +457,7 @@ export default {
         Description: "",
         VendorId: 2,
         IsPrime: false,
-        Type: "Delivery",
+        Type: "Takeaway",
         DeliveryPrice: 0,
         Region: "",
         PhoneNumber: "",
@@ -552,9 +534,13 @@ export default {
         Name: Item.Name,
         SalesInvoiceId: undefined,
       });
+      this.focusBarcode();
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
+    },
+    focusBarcode() {
+      document.getElementById("barcode").focus();
     },
     OpenCashDrawer() {
       OpenCashDrawer({ Com: this.$store.state.settings.CashDrawerCOM.COM })
@@ -577,233 +563,69 @@ export default {
           console.log(err);
         });
     },
-    createData() {
-      this.$refs["F-SaleInvoice"].validate((valid) => {
-        if (valid) {
-          this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
-          this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          let Total =
-            this.tempForm.InventoryMovements.reduce((prev, cur) => {
-              return prev + cur.Qty * cur.SellingPrice;
-            }, 0) - this.tempForm.Discount;
-          if (
-            Total > 0 &&
-            this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
-          ) {
-            this.DisabledSave = true;
-            Create(this.tempForm)
-              .then((response) => {
-                if (response) {
-                  this.ValidateDescription = "";
-                  this.tempForm.Id = response;
-                  this.tempForm.Total = Total;
-                  this.OldInvoice = this.tempForm;
-                  this.CheckVendor(
-                    this.tempForm.Name,
-                    this.tempForm.PhoneNumber,
-                    this.tempForm.Region
-                  );
-
-                  if (
-                    this.OldInvoice.Type == "Delivery" &&
-                    this.$store.getters.settings.PointOfSale.CreateDelivery == true
-                  ) {
-                    this.CreateDelivery(this.OldInvoice);
-                  }
-
-                  if (this.AutoPrint == true) {
-                    PrintReport("SaleInvoice", this.OldInvoice, true);
-                  }
-                  if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
-                    SendSMS(
-                      this.OldInvoice.PhoneNumber,
-                      "شكرا لإختياركم شاورما شيش , طلب رقم (" +
-                        this.OldInvoice.Id.toString().slice(-4) +
-                        ") القيمة مع التوصيل " +
-                        (
-                          this.OldInvoice.DeliveryPrice +
-                          this.OldInvoice.InventoryMovements.reduce((prev, cur) => {
-                            return prev + cur.Qty * cur.SellingPrice;
-                          }, 0) -
-                          this.OldInvoice.Discount
-                        ).toFixed(2) +
-                        " JD"
-                    );
-                  this.$notify({
-                    title: "تم الإضافة بنجاح",
-                    message: "تم الإضافة بنجاح - " + this.tempForm.PhoneNumber + " ",
-                    type: "success",
-                    position: "top-left",
-                  });
-                  this.restTempForm();
-                  this.DisabledSave = false;
-                  this.OpenRestOfBill = false;
-                } else {
-                  this.$notify.error({
-                    title: "error",
-                    message: "حصلت مشكلة في ترحيل",
-                    position: "top-left",
-                  });
-                }
+    confirmData() {
+      this.$refs["F-SaleInvoice"].validate(async (valid) => {
+        this.tempForm.Tax = parseInt(this.tempForm.Tax);
+        this.tempForm.Total =
+          this.tempForm.InventoryMovements.reduce((prev, cur) => {
+            return prev + cur.Qty * cur.SellingPrice;
+          }, 0) - this.tempForm.Discount;
+        if (
+          valid &&
+          this.tempForm.Total > 0 &&
+          this.tempForm.InventoryMovements.length > 0 &&
+          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
+        ) {
+          let Done;
+          if (this.isEdit != true) {
+            Done = await Create(this.tempForm)
+              .then((res) => {
+                if (res) {
+                  this.tempForm.Id = res;
+                  return res;
+                } else return false;
               })
               .catch((error) => {
-                console.log(error);
+                return false;
               });
           } else {
-            this.OpenRestOfBill = false;
-            return false;
-          }
-        }
-      });
-    },
-    async CreateDelivery(temp) {
-      let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
-      CreateDelivery({
-        Id: undefined,
-        Name: temp.Name,
-        TotalPrice: temp.DeliveryPrice + temp.Total,
-        Status: 0,
-        Description: temp.Description,
-        FakeDate: temp.FakeDate,
-        PhoneNumber: temp.PhoneNumber,
-        Region: temp.Region,
-        DeliveryPrice: temp.DeliveryPrice,
-        TotalPill: temp.Total,
-        Content: " " + ReportContentHtml,
-      }).then((res) => {
-        if (res) {
-          this.$notify({
-            title: "تم ",
-            message: "تم ارسال الطلب لشركة التوصيل بنجاح",
-            type: "success",
-            duration: 2000,
-          });
-        } else {
-          this.$notify({
-            position: "top-left",
-            title: "تم ",
-            message: " حصلت مشكلة في عملية ارسال طلب التوصيل",
-            type: "error",
-            duration: 20000,
-          });
-        }
-      });
-    },
-    CheckVendor(Name, PhoneNumber, Region) {
-      CheckVendorIsExist({
-        // Name: Name,
-        //  Ssn: this.tempForm.Ssn,
-        PhoneNumber: PhoneNumber,
-      }).then((res) => {
-        if (!res) {
-          CreateVendor({
-            Id: undefined,
-            Name: Name,
-            Ssn: "",
-            Region: Region,
-            Email: "",
-            PhoneNumber1: PhoneNumber,
-            PhoneNumber2: "",
-            Fax: "0",
-            CreditLimit: 0.0,
-            Description: "",
-            IsPrime: false,
-            Type: "Customer",
-          })
-            .then((response) => {
-              this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                duration: 2000,
+            Done = await Edit(this.tempForm)
+              .then((res) => {
+                if (res) return res;
+                else return false;
+              })
+              .catch((error) => {
+                return false;
               });
-            })
-            .catch((error) => {
-              console.log(error);
+          }
+          if (Done) {
+            this.OldInvoice = this.tempForm;
+            if (this.AutoPrint == true) {
+              PrintReport("SaleInvoice", this.OldInvoice);
+            }
+            this.$notify({
+              title: "تم " + this.isEdit ? "تعديل" : "إضافة" + "  بنجاح",
+              message: "تم " + this.isEdit ? "تعديل" : "إضافة" + " ",
+              type: "success",
+              position: "top-left",
+              duration: 1000,
+              showClose: false,
             });
-        } else {
-          this.$notify({
-            position: "top-left",
-            title: "تم ",
-            message: " يوجد شخص يحمل نفس رقم الهاتف او الاسم",
-            type: "warning",
-            duration: 20000,
-          });
-        }
-      });
-    },
-    updateData() {
-      this.$refs["F-SaleInvoice"].validate((valid) => {
-        if (valid) {
-          this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
-          this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          let Total =
-            this.tempForm.InventoryMovements.reduce((prev, cur) => {
-              return prev + cur.Qty * cur.SellingPrice;
-            }, 0) - this.tempForm.Discount;
-          if (
-            Total > 0 &&
-            this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
-          ) {
-            this.DisabledSave = true;
-            Edit(this.tempForm)
-              .then((response) => {
-                if (response) {
-                  this.$notify({
-                    title: "تم تعديل بنجاح",
-                    message: "تم تعديل بنجاح",
-                    type: "success",
-                    position: "top-left",
-                    duration: 1000,
-                    showClose: false,
-                  });
-                  this.ValidateDescription = "";
-                  this.tempForm.Total = Total;
-                  this.OldInvoice = this.tempForm;
-                  this.DisabledSave = false;
-                  this.OpenRestOfBill = false;
-                  if (this.AutoPrint == true) {
-                    PrintReport("SaleInvoice", this.OldInvoice, true);
-                  }
-                  if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
-                    SendSMS(
-                      this.OldInvoice.PhoneNumber,
-                      "شكرا لإختياركم شاورما شيش , طلب رقم (" +
-                        this.OldInvoice.Id.toString().slice(-4) +
-                        ") القيمة مع التوصيل " +
-                        (
-                          this.OldInvoice.DeliveryPrice +
-                          this.OldInvoice.InventoryMovements.reduce((prev, cur) => {
-                            return prev + cur.Qty * cur.SellingPrice;
-                          }, 0) -
-                          this.OldInvoice.Discount
-                        ).toFixed(2) +
-                        " JD"
-                    );
-                  this.$confirm("هل تريد العودة ")
-                    .then((_) => {
-                      this.$router.go(-1);
-                    })
-                    .catch((_) => {});
-                } else {
-                  this.$notify.error({
-                    title: "error",
-                    message: "حصلت مشكلة في ترحيل",
-                    position: "top-left",
-                  });
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-              });
           } else {
-            this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
-            this.OpenRestOfBill = false;
+            this.$notify({
+              title: "مشكلة",
+              message: "حصلت مشكلة في عملية الحفظ",
+              type: "error",
+              position: "top-left",
+              duration: 1000,
+              showClose: false,
+            });
           }
+          this.restTempForm();
+          this.DisabledSave = false;
         } else {
-          console.log("error submit!!");
+          this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
+          this.DisabledSave = false;
           return false;
         }
       });
