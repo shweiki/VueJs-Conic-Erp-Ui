@@ -7,7 +7,7 @@
        round
     >
     <span style="font-size: 14px;">
-    اضافة تسوية
+    اضافة تسوية دورية
     </span>
     </el-button>
     <el-dialog
@@ -25,7 +25,7 @@
           />
         </el-col>
         <el-col :span="20">
-          <el-divider> إضافة تسوية </el-divider>
+          <el-divider> إضافة تسوية دورية </el-divider>
         </el-col>
       </div>
       <el-form
@@ -43,7 +43,7 @@
         >
          <el-row :gutter="20" type="flex">
           <el-col :span="12">
-        <el-divider content-position="right"> إسم التسوية </el-divider>
+        <el-divider content-position="right"> إسم التسوية الدورية </el-divider>
         </el-col>
         </el-row>
           <el-input type="text" v-model="tempForm.Name"></el-input>
@@ -52,7 +52,7 @@
         </el-row>
         <el-row :gutter="20" type="flex">
           <el-col :span="12">
-        <el-divider content-position="right"> نوع التسوية </el-divider>
+        <el-divider content-position="right"> نوع التسوية الدورية </el-divider>
         </el-col>
         </el-row>
 <el-row :gutter="20">
@@ -67,7 +67,7 @@
 <el-row :gutter="20">
   <el-col :span="24">
          <el-radio v-model="radio" label="1" >بالقيمة النقدية</el-radio>
-         <el-radio v-model="radio" label="2" >بالساعات</el-radio>
+         <el-radio v-model="radio" label="2" >بالقيمة المئوية</el-radio>
   </el-col>
   <br><br>
   </el-row>
@@ -94,9 +94,9 @@
               <el-input-number
                 v-model="tempForm.AdjustmentPercentage"
                 :precision="3"
-                :step="1.00"
-                :min="0.01"
-                :max="100"
+                :step="0.01"
+                :min="0.001"
+                :max="0.99"
                 @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
@@ -109,7 +109,7 @@
 <script>
 import { Create } from "@/api/Adjustment";
 export default {
-  name: "Adjustment",
+  name: "StaticAdjustment",
   data() {
     return {
       radio: '1',
@@ -119,8 +119,8 @@ export default {
         Id: undefined,
         Name: "",
         AdjustmentAmount:1.000,
-        AdjustmentPercentage: 1.000,
-        IsWorkingHourAdjustment: true,
+        AdjustmentPercentage: 0.001,
+        IsStaticAdjustment: true,
       },
       rulesForm: {
         Name: [
@@ -168,7 +168,7 @@ export default {
             if(this.radio==1){this.tempForm.AdjustmentPercentage=0;};
             if(this.radio==2){this.tempForm.AdjustmentAmount=0;};
           }
-          this.tempForm.IsWorkingHourAdjustment = true;
+          this.tempForm.IsStaticAdjustment = true;
           Create(this.tempForm)
             .then(response => {
               this.dialogFormVisible = false;

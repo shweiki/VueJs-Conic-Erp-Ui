@@ -1,25 +1,18 @@
 <template>
   <div class="app-container" style="direction: rtl">
     <el-row :gutter="20">
-      <el-col :span="12">
-    <select-adjustment
-        :Value="adTemp"
-        @SetAdjustment="
-          (v) => {
-            vRegion = v;
-            SetVal();
-          }
-        "
-      />
+      <el-col :span="4">
+      <add-adjustment/>
+    </el-col>
+    <el-col :span="4">
+      <add-static-adjustment/>
+    </el-col>
+    <el-col :span="16">
+    <Adjustment-Bind :EmployeeId="EmployeeId" :EmployeeName="EmployeeName" />
       </el-col>
     </el-row>
       
     <el-table
-      @row-dblclick="
-        row => {
-          $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
-        }
-      "
       :data="SalaryPayment"
       fit
       border
@@ -64,32 +57,14 @@
   </div>
 </template>
 <script>
-
+import AddAdjustment from "../../Adjustment/Components/AddAdjustment.vue";
+import AddStaticAdjustment from "../../Adjustment/Components/AddStaticAdjustment.vue";
 import SelectAdjustment from '../../Adjustment/Components/SelectAdjustment.vue';
+import AdjustmentBind from '../../WorkingAdjustment/Components/AdjustmentBind.vue';
 export default {
-  components: { SelectAdjustment},
+  components: { SelectAdjustment, AddAdjustment, AddStaticAdjustment, AdjustmentBind},
   props: 
-    ["adTemp", "SalaryPayment", "EmployeeId", "EmployeeName"],
-   
+    ["SalaryPayment", "EmployeeId", "EmployeeName"],
   
-    data() {
-    return {
-      vAdjustment: "",
-    };
-  },
-    watch: {
-    adTemp(val) {
-      if (val != null && val != undefined) {
-        this.vAdjustment = val;
-      }
-    },
-  },
-    methods: {
-    SetVal() {
-      this.$emit("SetAdjustment", this.vAdjustment);
-     
-    },
-  },
- 
 };
 </script>

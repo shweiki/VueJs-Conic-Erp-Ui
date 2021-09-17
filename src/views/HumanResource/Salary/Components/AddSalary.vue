@@ -20,19 +20,7 @@
           </el-col>
         </el-row>
         <el-row>
-            <el-col :span="12">
-            <el-form-item label="صافي الراتب " prop="NetSalary">
-              <el-input-number
-                v-model="Temp.NetSalary"
-                :precision="2"
-                :step="1.0"
-                :min="0.0"
-                :max="5000"
-                @focus="$event.target.select()"
-              ></el-input-number>
-            </el-form-item>
-          </el-col>
-           <el-col :span="12">
+           <el-col :span="24">
             <el-form-item label="الراتب الكلي" prop="GrossSalary">
               <el-input-number
                 v-model="Temp.GrossSalary"
@@ -85,8 +73,6 @@ export default {
         Id: undefined,
         EmployeeId :0,
         GrossSalary: 0.0,
-        NetSalary: 0.0,
-        SalaryPeriod: new Date,
       },
       Visibles: false,
       

@@ -24,3 +24,11 @@ export function GetSalaryById(query) {
     params: query
   })
 }
+
+export function GetSalaryByIds(query) {
+  return request({
+    url: '/Salary/GetSalaryByIds',
+    method: 'get',
+    params: query
+  })
+}

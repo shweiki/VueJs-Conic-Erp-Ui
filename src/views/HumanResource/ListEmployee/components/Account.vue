@@ -76,7 +76,7 @@
 <script>
 import AddEntry from "@/views/Accounting/EntryAccounting/components/AddEntry.vue";
 import checkPermission from "@/utils/permission";
-import AddSalary from "./Dialogs/AddSalary";
+import AddSalary from "../../Salary/Components/AddSalary";
 export default {
   components: { AddEntry, AddSalary },
   props: {

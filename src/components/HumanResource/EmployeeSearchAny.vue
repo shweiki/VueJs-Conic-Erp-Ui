@@ -14,7 +14,6 @@
       <span style="float: left">{{ item.Name }}</span>
       <span style="float: right; color: #8492a6; font-size: 13px">{{ item.Ssn }}</span>
       <span style="color: #8492a6; font-size: 13px">( {{ item.PhoneNumber1 }} )</span>
-      <span style="color: #8492a6; font-size: 13px">( {{ item.Tag }} )</span>
     </el-option>
   </el-select>
 </template>

@@ -16,15 +16,20 @@
         class="demo-form-inline"
       >
         <el-row>
-          <el-col :span="24">
-            <el-form-item prop="EmployeeId" label="المشترك">
-              <Employee-Search-Any
+          <el-col :span="12">
+            <el-form-item prop="EmployeeName" label="اسم الموظف">
+              <!-- <Employee-Search-Any
                 @Set="
                   (v) => {
                     Temp.EmployeeId = v.Id;
                   }
                 "
-              />
+              /> --> <el-input disabled v-model="Name"></el-input>
+            </el-form-item>
+          </el-col>
+           <el-col :span="12">
+            <el-form-item prop="EmployeeId" label="الرقم الوظيفي">
+             <el-input disabled v-model="Id"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -66,6 +71,7 @@ import FakeDate from "@/components/Date/FakeDate.vue";
 export default {
   components: { EmployeeSearchAny, FakeDate },
   directives: { permission },
+  props:["Name", "Id"],
 
   data() {
     return {
@@ -85,6 +91,7 @@ export default {
     create() {
       this.$refs["EmployeeLogForm"].validate((valid) => {
         if (valid) {
+          this.Temp.EmployeeId = this.Id;
           Create(this.Temp)
             .then((response) => {
               this.Visibles = false;

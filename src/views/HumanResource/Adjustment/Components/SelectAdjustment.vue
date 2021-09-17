@@ -1,9 +1,6 @@
 <template>
   <div>
-    <el-col :span="6">
-      <add-adjustment/>
-    </el-col>
-    <el-col :span="18">
+    <el-col :span="24">
       <el-select @change="SetVal" v-model="AdTemp" filterable placeholder="التسوية">
         <el-option
           v-for="item in AdTemps"
@@ -21,10 +18,9 @@
   </div>
 </template>
 <script>
-import AddAdjustment from "./AddAdjustment.vue";
+
 import { GetAdjustmentLabel } from "@/api/Adjustment";
 export default {
-  components: { AddAdjustment },
   props: ["Value"],
   data() {
     return {
@@ -39,7 +35,7 @@ export default {
       console.log("select", val);
 
       if (val != null && val != undefined) {
-        this.AdTemp = this.AdTemps.find((element) => element.label == val).value;
+        this.AdTemp = this.AdTemps.find((element) => element.value == val).value;
         this.SetVal(this.AdTemp);
       }
     },
@@ -64,12 +60,14 @@ export default {
       if (val) {
         this.$emit(
           "SetAdjustment",
-          this.AdTemps.find((element) => element.value == val).label
+          this.AdTemps.find((element) => element.value == val).value
         );
-        // this.$emit(
+        
+        //  this.$emit(
         //   "SetAdjustmentAmount",
         //   this.AdTemps.find((element) => element.value == val).amount
         // );
+        // console.log("ffffffff",this.AdTemps.find((element) => element.value == val).amount)
       }
     },
   },

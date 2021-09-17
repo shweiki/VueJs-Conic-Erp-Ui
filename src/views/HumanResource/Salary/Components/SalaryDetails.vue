@@ -13,53 +13,14 @@
             <el-col :span="19">
               <Details :Employee="tempForm" />
             </el-col>
-
-            <el-col :span="5" v-if="tempForm.Status != -2">
-
-              <el-row>
-                <el-col :span="24">
-                  <Massage
-                    :NumberPhone1="tempForm.PhoneNumber1"
-                    :NumberPhone2="tempForm.PhoneNumber2"
-                    :Email="tempForm.Email"
-                  />
-                </el-col>
-              </el-row>
-                <el-row>
-                <el-col :span="24">
-                  <employee-login
-                  :Name="tempForm.Name"
-                  :Id="tempForm.Id"
-                  />
-                </el-col>
-              </el-row>
-                <el-row>
-                <el-col :span="24">
-                  <employee-logout
-                  :Name="tempForm.Name"
-                  :Id="tempForm.Id"
-                  />
-                </el-col>
-              </el-row>
-            </el-col>
           </el-row>
         </el-card>
 
         <el-card class="box-card">
           <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
-            <el-tab-pane label="بيانات" name="Details">
-              <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
-              <User-Card :Employee="tempForm" />
-            </el-tab-pane>
-
          <el-tab-pane label="دوامات" name="timeline">
               <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
               <Timeline :timeline="log" :EmployeeId="tempForm.Id" />
-            </el-tab-pane>
-
-            <el-tab-pane label="مالية" name="account">
-              <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-              <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name"/>
             </el-tab-pane>
 
              <el-tab-pane label="رواتب" name="salary">
@@ -69,13 +30,9 @@
 
             <el-tab-pane label="التسويات" name="Adjustment">
               <span slot="label"><i class="el-icon-refresh"></i> التسويات</span>
-              <Working-Adjustment :SalaryPayment="SalaryPayment" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name" :SalaryPaymentId="SalaryPaymentId" />
+              <Working-Adjustment/>
             </el-tab-pane>
 
-            <el-tab-pane label="تواصل" name="communication">
-              <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
-              <Communication />
-            </el-tab-pane>
           </el-tabs>
         </el-card>
       </el-col>
@@ -87,35 +44,19 @@
 
 
 import Details from "./Details.vue";
-import UserCard from "./UserCard.vue";
-import EmployeeSearch from "./EmployeeSearch.vue";
-import EmployeeLogin from "./Dialogs/EmployeeLogin";
-import EmployeeLogout from "./Dialogs/EmployeeLogout";
-import Account from "./Account.vue";
 import Salary from "./Salary.vue";
 import WorkingAdjustment from "./WorkingAdjustment.vue";
-import Communication from "./Communication.vue";
 import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
-import { GetFileByObjId } from "@/api/File";
-import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
-import { GetSalaryById, GetSalaryByIds } from "@/api/Salary";
-import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
+import { GetSalaryById } from "@/api/Salary";
 import checkPermission from "@/utils/permission";
 import { GetEmployeeLogById } from "@/api/WorkingHoursLog";
-import Massage from "@/components/Massage/index.vue";
 
 export default {
-  name: "Profile",
+  name: "Salary Details",
   components: {
     Details,
-    UserCard,
-    EmployeeLogin,
-    EmployeeLogout,
-    Account,
     Salary,
-    Communication,
-    Massage,
     Timeline,
     WorkingAdjustment,
   },
@@ -131,10 +72,8 @@ export default {
       loading: true,
       tempRoute: {},
       tempForm: null,
-      EntryMovements: [],
       SalaryPayment:[],
       log: [],
-      SalaryPaymentId:undefined,
     };
   },
   created() {
@@ -149,25 +88,14 @@ export default {
       GetEmployeeById({ Id: val })
         .then((response) => {
           this.tempForm = response;
-          this.GetImageMember(this.tempForm.Id);
           this.getAge();
           this.loading = false;
-          //this.GetMemberLogFromDevices(val);
           this.setTagsViewTitle();
-          // set page title
           this.setPageTitle();
-           GetSalaryByIds({
-          Id: 3,
-        })
-          .then((response) => {
-          this.SalaryPaymentId = response.reverse();
-          console.log("SalaryPaymentId", this.SalaryPaymentId )
-          });
         })
         .catch((err) => {
           console.log(err);
         });
-       
      
     },
     tabClick(tab, event) {
@@ -178,34 +106,16 @@ export default {
           //  console.log("log :", response);
           this.log = response.reverse();
         });
-      if (tab.label == "مالية")
-        GetEntryMovementsByAccountId({
-          AccountId: this.tempForm.AccountId,
-        }).then((response) => {
-          this.EntryMovements = response.map((curr, i, array) => {
-            curr.TotalRow =
-              array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
-            return curr;
-          });
-        });
+    
          if (tab.label == "رواتب")
-        GetSalaryByIds({
+        GetSalaryById({
           EmployeeId: this.tempForm.Id,
         }).then((response) => {
           this.SalaryPayment = response.reverse();
           });
      
     },
-    GetImageMember(Id) {
-      GetFileByObjId({ TableName: "Employee", ObjId: Id })
-        .then((response) => {
-          if (response) this.tempForm.Avatar = response.File;
-          else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+
     getAge() {
       var today = new Date();
       var birthDate = new Date(this.tempForm.DateofBirth);
@@ -219,14 +129,14 @@ export default {
     },
   
     setTagsViewTitle() {
-      const title = "موظف";
+      const title = "كشف الراتب";
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "موظف";
+      const title = "كشف الراتب";
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },
