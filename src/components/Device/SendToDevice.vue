@@ -2,12 +2,14 @@
   <el-popover placement="left-start" width="500" trigger="hover">
     <el-button-group v-for="item in options" :key="item.Id">
       <el-button
+        :loading="loading"
         @click="SetOnDevice(item.Id, item.Name)"
         type="primary"
         icon="el-icon-arrow-left"
         >تحديث البيانات الى{{ item.Name }}</el-button
       >
       <el-button
+        :loading="loading"
         @click="StartEnrollUserOnDevice(item.Id, item.Name)"
         type="primary"
         icon="el-icon-arrow-right"
@@ -25,6 +27,7 @@ export default {
   props: ["ObjectId"],
   data() {
     return {
+      loading: false,
       options: [],
     };
   },
@@ -35,6 +38,7 @@ export default {
   },
   methods: {
     SetOnDevice(DeviceId, Name) {
+      this.loading = true;
       SetUser({
         DeviceId: DeviceId,
         UserId: this.ObjectId,
@@ -48,9 +52,11 @@ export default {
             position: "top-right",
           });
         }
+        this.loading = false;
       });
     },
     StartEnrollUserOnDevice(DeviceId, Name) {
+      this.loading = true;
       StartEnrollUser({
         DeviceId: DeviceId,
         UserId: this.ObjectId,
@@ -64,6 +70,7 @@ export default {
             position: "top-right",
           });
         }
+        this.loading = false;
       });
     },
   },

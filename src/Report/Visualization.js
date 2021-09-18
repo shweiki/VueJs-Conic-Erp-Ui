@@ -3,6 +3,8 @@ import { nArabicWords } from "./nArabicWords.js";
 import i18n from "@/lang";
 
 let toFixed = store.getters.settings.ToFixed;
+var JsBarcode = require('jsbarcode');
+var { createCanvas } = require("canvas");
 
 export default function Visualization(Data, Html, Type) {
   console.log("Visualization Data : =>", Data);
@@ -11,6 +13,18 @@ export default function Visualization(Data, Html, Type) {
   let TimeConvert = TimeConvertX;
   let ToFixed = ToFixedX;
   let tr = (v) => i18n.t(v);
+  let Barcode = (v) => {
+    var canvas = createCanvas();
+    JsBarcode(canvas, v, {
+      format: "CODE128",
+      lineColor: "#000000",
+      width: 4,
+      height: 40,
+      displayValue: false
+    });
+    return '<img src="' + canvas.toDataURL() + '" />'
+
+  }
   Object.keys(Data).forEach(key => {
     if (typeof Data[key] == "function") { Data[key] = Data[key]() }
     Html = Html.replaceAll("{{" + key + "}}", Data[key]);
@@ -60,6 +74,7 @@ export default function Visualization(Data, Html, Type) {
       );
     }
   });
+
   var searchKeyword = "{#";
   var startingIndices = [];
   var indexOccurence = Html.indexOf(searchKeyword, 0);

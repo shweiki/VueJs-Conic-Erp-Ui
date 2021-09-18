@@ -1,5 +1,4 @@
 <template>
-
   <el-popover
     @after-enter="focus"
     @after-leave="focus"
@@ -14,10 +13,7 @@
       @click="SaleInvoiceLabel"
       >Receipt</el-button
     >
-    <el-button
-      v-if="Type == 'SaleInvoice'"
-      icon="el-icon-document"
-      @click="SaleInvoiceA4"
+    <el-button v-if="Type == 'SaleInvoice'" icon="el-icon-document" @click="SaleInvoiceA4"
       >A4</el-button
     >
     <el-button
@@ -26,10 +22,7 @@
       @click="PurchaseInvoiceA4"
       >A4</el-button
     >
-    <el-button
-      v-if="Type == 'Item'"
-      icon="el-icon-s-management"
-      @click="ItemLabel"
+    <el-button v-if="Type == 'Item'" icon="el-icon-s-management" @click="ItemLabel"
       >Label</el-button
     >
     <el-button icon="el-icon-s-management" @click="ShawermaSheesh(Data)"
@@ -42,8 +35,7 @@
       >OrderReceipt2
     </el-button>
 
-    <img id="barcodeV" style="display: none" />
-<img id="qr_code" style="display: none" />
+    <img id="qr_code" style="display: none" />
     <el-button
       v-bind:style="Css"
       icon="el-icon-printer"
@@ -56,7 +48,6 @@
 import { SaleInvoiceLabel } from "@/Report/POSInvoice";
 import { SaleInvoiceA4 } from "@/Report/SaleInvoice";
 import { PurchaseInvoiceA4 } from "@/Report/PurchaseInvoice";
-import { Label1 } from "@/Report/ItemLabel";
 import printJS from "print-js";
 import T1 from "raw-loader!@/Report/Html/T1.txt";
 import { OrderReceipt } from "@/Report/OrderReceipt.js";
@@ -70,8 +61,8 @@ export default {
     Css: String,
     Data: {
       type: Object,
-      default: {}
-    }
+      default: {},
+    },
   },
   methods: {
     focus() {
@@ -88,21 +79,14 @@ export default {
         printable: SaleInvoiceLabel(this.Data),
         type: "pdf",
         base64: true,
-        showModal: true
+        showModal: true,
       });
     },
-    ItemLabel() {
-      printJS({
-        printable: Label1(this.Data),
-        type: "pdf",
-        base64: true,
-        showModal: true
-      });
-    },
+
     ShawermaSheesh,
     OrderReceipt,
-    OrderReceipt2
-  }
+    OrderReceipt2,
+  },
 };
 </script>
 <style lang="scss" scoped>

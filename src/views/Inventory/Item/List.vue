@@ -30,8 +30,24 @@
             icon="el-icon-download"
             @click="handleDownload"
           >
-            Export </el-button
-          ><el-button
+            Export
+          </el-button>
+          <Drawer-Print
+            style="float: left"
+            Type="ItemList"
+            :Data="{
+              Totals: Totals,
+              Items: list,
+            }"
+          />
+          <Drawer-Print
+            style="float: left"
+            Type="ItemListlabel"
+            :Data="{
+              Totals: Totals,
+              Items: list,
+            }"
+          /><el-button
             v-waves
             class="filter-item"
             type="primary"

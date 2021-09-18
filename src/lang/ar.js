@@ -404,7 +404,7 @@ export default {
         CouponId: 'رقم الكوبون ',
         CouponNoteId: 'رقم الدفتر ',
         In: 'الدخول',
-        Out: 'الخاروج',
+        Out: 'الخروج',
 
     },
     NewPurchaseInvoice: {
