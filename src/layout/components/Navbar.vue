@@ -1,13 +1,11 @@
 <template>
   <div class="navbar">
-   <Right-Menu />
+    <Right-Menu />
 
     <hamburger
       id="hamburger-container"
       :is-active="$store.state.settings.sidebarOpen"
-      v-bind:style="
-        this.$i18n.locale == 'ar' ? 'float: right;' : 'float: left;'
-      "
+      v-bind:style="this.$i18n.locale == 'ar' ? 'float: right;' : 'float: left;'"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
@@ -22,22 +20,20 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 import RightMenu from "@/components/RightMenu";
 
-
 export default {
   components: {
     Breadcrumb,
     Hamburger,
-    RightMenu
-
+    RightMenu,
   },
   computed: {
-    ...mapGetters(["sidebar"])
+    ...mapGetters(["sidebar"]),
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -61,7 +57,5 @@ export default {
       background: #cdd4e4;
     }
   }
-
-
 }
 </style>

@@ -89,15 +89,15 @@
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
-        <span>إجمالي التكلفة</span>
+        <!--  <span>إجمالي التكلفة</span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.TotalCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
-
+       
         <span>صافي الربح</span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-        <el-divider direction="vertical"></el-divider>
+        <el-divider direction="vertical"></el-divider>-->
       </div>
     </el-card>
     <el-card v-permission="['Admin']" class="box-card">
@@ -522,6 +522,7 @@ export default {
                     });
                     loading.close();
                     PrintReport("CashPool", this.CashPool);
+                    this.getdata();
                     Object.assign(this.$data, this.$options.data());
                   } else {
                     loading.close();

@@ -51,9 +51,11 @@
             {{ $t("route.Permissions") }}
           </el-dropdown-item>
         </router-link>
-        <el-dropdown-item divided>
-          <span style="display: block" @click="logout">{{ $t("navbar.logOut") }}</span>
-        </el-dropdown-item>
+        <div @click="logout">
+          <el-dropdown-item divided>
+            <span style="display: block">{{ $t("navbar.logOut") }}</span>
+          </el-dropdown-item>
+        </div>
       </el-dropdown-menu>
     </el-dropdown>
   </div>

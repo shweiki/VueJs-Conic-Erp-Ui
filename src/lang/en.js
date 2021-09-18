@@ -86,6 +86,7 @@ export default {
         NewReport: "New Report",
         ListReport: "Reports List",
         NewPaymentCashPool :"New Payment Cash Pool",
+        NewVisitCashPool: "New Visit Cash Pool",
         ListCashPools :"Cash Pools List",
         NewMembershipMovementCashPool :"New Membership Movement Cash Pool",
         NewSaleInvoiceCashPool:"New Sale Invoice Cash Pool",
@@ -129,6 +130,10 @@ export default {
         datepickerQuery: "Date Picker Query",
         timeQuery: "Time Query",
         pickerOptions: "Picker Options"
+    },
+    SortOptions:{
+        Ascending: 'Ascending',
+        Descending: 'Descending',
     },
     navbar: {
         dashboard: 'Dashboard',

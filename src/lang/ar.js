@@ -94,6 +94,7 @@ export default {
         NewReport: "تقرير جديد",
         ListReport: "قائمة التقارير",
         NewPaymentCashPool: "إغلاق المقبوضات",
+        NewVisitCashPool: "إغلاق الزيارات",
         ListCashPools: "قائمة الاغلاقات",
         NewMembershipMovementCashPool: "إغلاق تحركات الاشتراكات",
         NewSaleInvoiceCashPool: "إغلاق فواتير البيع",
@@ -137,6 +138,10 @@ export default {
         datepickerQuery: "فترة الزمنية المعتمدة",
         timeQuery: "الوقت المعتمد",
         pickerOptions: "خيارات التاريخ"
+    },
+    SortOptions: {
+        Ascending: 'تنازلي',
+        Descending: 'تصاعدي',
     },
     navbar: {
         dashboard: 'لوحة التحكم',

@@ -3,7 +3,7 @@
     <el-option
       v-for="item in sortOptions"
       :key="item.key"
-      :label="item.label"
+      v-bind:label="$t('SortOptions.' + item.label + '')"
       :value="item.key"
     />
   </el-select>
@@ -14,14 +14,16 @@ export default {
   props: ["Value"],
   data() {
     return {
-      Sort: "-id",
+      Sort: "",
       sortOptions: [
-        { label: "Id Ascending", key: "+id" },
-        { label: "Id Descending", key: "-id" },
+        { label: "Ascending", key: "+id" },
+        { label: "Descending", key: "-id" },
       ],
     };
   },
-
+  created() {
+    this.Sort = this.Value;
+  },
   watch: {
     Value(val) {
       if (val != null && val != "") {

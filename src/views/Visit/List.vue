@@ -81,6 +81,11 @@
         <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
 
+        <span>{{ $t("CashPool.Coupon") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Coupon.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>

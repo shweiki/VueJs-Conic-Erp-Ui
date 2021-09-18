@@ -21,7 +21,7 @@
           "
         />
       </el-col>
-      <el-col :span="10">
+      <el-col :span="14">
         <Radio-Oprations
           TableName="OrderDelivery"
           @Set="
@@ -32,7 +32,7 @@
           "
         />
       </el-col>
-      <el-col :span="6">
+      <el-col :span="2">
         <el-button
           v-waves
           class="filter-item"
@@ -45,7 +45,7 @@
       </el-col>
     </el-row>
     <div v-loading="listLoading" class="container">
-      <div class="row" >
+      <div class="row">
         <el-row :gutter="20" class="panel-group" style="margin: 20px 2px">
           <div v-for="(option, index) in list" :key="index">
             <el-col :xs="24" :sm="12" :md="8" :lg="6" class="card-panel-col">
@@ -101,15 +101,13 @@
                     </div>
                   </el-col>
                 </el-row>
-                <el-row :gutter="24" >
+                <el-row :gutter="24">
                   <el-col :span="12">
                     <div class="card-panel-description">
                       <div class="card-panel-id" v-if="option.Driver != null">
                         {{ option.Driver.Name }}
                       </div>
-                       <div class="card-panel-id" v-else >
-                        لا يوجد سائق
-                      </div>
+                      <div class="card-panel-id" v-else>لا يوجد سائق</div>
                     </div>
                   </el-col>
                   <el-col :span="12">
@@ -119,49 +117,50 @@
                   </el-col>
                 </el-row>
                 <el-row v-if="$store.getters.device != 'mobile'" :gutter="24">
-                    <driver-to-order :Temp="option" @Done="handleFilter()" />
-                    <order-details :Temp="option" />
-                    <el-col :span="12" style="padding-top: 10px;">
-                       <div v-if="option.Status == 3">  
-                  <el-popconfirm
-                    confirm-button-text='ترحيل'
-                    cancel-button-text='لا, شكرا'
-                    confirm-button-type='warning'
-                    icon="el-icon-info"
-                    :title= "`تأكيد الطلب رقم  ${option.Id} وترحيله`"
-                    @confirm="HasDone(option.Id)"
-                    > 
-                   <el-button 
-                   slot="reference"
-                          style="float: right; "
+                  <driver-to-order :Temp="option" @Done="handleFilter()" />
+                  <order-details :Temp="option" />
+                  <el-col :span="12" style="padding-top: 10px">
+                    <div v-if="option.Status == 3">
+                      <el-popconfirm
+                        confirm-button-text="ترحيل"
+                        cancel-button-text="لا, شكرا"
+                        confirm-button-type="warning"
+                        icon="el-icon-info"
+                        :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`"
+                        @confirm="HasDone(option.Id)"
+                      >
+                        <el-button
+                          slot="reference"
+                          style="float: right"
                           type="warning"
                           :size="$store.getters.size"
-                          >ترحيل الطلب </el-button>
-                  </el-popconfirm>
-                        </div>
-                        </el-col>
+                          >ترحيل الطلب
+                        </el-button>
+                      </el-popconfirm>
+                    </div>
+                  </el-col>
                 </el-row>
                 <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
-                     <el-col :span="12" v-if="option.Status == 3" style="padding-top: 18px;">
-                  <el-popconfirm
-                    confirm-button-text='ترحيل'
-                    cancel-button-text='لا, شكرا'
-                    confirm-button-type='warning'
-                    icon="el-icon-info"
-                    :title= "`تأكيد الطلب رقم  ${option.Id} وترحيله`"
-                    @confirm="HasDone(option.Id)"
-                    > 
-                   <el-button 
-                   slot="reference"
-                          style="float: right; "
-                          type="warning"
-                          :size="$store.getters.size"
-                          >ترحيل الطلب </el-button>
-                  </el-popconfirm>
-                        
-                            </el-col>
-                    <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
-                    <order-details-mobile :Temp="option" caller="Manager" />
+                  <el-col :span="12" v-if="option.Status == 3" style="padding-top: 18px">
+                    <el-popconfirm
+                      confirm-button-text="ترحيل"
+                      cancel-button-text="لا, شكرا"
+                      confirm-button-type="warning"
+                      icon="el-icon-info"
+                      :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`"
+                      @confirm="HasDone(option.Id)"
+                    >
+                      <el-button
+                        slot="reference"
+                        style="float: right"
+                        type="warning"
+                        :size="$store.getters.size"
+                        >ترحيل الطلب
+                      </el-button>
+                    </el-popconfirm>
+                  </el-col>
+                  <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
+                  <order-details-mobile :Temp="option" caller="Manager" />
                 </el-row>
               </div>
             </el-col>
@@ -212,7 +211,7 @@ export default {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
-        Sort: "+id",
+        Sort: "-id",
         Status: undefined,
       },
     };
@@ -239,10 +238,25 @@ export default {
       this.listQuery.Page = 1;
       this.getList();
     },
-     HasDone(id){
-    OrderDone({id:id});
-    this.getList();
-    }
+    HasDone(id) {
+      OrderDone({ id: id }).then((res) => {
+        if (res) {
+          this.$notify({
+            title: "تم ارسال بنجاح",
+            message: "تم ارسال بنجاح - " + +" ",
+            type: "success",
+            position: "top-left",
+          });
+          this.getList();
+        } else {
+          this.$notify.error({
+            title: "error",
+            message: "حصلت مشكلة ما",
+            position: "top-left",
+          });
+        }
+      });
+    },
   },
 };
 </script>

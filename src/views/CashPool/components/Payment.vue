@@ -344,6 +344,7 @@ export default {
                     });
                     loading.close();
                     PrintReport("CashPool", this.CashPool);
+                    this.getdata();
                     Object.assign(this.$data, this.$options.data());
                   } else {
                     loading.close();

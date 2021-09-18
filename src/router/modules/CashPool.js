@@ -39,6 +39,21 @@ const CashPoolRouter = {
       hidden: true,
     },
     {
+      path: 'Create/Visit',
+      component: () => import('@/views/CashPool/components/Visit'),
+      name: 'NewVisitCashPool',
+      meta: { title: 'NewVisitCashPool', icon: 'machine' }
+    },
+    {
+      path: 'Edit/Visit/:id(\\d+)',
+      component: () => import('@/views/CashPool/components/Visit'),
+      name: 'EditVisitCashPool',
+      meta: {
+        title: 'EditVisitCashPool', noCache: true, activeMenu: '/CashPool/List'
+      },
+      hidden: true,
+    },
+    {
       path: 'List',
       component: () => import('@/views/CashPool/List'),
       name: 'ListCashPools',

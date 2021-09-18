@@ -1,6 +1,6 @@
 <template>
- <section class="overview-block-ptb">
-  <el-row type="flex">
+  <section class="overview-block-ptb">
+    <el-row type="flex">
       <el-col :span="4">
         <el-input
           v-model="listQuery.Any"
@@ -78,10 +78,12 @@
                   <el-col :span="12">
                     <div class="card-panel-description">
                       <div class="card-panel-phone">
-                         <el-tag size="small" type="success">
-                            <a :href="`tel:+${ option.PhoneNumber }`"> {{ option.PhoneNumber }} </a>
-                         </el-tag> 
-                       </div>
+                        <el-tag size="small" type="success">
+                          <a :href="`tel:+${option.PhoneNumber}`">
+                            {{ option.PhoneNumber }}
+                          </a>
+                        </el-tag>
+                      </div>
                     </div>
                   </el-col>
                   <el-col :span="12">
@@ -106,40 +108,42 @@
                   </el-col>
                 </el-row>
                 <el-row :gutter="24">
-                    <order-details-mobile :Temp="option" caller="Driver" />
-                 <el-col :span="12" style="padding-top: 10px;">
-                  <div v-if="option.Status == 1">  
-                  <el-popconfirm
-                    confirm-button-text='نعم'
-                    cancel-button-text='لا, شكرا'
-                    icon="el-icon-info"
-                    :title= "` ${option.Id} تأكيد استلام طلب رقم`"
-                    @confirm="HasReceived(option.Id)"
-                    > 
-                   <el-button 
-                   slot="reference"
+                  <order-details-mobile :Temp="option" caller="Driver" />
+                  <el-col :span="12" style="padding-top: 10px">
+                    <div v-if="option.Status == 1">
+                      <el-popconfirm
+                        confirm-button-text="نعم"
+                        cancel-button-text="لا, شكرا"
+                        icon="el-icon-info"
+                        :title="` ${option.Id} تأكيد استلام طلب رقم`"
+                        @confirm="HasReceived(option.Id)"
+                      >
+                        <el-button
+                          slot="reference"
                           type="success"
                           :size="$store.getters.size"
-                          >استلام الطلب </el-button>
-                  </el-popconfirm>
-                        </div>
-                          <div v-if="option.Status == 2">  
-                  <el-popconfirm
-                    confirm-button-text='نعم'
-                    cancel-button-text='لا, شكرا'
-                    confirm-button-type="warning"
-                    icon="el-icon-info"
-                    :title= "` ${option.Id} تأكيد توصيل طلب رقم`"
-                    @confirm="HasDelivered(option.Id)"
-                    > 
-                   <el-button 
-                   slot="reference"
+                          >استلام الطلب
+                        </el-button>
+                      </el-popconfirm>
+                    </div>
+                    <div v-if="option.Status == 2">
+                      <el-popconfirm
+                        confirm-button-text="نعم"
+                        cancel-button-text="لا, شكرا"
+                        confirm-button-type="warning"
+                        icon="el-icon-info"
+                        :title="` ${option.Id} تأكيد توصيل طلب رقم`"
+                        @confirm="HasDelivered(option.Id)"
+                      >
+                        <el-button
+                          slot="reference"
                           type="warning"
                           :size="$store.getters.size"
-                          >توصيل الطلب </el-button>
-                  </el-popconfirm>
-                        </div>
-                        </el-col>
+                          >توصيل الطلب
+                        </el-button>
+                      </el-popconfirm>
+                    </div>
+                  </el-col>
                 </el-row>
                 <!-- <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
                     <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
@@ -151,7 +155,7 @@
         </el-row>
       </div>
     </div>
-      <pagination
+    <pagination
       v-show="Totals.Rows > 0"
       :total="Totals.Rows"
       :page.sync="listQuery.Page"
@@ -162,7 +166,7 @@
 </template>
 <script>
 import OrderDetailsMobile from "./OrderDetailsMobile.vue";
-import { GetDriverOrder, OrderReceived,OrderDelivered } from "@/api/OrderDelivery";
+import { GetDriverOrder, OrderReceived, OrderDelivered } from "@/api/OrderDelivery";
 import { mapGetters } from "vuex";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
@@ -176,8 +180,7 @@ export default {
     RadioOprations,
     StatusIcon,
     Pagination,
-    SortOptions
-
+    SortOptions,
   },
   directives: { waves },
   data() {
@@ -186,7 +189,7 @@ export default {
       Totals: { Rows: 0 },
       user: {},
       listLoading: false,
-        listQuery: {
+      listQuery: {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -208,7 +211,15 @@ export default {
         name: this.name,
       };
       this.listLoading = true;
-      GetDriverOrder({ id: this.user.Id, name: this.user.name, Page: this.listQuery.Page ,Any:this.listQuery.Any, limit:this.listQuery.limit, Sort:this.listQuery.Sort, Status:this.listQuery.Status})
+      GetDriverOrder({
+        id: this.user.Id,
+        name: this.user.name,
+        Page: this.listQuery.Page,
+        Any: this.listQuery.Any,
+        limit: this.listQuery.limit,
+        Sort: this.listQuery.Sort,
+        Status: this.listQuery.Status,
+      })
         .then((response) => {
           // handle success
           this.list = response.items;
@@ -225,15 +236,44 @@ export default {
       this.listQuery.Page = 1;
       this.getdata();
     },
-    HasReceived(id){
-    OrderReceived({id:id});
-    this.getdata();
+    HasReceived(id) {
+      OrderReceived({ id: id }).then((res) => {
+        if (res) {
+          this.$notify({
+            title: "تم ارسال بنجاح",
+            message: "تم ارسال بنجاح - " + +" ",
+            type: "success",
+            position: "top-left",
+          });
+          this.getdata();
+        } else {
+          this.$notify.error({
+            title: "error",
+            message: "حصلت مشكلة ما",
+            position: "top-left",
+          });
+        }
+      });
     },
-    HasDelivered(id){
-    OrderDelivered({id:id});
-    this.getdata();
-    }
-  
+    HasDelivered(id) {
+      OrderDelivered({ id: id }).then((res) => {
+        if (res) {
+          this.$notify({
+            title: "تم ارسال بنجاح",
+            message: "تم ارسال بنجاح - " + +" ",
+            type: "success",
+            position: "top-left",
+          });
+          this.getdata();
+        } else {
+          this.$notify.error({
+            title: "error",
+            message: "حصلت مشكلة ما",
+            position: "top-left",
+          });
+        }
+      });
+    },
   },
 };
 </script>
@@ -288,7 +328,7 @@ export default {
         font-size: 12px;
         text-align: right;
       }
-        .card-panel-region {
+      .card-panel-region {
         line-height: 32px;
         color: rgba(0, 0, 0, 0.8);
         font-size: 12px;
@@ -315,5 +355,4 @@ export default {
     }
   }
 }
-
 </style>
