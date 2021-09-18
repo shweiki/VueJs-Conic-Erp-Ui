@@ -461,6 +461,7 @@ import DrawerSearchInvoice from "@/components/Sales/DrawerSearchInvoice.vue";
 import { Create as CreateVendor, CheckIsExist as CheckVendorIsExist } from "@/api/Vendor";
 
 import { SendSMS } from "@/api/SMS";
+import { Now } from "@/utils";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 
@@ -626,6 +627,7 @@ export default {
             this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
             this.DisabledSave = true;
+            this.tempForm.FakeDate = Now();
             Create(this.tempForm)
               .then((response) => {
                 if (response) {
@@ -695,6 +697,7 @@ export default {
       let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
       CreateDelivery({
         Id: undefined,
+        OrderId: temp.Id,
         Name: temp.Name,
         TotalPrice: temp.DeliveryPrice + temp.Total,
         Status: 0,

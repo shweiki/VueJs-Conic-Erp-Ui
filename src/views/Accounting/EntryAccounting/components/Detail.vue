@@ -54,6 +54,7 @@
           </el-col>
         </el-row>
         <Account-Search-Any
+        v-if="Type=='Account'"
           @Set="
             (v) => {
               AddEntryMovements(v);

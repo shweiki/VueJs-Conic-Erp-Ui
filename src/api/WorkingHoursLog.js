@@ -51,6 +51,15 @@ export function GetEmployeeLogById(query) {
   })
 }
 
+export function GetWorkingHourId(query) {
+  return request({
+    url: '/WorkingHourLog/GetWorkingHourId',
+    method: 'get',
+    params:  query 
+    
+  })
+}
+
 export function Create(data) {
   return request({
     url: '/EmployeeLog/Create',
@@ -66,3 +75,4 @@ export function Logout(data) {
     data: qs.stringify(data)
   })
 }
+

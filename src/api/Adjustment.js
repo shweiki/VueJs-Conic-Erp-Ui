@@ -7,7 +7,20 @@ export function GetAdjustments(query) {
     params: query
   })
 }
-
+export function GetPAdjustments(query) {
+  return request({
+    url: '/Adjustment/GetPAdjustments',
+    method: 'get',
+    params: query
+  })
+}
+export function GetRAdjustments(query) {
+  return request({
+    url: '/Adjustment/GetRAdjustments',
+    method: 'get',
+    params: query
+  })
+}
 
 export function Create(data) {
   return request({

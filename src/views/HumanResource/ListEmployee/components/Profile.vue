@@ -28,12 +28,16 @@
                 <el-row>
                 <el-col :span="24">
                   <employee-login
+                  :Name="tempForm.Name"
+                  :Id="tempForm.Id"
                   />
                 </el-col>
               </el-row>
                 <el-row>
                 <el-col :span="24">
                   <employee-logout
+                  :Name="tempForm.Name"
+                  :Id="tempForm.Id"
                   />
                 </el-col>
               </el-row>
@@ -48,8 +52,8 @@
               <User-Card :Employee="tempForm" />
             </el-tab-pane>
 
-         <el-tab-pane label="زيارات" name="timeline">
-              <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
+         <el-tab-pane label="دوامات" name="timeline">
+              <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
               <Timeline :timeline="log" :EmployeeId="tempForm.Id" />
             </el-tab-pane>
 
@@ -65,7 +69,7 @@
 
             <el-tab-pane label="التسويات" name="Adjustment">
               <span slot="label"><i class="el-icon-refresh"></i> التسويات</span>
-              <Working-Adjustment/>
+              <Working-Adjustment :WorkingAdjustment="WorkingAdjustment" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name" :SalaryPaymentId="SalaryPaymentId" :WorkingHourId="WorkingHourId" />
             </el-tab-pane>
 
             <el-tab-pane label="تواصل" name="communication">
@@ -84,7 +88,7 @@
 
 import Details from "./Details.vue";
 import UserCard from "./UserCard.vue";
-import MemberSearch from "./MemberSearch.vue";
+import EmployeeSearch from "./EmployeeSearch.vue";
 import EmployeeLogin from "./Dialogs/EmployeeLogin";
 import EmployeeLogout from "./Dialogs/EmployeeLogout";
 import Account from "./Account.vue";
@@ -95,10 +99,10 @@ import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetFileByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
-import { GetSalaryById } from "@/api/Salary";
-import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
+import { GetSalaryById, GetSalaryId } from "@/api/Salary";
+import { GetWorkingAdjustmentBySalaryId } from "@/api/WorkingAdjustment";
 import checkPermission from "@/utils/permission";
-import { GetEmployeeLogById } from "@/api/WorkingHoursLog";
+import { GetEmployeeLogById, GetWorkingHourId } from "@/api/WorkingHoursLog";
 import Massage from "@/components/Massage/index.vue";
 
 export default {
@@ -129,13 +133,15 @@ export default {
       tempForm: null,
       EntryMovements: [],
       SalaryPayment:[],
+      WorkingAdjustment: [],
       log: [],
+      SalaryPaymentId:undefined,
+      WorkingHourId: undefined,
     };
   },
   created() {
     if (this.isEdit) {
       this.getdata(this.$route.params && this.$route.params.id);
-      // console.log(this.$route.params )
     }
     this.tempRoute = Object.assign({}, this.$route);
   },
@@ -152,14 +158,28 @@ export default {
           this.setTagsViewTitle();
           // set page title
           this.setPageTitle();
+           GetSalaryId({
+          EmployeeId: this.tempForm.Id,
+        })
+          .then((response) => {
+          this.SalaryPaymentId = response[0].Id;
+          });
+            GetWorkingHourId({
+          EmployeeId: this.tempForm.Id,
+        })
+          .then((response) => {
+          this.WorkingHourId = response;
+          console.log("whkhlklk", this.WorkingHourId);
+          });
         })
         .catch((err) => {
           console.log(err);
         });
+       
      
     },
     tabClick(tab, event) {
-     if (tab.label == "زيارات")
+     if (tab.label == "دوامات")
         GetEmployeeLogById({
           Id: this.tempForm.Id,
         }).then((response) => {
@@ -181,6 +201,12 @@ export default {
           EmployeeId: this.tempForm.Id,
         }).then((response) => {
           this.SalaryPayment = response.reverse();
+          });
+            if (tab.label == "التسويات")
+        GetWorkingAdjustmentBySalaryId({
+          SalaryId: this.SalaryPaymentId,
+        }).then((response) => {
+          this.WorkingAdjustment = response.reverse();
           });
      
     },

@@ -8,7 +8,7 @@
     <el-table
       @row-dblclick="
         row => {
-          $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
+          $router.push({ path: `/Salary/Details/${row.EntryId}` });
         }
       "
       :data="SalaryPayment"
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import AddSalary from "./Dialogs/AddSalary";
+import AddSalary from "../../Salary/Components/AddSalary";
 export default {
   components: {AddSalary},
   props: {

@@ -1,30 +1,8 @@
 <template>
   <div class="app-container">
     <el-row>
-      <el-col :span="18" :xs="24" v-loading="loading">
-        <member-search />
-        <el-col
-          style="padding: 1.5px"
-          :xs="8"
-          :sm="8"
-          :md="8"
-          v-for="(member, index) in ActiveMembers"
-          :key="index"
-        >
-          <el-card :body-style="{ padding: '0px' }" class="box-card" shadow="always">
-            <div slot="header" >
-              <router-link :to="'/HumanResource/Edit/' + member.MemberId">
-                <strong style="font-size: 10px; cursor: pointer">{{
-                  member.Name.split(" ").slice(0, 4).join(" ")
-                }}</strong>
-              </router-link>
-            </div>
-           
-            <el-col :span="24">
-              <el-input disabled v-model="member.PhoneNumber1"></el-input>
-            </el-col>
-          </el-card>
-        </el-col>
+      <el-col :span="24" :xs="24" v-loading="loading">
+        <employee-search />
       </el-col>
     </el-row>
   </div>
@@ -32,35 +10,23 @@
 
 <script>
 import permission from "@/directive/permission/index.js";
-import MemberSearch from "./components/MemberSearch.vue";
+import EmployeeSearch from "./components/EmployeeSearch.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 
-//import { GetActiveMember } from "@/api/Member";
-
 export default {
-  name: "MemberList",
+  name: "EmployeeList",
   directives: { permission },
-  components: { MemberSearch, PanThumb, WebCam},
+  components: { EmployeeSearch, PanThumb, WebCam},
   data() {
     return {
       loading: true,
-      ActiveMembers: [],
+     
     };
   },
-  computed: {
-    Members() {
-      return this.$store.getters.ActiveMembers;
-    },
-  },
-  watch: {
-    Members() {
-      this.ActiveMembers = this.Members;
-    },
-  },
-  mounted() {
-    this.ActiveMembers = this.Members;
-  },
+ 
+ 
+ 
   created() {
     this.getdata();
   },
