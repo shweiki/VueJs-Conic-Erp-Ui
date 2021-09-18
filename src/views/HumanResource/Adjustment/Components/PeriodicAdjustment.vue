@@ -24,12 +24,13 @@
         width="200"
         align="center"
       >
-        <template slot-scope="scope">{{
+        <template slot-scope="scope" >
+          <div v-if="scope.row.Type == 'CashValue' ">{{
           scope.row.AdjustmentAmount.toFixed($store.getters.settings.ToFixed)
-        }}</template>
+        }} </div> </template>
       </el-table-column>
 <el-table-column label="القيمة المؤوية" align="center" width="200">
-        <template slot-scope="scope">{{ scope.row.AdjustmentPercentage }}</template>
+        <template slot-scope="scope"> <div v-if="scope.row.Type == 'Percentage' ">{{ (scope.row.AdjustmentAmount*100).toFixed($store.getters.settings.ToFixed) }}% </div></template>
       </el-table-column>
 
       </el-table>

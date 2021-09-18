@@ -10,7 +10,7 @@
         >
           <span style="float: left">{{ item.label }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{
-            item.value
+            item.amount
           }}</span>
         </el-option>
       </el-select>
@@ -63,11 +63,23 @@ export default {
           this.AdTemps.find((element) => element.value == val).value
         );
         
-        //  this.$emit(
-        //   "SetAdjustmentAmount",
-        //   this.AdTemps.find((element) => element.value == val).amount
-        // );
-        // console.log("ffffffff",this.AdTemps.find((element) => element.value == val).amount)
+          this.$emit(
+           "SetAdjustmentAmount",
+           this.AdTemps.find((element) => element.value == val).amount
+         );
+         
+
+         this.$emit(
+           "CheckStatic",
+           this.AdTemps.find((element) => element.value == val).isstatic
+         );
+        
+
+         this.$emit(
+           "CheckWork",
+           this.AdTemps.find((element) => element.value == val).iswork
+         );
+        
       }
     },
   },

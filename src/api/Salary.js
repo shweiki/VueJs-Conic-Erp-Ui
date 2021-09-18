@@ -25,9 +25,9 @@ export function GetSalaryById(query) {
   })
 }
 
-export function GetSalaryByIds(query) {
+export function GetSalaryId(query) {
   return request({
-    url: '/Salary/GetSalaryByIds',
+    url: '/Salary/GetSalaryId',
     method: 'get',
     params: query
   })

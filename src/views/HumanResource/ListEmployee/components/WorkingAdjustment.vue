@@ -8,12 +8,12 @@
       <add-static-adjustment/>
     </el-col>
     <el-col :span="16">
-    <Adjustment-Bind :EmployeeId="EmployeeId" :EmployeeName="EmployeeName" />
+    <Adjustment-Bind :WorkingHourId="WorkingHourId" :EmployeeId="EmployeeId" :EmployeeName="EmployeeName" :SalaryPaymentId="SalaryPaymentId" />
       </el-col>
     </el-row>
       
     <el-table
-      :data="SalaryPayment"
+      :data="WorkingAdjustment"
       fit
       border
       highlight-current-row
@@ -25,34 +25,54 @@
         width="80"
         align="center"
       ></el-table-column>
-      <el-table-column
-        label="GrossSalary"
+        <el-table-column
+        label="AdjustmentName"
+        prop="Name"
         width="100"
         align="center"
       >
         <template slot-scope="scope">{{
-          scope.row.GrossSalary.toFixed($store.getters.settings.ToFixed)
+          scope.row.AdjustmentName
         }}</template>
       </el-table-column>
       <el-table-column
-        label="NetSalary"
-        prop="totalDebit"
+        label="AdjustmentAmmount"
         width="100"
         align="center"
       >
         <template slot-scope="scope">{{
-          scope.row.NetSalary.toFixed($store.getters.settings.ToFixed)
+          scope.row.AdjustmentAmmount.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-          <el-table-column label="التاريخ" align="center" width="140">
+      <el-table-column
+        label="Tax"
+        prop="Tax"
+        width="100"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.Tax.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+        <el-table-column
+        label="Description"
+        prop="Description"
+        width="100"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.Description
+        }}</template>
+      </el-table-column>
+           <el-table-column label="التاريخ" align="center" width="140">
         <template slot-scope="scope">
           <el-date-picker
             format="dd/MM/yyyy"
             disabled
-            v-model="scope.row.SalaryPeriod"
+            v-model="scope.row.Date"
           ></el-date-picker>
         </template>
-      </el-table-column>
+      </el-table-column> 
     </el-table>
   </div>
 </template>
@@ -63,8 +83,25 @@ import SelectAdjustment from '../../Adjustment/Components/SelectAdjustment.vue';
 import AdjustmentBind from '../../WorkingAdjustment/Components/AdjustmentBind.vue';
 export default {
   components: { SelectAdjustment, AddAdjustment, AddStaticAdjustment, AdjustmentBind},
-  props: 
-    ["SalaryPayment", "EmployeeId", "EmployeeName"],
+  props: {
+      EmployeeId:{
+      type: Number,
+    },
+    EmployeeName:{
+      type: String,
+    },
+    SalaryPaymentId:{
+      type: Number,
+    },
+    WorkingAdjustment:{
+      type: Array,
+    },
+    WorkingHourId :{
+      type: Number
+    }
+
+  }
+    // ["SalaryPayment", "EmployeeId", "EmployeeName", "SalaryPaymentId"],
   
 };
 </script>

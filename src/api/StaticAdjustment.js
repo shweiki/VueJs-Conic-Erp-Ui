@@ -4,7 +4,7 @@ import qs from 'qs';
 
 export function Create(data) {
   return request({
-    url: '/WorkingAdjustment/Create',
+    url: '/StaticAdjustment/Create',
     method: 'post',
     data: qs.stringify(data)
   })
@@ -12,7 +12,7 @@ export function Create(data) {
 
 export function GetWorkingAdjustmentBySalaryId(query) {
   return request({
-    url: '/WorkingAdjustment/GetWorkingAdjustmentBySalaryId',
+    url: '/StaticAdjustment/GetWorkingAdjustmentBySalaryId',
     method: 'get',
     params:  query 
     

@@ -4,22 +4,18 @@
       <add-employee />
     </el-col>
     <el-col :span="14">
-      <Employee-Search-Any
-        @Set="
-          (v) => {
-            $router.push({ path: `/HumanResource/Edit/${v.Id}` }); // -> /user/123
-          }
-        "
-      />
+      <Search-By Type="EmployeeSearchAny"  />
+      
+      
     </el-col>
   </el-row>
 </template>
 <script>
 import AddEmployee from "@/components/HumanResource/Employee/AddEmployee.vue";
-import EmployeeSearchAny from "@/components/HumanResource/EmployeeSearchAny.vue";
+import SearchBy from "@/components/DynamicComponents/SearchBy";
 
 export default {
   name: "EmployeeSearch",
-  components: { AddEmployee, EmployeeSearchAny },
+  components: { AddEmployee, SearchBy },
 };
 </script>

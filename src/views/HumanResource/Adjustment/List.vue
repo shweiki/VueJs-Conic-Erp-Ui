@@ -37,6 +37,7 @@ import AddAdjustment from "./Components/AddAdjustment";
 import AddStaticAdjustment from "./Components/AddStaticAdjustment";
 import RegularAdjustment from "./Components/RegularAdjustment";
 import PeriodicAdjustment from "./Components/PeriodicAdjustment";
+
 export default {
   name: "Adjustment",
   components: { StatusTag, AddAdjustment, AddStaticAdjustment, PeriodicAdjustment, RegularAdjustment },
@@ -55,13 +56,7 @@ export default {
         create: "إضافة",
       },
     
-      tempForm: {
-        Id: undefined,
-        Name: "",
-        AdjustmentAmount:1.00,
-        AdjustmentPercentage: 0.01,
-      },
-    
+
     };
   },
   created() {

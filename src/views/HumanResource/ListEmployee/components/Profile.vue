@@ -69,7 +69,7 @@
 
             <el-tab-pane label="التسويات" name="Adjustment">
               <span slot="label"><i class="el-icon-refresh"></i> التسويات</span>
-              <Working-Adjustment :SalaryPayment="SalaryPayment" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name" :SalaryPaymentId="SalaryPaymentId" />
+              <Working-Adjustment :WorkingAdjustment="WorkingAdjustment" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name" :SalaryPaymentId="SalaryPaymentId" :WorkingHourId="WorkingHourId" />
             </el-tab-pane>
 
             <el-tab-pane label="تواصل" name="communication">
@@ -99,10 +99,10 @@ import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetFileByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
-import { GetSalaryById, GetSalaryByIds } from "@/api/Salary";
-import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
+import { GetSalaryById, GetSalaryId } from "@/api/Salary";
+import { GetWorkingAdjustmentBySalaryId } from "@/api/WorkingAdjustment";
 import checkPermission from "@/utils/permission";
-import { GetEmployeeLogById } from "@/api/WorkingHoursLog";
+import { GetEmployeeLogById, GetWorkingHourId } from "@/api/WorkingHoursLog";
 import Massage from "@/components/Massage/index.vue";
 
 export default {
@@ -133,8 +133,10 @@ export default {
       tempForm: null,
       EntryMovements: [],
       SalaryPayment:[],
+      WorkingAdjustment: [],
       log: [],
       SalaryPaymentId:undefined,
+      WorkingHourId: undefined,
     };
   },
   created() {
@@ -156,12 +158,18 @@ export default {
           this.setTagsViewTitle();
           // set page title
           this.setPageTitle();
-           GetSalaryByIds({
-          Id: 3,
+           GetSalaryId({
+          EmployeeId: this.tempForm.Id,
         })
           .then((response) => {
-          this.SalaryPaymentId = response.reverse();
-          console.log("SalaryPaymentId", this.SalaryPaymentId )
+          this.SalaryPaymentId = response[0].Id;
+          });
+            GetWorkingHourId({
+          EmployeeId: this.tempForm.Id,
+        })
+          .then((response) => {
+          this.WorkingHourId = response;
+          console.log("whkhlklk", this.WorkingHourId);
           });
         })
         .catch((err) => {
@@ -189,10 +197,16 @@ export default {
           });
         });
          if (tab.label == "رواتب")
-        GetSalaryByIds({
+        GetSalaryById({
           EmployeeId: this.tempForm.Id,
         }).then((response) => {
           this.SalaryPayment = response.reverse();
+          });
+            if (tab.label == "التسويات")
+        GetWorkingAdjustmentBySalaryId({
+          SalaryId: this.SalaryPaymentId,
+        }).then((response) => {
+          this.WorkingAdjustment = response.reverse();
           });
      
     },

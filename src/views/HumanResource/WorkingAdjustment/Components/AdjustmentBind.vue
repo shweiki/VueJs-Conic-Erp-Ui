@@ -54,26 +54,61 @@
              tempForm.AdjustmentId = v;
           }
         "
+         @SetAdjustmentAmount="
+          (v) => {
+             tempForm.AdjustmentAmmount = v;
+          }
+        "
+         @CheckStatic="
+          (v) => {
+             IsStatic = v;
+          }
+        "
+         @CheckWork="
+          (v) => {
+             IsWork = v;
+          }
+        "
+        
       />
       </el-form-item>
+      <el-form-item prop="Description" label="ملاحظات ">
+             <el-input  v-model="tempForm.Description"></el-input>
+            </el-form-item>
         </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
 import SelectAdjustment from '../../Adjustment/Components/SelectAdjustment.vue';
-import { Create } from "@/api/WorkingAdjustment";
-import { GetSalaryById } from "@/api/Salary";
+import { Create as CreateWork} from "@/api/WorkingAdjustment";
+import { Create as CreateStatic} from "@/api/StaticAdjustment";
+
 export default {
   name: "Adjustment",
-  props: 
-    ["EmployeeId", "EmployeeName", "SalaryPayment"],
+  props: {
+    EmployeeId:{
+      type: Number,
+    },
+    EmployeeName:{
+      type: String,
+    },
+    SalaryPaymentId:{
+      type: Number,
+    },
+     WorkingHourId :{
+      type: Number
+    }
+  },
+   
   components: {SelectAdjustment},
   data() {
     return {
       radio: '1',
       type:'1',
       dialogFormVisible: false,
+      IsStatic : false,
+      IsWork : false,
        vAdjustment: "",
       tempForm: {
         Id: undefined,
@@ -85,25 +120,35 @@ export default {
         SalaryPaymentId: undefined,
         WorkingHoursLogId: undefined,
         },
+
+        StaticTemp :{
+          Id: undefined,
+          AdjustmentAmount: 0.0,
+          AdjustmentPercentage: 0.0,
+          AdjustmentId: undefined,
+          SalaryPaymentId: undefined,
+        }
     
     };
   },
  
-  created() {
-    this.getData(this.EmployeeId);
+  mounted() {
+    this.resetTempForm();
+    //this.getData(this.SalaryPaymentId);
   },
   methods: {
 
       getData(val) {
-      GetSalaryById({ Id: val })
-        .then((response) => {
-          this.tempForm.SalaryPaymentId = response.Id;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      // GetSalaryById({ Id: val })
+      //   .then((response) => {
+      //     this.tempForm.SalaryPaymentId = response.Id;
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     },
     resetTempForm() {
+      
       this.tempForm = {
         Id: undefined,
         AdjustmentAmmount: 0.0,
@@ -117,8 +162,10 @@ export default {
     },
     createData() {
       this.$refs["dataForm"]
-      this.tempForm.SalaryPaymentId = this.SalaryPayment.Id;
-          Create(this.tempForm)
+     if (this.IsWork){
+       this.tempForm.SalaryPaymentId = this.SalaryPaymentId;
+      this.tempForm.WorkingHoursLogId = this.WorkingHourId;
+          CreateWork(this.tempForm)
             .then(response => {
               this.dialogFormVisible = false;
               this.$notify({
@@ -131,7 +178,28 @@ export default {
             .catch(error => {
               console.log(error);
             });
-        
+        }
+        if (this.IsStatic){
+          this.StaticTemp.SalaryPaymentId = this.SalaryPaymentId;
+          this.StaticTemp.AdjustmentAmount =  this.tempForm.AdjustmentAmmount
+          this.StaticTemp.AdjustmentPercentage =  this.tempForm.AdjustmentAmmount
+          this.StaticTemp.AdjustmentId =  this.tempForm.AdjustmentId
+          console.log("this.StaticTemp", this.StaticTemp)
+          CreateStatic(this.StaticTemp)
+            .then(response => {
+              this.dialogFormVisible = false;
+              this.$notify({
+                title: "تم ",
+                message: "تم الإضافة بنجاح",
+                type: "success",
+                duration: 2000
+              });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+
      
     },
  

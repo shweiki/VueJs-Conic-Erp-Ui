@@ -89,10 +89,10 @@
           </el-col>
             <el-col :span="23" v-if="radio == 2">
             <el-form-item
-              prop="AdjustmentPercentage"
+              prop="AdjustmentAmount"
             >
               <el-input-number
-                v-model="tempForm.AdjustmentPercentage"
+                v-model="tempForm.AdjustmentAmount"
                 :precision="3"
                 :step="1.00"
                 :min="0.01"
@@ -119,7 +119,7 @@ export default {
         Id: undefined,
         Name: "",
         AdjustmentAmount:1.000,
-        AdjustmentPercentage: 1.000,
+        Type: "",
         IsWorkingHourAdjustment: true,
       },
       rulesForm: {
@@ -148,7 +148,7 @@ export default {
         Id: undefined,
         Name: "",
         AdjustmentAmount:0.0,
-        AdjustmentPercentage: 0,
+        Type: "",
       };
     },
     createData() {
@@ -156,17 +156,17 @@ export default {
         if (valid) {
           if (this.type==2){
             if(this.radio==1){
-              this.tempForm.AdjustmentPercentage=0;
+              this.tempForm.Type= "CashValue";
               this.tempForm.AdjustmentAmount= -this.tempForm.AdjustmentAmount;
             };
             if(this.radio==2){
-              this.tempForm.AdjustmentAmount=0;
-              this.tempForm.AdjustmentPercentage = -this.tempForm.AdjustmentPercentage;
+              this.tempForm.Type="Hours";
+              this.tempForm.AdjustmentAmount = -this.tempForm.AdjustmentAmount;
               };
           }
           if (this.type==1){
-            if(this.radio==1){this.tempForm.AdjustmentPercentage=0;};
-            if(this.radio==2){this.tempForm.AdjustmentAmount=0;};
+            if(this.radio==1){this.tempForm.Type= "CashValue";};
+            if(this.radio==2){this.tempForm.Type="Hours";};
           }
           this.tempForm.IsWorkingHourAdjustment = true;
           Create(this.tempForm)
