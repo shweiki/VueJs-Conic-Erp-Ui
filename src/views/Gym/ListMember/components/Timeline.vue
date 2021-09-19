@@ -9,16 +9,17 @@
         </el-radio-group>
       </div>
       <el-card shadow="hover">
-        <el-timeline :reverse="reverse" style="height: 550px; overflow: scroll;">
+        <el-timeline :reverse="reverse" style="height: 550px; overflow: scroll">
           <el-timeline-item
-            v-for="(item,index) of timeline"
+            v-for="(item, index) of timeline"
             :key="index"
             icon="el-icon-more"
             type="primary"
             color="#00000"
             size="large"
             :timestamp="item.DateTime"
-          >{{item.Name}}</el-timeline-item>
+            >{{ item.Name }}</el-timeline-item
+          >
         </el-timeline>
       </el-card>
     </el-col>
@@ -26,25 +27,27 @@
 </template>
 
 <script>
+import { GetByUserId } from "@/api/DeviceLog";
+
 export default {
   props: {
     timeline: {
       type: Array,
       default: () => {
         return [];
-      }
+      },
     },
     MemberId: {
       type: Number,
       default: () => {
         return undefined;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
-      reverse: false
+      reverse: false,
     };
-  }
+  },
 };
 </script>

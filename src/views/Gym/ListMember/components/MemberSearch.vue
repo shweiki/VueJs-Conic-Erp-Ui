@@ -18,13 +18,13 @@
       <add-member />
     </el-col>
     <el-col :span="14">
-       <Search-By Type="MemberSearchAny"  />
+      <Search-By Type="MemberSearchAny" />
     </el-col>
   </el-row>
 </template>
 <script>
 import AddMember from "@/components/Member/AddMember.vue";
-import SearchBy from "@/components/DynamicComponents/SearchBy";
+import SearchBy from "@/components/DynamicComponents/SearchBy.vue";
 
 export default {
   name: "MemberSearch",

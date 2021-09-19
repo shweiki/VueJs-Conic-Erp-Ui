@@ -249,7 +249,6 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import { SendMultiSMS } from "@/api/SMS";
-import LastLogMember from "@/components/Gym/LastLogMember.vue";
 import AddMember from "@/components/Member/AddMember.vue";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 import SortOptions from "@/components/SortOptions";
@@ -261,7 +260,6 @@ export default {
     NextOprations,
     Pagination,
     RadioOprations,
-    LastLogMember,
     AddMember,
     DialogActionLog,
     SortOptions,

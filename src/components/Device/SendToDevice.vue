@@ -8,7 +8,6 @@
         icon="el-icon-arrow-left"
         >تحديث البيانات الى{{ item.Name }}</el-button
       >
-      <br />
       <el-button
         :loading="loading"
         @click="StartEnrollUserOnDevice(item.Id, item.Name)"
@@ -16,13 +15,20 @@
         icon="el-icon-arrow-right"
         >انشاء بصمة وجه {{ item.Name }}</el-button
       >
+      <el-button
+        :loading="loading"
+        @click="RestartDevice(item.Id, item.Name)"
+        :size="$store.getters.size"
+        type="success"
+        >اعادة تشغيل الجهاز</el-button
+      >
     </el-button-group>
 
     <el-button type="info" slot="reference"> جهاز البصمة</el-button>
   </el-popover>
 </template>
 <script>
-import { GetDevice, SetUser, StartEnrollUser } from "@/api/Device";
+import { GetDevice, SetUser, StartEnrollUser, RestartDevice } from "@/api/Device";
 
 export default {
   props: ["ObjectId", "TableName", "Name"],
@@ -73,6 +79,20 @@ export default {
             position: "top-right",
           });
         }
+        this.loading = false;
+      });
+    },
+    RestartDevice(id, Name) {
+      this.loading = true;
+      RestartDevice({ DeviceId: id }).then((response) => {
+        // handle success
+        this.$notify({
+          title: "تم",
+          message: "اعادة تشغيل  " + Name + "  " + response + " ",
+          type: "success",
+          duration: 3000,
+          position: "top-right",
+        });
         this.loading = false;
       });
     },

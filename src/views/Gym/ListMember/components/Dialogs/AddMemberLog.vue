@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { Create } from "@/api/MemberLog";
+import { Create } from "@/api/DeviceLog";
 import MemberSearchAny from "@/components/Member/MemberSearchAny";
 import permission from "@/directive/permission/index.js";
 import FakeDate from "@/components/Date/FakeDate.vue";

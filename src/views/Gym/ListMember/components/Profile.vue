@@ -90,6 +90,7 @@
                     :Name="tempForm.Name"
                     TableName="Member"
                   />
+                  <button-scan />
                 </el-col>
               </el-row>
             </el-col>
@@ -119,7 +120,7 @@
             <el-tab-pane label="زيارات" name="timeline">
               <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
 
-              <Timeline :timeline="log" :MemberId="tempForm.Id" />
+              <Timeline :MemberId="tempForm.Id" />
             </el-tab-pane>
 
             <el-tab-pane label="مالية" name="account">
@@ -148,7 +149,6 @@
 
 <script>
 import MemberLog from "./MemberLog.vue";
-import { GetUserLog } from "@/api/Device";
 
 import Details from "./Details.vue";
 import UserCard from "./UserCard.vue";
@@ -168,13 +168,14 @@ import Service from "./Service.vue";
 import Communication from "./Communication.vue";
 
 import { GetMemberById } from "@/api/Member";
-import { GetMemberLogById } from "@/api/MemberLog";
 import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
 import { GetFileByObjId } from "@/api/File";
 import { GetPaymentsByMemberId } from "@/api/Payment";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
 import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
 import SendToDevice from "@/components/Device/SendToDevice.vue";
+import ButtonScan from "@/components/Device/ButtonScan";
+
 import checkPermission from "@/utils/permission";
 
 import Massage from "@/components/Massage/index.vue";
@@ -198,6 +199,7 @@ export default {
     Massage,
     MemberSearch,
     SendToDevice,
+    ButtonScan,
   },
   props: {
     isEdit: {
@@ -244,13 +246,6 @@ export default {
         });
     },
     tabClick(tab, event) {
-      if (tab.label == "زيارات")
-        GetMemberLogById({
-          Id: this.tempForm.Id,
-        }).then((response) => {
-          //  console.log("log :", response);
-          this.log = response.reverse();
-        });
       if (tab.label == "اشتراكات")
         GetMembershipMovementByMemberId({
           MemberId: this.tempForm.Id,

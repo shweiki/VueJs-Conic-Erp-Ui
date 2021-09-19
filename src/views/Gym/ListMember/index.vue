@@ -16,7 +16,7 @@
           :key="index"
         >
           <el-card :body-style="{ padding: '0px' }" class="box-card" shadow="always">
-            <div slot="header" >
+            <div slot="header">
               <router-link :to="'/Gym/Edit/' + member.MemberId">
                 <strong style="font-size: 10px; cursor: pointer">{{
                   member.Name.split(" ").slice(0, 4).join(" ")
@@ -29,7 +29,7 @@
               >
               <el-col :span="12">
                 <span>اخر زيارة</span>
-                <last-log-member :MemberId="member.MemberId" />
+                <last-log :UserId="member.MemberId" TableName="Member" />
               </el-col>
             </el-row>
             <el-col :span="24">
@@ -48,14 +48,14 @@ import MemberLog from "./components/MemberLog";
 import MemberSearch from "./components/MemberSearch.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
-import LastLogMember from "@/components/Gym/LastLogMember.vue";
+import LastLog from "@/components/Gym/LastLog.vue";
 
 //import { GetActiveMember } from "@/api/Member";
 
 export default {
   name: "MemberList",
   directives: { permission },
-  components: { MemberSearch, MemberLog, PanThumb, WebCam, LastLogMember },
+  components: { MemberSearch, MemberLog, PanThumb, WebCam, LastLog },
   data() {
     return {
       loading: true,

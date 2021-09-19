@@ -1,15 +1,24 @@
 <template>
   <div>
     <el-card style="margin-bottom: 20px">
-      <el-button
-        style="float: left"
-        type="primary"
-        icon="el-icon-refresh"
-        :size="$store.getters.size"
-        @click="getdata()"
-      ></el-button>
-      <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
-      <add-member-log />
+      <el-row type="flex">
+        <el-col :span="8">
+          <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
+        </el-col>
+        <el-col :span="8">
+          <add-member-log />
+        </el-col>
+        <el-col :span="8">
+          <el-button
+            :loading="loading"
+            style="float: left"
+            type="primary"
+            icon="el-icon-refresh"
+            :size="$store.getters.size"
+            @click="getdata()"
+          ></el-button>
+        </el-col>
+      </el-row>
 
       <div style="margin-top: 10px">
         <el-timeline
@@ -25,8 +34,8 @@
           <el-timeline-item
             v-for="(Log, index) in MembersLogs"
             :key="index"
-            :icon="Log.Style.IconClass"
-            :color="Log.Style.Color"
+            :icon="Log.User.Style.IconClass"
+            :color="Log.User.Style.Color"
             size="large"
             :timestamp="Log.DateTime"
             :hide-timestamp="true"
@@ -35,23 +44,27 @@
               @click="
                 () => {
                   let r = $router.resolve({
-                    path: '/Gym/Edit/' + Log.MemberId,
+                    path: '/Gym/Edit/' + Log.Fk,
                   });
                   window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
                 }
               "
-              :color="Log.Style.Color"
+              :color="Log.User.Style.Color"
               ><strong style="font-size: 10px; cursor: pointer">{{
-                Log.Name
+                Log.User.Name
               }}</strong></el-tag
             >
-            <Status-Tag :Status="Log.Status" TableName="Member"> </Status-Tag>
+            <Status-Tag :Status="Log.User.Status" TableName="Member"> </Status-Tag>
             <el-tag
-              v-if="Log.ActiveMemberShip != null"
-              v-bind:type="Log.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'"
-              >{{ Log.ActiveMemberShip.Type }}</el-tag
+              v-if="Log.User.ActiveMemberShip != null"
+              v-bind:type="
+                Log.User.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'
+              "
+              >{{ Log.User.ActiveMemberShip.Type }}</el-tag
             >
-            <el-tag v-if="Log.TotalCredit - Log.TotalDebit > 0" type="info">مدين</el-tag>
+            <el-tag v-if="Log.User.TotalCredit - Log.User.TotalDebit > 0" type="info"
+              >مدين</el-tag
+            >
             <el-time-picker
               :size="$store.getters.size"
               v-model="Log.DateTime"
@@ -66,16 +79,16 @@
 </template>
 
 <script>
-import { GetMemberLogByStatus, RemoveDuplicate } from "@/api/MemberLog";
+import { GetByStatus, RemoveDuplicate } from "@/api/DeviceLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import AddMemberLog from "./Dialogs/AddMemberLog.vue";
 
 export default {
   name: "MemberLog",
   components: { StatusTag, AddMemberLog },
-  props: {},
   data() {
     return {
+      loading: false,
       MembersLogs: [],
       reverse: false,
     };
@@ -85,7 +98,8 @@ export default {
   },
   methods: {
     getdata() {
-      GetMemberLogByStatus({ Status: 0 })
+      this.loading = true;
+      GetByStatus({ Status: 0, TableName: "Member" })
         .then((response) => {
           if (response.length != this.MembersLogs.length) {
             this.MembersLogs = response.sort(
@@ -93,6 +107,7 @@ export default {
             );
             RemoveDuplicate();
           }
+          this.loading = false;
         })
         .catch((error) => {
           reject(error);

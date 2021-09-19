@@ -1,6 +1,6 @@
 import { GetMember, GetActiveMember, CheckMembers } from "@/api/Member";
 import { CheckMembershipMovement } from "@/api/MembershipMovement";
-import { CheckMemberLog, GetMemberLogByStatus } from "@/api/MemberLog";
+import { CheckDeviceLog, } from "@/api/DeviceLog";
 import store from '@/store'
 
 const state = {
@@ -18,7 +18,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             CheckMembers().then(response => {
                 CheckMembershipMovement().then(response => {
-                    CheckMemberLog().then(response => {
+                    CheckDeviceLog().then(response => {
                         store.state.settings.triger.CheckMembers.LastRun = "" + Date() + ""
                         store.dispatch("settings/changeSetting", {
                             key: "triger",

@@ -73,16 +73,16 @@ export function SetAllMembers(query) {
     params: query
   })
 }
-export function GetAllFaceMembers(query) {
+export function GetAllFingerPrints(query) {
   return request({
-    url: '/Device/GetAllFaceMembers',
+    url: '/Device/GetAllFingerPrints',
     method: 'get',
     params: query
   })
 }
-export function GetAllLogMembers(query) {
+export function GetAllLog(query) {
   return request({
-    url: '/Device/GetAllLogMembers',
+    url: '/Device/GetAllLog',
     method: 'get',
     params: query
   })

@@ -40,14 +40,8 @@
               >Black List</el-button
             >
           </el-col>
-          <el-col
-            :span="24"
-            v-if="checkPermission(['Admin']) && Member.Status == -2"
-          >
-            <el-button
-              @click="dialogOprationVisible2 = true"
-              type="success"
-              plain
+          <el-col :span="24" v-if="checkPermission(['Admin']) && Member.Status == -2">
+            <el-button @click="dialogOprationVisible2 = true" type="success" plain
               >الغاء Black List</el-button
             >
           </el-col>
@@ -96,7 +90,7 @@
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
-            <last-log-member :MemberId="Member.Id" />
+            <last-log :UserId="Member.Id" TableName="Member" />
           </el-col>
           <el-col :span="4">
             <span>رقم الهاتف</span>
@@ -200,14 +194,11 @@
             {
               required: true,
               message: 'لايمكن ترك السبب فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -236,20 +227,15 @@
             {
               required: true,
               message: 'لايمكن ترك السبب فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="success" @click="RemoveBlackList()"
-          >فك الرفض</el-button
-        >
+        <el-button type="success" @click="RemoveBlackList()">فك الرفض</el-button>
         <Dialog-Action-Log TableName="Member" :ObjId="Member.Id" />
       </div>
     </el-dialog>
@@ -263,7 +249,7 @@ import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
 
-import LastLogMember from "@/components/Gym/LastLogMember";
+import LastLog from "@/components/Gym/LastLog";
 
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -271,20 +257,20 @@ import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
   components: {
-    LastLogMember,
+    LastLog,
     PanThumb,
     WebCam,
     StatusTag,
     ImageCropper,
-    DialogActionLog
+    DialogActionLog,
   },
   props: {
     Member: {
       type: Object,
       default: () => {
         return undefined;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -295,30 +281,30 @@ export default {
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: ""
-      }
+        Description: "",
+      },
     };
   },
   methods: {
     checkPermission,
     RemoveBlackList() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({
             ObjId: this.Member.Id,
             TableName: "Member",
             Status: -1,
-            Description: this.tempOpration.Description
-          }).then(response => {
+            Description: this.tempOpration.Description,
+          }).then((response) => {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
             this.$nextTick(() => {
               this.$router.replace({
-                path: "/redirect" + this.$route.fullPath
+                path: "/redirect" + this.$route.fullPath,
               });
             });
           });
@@ -326,23 +312,23 @@ export default {
       });
     },
     BlackList() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({
             ObjId: this.Member.Id,
             TableName: "Member",
             Status: -2,
-            Description: this.tempOpration.Description
-          }).then(response => {
+            Description: this.tempOpration.Description,
+          }).then((response) => {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
             this.$nextTick(() => {
               this.$router.replace({
-                path: "/redirect" + this.$route.fullPath
+                path: "/redirect" + this.$route.fullPath,
               });
             });
           });
@@ -355,7 +341,7 @@ export default {
     },
     close() {
       this.imagecropperShow = false;
-    }
-  }
+    },
+  },
 };
 </script>

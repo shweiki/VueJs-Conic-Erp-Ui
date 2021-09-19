@@ -11098,6 +11098,11 @@ sax@^1.1.4, sax@^1.2.4, sax@~1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
+scanner-js@^2.10.3:
+  version "2.10.3"
+  resolved "https://registry.yarnpkg.com/scanner-js/-/scanner-js-2.10.3.tgz#bd259033363776f201e49a335e31f44d1e58aba5"
+  integrity sha1-vSWQMzY3dvIB5JozXjH0TR5Yq6U=
+
 schema-utils@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-1.0.0.tgz#0b79a93204d7b600d4b2850d1f66c2a34951c770"

@@ -1,16 +1,16 @@
 import request from '@/utils/RequestApi'
 import qs from 'qs';
-export function GetMemberLog(query) {
+export function GetDeviceLog(query) {
   return request({
-    url: '/MemberLog/GetMemberLog',
+    url: '/DeviceLog/GetDeviceLog',
     method: 'get',
     params: query
   })
 }
 
-export function GetMemberLogByStatus(query) {
+export function GetByStatus(query) {
   return request({
-    url: '/MemberLog/GetMemberLogByStatus',
+    url: '/DeviceLog/GetByStatus',
     method: 'get',
     params:  query 
     
@@ -18,33 +18,33 @@ export function GetMemberLogByStatus(query) {
 }
 export function RemoveDuplicate(query) {
   return request({
-    url: '/MemberLog/RemoveDuplicate',
+    url: '/DeviceLog/RemoveDuplicate',
     method: 'get',
     params:  query 
     
   })
 }
 
-export function GetlastLogByMemberId(query) {
+export function GetlastLogByUserId(query) {
   return request({
-    url: '/MemberLog/GetlastLogByMemberId',
+    url: '/DeviceLog/GetlastLogByUserId',
     method: 'get',
     params:  query 
     
   })
 }
-export function CheckMemberLog(query) {
+export function CheckDeviceLog(query) {
   return request({
-    url: '/MemberLog/CheckMemberLog',
+    url: '/DeviceLog/CheckDeviceLog',
     method: 'get',
     params:  query 
     
   })
 }
 
-export function GetMemberLogById(query) {
+export function GetDeviceLogById(query) {
   return request({
-    url: '/MemberLog/GetMemberLogById',
+    url: '/DeviceLog/GetDeviceLogById',
     method: 'get',
     params:  query 
     
@@ -53,7 +53,7 @@ export function GetMemberLogById(query) {
 
 export function Create(data) {
   return request({
-    url: '/MemberLog/Create',
+    url: '/DeviceLog/Create',
     method: 'post',
     data: qs.stringify(data)
   })

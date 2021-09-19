@@ -42,7 +42,7 @@
           width="220"
           align="center"
         ></el-table-column>
-        <el-table-column label="Edit" width="220" align="center">
+        <el-table-column label="Edit" align="center">
           <template slot-scope="scope">
             <edit-device :DeviceId="scope.row.Id" />
           </template>
@@ -50,36 +50,56 @@
         <el-table-column prop="Name" align="center">
           <template slot-scope="scope">
             <el-button
-              @click="ClearAdministrators(scope.row.Id)"
-              :size="$store.getters.size"
-              type="success"
-              >Clear Administrators</el-button
-            >
-            <el-button
-              @click="GetAllFaceMember(scope.row.Id)"
+              @click="GetAllFingerPrints(scope.row.Id, 'Member')"
               :size="$store.getters.size"
               type="info"
               >سحب جميع بصمات الوجه المشتركين</el-button
             >
             <el-button
-              @click="GetAllLogMember(scope.row.Id)"
+              @click="GetAllFingerPrints(scope.row.Id, 'Employee')"
+              :size="$store.getters.size"
+              type="info"
+              >سحب جميع بصمات الوجه الموظفين</el-button
+            >
+            <el-button
+              @click="GetAllLog(scope.row.Id, 'Member')"
               :size="$store.getters.size"
               type="primary"
             >
-              سحب جميع سجلات المشتركين</el-button
-            >
+              سحب جميع سجلات المشتركين
+            </el-button>
             <el-button
-              @click="SetAllMember(scope.row.Id)"
+              @click="GetAllLog(scope.row.Id, 'Employee')"
+              :size="$store.getters.size"
+              type="primary"
+            >
+              سحب جميع سجلات الموظفين
+            </el-button>
+            <el-button
+              @click="SetAll(scope.row.Id, 'Member')"
               :size="$store.getters.size"
               type="warning"
             >
               ارسال جميع معلومات المشتركين</el-button
             >
             <el-button
+              @click="SetAll(scope.row.Id, 'Employee')"
+              :size="$store.getters.size"
+              type="warning"
+            >
+              ارسال جميع معلومات الموظفين</el-button
+            >
+            <el-button
               @click="ClearUserLog(scope.row.Id)"
               :size="$store.getters.size"
               type="danger"
               >مسح سجلات المشتركين</el-button
+            >
+            <el-button
+              @click="ClearAdministrators(scope.row.Id)"
+              :size="$store.getters.size"
+              type="success"
+              >Clear Administrators</el-button
             >
             <el-button
               @click="TurnOff(scope.row.Id)"
@@ -103,9 +123,9 @@
 <script>
 import {
   GetDevice,
-  GetAllFaceMembers,
-  GetAllLogMembers,
-  SetAllMembers,
+  GetAllFingerPrints,
+  GetAllLog,
+  SetAll,
   ClearUserLog,
   ClearAdministrators,
   RestartDevice,
@@ -144,8 +164,8 @@ export default {
           console.log(error);
         });
     },
-    SetAllMember(id) {
-      SetAllMembers({ DeviceId: id })
+    SetAll(id, TableName) {
+      SetAll({ DeviceId: id, TableName: TableName })
         .then((response) => {
           // handle success
           this.response = response;
@@ -159,8 +179,8 @@ export default {
           console.log(error);
         });
     },
-    ClearAdministrators(id) {
-      ClearAdministrators({ DeviceId: id })
+    GetAllFingerPrints(id, TableName) {
+      GetAllFingerPrints({ DeviceId: id, TableName: TableName })
         .then((response) => {
           // handle success
           this.response = response;
@@ -174,23 +194,8 @@ export default {
           console.log(error);
         });
     },
-    GetAllFaceMember(id) {
-      GetAllFaceMembers({ DeviceId: id })
-        .then((response) => {
-          // handle success
-          this.response = response;
-
-          console.log(response);
-        })
-        .catch((error) => {
-          // handle error
-          this.response = error;
-
-          console.log(error);
-        });
-    },
-    GetAllLogMember(id) {
-      GetAllLogMembers({ DeviceId: id })
+    GetAllLog(id, TableName) {
+      GetAllLog({ DeviceId: id, TableName: TableName })
         .then((response) => {
           // handle success
           this.response = response;
@@ -206,6 +211,21 @@ export default {
     },
     ClearUserLog(id) {
       ClearUserLog({ DeviceId: id })
+        .then((response) => {
+          // handle success
+          this.response = response;
+
+          console.log(response);
+        })
+        .catch((error) => {
+          // handle error
+          this.response = error;
+
+          console.log(error);
+        });
+    },
+    ClearAdministrators(id) {
+      ClearAdministrators({ DeviceId: id })
         .then((response) => {
           // handle success
           this.response = response;
