@@ -75,6 +75,7 @@
           <VuePhoneNumberInput
             default-country-code="JO"
             v-model="Member.PhoneNumber1"
+            :ignored-countries="['LI']"
           />
         </el-form-item>
       </el-col>
@@ -83,6 +84,7 @@
           <VuePhoneNumberInput
             default-country-code="JO"
             v-model="Member.PhoneNumber2"
+            :ignored-countries="['LI']"
           />
         </el-form-item>
       </el-col>

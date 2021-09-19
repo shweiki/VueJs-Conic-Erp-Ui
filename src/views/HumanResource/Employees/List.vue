@@ -92,7 +92,7 @@
         </el-col> -->
         <el-col v-permission="['Admin']" :span="18">
           <el-divider direction="vertical"></el-divider>
-          <span>عدد المشتركين</span>
+          <span>عدد الموظفين</span>
           <el-divider direction="vertical"></el-divider>
           <span>{{ Totals.Rows }}</span>
           <el-divider direction="vertical"></el-divider>

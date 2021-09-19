@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button
-      type="success"
+      type="warning "
       icon="el-icon-circle-plus"
       @click="dialogFormVisible = true"
        round

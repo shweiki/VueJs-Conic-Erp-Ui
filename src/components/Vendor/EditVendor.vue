@@ -111,6 +111,7 @@
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber1"
+                :ignored-countries="['LI']"
               /> -->
             </el-form-item></el-col
           >
@@ -129,6 +130,7 @@
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber2"
+                :ignored-countries="['LI']"
               /> --></el-form-item
             ></el-col
           >

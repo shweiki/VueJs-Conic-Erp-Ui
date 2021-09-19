@@ -2,7 +2,7 @@
   <div>
     <el-button
       v-permission="['Admin']"
-      type="danger"
+      type="primary"
       icon="el-icon-top"
       @click="Visibles = true"
     >

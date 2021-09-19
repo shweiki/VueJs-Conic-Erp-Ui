@@ -9,7 +9,7 @@
   <component :is="Type" 
   @Set="
           (v) => {
-           linkProps(v.Id)
+           linkProps(v)
           }
         ">
     <slot />
@@ -27,9 +27,7 @@ export default {
   data() {
     return {
      Emp:"/HumanResource/Edit",
-     Vendor: "",
      Member: "/Gym/Edit",
-     Account: "",
      Path:"",
     };
     },
@@ -38,27 +36,31 @@ export default {
     Type: {
       type: String,
       required: true
-    }
+    },
+    AccountId: {
+      Type: Number,
+    },
+
   },
 
 
    methods: {
-    linkProps(Id) {
+    linkProps(val) {
        if (this.Type == "EmployeeSearchAny"){
-       this.$router.push({ path: `${this.Emp}/${Id}` });
-       };
-
-        if (this.Type == "VendorSearchAny"){
-       this.$router.push({ path: `${this.Emp}/${Id}` });
+       this.$router.push({ path: `${this.Emp}/${val.Id}` });
        };
 
         if (this.Type == "MemberSearchAny"){
-       this.$router.push({ path: `${this.Emp}/${Id}` });
+       this.$router.push({ path: `${this.Emp}/${val.Id}` });
        };
 
         if (this.Type == "AccountSearchAny"){
-       this.$router.push({ path: `${this.Emp}/${Id}` });
-       }
+       this.$emit("Set", val);
+       };
+
+       if (this.Type == "VendorSearchAny"){
+       this.$emit("Set", val);
+       };
  
     }
   }

@@ -64,7 +64,7 @@
 
              <el-tab-pane label="رواتب" name="salary">
               <span slot="label"><i class="el-icon-refresh"></i> رواتب</span>
-              <Salary :SalaryPayment="SalaryPayment" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name"/>
+              <Salary :LastSalary="LastSalary" :SalaryPaymentId="SalaryPaymentId" :SalaryPayment="SalaryPayment" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name"/>
             </el-tab-pane>
 
             <el-tab-pane label="التسويات" name="Adjustment">
@@ -99,7 +99,7 @@ import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetFileByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
-import { GetSalaryById, GetSalaryId } from "@/api/Salary";
+import { GetSalaryById, GetSalaryId, GetLastSalaryById } from "@/api/Salary";
 import { GetWorkingAdjustmentBySalaryId } from "@/api/WorkingAdjustment";
 import checkPermission from "@/utils/permission";
 import { GetEmployeeLogById, GetWorkingHourId } from "@/api/WorkingHoursLog";
@@ -135,6 +135,7 @@ export default {
       SalaryPayment:[],
       WorkingAdjustment: [],
       log: [],
+      LastSalary:{},
       SalaryPaymentId:undefined,
       WorkingHourId: undefined,
     };
@@ -153,7 +154,6 @@ export default {
           this.tempForm = response;
           this.GetImageMember(this.tempForm.Id);
           this.getAge();
-          this.loading = false;
           //this.GetMemberLogFromDevices(val);
           this.setTagsViewTitle();
           // set page title
@@ -162,15 +162,17 @@ export default {
           EmployeeId: this.tempForm.Id,
         })
           .then((response) => {
-          this.SalaryPaymentId = response[0].Id;
+          this.SalaryPaymentId = response;
           });
             GetWorkingHourId({
           EmployeeId: this.tempForm.Id,
         })
           .then((response) => {
           this.WorkingHourId = response;
-          console.log("whkhlklk", this.WorkingHourId);
           });
+          GetLastSalaryById({EmployeeId: this.tempForm.Id})
+          .then (res => this.LastSalary = res[0])
+          this.loading = false;
         })
         .catch((err) => {
           console.log(err);

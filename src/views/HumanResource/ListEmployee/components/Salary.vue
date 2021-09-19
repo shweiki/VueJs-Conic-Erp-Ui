@@ -1,9 +1,15 @@
 <template>
   <div class="app-container" style="direction: rtl">
     <el-row :gutter="20">
-      <el-col :span="12">
-    <add-salary :SalaryPayment="SalaryPayment" :EmployeeId="EmployeeId" :EmployeeName="EmployeeName" />
+      <el-col :span="10">
+    <add-salary :LastSalary="LastSalary" :SalaryPayment="SalaryPayment" :EmployeeId="EmployeeId" :EmployeeName="EmployeeName" />
       </el-col>
+      <el-col :span="12">
+        <!-- <SalaryCalculation :SalaryPaymentId="SalaryPaymentId" :SalaryPayment="SalaryPayment" :EmployeeId="EmployeeId" :EmployeeName="EmployeeName"/> -->
+        <el-button @click="cal()">
+          press
+        </el-button>
+         </el-col>
     </el-row>
     <el-table
       @row-dblclick="
@@ -57,14 +63,17 @@
 
 <script>
 import AddSalary from "../../Salary/Components/AddSalary";
+import SalaryCal from "../../Salary/Components/SalaryCal";
 export default {
-  components: {AddSalary},
+  components: {AddSalary, SalaryCal},
   props: {
       SalaryPayment: {
       type: Array,
       default: () => {
-        return null;
-      }
+        return null;}
+      },
+      LastSalary: {
+      type: Object
     },
     EmployeeId:{
       type: Number,
@@ -73,6 +82,19 @@ export default {
      EmployeeName:{
       type: String,
     },
+    SalaryPaymentId:{
+      type: Number
+    },
+  },
+  methods:{
+    cal(){
+       
+        let r = this.$router.resolve({
+          path: '/HumanResource/SalaryCal/' + 3,
+        });
+        window.open(r.href, r.route.name, this.$store.getters.settings.windowStyle);
+        
+    }
   },
  
 };

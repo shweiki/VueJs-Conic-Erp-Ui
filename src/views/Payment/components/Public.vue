@@ -61,7 +61,8 @@
                 },
               ]"
             >
-              <Vendor-Search-Any
+              <Search-By
+                Type = "VendorSearchAny"
                 :VendorId="tempForm.VendorId"
                 @Set="
                   (v) => {
@@ -155,19 +156,19 @@
 import { Create, Edit, GetById } from "@/api/Payment";
 import FakeDate from "@/components/Date/FakeDate";
 import { CreateEntry, EditEntryByFktable } from "@/api/EntryAccounting";
-import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
 import EditorsUser from "@/components/Gym/EditorsUser";
+import SearchBy from "@/components/DynamicComponents/SearchBy";
 
 export default {
   name: "NewPayment",
   components: {
     FakeDate,
-    VendorSearchAny,
     SelectCashAccounts,
     RadioPaymentMethod,
     EditorsUser,
+    SearchBy
   },
   props: {
     isEdit: {

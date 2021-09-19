@@ -19,7 +19,6 @@
     </el-col>
     <el-col :span="14">
        <Search-By Type="MemberSearchAny"  />
-    
     </el-col>
   </el-row>
 </template>

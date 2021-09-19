@@ -53,8 +53,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <Account-Search-Any
-        v-if="Type=='Account'"
+        <Search-By
+        Type = "AccountSearchAny"
           @Set="
             (v) => {
               AddEntryMovements(v);
@@ -197,10 +197,10 @@ import { CreateEntry, GetEntryById, Edit } from "@/api/EntryAccounting";
 import FakeDate from "@/components/Date/FakeDate";
 import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
 import EditAccount from "@/views/Accounting/TreeAccount/EditAccount.vue";
-
+import SearchBy from "@/components/DynamicComponents/SearchBy";
 export default {
   name: "NewAccountingEntry",
-  components: { FakeDate, AccountSearchAny, EditAccount },
+  components: { FakeDate, AccountSearchAny, SearchBy, EditAccount },
   props: {
     isEdit: {
       type: Boolean,

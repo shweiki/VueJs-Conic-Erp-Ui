@@ -3,8 +3,10 @@
     <el-card class="box-card">
       <div class="filter-container">
         <el-row type="flex"
-          ><el-col :span="18">
-            <Account-Search-Any
+          >
+          <el-col :span="18">
+            <Search-By
+              Type = "AccountSearchAny"
               :AccountId="listQuery.AccountId"
               @Set="
                 (v) => {
@@ -15,7 +17,8 @@
           /></el-col>
           <el-col :span="2">
             <el-popover placement="right" width="400" trigger="click">
-              <Account-Search-Any
+              <Search-By
+               Type = "AccountSearchAny"
                 :AccountId="listQuery.MergeAccountId"
                 @Set="
                   (v) => {
@@ -223,6 +226,7 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import permission from "@/directive/permission/index.js";
 import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
 import waves from "@/directive/waves"; // waves directive
+import SearchBy from "@/components/DynamicComponents/SearchBy";
 import { parseTime } from "@/utils";
 
 export default {
@@ -232,6 +236,7 @@ export default {
     SearchByDate,
     DrawerPrint,
     AccountSearchAny,
+    SearchBy,
   },
   directives: { waves, permission },
   data() {

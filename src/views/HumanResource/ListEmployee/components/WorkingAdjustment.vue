@@ -28,7 +28,7 @@
         <el-table-column
         label="AdjustmentName"
         prop="Name"
-        width="100"
+        width="200"
         align="center"
       >
         <template slot-scope="scope">{{
@@ -57,7 +57,7 @@
         <el-table-column
         label="Description"
         prop="Description"
-        width="100"
+        width="200"
         align="center"
       >
         <template slot-scope="scope">{{
@@ -66,11 +66,20 @@
       </el-table-column>
            <el-table-column label="التاريخ" align="center" width="140">
         <template slot-scope="scope">
+          <div v-if="scope.row.StartDate">
           <el-date-picker
             format="dd/MM/yyyy"
             disabled
-            v-model="scope.row.Date"
+            v-model="scope.row.StartDate"
           ></el-date-picker>
+          </div>
+          <div v-else>
+          <el-date-picker
+            format="dd/MM/yyyy"
+            disabled
+            v-model="scope.row.EndDate"
+          ></el-date-picker>
+          </div>
         </template>
       </el-table-column> 
     </el-table>
@@ -101,7 +110,6 @@ export default {
     }
 
   }
-    // ["SalaryPayment", "EmployeeId", "EmployeeName", "SalaryPaymentId"],
   
 };
 </script>

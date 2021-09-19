@@ -1,50 +1,9 @@
 import request from '@/utils/RequestApi'
 import qs from 'qs';
-export function GetMemberLog(query) {
-  return request({
-    url: '/MemberLog/GetMemberLog',
-    method: 'get',
-    params: query
-  })
-}
-
-export function GetMemberLogByStatus(query) {
-  return request({
-    url: '/MemberLog/GetMemberLogByStatus',
-    method: 'get',
-    params:  query 
-    
-  })
-}
-export function RemoveDuplicate(query) {
-  return request({
-    url: '/MemberLog/RemoveDuplicate',
-    method: 'get',
-    params:  query 
-    
-  })
-}
-
-export function GetlastLogByMemberId(query) {
-  return request({
-    url: '/MemberLog/GetlastLogByMemberId',
-    method: 'get',
-    params:  query 
-    
-  })
-}
-export function CheckMemberLog(query) {
-  return request({
-    url: '/MemberLog/CheckMemberLog',
-    method: 'get',
-    params:  query 
-    
-  })
-}
 
 export function GetEmployeeLogById(query) {
   return request({
-    url: '/EmployeeLog/GetEmployeeLogById',
+    url: '/WorkingHourLog/GetEmployeeLogById',
     method: 'get',
     params:  query 
     
@@ -59,10 +18,17 @@ export function GetWorkingHourId(query) {
     
   })
 }
-
+export function GetEmployeeMounthLog(query) {
+  return request({
+    url: '/WorkingHourLog/GetEmployeeMounthLog',
+    method: 'get',
+    params:  query 
+    
+  })
+}
 export function Create(data) {
   return request({
-    url: '/EmployeeLog/Create',
+    url: '/WorkingHourLog/Create',
     method: 'post',
     data: qs.stringify(data)
   })
@@ -70,7 +36,7 @@ export function Create(data) {
 
 export function Logout(data) {
   return request({
-    url: '/EmployeeLog/Logout',
+    url: '/WorkingHourLog/Logout',
     method: 'post',
     data: qs.stringify(data)
   })

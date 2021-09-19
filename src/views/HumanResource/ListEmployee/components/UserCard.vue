@@ -75,6 +75,7 @@
           <VuePhoneNumberInput
             default-country-code="JO"
             v-model="Employee.PhoneNumber1"
+            :ignored-countries="['LI']"
           />
         </el-form-item>
       </el-col>
@@ -83,6 +84,7 @@
           <VuePhoneNumberInput
             default-country-code="JO"
             v-model="Employee.PhoneNumber2"
+            :ignored-countries="['LI']"
           />
         </el-form-item>
       </el-col>
@@ -105,6 +107,19 @@
           ></el-input>
         </el-form-item>
       </el-col>
+
+       <el-col :span="8">
+        <el-form-item label="المسمى الوظيفي" prop="JobTitle">
+          <el-input
+            type="textarea"
+            v-model="Employee.JobTitle"
+            placeholder="المسمى الوظيفي"
+          ></el-input>
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row type="flex">
+      <el-col>
       <el-col :span="3">
         <el-button
           type="primary"
@@ -120,6 +135,7 @@
           icon="el-icon-printer"
         ></el-button
       ></el-col>
+      </el-col>
     </el-row>
   </el-form>
 </template>

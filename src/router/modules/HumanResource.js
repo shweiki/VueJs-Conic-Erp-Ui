@@ -42,7 +42,15 @@ const HumanResource = {
         title: 'Adjustment', icon: 'cost'
       },
     },
-  
+    {
+      path: 'SalaryCal/:id(\\d+)',
+      component: () => import('@/views/HumanResource/Salary/Components/SalaryCal'),
+      name: 'SalaryCal',
+      meta: {
+        title: 'SalaryCal', noCache: true, activeMenu: '/HumanResource/ListEmployee/index'
+      },
+      hidden: true,
+    },
    
    
 
