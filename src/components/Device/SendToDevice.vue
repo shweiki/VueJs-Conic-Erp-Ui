@@ -4,10 +4,11 @@
       <el-button
         :loading="loading"
         @click="SetOnDevice(item.Id, item.Name)"
-        type="primary"
+        type="info"
         icon="el-icon-arrow-left"
         >تحديث البيانات الى{{ item.Name }}</el-button
       >
+      <br />
       <el-button
         :loading="loading"
         @click="StartEnrollUserOnDevice(item.Id, item.Name)"
@@ -24,7 +25,7 @@
 import { GetDevice, SetUser, StartEnrollUser } from "@/api/Device";
 
 export default {
-  props: ["ObjectId"],
+  props: ["ObjectId", "TableName", "Name"],
   data() {
     return {
       loading: false,
@@ -42,6 +43,8 @@ export default {
       SetUser({
         DeviceId: DeviceId,
         UserId: this.ObjectId,
+        Name: this.Name,
+        TableName: this.TableName,
       }).then((response) => {
         if (response) {
           this.$notify({

@@ -27,20 +27,14 @@
             @close="close"
             @crop-upload-success="cropSuccess"
           />
-         
+
           <el-col :span="24" v-if="Employee.Status != -2">
             <el-button @click="dialogOprationVisible = true" type="danger" plain
               >Black List</el-button
             >
           </el-col>
-          <el-col
-            :span="24"
-            v-if="checkPermission(['Admin']) && Employee.Status == -2"
-          >
-            <el-button
-              @click="dialogOprationVisible2 = true"
-              type="success"
-              plain
+          <el-col :span="24" v-if="checkPermission(['Admin']) && Employee.Status == -2">
+            <el-button @click="dialogOprationVisible2 = true" type="success" plain
               >الغاء Black List</el-button
             >
           </el-col>
@@ -85,7 +79,6 @@
           </el-col>
         </el-row>
         <el-row type="flex">
-          
           <el-col :span="4">
             <span>رقم الهاتف</span>
           </el-col>
@@ -134,14 +127,11 @@
             {
               required: true,
               message: 'لايمكن ترك السبب فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -170,20 +160,15 @@
             {
               required: true,
               message: 'لايمكن ترك السبب فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
-          <el-input
-            type="textarea"
-            v-model="tempOpration.Description"
-          ></el-input>
+          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="success" @click="RemoveBlackList()"
-          >فك الرفض</el-button
-        >
+        <el-button type="success" @click="RemoveBlackList()">فك الرفض</el-button>
         <Dialog-Action-Log TableName="Employee" :ObjId="Employee.Id" />
       </div>
     </el-dialog>
@@ -202,20 +187,19 @@ import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 export default {
   components: {
-    
     PanThumb,
     WebCam,
     StatusTag,
     ImageCropper,
-    DialogActionLog
+    DialogActionLog,
   },
   props: {
     Employee: {
       type: Object,
       default: () => {
         return undefined;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -226,30 +210,30 @@ export default {
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: ""
-      }
+        Description: "",
+      },
     };
   },
   methods: {
     checkPermission,
     RemoveBlackList() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({
             ObjId: this.Employee.Id,
             TableName: "Employee",
             Status: -1,
-            Description: this.tempOpration.Description
-          }).then(response => {
+            Description: this.tempOpration.Description,
+          }).then((response) => {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
             this.$nextTick(() => {
               this.$router.replace({
-                path: "/redirect" + this.$route.fullPath
+                path: "/redirect" + this.$route.fullPath,
               });
             });
           });
@@ -257,23 +241,23 @@ export default {
       });
     },
     BlackList() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({
             ObjId: this.Employee.Id,
             TableName: "Employee",
             Status: -2,
-            Description: this.tempOpration.Description
-          }).then(response => {
+            Description: this.tempOpration.Description,
+          }).then((response) => {
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
             this.$nextTick(() => {
               this.$router.replace({
-                path: "/redirect" + this.$route.fullPath
+                path: "/redirect" + this.$route.fullPath,
               });
             });
           });
@@ -286,7 +270,7 @@ export default {
     },
     close() {
       this.imagecropperShow = false;
-    }
-  }
+    },
+  },
 };
 </script>

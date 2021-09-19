@@ -6,7 +6,7 @@
     filterable
     default-first-option
     remote
-    v-bind:placeholder="$t('Vendors.Search') + '/ هاتف / الرقم الوطني /  رقم العضوية'"
+    v-bind:placeholder="$t('Vendors.Search') + '/ هاتف / الرقم الوطني /  رقم الوظيفي'"
     @change="change"
   >
     <el-option v-for="item in options" :key="item.Id" :value="item" :label="item.Name">

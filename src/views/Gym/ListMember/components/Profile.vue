@@ -85,7 +85,11 @@
 
               <el-row v-if="tempForm.MembershipsCount > 0 || checkPermission(['Admin'])">
                 <el-col :span="24">
-                  <Send-To-Device :ObjectId="tempForm.Id" />
+                  <send-to-device
+                    :ObjectId="tempForm.Id"
+                    :Name="tempForm.Name"
+                    TableName="Member"
+                  />
                 </el-col>
               </el-row>
             </el-col>

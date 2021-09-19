@@ -5,13 +5,26 @@
       icon="el-icon-circle-plus"
       @click="Visible = true"
     ></el-button>
- <el-dialog
+    <el-dialog
       style="margin-top: -13vh"
-      title="موظف جديد"
       :visible.sync="Visible"
       @opened="$refs['EmployeeName'].focus()"
     >
-   <el-form
+      <div slot="title" class="dialog-footer">
+        <el-col :span="4">
+          <el-button
+            icon="fa fa-save"
+            style="float: left"
+            :loading="createLoading"
+            type="primary"
+            @click="createData()"
+          />
+        </el-col>
+        <el-col :span="20">
+          <el-divider>موظف جديد</el-divider>
+        </el-col>
+      </div>
+      <el-form
         :model="tempForm"
         :rules="rulesForm"
         ref="dataForm"
@@ -142,12 +155,6 @@
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button :loading="createLoading" type="primary" @click="createData()">{{
-          $t("AddVendors.Save")
-        }}</el-button>
-      </div>
     </el-dialog>
   </div>
 </template>
@@ -180,7 +187,7 @@ export default {
         Type: "New",
         Tag: null,
         Status: -1,
-        EmployeeUserId:""
+        EmployeeUserId: "",
       },
       rulesForm: {
         Name: [
