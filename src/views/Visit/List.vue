@@ -218,7 +218,7 @@ export default {
   data() {
     return {
       list: [],
-      Totals: { Rows: 0, Totals: 0, Cash: 0, Visa: 0 },
+      Totals: { Rows: 0, Totals: 0, Cash: 0, Visa: 0, Coupon: 0 },
       listLoading: false,
       listQuery: {
         Page: 1,

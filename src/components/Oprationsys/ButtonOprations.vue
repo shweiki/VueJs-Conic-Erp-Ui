@@ -52,7 +52,6 @@ export default {
   data() {
     return {
       Oprations: [],
-      Status: null,
       dialogOprationVisible: false,
       textOpration: {
         OprationDescription: "",

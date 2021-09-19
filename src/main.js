@@ -25,7 +25,13 @@ const pluginOptions = {
   /* see config reference */
   globalOptions: { currency: 'JOD' },
 }
-
+Vue.directive('focus', {
+  inserted: function (el, binding, vnode) {
+    Vue.nextTick(function() {
+      el.focus()
+    })
+  }
+})
 Vue.use(VueCurrencyInput, pluginOptions)
 Vue.use(Element, {
   size:  'mini', // ||Cookies.get('size') || // store.getters.settings.size, // set element-ui default size

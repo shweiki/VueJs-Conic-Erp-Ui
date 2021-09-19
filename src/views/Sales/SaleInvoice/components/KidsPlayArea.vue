@@ -203,7 +203,6 @@
                           <el-col :span="24">
                             <el-form-item prop="Description">
                               <el-input
-                                ref="InvoiceDescription"
                                 v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
                                 v-model="tempForm.Description"
                               ></el-input>
@@ -364,10 +363,10 @@
           <template slot="paneR">
             <split-pane split="horizontal" :min-percent="50" :default-percent="55">
               <template slot="paneR">
-                <VisitIn />
+                <VisitIn @Done="focusBarcode()" />
               </template>
               <template slot="paneL" class="card">
-                <VisitCreate :is-edit="false" />
+                <VisitCreate @Done="focusBarcode()" :is-edit="false" />
               </template>
             </split-pane>
           </template>
@@ -383,8 +382,6 @@ import permission from "@/directive/permission/index.js";
 
 // components
 import ItemsSearch from "@/components/Item/ItemsSearch";
-import ItemsCategory from "@/components/Item/ItemsCategory";
-import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill.vue";
 import RightMenu from "@/components/RightMenu";
 
@@ -421,8 +418,6 @@ export default {
     Screenfull,
     SizeSelect,
     ItemsSearch,
-    ItemsCategory,
-    EditItem,
     DrawerPrint,
     RestOfBill,
     RightMenu,
@@ -439,6 +434,7 @@ export default {
       default: false,
     },
   },
+
   data() {
     return {
       OldInvoice: null,
@@ -485,6 +481,7 @@ export default {
       ],
     };
   },
+
   created() {
     if (this.isEdit) {
       this.getdata(this.$route.params && this.$route.params.id);
@@ -497,6 +494,7 @@ export default {
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0, 0.7)",
     });
+
     loading.close();
   },
   methods: {
@@ -540,7 +538,7 @@ export default {
       this.tempForm.InventoryMovements.splice(index, 1);
     },
     focusBarcode() {
-      document.getElementById("barcode").focus();
+      //  this.$refs["barcode"].focus();
     },
     OpenCashDrawer() {
       OpenCashDrawer({ Com: this.$store.state.settings.CashDrawerCOM.COM })

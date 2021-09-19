@@ -20,10 +20,11 @@
       </el-col>
       <el-col v-if="WithBarCode" :span="8">
         <el-input
+          v-focus
           data-barcode
-          ref="Barcode"
           v-model="Barcode"
           id="barcode"
+          ref="barcode"
           placeholder="باركود صنف"
           @focus="
             () => {
@@ -87,8 +88,8 @@ export default {
       fuse: undefined,
     };
   },
-  created() {
-    // Add barcode scan listener and pass the callback function
+  mounted() {
+    this.$refs["barcode"].focus();
     this.$barcodeScanner.init(this.onBarcodeScanned);
   },
 

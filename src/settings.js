@@ -56,6 +56,8 @@ module.exports = {
             Suppliers: true,
             Purchases: true,
             Sales: true,
+            Visits: true,
+
         }
     },
     PointOfSale: {

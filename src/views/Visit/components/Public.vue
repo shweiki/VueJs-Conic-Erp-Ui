@@ -28,7 +28,7 @@
             style="float: left"
             type="success"
             icon="fa fa-save"
-            @click="isEdit != true ? createData() : updateData()"
+            @click="confirmData()"
             >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
           >
         </el-col>
@@ -286,104 +286,83 @@ export default {
         Description: "",
       };
     },
-    updateData() {
-      this.$refs["tempForm"].validate((valid) => {
-        if (valid) {
-          if (this.tempForm.PaymentMethod == "Coupon") {
-            this.tempForm.PersonCount = 1;
-            this.tempForm.HourCount = 0.5;
-            this.tempForm.HourPrice = 0;
-            this.tempForm.Description =
-              "كوبون رقم " +
-              this.tempForm.CouponId +
-              " من دفتر رقم " +
-              this.tempForm.CouponNoteId +
-              " ";
-          }
-          this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          let Total = (
-            this.tempForm.PersonCount *
-              (this.tempForm.HourCount * 2) *
-              this.tempForm.HourPrice -
-            this.tempForm.Discount
-          ).toFixed(this.$store.getters.settings.ToFixed);
-          if (Total > 0) {
-            this.DisabledSave = true;
-            Edit(this.tempForm)
-              .then((res) => {
-                if (res) this.DisabledSave = false;
-                this.$notify({
-                  title: "تم تعديل  بنجاح",
-                  message: "تم تعديل بنجاح",
-                  type: "success",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                });
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    createData() {
-      this.$refs["tempForm"].validate((valid) => {
-        if (valid) {
-          if (this.tempForm.PaymentMethod == "Coupon") {
-            this.tempForm.PersonCount = 1;
-            this.tempForm.HourCount = 0.5;
-            this.tempForm.HourPrice = 1;
-            this.tempForm.Description =
-              "كوبون رقم " +
-              this.tempForm.CouponId +
-              " من دفتر رقم " +
-              this.tempForm.CouponNoteId +
-              " ";
-          }
-          this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          let Total = (
-            this.tempForm.PersonCount *
-              (this.tempForm.HourCount * 2) *
-              this.tempForm.HourPrice -
-            this.tempForm.Discount
-          ).toFixed(this.$store.getters.settings.ToFixed);
-          if (Total > 0) {
-            this.DisabledSave = true;
-            this.tempForm.FakeDate = Now();
-            this.tempForm.TimeOut = addMinutes(new Date(), this.tempForm.HourCount);
 
-            Create(this.tempForm)
+    confirmData() {
+      this.$refs["tempForm"].validate(async (valid) => {
+        if (this.tempForm.PaymentMethod == "Coupon") {
+          this.tempForm.PersonCount = 1;
+          this.tempForm.HourCount = 0.5;
+          this.tempForm.HourPrice = 1;
+          this.tempForm.Description =
+            "كوبون رقم " +
+            this.tempForm.CouponId +
+            " من دفتر رقم " +
+            this.tempForm.CouponNoteId +
+            " ";
+        }
+        this.tempForm.Total = (
+          this.tempForm.PersonCount *
+            (this.tempForm.HourCount * 2) *
+            this.tempForm.HourPrice -
+          this.tempForm.Discount
+        ).toFixed(this.$store.getters.settings.ToFixed);
+        if (valid && this.tempForm.Total > 0) {
+          this.tempForm.Tax = parseInt(this.tempForm.Tax);
+          this.DisabledSave = true;
+          this.tempForm.FakeDate = Now();
+          this.tempForm.TimeOut = addMinutes(new Date(), this.tempForm.HourCount);
+          let Done;
+          if (this.isEdit != true) {
+            Done = await Create(this.tempForm)
               .then((res) => {
                 if (res) {
-                  this.tempForm.Id = res;
-                  this.OldVisit = this.tempForm;
-                  if (this.AutoPrint == true) {
-                    PrintReport("Visit", this.OldVisit);
-                  }
-                  this.DisabledSave = false;
-                  this.restTempForm();
-                  this.$notify({
-                    title: "تم الإضافة بنجاح",
-                    message: "تم الإضافة بنجاح",
-                    type: "success",
-                    position: "top-left",
-                    duration: 1000,
-                    showClose: false,
-                  });
-                }
+                  return res;
+                } else return false;
               })
               .catch((error) => {
-                console.log(error);
-                this.DisabledSave = false;
+                return false;
               });
-          } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
+          } else {
+            Done = await Edit(this.tempForm)
+              .then((res) => {
+                if (res) return res;
+                else return false;
+              })
+              .catch((error) => {
+                return false;
+              });
+          }
+          if (Done) {
+            this.tempForm.Id = Done;
+            this.OldVisit = this.tempForm;
+            if (this.AutoPrint == true) {
+              PrintReport("Visit", this.OldVisit);
+            }
+            this.DisabledSave = false;
+            this.restTempForm();
+            this.$notify({
+              title: "تم الإضافة بنجاح",
+              message: "تم الإضافة بنجاح",
+              type: "success",
+              position: "top-left",
+              duration: 1000,
+              showClose: false,
+            });
+          } else {
+            this.$notify({
+              title: "مشكلة",
+              message: "حصلت مشكلة في عملية الحفظ",
+              type: "error",
+              position: "top-left",
+              duration: 1000,
+              showClose: false,
+            });
+          }
+          this.restTempForm();
+          this.DisabledSave = false;
         } else {
-          console.log("error submit!!");
+          this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
+          this.DisabledSave = false;
           return false;
         }
       });
