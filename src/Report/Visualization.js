@@ -1,6 +1,7 @@
 import store from "@/store";
 import { nArabicWords } from "./nArabicWords.js";
 import i18n from "@/lang";
+import QRCode from 'qrcode'
 
 let toFixed = store.getters.settings.ToFixed;
 var JsBarcode = require('jsbarcode');
@@ -23,7 +24,17 @@ export default function Visualization(Data, Html, Type) {
       displayValue: false
     });
     return '<img src="' + canvas.toDataURL() + '" />'
-
+  }
+  let QRcode = (v, w = 50, h = 50) => {
+    console.log("QRcode Data : =>", v);
+    var imgurl = '';
+    QRCode.toDataURL(
+      v
+      , (err, url) => {
+        if (err) throw err
+        imgurl = url
+      })
+    return '<img src="' + imgurl + '"  width="' + w + '" height="' + h + '" />'
   }
   Object.keys(Data).forEach(key => {
     if (typeof Data[key] == "function") { Data[key] = Data[key]() }
@@ -58,6 +69,7 @@ export default function Visualization(Data, Html, Type) {
             if (Equation != "" && Equation.search("{{") <= -1) {
               let evalV = Equation.replace("{#", "");
               evalV = evalV.replace("/}", "");
+              //   debugger;
               row = row.replace(Equation, eval(evalV));
             }
             indexOccurence = row.indexOf(searchKeyword, indexOccurence + 1);

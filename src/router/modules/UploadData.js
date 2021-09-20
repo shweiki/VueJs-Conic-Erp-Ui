@@ -12,6 +12,14 @@ const UploadData = {
   },
   children: [
     {
+      path: 'Upload/GenerateQr',
+      component: () => import('@/views/UploadData/GenerateQr'),
+      name: 'GenerateQr',
+      meta: {
+        title: 'GenerateQr', icon: 'execution'
+      },
+    },
+    {
       path: 'Upload/Item',
       component: () => import('@/views/UploadData/Item'),
       name: 'UploadItem',

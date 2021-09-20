@@ -5,6 +5,7 @@ import * as htmlToImage from "html-to-image";
 import jsPDF from "jspdf";
 import { SendEmail } from "@/api/StmpEmail";
 import JSPM from "jsprintmanager";
+import download from "downloadjs";
 
 import { ShawermaSheesh as ShawermaSheeshx } from "@/Report/ShawermaSheesh";
 import { OrderReceipt as OrderReceiptx } from "@/Report/OrderReceipt";
@@ -78,6 +79,36 @@ export function VisualizationReportHtml(Type, Data) {
     }).then((res) => {
       res.forEach((item, index) => {
         item.Html = Visualization(Data, item.Html, "Set");
+      });
+      resolve(res.map(x => x.Html))
+    }).catch(err => { reject(err) });
+  })
+}
+export function DownloadReportAsImage(Type, Data) {
+  return new Promise((resolve, reject) => {
+    GetReportByType({
+      Type: Type,
+    }).then((res) => {
+      res.forEach((item, index) => {
+        var oIframe = document.getElementById("DownloadAsImage");
+        var oDoc = oIframe.contentWindow || oIframe.contentDocument;
+        if (oDoc.document) oDoc = oDoc.document;
+        oDoc.write("<head><title>title</title>");
+        oDoc.write("</head><body >");
+        oDoc.write(Visualization(Data, item.Html, "Set") + "</body>");
+        console.log(oDoc.body);
+        htmlToImage
+          .toPng(oDoc.body)
+          .then((dataUrl) => {
+
+            download(dataUrl, Data.name+'.png');
+
+            oDoc.close();
+          })
+          .catch((error) => {
+            console.error("oops, something went wrong!", error);
+          });
+
       });
       resolve(res.map(x => x.Html))
     }).catch(err => { reject(err) });
