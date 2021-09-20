@@ -151,7 +151,7 @@ export default {
       SalaryPayment: [],
       WorkingAdjustment: [],
       log: [],
-      LastSalary: {},
+      LastSalary: undefined,
       SalaryPaymentId: undefined,
       WorkingHourId: undefined,
     };
@@ -184,8 +184,8 @@ export default {
           }).then((response) => {
             this.WorkingHourId = response;
           });
-          GetLastSalaryById({ EmployeeId: this.tempForm.Id }).then(
-            (res) => (this.LastSalary = res[0])
+          GetLastSalaryById({ Id: this.tempForm.Id }).then(
+            (res) => (this.LastSalary = res)
           );
           this.loading = false;
         })
@@ -219,7 +219,7 @@ export default {
         });
       if (tab.label == "التسويات")
         GetWorkingAdjustmentBySalaryId({
-          SalaryId: this.SalaryPaymentId,
+          SalId: this.SalaryPaymentId,
         }).then((response) => {
           this.WorkingAdjustment = response.reverse();
         });

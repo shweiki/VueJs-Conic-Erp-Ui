@@ -32,6 +32,13 @@ export function GetLastSalaryById(query) {
     params: query
   })
 }
+export function GetSalary(query) {
+  return request({
+    url: '/Salary/GetSalary',
+    method: 'get',
+    params: query
+  })
+}
 export function GetSalaryId(query) {
   return request({
     url: '/Salary/GetSalaryId',

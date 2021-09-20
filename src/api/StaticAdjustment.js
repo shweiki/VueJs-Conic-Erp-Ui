@@ -10,9 +10,9 @@ export function Create(data) {
   })
 }
 
-export function GetWorkingAdjustmentBySalaryId(query) {
+export function GetStaticAdjustmentsById(query) {
   return request({
-    url: '/StaticAdjustment/GetWorkingAdjustmentBySalaryId',
+    url: '/StaticAdjustment/GetStaticAdjustmentsById',
     method: 'get',
     params:  query 
     

@@ -90,7 +90,7 @@ export default {
     cal(){
        
         let r = this.$router.resolve({
-          path: '/HumanResource/SalaryCal/' + 3,
+          path: '/HumanResource/SalaryCal/' + this.LastSalary,
         });
         window.open(r.href, r.route.name, this.$store.getters.settings.windowStyle);
         

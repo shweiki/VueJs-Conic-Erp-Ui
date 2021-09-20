@@ -18,3 +18,11 @@ export function GetWorkingAdjustmentBySalaryId(query) {
     
   })
 }
+
+export function GetByListQ(data) {
+  return request({
+    url: '/WorkingAdjustment/GetByListQ',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}

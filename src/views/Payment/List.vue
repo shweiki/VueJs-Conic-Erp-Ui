@@ -85,7 +85,7 @@
     />
     <el-card class="box-card">
       <el-divider direction="vertical"></el-divider>
-      <span>عدد مقبوضات</span>
+      <span>عدد المقبوضات</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Rows }}</span>
       <el-divider direction="vertical"></el-divider>
