@@ -26,10 +26,18 @@ export default function Visualization(Data, Html, Type) {
     return '<img src="' + canvas.toDataURL() + '" />'
   }
   let QRcode = (v, w = 50, h = 50) => {
-    console.log("QRcode Data : =>", v);
+    var opts = {
+      errorCorrectionLevel: 'H',
+      type: 'image/png',
+      quality: 1,
+      margin: 1,
+      width : w,
+      height: h,
+    }
     var imgurl = '';
     QRCode.toDataURL(
-      v
+      v,
+      opts
       , (err, url) => {
         if (err) throw err
         imgurl = url
@@ -69,7 +77,6 @@ export default function Visualization(Data, Html, Type) {
             if (Equation != "" && Equation.search("{{") <= -1) {
               let evalV = Equation.replace("{#", "");
               evalV = evalV.replace("/}", "");
-              //   debugger;
               row = row.replace(Equation, eval(evalV));
             }
             indexOccurence = row.indexOf(searchKeyword, indexOccurence + 1);

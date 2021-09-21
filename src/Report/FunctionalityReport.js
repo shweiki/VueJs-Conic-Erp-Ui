@@ -58,8 +58,8 @@ export function JSPMPrintReport(Type, Data) {
 export function SendReportByEmail(Email, Type, Data, Subject = "") {
   GetReportByType({
     Type: Type,
-  }).then( (res) => {
-    res.forEach(async(item, index) => {
+  }).then((res) => {
+    res.forEach(async (item, index) => {
       item.Html = Visualization(Data, item.Html, "Set");
       const ResolveSendEmail = await SendEmail(Email, item.Name + " - " + Subject, item.Html)
       this.$notify({
@@ -93,16 +93,11 @@ export function DownloadReportAsImage(Type, Data) {
         var oIframe = document.getElementById("DownloadAsImage");
         var oDoc = oIframe.contentWindow || oIframe.contentDocument;
         if (oDoc.document) oDoc = oDoc.document;
-        oDoc.write("<head><title>title</title>");
-        oDoc.write("</head><body >");
-        oDoc.write(Visualization(Data, item.Html, "Set") + "</body>");
-        console.log(oDoc.body);
+        oDoc.write(Visualization(Data, item.Html, "Set"));
         htmlToImage
           .toPng(oDoc.body)
           .then((dataUrl) => {
-
-            download(dataUrl, Data.name+'.png');
-
+            download(dataUrl, Data.Name.replaceAll("'", "") + '.png');
             oDoc.close();
           })
           .catch((error) => {
@@ -111,6 +106,33 @@ export function DownloadReportAsImage(Type, Data) {
 
       });
       resolve(res.map(x => x.Html))
+    }).catch(err => { reject(err) });
+  })
+}
+export function ReportAsDataUrl(Type, Data) {
+  return new Promise((resolve, reject) => {
+    GetReportByType({
+      Type: Type,
+    }).then((res) => {
+      res.forEach((item, index) => {
+        var oIframe = document.getElementById("DownloadAsImage");
+        var oDoc = oIframe.contentWindow || oIframe.contentDocument;
+        if (oDoc.document) oDoc = oDoc.document;
+        oDoc.write(Visualization(Data, item.Html, "Set"));
+        htmlToImage
+          .toPng(oDoc.body)
+          .then((dataUrl) => {
+            item.url = dataUrl.replace(/^data:image\/(png|jpg);base64,/, "")
+            oDoc.close();
+          })
+          .catch((error) => {
+            console.error("oops, something went wrong!", error);
+          });
+
+      });
+      resolve(res.map(x => x.url))
+
+
     }).catch(err => { reject(err) });
   })
 }

@@ -26,8 +26,7 @@ import toolbar from "./toolbar";
 import load from "./dynamicLoadScript";
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN =
-  "https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js";
+const tinymceCDN = "https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js";
 
 export default {
   name: "Tinymce",
@@ -35,33 +34,33 @@ export default {
   props: {
     id: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     value: {
       type: String,
-      default: ""
+      default: "",
     },
     toolbar: {
       type: Array,
       required: false,
       default() {
         return [];
-      }
+      },
     },
     menubar: {
       type: String,
-      default: "file edit view insert format tools table tc help"
+      default: "file edit view insert format tools table tc help",
     },
     height: {
       type: [Number, String],
       required: false,
-      default: 360
+      default: 360,
     },
     width: {
       type: [Number, String],
       required: false,
-      default: "auto"
-    }
+      default: "auto",
+    },
   },
   data() {
     return {
@@ -74,8 +73,8 @@ export default {
         zh: "zh_CN",
         es: "es_MX",
         ja: "ja",
-        ar: "ar"
-      }
+        ar: "ar",
+      },
     };
   },
   computed: {
@@ -86,18 +85,16 @@ export default {
         return `${width}px`;
       }
       return width;
-    }
+    },
   },
   watch: {
     value(val) {
       console.log(val);
 
       if (!this.hasChange && this.hasInit) {
-        this.$nextTick(() =>
-          window.tinymce.get(this.tinymceId).setContent(val || "")
-        );
+        this.$nextTick(() => window.tinymce.get(this.tinymceId).setContent(val || ""));
       }
-    }
+    },
   },
   created() {
     this.init();
@@ -116,7 +113,7 @@ export default {
   methods: {
     init() {
       // dynamic load tinymce from cdn
-      load(tinymceCDN, err => {
+      load(tinymceCDN, (err) => {
         if (err) {
           this.$message.error(err.message);
           return;
@@ -154,7 +151,7 @@ export default {
         autosave_retention: "2m",
         image_advtab: true,
         nonbreaking_force_tab: true, // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
-        init_instance_callback: editor => {
+        init_instance_callback: (editor) => {
           if (_this.value) {
             editor.setContent(_this.value);
           }
@@ -165,10 +162,10 @@ export default {
           });
         },
         setup(editor) {
-          editor.on("FullscreenStateChanged", e => {
+          editor.on("FullscreenStateChanged", (e) => {
             _this.fullscreen = e.state;
           });
-        }
+        },
       });
     },
     destroyTinymce() {
@@ -189,13 +186,13 @@ export default {
     },
     imageSuccessCBK(arr) {
       const _this = this;
-      arr.forEach(v => {
+      arr.forEach((v) => {
         window.tinymce
           .get(_this.tinymceId)
           .insertContent(`<img class="wscnph" src="${v.url}" >`);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
