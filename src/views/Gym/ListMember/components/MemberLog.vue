@@ -91,6 +91,14 @@ export default {
       loading: false,
       MembersLogs: [],
       reverse: false,
+      listQuery: {
+        Page: 1,
+        Any: "",
+        limit: this.$store.getters.settings.LimitQurey,
+        Sort: "-id",
+        Status: undefined,
+        TableName: "Member",
+      },
     };
   },
   created() {
@@ -99,13 +107,12 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
-      GetByStatus({ Status: 0, TableName: "Member" })
+      GetByStatus(this.listQuery)
         .then((response) => {
           if (response.length != this.MembersLogs.length) {
-            this.MembersLogs = response.sort(
-              (a, b) => new Date(b.DateTime) - new Date(a.DateTime)
-            );
-            RemoveDuplicate();
+            this.MembersLogs = response;
+            //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
+            //  RemoveDuplicate();
           }
           this.loading = false;
         })
