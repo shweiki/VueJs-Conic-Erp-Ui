@@ -651,7 +651,11 @@ export default {
                   if (this.AutoPrint == true) {
                     PrintReport("SaleInvoice", this.OldInvoice, true);
                   }
-                  if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")
+                  if (
+                    this.OldInvoice.PhoneNumber != null &&
+                    this.AutoSendSMS &&
+                    this.OldInvoice.Type == "Delivery"
+                  )
                     SendSMS(
                       this.OldInvoice.PhoneNumber,
                       "شكرا لإختياركم شاورما شيش , طلب رقم (" +

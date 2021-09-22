@@ -163,7 +163,7 @@
             </el-tag>
           </el-collapse-item>
           <el-collapse-item title="Ingredients" name="Ingredients">
-            <ingredients :Value="tempForm.Ingredients" />
+            <ingredient :Value="tempForm.Ingredients" />
           </el-collapse-item>
         </el-collapse>
       </el-form>
@@ -181,9 +181,10 @@ import { GetFileByObjId } from "@/api/File";
 import permission from "@/directive/permission/index.js";
 import Category from "./Category";
 import elDragDialog from "@/directive/el-drag-dialog"; // base on element-ui
+import Ingredient from "./Ingredient.vue";
 
 export default {
-  components: { InventoryQty, PanThumb, WebCam, ImageCropper, Category },
+  components: { InventoryQty, PanThumb, WebCam, ImageCropper, Category, Ingredient },
   props: {
     ItemId: {
       type: Number,

@@ -10,12 +10,12 @@ import download from "downloadjs";
 import { ShawermaSheesh as ShawermaSheeshx } from "@/Report/ShawermaSheesh";
 import { OrderReceipt as OrderReceiptx } from "@/Report/OrderReceipt";
 
-export function PrintReport(Type, Data, JSPM = false) {
+export function PrintReport(Type, Data, JSPMT = false) {
   GetReportByType({
     Type: Type,
   }).then((res) => {
     res.forEach((item, index) => {
-      if (!JSPM) {
+      if (!JSPMT) {
         item.Html = Visualization(Data, item.Html, "Set");
         try {
           var oIframe = document.getElementById("ifrmPrint");
@@ -32,26 +32,27 @@ export function PrintReport(Type, Data, JSPM = false) {
           self.print();
         }
       } else {
-        var ShawermaSheesh = ShawermaSheeshx
-        var OrderReceipt = OrderReceiptx
-        eval(
-          "" +
-          item.Name +
-          "(" +
-          JSON.stringify(Data) +
-          (item.Printer ? ",`" + item.Printer + "`)" : ")")
-        );
+        if (JSPM.JSPrintManager.auto_reconnect) {
+          var ShawermaSheesh = ShawermaSheeshx
+          var OrderReceipt = OrderReceiptx
+          eval(
+            "" +
+            item.Name +
+            "(" +
+            JSON.stringify(Data) +
+            (item.Printer ? ",`" + item.Printer + "`)" : ")")
+          );
+        } else {
+          JSPM.JSPrintManager.auto_reconnect = true;
+          JSPM.JSPrintManager.start();
+          JSPM.JSPrintManager.WS.onStatusChanged = () => {
+            store.dispatch("app/setPrinters");
+            PrintReport(Type, Data, JSPMT)
+          };
+        }
+
 
       }
-    });
-  });
-}
-export function JSPMPrintReport(Type, Data) {
-  GetReportByType({
-    Type: Type,
-  }).then((res) => {
-    res.forEach((item, index) => {
-
     });
   });
 }
@@ -122,7 +123,7 @@ export function ReportAsDataUrl(Type, Data) {
         htmlToImage
           .toPng(oDoc.body)
           .then((dataUrl) => {
-            item.url = dataUrl.replace(/^data:image\/(png|jpg);base64,/, "")
+            resolve(dataUrl.replace(/^data:image\/(png|jpg);base64,/, ""))
             oDoc.close();
           })
           .catch((error) => {
@@ -130,9 +131,6 @@ export function ReportAsDataUrl(Type, Data) {
           });
 
       });
-      resolve(res.map(x => x.url))
-
-
     }).catch(err => { reject(err) });
   })
 }
