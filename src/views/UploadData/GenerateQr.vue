@@ -15,7 +15,9 @@
         :loading="loading"
         >Download All As Image</el-button
       >
-      <el-upload
+      <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
+
+      <!--      <el-upload
         class="upload-demo"
         action="http://localhost:8090/test1/Files/Upload"
         :on-preview="handlePreview"
@@ -33,24 +35,11 @@
         <div slot="tip" class="el-upload__tip">
           jpg/png files with a size less than 500kb
         </div>
-      </el-upload>
+      </el-upload>-->
     </el-card>
     <el-card>
       <el-table :data="List" border fit highlight-current-row style="width: 100%">
         <el-table-column label="name" prop="name" align="center"> </el-table-column>
-
-        <el-table-column label="size" prop="size" align="center"> </el-table-column>
-        <el-table-column label="type" prop="raw" align="center">
-          <template slot-scope="{ row }">
-            {{ row.raw.type }}
-          </template>
-        </el-table-column>
-
-        <el-table-column label="type" prop="raw" align="center">
-          <template slot-scope="{ row }">
-            {{ row.raw.lastModifiedDate }}
-          </template>
-        </el-table-column>
 
         <el-table-column align="center">
           <template slot-scope="scope">
@@ -85,9 +74,10 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import { DownloadReportAsImage, ReportAsDataUrl } from "@/Report/FunctionalityReport";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
+import UploadExcelComponent from "@/components/UploadExcel/index.vue";
 
 export default {
-  components: { DrawerPrint },
+  components: { DrawerPrint, UploadExcelComponent },
   data() {
     return {
       fileList: [],
@@ -118,9 +108,31 @@ export default {
       });*/
       this.loading = false;
     },
+    handleSuccess({ results, header }) {
+      this.loading = true;
+      this.List = results;
+      this.List.map((el) => {
+        el.Name = el.name.slice(el.name.lastIndexOf(",") + 1, el.name.lastIndexOf("."));
+        //el.qr = el.name.substring(0, el.name.lastIndexOf(".")).replaceAll("-", "");
+        // el.qr = el.qr.replaceAll("'", "");
+      });
+      this.loading = false;
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
+    beforeUpload(file) {
+      const isLt1M = file.size / 1024 / 1024 < 8;
+      if (isLt1M) {
+        return true;
+      }
+      this.$message({
+        message: "Please do not upload files larger than 8m in size.",
+        type: "warning",
+      });
+      return false;
+    },
+    /*
     handleSuccess(response, file, fileList) {
       this.List = fileList;
       this.List.map((el) => {
@@ -130,7 +142,7 @@ export default {
         el.qr = el.qr.replaceAll("'", "");
       });
       console.log(response, file, fileList);
-    },
+    },*/
     handlePreview(file) {
       console.log(file);
     },
