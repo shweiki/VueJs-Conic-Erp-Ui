@@ -63,6 +63,7 @@ module.exports = {
     PointOfSale: {
         Layout: "Public",
         WithImage: false,
+        QtyCounter:false,
         CreateEntry: false,
         CreateDelivery: false,
         DeliveryUrl: "http://localhost:8090/OrderDelivery/Create"

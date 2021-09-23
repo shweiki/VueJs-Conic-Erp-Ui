@@ -112,7 +112,8 @@
                                         $store.getters.settings.ToFixed
                                       )
                                     }}
-                                    ) {{ $t("NewPurchaseInvoice.quantity") }} ({{
+                                    )
+                                    {{ $t("NewPurchaseInvoice.quantity") }} ({{
                                       tempForm.InventoryMovements.reduce(
                                         (a, b) => a + (b["Qty"] || 0),
                                         0
@@ -519,19 +520,26 @@ export default {
     AddItem(Item, Qty) {
       let SellingPrice = Item.SellingPrice;
       if (this.PriceMethod == "wholesale") SellingPrice = Item.OtherPrice;
-      this.tempForm.InventoryMovements.push({
-        Id: undefined,
-        ItemsId: Item.Id,
-        TypeMove: "Out",
-        Status: 2,
-        Qty: 1.0,
-        SellingPrice: SellingPrice,
-        Tax: 0.0,
-        Description: "",
-        InventoryItemId: 1,
-        Name: Item.Name,
-        SalesInvoiceId: undefined,
-      });
+
+      var find = this.$store.getters.settings.PointOfSale.QtyCounter
+        ? this.tempForm.InventoryMovements.findIndex((value) => value.ItemsId == Item.Id)
+        : -1;
+      if (find != -1) this.tempForm.InventoryMovements[find].Qty += Qty;
+      else {
+        this.tempForm.InventoryMovements.push({
+          Id: undefined,
+          ItemsId: Item.Id,
+          TypeMove: "Out",
+          Status: 2,
+          Qty: 1.0,
+          SellingPrice: SellingPrice,
+          Tax: 0.0,
+          Description: "",
+          InventoryItemId: 1,
+          Name: Item.Name,
+          SalesInvoiceId: undefined,
+        });
+      }
       this.focusBarcode();
     },
     RemoveItem(index) {
