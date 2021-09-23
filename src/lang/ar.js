@@ -114,7 +114,12 @@ export default {
         AddDrivers: "إضافة سائق",
         DriverPage: "صفحة السائق",
         JsonEditorSetting: "تعديل الاعدادات بجيسون",
-        DriverDeliveryList: "قائمة طلبات السائق"
+        DriverDeliveryList: "قائمة طلبات السائق",
+        GenerateQr: "انشاء كود (QR)",
+        Adjustment: "التسويات",
+        Employees: "الموظفين",
+        ListEmployee: "قائمة الموظفين",
+        HumanResource: "الموارد البشرية",
     },
     Settings: {
         settings: "اعدادات",
@@ -263,6 +268,7 @@ export default {
         tagsView: 'فتح علامات مشاهدة',
         fixedHeader: 'رأس ثابت',
         sidebarLogo: 'شعار الشريط الجانبي ',
+        PurchaseLayout: "تنسيق الشراء",
         DateFormat: "صيغة البيانات",
         DateTimeFormat: "صيغة الوقت والتاريخ",
         CashDrawerCOM: 'درج الكاش',
@@ -276,7 +282,8 @@ export default {
         loginBackground: "خلفية شاشة تسجيل الدخول",
         sidebarImages: 'صورة الشريط الجانبي',
         Images: 'الصور',
-        PurchaseLayout: "تنسيق الشراء",
+        CashPoolLayout:"شكل نظام المجمع النقدي",
+        WorkShopLayout:"شكل نظام الورشات",
     },
     MinOrd: {
         SBy: "البحث بحسب الرقم /الاسم /الباركود /التصنيف",
@@ -301,7 +308,7 @@ export default {
         Purchases: 'المشتريات'
     },
     Vendors: {
-        Id: "الرقم",
+        ID: "الرقم",
         Vendor: 'العملاء و الموردون',
         Add: 'إضافة',
         Search: 'البحث بحسب الإسم',
@@ -376,7 +383,8 @@ export default {
         TotalRestitution: "إجمالي التعويضات",
         SaleInvoice: "فواتير المبيعات",
         Payment: "سندات القبض",
-        Receive: "سندات الصرف"
+        Receive: "سندات الصرف",
+        Coupon:"كوبون",
     },
     ItemSales: {
         Name: "الإسم",
@@ -500,7 +508,11 @@ export default {
         cancel: 'إلغاء',
         UnitName: 'إسم وحدة القياس',
         SearchBy: 'بحث حسب الإسم',
-        Address: "العنوان"
+        Address: "العنوان",
+        Ip:"الاي بي",
+        Port:"البورت",
+        LastSetDateTime:"اخر تعيين للوقت والتاريخ",
+        Edit:"تعديل",
 
     },
     Stocks: {
@@ -643,7 +655,8 @@ export default {
         AccType: "نوع الحساب",
         Save: "حفظ",
         cancel: "إلغاء",
-        InCome: "إيراد"
+        InCome: "إيراد",
+        Bank: "البنك",
 
     },
     AddMembers: {

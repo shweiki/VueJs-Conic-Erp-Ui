@@ -183,6 +183,7 @@ export default {
             EmployeeId: this.tempForm.Id,
           }).then((response) => {
             this.WorkingHourId = response;
+            if (response == false) { this.WorkingHourId = -1}
           });
           GetLastSalaryById({ Id: this.tempForm.Id }).then(
             (res) => (this.LastSalary = res)

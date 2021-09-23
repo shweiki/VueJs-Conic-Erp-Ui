@@ -294,7 +294,6 @@ export default {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
-        console.log("employeeeeees", response);
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;

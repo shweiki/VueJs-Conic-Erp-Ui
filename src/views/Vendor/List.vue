@@ -142,7 +142,7 @@
     >
       <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
-        v-bind:label="$t('Vendors.Id')"
+        v-bind:label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"

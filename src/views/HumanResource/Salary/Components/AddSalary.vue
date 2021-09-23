@@ -70,6 +70,9 @@ export default {
     },
     EmployeeName:{
       type: String
+    },
+    LastSalary:{
+      type: Number
     }
     },
   data() {
@@ -87,7 +90,7 @@ export default {
     update() {
       this.$refs["SalaryForm"].validate((valid) => {
         if (valid) {
-          this.Temp.EmployeeId = this.EmployeeId;
+          this.Temp.Id = this.LastSalary;
           Update(this.Temp)
             .then((response) => {
               this.Visibles = false;

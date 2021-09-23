@@ -34,15 +34,15 @@
             <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
-        <el-table-column prop="Ip" label="IP" align="center"></el-table-column>
-        <el-table-column prop="Port" label="Port" align="center"></el-table-column>
+        <el-table-column prop="Ip" :label="$t('Classification.Ip')" align="center"></el-table-column>
+        <el-table-column prop="Port" :label="$t('Classification.Port')" align="center"></el-table-column>
         <el-table-column
           v-bind:label="$t('Classification.Notes')"
           prop="Description"
           width="220"
           align="center"
         ></el-table-column>
-        <el-table-column label="Edit" align="center">
+        <el-table-column :label="$t('Classification.Edit')" align="center">
           <template slot-scope="scope">
             <edit-device :DeviceId="scope.row.Id" />
           </template>

@@ -222,7 +222,7 @@ export default {
           ChangeObjStatusByTableName({
             ObjId: this.Employee.Id,
             TableName: "Employee",
-            Status: -1,
+            Status: 0,
             Description: this.tempOpration.Description,
           }).then((response) => {
             this.$notify({

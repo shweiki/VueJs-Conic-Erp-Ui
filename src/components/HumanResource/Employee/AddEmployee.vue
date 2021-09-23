@@ -186,7 +186,7 @@ export default {
         Ssn: "",
         Type: "New",
         Tag: null,
-        Status: -1,
+        Status: 0,
         EmployeeUserId: "",
       },
       rulesForm: {
@@ -221,7 +221,7 @@ export default {
         PhoneNumber2: "",
         Description: "",
         Type: "New",
-        Status: -1,
+        Status: 0,
         JobTitle: "",
       };
     },

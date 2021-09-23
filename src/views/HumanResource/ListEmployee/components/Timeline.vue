@@ -27,7 +27,7 @@
         </div>
         <div v-else>
           <h4>تسجيل دخول</h4>
-        <p>{{item.StartDateTime}}</p>
+        <p>{{ item.StartDateTime | parseTime("{m}-{d}-{y} {h}:{i}:{s}")  }}</p>
           </div>
            <div v-if="item.EndDateTime ==null">
              <h4 style="color:#ff6a6a">لا يوجد تسجيل خروج هذا اليوم</h4>
@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import { parseTime } from "@/utils";
 export default {
   props: {
     timeline: {
@@ -85,6 +86,13 @@ export default {
     return {
       reverse: false
     };
-  }
+  },
+  methods: {
+    todays (date){
+     date | parseTime("{m}-{d}-{y} {h}:{i}:{s}")
+     newdate = date | getDay();
+      return newdate;
+    }
+  },
 };
 </script>

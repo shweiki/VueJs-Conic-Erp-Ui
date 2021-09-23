@@ -35,7 +35,7 @@
         <el-form-item v-bind:label="$t('Classification.Name')" prop="Name">
           <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('Ip')" prop="Ip">
+        <el-form-item v-bind:label="$t('Classification.Ip')" prop="Ip">
           <el-input type="text" v-model="tempForm.Ip"></el-input>
         </el-form-item>
         <el-form-item v-bind:label="$t('Classification.Port')" prop="Port">

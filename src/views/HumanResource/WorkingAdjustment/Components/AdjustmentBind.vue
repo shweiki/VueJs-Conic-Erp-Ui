@@ -124,7 +124,8 @@ export default {
         StaticTemp :{
           Id: undefined,
           AdjustmentAmount: 0.0,
-          AdjustmentPercentage: 0.0,
+          Description: "",
+          Status: 0,
           AdjustmentId: undefined,
           SalaryPaymentId: undefined,
         }
@@ -182,7 +183,7 @@ export default {
         if (this.IsStatic){
           this.StaticTemp.SalaryPaymentId = this.SalaryPaymentId;
           this.StaticTemp.AdjustmentAmount =  this.tempForm.AdjustmentAmmount
-          this.StaticTemp.AdjustmentPercentage =  this.tempForm.AdjustmentAmmount
+          this.StaticTemp.Description =  this.tempForm.Description
           this.StaticTemp.AdjustmentId =  this.tempForm.AdjustmentId
           console.log("this.StaticTemp", this.StaticTemp)
           CreateStatic(this.StaticTemp)

@@ -106,7 +106,12 @@ export default {
         AddDrivers:"Add Drivers",
         DriverPage:"Driver Page",
         JsonEditorSetting:"Json Editor Setting",
-        DriverDeliveryList:"Driver Delivery List"
+        DriverDeliveryList:"Driver Delivery List",
+        GenerateQr: "Generate Qr",
+        Adjustment: "Adjustments",
+        Employees: "Employees",
+        ListEmployee: "Employees List",
+        HumanResource: "Human Resource",
     },
     Settings: {
         settings: "Settings",
@@ -254,13 +259,28 @@ export default {
         Receivables: 'Receivables',
         Cheque: 'Cheque',
     },
-    settings: {
+    Settings: {
         title: 'Page style setting',
         theme: 'Theme Color',
         tagsView: 'Open Tags-View',
         fixedHeader: 'Fixed Header',
         sidebarLogo: 'Sidebar Logo',
         PurchaseLayout: "Purchase Layout",
+        DateFormat: "Date Format",
+        DateTimeFormat: "Date Time Format",
+        CashDrawerCOM: 'Cash Drawer ',
+        PointOfSaleLayout: 'Point Of Sale Layout',
+        BusinessType: "Business Type",
+        showSettings: "Show Settings",
+        showRestOfBill: "Show Rest Of Bill",
+        sidebarOpen: 'Sidebar Open',
+        WithOutCheckItemIsExist: 'Without Item Is Exist Check',
+        BarcodeIsId: "Barcode Is The Item Number (ID)",
+        loginBackground: "login Background",
+        sidebarImages: 'sidebar Images',
+        Images: 'Images',
+        CashPoolLayout:"CashPoo lLayout",
+        WorkShopLayout:"WorkShop Layout",
     },
     PanelGroup: {
         MinimumOrder: "Minimum Order",
@@ -351,7 +371,8 @@ export default {
         TotalReject :"Total Reject",
         TotalRestitution :"Total Restitution",
         SaleInvoice: "Sale Invoice",
-        Payment: "Payment"
+        Payment: "Payment",
+        Coupon:"Coupon",
     },
     ItemSales: {
         Name: 'Name',
@@ -472,7 +493,11 @@ export default {
         cancel: 'Cancel',
         UnitName: 'Unit Name',
         SearchBy: 'Search By Name',
-        Address: "Address"
+        Address: "Address",
+        Ip:"Ip",
+        Port:"Port",
+        LastSetDateTime:"Last Set For Date Time",
+        Edit:"Edit",
 
     },
     Stocks: {
@@ -616,7 +641,8 @@ export default {
         AccType: "AccType",
         Save: "Save",
         cancel: "Cancel",
-        InCome: "In Come"
+        InCome: "In Come",
+        Bank: "Bank"
     },
     AddMembers: {
         Female: "Female",

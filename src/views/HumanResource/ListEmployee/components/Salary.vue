@@ -7,7 +7,7 @@
       <el-col :span="12">
         <!-- <SalaryCalculation :SalaryPaymentId="SalaryPaymentId" :SalaryPayment="SalaryPayment" :EmployeeId="EmployeeId" :EmployeeName="EmployeeName"/> -->
         <el-button @click="cal()">
-          press
+          احتساب الراتب
         </el-button>
          </el-col>
     </el-row>
@@ -73,7 +73,7 @@ export default {
         return null;}
       },
       LastSalary: {
-      type: Object
+      type: Number
     },
     EmployeeId:{
       type: Number,

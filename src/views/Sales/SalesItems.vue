@@ -174,7 +174,7 @@
       "
     >
       <el-table-column
-        v-bind:label="$t('Vendors.Id')"
+        v-bind:label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"

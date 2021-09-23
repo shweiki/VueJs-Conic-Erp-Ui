@@ -148,7 +148,7 @@ export default {
         Id: undefined,
         Name: "",
         AdjustmentAmount:0.0,
-        Type: "",
+        Desription: "",
       };
     },
     createData() {

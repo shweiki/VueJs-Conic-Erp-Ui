@@ -12,7 +12,11 @@
       </el-col>
     </el-row>
       
-    <el-table
+       <el-card class="box-card" >
+ <el-tabs v-model="activeTab" type="card" tab-position="top" @tab-click="tabClick">
+   <el-tab-pane label="التسويات العادية" name="RegularAdjustment">
+     <span slot="label"><i class="el-icon-refresh"></i> التسويات العادية</span>
+   <el-table
       :data="WorkingAdjustment"
       fit
       border
@@ -22,7 +26,7 @@
       <el-table-column
         prop="Id"
         label="Id"
-        width="80"
+        width="60"
         align="center"
       ></el-table-column>
         <el-table-column
@@ -83,6 +87,56 @@
         </template>
       </el-table-column> 
     </el-table>
+            </el-tab-pane>
+
+         <el-tab-pane label="التسويات الدورية" name="PeriodicAdjustment">
+              <span slot="label"><i class="el-icon-refresh"></i> التسويات الدورية</span>
+   <el-table
+      :data="StaticAdjustment"
+      fit
+      border
+      highlight-current-row
+      height="500"
+    >
+      <el-table-column
+        prop="Id"
+        label="Id"
+        width="80"
+        align="center"
+      ></el-table-column>
+        <el-table-column
+        label="AdjustmentName"
+        prop="Name"
+        width="200"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.AdjustmentName
+        }}</template>
+      </el-table-column>
+      <el-table-column
+        label="AdjustmentAmount"
+        width="100"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.AdjustmentAmount.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+        <el-table-column
+        label="Description"
+        prop="Description"
+        width="200"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.Description
+        }}</template>
+      </el-table-column>
+    </el-table>
+            </el-tab-pane>
+          </el-tabs>
+        </el-card>
   </div>
 </template>
 <script>
@@ -90,6 +144,8 @@ import AddAdjustment from "../../Adjustment/Components/AddAdjustment.vue";
 import AddStaticAdjustment from "../../Adjustment/Components/AddStaticAdjustment.vue";
 import SelectAdjustment from '../../Adjustment/Components/SelectAdjustment.vue';
 import AdjustmentBind from '../../WorkingAdjustment/Components/AdjustmentBind.vue';
+import { GetWorkingAdjustmentBySalaryId } from "@/api/WorkingAdjustment";
+import { GetStaticAdjustmentsById } from "@/api/StaticAdjustment";
 export default {
   components: { SelectAdjustment, AddAdjustment, AddStaticAdjustment, AdjustmentBind},
   props: {
@@ -109,7 +165,35 @@ export default {
       type: Number
     }
 
-  }
+  },
+  data (){
+    return {
+      activeTab: "RegularAdjustment",
+      StaticAdjustment: [],
+    };
+  },
+   methods: {
+
+       tabClick(tab, event) {
+       if (tab.label == "التسويات")
+        GetWorkingAdjustmentBySalaryId({
+          SalId: this.SalaryPaymentId,
+        }).then((response) => {
+          this.WorkingAdjustment = response.reverse();
+        });
+   
+         if (tab.label == "التسويات الدورية")
+        GetStaticAdjustmentsById({
+          Id: this.SalaryPaymentId,
+        }).then((response) => {
+          this.StaticAdjustment = response.reverse();
+          });
+     
+    },}
   
 };
 </script>
+<style>
+.el-tabs--card > .el-tabs__header .el-tabs__nav {
+    float: right;}
+</style>
