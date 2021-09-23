@@ -66,7 +66,7 @@ module.exports = {
         QtyCounter:false,
         CreateEntry: false,
         CreateDelivery: false,
-        DeliveryUrl: "http://localhost:8090/OrderDelivery/Create"
+        DeliveryUrl: "http://localhost:8090/test1/OrderDelivery/Create"
     },
     CashPoolLayout: "Restaurant",
     PurchaseLayout: "SuperMarket",

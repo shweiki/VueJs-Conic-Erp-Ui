@@ -254,8 +254,10 @@ export default {
         EmpId: undefined,
         GrossSalary: 0,
         NetSalary: 0,
-        SalaryPeriod: "",
+        SalaryFrom: new Date,
+        SalaryTo : new Date,
         status: 0,
+        WorkingHours: 0,
         Name: "",
       },
       WorkingForm: {

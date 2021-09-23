@@ -643,7 +643,8 @@ export default {
 
                   if (
                     this.OldInvoice.Type == "Delivery" &&
-                    this.$store.getters.settings.PointOfSale.CreateDelivery == true
+                    this.$store.getters.settings.PointOfSale.CreateDelivery == true && 
+                    this.$store.getters.settings.PointOfSale.IsAutomatic == true
                   ) {
                     this.CreateDelivery(this.OldInvoice);
                   }

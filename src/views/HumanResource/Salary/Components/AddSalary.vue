@@ -36,6 +36,15 @@
                 @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
+               <el-form-item label="ساعات الدوام " prop="WorkingHours">
+              <el-input-number
+                v-model="Temp.WorkingHours"
+                :step="1.0"
+                :min="0.0"
+                :max="15"
+                @focus="$event.target.select()"
+              ></el-input-number>
+            </el-form-item>
           </el-col>
         </el-row>
       </el-form>
@@ -81,6 +90,7 @@ export default {
         Id: undefined,
         EmployeeId :0,
         GrossSalary: 0.0,
+        WorkingHours: 0
       },
       Visibles: false,
       

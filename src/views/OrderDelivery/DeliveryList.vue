@@ -63,6 +63,16 @@
             Search
           </el-button>
         </el-col>
+          <el-col :span="6">
+         <el-switch
+         style="
+    direction: ltr;"
+           v-model="IsAuto"
+           active-text="تلقائي"
+           inactive-text="يدوي"
+           @change="changeIsAuto()">
+        </el-switch>
+        </el-col>
       </el-row>
     </div>
     <Radio-Oprations
@@ -208,6 +218,7 @@ export default {
       list: [],
       Totals: { Rows: 0 },
       listLoading: false,
+      IsAuto: false,
       listQuery: {
         Page: 1,
         Any: "",

@@ -48,12 +48,27 @@
           scope.row.NetSalary.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-          <el-table-column label="التاريخ" align="center" width="140">
+       <el-table-column
+        prop="WorkingHours"
+        label="WorkingHours"
+        width="80"
+        align="center"
+      ></el-table-column>
+          <el-table-column label="من تاريخ" align="center" width="140">
         <template slot-scope="scope">
           <el-date-picker
             format="dd/MM/yyyy"
             disabled
-            v-model="scope.row.SalaryPeriod"
+            v-model="scope.row.SalaryFrom"
+          ></el-date-picker>
+        </template>
+      </el-table-column>
+        <el-table-column label="الى تاريخ" align="center" width="140">
+        <template slot-scope="scope">
+          <el-date-picker
+            format="dd/MM/yyyy"
+            disabled
+            v-model="scope.row.SalaryTo"
           ></el-date-picker>
         </template>
       </el-table-column>
