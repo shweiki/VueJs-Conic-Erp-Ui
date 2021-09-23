@@ -449,7 +449,7 @@ import FakeDate from "@/components/Date/FakeDate";
 import { PrintReport, VisualizationReportHtml } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { Create as CreateDelivery } from "@/api/OrderDelivery";
+import { Create as CreateDelivery, CreateWithDriver } from "@/api/OrderDelivery";
 
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
@@ -644,11 +644,17 @@ export default {
                   if (
                     this.OldInvoice.Type == "Delivery" &&
                     this.$store.getters.settings.PointOfSale.CreateDelivery == true && 
-                    this.$store.getters.settings.PointOfSale.IsAutomatic == true
+                    this.$store.getters.settings.OrderIsAutomatic == false
                   ) {
                     this.CreateDelivery(this.OldInvoice);
                   }
-
+                  if (
+                    this.OldInvoice.Type == "Delivery" &&
+                    this.$store.getters.settings.PointOfSale.CreateDelivery == true && 
+                    this.$store.getters.settings.OrderIsAutomatic == true
+                  ) {
+                    this.CreateWithDriver(this.OldInvoice);
+                  }
                   if (this.AutoPrint == true) {
                     PrintReport("SaleInvoice", this.OldInvoice, true);
                   }
@@ -712,6 +718,41 @@ export default {
         Region: temp.Region,
         DeliveryPrice: temp.DeliveryPrice,
         TotalPill: temp.Total,
+        Content: " " + ReportContentHtml,
+      }).then((res) => {
+        if (res) {
+          this.$notify({
+            title: "تم ",
+            message: "تم ارسال الطلب لشركة التوصيل بنجاح",
+            type: "success",
+            duration: 2000,
+          });
+        } else {
+          this.$notify({
+            position: "top-left",
+            title: "تم ",
+            message: " حصلت مشكلة في عملية ارسال طلب التوصيل",
+            type: "error",
+            duration: 20000,
+          });
+        }
+      });
+    },
+     async CreateWithDriver(temp) {
+      let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
+      CreateWithDriver({
+        Id: undefined,
+        OrderId: temp.Id,
+        Name: temp.Name,
+        TotalPrice: temp.DeliveryPrice + temp.Total,
+        Status: 0,
+        Description: temp.Description,
+        FakeDate: temp.FakeDate,
+        PhoneNumber: temp.PhoneNumber,
+        Region: temp.Region,
+        DeliveryPrice: temp.DeliveryPrice,
+        TotalPill: temp.Total,
+        DriverId: undefined,
         Content: " " + ReportContentHtml,
       }).then((res) => {
         if (res) {
