@@ -33,6 +33,14 @@ export function Create(data) {
     data: qs.stringify(data)
   })
 }
+export function CreateWithDriver(data) {
+  return request({
+    url: '/OrderDelivery/CreateWithDriver',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+
 
 export function SetDriver(data) {
   return request({

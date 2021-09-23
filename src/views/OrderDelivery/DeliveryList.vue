@@ -70,7 +70,7 @@
            v-model="IsAuto"
            active-text="تلقائي"
            inactive-text="يدوي"
-           @change="changeIsAuto()">
+          >
         </el-switch>
         </el-col>
       </el-row>
@@ -218,7 +218,6 @@ export default {
       list: [],
       Totals: { Rows: 0 },
       listLoading: false,
-      IsAuto: false,
       listQuery: {
         Page: 1,
         Any: "",
@@ -232,6 +231,19 @@ export default {
 
       downloadLoading: false,
     };
+  },
+  computed: {
+    IsAuto:{
+      get() {
+        return this.$store.state.settings.OrderIsAutomatic;
+      },
+      set(val) {
+        this.$store.dispatch("settings/changeSetting", {
+          key: "OrderIsAutomatic",
+          value: val,
+        });
+      },
+      },
   },
   created() {
     // this.getList();
