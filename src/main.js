@@ -20,6 +20,8 @@ import BarCodeSound from '@/assets/Sounds/BarCode.wav'
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 // ..
+store.dispatch("settings/GetSetting");
+
 AOS.init();
 const pluginOptions = {
   /* see config reference */
@@ -42,7 +44,6 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
-store.dispatch("settings/GetSetting");
 Vue.config.productionTip = false
 
 
