@@ -41,9 +41,9 @@
         "js-cookie": "^2.2.0",
         "jsbarcode": "^3.11.0",
         "jsonlint": "^1.6.3",
-        "jspdf": "^2.3.1",
+        "jspdf": ">=2.3.1",
         "jsprintmanager": "^3.0.7",
-        "jszip": "^3.2.1",
+        "jszip": ">=3.2.1",
         "normalize.css": "^7.0.0",
         "nprogress": "^0.2.0",
         "numeric-keyboard": "^0.7.0",
@@ -71,7 +71,7 @@
         "vue-splitpane": "^1.0.4",
         "vuedraggable": "^2.20.0",
         "vuex": "^3.1.0",
-        "xlsx": "^0.17.0"
+        "xlsx": ">=0.17.0"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",
