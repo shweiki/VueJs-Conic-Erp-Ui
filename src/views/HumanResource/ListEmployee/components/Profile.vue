@@ -76,17 +76,6 @@
               />
             </el-tab-pane>
 
-            <el-tab-pane label="التسويات" name="Adjustment">
-              <span slot="label"><i class="el-icon-refresh"></i> التسويات</span>
-              <Working-Adjustment
-                :WorkingAdjustment="WorkingAdjustment"
-                :EmployeeId="tempForm.Id"
-                :EmployeeName="tempForm.Name"
-                :SalaryPaymentId="SalaryPaymentId"
-                :WorkingHourId="WorkingHourId"
-              />
-            </el-tab-pane>
-
             <el-tab-pane label="تواصل" name="communication">
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
               <Communication />
@@ -106,16 +95,13 @@ import EmployeeLogin from "./Dialogs/EmployeeLogin";
 import EmployeeLogout from "./Dialogs/EmployeeLogout";
 import Account from "./Account.vue";
 import Salary from "./Salary.vue";
-import WorkingAdjustment from "./WorkingAdjustment.vue";
 import Communication from "./Communication.vue";
 import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetFileByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
-import { GetSalaryById, GetSalaryId, GetLastSalaryById } from "@/api/Salary";
-import { GetWorkingAdjustmentBySalaryId } from "@/api/WorkingAdjustment";
+import { GetSalaryByEmployeeId, GetSalaryId, GetLastSalaryById } from "@/api/Salary";
 import checkPermission from "@/utils/permission";
-import { GetEmployeeLogById, GetWorkingHourId } from "@/api/WorkingHoursLog";
 import Massage from "@/components/Massage/index.vue";
 import SendToDevice from "@/components/Device/SendToDevice.vue";
 
@@ -131,7 +117,6 @@ export default {
     Communication,
     Massage,
     Timeline,
-    WorkingAdjustment,
     EmployeeSearch,
     SendToDevice,
   },
@@ -149,7 +134,6 @@ export default {
       tempForm: null,
       EntryMovements: [],
       SalaryPayment: [],
-      WorkingAdjustment: [],
       log: [],
       LastSalary: undefined,
       SalaryPaymentId: undefined,
@@ -168,7 +152,7 @@ export default {
       GetEmployeeById({ Id: val })
         .then((response) => {
           this.tempForm = response;
-          this.GetImageMember(this.tempForm.Id);
+          this.GetImage(this.tempForm.Id);
           this.getAge();
           //this.GetMemberLogFromDevices(val);
           this.setTagsViewTitle();
@@ -183,7 +167,9 @@ export default {
             EmployeeId: this.tempForm.Id,
           }).then((response) => {
             this.WorkingHourId = response;
-            if (response == false) { this.WorkingHourId = -1}
+            if (response == false) {
+              this.WorkingHourId = -1;
+            }
           });
           GetLastSalaryById({ Id: this.tempForm.Id }).then(
             (res) => (this.LastSalary = res)
@@ -213,19 +199,13 @@ export default {
           });
         });
       if (tab.label == "رواتب")
-        GetSalaryById({
+        GetSalaryByEmployeeId({
           EmployeeId: this.tempForm.Id,
         }).then((response) => {
           this.SalaryPayment = response.reverse();
         });
-      if (tab.label == "التسويات")
-        GetWorkingAdjustmentBySalaryId({
-          SalId: this.SalaryPaymentId,
-        }).then((response) => {
-          this.WorkingAdjustment = response.reverse();
-        });
     },
-    GetImageMember(Id) {
+    GetImage(Id) {
       GetFileByObjId({ TableName: "Employee", ObjId: Id })
         .then((response) => {
           if (response) this.tempForm.Avatar = response.File;

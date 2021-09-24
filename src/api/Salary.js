@@ -17,9 +17,9 @@ export function Update(data) {
   })
 }
 
-export function GetSalaryById(query) {
+export function GetSalaryByEmployeeId(query) {
   return request({
-    url: '/Salary/GetSalaryById',
+    url: '/Salary/GetSalaryByEmployeeId',
     method: 'get',
     params: query
   })
@@ -32,9 +32,9 @@ export function GetLastSalaryById(query) {
     params: query
   })
 }
-export function GetSalary(query) {
+export function GetById(query) {
   return request({
-    url: '/Salary/GetSalary',
+    url: '/Salary/GetById',
     method: 'get',
     params: query
   })

@@ -39,7 +39,7 @@
           </el-col>
         </el-row>
         <el-row type="flex">
-          <el-col :span="24">
+          <el-col :span="12">
             <el-form-item
               label="تاريخ ميلاد"
               prop="DateofBirth"
@@ -68,6 +68,11 @@
                 العمر
                 {{ getAge(tempForm.DateofBirth) }}
               </el-tag>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="JobTitle" prop="JobTitle">
+              <el-input type="text" v-model="tempForm.JobTitle"></el-input>
             </el-form-item>
           </el-col>
         </el-row>

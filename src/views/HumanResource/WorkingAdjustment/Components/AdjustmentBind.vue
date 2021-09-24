@@ -1,14 +1,12 @@
 <template>
   <div>
     <el-button
-      type="warning "
+      type="warning"
       icon="el-icon-circle-plus"
       @click="dialogFormVisible = true"
-       round
+      round
     >
-    <span style="font-size: 14px;">
-    زيادة / خصم
-    </span>
+      <span style="font-size: 14px">إيرادات \ إقتطاعات </span>
     </el-button>
     <el-dialog
       style="margin-top: -13vh"
@@ -25,185 +23,140 @@
           />
         </el-col>
         <el-col :span="20">
-          <el-divider> زيادة / خصم </el-divider>
+          <el-divider> إيرادات \ إقتطاعات </el-divider>
         </el-col>
       </div>
-        <el-form
+      <el-form
         :model="tempForm"
         ref="EmployeeLogForm"
         label-position="top"
         class="demo-form-inline"
       >
-    <el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item prop="EmployeeName" label="اسم الموظف">
-            <el-input disabled v-model="EmployeeName"></el-input>
+              <el-input disabled v-model="EmployeeName"></el-input>
             </el-form-item>
           </el-col>
-           <el-col :span="12">
+          <el-col :span="12">
             <el-form-item prop="EmployeeId" label="الرقم الوظيفي">
-             <el-input disabled v-model="EmployeeId"></el-input>
+              <el-input disabled v-model="EmployeeId"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item prop="AdjustmentId" label="التسوية">
-             <Select-Adjustment
-        :Value="tempForm.AdjustmentId"
-        @SetAdjustment="
-          (v) => {
-             tempForm.AdjustmentId = v;
-          }
-        "
-         @SetAdjustmentAmount="
-          (v) => {
-             tempForm.AdjustmentAmmount = v;
-          }
-        "
-         @CheckStatic="
-          (v) => {
-             IsStatic = v;
-          }
-        "
-         @CheckWork="
-          (v) => {
-             IsWork = v;
-          }
-        "
-        
-      />
-      </el-form-item>
-      <el-form-item prop="Description" label="ملاحظات ">
-             <el-input  v-model="tempForm.Description"></el-input>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="AdjustmentId" label="التسوية">
+              <Select-Adjustment
+                :GrossSalary="GrossSalary"
+                :Value="tempForm.AdjustmentId"
+                @SetAdjustment="
+                  (v) => {
+                    tempForm.AdjustmentId = v;
+                  }
+                "
+                @SetAdjustmentAmount="
+                  (v) => {
+                    tempForm.AdjustmentAmmount = v;
+                  }
+                "
+              />
             </el-form-item>
-        </el-form>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="القيمة ">
+              <currency-input
+                :rules="[
+                  {
+                    required: true,
+                    message: 'لايمكن ترك القيمة فارغ',
+                    trigger: 'blur',
+                  },
+                ]"
+                class="currency-input"
+                v-model="tempForm.AdjustmentAmmount"
+                :value-range="{ min: -1000, max: 1000 }"
+                @focus="$event.target.select()"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item prop="Description" label="ملاحظات ">
+          <el-input v-model="tempForm.Description"></el-input>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
-import SelectAdjustment from '../../Adjustment/Components/SelectAdjustment.vue';
-import { Create as CreateWork} from "@/api/WorkingAdjustment";
-import { Create as CreateStatic} from "@/api/StaticAdjustment";
+import SelectAdjustment from "../../Adjustment/Components/SelectAdjustment.vue";
+import { Create } from "@/api/SalaryAdjustmentLog";
 
 export default {
   name: "Adjustment",
   props: {
-    EmployeeId:{
+    EmployeeId: {
       type: Number,
     },
-    EmployeeName:{
+    EmployeeName: {
       type: String,
     },
-    SalaryPaymentId:{
+    SalaryPaymentId: {
       type: Number,
     },
-     WorkingHourId :{
-      type: Number
-    }
+    GrossSalary: {
+      type: Number,
+    },
   },
-   
-  components: {SelectAdjustment},
+
+  components: { SelectAdjustment },
   data() {
     return {
-      radio: '1',
-      type:'1',
       dialogFormVisible: false,
-      IsStatic : false,
-      IsWork : false,
-       vAdjustment: "",
       tempForm: {
         Id: undefined,
         AdjustmentAmmount: 0.0,
-        Tax: 0.0,
         Description: "",
         Status: 0,
         AdjustmentId: undefined,
         SalaryPaymentId: undefined,
-        WorkingHoursLogId: undefined,
-        },
-
-        StaticTemp :{
-          Id: undefined,
-          AdjustmentAmount: 0.0,
-          Description: "",
-          Status: 0,
-          AdjustmentId: undefined,
-          SalaryPaymentId: undefined,
-        }
-    
+      },
     };
   },
- 
+
   mounted() {
     this.resetTempForm();
     //this.getData(this.SalaryPaymentId);
   },
   methods: {
-
-      getData(val) {
-      // GetSalaryById({ Id: val })
-      //   .then((response) => {
-      //     this.tempForm.SalaryPaymentId = response.Id;
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-    },
+    getData(val) {},
     resetTempForm() {
-      
       this.tempForm = {
         Id: undefined,
         AdjustmentAmmount: 0.0,
-        Tax: 0.0,
         Description: "",
         Status: 0,
         AdjustmentId: undefined,
         SalaryPaymentId: undefined,
-        WorkingHoursLogId: undefined,
       };
     },
     createData() {
-      this.$refs["dataForm"]
-     if (this.IsWork){
-       this.tempForm.SalaryPaymentId = this.SalaryPaymentId;
-      this.tempForm.WorkingHoursLogId = this.WorkingHourId;
-          CreateWork(this.tempForm)
-            .then(response => {
-              this.dialogFormVisible = false;
-              this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                duration: 2000
-              });
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-        if (this.IsStatic){
-          this.StaticTemp.SalaryPaymentId = this.SalaryPaymentId;
-          this.StaticTemp.AdjustmentAmount =  this.tempForm.AdjustmentAmmount
-          this.StaticTemp.Description =  this.tempForm.Description
-          this.StaticTemp.AdjustmentId =  this.tempForm.AdjustmentId
-          console.log("this.StaticTemp", this.StaticTemp)
-          CreateStatic(this.StaticTemp)
-            .then(response => {
-              this.dialogFormVisible = false;
-              this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                duration: 2000
-              });
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-
-     
+      this.$refs["dataForm"];
+      this.tempForm.SalaryPaymentId = this.SalaryPaymentId;
+      Create(this.tempForm)
+        .then((response) => {
+          this.dialogFormVisible = false;
+          this.$notify({
+            title: "تم ",
+            message: "تم الإضافة بنجاح",
+            type: "success",
+            duration: 2000,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
- 
-  }
+  },
 };
 </script>

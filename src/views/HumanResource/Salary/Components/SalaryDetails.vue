@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
     <el-row v-if="tempForm">
-     
       <el-col :span="24" :xs="24" v-loading="loading">
         <!-- <Member-Search /> -->
 
@@ -18,21 +17,24 @@
 
         <el-card class="box-card">
           <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
-         <el-tab-pane label="دوامات" name="timeline">
+            <el-tab-pane label="دوامات" name="timeline">
               <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
               <Timeline :timeline="log" :EmployeeId="tempForm.Id" />
             </el-tab-pane>
 
-             <el-tab-pane label="رواتب" name="salary">
+            <el-tab-pane label="رواتب" name="salary">
               <span slot="label"><i class="el-icon-refresh"></i> رواتب</span>
-              <Salary :SalaryPayment="SalaryPayment" :EmployeeId="tempForm.Id" :EmployeeName="tempForm.Name"/>
+              <Salary
+                :SalaryPayment="SalaryPayment"
+                :EmployeeId="tempForm.Id"
+                :EmployeeName="tempForm.Name"
+              />
             </el-tab-pane>
 
             <el-tab-pane label="التسويات" name="Adjustment">
               <span slot="label"><i class="el-icon-refresh"></i> التسويات</span>
-              <Working-Adjustment/>
+              <Working-Adjustment />
             </el-tab-pane>
-
           </el-tabs>
         </el-card>
       </el-col>
@@ -41,8 +43,6 @@
 </template>
 
 <script>
-
-
 import Details from "./Details.vue";
 import Salary from "./Salary.vue";
 import WorkingAdjustment from "./WorkingAdjustment.vue";
@@ -50,7 +50,6 @@ import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetSalaryById } from "@/api/Salary";
 import checkPermission from "@/utils/permission";
-import { GetEmployeeLogById } from "@/api/WorkingHoursLog";
 
 export default {
   name: "Salary Details",
@@ -72,7 +71,7 @@ export default {
       loading: true,
       tempRoute: {},
       tempForm: null,
-      SalaryPayment:[],
+      SalaryPayment: [],
       log: [],
     };
   },
@@ -96,24 +95,22 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-     
     },
     tabClick(tab, event) {
-     if (tab.label == "دوامات")
+      if (tab.label == "دوامات")
         GetEmployeeLogById({
           Id: this.tempForm.Id,
         }).then((response) => {
           //  console.log("log :", response);
           this.log = response.reverse();
         });
-    
-         if (tab.label == "رواتب")
+
+      if (tab.label == "رواتب")
         GetSalaryById({
           EmployeeId: this.tempForm.Id,
         }).then((response) => {
           this.SalaryPayment = response.reverse();
-          });
-     
+        });
     },
 
     getAge() {
@@ -127,7 +124,7 @@ export default {
 
       this.tempForm.Age = age;
     },
-  
+
     setTagsViewTitle() {
       const title = "كشف الراتب";
       const route = Object.assign({}, this.tempRoute, {

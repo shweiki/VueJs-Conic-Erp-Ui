@@ -22,6 +22,8 @@
 
       <div style="margin-top: 10px">
         <el-timeline
+          v-infinite-scroll="load"
+          infinite-scroll-disabled="disabled"
           :reverse="reverse"
           style="
             margin-left: -25px;
@@ -72,6 +74,8 @@
               disabled
             />
           </el-timeline-item>
+          <p v-if="loading">Loading...</p>
+          <p v-if="noMore">No more</p>
         </el-timeline>
       </div>
     </el-card>
@@ -101,6 +105,14 @@ export default {
       },
     };
   },
+  computed: {
+    noMore() {
+      return this.listQuery.limit >= 200;
+    },
+    disabled() {
+      return this.loading || this.noMore;
+    },
+  },
   created() {
     this.getdata();
   },
@@ -119,6 +131,14 @@ export default {
         .catch((error) => {
           reject(error);
         });
+    },
+    load() {
+      this.loading = true;
+      setTimeout(() => {
+        this.listQuery.limit += 10;
+        this.getdata();
+        this.loading = false;
+      }, 2000);
     },
   },
 };

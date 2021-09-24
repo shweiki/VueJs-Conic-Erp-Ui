@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-col :span="24">
-      <el-select @change="SetVal" v-model="AdTemp" filterable placeholder="التسوية">
+      <el-select @change="SetVal" v-model="value" filterable placeholder="التسوية">
         <el-option
-          v-for="item in AdTemps"
+          v-for="item in options"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -18,26 +18,27 @@
   </div>
 </template>
 <script>
-
 import { GetAdjustmentLabel } from "@/api/Adjustment";
 export default {
-  props: ["Value"],
+  props: ["Value", "GrossSalary"],
   data() {
     return {
-      
-      AdTemp: 1,
-      AdTemps: [],
-      Price: 0.0,
+      value: 1,
+      options: [],
     };
   },
   watch: {
     Value(val) {
-      console.log("select", val);
-
       if (val != null && val != undefined) {
-        this.AdTemp = this.AdTemps.find((element) => element.value == val).value;
-        this.SetVal(this.AdTemp);
+        this.value = this.options.find((element) => element.value == val).value;
+        this.SetVal(this.value);
       }
+    },
+    GrossSalary(val) {
+      if (val > 0) {
+        this.GrossSalary = val;
+        this.SetVal(this.value);
+      } else this.GrossSalary = 0;
     },
   },
   mounted() {
@@ -46,10 +47,11 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
-       GetAdjustmentLabel().then(res => {
-        this.AdTemps = res;
-        this.SetVal(this.AdTemp);
-        this.loading = false;
+      GetAdjustmentLabel()
+        .then((res) => {
+          this.options = res;
+          this.SetVal(this.value);
+          this.loading = false;
         })
         .catch((error) => {
           // handle error
@@ -58,28 +60,12 @@ export default {
     },
     SetVal(val) {
       if (val) {
+        let dis = this.options.find((obj) => obj.value == val);
+        this.$emit("SetAdjustment", dis.value);
         this.$emit(
-          "SetAdjustment",
-          this.AdTemps.find((element) => element.value == val).value
+          "SetAdjustmentAmount",
+          dis.type == "Percentage" ? dis.amount * this.GrossSalary : dis.amount
         );
-        
-          this.$emit(
-           "SetAdjustmentAmount",
-           this.AdTemps.find((element) => element.value == val).amount
-         );
-         
-
-         this.$emit(
-           "CheckStatic",
-           this.AdTemps.find((element) => element.value == val).isstatic
-         );
-        
-
-         this.$emit(
-           "CheckWork",
-           this.AdTemps.find((element) => element.value == val).iswork
-         );
-        
       }
     },
   },

@@ -42,9 +42,9 @@ export function CheckDeviceLog(query) {
   })
 }
 
-export function GetDeviceLogById(query) {
+export function GetLogByUserId(query) {
   return request({
-    url: '/DeviceLog/GetDeviceLogById',
+    url: '/DeviceLog/GetLogByUserId',
     method: 'get',
     params:  query 
     

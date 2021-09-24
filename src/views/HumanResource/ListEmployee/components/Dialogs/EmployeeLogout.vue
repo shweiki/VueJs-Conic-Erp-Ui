@@ -6,7 +6,7 @@
       icon="el-icon-top"
       @click="Visibles = true"
     >
-    Logout
+      Logout
     </el-button>
     <el-dialog style="margin-top: -13vh" title="تسجيل خروج" :visible.sync="Visibles">
       <el-form
@@ -15,7 +15,7 @@
         label-position="top"
         class="demo-form-inline"
       >
-             <el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item prop="EmployeeName" label="اسم الموظف">
               <!-- <Employee-Search-Any
@@ -24,17 +24,18 @@
                     Temp.EmployeeId = v.Id;
                   }
                 "
-              /> --> <el-input disabled v-model="Name"></el-input>
+              /> -->
+              <el-input disabled v-model="Name"></el-input>
             </el-form-item>
           </el-col>
-           <el-col :span="12">
+          <el-col :span="12">
             <el-form-item prop="EmployeeId" label="الرقم الوظيفي">
-            <el-input disabled v-model="Id"></el-input>
+              <el-input disabled v-model="Id"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-           <el-col :span="12">
+          <el-col :span="12">
             <el-form-item label="وقت الخروج" prop="EndDateTime">
               <Fake-Date
                 :Value="Temp.EndDateTime"
@@ -46,7 +47,7 @@
               />
             </el-form-item>
           </el-col>
-           <el-col :span="12">
+          <el-col :span="12">
             <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
               <el-input v-model="Temp.Description"></el-input>
             </el-form-item>
@@ -64,14 +65,13 @@
 </template>
 
 <script>
-import { Logout } from "@/api/WorkingHoursLog";
 import EmployeeSearchAny from "@/components/HumanResource/EmployeeSearchAny";
 import permission from "@/directive/permission/index.js";
 import FakeDate from "@/components/Date/FakeDate.vue";
 export default {
   components: { EmployeeSearchAny, FakeDate },
   directives: { permission },
-  props:["Name", "Id"],
+  props: ["Name", "Id"],
   data() {
     return {
       Temp: {
