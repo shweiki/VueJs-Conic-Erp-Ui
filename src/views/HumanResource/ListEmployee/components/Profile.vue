@@ -163,14 +163,6 @@ export default {
           }).then((response) => {
             this.SalaryPaymentId = response;
           });
-          GetWorkingHourId({
-            EmployeeId: this.tempForm.Id,
-          }).then((response) => {
-            this.WorkingHourId = response;
-            if (response == false) {
-              this.WorkingHourId = -1;
-            }
-          });
           GetLastSalaryById({ Id: this.tempForm.Id }).then(
             (res) => (this.LastSalary = res)
           );
@@ -181,13 +173,6 @@ export default {
         });
     },
     tabClick(tab, event) {
-      if (tab.label == "دوامات")
-        GetEmployeeLogById({
-          Id: this.tempForm.Id,
-        }).then((response) => {
-          //  console.log("log :", response);
-          this.log = response.reverse();
-        });
       if (tab.label == "مالية")
         GetEntryMovementsByAccountId({
           AccountId: this.tempForm.AccountId,

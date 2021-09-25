@@ -383,6 +383,7 @@ export default {
         TotalRestitution: "إجمالي التعويضات",
         SaleInvoice: "فواتير المبيعات",
         Payment: "سندات القبض",
+        Visit: "زيارات",
         Receive: "سندات الصرف",
         Coupon:"كوبون",
     },

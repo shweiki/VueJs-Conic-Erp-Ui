@@ -291,7 +291,7 @@ export default {
       this.$refs["tempForm"].validate(async (valid) => {
         if (this.tempForm.PaymentMethod == "Coupon") {
           this.tempForm.PersonCount = 1;
-          this.tempForm.HourCount = 0.5;
+          this.tempForm.HourCount = 0;
           this.tempForm.HourPrice = 1;
           this.tempForm.Description =
             "كوبون رقم " +

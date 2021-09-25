@@ -187,6 +187,11 @@
               $t("CashPool." + row.Type)
             }}</strong>
           </router-link>
+          <router-link v-if="row.Type == 'Visit'" :to="'/CashPool/Edit/Visit/' + row.Id">
+            <strong style="font-size: 10px; cursor: pointer">{{
+              $t("CashPool." + row.Type)
+            }}</strong>
+          </router-link>
         </template>
       </el-table-column>
       <el-table-column label="المطلوب" align="center">
@@ -264,6 +269,7 @@
 import { GetByListQ } from "@/api/CashPool";
 import { GetSaleInvoiceByListId } from "@/api/SaleInvoice";
 import { GetPaymentByListId } from "@/api/Payment";
+import { GetByListId as GetVisitByListId } from "@/api/Visit";
 
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -357,6 +363,14 @@ export default {
           await GetPaymentByListId({ listid: item.Fktable }).then((res) => {
             item.Totals = res.Totals;
             item.Payment = res.items;
+            total = res.Totals;
+            total.Totals = total.Totals.toFixed(this.$store.getters.settings.ToFixed);
+          });
+        }
+        if (item.Type == "Visit") {
+          await GetVisitByListId({ listid: item.Fktable }).then((res) => {
+            item.Totals = res.Totals;
+            item.Visit = res.items;
             total = res.Totals;
             total.Totals = total.Totals.toFixed(this.$store.getters.settings.ToFixed);
           });

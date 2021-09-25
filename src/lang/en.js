@@ -371,6 +371,7 @@ export default {
         TotalReject :"Total Reject",
         TotalRestitution :"Total Restitution",
         SaleInvoice: "Sale Invoice",
+        Visit: "Visit",
         Payment: "Payment",
         Coupon:"Coupon",
     },

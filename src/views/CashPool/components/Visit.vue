@@ -154,7 +154,7 @@
 </template>
 
 <script>
-import { GetByListQ, GetVisitByListId } from "@/api/Visit";
+import { GetByListQ, GetByListId as GetVisitByListId } from "@/api/Visit";
 import { Create as CreateCashPool, GetCashPoolById } from "@/api/CashPool";
 
 import { CreateEntry } from "@/api/EntryAccounting";
@@ -202,7 +202,7 @@ export default {
         Cash: 0,
         Receivables: 0,
         Visa: 0,
-        Profit: 0,
+        Coupon: 0,
         TotalCost: 0,
         Discount: 0,
       },

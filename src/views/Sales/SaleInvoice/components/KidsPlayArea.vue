@@ -520,7 +520,6 @@ export default {
     AddItem(Item, Qty) {
       let SellingPrice = Item.SellingPrice;
       if (this.PriceMethod == "wholesale") SellingPrice = Item.OtherPrice;
-
       var find = this.$store.getters.settings.PointOfSale.QtyCounter
         ? this.tempForm.InventoryMovements.findIndex((value) => value.ItemsId == Item.Id)
         : -1;

@@ -44,7 +44,6 @@
           <el-col :span="24" :xs="24" v-loading="loading">
             <el-card class="box-card">
               <Status-Tag :Status="tempForm.Status" TableName="SalaryPayment" />
-
               <el-descriptions
                 class="margin-top"
                 title="احتساب الراتب"
@@ -57,6 +56,13 @@
                 >
                   <template slot="label"> الراتب الاساسي </template>
                   <el-tag size="small">{{ tempForm.GrossSalary }}</el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item
+                  :label-style="{ 'text-align': 'right' }"
+                  :content-style="{ 'text-align': 'right' }"
+                >
+                  <template slot="label"> ساعات الدوام </template>
+                  <el-tag size="small">{{ tempForm.WorkingHours }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
@@ -84,7 +90,11 @@
                   :content-style="{ 'text-align': 'right' }"
                 >
                   <template slot="label"> عدد أيام الدوام </template>
-                  <el-tag size="small">{{}}</el-tag>
+                  <el-tag size="small">{{
+                    list.reduce((prev, cur) => {
+                      return prev + parseFloat(!cur.absent ? 1 : 0);
+                    }, 0)
+                  }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
@@ -174,21 +184,32 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="اليوم" align="center">
+        <template slot-scope="{ row }">
+          <span>{{ days[row.Day] }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="التاريخ" width="150px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.Date | parseTime("{y}-{m}-{d}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="الدخول" width="150px" align="center">
+      <el-table-column label="الدخول" width="80px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.StartDateTime | parseTime("{h}:{i}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="الخروج" width="150px" align="center">
+      <el-table-column label="الخروج" width="80px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.EndDateTime | parseTime("{h}:{i}") }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="غياب" align="center">
+        <template slot-scope="{ row }">
+          <span>{{ row.absent ? "غياب" : "حضور" }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="الوصف" prop="Description" align="center"> </el-table-column>
       <el-table-column sortable label="عدد ساعات الدوام" width="150" align="center">
         <template slot-scope="scope">{{
@@ -253,9 +274,7 @@ export default {
         Name: "",
         SalaryAdjustmentLogs: [],
       },
-
       list: [],
-
       listLoading: false,
       listLoading2: false,
       listQuery: {
@@ -265,9 +284,10 @@ export default {
         DateFrom: "",
         DateTo: "",
         Status: 0,
-        TableName: "Emplyee",
+        TableName: "Employee",
         UserId: undefined,
       },
+      days: ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"],
     };
   },
   created() {
@@ -279,7 +299,7 @@ export default {
         this.tempForm = response;
         this.listQuery.UserId = this.tempForm.EmployeeId;
         GetLogByUserId(this.listQuery).then((response) => {
-          this.list = this.getDatesBetween(
+          this.list = this.GenerateWorkHoursLog(
             this.listQuery.DateFrom,
             this.listQuery.DateTo,
             response
@@ -302,8 +322,8 @@ export default {
           }
         });
     },
-    getDatesBetween(startDate, endDate, log) {
-      const dates = [];
+    GenerateWorkHoursLog(startDate, endDate, log) {
+      const WorkHoursLogs = [];
       startDate = new Date(startDate);
       endDate = new Date(endDate);
 
@@ -315,22 +335,45 @@ export default {
       );
 
       while (currentDate <= endDate) {
-        dates.push({
-          id: 0,
-          Date: currentDate,
-          StartDateTime: currentDate,
-          EndDateTime: currentDate,
-          WorkTime: 8,
+        let logs = log.filter((x) => {
+          return new Date(x.DateTime).getDate() === currentDate.getDate();
         });
-
+        let MinMaxD = [
+          new Date(
+            Math.min.apply(
+              null,
+              logs.map((x) => new Date(x.DateTime))
+            )
+          ),
+          new Date(
+            Math.max.apply(
+              null,
+              logs.map((x) => new Date(x.DateTime))
+            )
+          ),
+        ];
+        WorkHoursLogs.push({
+          Id: WorkHoursLogs.length + 1,
+          Day: currentDate.getDay(),
+          Date: currentDate,
+          StartDateTime: MinMaxD[0], // minDate
+          EndDateTime: MinMaxD[1], // maxDate,
+          WorkTime:
+            parseInt((Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60 * 60)) % 24) +
+            parseInt(
+              (Math.abs(MinMaxD[1].getTime() - MinMaxD[0].getTime()) / (1000 * 60)) % 60
+            ) /
+              100,
+          absent: logs.length <= 0 ? true : false,
+          logs: logs,
+        });
         currentDate = new Date(
           currentDate.getFullYear(),
           currentDate.getMonth(),
           currentDate.getDate() + 1 // Will increase month if over range
         );
       }
-
-      return dates;
+      return WorkHoursLogs;
     },
     handleFilter() {
       this.listQuery.Page = 1;
