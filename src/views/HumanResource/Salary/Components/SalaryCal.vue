@@ -209,7 +209,6 @@
           <span>{{ row.absent ? "غياب" : "حضور" }}</span>
         </template>
       </el-table-column>
-
       <el-table-column label="الوصف" prop="Description" align="center"> </el-table-column>
       <el-table-column sortable label="عدد ساعات الدوام" width="150" align="center">
         <template slot-scope="scope">{{

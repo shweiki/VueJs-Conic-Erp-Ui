@@ -9,8 +9,8 @@
             {
               required: true,
               message: 'لايمكن ترك الاسم فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <el-input
@@ -27,8 +27,8 @@
             {
               required: true,
               message: 'لايمكن ترك الرقم الوطني فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <el-input
@@ -46,8 +46,8 @@
             {
               required: true,
               message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <el-date-picker
@@ -68,8 +68,8 @@
             {
               required: true,
               message: 'لايمكن ترك رقم الهاتف فارغ',
-              trigger: 'blur'
-            }
+              trigger: 'blur',
+            },
           ]"
         >
           <VuePhoneNumberInput
@@ -116,48 +116,46 @@
         >
       </el-col>
       <el-col :span="3">
-        <el-button
-          @click="Print()"
-          type="primary"
-          icon="el-icon-printer"
-        ></el-button
-      ></el-col>
+        <Drawer-Print
+          v-bind:disabled="Member == null ? false : true"
+          Type="MemberAgreement"
+          :Data="Member"
+        />
+      </el-col>
     </el-row>
   </el-form>
 </template>
 
 <script>
-import {  Edit } from "@/api/Member";
-import printJS from "print-js";
-import { MemberAgreement } from "@/Report/MemberAgreement";
+import { Edit } from "@/api/Member";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 export default {
-  components: { VuePhoneNumberInput },
+  components: { VuePhoneNumberInput, DrawerPrint },
   props: {
     Member: {
       type: Object,
       default: () => {
         return {};
-      }
-    }
+      },
+    },
   },
   methods: {
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
- 
           Edit(this.Member)
-            .then(response => {
+            .then((response) => {
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -166,15 +164,6 @@ export default {
         }
       });
     },
-    Print() {
-      printJS({
-        printable: MemberAgreement(this.Member),
-        type: "pdf",
-        base64: true,
-        showModal: true
-      });
-    },
-
-  }
+  },
 };
 </script>

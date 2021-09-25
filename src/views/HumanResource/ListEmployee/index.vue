@@ -17,16 +17,12 @@ import WebCam from "@/components/WebCam";
 export default {
   name: "EmployeeList",
   directives: { permission },
-  components: { EmployeeSearch, PanThumb, WebCam},
+  components: { EmployeeSearch, PanThumb, WebCam },
   data() {
     return {
       loading: true,
-     
     };
   },
- 
- 
- 
   created() {
     this.getdata();
   },

@@ -15,7 +15,13 @@
             type="primary"
             icon="el-icon-refresh"
             :size="$store.getters.size"
-            @click="getdata()"
+            @click="
+              () => {
+                listQuery.Page = 1;
+                MembersLogs = [];
+                getdata();
+              }
+            "
           ></el-button>
         </el-col>
       </el-row>
@@ -100,14 +106,14 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
-        Status: undefined,
+        Status: 0,
         TableName: "Member",
       },
     };
   },
   computed: {
     noMore() {
-      return this.listQuery.limit >= 200;
+      return this.listQuery.Page >= 12;
     },
     disabled() {
       return this.loading || this.noMore;
@@ -121,11 +127,9 @@ export default {
       this.loading = true;
       GetByStatus(this.listQuery)
         .then((response) => {
-          if (response.length != this.MembersLogs.length) {
-            this.MembersLogs = response;
-            //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
-            //  RemoveDuplicate();
-          }
+          Array.prototype.push.apply(this.MembersLogs, response);
+          //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
+          //  RemoveDuplicate();
           this.loading = false;
         })
         .catch((error) => {
@@ -133,12 +137,8 @@ export default {
         });
     },
     load() {
-      this.loading = true;
-      setTimeout(() => {
-        this.listQuery.limit += 10;
-        this.getdata();
-        this.loading = false;
-      }, 2000);
+      this.listQuery.Page += 1;
+      this.getdata();
     },
   },
 };

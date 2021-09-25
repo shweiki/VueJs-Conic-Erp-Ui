@@ -45,7 +45,7 @@
 
 <script>
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
-import { InBody } from "@/Report/InBody";
+import { PrintReport } from "@/Report/FunctionalityReport";
 
 export default {
   props: {
@@ -89,7 +89,10 @@ export default {
             duration: 2000,
           });
           this.$nextTick(() => {
-            InBody(this.ServiceInvoices.find(({ Id }) => Id == this.SId));
+            PrintReport(
+              "InBody",
+              this.ServiceInvoices.find(({ Id }) => Id == this.SId)
+            );
           });
         })
         .catch((error) => {

@@ -257,11 +257,10 @@ export default {
     getdata(val) {
       GetById({ Id: val })
         .then((response) => {
-          console.log(response);
+          //  console.log(response);
           this.tempForm = response;
           // set tagsview title
           this.setTagsViewTitle();
-
           // set page title
           this.setPageTitle();
         })
@@ -286,13 +285,12 @@ export default {
         Description: "",
       };
     },
-
     confirmData() {
       this.$refs["tempForm"].validate(async (valid) => {
         if (this.tempForm.PaymentMethod == "Coupon") {
           this.tempForm.PersonCount = 1;
-          this.tempForm.HourCount = 0;
-          this.tempForm.HourPrice = 1;
+          this.tempForm.HourCount = 0.5;
+          this.tempForm.HourPrice = 0;
           this.tempForm.Description =
             "كوبون رقم " +
             this.tempForm.CouponId +
@@ -306,7 +304,7 @@ export default {
             this.tempForm.HourPrice -
           this.tempForm.Discount
         ).toFixed(this.$store.getters.settings.ToFixed);
-        if (valid && this.tempForm.Total > 0) {
+        if (valid) {
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
           this.DisabledSave = true;
           this.tempForm.FakeDate = Now();
