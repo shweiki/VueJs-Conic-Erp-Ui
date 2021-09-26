@@ -54,48 +54,6 @@
       </el-col>
       <el-col :span="6">
         <el-button
-          v-permission="['Admin']"
-          v-waves
-          class="filter-item"
-          icon="el-icon-printer"
-          type="primary"
-          @click="
-            SaleInvoicesList({
-              Totals: Totals,
-              Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo],
-            })
-          "
-        ></el-button>
-        <el-button
-          v-permission="['Admin']"
-          v-waves
-          class="filter-item"
-          icon="el-icon-printer"
-          type="info"
-          @click="
-            SaleInvoicesItemsMovements({
-              Totals: Totals,
-              Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo],
-            })
-          "
-        ></el-button>
-        <el-button
-          v-permission="['Admin']"
-          v-waves
-          class="filter-item"
-          icon="el-icon-printer"
-          type="success"
-          @click="
-            SaleInvoicesItemsIngredients({
-              Totals: Totals,
-              Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo],
-            })
-          "
-        ></el-button>
-        <el-button
           v-waves
           v-permission="['Admin']"
           :loading="downloadLoading"
@@ -287,11 +245,6 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import {
-  SaleInvoicesList,
-  SaleInvoicesItemsMovements,
-  SaleInvoicesItemsIngredients,
-} from "@/Report/SaleInvoice";
 import permission from "@/directive/permission/index.js";
 
 import waves from "@/directive/waves"; // waves directive
@@ -350,9 +303,6 @@ export default {
     // this.getList();
   },
   methods: {
-    SaleInvoicesList,
-    SaleInvoicesItemsMovements,
-    SaleInvoicesItemsIngredients,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
@@ -415,21 +365,6 @@ export default {
     getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
-    },
-    print(data) {
-      data = data.map((Item) => ({
-        Name: Item.Name,
-        Qty: Item.Qty,
-        SellingPrice: Item.SellingPrice,
-        Total: (Item.SellingPrice * Item.Qty).toFixed(
-          this.$store.getters.settings.ToFixed
-        ),
-      }));
-      printJS({
-        printable: data,
-        properties: ["Name", "Qty", "SellingPrice", "Total"],
-        type: "json",
-      });
     },
   },
 };

@@ -183,11 +183,7 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import {
-  SaleInvoicesList,
-  SaleInvoicesItemsMovements,
-  SaleInvoicesItemsIngredients,
-} from "@/Report/SaleInvoice";
+
 import permission from "@/directive/permission/index.js";
 
 import waves from "@/directive/waves"; // waves directive
@@ -242,9 +238,6 @@ export default {
     // this.getList();
   },
   methods: {
-    SaleInvoicesList,
-    SaleInvoicesItemsMovements,
-    SaleInvoicesItemsIngredients,
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);

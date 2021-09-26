@@ -50,10 +50,8 @@
 
 <script>
 import checkPermission from "@/utils/permission";
-import { PaymentMember } from "@/Report/PayPapar";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 
-import printJS from "print-js";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
@@ -68,14 +66,6 @@ export default {
   },
   methods: {
     checkPermission,
-    printPayment(data) {
-      printJS({
-        printable: PaymentMember(data),
-        type: "pdf",
-        base64: true,
-        showModal: true,
-      });
-    },
   },
 };
 </script>
