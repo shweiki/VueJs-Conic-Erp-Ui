@@ -72,6 +72,13 @@ export function GetDriverByStatus(query) {
     params: query
   })
 }
+export function GetDriverInfo(query) {
+  return request({
+    url: '/Driver/GetDriverInfo',
+    method: 'get',
+    params: query
+  })
+}
 
 export function GetDriverById(query) {
   return request({
@@ -81,8 +88,22 @@ export function GetDriverById(query) {
     
   })
 }
-
-
+export function DriverActivation(query) {
+  return request({
+    url: '/Driver/DriverActivation',
+    method: 'get',
+    params:  query 
+    
+  })
+}
+export function DriverDeActivation(query) {
+  return request({
+    url: '/Driver/DriverDeActivation',
+    method: 'get',
+    params:  query 
+    
+  })
+}
 export function Create(data) {
   return request({
     url: '/Driver/Create',

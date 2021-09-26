@@ -734,5 +734,7 @@ export default {
         CustomerName:"Customer Name",
         Phone:"Phone Number",
         DOrderInfo:"Delivery Order Information",
+        Account:"Account",
+        DriverAccount:"Driver Account",
     }
 }

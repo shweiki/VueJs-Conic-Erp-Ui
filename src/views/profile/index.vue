@@ -8,8 +8,11 @@
 
         <el-col :span="18" :xs="24">
           <el-card>
-            <el-tabs v-model="activeTab">
-              <el-tab-pane label="Account" name="account">
+            <el-tabs v-model="activeTab" >
+              <el-tab-pane v-if="this.DriverForm.DriverUserId == this.user.Id || this.user.name == 'Developer'" :label="$t('Delivery.DriverAccount')" name="DriverAccount">
+                <Driver :DriverForm="DriverForm" />
+              </el-tab-pane>
+                <el-tab-pane :label="$t('Delivery.Account')" name="account" >
                 <account :user="user" />
               </el-tab-pane>
             </el-tabs>
@@ -24,14 +27,16 @@
 import { mapGetters } from "vuex";
 import UserCard from "./components/UserCard";
 import Account from "./components/Account";
-
+import Driver from "./components/Driver";
+import {GetDriverInfo} from "@/api/Driver";
 export default {
   name: "Profile",
-  components: { UserCard, Account },
+  components: { UserCard, Account, Driver },
   data() {
     return {
       user: {},
       activeTab: "account",
+      DriverForm: {}
     };
   },
   computed: {
@@ -39,6 +44,7 @@ export default {
   },
   created() {
     this.getUser();
+    this.GetDriverData();
   },
   methods: {
     getUser() {
@@ -49,8 +55,19 @@ export default {
         role: this.roles.join(" | "),
         email: "admin@test.com",
         avatar: this.avatar,
-      };
+      }
+    
     },
+      GetDriverData() {
+      GetDriverInfo({UserId: this.user.Id, name: this.user.name}).then((response) => {
+        this.DriverForm = response;
+      })
+      },
   },
 };
 </script>
+<style >
+.el-tabs__nav-scroll{
+float: right;
+direction: ltr;}
+</style>

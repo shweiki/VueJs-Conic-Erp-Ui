@@ -748,7 +748,8 @@ export default {
         CustomerName: "إاسم الزبون",
         Phone: "رقم الهاتف",
         DOrderInfo: "معلومات طلب التوصيل",
-
+        Account:"الحساب الشخصي",
+        DriverAccount:"حساب السائق",
 
     }
 }
