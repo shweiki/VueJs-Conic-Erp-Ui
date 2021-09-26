@@ -91,8 +91,9 @@
                 >
                   <template slot="label"> عدد أيام الدوام </template>
                   <el-tag size="small">{{
+                    30 -
                     list.reduce((prev, cur) => {
-                      return prev + parseFloat(!cur.absent ? 1 : 0);
+                      return prev + parseFloat(cur.absent ? 1 : 0);
                     }, 0)
                   }}</el-tag>
                 </el-descriptions-item>
@@ -223,7 +224,9 @@
         }}</template>
       </el-table-column>
       <el-table-column label="الاجرائات " width="120" align="center">
-        <el-button> اتخاذ اجراء</el-button>
+        <template slot-scope="scope">
+          <dialog-log-device :Log="scope.row.logs" />
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -242,6 +245,7 @@ import SortOptions from "@/components/SortOptions";
 import AdjustmentBind from "../../WorkingAdjustment/Components/AdjustmentBind.vue";
 import waves from "@/directive/waves"; // waves directive
 import { GetLogByUserId } from "@/api/DeviceLog";
+import DialogLogDevice from "@/components/Device/DialogLogDevice.vue";
 
 export default {
   name: "Profile",
@@ -253,6 +257,7 @@ export default {
     AdjustmentBind,
     DrawerPrint,
     StatusTag,
+    DialogLogDevice,
   },
   directives: { waves },
   data() {
@@ -303,6 +308,7 @@ export default {
             this.listQuery.DateTo,
             response
           );
+          console.log(" this.list", this.list);
           this.listLoading2 = false;
         });
       });
