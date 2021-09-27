@@ -1,14 +1,8 @@
 <template>
-  <el-select @change="SetVal" filterable v-model="Device" placeholder="السائق">
-    <el-option
-      v-for="item in Devices"
-      :key="item.value"
-      :label="item.label"
-      :value="item"
-    >
-      <span style="color: #8492a6; font-size: 16px">{{ item.Company }}-------</span>
-      <span style="">{{ item.label }}-------</span>
-      <span style="color: #8492a6; font-size: 13px">{{ item.phone }}</span>
+  <el-select @change="SetVal" filterable v-model="Device" placeholder="اسم الجهاز">
+    <el-option v-for="item in Devices" :key="item.Id" :label="item.Name" :value="item">
+      <span style="color: #8492a6; font-size: 16px">{{ item.Name }}</span>
+      <span style="">{{ item.Id }}</span>
     </el-option>
   </el-select>
 </template>
@@ -16,6 +10,7 @@
 import { GetDevice } from "@/api/Device";
 
 export default {
+  props: ["Value"],
   data() {
     return {
       Device: {},

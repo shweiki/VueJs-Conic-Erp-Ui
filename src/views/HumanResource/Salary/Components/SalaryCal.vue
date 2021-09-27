@@ -163,7 +163,6 @@
           </el-row>
         </el-card> </el-col
     ></el-row>
-
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -231,7 +230,6 @@
     </el-table>
   </div>
 </template>
-
 <script>
 import { GetById, Update } from "@/api/Salary";
 import NextOprations from "@/components/Oprationsys/NextOprations";
@@ -308,7 +306,7 @@ export default {
             this.listQuery.DateTo,
             response
           );
-          console.log(" this.list", this.list);
+          console.log("this.list", this.list);
           this.listLoading2 = false;
         });
       });
@@ -338,7 +336,6 @@ export default {
         startDate.getMonth(),
         startDate.getDate()
       );
-
       while (currentDate <= endDate) {
         let logs = log.filter((x) => {
           return new Date(x.DateTime).getDate() === currentDate.getDate();
@@ -410,7 +407,6 @@ export default {
 .el-input__inner {
   width: 100%;
 }
-
 .el-col-8 {
   margin-left: 15px;
 }

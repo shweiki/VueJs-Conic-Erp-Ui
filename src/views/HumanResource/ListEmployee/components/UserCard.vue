@@ -131,8 +131,8 @@
         <el-col :span="3">
           <Drawer-Print
             v-bind:disabled="Member == null ? false : true"
-            Type="MemberAgreement"
-            :Data="Member"
+            Type="EmployeeAgreement"
+            :Data="Employee"
           />
         </el-col>
       </el-col>

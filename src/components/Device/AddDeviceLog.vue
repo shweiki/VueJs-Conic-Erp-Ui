@@ -10,7 +10,7 @@
     <el-dialog style="margin-top: -13vh" title="تسجيل دخول" :visible.sync="Visibles">
       <el-form
         :model="Temp"
-        ref="MemberLogForm"
+        ref="DeviceLogForm"
         label-position="top"
         class="demo-form-inline"
       >
@@ -20,15 +20,7 @@
               <employee-search-any
                 @Set="
                   (v) => {
-                    Temp.TableName = 'Member';
-                    Temp.Fk = v.Id;
-                  }
-                "
-              />
-              <Member-Search-Any
-                @Set="
-                  (v) => {
-                    Temp.TableName = 'Member';
+                    Temp.TableName = 'Employee';
                     Temp.Fk = v.Id;
                   }
                 "
@@ -36,7 +28,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <select-device :Value="DeviceId" @Set="(v) => (Temp.DeviceId = v.Id)" />
+            <select-device :Value="Temp.DeviceId" @Set="(v) => (Temp.DeviceId = v.Id)" />
           </el-col>
         </el-row>
 
@@ -76,8 +68,10 @@ import MemberSearchAny from "@/components/Member/MemberSearchAny";
 import permission from "@/directive/permission/index.js";
 import FakeDate from "@/components/Date/FakeDate.vue";
 import SelectDevice from "./SelectDevice.vue";
+import EmployeeSearchAny from "../HumanResource/EmployeeSearchAny.vue";
 export default {
-  components: { MemberSearchAny, FakeDate, SelectDevice },
+  name: "AddDeviceLog",
+  components: { MemberSearchAny, FakeDate, SelectDevice, EmployeeSearchAny },
   directives: { permission },
   data() {
     return {
@@ -96,7 +90,7 @@ export default {
   },
   methods: {
     create() {
-      this.$refs["MemberLogForm"].validate((valid) => {
+      this.$refs["DeviceLogForm"].validate((valid) => {
         if (valid) {
           Create(this.Temp)
             .then((response) => {

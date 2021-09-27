@@ -15,12 +15,6 @@
       <div slot="title" class="dialog-footer">
         <el-col :span="4">
           <Add-Device-Log />
-          <el-button
-            icon="fa fa-save"
-            style="float: left"
-            type="primary"
-            @click="createData()"
-          />
         </el-col>
         <el-col :span="20">
           <el-divider> سيجلات الدوام </el-divider>
@@ -48,8 +42,12 @@
 </template>
 
 <script>
+import AddDeviceLog from "./AddDeviceLog.vue";
+
 export default {
+  name: "DialogLogDevice",
   props: ["Log"],
+  components: { AddDeviceLog },
   data() {
     return {
       dialogFormVisible: false,
