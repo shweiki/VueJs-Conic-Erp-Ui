@@ -27,6 +27,12 @@ export default {
       date: "",
     };
   },
+  watch: {
+    Value(val) {
+      if (val != "") this.SetVal(new Date(val));
+      else this.SetVal(new Date());
+    },
+  },
   created() {
     if (this.Value != "") this.SetVal(new Date(this.Value));
     else this.SetVal(new Date()); //   this.date = new Date();
