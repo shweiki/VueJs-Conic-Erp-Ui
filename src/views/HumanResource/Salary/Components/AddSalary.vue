@@ -1,10 +1,8 @@
 <template>
   <div>
-   <el-button
-              type="primary"
-              icon="el-icon-plus"
-              @click="Visibles = true"
-            >تعديل الراتب</el-button>
+    <el-button type="primary" icon="el-icon-plus" @click="Visibles = true"
+      >تعديل الراتب</el-button
+    >
     <el-dialog style="margin-top: -13vh" title="تعديل الراتب" :visible.sync="Visibles">
       <el-form
         :model="Temp"
@@ -13,7 +11,7 @@
         class="demo-form-inline"
       >
         <el-row :gutter="20">
-            <el-col :span="8">
+          <el-col :span="8">
             <el-form-item prop="EmployeeId" label="الرقم الوظيفي ">
               <el-input disabled v-model="EmployeeId"></el-input>
             </el-form-item>
@@ -25,7 +23,20 @@
           </el-col>
         </el-row>
         <el-row>
-           <el-col :span="24">
+          <el-col :span="24">
+            <el-form-item label="الفترة" prop="SalaryFrom">
+              <Search-By-Date
+                :Value="[Temp.SalaryFrom, Temp.SalaryTo]"
+                @Set="
+                  (v) => {
+                    Temp.SalaryFrom = v[0];
+                    Temp.SalaryTo = v[1];
+                  }
+                "
+            /></el-form-item> </el-col
+        ></el-row>
+        <el-row>
+          <el-col :span="12">
             <el-form-item label="الراتب الكلي" prop="GrossSalary">
               <el-input-number
                 v-model="Temp.GrossSalary"
@@ -35,8 +46,9 @@
                 :max="5000"
                 @focus="$event.target.select()"
               ></el-input-number>
-            </el-form-item>
-               <el-form-item label="ساعات الدوام " prop="WorkingHours">
+            </el-form-item> </el-col
+          ><el-col :span="12">
+            <el-form-item label="ساعات الدوام " prop="WorkingHours">
               <el-input-number
                 v-model="Temp.WorkingHours"
                 :step="1.0"
@@ -62,38 +74,40 @@
 import { Update } from "@/api/Salary";
 import EmployeeSearchAny from "@/components/HumanResource/EmployeeSearchAny";
 import permission from "@/directive/permission/index.js";
-import FakeDate from "@/components/Date/FakeDate.vue";
+import SearchByDate from "@/components/Date/SearchByDate";
+
 export default {
-  components: { EmployeeSearchAny, FakeDate },
+  components: { EmployeeSearchAny, SearchByDate },
   directives: { permission },
-  props:{
-       SalaryPayment: {
+  props: {
+    SalaryPayment: {
       type: Array,
       default: () => {
         return null;
-      }
+      },
     },
-    EmployeeId:{
+    EmployeeId: {
       type: Number,
-      default: undefined
+      default: undefined,
     },
-    EmployeeName:{
-      type: String
+    EmployeeName: {
+      type: String,
     },
-    LastSalary:{
-      type: Number
-    }
+    LastSalary: {
+      type: Number,
     },
+  },
   data() {
     return {
       Temp: {
         Id: undefined,
-        EmployeeId :0,
+        EmployeeId: 0,
         GrossSalary: 0.0,
-        WorkingHours: 0
+        WorkingHours: 0,
+        SalaryFrom: "",
+        SalaryTo: "",
       },
       Visibles: false,
-      
     };
   },
   methods: {

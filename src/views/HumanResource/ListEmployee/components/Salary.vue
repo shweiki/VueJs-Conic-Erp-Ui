@@ -62,6 +62,7 @@
           >
             احتساب الراتب
           </el-button>
+          <Drawer-Print Type="SalaryPayment" :Data="row" />
         </template>
       </el-table-column>
     </el-table>
@@ -72,9 +73,10 @@
 import AddSalary from "../../Salary/Components/AddSalary";
 import SalaryCal from "../../Salary/Components/SalaryCal";
 import StatusTag from "@/components/Oprationsys/StatusTag";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
-  components: { AddSalary, SalaryCal, StatusTag },
+  components: { AddSalary, SalaryCal, StatusTag, DrawerPrint },
   props: {
     SalaryPayment: {
       type: Array,

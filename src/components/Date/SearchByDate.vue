@@ -28,10 +28,25 @@ import {
 } from "@js-joda/core";
 
 export default {
+  props: ["Value"],
   data() {
     return {
       date: [],
     };
+  },
+  watch: {
+    Value(val) {
+      if (
+        val[0] != "" &&
+        val[0] != this.date[0] &&
+        val[1] != "" &&
+        val[1] != this.date[1]
+      ) {
+        let start = new Date(val[0]);
+        let end = new Date(val[1]);
+        this.SetVal([start.setHours(0, 0, 0, 0), end.setHours(23, 59, 59, 999)]);
+      }
+    },
   },
   created() {
     const { shortcuts } = this.$store.getters.settings.pickerOptions;
@@ -43,6 +58,10 @@ export default {
       )
     );
     let end = new Date();
+    if (this.Value[0] != "" && this.Value[1] != "") {
+      start = new Date(this.Value[0]);
+      end = new Date(this.Value[1]);
+    }
     this.SetVal([start.setHours(0, 0, 0, 0), end.setHours(23, 59, 59, 999)]);
     //  this.date = [new Date(), new Date()];
   },

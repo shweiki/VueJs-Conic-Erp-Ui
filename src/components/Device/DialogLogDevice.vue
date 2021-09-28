@@ -14,7 +14,7 @@
     >
       <div slot="title" class="dialog-footer">
         <el-col :span="4">
-          <Add-Device-Log />
+          <Add-Device-Log :Fk="Fk" />
         </el-col>
         <el-col :span="20">
           <el-divider> سيجلات الدوام </el-divider>
@@ -36,6 +36,9 @@
         </el-table-column>
         <el-table-column label="الوصف" prop="Description" align="center">
         </el-table-column>
+        <el-table-column label="تعديل" width="80px" align="center">
+          <template slot-scope="{ row }"> <Edit-Device-Log :Id="row.Id" /> </template>
+        </el-table-column>
       </el-table>
     </el-dialog>
   </div>
@@ -43,11 +46,12 @@
 
 <script>
 import AddDeviceLog from "./AddDeviceLog.vue";
+import EditDeviceLog from "./EditDeviceLog.vue";
 
 export default {
   name: "DialogLogDevice",
-  props: ["Log"],
-  components: { AddDeviceLog },
+  props: ["Log", "Fk"],
+  components: { AddDeviceLog, EditDeviceLog },
   data() {
     return {
       dialogFormVisible: false,

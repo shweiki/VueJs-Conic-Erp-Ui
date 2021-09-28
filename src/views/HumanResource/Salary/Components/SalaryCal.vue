@@ -3,12 +3,11 @@
     <el-row type="flex">
       <el-col :span="8">
         <Search-By-Date
-          :Value="[listQuery.DateFrom, listQuery.DateTo]"
+          :Value="[tempForm.SalaryFrom, tempForm.SalaryTo]"
           @Set="
             (v) => {
               listQuery.DateFrom = v[0];
               listQuery.DateTo = v[1];
-              handleFilter();
             }
           "
         />
@@ -19,7 +18,6 @@
           @Set="
             (v) => {
               listQuery.Sort = v;
-              handleFilter();
             }
           "
         />
@@ -35,7 +33,15 @@
         </el-button>
       </el-col>
       <el-col :span="3">
-        <Drawer-Print style="float: left" Type="SalaryPayment" :Data="tempForm" />
+        <Drawer-Print Type="SalaryPayment" :Data="tempForm" />
+      </el-col>
+      <el-col :span="3">
+        <el-button
+          :disabled="DisabledSave"
+          @click="confirmData"
+          type="success"
+          icon="el-icon-check"
+        ></el-button>
       </el-col>
     </el-row>
     <el-row type="flex"
@@ -82,8 +88,28 @@
                   :label-style="{ 'text-align': 'right' }"
                   :content-style="{ 'text-align': 'right' }"
                 >
-                  <template slot="label"> مجموع ساعات الدوام </template>
-                  <el-tag size="small">{{}}</el-tag>
+                  <template slot="label"> مجموع ساعات </template>
+                  <el-tag size="small">{{
+                    list
+                      .reduce((prev, cur) => {
+                        return prev + cur.WorkTime;
+                      }, 0)
+                      .toFixed($store.getters.settings.ToFixed)
+                  }}</el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item
+                  :label-style="{ 'text-align': 'right' }"
+                  :content-style="{ 'text-align': 'right' }"
+                >
+                  <template slot="label"> مجموع ساعات التأخير </template>
+                  <el-tag size="small">{{ tempForm.DelayHours }}</el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item
+                  :label-style="{ 'text-align': 'right' }"
+                  :content-style="{ 'text-align': 'right' }"
+                >
+                  <template slot="label"> مجموع ساعات إضافي </template>
+                  <el-tag size="small">{{ tempForm.ExtraHours }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
@@ -102,34 +128,26 @@
                   :content-style="{ 'text-align': 'right' }"
                 >
                   <template slot="label"> صافي الراتب </template>
-                  <el-tag size="small">{{
-                    parseFloat(tempForm.GrossSalary) +
-                    tempForm.SalaryAdjustmentLogs.reduce((prev, cur) => {
-                      return prev + parseFloat(cur.AdjustmentAmmount);
-                    }, 0)
-                  }}</el-tag>
+                  <el-tag size="small">{{ tempForm.NetSalary }}</el-tag>
                 </el-descriptions-item>
               </el-descriptions>
-              <el-button
-                :disabled="DisabledSave"
-                @click="confirmData"
-                type="success"
-                icon="el-icon-check"
-              ></el-button>
             </el-card>
-          </el-col> </el-row></el-col
+          </el-col>
+        </el-row></el-col
       ><el-col :span="12">
         <el-card class="box-card">
-          <adjustment-bind
+          <Add-Salary-Adjustment-Log
             :EmployeeId="tempForm.EmployeeId"
             :EmployeeName="tempForm.Name"
             :SalaryPaymentId="tempForm.Id"
             :GrossSalary="tempForm.GrossSalary"
+            :ExtraHours="tempForm.ExtraHours"
+            :DelayHours="tempForm.DelayHours"
           />
           <el-row>
             <el-col :span="24">
               <el-table
-                height="200"
+                height="220"
                 :data="tempForm.SalaryAdjustmentLogs"
                 v-loading="listLoading2"
                 border
@@ -150,7 +168,7 @@
                 <el-table-column
                   prop="Description"
                   label="ملاحظات"
-                  width="160"
+                  width="120"
                   align="center"
                 ></el-table-column>
                 <el-table-column
@@ -158,6 +176,12 @@
                   label="القيمة"
                   align="center"
                 ></el-table-column>
+                <el-table-column label="تعديل" align="center">
+                  <template slot-scope="{ row }">
+                    <edit-salary-adjustment-log :Id="row.Id" />
+                    <Delete-Salary-Adjustment-Log :Id="row.Id"
+                  /></template>
+                </el-table-column>
               </el-table>
             </el-col>
           </el-row>
@@ -215,16 +239,19 @@
           scope.row.WorkTime.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column label="الزيادة والنقص" width="120" align="center">
+      <el-table-column label="ساعات تأخير" width="120" align="center">
         <template slot-scope="scope">{{
-          (scope.row.WorkTime - tempForm.WorkingHours).toFixed(
-            $store.getters.settings.ToFixed
-          )
+          scope.row.DelayHours.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column label="الاجرائات " width="120" align="center">
+      <el-table-column label="ساعات إضافي" width="120" align="center">
+        <template slot-scope="scope">{{
+          scope.row.ExtraHours.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column label="#" width="80" align="center">
         <template slot-scope="scope">
-          <dialog-log-device :Log="scope.row.logs" />
+          <dialog-log-device :Log="scope.row.logs" :Fk="tempForm.EmployeeId" />
         </template>
       </el-table-column>
     </el-table>
@@ -233,17 +260,19 @@
 <script>
 import { GetById, Update } from "@/api/Salary";
 import NextOprations from "@/components/Oprationsys/NextOprations";
-import SearchByDate from "@/components/Date/SearchByDate";
+import SearchByDate from "@/components/Date/SearchByDate.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 import { parseTime } from "@/utils";
 import SortOptions from "@/components/SortOptions";
-import AdjustmentBind from "../../WorkingAdjustment/Components/AdjustmentBind.vue";
+import AddSalaryAdjustmentLog from "../../WorkingAdjustment/Components/AddSalaryAdjustmentLog.vue";
 import waves from "@/directive/waves"; // waves directive
 import { GetLogByUserId } from "@/api/DeviceLog";
 import DialogLogDevice from "@/components/Device/DialogLogDevice.vue";
+import EditSalaryAdjustmentLog from "../../WorkingAdjustment/Components/EditSalaryAdjustmentLog.vue";
+import DeleteSalaryAdjustmentLog from "../../WorkingAdjustment/Components/DeleteSalaryAdjustmentLog.vue";
 
 export default {
   name: "Profile",
@@ -252,10 +281,12 @@ export default {
     SortOptions,
     RadioOprations,
     SearchByDate,
-    AdjustmentBind,
+    AddSalaryAdjustmentLog,
     DrawerPrint,
     StatusTag,
     DialogLogDevice,
+    EditSalaryAdjustmentLog,
+    DeleteSalaryAdjustmentLog,
   },
   directives: { waves },
   data() {
@@ -269,12 +300,14 @@ export default {
         EmployeeId: undefined,
         GrossSalary: 0,
         NetSalary: 0,
-        SalaryFrom: new Date(),
-        SalaryTo: new Date(),
+        SalaryFrom: "",
+        SalaryTo: "",
         status: 0,
         WorkingHours: 0,
         Name: "",
         SalaryAdjustmentLogs: [],
+        ExtraHours: 0,
+        DelayHours: 0,
       },
       list: [],
       listLoading: false,
@@ -293,7 +326,7 @@ export default {
     };
   },
   created() {
-    // this.getdata(val);
+    this.getdata();
   },
   methods: {
     getdata() {
@@ -306,18 +339,40 @@ export default {
             this.listQuery.DateTo,
             response
           );
-          console.log("this.list", this.list);
+          this.tempForm.ExtraHours = this.list
+            .reduce((prev, cur) => {
+              return prev + cur.ExtraHours;
+            }, 0)
+            .toFixed(this.$store.getters.settings.ToFixed);
+
+          this.tempForm.DelayHours = this.list
+            .reduce((prev, cur) => {
+              return prev + cur.DelayHours;
+            }, 0)
+            .toFixed(this.$store.getters.settings.ToFixed);
+          this.tempForm.NetSalary = (
+            parseFloat(this.tempForm.GrossSalary) +
+            this.tempForm.SalaryAdjustmentLogs.reduce((prev, cur) => {
+              return prev + parseFloat(cur.AdjustmentAmmount);
+            }, 0)
+          ).toFixed(this.$store.getters.settings.ToFixed);
+          //  console.log("this.list", this.list);
           this.listLoading2 = false;
         });
       });
-
       this.loading = false;
     },
     confirmData() {
       this.DisabledSave = true;
+      this.tempForm.Status = 1;
       Update(this.tempForm)
         .then((response) => {
-          this.tempForm = response;
+          this.$notify({
+            title: "تم ",
+            message: "تم احتساب بنجاح" + response,
+            type: "success",
+            duration: 2000,
+          });
         })
         .then((res) => {
           if (res) {
@@ -354,18 +409,32 @@ export default {
             )
           ),
         ];
+        // Work Time
+        let WorkTime =
+          parseInt((Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60 * 60)) % 24) +
+            parseInt(
+              (Math.abs(MinMaxD[1].getTime() - MinMaxD[0].getTime()) / (1000 * 60)) % 60
+            ) /
+              100 || 0;
+        //  Extra Hours && Delay Hours
+        let ExtraHours =
+            WorkTime - this.tempForm.WorkingHours > 0
+              ? WorkTime - this.tempForm.WorkingHours
+              : 0 || 0,
+          DelayHours =
+            WorkTime - this.tempForm.WorkingHours < 0
+              ? WorkTime - this.tempForm.WorkingHours
+              : 0 || 0;
+
         WorkHoursLogs.push({
           Id: WorkHoursLogs.length + 1,
           Day: currentDate.getDay(),
           Date: currentDate,
           StartDateTime: MinMaxD[0], // minDate
           EndDateTime: MinMaxD[1], // maxDate,
-          WorkTime:
-            parseInt((Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60 * 60)) % 24) +
-            parseInt(
-              (Math.abs(MinMaxD[1].getTime() - MinMaxD[0].getTime()) / (1000 * 60)) % 60
-            ) /
-              100,
+          WorkTime: WorkTime,
+          ExtraHours: ExtraHours,
+          DelayHours: DelayHours,
           absent: logs.length <= 0 ? true : false,
           logs: logs,
         });

@@ -30,12 +30,12 @@
 
           <el-col :span="24" v-if="Employee.Status != -2">
             <el-button @click="dialogOprationVisible = true" type="danger" plain
-              >Black List</el-button
+              >إستقالة</el-button
             >
           </el-col>
           <el-col :span="24" v-if="checkPermission(['Admin']) && Employee.Status == -2">
             <el-button @click="dialogOprationVisible2 = true" type="success" plain
-              >الغاء Black List</el-button
+              >الغاء إستقالة</el-button
             >
           </el-col>
         </div>
@@ -80,6 +80,12 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="4">
+            <span>اخر دوام</span>
+          </el-col>
+          <el-col :span="8">
+            <last-log :UserId="Employee.Id" TableName="Employee" />
+          </el-col>
+          <el-col :span="4">
             <span>رقم الهاتف</span>
           </el-col>
           <el-col :span="8">
@@ -110,7 +116,7 @@
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
-      title="رفض العضو و ارساله الى القائمة السوداء"
+      title="إستقالة الموظف "
       :visible.sync="dialogOprationVisible"
     >
       <el-form
@@ -121,7 +127,7 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item
-          label="ملاحظات للعملية "
+          label="سبب إستقالة "
           prop="Description"
           :rules="[
             {
@@ -135,15 +141,13 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="danger" @click="BlackList()"
-          >ارسال الى القائمة السوداء</el-button
-        >
+        <el-button type="danger" @click="ResignationList()">تأكيد</el-button>
       </div>
     </el-dialog>
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
-      title="الغاء الرفض"
+      title="الغاء إستقالة"
       :visible.sync="dialogOprationVisible2"
     >
       <el-form
@@ -154,7 +158,7 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item
-          label="ملاحظات للعملية "
+          label="سبب الغاء إستقالة"
           prop="Description"
           :rules="[
             {
@@ -168,7 +172,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="success" @click="RemoveBlackList()">فك الرفض</el-button>
+        <el-button type="success" @click="RemoveResignationList()">فك إستقالة</el-button>
         <Dialog-Action-Log TableName="Employee" :ObjId="Employee.Id" />
       </div>
     </el-dialog>
@@ -184,6 +188,7 @@ import ImageCropper from "@/components/ImageCropper";
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
+import LastLog from "@/components/Gym/LastLog.vue";
 
 export default {
   components: {
@@ -192,6 +197,7 @@ export default {
     StatusTag,
     ImageCropper,
     DialogActionLog,
+    LastLog,
   },
   props: {
     Employee: {
@@ -216,7 +222,7 @@ export default {
   },
   methods: {
     checkPermission,
-    RemoveBlackList() {
+    RemoveResignationList() {
       this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({
@@ -240,7 +246,7 @@ export default {
         }
       });
     },
-    BlackList() {
+    ResignationList() {
       this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({

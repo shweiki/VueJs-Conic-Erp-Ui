@@ -3,6 +3,34 @@
     <el-row>
       <el-col :span="24" :xs="24" v-loading="loading">
         <employee-search />
+        <el-col
+          style="padding: 1.5px"
+          :xs="8"
+          :sm="8"
+          :md="8"
+          v-for="(item, index) in ActiveEmployee"
+          :key="index"
+        >
+          <el-card :body-style="{ padding: '0px' }" class="box-card" shadow="always">
+            <div slot="header">
+              <router-link :to="'/HumanResource/Edit/' + item.Id">
+                <strong style="font-size: 10px; cursor: pointer">{{
+                  item.Name.split(" ").slice(0, 4).join(" ")
+                }}</strong>
+              </router-link>
+            </div>
+            <el-row>
+              <el-col :span="12"> --- </el-col>
+              <el-col :span="12">
+                <span>اخر دوام</span>
+                <last-log :UserId="item.Id" TableName="Employee" />
+              </el-col>
+            </el-row>
+            <el-col :span="24">
+              <el-input disabled v-model="item.PhoneNumber1"></el-input>
+            </el-col>
+          </el-card>
+        </el-col>
       </el-col>
     </el-row>
   </div>
@@ -13,14 +41,17 @@ import permission from "@/directive/permission/index.js";
 import EmployeeSearch from "./components/EmployeeSearch.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
+import LastLog from "@/components/Gym/LastLog.vue";
+import { GetActiveEmployee } from "@/api/Employee";
 
 export default {
   name: "EmployeeList",
   directives: { permission },
-  components: { EmployeeSearch, PanThumb, WebCam },
+  components: { EmployeeSearch, PanThumb, WebCam, LastLog },
   data() {
     return {
       loading: true,
+      ActiveEmployee: [],
     };
   },
   created() {
@@ -28,6 +59,9 @@ export default {
   },
   methods: {
     getdata() {
+      GetActiveEmployee().then((res) => {
+        this.ActiveEmployee = res;
+      });
       this.loading = false;
     },
   },

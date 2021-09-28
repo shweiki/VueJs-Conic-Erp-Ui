@@ -130,7 +130,7 @@
         </el-col>
         <el-col :span="3">
           <Drawer-Print
-            v-bind:disabled="Member == null ? false : true"
+            v-bind:disabled="Employee == null ? false : true"
             Type="EmployeeAgreement"
             :Data="Employee"
           />

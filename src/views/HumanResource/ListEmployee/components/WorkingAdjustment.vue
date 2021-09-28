@@ -127,7 +127,7 @@
 import AddAdjustment from "../../Adjustment/Components/AddAdjustment.vue";
 import AddStaticAdjustment from "../../Adjustment/Components/AddStaticAdjustment.vue";
 import SelectAdjustment from "../../Adjustment/Components/SelectAdjustment.vue";
-import AdjustmentBind from "../../WorkingAdjustment/Components/AdjustmentBind.vue";
+import AdjustmentBind from "../../WorkingAdjustment/Components/AddSalaryAdjustmentLog.vue";
 import { GetWorkingAdjustmentBySalaryId } from "@/api/SalaryAdjustmentLog";
 export default {
   components: { SelectAdjustment, AddAdjustment, AddStaticAdjustment, AdjustmentBind },

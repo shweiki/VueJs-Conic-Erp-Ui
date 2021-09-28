@@ -20,7 +20,7 @@
 <script>
 import { GetAdjustmentLabel } from "@/api/Adjustment";
 export default {
-  props: ["Value", "GrossSalary"],
+  props: ["Value", "GrossSalary", "ExtraHours", "DelayHours"],
   data() {
     return {
       value: 1,
@@ -30,15 +30,23 @@ export default {
   watch: {
     Value(val) {
       if (val != null && val != undefined) {
-        this.value = this.options.find((element) => element.value == val).value;
-        this.SetVal(this.value);
+        this.SetVal(val);
       }
     },
     GrossSalary(val) {
       if (val > 0) {
         this.GrossSalary = val;
-        this.SetVal(this.value);
-      } else this.GrossSalary = 0;
+      }
+    },
+    ExtraHours(val) {
+      if (val > 0) {
+        this.ExtraHours = val;
+      }
+    },
+    DelayHours(val) {
+      if (val < 0) {
+        this.DelayHours = val;
+      }
     },
   },
   mounted() {
@@ -46,12 +54,10 @@ export default {
   },
   methods: {
     getdata() {
-      this.loading = true;
       GetAdjustmentLabel()
         .then((res) => {
           this.options = res;
           this.SetVal(this.value);
-          this.loading = false;
         })
         .catch((error) => {
           // handle error
@@ -61,11 +67,16 @@ export default {
     SetVal(val) {
       if (val) {
         let dis = this.options.find((obj) => obj.value == val);
-        this.$emit("SetAdjustment", dis.value);
-        this.$emit(
-          "SetAdjustmentAmount",
-          dis.type == "Percentage" ? dis.amount * this.GrossSalary : dis.amount
-        );
+        console.log("dis", dis, this.GrossSalary, this.ExtraHours, this.DelayHours);
+        this.$emit("SetAdjustment", val);
+        if (dis != undefined && dis != null) {
+          if (dis.type == "Percentage")
+            this.$emit("SetAdjustmentAmount", dis.amount * (this.GrossSalary || 1));
+          if (dis.type == "Hours" && dis.amount > 0)
+            this.$emit("SetAdjustmentAmount", dis.amount * (this.ExtraHours || 1));
+          if (dis.type == "Hours" && dis.amount < 0)
+            this.$emit("SetAdjustmentAmount", dis.amount * (-this.DelayHours || 1));
+        }
       }
     },
   },

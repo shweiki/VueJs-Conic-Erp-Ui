@@ -28,15 +28,8 @@ export default {
     };
   },
   created() {
-    this.SetVal(new Date());
-    //   this.date = new Date();
-  },
-  watch: {
-    Value(val) {
-      //     console.log(val);
-      if (val != "") this.SetVal(new Date(val));
-      else this.SetVal(new Date());
-    },
+    if (this.Value != "") this.SetVal(new Date(this.Value));
+    else this.SetVal(new Date()); //   this.date = new Date();
   },
   methods: {
     SetVal(val) {

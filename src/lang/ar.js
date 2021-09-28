@@ -381,7 +381,7 @@ export default {
         TotalOutlay: "إجمالي السحوبات",
         TotalReject: "إجمالي ملغي",
         TotalRestitution: "إجمالي التعويضات",
-        SaleInvoice: "فواتير المبيعات",
+        SaleInvoice: "المبيعات",
         Payment: "سندات القبض",
         Visit: "زيارات",
         Receive: "سندات الصرف",

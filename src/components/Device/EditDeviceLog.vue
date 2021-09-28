@@ -3,11 +3,11 @@
     <el-button
       v-permission="['Admin']"
       type="primary"
-      icon="el-icon-plus"
+      icon="el-icon-edit"
       @click="Visibles = true"
     />
 
-    <el-dialog style="margin-top: -13vh" title="تسجيل دخول" :visible.sync="Visibles">
+    <el-dialog style="margin-top: -13vh" title="تعديل " :visible.sync="Visibles">
       <el-form
         :model="Temp"
         ref="DeviceLogForm"
@@ -18,7 +18,7 @@
           <el-col :span="12">
             <el-form-item prop="Fk" label="الموظف">
               <employee-search-any
-                :EmployeeId="Fk"
+                :EmployeeId="Temp.Fk"
                 @Set="
                   (v) => {
                     Temp.TableName = 'Employee';
@@ -54,50 +54,44 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button type="primary" @click="create()">{{
-          $t("AddVendors.Save")
-        }}</el-button>
+        <el-button type="primary" @click="Edit()">{{ $t("AddVendors.Save") }}</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { Create } from "@/api/DeviceLog";
+import { GetById, Edit } from "@/api/DeviceLog";
 import permission from "@/directive/permission/index.js";
 import FakeDate from "@/components/Date/FakeDate.vue";
 import SelectDevice from "./SelectDevice.vue";
 import EmployeeSearchAny from "../HumanResource/EmployeeSearchAny.vue";
 export default {
-  name: "AddDeviceLog",
-  props: ["Fk"],
+  name: "EditDeviceLog",
+  props: ["Id"],
   components: { FakeDate, SelectDevice, EmployeeSearchAny },
   directives: { permission },
   data() {
     return {
-      Temp: {
-        Id: undefined,
-        Type: "Manual",
-        Fk: undefined,
-        DateTime: "",
-        DeviceId: 1,
-        Status: 0,
-        TableName: "",
-        Description: "Manual Register Log",
-      },
+      Temp: {},
       Visibles: false,
     };
   },
+  created() {
+    GetById({ Id: this.Id }).then((res) => {
+      this.Temp = res;
+    });
+  },
   methods: {
-    create() {
+    Edit() {
       this.$refs["DeviceLogForm"].validate((valid) => {
         if (valid) {
-          Create(this.Temp)
+          Edit(this.Temp)
             .then((response) => {
               this.Visibles = false;
               this.$notify({
                 title: "تم ",
-                message: "تم الإضافة بنجاح",
+                message: "تم تعديل بنجاح",
                 type: "success",
                 duration: 2000,
               });

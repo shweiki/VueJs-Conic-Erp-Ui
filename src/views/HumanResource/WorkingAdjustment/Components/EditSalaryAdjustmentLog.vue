@@ -1,13 +1,6 @@
 <template>
   <div>
-    <el-button
-      type="warning"
-      icon="el-icon-circle-plus"
-      @click="dialogFormVisible = true"
-      round
-    >
-      <span style="font-size: 14px">إيرادات \ إقتطاعات </span>
-    </el-button>
+    <el-button type="warning" icon="el-icon-edit" @click="getData" round />
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
@@ -19,11 +12,11 @@
             icon="fa fa-save"
             style="float: left"
             type="primary"
-            @click="createData()"
+            @click="Edit()"
           />
         </el-col>
         <el-col :span="20">
-          <el-divider> إيرادات \ إقتطاعات </el-divider>
+          <el-divider>تعديل إيرادات \ إقتطاعات </el-divider>
         </el-col>
       </div>
       <el-form
@@ -35,12 +28,12 @@
         <el-row>
           <el-col :span="12">
             <el-form-item prop="EmployeeName" label="اسم الموظف">
-              <el-input disabled v-model="EmployeeName"></el-input>
+              <el-input disabled v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item prop="EmployeeId" label="الرقم الوظيفي">
-              <el-input disabled v-model="EmployeeId"></el-input>
+              <el-input disabled v-model="tempForm.EmployeeId"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -48,7 +41,7 @@
           <el-col :span="12">
             <el-form-item prop="AdjustmentId" label="التسوية">
               <Select-Adjustment
-                :GrossSalary="GrossSalary"
+                :GrossSalary="tempForm.GrossSalary"
                 :Value="tempForm.AdjustmentId"
                 @SetAdjustment="
                   (v) => {
@@ -90,25 +83,10 @@
 </template>
 <script>
 import SelectAdjustment from "../../Adjustment/Components/SelectAdjustment.vue";
-import { Create } from "@/api/SalaryAdjustmentLog";
+import { GetById, Edit } from "@/api/SalaryAdjustmentLog";
 
 export default {
-  name: "Adjustment",
-  props: {
-    EmployeeId: {
-      type: Number,
-    },
-    EmployeeName: {
-      type: String,
-    },
-    SalaryPaymentId: {
-      type: Number,
-    },
-    GrossSalary: {
-      type: Number,
-    },
-  },
-
+  props: ["Id"],
   components: { SelectAdjustment },
   data() {
     return {
@@ -123,27 +101,17 @@ export default {
       },
     };
   },
-
-  mounted() {
-    this.resetTempForm();
-    //this.getData(this.SalaryPaymentId);
-  },
   methods: {
-    getData(val) {},
-    resetTempForm() {
-      this.tempForm = {
-        Id: undefined,
-        AdjustmentAmmount: 0.0,
-        Description: "",
-        Status: 0,
-        AdjustmentId: undefined,
-        SalaryPaymentId: undefined,
-      };
+    getData() {
+      GetById({ Id: this.Id }).then((res) => {
+        this.tempForm = res;
+      });
+      this.dialogFormVisible = true;
     },
-    createData() {
+    Edit() {
       this.$refs["dataForm"];
       this.tempForm.SalaryPaymentId = this.SalaryPaymentId;
-      Create(this.tempForm)
+      Edit(this.tempForm)
         .then((response) => {
           this.dialogFormVisible = false;
           this.$notify({

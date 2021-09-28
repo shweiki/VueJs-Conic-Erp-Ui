@@ -9,7 +9,27 @@ export function Create(data) {
     data: qs.stringify(data)
   })
 }
-
+export function Edit(data) {
+  return request({
+    url: '/SalaryAdjustmentLog/Edit',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+export function Delete(data) {
+  return request({
+    url: '/SalaryAdjustmentLog/Delete',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+export function GetById(query) {
+  return request({
+    url: '/SalaryAdjustmentLog/GetById',
+    method: 'get',
+    params:  query 
+  })
+}
 export function GetWorkingAdjustmentBySalaryId(query) {
   return request({
     url: '/SalaryAdjustmentLog/GetSalaryAdjustmentLogBySalaryId',
@@ -18,7 +38,6 @@ export function GetWorkingAdjustmentBySalaryId(query) {
     
   })
 }
-
 export function GetByListQ(data) {
   return request({
     url: '/SalaryAdjustmentLog/GetByListQ',

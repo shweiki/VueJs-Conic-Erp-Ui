@@ -7,7 +7,14 @@ export function GetDeviceLog(query) {
     params: query
   })
 }
-
+export function GetById(query) {
+  return request({
+    url: '/DeviceLog/GetById',
+    method: 'get',
+    params:  query 
+    
+  })
+}
 export function GetByStatus(query) {
   return request({
     url: '/DeviceLog/GetByStatus',
@@ -51,6 +58,13 @@ export function GetLogByUserId(query) {
   })
 }
 
+export function Edit(data) {
+  return request({
+    url: '/DeviceLog/Edit',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function Create(data) {
   return request({
     url: '/DeviceLog/Create',
