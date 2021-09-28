@@ -233,7 +233,6 @@
           <span>{{ row.absent ? "غياب" : "حضور" }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="الوصف" prop="Description" align="center"> </el-table-column>
       <el-table-column sortable label="عدد ساعات الدوام" width="150" align="center">
         <template slot-scope="scope">{{
           scope.row.WorkTime.toFixed($store.getters.settings.ToFixed)
@@ -258,7 +257,7 @@
   </div>
 </template>
 <script>
-import { GetById, Update } from "@/api/Salary";
+import { GetById, Edit } from "@/api/Salary";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -364,8 +363,8 @@ export default {
     },
     confirmData() {
       this.DisabledSave = true;
-      this.tempForm.Status = 1;
-      Update(this.tempForm)
+      this.tempForm.Status = 0;
+      Edit(this.tempForm)
         .then((response) => {
           this.$notify({
             title: "تم ",

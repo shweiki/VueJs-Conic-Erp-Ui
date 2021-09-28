@@ -1,16 +1,12 @@
 <template>
   <div class="app-container" style="direction: rtl">
-    <el-row :gutter="20">
-      <el-col :span="10">
-        <add-salary
-          :LastSalary="LastSalary"
-          :SalaryPayment="SalaryPayment"
+    <el-row type="flex">
+      <el-col :span="24">
+        <Dialog-Salary-From
+          :isEdit="false"
           :EmployeeId="EmployeeId"
           :EmployeeName="EmployeeName"
         />
-      </el-col>
-      <el-col :span="12">
-        <!-- <SalaryCalculation :SalaryPaymentId="SalaryPaymentId" :SalaryPayment="SalaryPayment" :EmployeeId="EmployeeId" :EmployeeName="EmployeeName"/> -->
       </el-col>
     </el-row>
     <el-table :data="SalaryPayment" fit border highlight-current-row height="500">
@@ -53,16 +49,23 @@
           <Status-Tag :Status="scope.row.Status" TableName="SalaryPayment" />
         </template>
       </el-table-column>
-      <el-table-column label="">
+      <el-table-column label="#">
         <template slot-scope="{ row }">
-          <el-button
-            type="success"
-            v-if="row.Status == 0"
-            @click="$router.push({ path: `/HumanResource/SalaryCal/${row.Id}` })"
-          >
-            احتساب الراتب
-          </el-button>
-          <Drawer-Print Type="SalaryPayment" :Data="row" />
+          <el-row type="flex">
+            <el-col :span="8">
+              <el-button
+                type="success"
+                v-if="row.Status == 0"
+                @click="$router.push({ path: `/HumanResource/SalaryCal/${row.Id}` })"
+              >
+                احتساب الراتب
+              </el-button></el-col
+            >
+            <el-col :span="8">
+              <Dialog-Salary-From :isEdit="true" :Id="row.Id" />
+            </el-col>
+            <el-col :span="8"> <Drawer-Print Type="SalaryPayment" :Data="row" /> </el-col>
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -70,13 +73,13 @@
 </template>
 
 <script>
-import AddSalary from "../../Salary/Components/AddSalary";
+import DialogSalaryFrom from "../../Salary/Components/DialogSalaryFrom.vue";
 import SalaryCal from "../../Salary/Components/SalaryCal";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
-  components: { AddSalary, SalaryCal, StatusTag, DrawerPrint },
+  components: { DialogSalaryFrom, SalaryCal, StatusTag, DrawerPrint },
   props: {
     SalaryPayment: {
       type: Array,
@@ -84,18 +87,12 @@ export default {
         return null;
       },
     },
-    LastSalary: {
-      type: Number,
-    },
     EmployeeId: {
       type: Number,
       default: undefined,
     },
     EmployeeName: {
       type: String,
-    },
-    SalaryPaymentId: {
-      type: Number,
     },
   },
 };

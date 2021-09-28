@@ -68,8 +68,6 @@
             <el-tab-pane label="رواتب" name="salary">
               <span slot="label"><i class="el-icon-refresh"></i> رواتب</span>
               <Salary
-                :LastSalary="LastSalary"
-                :SalaryPaymentId="SalaryPaymentId"
                 :SalaryPayment="SalaryPayment"
                 :EmployeeId="tempForm.Id"
                 :EmployeeName="tempForm.Name"
@@ -100,7 +98,7 @@ import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetFileByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
-import { GetSalaryByEmployeeId, GetSalaryId, GetLastSalaryById } from "@/api/Salary";
+import { GetSalaryByEmployeeId } from "@/api/Salary";
 import checkPermission from "@/utils/permission";
 import Massage from "@/components/Massage/index.vue";
 import SendToDevice from "@/components/Device/SendToDevice.vue";
@@ -135,9 +133,6 @@ export default {
       EntryMovements: [],
       SalaryPayment: [],
       log: [],
-      LastSalary: undefined,
-      SalaryPaymentId: undefined,
-      WorkingHourId: undefined,
     };
   },
   created() {
@@ -158,14 +153,7 @@ export default {
           this.setTagsViewTitle();
           // set page title
           this.setPageTitle();
-          GetSalaryId({
-            EmployeeId: this.tempForm.Id,
-          }).then((response) => {
-            this.SalaryPaymentId = response;
-          });
-          GetLastSalaryById({ Id: this.tempForm.Id }).then(
-            (res) => (this.LastSalary = res)
-          );
+
           this.loading = false;
         })
         .catch((err) => {

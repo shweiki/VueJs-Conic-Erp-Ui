@@ -439,7 +439,7 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import VendorSelect from "@/components/Vendor/VendorSelect";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
-import FakeDate from "@/components/Date/FakeDate";
+import FakeDate from "@/components/Date/FakeDate.vue";
 import { PrintReport } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
@@ -452,6 +452,7 @@ import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
 import EditVendor from "@/components/Vendor/EditVendor";
+import { Now } from "@/utils";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";
 
@@ -644,6 +645,8 @@ export default {
           //  this.tempForm.Type == "Delivery"
           //   ? (this.tempForm.Status = 0)
           //    : (this.tempForm.Status = 2);
+          this.tempForm.FakeDate = Now();
+
           Create(this.tempForm)
             .then((response) => {
               if (response) {
@@ -695,6 +698,8 @@ export default {
             this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
             this.DisabledSave = true;
+            this.tempForm.FakeDate = Now();
+
             Edit(this.tempForm)
               .then((response) => {
                 this.$notify({
