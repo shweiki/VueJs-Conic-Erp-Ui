@@ -646,6 +646,7 @@ export default {
                     this.$store.getters.settings.PointOfSale.CreateDelivery == true && 
                     this.$store.getters.settings.OrderIsAutomatic == false
                   ) {
+                    
                     this.CreateDelivery(this.OldInvoice);
                   }
                   if (
@@ -706,6 +707,11 @@ export default {
     },
     async CreateDelivery(temp) {
       let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
+      
+      var items = temp.InventoryMovements;
+      var names = items.map(function(item) {
+      return item['Name'];
+      });
       CreateDelivery({
         Id: undefined,
         OrderId: temp.Id,
@@ -718,7 +724,7 @@ export default {
         Region: temp.Region,
         DeliveryPrice: temp.DeliveryPrice,
         TotalPill: temp.Total,
-        Content: " " + ReportContentHtml,
+        Content: names.toString(),
       }).then((res) => {
         if (res) {
           this.$notify({
@@ -740,6 +746,10 @@ export default {
     },
      async CreateWithDriver(temp) {
       let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
+      var items = temp.InventoryMovements;
+      var names = items.map(function(item) {
+      return item['Name'];
+      });
       CreateWithDriver({
         Id: undefined,
         OrderId: temp.Id,
@@ -753,7 +763,7 @@ export default {
         DeliveryPrice: temp.DeliveryPrice,
         TotalPill: temp.Total,
         DriverId: undefined,
-        Content: " " + ReportContentHtml,
+        Content: names.toString(),
       }).then((res) => {
         if (res) {
           this.$notify({

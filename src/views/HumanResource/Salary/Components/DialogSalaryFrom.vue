@@ -2,6 +2,7 @@
   <div>
     <el-button
       type="primary"
+      :size="$store.getters.size"
       v-bind:icon="isEdit ? 'el-icon-edit' : 'el-icon-plus'"
       @click="Visibles = true"
       >{{ isEdit ? "تعديل" : "إضافة" }} الراتب</el-button
