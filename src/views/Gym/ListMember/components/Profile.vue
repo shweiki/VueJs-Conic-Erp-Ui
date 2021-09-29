@@ -90,6 +90,10 @@
                     :Name="tempForm.Name"
                     TableName="Member"
                   />
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24">
                   <button-scan />
                 </el-col>
               </el-row>
