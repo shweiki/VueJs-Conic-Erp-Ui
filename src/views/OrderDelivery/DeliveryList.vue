@@ -75,6 +75,13 @@
         </el-col>
       </el-row>
     </div>
+    <el-row :gutter="20">
+      <el-col :span="10" style="float:left">
+        <div style="float:left">
+  <Add-Order/>
+        </div>
+      </el-col>
+      <el-col :span="14">
     <Radio-Oprations
       TableName="OrderDelivery"
       @Set="
@@ -84,7 +91,8 @@
         }
       "
     />
-
+      </el-col>
+    </el-row>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -94,6 +102,14 @@
       style="width: 100%"
       @sort-change="sortChange"
     >
+    <el-table-column type="expand">
+      <template slot-scope="props">
+        <h3 style="float: right; padding-right: 20px;">محتويات الطلب :</h3>
+        <br>
+        <p style="float: right; padding-top: 5px">  {{ props.row.Content }}</p>
+        
+      </template>
+    </el-table-column>
       <el-table-column
         label="Id"
         prop="Id"
@@ -106,6 +122,12 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
+            <el-table-column v-bind:label="$t('Sales.Date')" width="120px" align="center">
+        <template slot-scope="{ row }">
+          <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+        </template>
+      </el-table-column>
+       <el-table-column align="right" label="معلومات الزبون">
       <el-table-column
         sortable
         prop="Name"
@@ -116,47 +138,43 @@
       <el-table-column
         prop="PhoneNumber"
         v-bind:label="$t('MemberList.Phone')"
-        width="120"
+        width="100"
         align="center"
       ></el-table-column>
       <el-table-column
         prop="Region"
         v-bind:label="$t('AddVendors.Region')"
-        width="150"
+        width="130"
         align="center"
       ></el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
-        </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
-        <template slot-scope="{ row }">
-          {{ row.TotalPrice.toFixed($store.getters.settings.ToFixed) }}
-          JOD
-        </template>
-      </el-table-column>
-      <el-table-column v-bind:label="$t('Area.TotalPill')" width="120" align="center">
+      <el-table-column v-bind:label="$t('Area.TotalPill')" width="100" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalPill.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Area.DelievryPrice')" width="120" align="center">
+      <el-table-column v-bind:label="$t('Area.DelievryPrice')" width="100" align="center">
         <template slot-scope="{ row }">
           {{ row.DeliveryPrice.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Vendors.Description')"
-        prop="Description"
-        align="center"
-      >
+       <el-table-column v-bind:label="$t('CashPool.Amountv')" width="100" align="center">
+        <template slot-scope="{ row }">
+          {{ row.TotalPrice.toFixed($store.getters.settings.ToFixed) }}
+          JOD
+        </template>
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Delivery.DriverName')"
         prop="Driver.Name"
+        align="center"
+      >
+      </el-table-column>
+        <el-table-column
+        v-bind:label="$t('Vendors.Description')"
+        prop="Content"
         align="center"
       >
       </el-table-column>
@@ -165,7 +183,7 @@
           <Status-Tag :Status="scope.row.Status" TableName="OrderDelivery" />
         </template>
       </el-table-column>
-      <el-table-column width="180" align="center">
+      <el-table-column label="#" width="100" align="center">
         <template slot-scope="scope">
           <Dialog-Action-Log TableName="OrderDelivery" :ObjId="scope.row.Id" />
           <Drawer-Print Type="OrderDelivery" :Data="scope.row" />
@@ -200,6 +218,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
+import AddOrder from "./components/AddOrder.vue";
 export default {
   name: "ComplexTable",
   components: {
@@ -211,6 +230,7 @@ export default {
     SortOptions,
     DialogActionLog,
     RadioOprations,
+    AddOrder,
   },
   directives: { waves },
   data() {

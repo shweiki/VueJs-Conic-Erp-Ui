@@ -10,7 +10,7 @@
       </el-col>
     </el-row>
     <el-table :data="SalaryPayment" fit border highlight-current-row height="500">
-      <el-table-column prop="Id" label="Id" width="80" align="center"></el-table-column>
+      <el-table-column prop="Id" label="Id" width="60" align="center"></el-table-column>
       <el-table-column label="من تاريخ" align="center" width="140">
         <template slot-scope="scope">
           <el-date-picker
@@ -49,12 +49,13 @@
           <Status-Tag :Status="scope.row.Status" TableName="SalaryPayment" />
         </template>
       </el-table-column>
-      <el-table-column label="#">
+      <el-table-column label="#" width="260">
         <template slot-scope="{ row }">
           <el-row type="flex">
             <el-col :span="8">
               <el-button
                 type="success"
+                :size="$store.getters.size"
                 v-if="row.Status == 0"
                 @click="$router.push({ path: `/HumanResource/SalaryCal/${row.Id}` })"
               >
