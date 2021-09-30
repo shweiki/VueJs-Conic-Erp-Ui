@@ -111,13 +111,14 @@
       </template>
       <el-tag size="small">{{Temp.Driver.Name}}</el-tag>
     </el-descriptions-item>
-     <!-- <el-descriptions-item>
+      <el-descriptions-item
+      :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-office-building"></i>
         الاصناف
       </template>
-      <el-tag size="small">{{Content}}</el-tag>
-    </el-descriptions-item> -->
+      <el-tag size="small">{{Temp.Content}}</el-tag>
+    </el-descriptions-item> 
   </el-descriptions>
   <span slot="footer" class="dialog-footer">
     <el-button 

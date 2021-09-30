@@ -147,6 +147,7 @@
           v-if="Temp.Status != 0"
           :label-style="{ 'text-align': 'right' }"
           :content-style="{ 'text-align': 'right' }"
+          :span="2"
         >
           <template slot="label">
             <i class="el-icon-user-solid"></i>
@@ -154,13 +155,16 @@
           </template>
           <el-tag size="small">{{ Temp.Driver.Name }}</el-tag>
         </el-descriptions-item>
-        <!-- <el-descriptions-item>
+         <el-descriptions-item 
+         :span="2"
+         :label-style="{ 'text-align': 'right' }"
+          :content-style="{ 'text-align': 'right' }">
       <template slot="label">
         <i class="el-icon-office-building"></i>
         الاصناف
       </template>
-      <el-tag size="small">{{Content}}</el-tag>
-    </el-descriptions-item> -->
+      <el-tag size="small">{{Temp.Content}}</el-tag>
+    </el-descriptions-item> 
       </el-descriptions>
       <div>
       <el-col v-if="Temp.Status == 1">

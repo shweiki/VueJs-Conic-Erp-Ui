@@ -106,7 +106,7 @@
       <template slot-scope="props">
         <h3 style="float: right; padding-right: 20px;">محتويات الطلب :</h3>
         <br>
-        <p style="float: right; padding-top: 5px">  {{ props.row.Content }}</p>
+        <h4 style="float: right; padding-top: 5px">  {{ props.row.Content }}</h4>
         
       </template>
     </el-table-column>
@@ -174,7 +174,7 @@
       </el-table-column>
         <el-table-column
         v-bind:label="$t('Vendors.Description')"
-        prop="Content"
+        prop="Description"
         align="center"
       >
       </el-table-column>
