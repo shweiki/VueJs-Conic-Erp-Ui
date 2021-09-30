@@ -94,7 +94,7 @@
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <button-scan />
+                  <button-scan :ObjectId="tempForm.Id" TableName="Member" />
                 </el-col>
               </el-row>
             </el-col>

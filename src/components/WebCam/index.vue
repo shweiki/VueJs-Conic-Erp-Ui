@@ -1,20 +1,11 @@
 <template>
   <div>
-    <el-button
-      icon="el-icon-camera-solid"
-      circle
-      @click="Visible = true"
-    ></el-button>
+    <el-button icon="el-icon-camera-solid" circle @click="Visible = true"></el-button>
 
     <el-dialog style="margin-top: -13vh" title="تصوير" :visible.sync="Visible">
       <el-row>
         <el-col :span="24">
-          <video
-            id="video-player"
-            class="video"
-            width="300"
-            height="300"
-          ></video>
+          <video id="video-player" class="video" width="300" height="300"></video>
         </el-col>
       </el-row>
       <el-row>
@@ -25,9 +16,7 @@
         <img :src="img" height="50" />
       </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
+        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
         <el-button type="primary" @click="createData()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -37,7 +26,6 @@
 </template>
 <script>
 import { Create } from "@/api/File";
-import { string } from "clipboard";
 export default {
   name: "WebCam",
   props: {
@@ -45,15 +33,14 @@ export default {
       type: Number,
       default: () => {
         return undefined;
-      }
+      },
     },
     TableName: {
       type: String,
       default: () => {
         return undefined;
-      }
+      },
     },
-    EndDate: null
   },
   data() {
     return {
@@ -61,13 +48,13 @@ export default {
       stream: null,
       video: {},
       canvas: {},
-      img: null
+      img: null,
     };
   },
   methods: {
     start() {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
           this.stream = stream;
         });
         this.video = document.getElementById("video-player");
@@ -79,9 +66,7 @@ export default {
     },
     capture() {
       this.canvas = document.getElementById("canvas");
-      var context = this.canvas
-        .getContext("2d")
-        .drawImage(this.video, 0, 0, 640, 480);
+      var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
       this.img = canvas.toDataURL("image/png");
     },
     createData() {
@@ -92,27 +77,27 @@ export default {
           File: this.img.replace(/^data:image\/(png|jpg);base64,/, ""),
           Status: 0,
           TableName: this.TableName,
-          FKTable: this.ObjectId
+          FKTable: this.ObjectId,
         };
-        Create(file).then(response => {
+        Create(file).then((response) => {
           if (response) {
             this.Visibles = false;
             this.$notify({
               title: "تم ",
               message: "تم الإضافة بنجاح",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
             this.$nextTick(() => {
               this.$router.replace({
-                path: "/redirect" + this.$route.fullPath
+                path: "/redirect" + this.$route.fullPath,
               });
             });
           }
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

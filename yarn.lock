@@ -11461,10 +11461,10 @@ saxes@^5.0.1:
   dependencies:
     xmlchars "^2.2.0"
 
-scanner-js@^2.10.3:
+scannerjs@^2.10.3:
   version "2.10.3"
-  resolved "https://registry.yarnpkg.com/scanner-js/-/scanner-js-2.10.3.tgz#bd259033363776f201e49a335e31f44d1e58aba5"
-  integrity sha1-vSWQMzY3dvIB5JozXjH0TR5Yq6U=
+  resolved "https://registry.yarnpkg.com/scannerjs/-/scannerjs-2.10.3.tgz#eab0568e7c62a4cca27e7c850a33de61661fd353"
+  integrity sha1-6rBWjnxipMyifnyFCjPeYWYf01M=
 
 schema-utils@^1.0.0:
   version "1.0.0"
