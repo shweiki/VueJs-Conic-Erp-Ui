@@ -112,7 +112,8 @@
       <el-tag size="small">{{Temp.Driver.Name}}</el-tag>
     </el-descriptions-item>
       <el-descriptions-item
-      :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
+      :label-style="{'text-align': 'right'}" 
+      :content-style="{'text-align': 'right'}">
       <template slot="label">
         <i class="el-icon-office-building"></i>
         الاصناف

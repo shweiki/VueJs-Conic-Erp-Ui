@@ -111,7 +111,14 @@
             <i class="el-icon-s-flag"></i>
             {{ $t("OrderInventories.Status") }}
           </template>
+          <el-row>
+            <el-col :span="10">
+          <Dialog-Action-Log TableName="OrderDelivery" :ObjId="Temp.Id" />
+            </el-col>
+            <el-col :span="14">
           <Status-Tag :Status="Temp.Status" TableName="OrderDelivery" />
+            </el-col>
+          </el-row>
         </el-descriptions-item>
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
@@ -184,9 +191,10 @@
 import DriverSelect from "./DriverSelect.vue"
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import { SetDriver } from "@/api/OrderDelivery";
+import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 export default {
   components: {
-    StatusTag, DriverSelect},
+    StatusTag, DriverSelect, DialogActionLog},
   name: "OrderDetails",
   props: ["Temp"],
   data() {
