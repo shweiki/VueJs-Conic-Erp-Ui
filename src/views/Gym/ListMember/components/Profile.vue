@@ -144,6 +144,11 @@
 
               <Communication />
             </el-tab-pane>
+            <el-tab-pane label="مستندات" name="Documents">
+              <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
+
+              <Documents :ObjectId="tempForm.Id" TableName="Member" />
+            </el-tab-pane>
           </el-tabs>
         </el-card>
       </el-col>
@@ -170,6 +175,7 @@ import Timeline from "./Timeline.vue";
 import Account from "./Account.vue";
 import Service from "./Service.vue";
 import Communication from "./Communication.vue";
+import Documents from "./Documents.vue";
 
 import { GetMemberById } from "@/api/Member";
 import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
@@ -204,6 +210,7 @@ export default {
     MemberSearch,
     SendToDevice,
     ButtonScan,
+    Documents,
   },
   props: {
     isEdit: {

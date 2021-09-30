@@ -18,3 +18,11 @@ export function GetFileByObjId(query) {
     
   })
 }
+export function GetFilesByObjId(query) {
+  return request({
+    url: '/Files/GetFilesByObjId',
+    method: 'get',
+    params:  query 
+    
+  })
+}
