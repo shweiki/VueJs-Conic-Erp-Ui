@@ -175,7 +175,7 @@ import Timeline from "./Timeline.vue";
 import Account from "./Account.vue";
 import Service from "./Service.vue";
 import Communication from "./Communication.vue";
-import Documents from "./Documents.vue";
+import Documents from "@/components/Documents/Documents.vue";
 
 import { GetMemberById } from "@/api/Member";
 import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
