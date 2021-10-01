@@ -64,7 +64,6 @@
                 :EmployeeName="tempForm.Name"
               />
             </el-tab-pane>
-
             <el-tab-pane label="رواتب" name="salary">
               <span slot="label"><i class="el-icon-refresh"></i> رواتب</span>
               <Salary
@@ -73,10 +72,13 @@
                 :EmployeeName="tempForm.Name"
               />
             </el-tab-pane>
-
             <el-tab-pane label="تواصل" name="communication">
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
               <Communication />
+            </el-tab-pane>
+            <el-tab-pane label="مستندات" name="Documents">
+              <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
+              <Documents :ObjectId="tempForm.Id" TableName="Employee" />
             </el-tab-pane>
           </el-tabs>
         </el-card>
@@ -94,6 +96,7 @@ import EmployeeLogout from "./Dialogs/EmployeeLogout";
 import Account from "./Account.vue";
 import Salary from "./Salary.vue";
 import Communication from "./Communication.vue";
+import Documents from "@/components/Documents/Documents.vue";
 import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetFileByObjId } from "@/api/File";
@@ -117,6 +120,7 @@ export default {
     Timeline,
     EmployeeSearch,
     SendToDevice,
+    Documents,
   },
   props: {
     isEdit: {

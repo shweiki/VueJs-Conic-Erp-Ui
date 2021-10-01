@@ -14,7 +14,6 @@
 <script>
 // var scanner = require("scanner.js");
 import { Create } from "@/api/File";
-
 export default {
   props: {
     ObjectId: {
