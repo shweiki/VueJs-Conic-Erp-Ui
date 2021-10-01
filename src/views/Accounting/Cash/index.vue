@@ -47,13 +47,13 @@
         </el-table-column>
         <el-table-column
           v-bind:label="$t('CashDrawer.PCIP')"
-          prop="PCIP"
+          prop="Pcip"
           width="200"
           align="center"
         ></el-table-column>
         <el-table-column
           v-bind:label="$t('CashDrawer.BTCash')"
-          prop="BTCash"
+          prop="Btcash"
           width="120"
           align="center"
         ></el-table-column>
@@ -108,11 +108,11 @@
         <el-form-item v-bind:label="$t('CashDrawer.CashNumber')" prop="Name">
           <el-input type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('CashDrawer.PCIP')" prop="PCIP">
-          <el-input type="text" v-model="tempForm.PCIP"></el-input>
+        <el-form-item v-bind:label="$t('CashDrawer.PCIP')" prop="Pcip">
+          <el-input type="text" v-model="tempForm.Pcip"></el-input>
         </el-form-item>
-        <el-form-item v-bind:label="$t('CashDrawer.BTCash')" prop="BTCash">
-          <el-input type="text" v-model="tempForm.BTCash"></el-input>
+        <el-form-item v-bind:label="$t('CashDrawer.BTCash')" prop="Btcash">
+          <el-input type="text" v-model="tempForm.Btcash"></el-input>
         </el-form-item>
 
         <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
@@ -160,7 +160,7 @@
   </div>
 </template>
 <script>
-import { GetCash, Create, Edit } from "@/api/Cash";
+import { GetCash, Create, Edit, GetActive } from "@/api/Cash";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
@@ -191,9 +191,9 @@ export default {
       tempForm: {
         Id: undefined,
         Name: "",
-        PCIP: "",
+        Pcip: "",
         Description: "",
-        BTCash: "",
+        Btcash: "",
         IsPrime: false,
       },
       rulesForm: {},
@@ -241,9 +241,9 @@ export default {
       this.tempForm = {
         Id: undefined,
         Name: "",
-        PCIP: "",
+        Pcip: "",
         Description: "",
-        BTCash: "",
+        Btcash: "",
         IsPrime: false,
       };
     },
@@ -257,8 +257,8 @@ export default {
       console.log(row);
       this.tempForm.Id = row.Id;
       this.tempForm.Name = row.Name;
-      this.tempForm.PCIP = row.PCIP;
-      this.tempForm.BTCash = row.BTCash;
+      this.tempForm.Pcip = row.Pcip;
+      this.tempForm.Btcash = row.Btcash;
       this.tempForm.Description = row.Description;
       this.dialogFormStatus = "update";
       this.dialogFormVisible = true;
