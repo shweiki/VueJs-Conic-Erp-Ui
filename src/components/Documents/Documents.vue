@@ -26,28 +26,38 @@
         <el-button type="primary" @click="GetFiles" icon="el-icon-refresh"></el-button>
       </el-col>
     </el-row>
-
-    <el-card>
-      <el-image
-        style="width: 100px; height: 100px"
-        v-for="item in List"
-        :key="item.Id"
-        :src="item.File"
-        :preview-src-list="srcList"
-      >
-        <div slot="placeholder" class="image-slot">
-          Loading<span class="dot">...</span>
+    <el-col v-for="item in List" :key="item.Id" v-bind:span="24 / List.length">
+      <el-card :body-style="{ padding: '3px' }">
+        <el-image
+          style="width: 100px; height: 100px"
+          :src="item.File"
+          :preview-src-list="srcList"
+        >
+          <div slot="error" class="image-slot">
+            <i class="el-icon-picture-outline"></i>
+          </div>
+        </el-image>
+        <div style="padding: 14px">
+          <el-select @change="SetType(item)" v-model="item.Type" placeholder="النوع">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </div>
-      </el-image></el-card
-    >
+      </el-card>
+    </el-col>
   </div>
 </template>
 
 <script>
-import { GetFilesByObjId } from "@/api/File";
+import { GetFilesByObjId, SetTypeByObjId } from "@/api/File";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
-import ButtonScan from "@/components/Device/ButtonScan";
+import ButtonScan from "@/components/Device/ButtonScan.vue";
 
 export default {
   props: ["ObjectId", "TableName"],
@@ -58,6 +68,21 @@ export default {
       List: [],
       imagecropperShow: false,
       imagecropperKey: 0,
+      options: [
+        {
+          value: "ProfilePicture",
+          label: "شخصية",
+        },
+        {
+          value: "ID",
+          label: "الهوية",
+        },
+        {
+          value: "Passport",
+          label: "جواز",
+        },
+      ],
+      value: "",
     };
   },
   methods: {
@@ -70,6 +95,16 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    SetType(item) {
+      SetTypeByObjId({ Id: item.Id, Type: item.Type }).then((res) => {
+        this.$notify({
+          title: "تم ",
+          message: "تم الإضافة بنجاح " + res + " ",
+          type: "success",
+          duration: 2000,
+        });
+      });
     },
     b64toBlob(b64Data, contentType = "", sliceSize = 512) {
       const byteCharacters = atob(b64Data);

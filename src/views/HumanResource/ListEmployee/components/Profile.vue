@@ -99,7 +99,7 @@ import Communication from "./Communication.vue";
 import Documents from "@/components/Documents/Documents.vue";
 import Timeline from "./Timeline.vue";
 import { GetEmployeeById } from "@/api/Employee";
-import { GetFileByObjId } from "@/api/File";
+import { GetProfilePictureByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
 import { GetSalaryByEmployeeId } from "@/api/Salary";
 import checkPermission from "@/utils/permission";
@@ -183,7 +183,7 @@ export default {
         });
     },
     GetImage(Id) {
-      GetFileByObjId({ TableName: "Employee", ObjId: Id })
+      GetProfilePictureByObjId({ TableName: "Employee", ObjId: Id })
         .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;

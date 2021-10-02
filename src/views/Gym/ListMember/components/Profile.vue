@@ -92,11 +92,6 @@
                   />
                 </el-col>
               </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <button-scan :ObjectId="tempForm.Id" TableName="Member" />
-                </el-col>
-              </el-row>
             </el-col>
           </el-row>
         </el-card>
@@ -179,12 +174,11 @@ import Documents from "@/components/Documents/Documents.vue";
 
 import { GetMemberById } from "@/api/Member";
 import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
-import { GetFileByObjId } from "@/api/File";
+import { GetProfilePictureByObjId } from "@/api/File";
 import { GetPaymentsByMemberId } from "@/api/Payment";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
 import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
 import SendToDevice from "@/components/Device/SendToDevice.vue";
-import ButtonScan from "@/components/Device/ButtonScan";
 
 import checkPermission from "@/utils/permission";
 
@@ -209,7 +203,6 @@ export default {
     Massage,
     MemberSearch,
     SendToDevice,
-    ButtonScan,
     Documents,
   },
   props: {
@@ -244,7 +237,7 @@ export default {
       GetMemberById({ Id: val })
         .then((response) => {
           this.tempForm = response;
-          this.GetImageMember(this.tempForm.Id);
+          this.GetImage(this.tempForm.Id);
           this.getAge();
           this.loading = false;
           //this.GetMemberLogFromDevices(val);
@@ -289,8 +282,8 @@ export default {
           this.ServiceInvoices = response.reverse();
         });
     },
-    GetImageMember(Id) {
-      GetFileByObjId({ TableName: "Member", ObjId: Id })
+    GetImage(Id) {
+      GetProfilePictureByObjId({ TableName: "Member", ObjId: Id })
         .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;

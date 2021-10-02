@@ -6,7 +6,7 @@ import printJS from "print-js";
 
 export function OrderReceipt2(temp, printer = undefined) {
   let startX = 1, startY = 0
-  let doc = new jsPDF("p", "mm", "80", { filters: ["ASCIIHexEncode"] });
+  let doc = new jsPDF();
   console.log(temp)
   let timein = new Date(temp.FakeDate);
 
@@ -18,7 +18,6 @@ export function OrderReceipt2(temp, printer = undefined) {
   doc.setFontSize(24);
   doc.text(store.getters.name, 45, startY += 6, { align: 'right' });
 
-  doc.setFontType("normal");
   doc.setLineWidth(0.65);
   doc.setFontSize(18);
   doc.text(temp.Type.charAt(0).toUpperCase() + temp.Type.slice(1), 45, startY += 25, { align: 'right' });

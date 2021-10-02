@@ -1,14 +1,15 @@
 <template>
   <el-popover placement="left-start" width="100%" trigger="click">
-    <el-button @click="scanToJpg" type="primary">Scan Now...</el-button>
     <el-button
       v-bind:disabled="imagesScanned.length == 0"
       type="warning"
       @click="createData()"
       >{{ $t("AddVendors.Save") }}</el-button
     >
+    <el-button @click="scanToJpg" type="primary">بدء</el-button>
+
     <div id="images"></div>
-    <el-button icon="el-icon-printer" type="success" slot="reference">Scan</el-button>
+    <el-button icon="el-icon-receiving" type="success" slot="reference"></el-button>
   </el-popover>
 </template>
 <script>

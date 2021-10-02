@@ -9,7 +9,22 @@ export function Create(data) {
     data: qs.stringify(data)
   })
 }
+export function SetTypeByObjId(data) {
+  return request({
+    url: '/Files/SetTypeByObjId',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 
+export function GetProfilePictureByObjId(query) {
+  return request({
+    url: '/Files/GetProfilePictureByObjId',
+    method: 'get',
+    params:  query 
+    
+  })
+}
 export function GetFileByObjId(query) {
   return request({
     url: '/Files/GetFileByObjId',

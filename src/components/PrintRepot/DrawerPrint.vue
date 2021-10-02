@@ -32,6 +32,12 @@
       <el-col v-bind:span="24 / Reports.length" v-for="item in Reports" :key="item.Id">
         <el-row type="flex">
           <el-col :span="2">
+            <el-button
+              type="success"
+              icon="el-icon-printer"
+              @click="ShawermaSheesh(Data)"
+            />
+
             <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
           </el-col>
           <el-col v-permission="['Admin']" :span="2">

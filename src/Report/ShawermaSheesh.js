@@ -8,7 +8,7 @@ import QRCode from 'qrcode'
 
 export function ShawermaSheesh(temp, printer = undefined) {
   let startX = 1, startY = 0
-  let doc = new jsPDF("p", "mm", "80", { filters: ["ASCIIHexEncode"] });
+  let doc = new jsPDF();
   let timein = new Date(temp.FakeDate);
   let TotalAmmount = (
     temp.InventoryMovements.reduce((prev, cur) => {
@@ -23,7 +23,6 @@ export function ShawermaSheesh(temp, printer = undefined) {
   doc.addImage(store.getters.CompanyInfo.Logo, "jpeg", startX + 10, startY, 50, 25);
   //Name
   doc.setFontSize(24);
-  doc.setFontType("normal");
   doc.setLineWidth(0.4);
   startY += 15
   doc.line(0, startY + 5, 70, startY += 5);
