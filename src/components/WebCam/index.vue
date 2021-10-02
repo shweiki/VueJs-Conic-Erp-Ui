@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-button icon="el-icon-camera-solid" circle @click="Visible = true"></el-button>
+    <el-button
+      type="success"
+      icon="el-icon-camera-solid"
+      circle
+      @click="Visible = true"
+    ></el-button>
 
     <el-dialog style="margin-top: -13vh" title="تصوير" :visible.sync="Visible">
       <el-row>

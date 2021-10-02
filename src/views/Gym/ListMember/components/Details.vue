@@ -14,19 +14,20 @@
               icon="el-icon-upload"
               @click="imagecropperShow = true"
             ></el-button>
+            <image-cropper
+              v-show="imagecropperShow"
+              :key="imagecropperKey"
+              :width="150"
+              :height="150"
+              lang-type="ar"
+              TableName="Member"
+              :ObjectId="Member.Id"
+              @close="close"
+              @crop-upload-success="cropSuccess"
+            />
             <web-cam TableName="Member" :ObjectId="Member.Id" />
           </pan-thumb>
-          <image-cropper
-            v-show="imagecropperShow"
-            :key="imagecropperKey"
-            :width="150"
-            :height="150"
-            lang-type="ar"
-            TableName="Member"
-            :ObjectId="Member.Id"
-            @close="close"
-            @crop-upload-success="cropSuccess"
-          />
+
           <el-col :span="24">
             <el-tag v-if="Member.HaveFaceOnDevice == true" type="success"
               >يوجد بصمة وجه</el-tag
