@@ -47,7 +47,7 @@
                 <edit-vendor :VendorId="tempForm.VendorId" />
               </el-col>
 
-              <el-col v-permission="['Admin']" :span="3">
+              <el-col v-permission="['admin']" :span="3">
                 <el-form-item
                   prop="FakeDate"
                   :rules="[
@@ -235,7 +235,7 @@
                         </el-col>
                       </el-col>
                     </el-row>
-                    <el-row type="flex" class="card" v-permission="['Admin']">
+                    <el-row type="flex" class="card" v-permission="['admin']">
                       <el-col :span="10">
                         <el-form-item prop="Tax">
                           <el-select

@@ -240,7 +240,7 @@
                             >
                           </el-col>
                         </el-row>
-                        <el-row type="flex" class="card" v-permission="['Admin']">
+                        <el-row type="flex" class="card" v-permission="['admin']">
                           <el-col :span="10">
                             <el-form-item prop="Tax">
                               <el-select
@@ -299,7 +299,7 @@
                           <!--  <vendor-select @Set="v => (tempForm.Vendor = v)" />-->
                         </el-form-item>
                       </el-col>
-                      <el-col v-permission="['Admin']" :span="8">
+                      <el-col v-permission="['admin']" :span="8">
                         <el-form-item
                           prop="FakeDate"
                           :rules="[

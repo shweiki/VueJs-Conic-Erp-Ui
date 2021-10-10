@@ -1,5 +1,5 @@
 <template>
-  <div v-permission="['Admin']">
+  <div v-permission="['admin']">
     <el-col v-for="(NOprations, index) in NextOprations" :key="index">
       <el-button
         :type="NOprations.ClassName"

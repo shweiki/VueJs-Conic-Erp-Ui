@@ -55,7 +55,7 @@
             }
           "
       /></el-col>
-      <el-col v-permission="['Admin']" :span="18">
+      <el-col v-permission="['admin']" :span="18">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الحسابات</span>
         <el-divider direction="vertical"></el-divider>

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container" style="direction: rtl">
     <add-entry
-      v-if="checkPermission(['Admin'])"
+      v-if="checkPermission(['admin'])"
       :AccountId1="3"
       :AccountId2="AccountId"
     />

@@ -32,15 +32,9 @@
       <el-col v-bind:span="24 / Reports.length" v-for="item in Reports" :key="item.Id">
         <el-row type="flex">
           <el-col :span="2">
-            <el-button
-              type="success"
-              icon="el-icon-printer"
-              @click="ShawermaSheesh(Data)"
-            />
-
             <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
           </el-col>
-          <el-col v-permission="['Admin']" :span="2">
+          <el-col v-permission="['admin']" :span="2">
             <el-button
               class="filter-item"
               type="primary"
@@ -49,7 +43,7 @@
             >
             </el-button>
           </el-col>
-          <el-col v-permission="['Admin']" :span="2">
+          <el-col v-permission="['admin']" :span="2">
             <el-button
               type="warning"
               icon="el-icon-edit"
@@ -61,7 +55,7 @@
               "
             />
           </el-col>
-          <el-col v-permission="['Admin']" :span="9">
+          <el-col v-permission="['admin']" :span="9">
             <el-input
               placeholder="Please input Email"
               v-model="item.EmailSent"
@@ -74,7 +68,7 @@
               ></el-button>
             </el-input>
           </el-col>
-          <el-col v-permission="['Admin']" :span="9">
+          <el-col v-permission="['admin']" :span="9">
             <el-input
               placeholder="Please input Number as 79xxxxxxx"
               v-model="PhoneNumber"

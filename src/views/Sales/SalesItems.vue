@@ -55,7 +55,7 @@
       <el-col :span="6">
         <el-button
           v-waves
-          v-permission="['Admin']"
+          v-permission="['admin']"
           :loading="downloadLoading"
           class="filter-item"
           type="warning"
@@ -85,7 +85,7 @@
             }
           "
       /></el-col>
-      <el-col v-permission="['Admin']" :span="18">
+      <el-col v-permission="['admin']" :span="18">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الفواتير</span>
         <el-divider direction="vertical"></el-divider>

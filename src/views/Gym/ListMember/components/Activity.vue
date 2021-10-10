@@ -99,7 +99,7 @@
         </template>
       </el-table-column>
       <el-table-column label="محرر" align="center" prop="EditorName"></el-table-column>
-      <el-table-column width="40" v-if="checkPermission(['Admin'])">
+      <el-table-column width="40" v-if="checkPermission(['admin'])">
         <template slot-scope="scope">
           <Member-Ship-Movement-Edit :MembershipMovementId="scope.row.Id" />
         </template>

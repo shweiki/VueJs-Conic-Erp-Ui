@@ -9,7 +9,7 @@
           </el-col>
           <el-col :span="2">
             <el-switch
-              v-bind:disabled="!checkPermission(['Admin'])"
+              v-bind:disabled="!checkPermission(['admin'])"
               v-model="AutoSent"
               active-color="#13ce66"
               inactive-color="#ff4949"
@@ -39,7 +39,7 @@
           </el-col>
         </el-row>
       </div>
-      <div v-permission="['Admin']">
+      <div v-permission="['admin']">
         <el-divider direction="vertical"></el-divider>
         <span>عدد مقبوضات</span>
         <el-divider direction="vertical"></el-divider>
@@ -139,7 +139,7 @@
             <Drawer-Print :Data="scope.row" Type="Payment" />
           </template>
         </el-table-column>
-        <el-table-column align="center" v-if="checkPermission(['Admin'])">
+        <el-table-column align="center" v-if="checkPermission(['admin'])">
           <template slot-scope="scope">
             <Next-Oprations
               :ObjId="scope.row.Id"

@@ -122,7 +122,7 @@
         <el-col :span="8">
           <el-form-item v-bind:label="$t('Visit.HourPrice')" prop="HourPrice">
             <el-input-number
-              v-bind:disabled="!checkPermission(['Admin'])"
+              v-bind:disabled="!checkPermission(['admin'])"
               :size="$store.getters.size"
               v-model="tempForm.HourPrice"
               :precision="0"

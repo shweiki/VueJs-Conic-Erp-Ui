@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="8">
         <add-entry
-          v-if="checkPermission(['Admin'])"
+          v-if="checkPermission(['admin'])"
           :AccountId1="3"
           :AccountId2="AccountId"
         />

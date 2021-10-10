@@ -9,7 +9,7 @@
         <split-pane split="horizontal" :min-percent="6" :default-percent="6">
           <template slot="paneL">
             <el-row type="flex" style="background: #545454; color: white">
-              <el-col v-permission="['Admin']" :span="3">
+              <el-col v-permission="['admin']" :span="3">
                 <el-form-item
                   prop="FakeDate"
                   :rules="[
@@ -170,7 +170,7 @@
                               }}</el-tag>
                               <edit-item
                                 @focus="focusBarcode"
-                                v-if="checkPermission(['Admin'])"
+                                v-if="checkPermission(['admin'])"
                                 style="float: left"
                                 :ItemId="
                                   tempForm.InventoryMovements[scope.$index].ItemsId
@@ -216,7 +216,7 @@
                           </template>
                         </el-table-column>
                         <el-table-column
-                          v-if="checkPermission(['Admin'])"
+                          v-if="checkPermission(['admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Price')"
                           width="130"
                           align="center"
@@ -233,7 +233,7 @@
                           </template>
                         </el-table-column>
                         <el-table-column
-                          v-if="!checkPermission(['Admin'])"
+                          v-if="!checkPermission(['admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Price')"
                           width="130"
                           align="center"
@@ -268,7 +268,7 @@
                           </template>
                         </el-table-column>
                         <el-table-column
-                          v-if="checkPermission(['Admin'])"
+                          v-if="checkPermission(['admin'])"
                           v-bind:label="$t('NewPurchaseInvoice.Inventory')"
                           width="110"
                           align="center"
@@ -378,7 +378,7 @@
                           ></el-input>
                         </el-col>
                       </el-row>
-                      <el-row v-permission="['Admin']">
+                      <el-row v-permission="['admin']">
                         <el-col :span="10">
                           <el-form-item prop="Tax">
                             <el-select

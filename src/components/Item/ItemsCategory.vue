@@ -68,7 +68,7 @@
               JD
             </div>
           </div>
-          <!--  <el-col v-permission="['Admin']"> 
+          <!--  <el-col v-permission="['admin']"> 
               <el-tooltip
                 v-for="(Inventory, index) in Item.InventoryQty"
                 :key="index"

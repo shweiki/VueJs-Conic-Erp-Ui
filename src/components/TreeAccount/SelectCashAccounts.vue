@@ -1,6 +1,6 @@
 <template>
   <el-select
-    v-bind:disabled="!checkPermission(['Admin'])"
+    v-bind:disabled="!checkPermission(['admin'])"
     v-model="value"
     @change="SetVal"
     placeholder="الصندوق"

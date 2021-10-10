@@ -24,7 +24,7 @@
         </el-col>
       </div>
       <div style="text-align: center">
-        <div v-permission="['Admin']">
+        <div v-permission="['admin']">
           <span style="color: #ff5722; font-size: large"
             >مبيعات النقدية :
             {{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }}
@@ -89,7 +89,7 @@
             /></el-col>
           </el-row>
 
-          <el-row v-permission="['Admin']" type="flex">
+          <el-row v-permission="['admin']" type="flex">
             <el-col :span="12">
               <span style="font-size: large">إجمالي سحوبات :</span>
             </el-col>
@@ -148,7 +148,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <span v-permission="['Admin']" style="color: #ff5722; font-size: x-large"
+          <span v-permission="['admin']" style="color: #ff5722; font-size: x-large"
             >النتيجة :
             {{
               (

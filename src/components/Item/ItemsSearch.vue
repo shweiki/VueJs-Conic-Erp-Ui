@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-row>
-      <el-col v-permission="['Admin']" :span="2">
+      <el-col v-permission="['admin']" :span="2">
         <add-item :visible="OpenAddItem" :barcode="Barcode" @focus="focus" />
       </el-col>
-      <el-col v-permission="['Admin']" :span="2">
+      <el-col v-permission="['admin']" :span="2">
         <dialog-search-item @add="AddItem" @focus="focus" />
       </el-col>
       <el-col :span="2">

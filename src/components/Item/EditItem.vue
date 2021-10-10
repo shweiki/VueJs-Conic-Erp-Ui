@@ -2,7 +2,7 @@
   <div>
     <el-button
       icon="el-icon-edit"
-      v-permission="['Admin']"
+      v-permission="['admin']"
       circle
       @click="getdata()"
     ></el-button>

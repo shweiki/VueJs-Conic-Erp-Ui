@@ -11,7 +11,7 @@
       </el-col>
       <el-col :span="8">
         <Search-By-Date
-          v-permission="['Admin']"
+          v-permission="['admin']"
           :Value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
             (v) => {
@@ -24,7 +24,7 @@
       </el-col>
       <el-col :span="3">
         <user-select
-          v-permission="['Admin']"
+          v-permission="['admin']"
           @Set="
             (v) => {
               listQuery.User = v;
@@ -46,7 +46,7 @@
       </el-col>
       <el-col :span="6">
         <Drawer-Print
-          v-permission="['Admin']"
+          v-permission="['admin']"
           style="float: left"
           Type="ItemsSales"
           :Data="{
@@ -75,7 +75,7 @@
         />
 
         <Drawer-Print
-          v-permission="['Admin']"
+          v-permission="['admin']"
           style="float: left"
           Type="ItemsIngredients"
           :Data="{
@@ -115,7 +115,7 @@
           }"
         />
         <Drawer-Print
-          v-permission="['Admin']"
+          v-permission="['admin']"
           style="float: left"
           Type="SaleInvoicesList"
           :Data="{
@@ -126,7 +126,7 @@
         />
         <el-button
           v-waves
-          v-permission="['Admin']"
+          v-permission="['admin']"
           :loading="downloadLoading"
           class="filter-item"
           type="warning"
@@ -156,7 +156,7 @@
             }
           "
       /></el-col>
-      <el-col v-permission="['Admin']" :span="18">
+      <el-col v-permission="['admin']" :span="18">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الفواتير</span>
         <el-divider direction="vertical"></el-divider>

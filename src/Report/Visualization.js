@@ -2,6 +2,7 @@ import store from "@/store";
 import { nArabicWords } from "./nArabicWords.js";
 import i18n from "@/lang";
 import QRCode from 'qrcode'
+import checkPermission from "@/utils/permission";
 
 let toFixed = store.getters.settings.ToFixed;
 var JsBarcode = require('jsbarcode');
@@ -43,6 +44,11 @@ export default function Visualization(Data, Html, Type) {
         imgurl = url
       })
     return '<img src="' + imgurl + '"  width="' + w + '" height="' + h + '" />'
+  }
+  let checkpermission  = (v) => {
+    if(!checkPermission(v)){
+      return "display: none;"
+    }
   }
   Object.keys(Data).forEach(key => {
     if (typeof Data[key] == "function") { Data[key] = Data[key]() }

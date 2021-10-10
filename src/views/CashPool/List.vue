@@ -47,7 +47,7 @@
 
         <el-button
           v-waves
-          v-permission="['Admin']"
+          v-permission="['admin']"
           :loading="downloadLoading"
           class="filter-item"
           type="warning"
@@ -77,7 +77,7 @@
       /></el-col>
     </el-row>
     <el-row type="flex">
-      <el-col v-permission="['Admin']" :span="24">
+      <el-col v-permission="['admin']" :span="24">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الاغلاقات</span>
         <el-divider direction="vertical"></el-divider>

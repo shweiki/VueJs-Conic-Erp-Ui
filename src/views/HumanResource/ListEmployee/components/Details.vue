@@ -33,7 +33,7 @@
               >إستقالة</el-button
             >
           </el-col>
-          <el-col :span="24" v-if="checkPermission(['Admin']) && Employee.Status == -2">
+          <el-col :span="24" v-if="checkPermission(['admin']) && Employee.Status == -2">
             <el-button @click="dialogOprationVisible2 = true" type="success" plain
               >الغاء إستقالة</el-button
             >

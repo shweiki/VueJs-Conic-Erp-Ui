@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button
-      v-permission="['Admin']"
+      v-permission="['admin']"
       type="primary"
       icon="el-icon-plus"
       @click="Visibles = true"

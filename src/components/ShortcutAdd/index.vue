@@ -34,7 +34,7 @@
         <el-col :span="12"> إضافة شيك </el-col>
       </el-row>
       <i
-        v-permission="['Admin']"
+        v-permission="['admin']"
         class="el-icon-plus avatar-container Right-Menu-item hover-effect"
         slot="reference"
         @click="visible = !visible"

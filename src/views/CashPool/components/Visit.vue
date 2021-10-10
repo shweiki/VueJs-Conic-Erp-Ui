@@ -25,7 +25,7 @@
 
         <el-col :span="6">
           <el-switch
-            v-bind:disabled="!checkPermission(['Admin'])"
+            v-bind:disabled="!checkPermission(['admin'])"
             v-model="AutoSent"
             active-color="#13ce66"
             inactive-color="#ff4949"
@@ -42,7 +42,7 @@
           </el-col>
         </el-row>
       </div>
-      <div v-permission="['Admin']">
+      <div v-permission="['admin']">
         <el-divider direction="vertical"></el-divider>
         <span>{{ $t("CashPool.Invoice") }}</span>
         <el-divider direction="vertical"></el-divider>
