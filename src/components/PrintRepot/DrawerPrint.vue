@@ -107,7 +107,9 @@ import jsPDF from "jspdf";
 import JSPM from "jsprintmanager";
 import * as htmlToImage from "html-to-image";
 import { GetReportByType } from "@/api/Report";
-import { SendEmail } from "@/api/StmpEmail";
+
+import { Send as SendEmail } from "@/api/Email";
+
 import permission from "@/directive/permission/index.js";
 
 export default {
@@ -178,11 +180,11 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      const ResolveSendEmail = await SendEmail(
-        item.EmailSent,
-        "From Conic Erp App " + item.Name + "",
-        item.Html
-      );
+      const ResolveSendEmail = await SendEmail({
+        to: item.EmailSent,
+        subject: "From Conic Erp App " + item.Name + "",
+        body: item.Html,
+      });
       this.$notify({
         title: "تم ",
         message: "تم ارسال " + ResolveSendEmail,

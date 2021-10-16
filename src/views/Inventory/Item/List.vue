@@ -168,7 +168,7 @@
               TableName="Item"
               @Done="handleFilter"
           /></el-col>
-          <el-col :span="8"> <edit-item :ItemId="scope.row.Id" /> </el-col>
+          <el-col :span="8"> <Edit-Item :ItemId="scope.row.Id" /> </el-col>
           <el-col :span="8">
             <Drawer-Print Type="Item" :Data="scope.row" />
           </el-col>

@@ -26,6 +26,7 @@ module.exports = {
    */
   publicPath: '/',
   outputDir: '../AspCore-Conic-Erp-RestApi/AspCore-Conic-Erp-RestApi/wwwroot',
+  //outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,

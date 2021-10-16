@@ -2,8 +2,7 @@ import store from "@/store";
 import { GetReportByType } from "@/api/Report";
 import Visualization from "./Visualization";
 import * as htmlToImage from "html-to-image";
-import jsPDF from "jspdf";
-import { SendEmail } from "@/api/StmpEmail";
+import { Send as SendEmail } from "@/api/Email";
 import JSPM from "jsprintmanager";
 import download from "downloadjs";
 
@@ -62,7 +61,13 @@ export function SendReportByEmail(Email, Type, Data, Subject = "") {
   }).then((res) => {
     res.forEach(async (item, index) => {
       item.Html = Visualization(Data, item.Html, "Set");
-      const ResolveSendEmail = await SendEmail(Email, item.Name + " - " + Subject, item.Html)
+      const ResolveSendEmail = await SendEmail(
+        {
+          to: Email,
+          subject: item.Name + " - " + Subject,
+          body: item.Html,
+        }
+      )
       this.$notify({
         title: "تم الإضافة بنجاح",
         message: "تم ارسال " + ResolveSendEmail,

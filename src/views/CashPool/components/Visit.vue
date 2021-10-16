@@ -169,7 +169,7 @@ import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue"
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import { parseTime } from "@/utils";
 import { VisualizationReportHtml, PrintReport } from "@/Report/FunctionalityReport";
-import { SendEmail } from "@/api/StmpEmail";
+import { Send as SendEmail } from "@/api/Email";
 
 export default {
   name: "Visit",
@@ -328,9 +328,10 @@ export default {
                       Dates: [new Date(), new Date()],
                     });
 
-                    const ResolveSendEmail = await SendEmail(
-                      this.$store.getters.CompanyInfo.Email,
-                      "إغلاق صندوق " +
+                    const ResolveSendEmail = await SendEmail({
+                      to: this.$store.getters.CompanyInfo.Email,
+                      subject:
+                        "إغلاق صندوق " +
                         this.CashPool.Type +
                         " - " +
                         "من تاريخ " +
@@ -338,8 +339,8 @@ export default {
                         " - " +
                         "لغاية  " +
                         this.formatDate(new Date()),
-                      CashPool + VisitsList
-                    );
+                      body: CashPool + VisitsList,
+                    });
                     this.$notify({
                       title: "تم الإضافة بنجاح",
                       message: "تم الإضافة بنجاح  " + ResolveSendEmail,
