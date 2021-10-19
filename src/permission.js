@@ -50,6 +50,7 @@ router.beforeEach(async (to, from, next) => {
                         var now = new Date();
                         var d = new Date(store.state.settings.triger.CheckMembers.LastRun)
                         d.setTime(d.getTime() + (store.state.settings.triger.CheckMembers.OnClock * 60 * 60 * 1000))
+                      //  console.log("-",d.getTime()+"-"+now.getTime())
                         if (d.getTime() < now.getTime()) {
                             const CheckMembers =  store.dispatch("Members/CheckMembers")
                         }

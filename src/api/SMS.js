@@ -24,7 +24,7 @@ export function SendSMS(numberPhone, msg) {
 export function SendMultiSMS(numberPhones, msg) {
     numberPhones = numberPhones.map(element => {
         if (element.length >= 10) {
-            numberPhone = numberPhone.replaceAll(" ", "");
+            element = element.replaceAll(" ", "");
             element = element.slice(1);
         }
         return "962" + element;

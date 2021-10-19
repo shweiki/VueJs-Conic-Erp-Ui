@@ -1,6 +1,8 @@
-import { GetMember, GetActiveMember, CheckMembers } from "@/api/Member";
+import { GetActiveMember, CheckMembers } from "@/api/Member";
 import { CheckMembershipMovement } from "@/api/MembershipMovement";
 import { CheckDeviceLog } from "@/api/DeviceLog";
+import { Notification } from 'element-ui';
+
 import store from '@/store'
 
 const state = {
@@ -16,6 +18,13 @@ const mutations = {
 const actions = {
     CheckMembers() {
         return new Promise((resolve, reject) => {
+            Notification.success({
+                type: 'info',
+                title: 'Info',
+                message: 'بدء النظام في عملية فحص المشتركين ',
+                showClose: false,
+                duration: 5000
+            });
             CheckMembers().then(response => {
                 CheckMembershipMovement().then(response => {
                     CheckDeviceLog().then(response => {
@@ -23,6 +32,13 @@ const actions = {
                         store.dispatch("settings/changeSetting", {
                             key: "triger",
                             value: store.getters.settings.triger,
+                        });
+                        Notification.success({
+                            type: 'success',
+                            title: 'Info',
+                            message: 'تم انتهاء من عملية فحص المشتركين ',
+                            showClose: false,
+                            duration: 5000
                         });
                         resolve(response)
                     }).catch(error => {
