@@ -43,7 +43,7 @@ export function SendMultiSMS(numberPhones, msg) {
             request({
                 method: 'get',
                 params: {
-                    numbers: element,
+                    numbers: element.join(","),
                     senderid: store.getters.settings.Sms.senderid,
                     AccName: store.getters.settings.Sms.AccName,
                     AccPass: store.getters.settings.Sms.AccPass,
