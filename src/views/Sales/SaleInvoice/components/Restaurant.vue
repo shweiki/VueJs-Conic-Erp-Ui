@@ -643,15 +643,14 @@ export default {
 
                   if (
                     this.OldInvoice.Type == "Delivery" &&
-                    this.$store.getters.settings.PointOfSale.CreateDelivery == true && 
+                    this.$store.getters.settings.PointOfSale.CreateDelivery == true &&
                     this.$store.getters.settings.OrderIsAutomatic == false
                   ) {
-                    
                     this.CreateDelivery(this.OldInvoice);
                   }
                   if (
                     this.OldInvoice.Type == "Delivery" &&
-                    this.$store.getters.settings.PointOfSale.CreateDelivery == true && 
+                    this.$store.getters.settings.PointOfSale.CreateDelivery == true &&
                     this.$store.getters.settings.OrderIsAutomatic == true
                   ) {
                     this.CreateWithDriver(this.OldInvoice);
@@ -707,10 +706,10 @@ export default {
     },
     async CreateDelivery(temp) {
       let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
-      
+
       var items = temp.InventoryMovements;
-      var names = items.map(function(item) {
-      return item['Name'];
+      var names = items.map(function (item) {
+        return item["Name"];
       });
       CreateDelivery({
         Id: undefined,
@@ -725,6 +724,7 @@ export default {
         DeliveryPrice: temp.DeliveryPrice,
         TotalPill: temp.Total,
         Content: names.toString(),
+        DriverId: undefined,
       }).then((res) => {
         if (res) {
           this.$notify({
@@ -744,11 +744,11 @@ export default {
         }
       });
     },
-     async CreateWithDriver(temp) {
+    async CreateWithDriver(temp) {
       let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
       var items = temp.InventoryMovements;
-      var names = items.map(function(item) {
-      return item['Name'];
+      var names = items.map(function (item) {
+        return item["Name"];
       });
       CreateWithDriver({
         Id: undefined,

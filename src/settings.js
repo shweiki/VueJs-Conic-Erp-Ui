@@ -19,6 +19,7 @@ module.exports = {
     showRestOfBill: false,
     BarcodeIsId: false,
     WithOutCheckItemIsExist: true,
+    OrderIsAutomatic: false,
     ToFixed: 2,
     LimitQurey: 20,
     LimitGetInvoice: 200,
