@@ -2,25 +2,20 @@
   <div class="app-container">
     <el-row v-if="tempForm">
       <el-col :span="24" :xs="24" v-loading="loading">
-        <Items-Search  />
-
         <el-card class="box-card">
-          <el-tabs
-            v-model="activeTab"
-            tab-position="right"
-            @tab-click="tabClick"
-          >
+          <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
             <el-tab-pane label="بيانات" name="Details">
               <Item-Form :ItemId="tempForm.Id" />
             </el-tab-pane>
             <el-tab-pane label="الكمية" name="Qty">
               <Inventory-Qty :ItemId="tempForm.Id" />
             </el-tab-pane>
-            <el-tab-pane label="حركات" name="Movements"> </el-tab-pane>
-            <el-tab-pane label="مبيعات" name="Sales"> </el-tab-pane>
-            <el-tab-pane label="مشتريات" name="Purchases"> </el-tab-pane>
-            <el-tab-pane label="سندات مخزون" name="OrderInventory">
+            <el-tab-pane label="حركات" name="Movements"
+              ><Movements :Item="tempForm" />
             </el-tab-pane>
+            <el-tab-pane label="مكونات" name="Ingredient">
+              <ingredient :Value="tempForm.Ingredients" :ItemId="tempForm.Id"
+            /></el-tab-pane>
           </el-tabs>
         </el-card>
       </el-col>
@@ -29,23 +24,22 @@
 </template>
 
 <script>
-import ItemsSearch from "@/components/Item/ItemsSearch";
 import InventoryQty from "@/components/Item/InventoryQty";
 import ItemForm from "@/components/Item/ItemForm.vue";
-import Ingredient from "@/components/Item/Ingredient";
+import Ingredient from "@/components/Item/Ingredient.vue";
+import Movements from "./Movements.vue";
 
 import { GetItemById } from "@/api/Item";
 export default {
   name: "Details",
-  components: { ItemsSearch, InventoryQty, ItemForm, Ingredient },
+  components: { InventoryQty, ItemForm, Ingredient, Movements },
   props: {
     isEdit: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
-    
     return {
       activeTab: "Details",
       loading: true,
@@ -54,7 +48,7 @@ export default {
       ItemshipMovements: [],
       Payments: [],
       EntryMovements: [],
-      log: []
+      log: [],
     };
   },
 
@@ -68,7 +62,7 @@ export default {
   methods: {
     getdata(val) {
       GetItemById({ Id: val })
-        .then(response => {
+        .then((response) => {
           this.tempForm = response;
           //this.GetImageItem(this.tempForm.Id);
           this.loading = false;
@@ -77,38 +71,37 @@ export default {
           // set page title
           this.setPageTitle();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     tabClick(tab, event) {
       if (tab.label == "زيارات")
         if (tab.label == "اشتراكات")
-          if (tab.label == "مقبوضات")
-            if (tab.label == "مالية") console.log(tab);
+          if (tab.label == "مقبوضات") if (tab.label == "مالية") console.log(tab);
     },
     GetImageItem(Id) {
       GetFileByObjId({ TableName: "Item", ObjId: Id })
-        .then(response => {
+        .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     setTagsViewTitle() {
       const title = "Item";
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`
+        title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
       const title = "Item";
       document.title = `${title} - ${this.tempForm.Id}`;
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

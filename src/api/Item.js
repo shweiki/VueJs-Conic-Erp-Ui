@@ -101,6 +101,13 @@ export function Edit(data) {
     data: qs.stringify(data)
   })
 }
+export function EditIngredient(data) {
+  return request({
+    url: '/Item/EditIngredient',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 
 export function CalculateInventoryItemQty(data) {
   return request({

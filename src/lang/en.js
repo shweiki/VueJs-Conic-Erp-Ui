@@ -458,7 +458,10 @@ export default {
         PurchaseCost: 'Purchase Cost',
         SellingPrice: 'Selling Price',
         ToCA: 'To Customer \ Account',
-        Category: "Category"
+        Category: "Category",
+        TotalIn: "In",
+        TotalOut: "Out",
+        Total: "Total",
     },
     OrderInventories: {
         OrderType: 'Order Type',

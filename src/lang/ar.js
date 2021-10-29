@@ -471,7 +471,10 @@ export default {
         PurchaseCost: 'سعر الشراء',
         SellingPrice: 'سعر البيع',
         ToCA: 'إالى حساب / عميل',
-        Category: "الأصناف",
+        Category: "تصنيفات",
+        TotalIn: "الداخل",
+        TotalOut: "الخارج",
+        Total: "الرصيد",
     },
     OrderInventories: {
         OrderType: 'نوع الطلب',

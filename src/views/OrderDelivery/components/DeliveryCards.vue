@@ -62,7 +62,9 @@
                   </el-col>
                   <el-col :span="4">
                     <div class="card-panel-description">
-                      <div class="card-panel-id">{{ option.Id }}</div>
+                      <div class="card-panel-id">
+                        {{ option.Id + "\\" + option.OrderId }}
+                      </div>
                     </div>
                   </el-col>
                   <el-col :span="12">

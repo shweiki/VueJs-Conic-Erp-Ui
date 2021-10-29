@@ -79,7 +79,7 @@
                     <div class="card-panel-description">
                       <div class="card-panel-phone">
                         <el-tag size="small" type="success">
-                          <a :href="`tel:+${option.PhoneNumber}`">
+                          <a :href="`tel:${option.PhoneNumber}`">
                             {{ option.PhoneNumber }}
                           </a>
                         </el-tag>

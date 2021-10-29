@@ -13,14 +13,8 @@
       <el-row type="flex">
         <el-col :span="16">
           <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
-            <el-input
-              ref="ItemName"
-              type="text"
-              v-model="tempForm.Name"
-            ></el-input>
-            <el-checkbox v-model="tempForm.IsPrime"
-              >اظهار على شاشة المبيعات</el-checkbox
-            >
+            <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
+            <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -58,38 +52,32 @@
               :precision="2"
               :step="0.1"
               :min="0.0"
-              :max="1500"                            @focus="$event.target.select()"
-
+              :max="1500"
+              @focus="$event.target.select()"
             ></el-input-number>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item
-            v-bind:label="$t('Items.PurchaseCost')"
-            prop="OtherPrice"
-          >
+          <el-form-item v-bind:label="$t('Items.PurchaseCost')" prop="OtherPrice">
             <el-input-number
               v-model="tempForm.OtherPrice"
               :precision="2"
               :step="0.1"
               :min="0.0"
-              :max="1500"                            @focus="$event.target.select()"
-
+              :max="1500"
+              @focus="$event.target.select()"
             ></el-input-number>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item
-            v-bind:label="$t('Items.SellingPrice')"
-            prop="SellingPrice"
-          >
+          <el-form-item v-bind:label="$t('Items.SellingPrice')" prop="SellingPrice">
             <el-input-number
               v-model="tempForm.SellingPrice"
               :precision="2"
               :step="0.1"
               :min="0.0"
-              :max="1500"                            @focus="$event.target.select()"
-
+              :max="1500"
+              @focus="$event.target.select()"
             ></el-input-number>
           </el-form-item>
         </el-col>
@@ -100,8 +88,8 @@
             <el-input-number
               v-model="tempForm.LowOrder"
               :min="1"
-              :max="100000000"                            @focus="$event.target.select()"
-
+              :max="100000000"
+              @focus="$event.target.select()"
             ></el-input-number>
           </el-form-item>
         </el-col>
@@ -112,8 +100,8 @@
               :precision="2"
               :step="0.01"
               :min="0.01"
-              :max="1"                            @focus="$event.target.select()"
-
+              :max="1"
+              @focus="$event.target.select()"
             />
           </el-form-item>
         </el-col>
@@ -121,10 +109,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
-            <el-input
-              v-model="tempForm.Barcode"
-              suffix-icon="fa fa-barcode"
-            ></el-input>
+            <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -133,14 +118,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <ingredient
-        :Value="tempForm.Ingredients"
-        @Set="
-          v => {
-            tempForm.Ingredients = v;
-          }
-        "
-      />
     </el-form>
   </div>
 </template>
@@ -152,7 +129,6 @@ import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
 import { GetFileByObjId } from "@/api/File";
 import permission from "@/directive/permission/index.js";
-import Ingredient from "./Ingredient.vue";
 
 export default {
   name: "ItemForm",
@@ -160,13 +136,12 @@ export default {
     PanThumb,
     WebCam,
     ImageCropper,
-    Ingredient
   },
   props: {
     ItemId: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   directives: { permission },
   mounted() {
@@ -184,21 +159,21 @@ export default {
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
     getdata() {
-      GetItemById({ Id: this.ItemId }).then(response => {
+      GetItemById({ Id: this.ItemId }).then((response) => {
         // handle success
         this.tempForm = response;
         this.GetImageItem(this.tempForm.Id);
@@ -210,20 +185,20 @@ export default {
       this.$emit("focus");
     },
     updateData() {
-      console.log(this.tempForm)
-      this.$refs["dataForm"].validate(valid => {
+      console.log(this.tempForm);
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.Visibles = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -234,11 +209,11 @@ export default {
     },
     GetImageItem(ID) {
       GetFileByObjId({ TableName: "Item", ObjId: ID })
-        .then(response => {
+        .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -248,8 +223,8 @@ export default {
     },
     close() {
       this.imagecropperShow = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

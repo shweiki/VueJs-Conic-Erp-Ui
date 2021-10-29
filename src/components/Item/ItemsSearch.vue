@@ -2,10 +2,10 @@
   <div>
     <el-row>
       <el-col v-permission="['admin']" :span="2">
-        <add-item :visible="OpenAddItem" :barcode="Barcode" @focus="focus" />
+        <add-item :visible="OpenAddItem" :barcode="Barcode" />
       </el-col>
       <el-col v-permission="['admin']" :span="2">
-        <dialog-search-item @add="AddItem" @focus="focus" />
+        <dialog-search-item @add="AddItem" />
       </el-col>
       <el-col :span="2">
         <el-switch
@@ -89,7 +89,7 @@ export default {
     };
   },
   mounted() {
-    this.$refs["barcode"].focus();
+    // this.$refs["barcode"].focus();
     this.$barcodeScanner.init(this.onBarcodeScanned);
   },
 

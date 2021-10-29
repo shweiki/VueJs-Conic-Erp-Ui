@@ -1,25 +1,26 @@
 <template>
   <div>
-     <el-col :span="24" v-if="Temp.Status == 2" style="padding-top: 10px;">
-             <el-button 
-          style="float: right"
-          icon="el-icon-info"
-          type="primary"
-          :size="$store.getters.size"
-          @click="dialogFormVisible = true"
-          >{{$t("Delivery.Details")}} </el-button>
-          </el-col> 
-    <el-col :span="12" v-else style="padding-top: 10px;">
-     <el-button
-      style="float: right"
-      icon="el-icon-info"
-      type="primary"
-      :size="$store.getters.size"
-      @click="dialogFormVisible = true"
-      >{{ $t("Delivery.Details") }}
-    </el-button> 
-    </el-col> 
-    
+    <el-col :span="24" v-if="Temp.Status == 2" style="padding-top: 10px">
+      <el-button
+        style="float: right"
+        icon="el-icon-info"
+        type="primary"
+        :size="$store.getters.size"
+        @click="dialogFormVisible = true"
+        >{{ $t("Delivery.Details") }}
+      </el-button>
+    </el-col>
+    <el-col :span="12" v-else style="padding-top: 10px">
+      <el-button
+        style="float: right"
+        icon="el-icon-info"
+        type="primary"
+        :size="$store.getters.size"
+        @click="dialogFormVisible = true"
+        >{{ $t("Delivery.Details") }}
+      </el-button>
+    </el-col>
+
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
@@ -62,8 +63,8 @@
             {{ $t("Delivery.Phone") }}
           </template>
           <el-tag size="small" type="success">
-      <a :href="`tel:+${ Temp.PhoneNumber }`"> {{ Temp.PhoneNumber }} </a>
-      </el-tag>
+            <a :href="`tel:${Temp.PhoneNumber}`"> {{ Temp.PhoneNumber }} </a>
+          </el-tag>
         </el-descriptions-item>
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
@@ -91,7 +92,7 @@
             <i class="el-icon-star-off"></i>
             {{ $t("Delivery.OrderNo") }}
           </template>
-          <el-tag size="small">{{ Temp.Id }}</el-tag>
+          <el-tag size="small">{{ Temp.Id + "\\" + Temp.OrderId }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
@@ -113,10 +114,10 @@
           </template>
           <el-row>
             <el-col :span="10">
-          <Dialog-Action-Log TableName="OrderDelivery" :ObjId="Temp.Id" />
+              <Dialog-Action-Log TableName="OrderDelivery" :ObjId="Temp.Id" />
             </el-col>
             <el-col :span="14">
-          <Status-Tag :Status="Temp.Status" TableName="OrderDelivery" />
+              <Status-Tag :Status="Temp.Status" TableName="OrderDelivery" />
             </el-col>
           </el-row>
         </el-descriptions-item>
@@ -162,39 +163,43 @@
           </template>
           <el-tag size="small">{{ Temp.Driver.Name }}</el-tag>
         </el-descriptions-item>
-         <el-descriptions-item 
-         :span="2"
-         :label-style="{ 'text-align': 'right' }"
-          :content-style="{ 'text-align': 'right' }">
-      <template slot="label">
-        <i class="el-icon-office-building"></i>
-        الاصناف
-      </template>
-      <el-tag size="small">{{Temp.Content}}</el-tag>
-    </el-descriptions-item> 
+        <el-descriptions-item
+          :span="2"
+          :label-style="{ 'text-align': 'right' }"
+          :content-style="{ 'text-align': 'right' }"
+        >
+          <template slot="label">
+            <i class="el-icon-office-building"></i>
+            الاصناف
+          </template>
+          <el-tag size="small">{{ Temp.Content }}</el-tag>
+        </el-descriptions-item>
       </el-descriptions>
       <div>
-      <el-col v-if="Temp.Status == 1">
-           <driver-select
-      @Set="
-        (v) => {
-          SetDriver(v.value, Temp.Id);
-        }
-      "
-    />
-      </el-col>
+        <el-col v-if="Temp.Status == 1">
+          <driver-select
+            @Set="
+              (v) => {
+                SetDriver(v.value, Temp.Id);
+              }
+            "
+          />
+        </el-col>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import DriverSelect from "./DriverSelect.vue"
+import DriverSelect from "./DriverSelect.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import { SetDriver } from "@/api/OrderDelivery";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 export default {
   components: {
-    StatusTag, DriverSelect, DialogActionLog},
+    StatusTag,
+    DriverSelect,
+    DialogActionLog,
+  },
   name: "OrderDetails",
   props: ["Temp"],
   data() {
@@ -202,7 +207,7 @@ export default {
       dialogFormVisible: false,
     };
   },
-   methods: {
+  methods: {
     SetDriver(driverid, orderid) {
       SetDriver({ DriverId: driverid, OrderId: orderid }).then((res) => {
         if (res) {
@@ -210,8 +215,7 @@ export default {
           this.$emit("Done");
         }
       });
-    },     
-      
     },
+  },
 };
 </script>

@@ -709,11 +709,11 @@ export default {
 
       var items = temp.InventoryMovements;
       var names = items.map(function (item) {
-        return item["Name"];
+        return item["Name"] + " [ " + item["Description"] + " ] ";
       });
       CreateDelivery({
         Id: undefined,
-        OrderId: temp.Id,
+        OrderId: temp.Id.toString().slice(-4),
         Name: temp.Name,
         TotalPrice: temp.DeliveryPrice + temp.Total,
         Status: 0,

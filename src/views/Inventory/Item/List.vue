@@ -135,7 +135,26 @@
         width="120"
         align="center"
       ></el-table-column>
-      <el-table-column
+      <el-table-column align="center" v-bind:label="$t('Items.QuantityInventory')">
+        <el-table-column
+          v-bind:label="$t('Items.TotalIn')"
+          prop="TotalIn"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('Items.TotalOut')"
+          prop="TotalOut"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column v-bind:label="$t('Items.Total')" width="80" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.TotalIn - scope.row.TotalOut }}
+          </template></el-table-column
+        >
+      </el-table-column>
+      <!--   <el-table-column
         v-bind:label="$t('Items.QuantityInventory')"
         align="center"
         width="120"
@@ -143,7 +162,7 @@
         <template slot-scope="scope">
           <item-qty :ItemId="scope.row.Id" />
         </template>
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column v-bind:label="$t('Items.Category')" align="center" width="120">
         <template slot-scope="scope">
           <el-tag

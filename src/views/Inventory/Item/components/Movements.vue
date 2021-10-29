@@ -1,0 +1,296 @@
+<template>
+  <div class="app-container">
+    <div class="filter-container">
+      <el-row type="flex">
+        <el-col :span="2">
+          <el-popover placement="right" width="400" trigger="click">
+            <Item-Search-Any
+              :ItemId="listQuery.MergeItemId"
+              @Set="
+                (v) => {
+                  //  Account = v;
+                  listQuery.MergeItemId = v.Id;
+                }
+              "
+            />
+            <el-button type="primary" icon="fa fa-object-group" slot="reference">
+              دمج
+            </el-button>
+          </el-popover>
+        </el-col>
+      </el-row>
+      <el-row type="flex">
+        <el-col :span="10">
+          <Search-By-Date
+            :Value="[listQuery.DateFrom, listQuery.DateTo]"
+            @Set="
+              (v) => {
+                listQuery.DateFrom = v[0];
+                listQuery.DateTo = v[1];
+              }
+            "
+          />
+        </el-col>
+
+        <el-col :span="9">
+          <el-button
+            v-waves
+            :loading="downloadLoading"
+            class="filter-item"
+            type="primary"
+            icon="el-icon-download"
+            @click="handleDownload"
+          >
+            Export </el-button
+          ><el-button
+            v-waves
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            @click="handleFilter"
+          >
+            Search
+          </el-button>
+        </el-col>
+        <el-col :span="1">
+          <Drawer-Print
+            Type="ItemMoveStatement"
+            :Data="{
+              Name: Item.Name,
+              Id: Item.Id,
+              Code: Item.BarCode,
+              DateFrom: listQuery.DateFrom,
+              DateTo: listQuery.DateTo,
+              ItemMovement: list,
+              TotalIn: Totals.In,
+              TotalOut: Totals.Out,
+              Total: Totals.Totals,
+              TotalRows: Totals.Rows,
+            }"
+        /></el-col>
+      </el-row>
+    </div>
+
+    <el-divider direction="vertical"></el-divider>
+    <span>عدد الحركات</span>
+    <el-divider direction="vertical"></el-divider>
+    <span>{{ Totals.Rows }}</span>
+    <el-divider direction="vertical"></el-divider>
+
+    <span>مجموع الداخل</span>
+    <el-divider direction="vertical"></el-divider>
+    <span>{{ Totals.In.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+    <el-divider direction="vertical"></el-divider>
+
+    <span>مجموع الخارج</span>
+    <el-divider direction="vertical"></el-divider>
+    <span>{{ Totals.Out.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+    <el-divider direction="vertical"></el-divider>
+
+    <span>الرصيد</span>
+    <el-divider direction="vertical"></el-divider>
+    <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+    <el-divider direction="vertical"></el-divider>
+
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      fit
+      border
+      highlight-current-row
+      style="width: 100%"
+    >
+      <el-table-column
+        v-bind:label="$t('Accounting.EntryId')"
+        prop="Id"
+        width="80"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column label="التاريخ" align="center" width="140">
+        <template slot-scope="{ row }">
+          <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Accounting.FktableDescription')"
+        prop="FkDescription"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        v-bind:label="$t('Accounting.Notes')"
+        prop="Description"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        label="رقم الحركة"
+        prop="Id"
+        align="center"
+        width="80"
+      ></el-table-column>
+      <el-table-column label="نوع الحركة" prop="Move" align="center">
+        <template slot-scope="{ row }">
+          <router-link
+            v-if="row.TableName == 'Manual'"
+            :to="'/EntryAccounting/Edit/' + row.EntryId"
+          >
+            <strong style="font-size: 10px; cursor: pointer">{{
+              $t("AccountStatement." + row.TableName)
+            }}</strong>
+          </router-link>
+          <router-link
+            v-if="row.TableName == 'Receive'"
+            :to="'/Receive/Edit/' + row.Fktable"
+          >
+            <strong style="font-size: 10px; cursor: pointer">{{
+              $t("AccountStatement." + row.TableName)
+            }}</strong>
+          </router-link>
+          <router-link
+            v-if="row.TableName == 'Payment'"
+            :to="'/Payment/Edit/' + row.Fktable"
+          >
+            <strong style="font-size: 10px; cursor: pointer">{{
+              $t("AccountStatement." + row.TableName)
+            }}</strong>
+          </router-link>
+          <router-link
+            v-if="row.TableName == 'SaleInvoice'"
+            :to="'/Sales/Edit/' + row.Fktable"
+          >
+            <strong style="font-size: 10px; cursor: pointer">{{
+              $t("AccountStatement." + row.TableName)
+            }}</strong>
+          </router-link>
+          <router-link
+            v-if="row.TableName == 'SaleInvoiceCashPool'"
+            :to="'/CashPool/Edit/SaleInvoice/' + row.Fktable"
+          >
+            <strong style="font-size: 10px; cursor: pointer">{{
+              $t("AccountStatement." + row.TableName)
+            }}</strong>
+          </router-link>
+          <router-link
+            v-if="row.TableName == 'PaymentCashPool'"
+            :to="'/CashPool/Edit/Payment/' + row.Fktable"
+          >
+            <strong style="font-size: 10px; cursor: pointer">{{
+              $t("AccountStatement." + row.TableName)
+            }}</strong>
+          </router-link>
+        </template></el-table-column
+      >
+      <el-table-column label="الداخل" prop="In" width="80" align="center">
+        <template slot-scope="scope">{{
+          scope.row.In.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column label="الخارج" prop="Out" width="80" align="center">
+        <template slot-scope="scope">{{
+          scope.row.Out.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column label="الرصيد" prop="TotalRow" width="80" align="center">
+        <template slot-scope="scope">{{
+          scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column v-bind:label="$t('Sales.Status')" width="100" align="center">
+        <template slot-scope="scope">
+          <Status-Tag :Status="scope.row.Status" TableName="InventoryMovements" />
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+<script>
+import { GetItemMove } from "@/api/Item";
+import SearchByDate from "@/components/Date/SearchByDate";
+import StatusTag from "@/components/Oprationsys/StatusTag";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import permission from "@/directive/permission/index.js";
+import ItemSearchAny from "@/components/Item/ItemSearchAny.vue";
+import waves from "@/directive/waves"; // waves directive
+import SearchBy from "@/components/DynamicComponents/SearchBy";
+import { parseTime } from "@/utils";
+
+export default {
+  name: "ItemMoveStatement",
+  props: ["Item"],
+  components: {
+    StatusTag,
+    SearchByDate,
+    DrawerPrint,
+    ItemSearchAny,
+    SearchBy,
+  },
+  directives: { waves, permission },
+  data() {
+    return {
+      list: [],
+      Totals: { Rows: 0, Totals: 0, In: 0, Out: 0 },
+      listLoading: false,
+      listQuery: {
+        DateFrom: "",
+        DateTo: "",
+        ItemId: this.Item.Id,
+        MergeItemId: undefined,
+      },
+      //   Item: this.Item,
+      downloadLoading: false,
+    };
+  },
+  mounted() {
+    this.getList();
+  },
+  methods: {
+    getList() {
+      this.listLoading = true;
+      //    console.log("sdsad", this.listQuery);
+      GetItemMove(this.listQuery).then((response) => {
+        this.list = response.items.map((curr, i, array) => {
+          let Total = curr.Credit - curr.Debit;
+          let lastTotal = i != 0 ? array[i - 1].TotalRow : 0;
+          console.log("lastTotal", lastTotal);
+
+          curr.TotalRow += lastTotal;
+
+          console.log(curr.TotalRow);
+
+          return curr;
+        });
+        this.Totals = response.Totals;
+        this.listLoading = false;
+      });
+    },
+    handleFilter() {
+      this.getList();
+    },
+    handleDownload() {
+      this.downloadLoading = true;
+      import("@/Report/Excel/Export2Excel").then((excel) => {
+        const tHeader = Object.keys(this.list[0]);
+        const filterVal = Object.keys(this.list[0]);
+        const data = this.formatJson(filterVal);
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: "table-list",
+        });
+        this.downloadLoading = false;
+      });
+    },
+    formatJson(filterVal) {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
+          if (j === "timestamp") {
+            return parseTime(v[j]);
+          } else {
+            return v[j];
+          }
+        })
+      );
+    },
+  },
+};
+</script>
