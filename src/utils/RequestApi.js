@@ -7,7 +7,8 @@ import store from '@/store'
 var baseUrl = window.location.protocol + "//" + window.location.host + "/"
 console.log("process.env", process.env)
 const service = axios.create({
-  baseURL: process.env.NODE_ENV == "development" ? process.env.VUE_APP_BASE_API : baseUrl,// baseUrl || url = base url + request url
+  baseURL: process.env.NODE_ENV == "development" ? process.env.VUE_APP_BASE_API : baseUrl,//'http://localhost:5000'
+  // baseUrl || url = base url + request url
   timeout: 20000000,// request timeout
   withCredentials: true,
 })
