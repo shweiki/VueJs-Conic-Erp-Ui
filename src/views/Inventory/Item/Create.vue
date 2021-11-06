@@ -1,13 +1,12 @@
 ﻿<template>
-  <detail :is-edit="false" />
+  <Detail :is-edit="false" />
 </template>
 
 <script>
-import Detail from './components/Detail'
+import Detail from "./components/Detail";
 
 export default {
-  name: 'Edit',
-  components: { Detail }
-}
+  name: "Create",
+  components: { Detail },
+};
 </script>
-

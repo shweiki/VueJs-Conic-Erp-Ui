@@ -220,7 +220,6 @@
                         </el-form-item>
                       </el-col></el-row
                     >
-
                     <el-row v-if="tempForm.Type == 'Delivery'" type="flex" class="card">
                       <el-col :span="24">
                         <delivery-el
@@ -708,22 +707,22 @@ export default {
       let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
 
       var items = temp.InventoryMovements;
-      var names = items.map(function (item) {
+      var itemsnames = items.map(function (item) {
         return item["Name"] + " [ " + item["Description"] + " ] ";
       });
       CreateDelivery({
         Id: undefined,
         OrderId: temp.Id.toString().slice(-4),
         Name: temp.Name,
-        TotalPrice: temp.DeliveryPrice + temp.Total,
+        TotalPrice: 0, // temp.DeliveryPrice + temp.Total,
         Status: 0,
         Description: temp.Description,
         FakeDate: temp.FakeDate,
         PhoneNumber: temp.PhoneNumber,
         Region: temp.Region,
         DeliveryPrice: temp.DeliveryPrice,
-        TotalPill: temp.Total,
-        Content: names.toString(),
+        TotalPill: 0, //temp.Total,
+        Content: itemsnames.toString(),
         DriverId: undefined,
       }).then((res) => {
         if (res) {

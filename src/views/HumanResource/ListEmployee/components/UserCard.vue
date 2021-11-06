@@ -20,6 +20,14 @@
           ></el-input> </el-form-item
       ></el-col>
       <el-col :span="8">
+        <el-form-item v-bind:label="$t('CashDrawer.LatinName')" prop="LatinName">
+          <el-input
+            type="text"
+            v-model="Employee.LatinName"
+            v-bind:placeholder="$t('CashDrawer.Name')"
+          ></el-input> </el-form-item
+      ></el-col>
+      <el-col :span="8">
         <el-form-item
           label="الرقم الوطني"
           prop="Ssn"

@@ -8,6 +8,7 @@
             (v) => {
               listQuery.DateFrom = v[0];
               listQuery.DateTo = v[1];
+              getdata();
             }
           "
         />
@@ -317,7 +318,7 @@ export default {
         Sort: "-id",
         DateFrom: "",
         DateTo: "",
-        Status: 0,
+        Status: undefined,
         TableName: "Employee",
         UserId: undefined,
       },
@@ -325,7 +326,7 @@ export default {
     };
   },
   created() {
-    this.getdata();
+    // this.getdata();
   },
   methods: {
     getdata() {

@@ -20,7 +20,7 @@
         </el-col>
       </el-row>
       <el-row type="flex">
-        <el-col :span="10">
+        <el-col :span="16">
           <Search-By-Date
             :Value="[listQuery.DateFrom, listQuery.DateTo]"
             @Set="
@@ -31,8 +31,7 @@
             "
           />
         </el-col>
-
-        <el-col :span="9">
+        <el-col :span="3">
           <el-button
             v-waves
             :loading="downloadLoading"
@@ -41,8 +40,11 @@
             icon="el-icon-download"
             @click="handleDownload"
           >
-            Export </el-button
-          ><el-button
+            Export
+          </el-button>
+        </el-col>
+        <el-col :span="3">
+          <el-button
             v-waves
             class="filter-item"
             type="primary"
@@ -100,82 +102,55 @@
       highlight-current-row
       style="width: 100%"
     >
-      <el-table-column
-        v-bind:label="$t('Accounting.EntryId')"
-        prop="Id"
-        width="80"
-        align="center"
-      >
+      <el-table-column label="رقم الحركة" prop="Id" width="80" align="center">
       </el-table-column>
       <el-table-column label="التاريخ" align="center" width="140">
         <template slot-scope="{ row }">
-          <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+          <span>{{ row.FkObject.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Accounting.FktableDescription')"
-        prop="FkDescription"
-        align="center"
-      ></el-table-column>
+      <el-table-column v-bind:label="$t('Accounting.FktableDescription')" align="center">
+        <template slot-scope="{ row }">
+          {{ row.FkObject.Description }}
+        </template>
+      </el-table-column>
       <el-table-column
         v-bind:label="$t('Accounting.Notes')"
         prop="Description"
         align="center"
       ></el-table-column>
-      <el-table-column
-        label="رقم الحركة"
-        prop="Id"
-        align="center"
-        width="80"
-      ></el-table-column>
       <el-table-column label="نوع الحركة" prop="Move" align="center">
         <template slot-scope="{ row }">
           <router-link
-            v-if="row.TableName == 'Manual'"
-            :to="'/EntryAccounting/Edit/' + row.EntryId"
+            v-if="row.FkObject.Type == 'SalesInvoice'"
+            :to="'/Sales/Edit/' + row.FkObject.Id"
           >
             <strong style="font-size: 10px; cursor: pointer">{{
-              $t("AccountStatement." + row.TableName)
+              $t("ItemMovement." + row.FkObject.Type)
             }}</strong>
           </router-link>
           <router-link
-            v-if="row.TableName == 'Receive'"
-            :to="'/Receive/Edit/' + row.Fktable"
+            v-if="row.FkObject.Type == 'PurchaseInvoice'"
+            :to="'/PurchaseInvoice/Edit/' + row.FkObject.Id"
           >
             <strong style="font-size: 10px; cursor: pointer">{{
-              $t("AccountStatement." + row.TableName)
+              $t("ItemMovement." + row.FkObject.Type)
             }}</strong>
           </router-link>
           <router-link
-            v-if="row.TableName == 'Payment'"
-            :to="'/Payment/Edit/' + row.Fktable"
+            v-if="row.FkObject.Type == 'OrderInventory'"
+            :to="'/OrderInventory/Edit/' + row.FkObject.Id"
           >
             <strong style="font-size: 10px; cursor: pointer">{{
-              $t("AccountStatement." + row.TableName)
+              $t("ItemMovement." + row.FkObject.Type)
             }}</strong>
           </router-link>
           <router-link
-            v-if="row.TableName == 'SaleInvoice'"
-            :to="'/Sales/Edit/' + row.Fktable"
+            v-if="row.FkObject.Type == 'WorkShop'"
+            :to="'/WorkShop/Edit/' + row.FkObject.Id"
           >
             <strong style="font-size: 10px; cursor: pointer">{{
-              $t("AccountStatement." + row.TableName)
-            }}</strong>
-          </router-link>
-          <router-link
-            v-if="row.TableName == 'SaleInvoiceCashPool'"
-            :to="'/CashPool/Edit/SaleInvoice/' + row.Fktable"
-          >
-            <strong style="font-size: 10px; cursor: pointer">{{
-              $t("AccountStatement." + row.TableName)
-            }}</strong>
-          </router-link>
-          <router-link
-            v-if="row.TableName == 'PaymentCashPool'"
-            :to="'/CashPool/Edit/Payment/' + row.Fktable"
-          >
-            <strong style="font-size: 10px; cursor: pointer">{{
-              $t("AccountStatement." + row.TableName)
+              $t("ItemMovement." + row.FkObject.Type)
             }}</strong>
           </router-link>
         </template></el-table-column

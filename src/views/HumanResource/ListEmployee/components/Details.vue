@@ -27,7 +27,14 @@
             @close="close"
             @crop-upload-success="cropSuccess"
           />
-
+          <el-col :span="24">
+            <el-tag v-if="Employee.HaveFaceOnDevice == true" type="success"
+              >يوجد بصمة وجه</el-tag
+            >
+            <el-tag v-if="Employee.HaveFaceOnDevice == false" type="danger"
+              >لا يوجد بصمة وجه</el-tag
+            >
+          </el-col>
           <el-col :span="24" v-if="Employee.Status != -2">
             <el-button @click="dialogOprationVisible = true" type="danger" plain
               >إستقالة</el-button

@@ -142,18 +142,38 @@ export default {
       type: Number,
       default: undefined,
     },
+    isEdit: {
+      type: Boolean,
+      default: true,
+    },
   },
   directives: { permission },
   mounted() {
-    this.getdata();
+    if (this.isEdit) {
+      this.getdata();
+      // console.log(this.$route.params )
+    }
   },
   data() {
     return {
       Visibles: false,
       activeNames: "Info",
-      tempForm: {},
       imagecropperShow: false,
       imagecropperKey: 0,
+      tempForm: {
+        Id: undefined,
+        Name: "",
+        CostPrice: 0.0,
+        SellingPrice: 0.0,
+        OtherPrice: 0.0,
+        LowOrder: 0,
+        Tax: 0.0,
+        Rate: 0,
+        IsPrime: false,
+        Barcode: "",
+        Description: "",
+        Ingredients: null,
+      },
       rulesForm: {
         Name: [
           {

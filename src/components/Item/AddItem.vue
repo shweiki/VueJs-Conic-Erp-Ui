@@ -6,7 +6,6 @@
       :size="$store.getters.size"
       @click="Open = true"
     ></el-button>
-
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
@@ -26,7 +25,6 @@
           <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
         <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
-
         <el-row>
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">

@@ -5,15 +5,15 @@
         <el-card class="box-card">
           <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
             <el-tab-pane label="بيانات" name="Details">
-              <Item-Form :ItemId="tempForm.Id" />
+              <Item-Form :is-edit="isEdit" :ItemId="tempForm.Id" />
             </el-tab-pane>
-            <el-tab-pane label="الكمية" name="Qty">
+            <el-tab-pane v-if="isEdit" label="الكمية" name="Qty">
               <Inventory-Qty :ItemId="tempForm.Id" />
             </el-tab-pane>
-            <el-tab-pane label="حركات" name="Movements"
+            <el-tab-pane v-if="isEdit" label="حركات" name="Movements"
               ><Movements :Item="tempForm" />
             </el-tab-pane>
-            <el-tab-pane label="مكونات" name="Ingredient">
+            <el-tab-pane v-if="isEdit" label="مكونات" name="Ingredient">
               <ingredient :Value="tempForm.Ingredients" :ItemId="tempForm.Id"
             /></el-tab-pane>
           </el-tabs>
@@ -36,24 +36,24 @@ export default {
   props: {
     isEdit: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   data() {
     return {
       activeTab: "Details",
-      loading: true,
+      loading: false,
       tempRoute: {},
-      tempForm: null,
+      tempForm: {},
       ItemshipMovements: [],
-      Payments: [],
-      EntryMovements: [],
       log: [],
     };
   },
 
   created() {
+    //  console.log(this.$route.params);
     if (this.isEdit) {
+      this.loading = true;
       this.getdata(this.$route.params && this.$route.params.id);
       // console.log(this.$route.params )
     }
@@ -64,7 +64,7 @@ export default {
       GetItemById({ Id: val })
         .then((response) => {
           this.tempForm = response;
-          //this.GetImageItem(this.tempForm.Id);
+          this.GetImageItem(this.tempForm.Id);
           this.loading = false;
           //this.GetItemLogFromDevices(val);
           this.setTagsViewTitle();
@@ -75,11 +75,7 @@ export default {
           console.log(err);
         });
     },
-    tabClick(tab, event) {
-      if (tab.label == "زيارات")
-        if (tab.label == "اشتراكات")
-          if (tab.label == "مقبوضات") if (tab.label == "مالية") console.log(tab);
-    },
+    tabClick(tab, event) {},
     GetImageItem(Id) {
       GetFileByObjId({ TableName: "Item", ObjId: Id })
         .then((response) => {

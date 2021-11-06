@@ -129,6 +129,7 @@
           />
         </div>
       </div>
+      <button type="button" @click="notify">Show notification</button>
     </el-col>
   </el-row>
 </template>
@@ -151,6 +152,16 @@ export default {
     this.getdata();
   },
   methods: {
+    notify() {
+      // https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification#Parameters
+      this.$notification.show(
+        "Hello World",
+        {
+          body: "This is an example!",
+        },
+        {}
+      );
+    },
     handleSetLineChartData(type) {
       this.$emit("handleSetLineChartData", type);
     },

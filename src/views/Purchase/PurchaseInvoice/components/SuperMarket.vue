@@ -307,10 +307,11 @@ import FakeDate from "@/components/Date/FakeDate";
 import { GetActiveVendor } from "@/api/Vendor";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
+import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
 
 export default {
   name: "NewPurchaseInvoice",
-  components: { ItemsSearch, EditItem, FakeDate },
+  components: { ItemsSearch, EditItem, FakeDate, RadioActiveInventory },
   props: {
     isEdit: {
       type: Boolean,

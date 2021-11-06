@@ -21,7 +21,15 @@ import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 // ..
 store.dispatch("settings/GetSetting");
-
+import VueNativeNotification from 'vue-native-notification'
+ 
+Vue.use(VueNativeNotification, {
+  // Automatic permission request before
+  // showing notification (default: true)
+  requestOnNotify: true
+})
+Vue.notification.requestPermission()
+  .then(console.log)
 AOS.init();
 const pluginOptions = {
   /* see config reference */
