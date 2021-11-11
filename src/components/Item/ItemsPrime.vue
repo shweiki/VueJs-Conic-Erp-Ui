@@ -22,7 +22,7 @@
       v-for="(Item, index) in ItemsPrime.filter(
         data =>
           !search || data.Name.toLowerCase().includes(search.toLowerCase())
-        //||data.Category.includes(search.toLowerCase())
+        //||data.MenuItem.includes(search.toLowerCase())
       )"
       :key="index"
     >

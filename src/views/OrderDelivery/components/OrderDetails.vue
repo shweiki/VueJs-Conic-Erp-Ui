@@ -112,7 +112,7 @@
             <i class="el-icon-s-flag"></i>
             {{ $t("OrderInventories.Status") }}
           </template>
-          <el-row>
+          <el-row type="flex">
             <el-col :span="10">
               <Dialog-Action-Log TableName="OrderDelivery" :ObjId="Temp.Id" />
             </el-col>

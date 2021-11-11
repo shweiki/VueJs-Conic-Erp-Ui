@@ -1,13 +1,13 @@
 <template>
   <div>
-      <el-button
-      type="warning"
+    <el-button
+      type="primary"
       icon="el-icon-circle-plus"
       @click="dialogFormVisible = true"
       :size="$store.getters.size"
     ></el-button>
 
-  <el-dialog
+    <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
       :visible.sync="dialogFormVisible"
@@ -22,10 +22,10 @@
           />
         </el-col>
         <el-col :span="20">
-          <el-divider> إضافة تصنيف </el-divider>
+          <el-divider> إضافة وحدة قياس </el-divider>
         </el-col>
       </div>
-       <el-form
+      <el-form
         ref="dataForm"
         :rules="rulesForm"
         :model="tempForm"
@@ -44,31 +44,32 @@
 </template>
 
 <script>
-import { Create } from "@/api/MenuItem";
+import { Create } from "@/api/UnitItem";
 export default {
-  name: "AddInventory",
+  name: "AddUnitItem",
   data() {
     return {
       dialogFormVisible: false,
-   tempForm: {
+      tempForm: {
         Id: undefined,
         Name: "",
+        Status: 0,
         Description: "",
       },
-       rulesForm: {
+      rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             minlength: 3,
             maxlength: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
     };
   },
@@ -76,28 +77,29 @@ export default {
     this.resetTempForm();
   },
   methods: {
-   resetTempForm() {
+    resetTempForm() {
       this.tempForm = {
         Id: undefined,
         Name: "",
-        Description: ""
+        Description: "",
       };
     },
-     createData() {
-      this.$refs["dataForm"].validate(valid => {
+    createData() {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           console.log(this.tempForm);
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.dialogFormVisible = false;
+              this.$emit("Success", response);
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -106,8 +108,6 @@ export default {
         }
       });
     },
-
-
-  }
+  },
 };
 </script>

@@ -247,7 +247,7 @@ export default {
 
     },
     MinOrd: {
-        SBy: "Search By Name /Number /Barcode /Category",
+        SBy: "Search By Name /Number /Barcode /MenuItem",
         Qty: "Quantity",
         TotalIn: "Total In",
         TotalOut: "Total Out",
@@ -458,7 +458,8 @@ export default {
         PurchaseCost: 'Purchase Cost',
         SellingPrice: 'Selling Price',
         ToCA: 'To Customer \ Account',
-        Category: "Category",
+        MenuItem: "MenuItem",
+        UnitItem: "UnitItem",
         TotalIn: "In",
         TotalOut: "Out",
         Total: "Total",

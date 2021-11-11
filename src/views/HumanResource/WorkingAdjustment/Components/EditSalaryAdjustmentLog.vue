@@ -25,7 +25,7 @@
         label-position="top"
         class="demo-form-inline"
       >
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item prop="EmployeeName" label="اسم الموظف">
               <el-input disabled v-model="tempForm.Name"></el-input>
@@ -37,7 +37,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item prop="AdjustmentId" label="التسوية">
               <Select-Adjustment

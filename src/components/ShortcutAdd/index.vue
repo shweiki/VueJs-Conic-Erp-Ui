@@ -1,35 +1,35 @@
 <template>
   <div>
     <el-popover v-model="visible" placement="bottom" width="250" trigger="manual">
-      <el-row>
+      <el-row type="flex">
         <el-col :span="12"><Add-Item /></el-col>
         <el-col :span="12">صنف جديد</el-col>
       </el-row>
-      <el-row>
+      <el-row type="flex">
         <el-col :span="12"> <Add-Member /> </el-col>
         <el-col :span="12"> مشترك جديد </el-col>
       </el-row>
-      <el-row>
+      <el-row type="flex">
         <el-col :span="12"> <Add-Vendor /> </el-col>
         <el-col :span="12"> عميل/مورد جديد </el-col>
       </el-row>
-      <el-row>
+      <el-row type="flex">
         <el-col :span="12"> <Add-Inventory /> </el-col>
         <el-col :span="12"> مخزن جديد </el-col>
       </el-row>
-      <el-row>
+      <el-row type="flex">
         <el-col :span="12"> <Add-Membership /> </el-col>
         <el-col :span="12"> إشتراك جديد </el-col>
       </el-row>
-      <el-row>
-        <el-col :span="12"> <Add-Cat /> </el-col>
+      <el-row type="flex">
+        <el-col :span="12"> <Add-Menu-Item /> </el-col>
         <el-col :span="12"> تصنيف جديد </el-col>
       </el-row>
-      <el-row>
+      <el-row type="flex">
         <el-col :span="12"> <Add-Cash /> </el-col>
         <el-col :span="12"> إضافة كاش </el-col>
       </el-row>
-      <el-row>
+      <el-row type="flex">
         <el-col :span="12"> <Add-Cheque /> </el-col>
         <el-col :span="12"> إضافة شيك </el-col>
       </el-row>
@@ -53,7 +53,7 @@ import AddInventory from "../Add/AddInventory.vue";
 import AddMembership from "../Gym/AddMembership.vue";
 import AddCash from "../Add/AddCash.vue";
 import AddCheque from "../Add/AddCheque.vue";
-import AddCat from "../Add/AddCat.vue";
+import AddMenuItem from "../Add/AddMenuItem.vue";
 import permission from "@/directive/permission/index.js";
 
 export default {
@@ -66,7 +66,7 @@ export default {
     AddMembership,
     AddCash,
     AddCheque,
-    AddCat,
+    AddMenuItem,
   },
   data() {
     return {

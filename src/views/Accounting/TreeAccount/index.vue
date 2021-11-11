@@ -62,7 +62,7 @@
         </el-col>
       </el-row>
     </el-card>
-    <el-row>
+    <el-row type="flex">
       <el-col :span="24"> <create /> </el-col
     ></el-row>
   </div>

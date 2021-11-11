@@ -124,7 +124,7 @@
         <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
           <span>JOD {{ tempForm.TotalAmmount }}</span>
         </el-form-item>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="24">
             <el-form-item
               prop="EditorName"

@@ -20,7 +20,7 @@
       <span style="float: right; color: #8492a6; font-size: 13px">{{
         item.BarCode
       }}</span>
-      <span style="color: #8492a6; font-size: 13px"> {{ item.Category }} </span>
+      <span style="color: #8492a6; font-size: 13px"> {{ item.MenuItem }} </span>
       <span style="color: #8492a6; font-size: 13px"
         >( {{ item.SellingPrice }} )</span
       >

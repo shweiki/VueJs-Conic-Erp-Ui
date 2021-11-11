@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row>
+    <el-row type="flex">
       <el-col :span="20">
         <el-row type="flex">
           <el-col :span="4">

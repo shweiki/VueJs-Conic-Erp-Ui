@@ -14,6 +14,7 @@
         />
         <Drawer-Print style="float: left" Type="CashPool" :Data="CashPool" />
         <Drawer-Print
+          v-permission="['admin']"
           style="float: left"
           Type="VisitsList"
           :Data="{

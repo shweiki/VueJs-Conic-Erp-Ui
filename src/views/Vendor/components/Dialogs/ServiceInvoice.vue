@@ -14,7 +14,7 @@
       @opened="getdata"
     >
       <el-form label-position="top" class="demo-form-inline">
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item label="العدد">
               <span>{{ Service.Qty }}</span>
@@ -48,7 +48,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
               <span>JOD {{ Service.SellingPrice }}</span>

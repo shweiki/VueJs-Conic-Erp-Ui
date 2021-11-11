@@ -18,7 +18,7 @@
         ref="dataForm"
         class="demo-form-inline"
       >
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item
               prop="Type"
@@ -48,7 +48,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="24">
             <el-form-item
               prop="Description"

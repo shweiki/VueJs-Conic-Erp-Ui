@@ -26,7 +26,7 @@
           >
           <span>جرد مخزن</span>
         </div>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="6">
             <el-form-item
               prop="FakeDate"
@@ -54,7 +54,7 @@
           </el-col>
         </el-row>
         <el-card class="box-card">
-          <el-row>
+          <el-row type="flex">
             <el-col :span="6">
               <el-switch
                 v-model="ByQTY"
@@ -174,7 +174,7 @@
         :visible.sync="NewItemVisible"
         width="80%"
       >
-        <el-row>
+        <el-row type="flex">
           <el-col :span="3">
             <el-button type="success" icon="el-plus" @click="NewItem()">حفظ</el-button>
           </el-col>
@@ -197,7 +197,7 @@
         :visible.sync="EnterQTYVisible"
         width="80%"
       >
-        <el-row>
+        <el-row type="flex">
           <el-col :span="3">
             <el-button type="success" icon="el-plus" @click="onBarcodeScanned(Barcode)"
               >Add</el-button

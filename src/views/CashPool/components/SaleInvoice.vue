@@ -14,6 +14,7 @@
         />
         <Drawer-Print style="float: left" Type="CashPool" :Data="CashPool" />
         <Drawer-Print
+          v-permission="['admin']"
           style="float: left"
           Type="SaleInvoicesList"
           :Data="{
@@ -23,6 +24,7 @@
           }"
         />
         <Drawer-Print
+          v-permission="['admin']"
           style="float: left"
           Type="ItemsSales"
           :Data="{
@@ -32,6 +34,7 @@
           }"
         />
         <Drawer-Print
+          v-permission="['admin']"
           style="float: left"
           Type="ItemsIngredients"
           :Data="{

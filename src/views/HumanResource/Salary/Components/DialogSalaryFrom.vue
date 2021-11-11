@@ -26,7 +26,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="24">
             <el-form-item label="الفترة" prop="SalaryFrom">
               <Search-By-Date
@@ -39,7 +39,7 @@
                 "
             /></el-form-item> </el-col
         ></el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item label="الراتب الكلي" prop="GrossSalary">
               <el-input-number

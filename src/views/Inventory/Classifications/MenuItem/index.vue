@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
-  <Add-Cat/>
+      <Add-Menu-Item />
       <el-table
         v-loading="loading"
         :data="
@@ -30,7 +30,7 @@
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')"/>
+            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
 
@@ -43,7 +43,6 @@
         <el-table-column
           v-bind:label="$t('Classification.Notes')"
           prop="Description"
-          
           align="center"
         ></el-table-column>
         <el-table-column
@@ -55,24 +54,21 @@
             <Status-Tag :Status="scope.row.Status" TableName="MenuItem" />
           </template>
         </el-table-column>
-          <el-table-column align="right" width="200">
+        <el-table-column align="right" width="200">
           <template slot-scope="scope">
             <el-button
-              
               icon="el-icon-edit"
               circle
               @click="handleUpdate(scope.row)"
             ></el-button>
-              <Next-Oprations
-                :ObjId="scope.row.Id"
-                :Status="scope.row.Status"
-                TableName="MenuItem"
-                @Done="getdata"
+            <Next-Oprations
+              :ObjId="scope.row.Id"
+              :Status="scope.row.Status"
+              TableName="MenuItem"
+              @Done="getdata"
             />
-         
-             
           </template>
-        </el-table-column>  
+        </el-table-column>
       </el-table>
     </el-card>
 
@@ -140,11 +136,11 @@ import { GetMenuItem, Create, Edit } from "@/api/MenuItem";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import NextOprations from "@/components/Oprationsys/NextOprations";
-import AddCat from "@/components/Add/AddCat";
+import AddMenuItem from "@/components/Add/AddMenuItem";
 import printJS from "print-js";
 export default {
   name: "MenuItem",
-  components: { StatusTag, NextOprations, AddCat },
+  components: { StatusTag, NextOprations, AddMenuItem },
   data() {
     return {
       tableData: [],

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-row>
+    <el-row type="flex">
       <el-col :span="6" :xs="24">
         <member-log />
       </el-col>
@@ -23,7 +23,7 @@
                 }}</strong>
               </router-link>
             </div>
-            <el-row>
+            <el-row type="flex">
               <el-col :span="12"
                 >{{ $t("MemberList.MembershipType") }}{{ member.MembershipName }}</el-col
               >

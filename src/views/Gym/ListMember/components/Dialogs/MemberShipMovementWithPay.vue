@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row>
+    <el-row type="flex">
       <el-col :span="6">
         <Drawer-Print :Data="OldPayment" Type="Payment" />
       </el-col>
@@ -127,7 +127,7 @@
             <el-radio label border></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="24">
             <el-form-item
               prop="EditorName"
@@ -188,7 +188,7 @@
         <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input style="width: 220px" v-model="Payment.Description"></el-input>
         </el-form-item>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="24">
             <el-form-item
               prop="EditorName"

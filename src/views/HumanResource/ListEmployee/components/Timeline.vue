@@ -1,5 +1,5 @@
 <template>
-  <el-row>
+  <el-row type="flex">
     <el-col :span="24">
       <div class="radio">
         ترتيب:

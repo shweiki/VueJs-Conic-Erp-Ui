@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row>
+    <el-row type="flex">
       <el-col v-permission="['admin']" :span="2">
         <add-item :visible="OpenAddItem" :barcode="Barcode" />
       </el-col>
@@ -42,7 +42,7 @@
       :visible.sync="EnterQTYVisible"
       width="80%"
     >
-      <el-row>
+      <el-row type="flex">
         <el-col :span="3">
           <el-button type="success" icon="el-plus" @click="AddItemByQty">Add</el-button>
         </el-col>
@@ -71,7 +71,6 @@ import permission from "@/directive/permission/index.js";
 export default {
   name: "ItemsSearch",
   props: ["WithBarCode"],
-
   components: { AddItem, DialogSearchItem, ItemSearchAny },
   directives: { permission },
   data() {

@@ -1,6 +1,6 @@
 ﻿<template>
   <div class="app-container">
-    <el-tabs v-model="activeTab" tab-position="right" >
+    <el-tabs v-model="activeTab" tab-position="top" >
       <el-tab-pane label="مبيعات" name="Sales"><Sales-Items /> </el-tab-pane>
       <el-tab-pane label="مشتريات" name="Purchases"
         ><Purchase-Items />

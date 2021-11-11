@@ -352,7 +352,7 @@
                 <split-pane split="horizontal" :min-percent="27" :default-percent="30">
                   <template slot="paneL">
                     <el-card style="background: #545454">
-                      <el-row>
+                      <el-row type="flex">
                         <el-col :span="24">
                           <el-input
                             @change="focusBarcode"
@@ -395,7 +395,7 @@
                           $t("NewPurchaseInvoice.TotalDiscount")
                         }}</el-col>
                       </el-row>
-                      <el-row>
+                      <el-row type="flex">
                         <el-col :span="24">
                           <el-form-item prop="Description">
                             <el-input
@@ -406,7 +406,7 @@
                           </el-form-item>
                         </el-col>
                       </el-row>
-                      <el-row>
+                      <el-row type="flex">
                         <el-col :span="24" class="TotalAmmount">
                           <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
                           <el-divider direction="vertical"></el-divider>

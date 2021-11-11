@@ -23,7 +23,7 @@
           width="100%"
           :show-close="false"
           :visible.sync="dialogFormVisible"> 
-          <el-row>
+          <el-row type="flex">
   <el-descriptions class="margin-top" :title="$t('Delivery.OrderInfo')" :column="1" border>
     <el-descriptions-item :label-style="{'text-align': 'right'}" :content-style="{'text-align': 'right'}">
       <template slot="label">
@@ -71,7 +71,7 @@
   </el-descriptions>
   </el-row>
   <br>
-  <el-row>
+  <el-row type="flex">
        <driver-select
       @Set="
         (v) => {

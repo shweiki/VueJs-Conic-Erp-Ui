@@ -20,7 +20,7 @@ export function Create(data) {
   return request({
     url: '/UnitItem/Create',
     method: 'post',
-     data
+    data: qs.stringify(data)
   })
 }
 
@@ -28,6 +28,6 @@ export function Edit(data) {
   return request({
     url: '/UnitItem/Edit',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }

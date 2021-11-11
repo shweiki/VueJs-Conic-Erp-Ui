@@ -29,7 +29,7 @@
             {{ ValidateNote }}
           </p>
         </div>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="6">
             <el-form-item
               prop="OrderType"

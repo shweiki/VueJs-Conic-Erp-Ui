@@ -113,7 +113,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="24">
             <el-form-item
               prop="EditorName"

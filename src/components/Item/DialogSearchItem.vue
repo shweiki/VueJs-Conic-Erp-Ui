@@ -16,8 +16,9 @@
       @closed="focus"
     >
       <item-list
+        DblClickRow="AddAsRow"
         @dblclick="
-          v => {
+          (v) => {
             AddItem(v);
           }
         "
@@ -33,7 +34,7 @@ export default {
   data() {
     return {
       Open: false,
-      search: ""
+      search: "",
     };
   },
   methods: {
@@ -43,7 +44,7 @@ export default {
     },
     focus() {
       this.$emit("focus");
-    }
-  }
+    },
+  },
 };
 </script>

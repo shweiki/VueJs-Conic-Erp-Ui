@@ -30,7 +30,7 @@
       <el-form ref="dataForm" :rules="rulesForm" :model="tempForm">
         <el-collapse style="display: table-row-group" v-model="activeNames" accordion>
           <el-collapse-item title="Info" name="Info">
-            <el-row>
+            <el-row type="flex">
               <el-col :span="16">
                 <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
                   <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
@@ -66,7 +66,7 @@
                 /> </el-col
             ></el-row>
 
-            <el-row>
+            <el-row type="flex">
               <el-col :span="8">
                 <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
                   <el-input-number
@@ -104,7 +104,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row>
+            <el-row type="flex">
               <el-col :span="12">
                 <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
                   <el-input-number
@@ -128,7 +128,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row>
+            <el-row type="flex">
               <el-col :span="12">
                 <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
                   <el-input
@@ -146,17 +146,17 @@
           <el-collapse-item title="Qty" name="Qty">
             <inventory-qty :ItemId="tempForm.Id" />
           </el-collapse-item>
-          <el-collapse-item title="Category" name="Category">
-            <category
-              :Value="tempForm.Category"
+          <el-collapse-item title="MenuItem" name="MenuItem">
+            <Menu-Item
+              :Value="tempForm.MenuItem"
               @Set="
                 (v) => {
-                  tempForm.Category = v;
+                  tempForm.MenuItem = v;
                 }
               "
             />
             <el-tag
-              v-for="item of Array.from((tempForm.Category || '').split(','))"
+              v-for="item of Array.from((tempForm.MenuItem || '').split(','))"
               :key="item"
             >
               {{ item }}
@@ -179,12 +179,12 @@ import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
 import { GetFileByObjId } from "@/api/File";
 import permission from "@/directive/permission/index.js";
-import Category from "./Category";
+import MenuItem from "./MenuItem.vue";
 import elDragDialog from "@/directive/el-drag-dialog"; // base on element-ui
 import Ingredient from "./Ingredient.vue";
 
 export default {
-  components: { InventoryQty, PanThumb, WebCam, ImageCropper, Category, Ingredient },
+  components: { InventoryQty, PanThumb, WebCam, ImageCropper, MenuItem, Ingredient },
   props: {
     ItemId: {
       type: Number,

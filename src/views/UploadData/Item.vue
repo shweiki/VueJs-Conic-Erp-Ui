@@ -110,7 +110,7 @@ export default {
           Barcode: element.Barcode,
           Description: element.Description,
           Status: 0,
-          Category: element.Category,
+          MenuItem: element.MenuItem,
           Ingredients :element.Ingredients ,
           IsPrime: false
         };

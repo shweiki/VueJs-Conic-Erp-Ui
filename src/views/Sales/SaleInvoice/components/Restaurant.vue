@@ -107,7 +107,7 @@
                   </template>
                   <template slot="paneL">
                     <el-card class="card" :body-style="{ padding: '4px' }">
-                      <el-row>
+                      <el-row type="flex">
                         <el-col :span="3">
                           <drawer-search-invoice />
                         </el-col>
@@ -430,7 +430,7 @@ import permission from "@/directive/permission/index.js";
 
 // components
 import ItemsSearch from "@/components/Item/ItemsSearch";
-import ItemsCategory from "@/components/Item/ItemsCategory";
+import MenuItem from "@/components/Item/MenuItem.vue";
 import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill.vue";
 import RightMenu from "@/components/RightMenu";
@@ -473,7 +473,7 @@ export default {
     Screenfull,
     SizeSelect,
     ItemsSearch,
-    ItemsCategory,
+    MenuItem,
     EditItem,
     DrawerPrint,
     RestOfBill,

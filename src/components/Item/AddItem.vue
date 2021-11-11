@@ -25,7 +25,7 @@
           <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
         </el-form-item>
         <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
               <el-input-number
@@ -64,7 +64,7 @@
           </el-col>
         </el-row>
 
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
               <el-input-number
@@ -88,7 +88,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
               <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode"></el-input>
@@ -111,10 +111,10 @@
 
 <script>
 import { CreateItem, CheckItemIsExist } from "@/api/Item";
-import Category from "./Category.vue";
+import MenuItem from "./MenuItem.vue";
 
 export default {
-  components: { Category },
+  components: { MenuItem },
   props: {
     visible: Boolean,
     barcode: String,

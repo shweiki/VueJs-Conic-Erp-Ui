@@ -105,11 +105,14 @@
       @selection-change="handleSelectionChange"
       @row-dblclick="
         (row) => {
-          //  $emit('dblclick', row);
-          let r = $router.resolve({
-            path: '/Item/Edit/' + row.Id,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+          if (DblClickRow == 'AddAsRow') {
+            $emit('dblclick', row);
+          } else {
+            let r = $router.resolve({
+              path: '/Item/Edit/' + row.Id,
+            });
+            window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+          }
         }
       "
     >
@@ -163,10 +166,20 @@
           <item-qty :ItemId="scope.row.Id" />
         </template>
       </el-table-column>-->
-      <el-table-column v-bind:label="$t('Items.Category')" align="center" width="120">
+      <el-table-column v-bind:label="$t('Items.MenuItem')" align="center" width="120">
         <template slot-scope="scope">
           <el-tag
-            v-for="item of Array.from((scope.row.Category || '').split(','))"
+            v-for="item of Array.from((scope.row.MenuItem || '').split(','))"
+            :key="item"
+          >
+            {{ item }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column v-bind:label="$t('Items.UnitItem')" align="center" width="120">
+        <template slot-scope="scope">
+          <el-tag
+            v-for="item of Array.from((scope.row.UnitItem || '').split(','))"
             :key="item"
           >
             {{ item }}
@@ -269,6 +282,7 @@ import SortOptions from "@/components/SortOptions";
 
 export default {
   name: "ComplexTable",
+  props: ["DblClickRow"],
   components: {
     StatusTag,
     NextOprations,

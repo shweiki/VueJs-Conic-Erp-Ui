@@ -3,7 +3,7 @@
     <el-button icon="el-icon-arrow-left" class="pan-back-btn" @click="back">
       返回
     </el-button>
-    <el-row>
+    <el-row type="flex">
       <el-col :span="12">
         <h1 class="text-jumbo text-ginormous">Oops!</h1>
         gif来源<a href="https://zh.airbnb.com/" target="_blank">airbnb</a> 页面

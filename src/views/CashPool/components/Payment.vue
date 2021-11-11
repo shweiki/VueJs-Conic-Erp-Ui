@@ -28,6 +28,7 @@
               @click="OpenCashPoolDialog = true"
             />
             <Drawer-Print
+              v-permission="['admin']"
               style="float: left"
               Type="PaymentList"
               :Data="{

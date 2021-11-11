@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-row>
+    <el-row type="flex">
       <el-col :span="24" :xs="24" v-loading="loading">
         <employee-search />
         <el-col
@@ -19,7 +19,7 @@
                 }}</strong>
               </router-link>
             </div>
-            <el-row>
+            <el-row type="flex">
               <el-col :span="12"> --- </el-col>
               <el-col :span="12">
                 <span>اخر دوام</span>

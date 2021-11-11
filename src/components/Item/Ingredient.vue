@@ -53,7 +53,7 @@ export default {
   props: ["Value", "ItemId"],
   data() {
     return {
-      value: JSON.parse(this.Value),
+      value: JSON.parse(this.Value || "[]"),
     };
   },
 

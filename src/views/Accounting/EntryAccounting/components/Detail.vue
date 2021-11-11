@@ -28,7 +28,7 @@
         label-width="70px"
         class="demo-ruleForm"
       >
-        <el-row>
+        <el-row type="flex">
           <el-col :span="18">
             <el-form-item v-bind:label="$t('Classification.Notes')">
               <el-input type="textarea" v-model="tempForm.Description"></el-input>

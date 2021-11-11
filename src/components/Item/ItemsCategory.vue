@@ -47,16 +47,15 @@
         :lg="6"
         :xl="4"
         v-for="(Item, index) in List.filter(
-          data =>
-            !search || data.Name.toLowerCase().includes(search.toLowerCase())
-          //||data.Category.includes(search.toLowerCase())
+          (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+          //||data.MenuItem.includes(search.toLowerCase())
         )"
         :key="index"
       >
         <el-card
           class="box-card"
           shadow="always"
-          style="background:#607d8b "
+          style="background: #607d8b"
           :body-style="{ padding: '12px' }"
         >
           <div @click="AddItem(Item)">
@@ -116,7 +115,7 @@ import { GetFileByObjId } from "@/api/File";
 import { GetActiveMenuItem } from "@/api/MenuItem";
 
 export default {
-  name: "ItemsCategory",
+  name: "MenuItem",
   directives: { permission },
   props: ["WithImage"],
   data() {
@@ -126,12 +125,12 @@ export default {
       search: "",
       List: [],
       tabPosition: "top",
-      order: false
+      order: false,
     };
   },
   created() {
     GetActiveMenuItem()
-      .then(response => {
+      .then((response) => {
         // handle success
         console.log(response);
         this.cats = response;
@@ -139,7 +138,7 @@ export default {
         this.getdata();
         this.loading = false;
       })
-      .catch(error => {
+      .catch((error) => {
         // handle error
         console.log(error);
       });
@@ -168,28 +167,28 @@ export default {
       this.focus();
     },
     getdata() {
-      GetItemByAny({ Any: this.query }).then(response => {
+      GetItemByAny({ Any: this.query }).then((response) => {
         if (this.WithImage) {
-          Promise.all(response.map(item => this.GetImageItem(item))).then(
-            responses => (this.List = responses)
+          Promise.all(response.map((item) => this.GetImageItem(item))).then(
+            (responses) => (this.List = responses)
           );
         } else this.List = response;
       });
     },
     GetImageItem(item) {
       let defImg = this.$store.getters.CompanyInfo.Logo;
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         GetFileByObjId({ TableName: "Item", ObjId: item.Id })
-          .then(response => {
+          .then((response) => {
             response ? (item.Avatar = response.File) : (item.Avatar = defImg);
             resolve(item);
           })
-          .catch(err => {
+          .catch((err) => {
             reject(err);
           });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

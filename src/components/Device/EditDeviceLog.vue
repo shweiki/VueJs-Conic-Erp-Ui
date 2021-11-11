@@ -14,7 +14,7 @@
         label-position="top"
         class="demo-form-inline"
       >
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item prop="Fk" label="الموظف">
               <employee-search-any
@@ -32,7 +32,7 @@
             <select-device :Value="Temp.DeviceId" @Set="(v) => (Temp.DeviceId = v.Id)" />
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('AddVendors.Description')" prop="DateTime">
               <Fake-Date

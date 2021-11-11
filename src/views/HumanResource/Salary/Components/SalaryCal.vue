@@ -145,7 +145,7 @@
             :ExtraHours="tempForm.ExtraHours"
             :DelayHours="tempForm.DelayHours"
           />
-          <el-row>
+          <el-row type="flex">
             <el-col :span="24">
               <el-table
                 height="220"

@@ -4,7 +4,7 @@
 
     <panel-group />
     <el-card class="box-card">
-      <el-tabs v-model="activeTab" tab-position="right">
+      <el-tabs v-model="activeTab" tab-position="top">
         <el-tab-pane v-bind:label="$t('PanelGroup.Receivables')" name="Receivables">
           <receivables />
         </el-tab-pane>

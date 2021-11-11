@@ -8,7 +8,7 @@
           class="box-card"
           v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
         >
-          <el-row>
+          <el-row type="flex">
             <el-col :span="19">
               <Details :Employee="tempForm" />
             </el-col>
@@ -16,7 +16,7 @@
         </el-card>
 
         <el-card class="box-card">
-          <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
+          <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
             <el-tab-pane label="دوامات" name="timeline">
               <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
               <Timeline :timeline="log" :EmployeeId="tempForm.Id" />

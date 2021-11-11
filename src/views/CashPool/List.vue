@@ -65,7 +65,7 @@
         </el-button>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row type="flex">
       <el-col :span="24">
         <Radio-Oprations
           TableName="CashPool"

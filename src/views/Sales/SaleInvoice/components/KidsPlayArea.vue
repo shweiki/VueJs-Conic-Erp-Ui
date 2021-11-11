@@ -10,7 +10,7 @@
             <split-pane split="horizontal" :min-percent="5" :default-percent="6.5">
               <template slot="paneL">
                 <el-card class="card" :body-style="{ padding: '4px' }">
-                  <el-row>
+                  <el-row type="flex">
                     <el-col :span="3">
                       <drawer-search-invoice />
                     </el-col>

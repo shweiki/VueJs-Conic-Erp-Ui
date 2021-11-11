@@ -1,0 +1,191 @@
+<template>
+  <div class="app-container">
+    <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
+    <el-button
+      v-waves
+      :loading="downloadLoading"
+      class="filter-item"
+      type="primary"
+      icon="el-icon-download"
+      @click="handleDownload"
+    />
+    <el-row type="flex">
+      <el-col :span="12">
+        <el-table
+          height="500"
+          v-loading="loading"
+          :data="ExcelData"
+          border
+          highlight-current-row
+          style="width: 100%; margin-top: 20px"
+        >
+          <el-table-column
+            v-for="item of ExcelHeader"
+            :key="item"
+            :prop="item"
+            :label="item"
+          /> </el-table
+      ></el-col>
+      <el-col :span="12">
+        <el-table
+          height="500"
+          v-loading="loading"
+          :data="data"
+          border
+          highlight-current-row
+          style="width: 100%; margin-top: 20px"
+        >
+          <el-table-column
+            v-for="item of dataHeader"
+            :key="item"
+            :prop="item"
+            :label="item"
+          /> </el-table
+      ></el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+import UploadExcelComponent from "@/components/UploadExcel/index.vue";
+import waves from "@/directive/waves"; // waves directive
+import { parseTime } from "@/utils";
+
+export default {
+  name: "ForUploadBioLab",
+  components: { UploadExcelComponent },
+  directives: { waves },
+  data() {
+    return {
+      isDisabled: true,
+      radio: "Create",
+      loading: false,
+      ExcelData: [],
+      data: [],
+      ExcelHeader: [],
+      dataHeader: [],
+      file: undefined,
+      downloadLoading: false,
+    };
+  },
+  methods: {
+    handleDownload() {
+      this.downloadLoading = true;
+      console.log(this.file);
+
+      import("@/Report/Excel/Export2Excel").then((excel) => {
+        const tHeader = Object.keys(this.data[0]);
+        const filterVal = Object.keys(this.data[0]);
+        const data = this.formatJson(filterVal);
+        console.log(data);
+
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.file.name.slice(0, this.file.name.lastIndexOf(".")),
+        });
+        this.downloadLoading = false;
+      });
+    },
+    beforeUpload(file) {
+      const isLt1M = file.size / 1024 / 1024 < 8;
+      this.file = file;
+      if (isLt1M) {
+        return true;
+      }
+
+      this.$message({
+        message: "Please do not upload files larger than 8m in size.",
+        type: "warning",
+      });
+      return false;
+    },
+    handleSuccess({ results, header }) {
+      this.loading = true;
+      this.ExcelData = results;
+      this.ExcelHeader = header;
+
+      this.data = results.map((x) => {
+        let VDateBirthday = new Date("" + x["DATE OF BIRTH"].toString() + "");
+        console.log("DD", x["DATE OF BIRTH"], this.formatDate(VDateBirthday));
+        return {
+          Arabicname:
+            x["CABIN"] != undefined || null || "" ? x["CABIN"].replaceAll(" ", "") : "",
+          Englishname:
+            (x["FIRSTNAME"] != undefined || null || "" ? x["FIRSTNAME"] : "") +
+            " " +
+            (x["LASTNAME"] != undefined || null || "" ? x["LASTNAME"] : ""),
+          DateBirthday: this.formatDate(VDateBirthday), // x["DATE OF BIRTH"] != undefined || null || "" ? VDateBirthday : "", //   +,
+          Gender: x["GEN"] != "M" ? "Female" : "Male",
+          Email: x["EMAIL"] != undefined || null || "" ? x["EMAIL"] : "",
+          MobileCountryCode:
+            x["MobileCountryCode"] != undefined || null || ""
+              ? x["MobileCountryCode"]
+              : "962",
+          Mobilenumber:
+            x["Mobilenumber"] != undefined || null || "" ? x["Mobilenumber"] : "0",
+          PatNationality:
+            x["NAT"] != undefined || null || "" ? x["NAT"].replaceAll(",", " ") : "",
+          DocumentNumber:
+            x["PASS NR"] != undefined || null || ""
+              ? x["PASS NR"].replaceAll(" ", "")
+              : "",
+          Barcodenumber:
+            x["MSC CARD"] != undefined || null || ""
+              ? x["MSC CARD"].replace("'", "*").replaceAll(" ", "")
+              : "",
+        };
+      });
+      this.dataHeader = Object.keys(this.data[0]);
+      this.isDisabled = false;
+      this.loading = false;
+    },
+    formatJson(filterVal) {
+      return this.data.map((v) =>
+        filterVal.map((j) => {
+          if (j === "timestamp") {
+            return parseTime(v[j]);
+          } else {
+            return v[j];
+          }
+        })
+      );
+    },
+    formatDate(date) {
+      let d = new Date(date),
+        day = "" + d.getDate(),
+        month = "" + (d.getMonth() + 1),
+        year = d.getFullYear();
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [day, month, year].join("/");
+    },
+    ExcelDateToJSDate(serial) {
+      var utc_days = Math.floor(serial - 25569);
+      var utc_value = utc_days * 86400;
+      var date_info = new Date(utc_value * 1000);
+
+      var fractional_day = serial - Math.floor(serial) + 0.0000001;
+
+      var total_seconds = Math.floor(86400 * fractional_day);
+
+      var seconds = total_seconds % 60;
+
+      total_seconds -= seconds;
+
+      var hours = Math.floor(total_seconds / (60 * 60));
+      var minutes = Math.floor(total_seconds / 60) % 60;
+
+      return new Date(
+        date_info.getFullYear(),
+        date_info.getMonth(),
+        date_info.getDate(),
+        hours,
+        minutes,
+        seconds
+      );
+    },
+  },
+};
+</script>

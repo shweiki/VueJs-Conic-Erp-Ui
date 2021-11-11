@@ -27,7 +27,7 @@
       :show-close="false"
       :visible.sync="dialogFormVisible"
     >
-      <el-row>
+      <el-row type="flex">
         <el-descriptions
           class="margin-top"
           :title="$t('Delivery.OrderInfo')"
@@ -99,7 +99,7 @@
         </el-descriptions>
       </el-row>
       <br />
-      <el-row>
+      <el-row type="flex">
         <driver-select
           @Set="
             (v) => {

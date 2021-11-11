@@ -1,9 +1,9 @@
 <template>
-  <div class="app-container">
+  <div>
     <el-row v-if="tempForm">
       <el-col :span="24" :xs="24" v-loading="loading">
         <el-card class="box-card">
-          <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
+          <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
             <el-tab-pane label="بيانات" name="Details">
               <Item-Form :is-edit="isEdit" :ItemId="tempForm.Id" />
             </el-tab-pane>
@@ -13,7 +13,7 @@
             <el-tab-pane v-if="isEdit" label="حركات" name="Movements"
               ><Movements :Item="tempForm" />
             </el-tab-pane>
-            <el-tab-pane v-if="isEdit" label="مكونات" name="Ingredient">
+            <el-tab-pane label="مكونات" name="Ingredient">
               <ingredient :Value="tempForm.Ingredients" :ItemId="tempForm.Id"
             /></el-tab-pane>
           </el-tabs>
@@ -28,8 +28,9 @@ import InventoryQty from "@/components/Item/InventoryQty";
 import ItemForm from "@/components/Item/ItemForm.vue";
 import Ingredient from "@/components/Item/Ingredient.vue";
 import Movements from "./Movements.vue";
-
+import { GetFileByObjId } from "@/api/File";
 import { GetItemById } from "@/api/Item";
+
 export default {
   name: "Details",
   components: { InventoryQty, ItemForm, Ingredient, Movements },
@@ -51,7 +52,6 @@ export default {
   },
 
   created() {
-    //  console.log(this.$route.params);
     if (this.isEdit) {
       this.loading = true;
       this.getdata(this.$route.params && this.$route.params.id);

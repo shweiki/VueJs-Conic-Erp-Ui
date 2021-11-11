@@ -8,12 +8,12 @@
     ></el-button>
 
     <el-dialog style="margin-top: -13vh" title="تصوير" :visible.sync="Visible">
-      <el-row>
+      <el-row type="flex">
         <el-col :span="24">
           <video id="video-player" class="video" width="300" height="300"></video>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row type="flex">
         <el-button type="primary" @click="start()">لبدء اضغط 2 مرة</el-button>
 
         <el-button type="success" @click="capture()">التقاط</el-button>

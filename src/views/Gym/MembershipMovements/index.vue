@@ -74,7 +74,7 @@
     <div>
       <el-dialog style="margin-top: -13vh" title="تسجيل تجميد" :visible.sync="Visibles">
         <el-form label-position="top" class="demo-form-inline">
-          <el-row>
+          <el-row type="flex">
             <el-col :span="24">
               <el-form-item prop="FreezeBetween" label="الفترة">
                 <el-date-picker
@@ -92,14 +92,14 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row type="flex">
             <el-col :span="24">
               <el-form-item v-bind:label="$t('AddVendors.Description')">
                 <el-input v-model="Description"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row type="flex">
             <el-col :span="24">
               مجموع الايام حسب الفترة المطلوبة
               {{

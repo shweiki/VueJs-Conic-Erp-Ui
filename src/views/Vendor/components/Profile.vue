@@ -7,12 +7,12 @@
           class="box-card"
           v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
         >
-          <el-row>
+          <el-row type="flex">
             <el-col :span="19">
               <Details :Vendor="tempForm" />
             </el-col>
             <el-col :span="5" v-if="tempForm.Status != -2">
-              <el-row>
+              <el-row type="flex">
                 <el-col :span="24">
                   <el-button
                     style="width: 100px"
@@ -28,17 +28,17 @@
                 </el-col>
               </el-row>
 
-              <el-row>
+              <el-row type="flex">
                 <el-col :span="24">
                   <Vendor-Pay :VendorId="tempForm.Id" :Name="tempForm.Name" />
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row type="flex">
                 <el-col :span="24"
                   ><Vendor-Receive :VendorId="tempForm.Id" :Name="tempForm.Name" />
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row type="flex">
                 <el-col :span="24">
                   <Massage
                     :NumberPhone1="tempForm.PhoneNumber1"
@@ -51,7 +51,7 @@
           </el-row>
         </el-card>
         <el-card class="box-card">
-          <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
+          <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
             <el-tab-pane label="بيانات" name="Details">
               <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
               <User-Card :Vendor="tempForm" />

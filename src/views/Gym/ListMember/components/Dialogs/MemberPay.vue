@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row>
+    <el-row type="flex">
       <el-col :span="12">
         <Drawer-Print :Data="OldPayment" Type="Payment" />
       </el-col>
@@ -17,7 +17,7 @@
       :visible.sync="Visibles"
     >
       <el-form :model="tempForm" ref="Form" label-position="top" class="demo-form-inline">
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item label="القيمة المقبوضة">
               <currency-input
@@ -54,7 +54,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item prop="PaymentMethod" label="طريقة الدفع">
               <radio-payment-method
@@ -71,7 +71,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="24">
             <el-form-item
               prop="EditorName"

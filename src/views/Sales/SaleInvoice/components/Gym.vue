@@ -101,7 +101,7 @@
                   </template>
                   <template slot="paneR">
                     <el-card class="card" :body-style="{ padding: '4px' }">
-                      <el-row>
+                      <el-row type="flex">
                         <el-col :span="6">
                           <el-switch
                             v-model="AutoPrint"
@@ -425,7 +425,7 @@ import permission from "@/directive/permission/index.js";
 
 // components
 import ItemsSearch from "@/components/Item/ItemsSearch";
-import ItemsCategory from "@/components/Item/ItemsCategory";
+import MenuItem from "@/components/Item/MenuItem";
 import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill";
 import RightMenu from "@/components/RightMenu";
@@ -465,7 +465,7 @@ export default {
     Screenfull,
     SizeSelect,
     ItemsSearch,
-    ItemsCategory,
+    MenuItem,
     EditItem,
     DrawerPrint,
     RestOfBill,

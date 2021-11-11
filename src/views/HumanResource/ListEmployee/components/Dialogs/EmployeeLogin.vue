@@ -15,7 +15,7 @@
         label-position="top"
         class="demo-form-inline"
       >
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item prop="EmployeeName" label="اسم الموظف">
               <!-- <Employee-Search-Any
@@ -34,7 +34,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex">
           <el-col :span="12">
             <el-form-item label="وقت الدخول" prop="StartDateTime">
               <Fake-Date

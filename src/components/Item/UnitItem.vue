@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-drag-select @change="SetVal" v-model="value" multiple placeholder="تصنيفات">
+    <el-col :span="2"
+      ><Add-Unit-Item @Success="(v) => options.push({ value: v.Name, label: v.Name })"
+    /></el-col>
+    <el-col :span="20"></el-col>
+    <el-drag-select @change="SetVal" v-model="value" multiple placeholder="وحدات قياس">
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -8,24 +12,29 @@
         :value="item.value"
       />
     </el-drag-select>
+    <el-tag v-for="item of value" :key="item">
+      {{ item }}
+    </el-tag>
   </div>
 </template>
 
 <script>
 import ElDragSelect from "@/components/DragSelect"; // base on element-ui
-import { GetActiveMenuItem } from "@/api/MenuItem";
+import { GetActiveUnitItem } from "@/api/UnitItem";
+import AddUnitItem from "@/components/Add/AddUnitItem.vue"; // base on element-ui
+
 export default {
   props: ["Value"],
-  components: { ElDragSelect },
+  components: { ElDragSelect, AddUnitItem },
   data() {
     return {
       value: [],
       options: [],
     };
   },
-  created() {
+  mounted() {
     if (this.Value) this.value = Array.from(this.Value.split(","));
-    GetActiveMenuItem()
+    GetActiveUnitItem()
       .then((response) => {
         // handle success
         console.log(response);

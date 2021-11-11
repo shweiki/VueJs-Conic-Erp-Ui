@@ -12,7 +12,7 @@
       <el-divider/>
      
     <el-card class="box-card" >
-          <el-tabs v-model="activeTab" tab-position="right" @tab-click="tabClick">
+          <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
             <el-tab-pane label="التسويات العادية" name="RegularAdjustment">
               <span slot="label"><i class="el-icon-refresh"></i> التسويات العادية</span>
               <Regular-Adjustment  :RAdjustments="RAdjustments"/>

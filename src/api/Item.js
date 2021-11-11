@@ -108,7 +108,13 @@ export function EditIngredient(data) {
     data: qs.stringify(data)
   })
 }
-
+export function EditTakeBon(data) {
+  return request({
+    url: '/Item/EditTakeBon',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function CalculateInventoryItemQty(data) {
   return request({
     url: '/Item/CalculateInventoryItemQty',

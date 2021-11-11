@@ -5,7 +5,7 @@
         icon="fa fa-save"
         style="float: left"
         type="primary"
-        @click="updateData()"
+        @click="confirmData()"
       />
     </el-col>
 
@@ -15,10 +15,12 @@
           <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
             <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
             <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
+            <el-checkbox v-model="tempForm.TakeBon">تتبع جمركي</el-checkbox>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <pan-thumb
+            v-if="tempForm"
             :image="tempForm.Avatar"
             :height="'100px'"
             :width="'100px'"
@@ -30,21 +32,21 @@
               @click="imagecropperShow = true"
             ></el-button>
             <web-cam TableName="Item" :ObjectId="tempForm.Id" />
-          </pan-thumb>
-          <image-cropper
-            v-show="imagecropperShow"
-            :key="imagecropperKey"
-            :width="150"
-            :height="150"
-            lang-type="ar"
-            TableName="Item"
-            :ObjectId="tempForm.Id"
-            @close="close"
-            @crop-upload-success="cropSuccess"
-          /> </el-col
+            <image-cropper
+              v-show="imagecropperShow"
+              :key="imagecropperKey"
+              :width="150"
+              :height="150"
+              lang-type="ar"
+              TableName="Item"
+              :ObjectId="tempForm.Id"
+              @close="close"
+              @crop-upload-success="cropSuccess"
+            />
+          </pan-thumb> </el-col
       ></el-row>
 
-      <el-row>
+      <el-row type="flex">
         <el-col :span="8">
           <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
             <el-input-number
@@ -82,7 +84,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row type="flex">
         <el-col :span="12">
           <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
             <el-input-number
@@ -106,7 +108,33 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row type="flex" justify="space-around">
+        <el-col :span="10">
+          <el-form-item v-bind:label="$t('Items.MenuItem')" prop="MenuItem">
+            <Menu-Item
+              :Value="tempForm.MenuItem"
+              @Set="
+                (v) => {
+                  tempForm.MenuItem = v;
+                }
+              "
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="10">
+          <el-form-item v-bind:label="$t('Items.UnitItem')" prop="UnitItem">
+            <Unit-Item
+              :Value="tempForm.UnitItem"
+              @Set="
+                (v) => {
+                  tempForm.UnitItem = v;
+                }
+              "
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex">
         <el-col :span="12">
           <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
             <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode"></el-input>
@@ -123,12 +151,14 @@
 </template>
 
 <script>
-import { Edit, GetItemById } from "@/api/Item";
+import { CreateItem as Create, Edit, GetItemById } from "@/api/Item";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
 import { GetFileByObjId } from "@/api/File";
 import permission from "@/directive/permission/index.js";
+import MenuItem from "./MenuItem";
+import UnitItem from "./UnitItem";
 
 export default {
   name: "ItemForm",
@@ -136,6 +166,8 @@ export default {
     PanThumb,
     WebCam,
     ImageCropper,
+    MenuItem,
+    UnitItem,
   },
   props: {
     ItemId: {
@@ -144,19 +176,17 @@ export default {
     },
     isEdit: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   directives: { permission },
   mounted() {
     if (this.isEdit) {
-      this.getdata();
-      // console.log(this.$route.params )
+      this.getdata(this.ItemId || this.$route.params.id);
     }
   },
   data() {
     return {
-      Visibles: false,
       activeNames: "Info",
       imagecropperShow: false,
       imagecropperKey: 0,
@@ -170,9 +200,11 @@ export default {
         Tax: 0.0,
         Rate: 0,
         IsPrime: false,
+        TakeBon: false,
         Barcode: "",
         Description: "",
         Ingredients: null,
+        UnitItem: "",
       },
       rulesForm: {
         Name: [
@@ -192,35 +224,59 @@ export default {
     };
   },
   methods: {
-    getdata() {
-      GetItemById({ Id: this.ItemId }).then((response) => {
+    getdata(v) {
+      GetItemById({ Id: v }).then((response) => {
         // handle success
         this.tempForm = response;
+        console.log("this.tempForm.Id", this.$store.getters.CompanyInfo.Logo);
         this.GetImageItem(this.tempForm.Id);
-
-        this.Visibles = true;
       });
     },
     focus() {
       this.$emit("focus");
     },
-    updateData() {
-      console.log(this.tempForm);
-      this.$refs["dataForm"].validate((valid) => {
+    confirmData() {
+      this.$refs["dataForm"].validate(async (valid) => {
         if (valid) {
-          Edit(this.tempForm)
-            .then((response) => {
-              this.Visibles = false;
-              this.$notify({
-                title: "تم",
-                message: "تم التعديل بنجاح",
-                type: "success",
-                duration: 2000,
+          let Done;
+          if (this.isEdit != true) {
+            Done = await Create(this.tempForm)
+              .then((res) => {
+                if (res) {
+                  this.tempForm = res;
+                  return true;
+                } else return false;
+              })
+              .catch((error) => {
+                return false;
               });
-            })
-            .catch((error) => {
-              console.log(error);
+          } else {
+            Done = await Edit(this.tempForm)
+              .then((res) => {
+                if (res) return true;
+                else return false;
+              })
+              .catch((error) => {
+                return false;
+              });
+          }
+          console.log(("done", this.isEdit));
+
+          if (Done) {
+            this.$notify({
+              title: "تم " + this.isEdit == true ? "تعديل" : "إضافة" + " ",
+              message: "تم " + this.isEdit == true ? "تعديل" : "إضافة" + "   بنجاح",
+              type: "success",
+              position: "top-left",
+              duration: 1000,
+              showClose: false,
             });
+            this.$confirm("هل تريد العودة ")
+              .then((_) => {
+                this.$router.back();
+              })
+              .catch((_) => {});
+          }
         } else {
           console.log("error submit!!");
           return false;
@@ -231,7 +287,7 @@ export default {
       GetFileByObjId({ TableName: "Item", ObjId: ID })
         .then((response) => {
           if (response) this.tempForm.Avatar = response.File;
-          else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
+          else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo || "";
         })
         .catch((err) => {
           console.log(err);

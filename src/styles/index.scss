@@ -25,7 +25,9 @@ html {
   height: 100%;
   box-sizing: border-box;
 }
-
+.el-tabs__nav {
+  float: initial;
+}
 #app {
   height: 100%;
 }
