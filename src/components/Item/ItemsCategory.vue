@@ -115,7 +115,7 @@ import { GetFileByObjId } from "@/api/File";
 import { GetActiveMenuItem } from "@/api/MenuItem";
 
 export default {
-  name: "MenuItem",
+  name: "ItemsCategory",
   directives: { permission },
   props: ["WithImage"],
   data() {

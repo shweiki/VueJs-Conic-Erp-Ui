@@ -43,17 +43,8 @@
         />
       </el-col>
       <el-col :span="6">
+        <Export :list="list" />
         <el-button
-          v-waves
-          v-permission="['admin']"
-          :loading="downloadLoading"
-          class="filter-item"
-          type="warning"
-          icon="el-icon-download"
-          @click="handleDownload"
-        >
-        </el-button
-        ><el-button
           v-waves
           class="filter-item"
           type="primary"
@@ -191,6 +182,7 @@ import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 import SortOptions from "@/components/SortOptions";
+import Export from "@/components/Export";
 
 export default {
   name: "ComplexTable",
@@ -204,6 +196,7 @@ export default {
     RadioOprations,
     DialogActionLog,
     SortOptions,
+    Export,
   },
 
   directives: { waves, permission },
@@ -231,7 +224,6 @@ export default {
         DateTo: "",
         Status: undefined,
       },
-      downloadLoading: false,
     };
   },
   created() {
@@ -265,38 +257,7 @@ export default {
       }
       this.handleFilter();
     },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.list[0]);
-        const filterVal = Object.keys(this.list[0]);
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename:
-            window.location.pathname.split("/") + "-" + JSON.stringify(this.listQuery),
-        });
-        this.downloadLoading = false;
-      });
-    },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "InventoryMovements") {
-            return JSON.stringify(v[j]);
-          }
-          if (j === "ActionLogs") {
-            return JSON.stringify(v[j]);
-          }
-          if (j === "FakeDate") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
-    },
+
     getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";

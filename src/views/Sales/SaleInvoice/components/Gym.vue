@@ -97,7 +97,7 @@
                 <split-pane split="horizontal" :min-percent="95" :default-percent="93.5">
                   <template slot="paneL">
                     <!--  <items-search :WithBarCode="false" @add="AddItem" />-->
-                    <items-category :WithImage="true" @add="AddItem" />
+                    <Items-Category :WithImage="true" @add="AddItem" />
                   </template>
                   <template slot="paneR">
                     <el-card class="card" :body-style="{ padding: '4px' }">
@@ -425,7 +425,7 @@ import permission from "@/directive/permission/index.js";
 
 // components
 import ItemsSearch from "@/components/Item/ItemsSearch";
-import MenuItem from "@/components/Item/MenuItem";
+import ItemsCategory from "@/components/Item/ItemsCategory";
 import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill";
 import RightMenu from "@/components/RightMenu";
@@ -465,7 +465,7 @@ export default {
     Screenfull,
     SizeSelect,
     ItemsSearch,
-    MenuItem,
+    ItemsCategory,
     EditItem,
     DrawerPrint,
     RestOfBill,

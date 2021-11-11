@@ -22,16 +22,7 @@
           />
         </el-col>
         <el-col :span="6">
-          <el-button
-            v-waves
-            :loading="downloadLoading"
-            class="filter-item"
-            type="primary"
-            icon="el-icon-download"
-            @click="handleDownload"
-          >
-            Export </el-button
-          ><el-button
+          <Export :list="list" /><el-button
             v-waves
             class="filter-item"
             type="primary"
@@ -230,6 +221,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SortOptions from "@/components/SortOptions";
+import Export from "@/components/Export";
 
 export default {
   name: "ComplexTable",
@@ -243,6 +235,7 @@ export default {
     EditItem,
     AddItem,
     SortOptions,
+    Export,
   },
   directives: { waves },
   data() {
@@ -258,8 +251,6 @@ export default {
         Sort: "-id",
         Status: undefined,
       },
-
-      downloadLoading: false,
     };
   },
   created() {
@@ -294,31 +285,6 @@ export default {
         this.listQuery.sort = "-id";
       }
       this.handleFilter();
-    },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.list[0]);
-        const filterVal = Object.keys(this.list[0]);
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "table-list",
-        });
-        this.downloadLoading = false;
-      });
-    },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
     },
     getSortClass: function (key) {
       const sort = this.listQuery.sort;

@@ -21,16 +21,8 @@
         />
       </el-col>
       <el-col :span="6">
+        <Export :list="list" />
         <el-button
-          v-waves
-          :loading="downloadLoading"
-          class="filter-item"
-          type="primary"
-          icon="el-icon-download"
-          @click="handleDownload"
-        >
-        </el-button
-        ><el-button
           v-waves
           class="filter-item"
           type="primary"
@@ -85,12 +77,14 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SortOptions from "@/components/SortOptions";
+import Export from "@/components/Export";
 
 export default {
   name: "ComplexTable",
   components: {
     Pagination,
     SortOptions,
+    Export,
   },
   directives: { waves },
   data() {
@@ -113,7 +107,6 @@ export default {
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
       },
-      downloadLoading: false,
     };
   },
   created() {
@@ -146,31 +139,6 @@ export default {
         this.listQuery.sort = "-id";
       }
       this.handleFilter();
-    },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.list[0]);
-        const filterVal = Object.keys(this.list[0]);
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "ReportTemplet",
-        });
-        this.downloadLoading = false;
-      });
-    },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
     },
     getSortClass: function (key) {
       const sort = this.listQuery.sort;

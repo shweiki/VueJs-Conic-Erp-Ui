@@ -34,16 +34,8 @@
           />
         </el-col>
         <el-col :span="6">
+          <Export :list="list" />
           <el-button
-            v-waves
-            :loading="downloadLoading"
-            class="filter-item"
-            type="primary"
-            icon="el-icon-download"
-            @click="handleDownload"
-          >
-            Export </el-button
-          ><el-button
             v-waves
             class="filter-item"
             type="primary"
@@ -239,6 +231,7 @@ import Pagination from "@/components/Pagination"; // secondary package based on 
 import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
 import SortOptions from "@/components/SortOptions";
+import Export from "@/components/Export";
 
 export default {
   name: "ComplexTable",
@@ -254,6 +247,7 @@ export default {
     SelectItemExpColumn,
     SearchByDate,
     SortOptions,
+    Export,
   },
   directives: { waves },
   data() {
@@ -271,7 +265,6 @@ export default {
         DateTo: "",
         Status: undefined,
       },
-      downloadLoading: false,
     };
   },
   created() {
@@ -307,31 +300,7 @@ export default {
       }
       this.handleFilter();
     },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.list[0]);
-        const filterVal = Object.keys(this.list[0]);
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "table-list",
-        });
-        this.downloadLoading = false;
-      });
-    },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
-    },
+
     getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";

@@ -100,7 +100,7 @@
                 <split-pane split="horizontal" :min-percent="5" :default-percent="6.5">
                   <template slot="paneR">
                     <!--  <items-search :WithBarCode="false" @add="AddItem" />-->
-                    <items-category
+                    <Items-Category
                       :WithImage="$store.getters.settings.PointOfSale.WithImage"
                       @add="AddItem"
                     />
@@ -430,7 +430,7 @@ import permission from "@/directive/permission/index.js";
 
 // components
 import ItemsSearch from "@/components/Item/ItemsSearch";
-import MenuItem from "@/components/Item/MenuItem.vue";
+import ItemsCategory from "@/components/Item/ItemsCategory";
 import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill.vue";
 import RightMenu from "@/components/RightMenu";
@@ -473,7 +473,6 @@ export default {
     Screenfull,
     SizeSelect,
     ItemsSearch,
-    MenuItem,
     EditItem,
     DrawerPrint,
     RestOfBill,
@@ -484,6 +483,7 @@ export default {
     DeliveryEl,
     VendorSearchAny,
     DrawerSearchInvoice,
+    ItemsCategory,
   },
   props: {
     isEdit: {

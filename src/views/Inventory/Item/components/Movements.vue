@@ -32,16 +32,7 @@
           />
         </el-col>
         <el-col :span="3">
-          <el-button
-            v-waves
-            :loading="downloadLoading"
-            class="filter-item"
-            type="primary"
-            icon="el-icon-download"
-            @click="handleDownload"
-          >
-            Export
-          </el-button>
+          <Export :list="list" />
         </el-col>
         <el-col :span="3">
           <el-button
@@ -188,6 +179,7 @@ import ItemSearchAny from "@/components/Item/ItemSearchAny.vue";
 import waves from "@/directive/waves"; // waves directive
 import SearchBy from "@/components/DynamicComponents/SearchBy";
 import { parseTime } from "@/utils";
+import Export from "@/components/Export";
 
 export default {
   name: "ItemMoveStatement",
@@ -198,6 +190,7 @@ export default {
     DrawerPrint,
     ItemSearchAny,
     SearchBy,
+    Export,
   },
   directives: { waves, permission },
   data() {
@@ -212,7 +205,6 @@ export default {
         MergeItemId: undefined,
       },
       //   Item: this.Item,
-      downloadLoading: false,
     };
   },
   mounted() {
@@ -240,31 +232,6 @@ export default {
     },
     handleFilter() {
       this.getList();
-    },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.list[0]);
-        const filterVal = Object.keys(this.list[0]);
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "table-list",
-        });
-        this.downloadLoading = false;
-      });
-    },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
     },
   },
 };

@@ -2,11 +2,10 @@
   <div class="app-container">
     <el-card class="box-card">
       <div class="filter-container">
-        <el-row type="flex"
-          >
+        <el-row type="flex">
           <el-col :span="18">
             <Search-By
-              Type = "AccountSearchAny"
+              Type="AccountSearchAny"
               :AccountId="listQuery.AccountId"
               @Set="
                 (v) => {
@@ -18,7 +17,7 @@
           <el-col :span="2">
             <el-popover placement="right" width="400" trigger="click">
               <Search-By
-               Type = "AccountSearchAny"
+                Type="AccountSearchAny"
                 :AccountId="listQuery.MergeAccountId"
                 @Set="
                   (v) => {
@@ -47,16 +46,8 @@
           </el-col>
 
           <el-col :span="9">
+            <Export :list="list" />
             <el-button
-              v-waves
-              :loading="downloadLoading"
-              class="filter-item"
-              type="primary"
-              icon="el-icon-download"
-              @click="handleDownload"
-            >
-              Export </el-button
-            ><el-button
               v-waves
               class="filter-item"
               type="primary"
@@ -228,6 +219,7 @@ import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
 import waves from "@/directive/waves"; // waves directive
 import SearchBy from "@/components/DynamicComponents/SearchBy";
 import { parseTime } from "@/utils";
+import Export from "@/components/Export";
 
 export default {
   name: "AccountStatement",
@@ -237,6 +229,7 @@ export default {
     DrawerPrint,
     AccountSearchAny,
     SearchBy,
+    Export,
   },
   directives: { waves, permission },
   data() {
@@ -251,7 +244,6 @@ export default {
         MergeAccountId: undefined,
       },
       Account: {},
-      downloadLoading: false,
     };
   },
   methods: {
@@ -276,31 +268,6 @@ export default {
     },
     handleFilter() {
       this.getList();
-    },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.list[0]);
-        const filterVal = Object.keys(this.list[0]);
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "table-list",
-        });
-        this.downloadLoading = false;
-      });
-    },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
     },
   },
 };

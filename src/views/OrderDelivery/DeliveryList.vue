@@ -44,16 +44,8 @@
               Dates: [listQuery.DateFrom, listQuery.DateTo],
             }"
           /> -->
+          <Export :list="list" />
           <el-button
-            v-waves
-            :loading="downloadLoading"
-            class="filter-item"
-            type="primary"
-            icon="el-icon-download"
-            @click="handleDownload"
-          >
-            Export </el-button
-          ><el-button
             v-waves
             class="filter-item"
             type="primary"
@@ -63,34 +55,33 @@
             Search
           </el-button>
         </el-col>
-          <el-col :span="6">
-         <el-switch
-         style="
-    direction: ltr;"
-           v-model="IsAuto"
-           active-text="تلقائي"
-           inactive-text="يدوي"
+        <el-col :span="6">
+          <el-switch
+            style="direction: ltr"
+            v-model="IsAuto"
+            active-text="تلقائي"
+            inactive-text="يدوي"
           >
-        </el-switch>
+          </el-switch>
         </el-col>
       </el-row>
     </div>
     <el-row :gutter="20">
-      <el-col :span="10" style="float:left">
-        <div style="float:left">
-  <Add-Order/>
+      <el-col :span="10" style="float: left">
+        <div style="float: left">
+          <Add-Order />
         </div>
       </el-col>
       <el-col :span="14">
-    <Radio-Oprations
-      TableName="OrderDelivery"
-      @Set="
-        (v) => {
-          listQuery.Status = v;
-          handleFilter();
-        }
-      "
-    />
+        <Radio-Oprations
+          TableName="OrderDelivery"
+          @Set="
+            (v) => {
+              listQuery.Status = v;
+              handleFilter();
+            }
+          "
+        />
       </el-col>
     </el-row>
     <el-table
@@ -102,14 +93,13 @@
       style="width: 100%"
       @sort-change="sortChange"
     >
-    <el-table-column type="expand">
-      <template slot-scope="props">
-        <h3 style="float: right; padding-right: 20px;">محتويات الطلب :</h3>
-        <br>
-        <h4 style="float: right; padding-top: 5px">  {{ props.row.Content }}</h4>
-        
-      </template>
-    </el-table-column>
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <h3 style="float: right; padding-right: 20px">محتويات الطلب :</h3>
+          <br />
+          <h4 style="float: right; padding-top: 5px">{{ props.row.Content }}</h4>
+        </template>
+      </el-table-column>
       <el-table-column
         label="Id"
         prop="Id"
@@ -122,31 +112,31 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-            <el-table-column v-bind:label="$t('Sales.Date')" width="120px" align="center">
+      <el-table-column v-bind:label="$t('Sales.Date')" width="120px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-       <el-table-column align="right" label="معلومات الزبون">
-      <el-table-column
-        sortable
-        prop="Name"
-        v-bind:label="$t('AddVendors.Name')"
-        align="center"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="PhoneNumber"
-        v-bind:label="$t('MemberList.Phone')"
-        width="100"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="Region"
-        v-bind:label="$t('AddVendors.Region')"
-        width="130"
-        align="center"
-      ></el-table-column>
+      <el-table-column align="right" label="معلومات الزبون">
+        <el-table-column
+          sortable
+          prop="Name"
+          v-bind:label="$t('AddVendors.Name')"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="PhoneNumber"
+          v-bind:label="$t('MemberList.Phone')"
+          width="100"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="Region"
+          v-bind:label="$t('AddVendors.Region')"
+          width="130"
+          align="center"
+        ></el-table-column>
       </el-table-column>
       <el-table-column v-bind:label="$t('Area.TotalPill')" width="100" align="center">
         <template slot-scope="{ row }">
@@ -160,7 +150,7 @@
           JOD
         </template>
       </el-table-column>
-       <el-table-column v-bind:label="$t('CashPool.Amountv')" width="100" align="center">
+      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="100" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalPrice.toFixed($store.getters.settings.ToFixed) }}
           JOD
@@ -172,7 +162,7 @@
         align="center"
       >
       </el-table-column>
-        <el-table-column
+      <el-table-column
         v-bind:label="$t('Vendors.Description')"
         prop="Description"
         align="center"
@@ -187,12 +177,12 @@
         <template slot-scope="scope">
           <Dialog-Action-Log TableName="OrderDelivery" :ObjId="scope.row.Id" />
           <Drawer-Print Type="OrderDelivery" :Data="scope.row" />
-           <Next-Oprations
-                :ObjId="scope.row.Id"
-                :Status="scope.row.Status"
-                TableName="OrderDelivery"
-                @Done="getList"
-            />
+          <Next-Oprations
+            :ObjId="scope.row.Id"
+            :Status="scope.row.Status"
+            TableName="OrderDelivery"
+            @Done="getList"
+          />
         </template>
       </el-table-column>
     </el-table>
@@ -219,6 +209,8 @@ import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
 import AddOrder from "./components/AddOrder.vue";
+import Export from "@/components/Export";
+
 export default {
   name: "ComplexTable",
   components: {
@@ -231,6 +223,7 @@ export default {
     DialogActionLog,
     RadioOprations,
     AddOrder,
+    Export,
   },
   directives: { waves },
   data() {
@@ -248,12 +241,10 @@ export default {
         DateTo: "",
         Status: undefined,
       },
-
-      downloadLoading: false,
     };
   },
   computed: {
-    IsAuto:{
+    IsAuto: {
       get() {
         return this.$store.state.settings.OrderIsAutomatic;
       },
@@ -263,7 +254,7 @@ export default {
           value: val,
         });
       },
-      },
+    },
   },
   created() {
     // this.getList();
@@ -295,31 +286,6 @@ export default {
         this.listQuery.sort = "-id";
       }
       this.handleFilter();
-    },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.list[0]);
-        const filterVal = Object.keys(this.list[0]);
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "table-list",
-        });
-        this.downloadLoading = false;
-      });
-    },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
     },
     getSortClass: function (key) {
       const sort = this.listQuery.sort;

@@ -1,14 +1,8 @@
 <template>
   <div class="app-container">
     <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
-    <el-button
-      v-waves
-      :loading="downloadLoading"
-      class="filter-item"
-      type="primary"
-      icon="el-icon-download"
-      @click="handleDownload"
-    />
+    <Export :list="data" />
+
     <el-row type="flex">
       <el-col :span="12">
         <el-table
@@ -50,10 +44,11 @@
 import UploadExcelComponent from "@/components/UploadExcel/index.vue";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
+import Export from "@/components/Export";
 
 export default {
   name: "ForUploadBioLab",
-  components: { UploadExcelComponent },
+  components: { UploadExcelComponent, Export },
   directives: { waves },
   data() {
     return {
@@ -65,35 +60,15 @@ export default {
       ExcelHeader: [],
       dataHeader: [],
       file: undefined,
-      downloadLoading: false,
     };
   },
   methods: {
-    handleDownload() {
-      this.downloadLoading = true;
-      console.log(this.file);
-
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.data[0]);
-        const filterVal = Object.keys(this.data[0]);
-        const data = this.formatJson(filterVal);
-        console.log(data);
-
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: this.file.name.slice(0, this.file.name.lastIndexOf(".")),
-        });
-        this.downloadLoading = false;
-      });
-    },
     beforeUpload(file) {
       const isLt1M = file.size / 1024 / 1024 < 8;
       this.file = file;
       if (isLt1M) {
         return true;
       }
-
       this.$message({
         message: "Please do not upload files larger than 8m in size.",
         type: "warning",
@@ -107,7 +82,7 @@ export default {
 
       this.data = results.map((x) => {
         let VDateBirthday = new Date("" + x["DATE OF BIRTH"].toString() + "");
-        console.log("DD", x["DATE OF BIRTH"], this.formatDate(VDateBirthday));
+        //   console.log("DD", x["DATE OF BIRTH"], this.formatDate(VDateBirthday));
         return {
           Arabicname:
             x["CABIN"] != undefined || null || "" ? x["CABIN"].replaceAll(" ", "") : "",
