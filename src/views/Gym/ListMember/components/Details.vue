@@ -1,53 +1,6 @@
 <template>
   <div>
     <el-row type="flex">
-      <el-col :span="4">
-        <div style="float: left">
-          <pan-thumb
-            :image="Member.Avatar"
-            :height="'100px'"
-            :width="'100px'"
-            :hoverable="false"
-          >
-            <el-button
-              type="primary"
-              icon="el-icon-upload"
-              @click="imagecropperShow = true"
-            ></el-button>
-            <image-cropper
-              v-show="imagecropperShow"
-              :key="imagecropperKey"
-              :width="150"
-              :height="150"
-              lang-type="ar"
-              TableName="Member"
-              :ObjectId="Member.Id"
-              @close="close"
-              @crop-upload-success="cropSuccess"
-            />
-            <web-cam TableName="Member" :ObjectId="Member.Id" />
-          </pan-thumb>
-
-          <el-col :span="24">
-            <el-tag v-if="Member.HaveFaceOnDevice == true" type="success"
-              >يوجد بصمة وجه</el-tag
-            >
-            <el-tag v-if="Member.HaveFaceOnDevice == false" type="danger"
-              >لا يوجد بصمة وجه</el-tag
-            >
-          </el-col>
-          <el-col :span="24" v-if="Member.Status != -2">
-            <el-button @click="dialogOprationVisible = true" type="danger" plain
-              >Black List</el-button
-            >
-          </el-col>
-          <el-col :span="24" v-if="checkPermission(['admin']) && Member.Status == -2">
-            <el-button @click="dialogOprationVisible2 = true" type="success" plain
-              >الغاء Black List</el-button
-            >
-          </el-col>
-        </div>
-      </el-col>
       <el-col :span="20">
         <el-row type="flex">
           <el-col :span="4">
@@ -173,6 +126,53 @@
             <Status-Tag :Status="Member.Status" TableName="Member" />
           </el-col>
         </el-row>
+      </el-col>
+      <el-col :span="4">
+        <div>
+          <pan-thumb
+            :image="Member.Avatar"
+            :height="'100px'"
+            :width="'100px'"
+            :hoverable="false"
+          >
+            <el-button
+              type="primary"
+              icon="el-icon-upload"
+              @click="imagecropperShow = true"
+            ></el-button>
+            <image-cropper
+              v-show="imagecropperShow"
+              :key="imagecropperKey"
+              :width="150"
+              :height="150"
+              lang-type="ar"
+              TableName="Member"
+              :ObjectId="Member.Id"
+              @close="close"
+              @crop-upload-success="cropSuccess"
+            />
+            <web-cam TableName="Member" :ObjectId="Member.Id" />
+          </pan-thumb>
+
+          <el-col :span="24">
+            <el-tag v-if="Member.HaveFaceOnDevice == true" type="success"
+              >يوجد بصمة وجه</el-tag
+            >
+            <el-tag v-if="Member.HaveFaceOnDevice == false" type="danger"
+              >لا يوجد بصمة وجه</el-tag
+            >
+          </el-col>
+          <el-col :span="24" v-if="Member.Status != -2">
+            <el-button @click="dialogOprationVisible = true" type="danger" plain
+              >Black List</el-button
+            >
+          </el-col>
+          <el-col :span="24" v-if="checkPermission(['admin']) && Member.Status == -2">
+            <el-button @click="dialogOprationVisible2 = true" type="success" plain
+              >الغاء Black List</el-button
+            >
+          </el-col>
+        </div>
       </el-col>
     </el-row>
     <el-dialog

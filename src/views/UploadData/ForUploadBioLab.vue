@@ -98,7 +98,9 @@ export default {
               ? x["MobileCountryCode"]
               : "962",
           Mobilenumber:
-            x["Mobilenumber"] != undefined || null || "" ? x["Mobilenumber"] : "0",
+            x["Mobilenumber"] != undefined || null || ""
+              ? x["Mobilenumber"]
+              : "785907000",
           PatNationality:
             x["NAT"] != undefined || null || "" ? x["NAT"].replaceAll(",", " ") : "",
           DocumentNumber:

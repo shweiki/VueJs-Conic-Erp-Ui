@@ -1,154 +1,147 @@
 <template>
-  <div class="app-container">
-    <el-row v-if="tempForm">
-      <el-col :span="6" :xs="24">
-        <Member-Log />
-      </el-col>
+  <el-row type="flex" v-if="tempForm">
+    <el-col :span="6" :xs="24">
+      <Member-Log />
+    </el-col>
 
-      <el-col :span="18" :xs="24" v-loading="loading">
-        <Member-Search />
+    <el-col :span="18" :xs="24" v-loading="loading">
+      <Member-Search />
 
-        <el-card
-          class="box-card"
-          v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
-        >
-          <el-row type="flex">
-            <el-col :span="19">
-              <Details :Member="tempForm" />
-            </el-col>
+      <el-card
+        class="box-card"
+        v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
+      >
+        <el-row type="flex">
+          <el-col :span="5" v-if="tempForm.Status != -2">
+            <el-row type="flex">
+              <el-col :span="24">
+                <el-button
+                  style="width: 100px"
+                  type="info"
+                  icon="el-icon-zoom-in"
+                  @click="$router.replace({ path: '/redirect' + '/Gym/ListMember' })"
+                  >جميع مشتركين</el-button
+                >
+              </el-col>
+            </el-row>
 
-            <el-col :span="5" v-if="tempForm.Status != -2">
-              <el-row type="flex">
-                <el-col :span="24">
-                  <el-button
-                    style="width: 100px"
-                    type="info"
-                    icon="el-icon-zoom-in"
-                    @click="$router.replace({ path: '/redirect' + '/Gym/ListMember' })"
-                    >جميع مشتركين</el-button
-                  >
-                </el-col>
-              </el-row>
+            <el-row type="flex">
+              <el-col :span="24">
+                <Member-Ship-Movement
+                  :MemberId="tempForm.Id"
+                  :AccountId="tempForm.AccountId"
+                  :Name="tempForm.Name"
+                  :Enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
+                />
+              </el-col>
+            </el-row>
 
-              <el-row type="flex">
-                <el-col :span="24">
-                  <Member-Ship-Movement
-                    :MemberId="tempForm.Id"
-                    :AccountId="tempForm.AccountId"
-                    :Name="tempForm.Name"
-                    :Enable="
-                      tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false
-                    "
-                  />
-                </el-col>
-              </el-row>
+            <el-row type="flex">
+              <el-col :span="24">
+                <Member-Pay
+                  :MemberId="tempForm.Id"
+                  :Name="tempForm.Name"
+                  :NumberPhone1="tempForm.PhoneNumber1"
+                />
+              </el-col>
+            </el-row>
 
-              <el-row type="flex">
-                <el-col :span="24">
-                  <Member-Pay
-                    :MemberId="tempForm.Id"
-                    :Name="tempForm.Name"
-                    :NumberPhone1="tempForm.PhoneNumber1"
-                  />
-                </el-col>
-              </el-row>
+            <el-row type="flex">
+              <el-col :span="24">
+                <Member-Ship-Movement-With-Pay
+                  :MemberId="tempForm.Id"
+                  :AccountId="tempForm.AccountId"
+                  :Name="tempForm.Name"
+                  :NumberPhone1="tempForm.PhoneNumber1"
+                  :Enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
+                />
+              </el-col>
+            </el-row>
 
-              <el-row type="flex">
-                <el-col :span="24">
-                  <Member-Ship-Movement-With-Pay
-                    :MemberId="tempForm.Id"
-                    :AccountId="tempForm.AccountId"
-                    :Name="tempForm.Name"
-                    :NumberPhone1="tempForm.PhoneNumber1"
-                    :Enable="
-                      tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false
-                    "
-                  />
-                </el-col>
-              </el-row>
+            <el-row type="flex">
+              <el-col :span="24">
+                <Service-Invoice :MemberId="tempForm.Id" />
+              </el-col>
+            </el-row>
 
-              <el-row type="flex">
-                <el-col :span="24">
-                  <Service-Invoice :MemberId="tempForm.Id" />
-                </el-col>
-              </el-row>
+            <el-row type="flex">
+              <el-col :span="24">
+                <Massage
+                  :NumberPhone1="tempForm.PhoneNumber1"
+                  :NumberPhone2="tempForm.PhoneNumber2"
+                  :Email="tempForm.Email"
+                />
+              </el-col>
+            </el-row>
 
-              <el-row type="flex">
-                <el-col :span="24">
-                  <Massage
-                    :NumberPhone1="tempForm.PhoneNumber1"
-                    :NumberPhone2="tempForm.PhoneNumber2"
-                    :Email="tempForm.Email"
-                  />
-                </el-col>
-              </el-row>
+            <el-row v-if="tempForm.MembershipsCount > 0 || checkPermission(['admin'])">
+              <el-col :span="24">
+                <send-to-device
+                  :ObjectId="tempForm.Id"
+                  :Name="tempForm.Name"
+                  TableName="Member"
+                />
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="19">
+            <Details :Member="tempForm" />
+          </el-col>
+        </el-row>
+      </el-card>
 
-              <el-row v-if="tempForm.MembershipsCount > 0 || checkPermission(['admin'])">
-                <el-col :span="24">
-                  <send-to-device
-                    :ObjectId="tempForm.Id"
-                    :Name="tempForm.Name"
-                    TableName="Member"
-                  />
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-        </el-card>
+      <el-card class="box-card">
+        <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
+          <el-tab-pane label="بيانات" name="Details">
+            <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
 
-        <el-card class="box-card">
-          <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
-            <el-tab-pane label="بيانات" name="Details">
-              <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
+            <User-Card :Member="tempForm" />
+          </el-tab-pane>
 
-              <User-Card :Member="tempForm" />
-            </el-tab-pane>
+          <el-tab-pane label="اشتراكات" name="activity">
+            <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
 
-            <el-tab-pane label="اشتراكات" name="activity">
-              <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
+            <Activity :MembershipMovements="MembershipMovements" />
+          </el-tab-pane>
 
-              <Activity :MembershipMovements="MembershipMovements" />
-            </el-tab-pane>
+          <el-tab-pane label="مقبوضات" name="Payment">
+            <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
 
-            <el-tab-pane label="مقبوضات" name="Payment">
-              <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
+            <Payment :Payments="Payments" />
+          </el-tab-pane>
 
-              <Payment :Payments="Payments" />
-            </el-tab-pane>
+          <el-tab-pane label="زيارات" name="timeline">
+            <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
 
-            <el-tab-pane label="زيارات" name="timeline">
-              <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
+            <Timeline :MemberId="tempForm.Id" />
+          </el-tab-pane>
 
-              <Timeline :MemberId="tempForm.Id" />
-            </el-tab-pane>
+          <el-tab-pane label="مالية" name="account">
+            <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
 
-            <el-tab-pane label="مالية" name="account">
-              <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
+            <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
+          </el-tab-pane>
 
-              <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
-            </el-tab-pane>
+          <el-tab-pane label="خدمات" name="Service">
+            <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
 
-            <el-tab-pane label="خدمات" name="Service">
-              <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
+            <Service :ServiceInvoices="ServiceInvoices" />
+          </el-tab-pane>
 
-              <Service :ServiceInvoices="ServiceInvoices" />
-            </el-tab-pane>
+          <el-tab-pane label="تواصل" name="communication">
+            <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
 
-            <el-tab-pane label="تواصل" name="communication">
-              <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
+            <Communication />
+          </el-tab-pane>
+          <el-tab-pane label="مستندات" name="Documents">
+            <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
 
-              <Communication />
-            </el-tab-pane>
-            <el-tab-pane label="مستندات" name="Documents">
-              <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
-
-              <Documents :ObjectId="tempForm.Id" TableName="Member" />
-            </el-tab-pane>
-          </el-tabs>
-        </el-card>
-      </el-col>
-    </el-row>
-  </div>
+            <Documents :ObjectId="tempForm.Id" TableName="Member" />
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
