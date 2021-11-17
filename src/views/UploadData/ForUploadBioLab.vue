@@ -81,8 +81,14 @@ export default {
       this.ExcelHeader = header;
 
       this.data = results.map((x) => {
-        let VDateBirthday = new Date("" + x["DATE OF BIRTH"].toString() + "");
-        //   console.log("DD", x["DATE OF BIRTH"], this.formatDate(VDateBirthday));
+        let VDateBirthday = new Date(x["DATE OF BIRTH"]);
+        console.log(
+          this.ExcelDateToJSDate(x["DATE OF BIRTH"]),
+          VDateBirthday,
+          "//",
+          x["DATE OF BIRTH"],
+          this.formatDate(this.ExcelDateToJSDate(x["DATE OF BIRTH"]))
+        );
         return {
           Arabicname:
             x["CABIN"] != undefined || null || "" ? x["CABIN"].replaceAll(" ", "") : "",
@@ -90,7 +96,7 @@ export default {
             (x["FIRSTNAME"] != undefined || null || "" ? x["FIRSTNAME"] : "") +
             " " +
             (x["LASTNAME"] != undefined || null || "" ? x["LASTNAME"] : ""),
-          DateBirthday: this.formatDate(VDateBirthday), // x["DATE OF BIRTH"] != undefined || null || "" ? VDateBirthday : "", //   +,
+          DateBirthday: this.formatDate(this.ExcelDateToJSDate(x["DATE OF BIRTH"])), // x["DATE OF BIRTH"] != undefined || null || "" ? VDateBirthday : "", //   +,
           Gender: x["GEN"] != "M" ? "Female" : "Male",
           Email: x["EMAIL"] != undefined || null || "" ? x["EMAIL"] : "",
           MobileCountryCode:
