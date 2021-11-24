@@ -91,7 +91,9 @@ export default {
         );
         return {
           Arabicname:
-            x["CABIN"] != undefined || null || "" ? x["CABIN"].replaceAll(" ", "") : "",
+            x["CABIN"] != undefined || null || ""
+              ? x["CABIN"].toString().replaceAll(" ", "")
+              : "",
           Englishname:
             (x["FIRSTNAME"] != undefined || null || "" ? x["FIRSTNAME"] : "") +
             " " +
@@ -108,14 +110,16 @@ export default {
               ? x["Mobilenumber"]
               : "785907000",
           PatNationality:
-            x["NAT"] != undefined || null || "" ? x["NAT"].replaceAll(",", " ") : "",
+            x["NAT"] != undefined || null || ""
+              ? x["NAT"].toString().replaceAll(",", " ")
+              : "",
           DocumentNumber:
             x["PASS NR"] != undefined || null || ""
-              ? x["PASS NR"].replaceAll(" ", "")
+              ? x["PASS NR"].toString().replaceAll(" ", "")
               : "",
           Barcodenumber:
             x["MSC CARD"] != undefined || null || ""
-              ? x["MSC CARD"].replace("'", "*").replaceAll(" ", "")
+              ? x["MSC CARD"].toString().replace("'", "*").replaceAll(" ", "")
               : "",
         };
       });
