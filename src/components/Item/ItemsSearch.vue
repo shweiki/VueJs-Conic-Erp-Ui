@@ -5,6 +5,20 @@
         <add-item :visible="OpenAddItem" :barcode="Barcode" />
       </el-col>
       <el-col v-permission="['admin']" :span="2">
+        <el-button
+          icon="el-icon-circle-plus-outline"
+          type="primary"
+          @click="
+            () => {
+              let r = $router.resolve({
+                path: '/Item/Create',
+              });
+              window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+            }
+          "
+        ></el-button>
+      </el-col>
+      <el-col v-permission="['admin']" :span="2">
         <dialog-search-item @add="AddItem" />
       </el-col>
       <el-col :span="2">
@@ -82,7 +96,6 @@ export default {
       NewItemVisible: false,
       EnterQTYVisible: false,
       Barcode: "",
-
       searchPool: [],
       fuse: undefined,
     };
@@ -99,6 +112,7 @@ export default {
         return;
       }
       this.Barcode = "";
+      console.log("item", item);
       this.$emit("add", item, Qty);
       this.focus();
     },

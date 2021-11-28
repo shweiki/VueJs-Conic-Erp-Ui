@@ -214,9 +214,10 @@ export default {
     getList() {
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
+      this.listQuery.ItemId = this.Item.Id;
       GetItemMove(this.listQuery).then((response) => {
         this.list = response.items.map((curr, i, array) => {
-          let Total = curr.Credit - curr.Debit;
+          let Total = curr.In - curr.Out;
           let lastTotal = i != 0 ? array[i - 1].TotalRow : 0;
           console.log("lastTotal", lastTotal);
 

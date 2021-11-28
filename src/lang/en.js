@@ -26,6 +26,7 @@ export default {
         CashPool: 'Cash Pool',
         AccountStatement: "Account Statement",
         NewPurchaseInvoice: 'New Purchase Invoice',
+        ListBillOfEntery:"List Bill Of Entery",
         ListPurchaseInvoice: 'List Purchase Invoice',
         PurchaseItems: 'Purchase Items',
         Discount: "Discount",
@@ -326,6 +327,7 @@ export default {
         Save: 'Save',
         EditorName: 'Editor Name',
         Region: "Region",
+        BonId:"BonId"
     },
     Sales: {
         ByDate: 'Search By Date',
@@ -345,6 +347,12 @@ export default {
         Manual: 'Manual',
         BalanceCarried: "Balance Carried",
         null: ""
+    },
+    ItemMovement:{
+        PurchaseInvoice:"Purchase Invoice",
+        SalesInvoice:"Sales Invoice",
+        OrderInventory:"Order Inventory",
+        WorkShop:"Work Shop",
     },
     CashPool: {
         Save: 'Save',

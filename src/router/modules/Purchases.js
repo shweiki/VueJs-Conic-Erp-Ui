@@ -37,7 +37,15 @@ const PurchasesRouter = {
       meta: {
         title: 'PurchaseItems', icon: 'shopping-cart (1)'
       },
-    }
+    },
+    {
+      path: 'BillOfEnteryList',
+      component: () => import('@/views/Purchase/BillOfEntery/List'),
+      name: 'ListBillOfEntery',
+      meta: {
+        title: 'ListBillOfEntery', icon: 'cost'
+      },
+    },
   ]
 }
 

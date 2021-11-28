@@ -29,6 +29,7 @@ export default {
         SalesItems: 'مبيعات صنف',
         CashPool: 'اغلاق صندوق',
         NewPurchaseInvoice: 'انشاء فاتورة شراء',
+        ListBillOfEntery:"بيانات جمركية",
         NewEntryAccounting: 'انشاء قيد جديد',
         AccountStatement: "كشف حساب",
         EditEntryAccounting: 'تعديل القيود',
@@ -336,6 +337,7 @@ export default {
         Save: 'حفظ',
         EditorName: 'محرر السند',
         Region: "المنطقة",
+        BonId:"رقم البيان"
 
     },
     AccountStatement: {
@@ -491,7 +493,12 @@ export default {
         TotalNumber: 'العدد الكلي',
 
     },
-
+    ItemMovement:{
+        PurchaseInvoice:"فاتورة شراء",
+        SalesInvoice:"فاتورة مبيعات",
+        OrderInventory:"سند مخزون",
+        WorkShop:"ورشة عمل",
+    },
     Inventory: {
         Wharehouse: 'المخازن و المستودعات',
         StoreName: 'إسم المستودع',

@@ -8,28 +8,39 @@
       class="demo-ruleForm"
     >
       <el-card class="box-card">
-        <div slot="header">
-          <el-button
-            :disabled="DisabledSave"
-            style="float: left"
-            type="success"
-            icon="fa fa-save"
-            @click="isEdit != true ? createData() : updateData()"
-            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-          >
-          <router-link
-            class="pan-btn tiffany-btn"
-            style="
-              float: right;
-              margin-left: 20px;
-              padding: 10px 15px;
-              border-radius: 6px;
-            "
-            icon="el-icon-plus"
-            to="/Purchase/List"
-            >{{ $t("route.ListPurchaseInvoice") }}</router-link
-          >
-        </div>
+        <el-row type="flex" slot="header">
+          <el-col :span="16">
+            <router-link
+              class="pan-btn tiffany-btn"
+              style="
+                float: right;
+                margin-left: 20px;
+                padding: 10px 15px;
+                border-radius: 6px;
+              "
+              icon="el-icon-plus"
+              to="/Purchase/List"
+              >{{ $t("route.ListPurchaseInvoice") }}</router-link
+            >
+          </el-col>
+          <el-col :span="4">
+            <Drawer-Print
+              v-bind:disabled="OldInvoice == null ? false : true"
+              Type="PurchaseInvoice"
+              :Data="OldInvoice"
+            />
+          </el-col>
+          <el-col :span="4">
+            <el-button
+              :disabled="DisabledSave"
+              style="float: left"
+              type="success"
+              icon="fa fa-save"
+              @click="isEdit != true ? confirmData() : confirmData()"
+              >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
+            >
+          </el-col>
+        </el-row>
         <el-row type="flex">
           <el-col :span="4">
             <el-form-item
@@ -137,24 +148,49 @@
           <el-table-column align="center" prop="Name">
             <template slot="header" slot-scope="{}"
               >{{ $t("NewPurchaseInvoice.Items") }} ({{
-                TotalItems.toFixed($store.getters.settings.ToFixed)
+                tempForm.InventoryMovements.length.toFixed(
+                  $store.getters.settings.ToFixed
+                )
               }})</template
             >
             <template slot-scope="scope">
               {{ tempForm.InventoryMovements[scope.$index].Name }}
-              <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
+              <el-button
+                style="float: left"
+                icon="el-icon-edit"
+                type="primary"
+                @click="
+                  () => {
+                    let r = $router.resolve({
+                      path:
+                        '/Item/Edit/' + tempForm.InventoryMovements[scope.$index].ItemsId,
+                    });
+                    window.open(
+                      r.href,
+                      r.route.name,
+                      $store.getters.settings.windowStyle
+                    );
+                  }
+                "
+              ></el-button>
             </template>
           </el-table-column>
-
+          <el-table-column align="center" label="وحدة القياس" prop="UnitItem">
+            <template slot-scope="scope">
+              {{ tempForm.InventoryMovements[scope.$index].UnitItem }}
+            </template>
+          </el-table-column>
           <el-table-column width="130" align="center">
             <template slot="header" slot-scope="{}"
               >{{ $t("NewPurchaseInvoice.quantity") }} ({{
-                TotalQty.toFixed($store.getters.settings.ToFixed)
+                tempForm.InventoryMovements.reduce(
+                  (a, b) => a + (b["Qty"] || 0),
+                  0
+                ).toFixed($store.getters.settings.ToFixed)
               }})</template
             >
             <template slot-scope="scope">
               <el-input-number
-                @change="SumTotalAmmount"
                 controls-position="right"
                 v-model="tempForm.InventoryMovements[scope.$index].Qty"
                 :precision="2"
@@ -171,7 +207,6 @@
             }}</template>
             <template slot-scope="scope">
               <currency-input
-                @change="SumTotalAmmount"
                 class="currency-input"
                 :precision="10"
                 @focus="$event.target.select()"
@@ -250,19 +285,25 @@
             <el-divider direction="vertical"></el-divider>
             <span>{{ $t("NewPurchaseInvoice.Items") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalItems.toFixed($store.getters.settings.ToFixed) }}</span>
+            <span>{{
+              tempForm.InventoryMovements.length.toFixed($store.getters.settings.ToFixed)
+            }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.QuantityAmount") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalQty.toFixed($store.getters.settings.ToFixed) }}</span>
+            <span>{{
+              tempForm.InventoryMovements.reduce(
+                (a, b) => a + (b["Qty"] || 0),
+                0
+              ).toFixed($store.getters.settings.ToFixed)
+            }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.TotalDiscount") }}</span>
             <el-divider direction="vertical"></el-divider>
             <span>
               <el-input-number
-                @change="SumTotalAmmount"
                 v-model="tempForm.Discount"
                 :precision="2"
                 :step="1"
@@ -275,7 +316,16 @@
 
             <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{ TotalAmmount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+            <span
+              >{{
+                (
+                  tempForm.InventoryMovements.reduce((prev, cur) => {
+                    return prev + cur.Qty * cur.SellingPrice;
+                  }, 0) - tempForm.Discount
+                ).toFixed($store.getters.settings.ToFixed)
+              }}
+              JOD</span
+            >
             <el-divider direction="vertical"></el-divider>
           </el-card>
         </el-col>
@@ -290,28 +340,43 @@
           ></el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="12">
+
+      <el-col :span="6">
         <el-input
           prop="Name"
           placeholder="اسم المستلم"
           v-model="tempForm.Name"
         ></el-input>
       </el-col>
+      <el-col :span="6"><Add-Bill-Of-Entery @Done="(v) => (BillOfEntery = v)" /></el-col>
     </el-form>
   </div>
 </template>
 <script>
 import { Create, Edit, GetPurchaseInvoiceById } from "@/api/PurchaseInvoice";
 import FakeDate from "@/components/Date/FakeDate";
-
+import {
+  Create as CreateBillOfEntery,
+  Edit as EditBillOfEntery,
+  GetBillOfEnteryById,
+} from "@/api/BillOfEntery";
 import { GetActiveVendor } from "@/api/Vendor";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
 import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
+import AddBillOfEntery from "@/views/Purchase/BillOfEntery/AddBillOfEntery.vue";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
   name: "NewPurchaseInvoice",
-  components: { ItemsSearch, EditItem, FakeDate, RadioActiveInventory },
+  components: {
+    ItemsSearch,
+    EditItem,
+    FakeDate,
+    DrawerPrint,
+    RadioActiveInventory,
+    AddBillOfEntery,
+  },
   props: {
     isEdit: {
       type: Boolean,
@@ -320,11 +385,9 @@ export default {
   },
   data() {
     return {
-      TotalQty: 0,
-      TotalItems: 0,
-      TotalAmmount: 0,
       ValidateNote: "",
       DisabledSave: false,
+      OldInvoice: {},
       tempForm: {
         Id: undefined,
         Name: "-",
@@ -338,6 +401,8 @@ export default {
         Status: 0,
         InventoryMovements: [],
       },
+      BillOfEntery: {},
+
       rules: {
         InventoryMovements: [
           {
@@ -374,7 +439,6 @@ export default {
         .then((response) => {
           console.log(response);
           this.tempForm = response;
-          this.SumTotalAmmount();
           // set tagsview title
           this.setTagsViewTitle();
 
@@ -396,87 +460,105 @@ export default {
         Tax: 0.0,
         InventoryItemId: 1,
         Name: item.Name,
+        UnitItem: item.UnitItem,
         PurchaseInvoiceId: undefined,
         Description: "",
       });
-      this.SumTotalAmmount();
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
-      this.SumTotalAmmount();
-    },
-    SumTotalAmmount() {
-      this.TotalItems = this.tempForm.InventoryMovements.length;
-      this.TotalQty = this.tempForm.InventoryMovements.reduce(
-        (a, b) => a + (b["Qty"] || 0),
-        0
-      );
-      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function (prev, cur) {
-        return prev + cur.Qty * cur.SellingPrice;
-      }, 0);
-      this.TotalAmmount -= this.tempForm.Discount;
-      document.getElementById("barcode").focus();
     },
 
-    updateData() {
-      this.$refs["tempForm"].validate((valid) => {
-        if (valid) {
-          this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
-            Edit(this.tempForm)
-              .then((response) => {
-                this.$notify({
-                  title: "تم تعديل  بنجاح",
-                  message: "تم تعديل بنجاح",
-                  type: "success",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                  onClose: () => {
-                    if (response) {
-                      this.$router.push({ path: `/Report/List` });
-                    }
-                  },
-                });
+    confirmData() {
+      this.$refs["tempForm"].validate(async (valid) => {
+        this.tempForm.Tax = parseInt(this.tempForm.Tax);
+        this.tempForm.Total =
+          this.tempForm.InventoryMovements.reduce((prev, cur) => {
+            return prev + cur.Qty * cur.SellingPrice;
+          }, 0) - this.tempForm.Discount;
+        if (
+          valid &&
+          this.tempForm.Total > 0 &&
+          this.tempForm.InventoryMovements.length > 0 &&
+          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
+        ) {
+          let Done;
+          if (this.isEdit != true) {
+            Done = await Create(this.tempForm)
+              .then((res) => {
+                if (res) {
+                  this.tempForm.Id = res;
+                  this.BillOfEntery.PurchaseInvoiceId = res;
+                  return res;
+                } else return false;
               })
               .catch((error) => {
-                console.log(error);
+                return false;
               });
-          } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    createData() {
-      this.$refs["tempForm"].validate((valid) => {
-        if (valid) {
-          this.tempForm.Tax = parseInt(this.tempForm.Tax);
-
-          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
-            this.DisabledSave = true;
-
-            Create(this.tempForm)
-              .then((response) => {
-                this.$router.push({ path: `/Purchase/List` });
-
-                this.$notify({
-                  title: "تم الإضافة بنجاح",
-                  message: "تم الإضافة بنجاح",
-                  type: "success",
-                  position: "top-left",
-                  duration: 1000,
-                  showClose: false,
-                });
+          } else {
+            Done = await Edit(this.tempForm)
+              .then((res) => {
+                if (res) return res;
+                else return false;
               })
               .catch((error) => {
-                console.log(error);
-                this.DisabledSave = false;
+                return false;
               });
-          } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
+          }
+
+          if (Done && this.$store.getters.settings.Purchase.BillOfEntery == true) {
+            CreateBillOfEntery(this.BillOfEntery)
+              .then((res) => {
+                if (res) {
+                  this.$notify({
+                    title: "تم " + !this.isEdit ? "تعديل" : "إضافة" + " ",
+                    message:
+                      "تم " + !this.isEdit ? "تعديل" : "إضافة" + " بيان جمركي بنجاح",
+                    type: "success",
+                    position: "top-left",
+                    duration: 1000,
+                    showClose: false,
+                  });
+                  return res;
+                } else return false;
+              })
+              .catch((error) => {
+                return false;
+              });
+          }
+          if (Done) {
+            this.OldInvoice = this.tempForm;
+            this.$notify({
+              title: "تم " + this.isEdit ? "تعديل" : "إضافة" + "  بنجاح",
+              message: "تم " + this.isEdit ? "تعديل" : "إضافة" + " ",
+              type: "success",
+              position: "top-left",
+              duration: 1000,
+              showClose: false,
+            });
+            this.$confirm("هل تريد العودة ")
+              .then((_) => {
+                this.$router.back();
+              })
+              .catch((_) => {
+                this.tempForm.Id = undefined;
+                this.BillOfEntery.PurchaseInvoiceId = undefined;
+              });
+          } else {
+            this.$notify({
+              title: "مشكلة",
+              message: "حصلت مشكلة في عملية الحفظ",
+              type: "error",
+              position: "top-left",
+              duration: 1000,
+              showClose: false,
+            });
+          }
+          this.restTempForm();
+          this.DisabledSave = false;
         } else {
-          console.log("error submit!!");
+          this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
+          this.DisabledSave = false;
           return false;
         }
       });

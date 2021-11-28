@@ -1,25 +1,19 @@
 ﻿<template>
   <div>
-    <SuperMarket
-      v-if="$store.getters.settings.PurchaseLayout == 'SuperMarket'"
-      :is-edit="true"
-    />
+    <Public v-if="$store.getters.settings.Purchase.Layout == 'Public'" :is-edit="true" />
     <Pharmacy
-      v-if="$store.getters.settings.PurchaseLayout == 'Pharmacy'"
+      v-if="$store.getters.settings.Purchase.Layout == 'Pharmacy'"
       :is-edit="true"
     />
   </div>
 </template>
 
 <script>
-import SuperMarket from "./components/SuperMarket.vue";
+import Public from "./components/Public.vue";
 import Pharmacy from "./components/Pharmacy.vue";
 
 export default {
   name: "EditInvoice",
-  components: { SuperMarket, Pharmacy }
+  components: { Public, Pharmacy },
 };
 </script>
-
-
-

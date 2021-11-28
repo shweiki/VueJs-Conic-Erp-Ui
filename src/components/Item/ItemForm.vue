@@ -243,7 +243,6 @@ export default {
             Done = await Create(this.tempForm)
               .then((res) => {
                 if (res) {
-                  this.tempForm = res;
                   return true;
                 } else return false;
               })

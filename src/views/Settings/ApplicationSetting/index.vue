@@ -21,13 +21,13 @@
               <span>{{ $t("Settings.DateTimeFormat") }}</span>
               <el-input v-model="DateTimeFormat" />
             </el-col>
-             <el-col :span="8">
+            <el-col :span="8">
               <span>{{ $t("Settings.title") }}</span>
               <el-input v-model="title" />
             </el-col>
           </el-row>
-         
-            <el-row type="flex">
+
+          <el-row type="flex">
             <el-col :span="8">
               <span>{{ $t("Settings.PointOfSaleLayout") }}</span>
               <el-select v-model="PointOfSaleLayout" placeholder="PointOfSaleLayout">
@@ -40,13 +40,13 @@
                 <el-option label="KidsPlayArea" value="KidsPlayArea"> </el-option>
               </el-select>
             </el-col>
-             <el-col :span="8">
+            <el-col :span="8">
               <span>{{ $t("Settings.CashPoolLayout") }}</span>
               <el-select v-model="CashPoolLayout" placeholder="CashPoolLayout">
                 <el-option label="Restaurant" value="Restaurant"> </el-option>
               </el-select>
             </el-col>
-              <el-col :span="8">
+            <el-col :span="8">
               <span>{{ $t("Settings.CashDrawerCOM") }}</span>
               <el-input v-model="CashDrawerCOM" />
             </el-col>
@@ -55,7 +55,7 @@
             <el-col :span="8">
               <span>{{ $t("Settings.PurchaseLayout") }}</span>
               <el-select v-model="PurchaseLayout" placeholder="PurchaseLayout">
-                <el-option label="SuperMarket" value="SuperMarket"> </el-option>
+                <el-option label="Public" value="Public"> </el-option>
                 <el-option label="Pharmacy" value="Pharmacy"> </el-option>
               </el-select>
             </el-col>
@@ -74,8 +74,8 @@
                 <el-option label="Restaurant" value="Restaurant"> </el-option>
               </el-select>
             </el-col>
-            </el-row>
-          
+          </el-row>
+
           <el-row type="flex">
             <el-col :span="8">
               <span>{{ $t("Settings.tagsView") }}</span>
@@ -101,10 +101,10 @@
             </el-col>
             <el-col :span="8">
               <span>{{ $t("Settings.sidebarLogo") }}</span>
-              <el-switch v-model="sidebarLogo" class="drawer-switch" /> </el-col
-            >
+              <el-switch v-model="sidebarLogo" class="drawer-switch" />
+            </el-col>
           </el-row>
-           <el-row type="flex">
+          <el-row type="flex">
             <el-col :span="8">
               <span>{{ $t("Settings.BarcodeIsId") }}</span>
               <el-switch v-model="BarcodeIsId" class="drawer-switch" />
@@ -113,7 +113,7 @@
               <span>{{ $t("Settings.sidebarOpen") }}</span>
               <el-switch v-model="sidebarOpen" class="drawer-switch" />
             </el-col>
-              </el-row>
+          </el-row>
         </el-card>
       </el-col>
     </el-row>
@@ -280,6 +280,19 @@ export default {
         });
       },
     },
+    PurchaseLayout: {
+      get() {
+        return this.$store.state.settings.Purchase.Layout;
+      },
+      set(val) {
+        this.$store.state.settings.Purchase.Layout = val;
+
+        this.$store.dispatch("settings/changeSetting", {
+          key: "Purchase",
+          value: this.$store.state.settings.Purchase,
+        });
+      },
+    },
     CashPoolLayout: {
       get() {
         return this.$store.state.settings.CashPoolLayout;
@@ -287,17 +300,6 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "CashPoolLayout",
-          value: val,
-        });
-      },
-    },
-    PurchaseLayout: {
-      get() {
-        return this.$store.state.settings.PurchaseLayout;
-      },
-      set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "PurchaseLayout",
           value: val,
         });
       },
@@ -347,12 +349,12 @@ export default {
   float: right;
 }
 .el-row--flex {
-    padding-bottom: 12px;
+  padding-bottom: 12px;
 }
 .el-row {
-    padding-bottom: 12px;
+  padding-bottom: 12px;
 }
-.el-input--mini{
+.el-input--mini {
   padding-top: 5px;
 }
 .el-select {

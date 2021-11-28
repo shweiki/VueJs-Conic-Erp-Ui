@@ -37,6 +37,7 @@
                   <el-checkbox v-model="tempForm.IsPrime"
                     >اظهار على شاشة المبيعات</el-checkbox
                   >
+                  <el-checkbox v-model="tempForm.TakeBon">تتبع جمركي</el-checkbox>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
