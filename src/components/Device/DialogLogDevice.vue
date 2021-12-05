@@ -14,7 +14,7 @@
     >
       <div slot="title" class="dialog-footer">
         <el-col :span="4">
-          <Add-Device-Log :Fk="Fk" />
+          <Add-Device-Log :Fk="Fk" @Done="Done" />
         </el-col>
         <el-col :span="20">
           <el-divider> سيجلات الدوام </el-divider>
@@ -37,7 +37,9 @@
         <el-table-column label="الوصف" prop="Description" align="center">
         </el-table-column>
         <el-table-column label="تعديل" width="80px" align="center">
-          <template slot-scope="{ row }"> <Edit-Device-Log :Id="row.Id" /> </template>
+          <template slot-scope="{ row }">
+            <Edit-Device-Log :Id="row.Id" @Done="Done" />
+          </template>
         </el-table-column>
       </el-table>
     </el-dialog>
@@ -56,6 +58,11 @@ export default {
     return {
       dialogFormVisible: false,
     };
+  },
+  methods: {
+    Done() {
+      this.$emit("Done");
+    },
   },
 };
 </script>

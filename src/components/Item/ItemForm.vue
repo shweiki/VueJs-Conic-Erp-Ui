@@ -101,7 +101,7 @@
               v-model="tempForm.Tax"
               :precision="2"
               :step="0.01"
-              :min="0.01"
+              :min="0.0"
               :max="1"
               @focus="$event.target.select()"
             />

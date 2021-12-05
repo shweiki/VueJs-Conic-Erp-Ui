@@ -1,40 +1,15 @@
 <template>
   <div class="app-container">
     <el-row type="flex">
-      <el-col :span="8">
-        <Search-By-Date
-          :Value="[tempForm.SalaryFrom, tempForm.SalaryTo]"
-          @Set="
-            (v) => {
-              listQuery.DateFrom = v[0];
-              listQuery.DateTo = v[1];
-              getdata();
-            }
-          "
-        />
-      </el-col>
       <el-col :span="3">
-        <Sort-Options
-          :Value="listQuery.Sort"
-          @Set="
-            (v) => {
-              listQuery.Sort = v;
-            }
-          "
-        />
-      </el-col>
-      <el-col :span="3">
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleFilter"
-        >
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search">
         </el-button>
       </el-col>
       <el-col :span="3">
         <Drawer-Print Type="SalaryPayment" :Data="tempForm" />
+      </el-col>
+      <el-col :span="3">
+        <Dialog-Salary-From :isEdit="true" :Id="$route.params && $route.params.id" />
       </el-col>
       <el-col :span="3">
         <el-button
@@ -50,13 +25,13 @@
         <el-row type="flex">
           <el-col :span="24" :xs="24" v-loading="loading">
             <el-card class="box-card">
-              <Status-Tag :Status="tempForm.Status" TableName="SalaryPayment" />
-              <el-descriptions
-                class="margin-top"
-                title="احتساب الراتب"
-                :column="3"
-                border
-              >
+              <div slot="header" class="clearfix">
+                احتساب الراتب :
+                <span>
+                  <Status-Tag :Status="tempForm.Status" TableName="SalaryPayment" />
+                </span>
+              </div>
+              <el-descriptions class="margin-top" :column="3" border>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
                   :content-style="{ 'text-align': 'right' }"
@@ -85,44 +60,27 @@
                   <template slot="label"> الرقم الوظيفي </template>
                   <el-tag size="small">{{ tempForm.EmployeeId }}</el-tag>
                 </el-descriptions-item>
-                <el-descriptions-item
-                  :label-style="{ 'text-align': 'right' }"
-                  :content-style="{ 'text-align': 'right' }"
-                >
-                  <template slot="label"> مجموع ساعات </template>
-                  <el-tag size="small">{{
-                    list
-                      .reduce((prev, cur) => {
-                        return prev + cur.WorkTime;
-                      }, 0)
-                      .toFixed($store.getters.settings.ToFixed)
-                  }}</el-tag>
-                </el-descriptions-item>
+
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
                   :content-style="{ 'text-align': 'right' }"
                 >
                   <template slot="label"> مجموع ساعات التأخير </template>
-                  <el-tag size="small">{{ tempForm.DelayHours }}</el-tag>
+                  <el-tag size="small">{{ DelayHours || 0 }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
                   :content-style="{ 'text-align': 'right' }"
                 >
                   <template slot="label"> مجموع ساعات إضافي </template>
-                  <el-tag size="small">{{ tempForm.ExtraHours }}</el-tag>
+                  <el-tag size="small">{{ ExtraHours }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
                   :content-style="{ 'text-align': 'right' }"
                 >
                   <template slot="label"> عدد أيام الدوام </template>
-                  <el-tag size="small">{{
-                    30 -
-                    list.reduce((prev, cur) => {
-                      return prev + parseFloat(cur.absent ? 1 : 0);
-                    }, 0)
-                  }}</el-tag>
+                  <el-tag size="small">{{ WorkingDays }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
@@ -142,18 +100,17 @@
             :EmployeeName="tempForm.Name"
             :SalaryPaymentId="tempForm.Id"
             :GrossSalary="tempForm.GrossSalary"
-            :ExtraHours="tempForm.ExtraHours"
-            :DelayHours="tempForm.DelayHours"
+            :ExtraHours="ExtraHours"
+            :DelayHours="DelayHours"
           />
           <el-row type="flex">
             <el-col :span="24">
               <el-table
                 height="220"
                 :data="tempForm.SalaryAdjustmentLogs"
-                v-loading="listLoading2"
+                v-loading="listLoading"
                 border
                 highlight-current-row
-                @sort-change="sortChange"
               >
                 <el-table-column
                   prop="Id"
@@ -179,8 +136,8 @@
                 ></el-table-column>
                 <el-table-column label="تعديل" align="center">
                   <template slot-scope="{ row }">
-                    <edit-salary-adjustment-log :Id="row.Id" />
-                    <Delete-Salary-Adjustment-Log :Id="row.Id"
+                    <edit-salary-adjustment-log :Id="row.Id" @Done="getdata" />
+                    <Delete-Salary-Adjustment-Log :Id="row.Id" @Done="getdata"
                   /></template>
                 </el-table-column>
               </el-table>
@@ -188,113 +145,51 @@
           </el-row>
         </el-card> </el-col
     ></el-row>
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%"
-      @sort-change="sortChange"
-    >
-      <el-table-column
-        v-bind:label="$t('Vendors.ID')"
-        prop="Id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.Id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="اليوم" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ days[row.Day] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="التاريخ" width="150px" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.Date | parseTime("{y}-{m}-{d}") }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="الدخول" width="80px" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.StartDateTime | parseTime("{h}:{i}") }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="الخروج" width="80px" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.EndDateTime | parseTime("{h}:{i}") }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="غياب" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.absent ? "غياب" : "حضور" }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column sortable label="عدد ساعات الدوام" width="150" align="center">
-        <template slot-scope="scope">{{
-          scope.row.WorkTime.toFixed($store.getters.settings.ToFixed)
-        }}</template>
-      </el-table-column>
-      <el-table-column label="ساعات تأخير" width="120" align="center">
-        <template slot-scope="scope">{{
-          scope.row.DelayHours.toFixed($store.getters.settings.ToFixed)
-        }}</template>
-      </el-table-column>
-      <el-table-column label="ساعات إضافي" width="120" align="center">
-        <template slot-scope="scope">{{
-          scope.row.ExtraHours.toFixed($store.getters.settings.ToFixed)
-        }}</template>
-      </el-table-column>
-      <el-table-column label="#" width="80" align="center">
-        <template slot-scope="scope">
-          <dialog-log-device :Log="scope.row.logs" :Fk="tempForm.EmployeeId" />
-        </template>
-      </el-table-column>
-    </el-table>
+    <Device-Log
+      TableName="Employee"
+      :UserId="tempForm.EmployeeId"
+      :FromDate="tempForm.SalaryFrom"
+      :ToDate="tempForm.SalaryTo"
+      :WorkingHours="tempForm.WorkingHours"
+      @Done="SetValue"
+    />
   </div>
 </template>
 <script>
 import { GetById, Edit } from "@/api/Salary";
-import NextOprations from "@/components/Oprationsys/NextOprations";
-import SearchByDate from "@/components/Date/SearchByDate.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
-import { parseTime } from "@/utils";
-import SortOptions from "@/components/SortOptions";
 import AddSalaryAdjustmentLog from "../../WorkingAdjustment/Components/AddSalaryAdjustmentLog.vue";
 import waves from "@/directive/waves"; // waves directive
-import { GetLogByUserId } from "@/api/DeviceLog";
-import DialogLogDevice from "@/components/Device/DialogLogDevice.vue";
 import EditSalaryAdjustmentLog from "../../WorkingAdjustment/Components/EditSalaryAdjustmentLog.vue";
 import DeleteSalaryAdjustmentLog from "../../WorkingAdjustment/Components/DeleteSalaryAdjustmentLog.vue";
+import DeviceLog from "@/views/HumanResource/ListEmployee/components/DeviceLog.vue";
+import DialogSalaryFrom from "../../Salary/Components/DialogSalaryFrom.vue";
 
 export default {
-  name: "Profile",
   components: {
     DialogActionLog,
-    SortOptions,
     RadioOprations,
-    SearchByDate,
     AddSalaryAdjustmentLog,
     DrawerPrint,
     StatusTag,
-    DialogLogDevice,
+    DeviceLog,
     EditSalaryAdjustmentLog,
     DeleteSalaryAdjustmentLog,
+    DialogSalaryFrom,
   },
   directives: { waves },
   data() {
     return {
-      activeTab: "Details",
       DisabledSave: false,
       loading: true,
       tableData: [],
+      ExtraHours: 0,
+      DelayHours: 0,
+      WorkingDays: 0,
+
       tempForm: {
         Id: undefined,
         EmployeeId: undefined,
@@ -306,59 +201,35 @@ export default {
         WorkingHours: 0,
         Name: "",
         SalaryAdjustmentLogs: [],
-        ExtraHours: 0,
-        DelayHours: 0,
       },
-      list: [],
       listLoading: false,
-      listLoading2: false,
-      listQuery: {
-        Page: 1,
-        limit: this.$store.getters.settings.LimitQurey,
-        Sort: "-id",
-        DateFrom: "",
-        DateTo: "",
-        Status: undefined,
-        TableName: "Employee",
-        UserId: undefined,
-      },
-      days: ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"],
     };
   },
+
   created() {
-    // this.getdata();
+    this.getdata();
   },
   methods: {
+    SetValue(e) {
+      this.WorkingDays = parseFloat(e.WorkingDays);
+      this.ExtraHours = parseFloat(e.ExtraHours);
+      this.DelayHours = parseFloat(e.DelayHours);
+      this.getdata();
+    },
     getdata() {
+      this.listLoading = true;
+      this.loading = true;
+
       GetById({ Id: this.$route.params && this.$route.params.id }).then((response) => {
         this.tempForm = response;
-        this.listQuery.UserId = this.tempForm.EmployeeId;
-        GetLogByUserId(this.listQuery).then((response) => {
-          this.list = this.GenerateWorkHoursLog(
-            this.listQuery.DateFrom,
-            this.listQuery.DateTo,
-            response
-          );
-          this.tempForm.ExtraHours = this.list
-            .reduce((prev, cur) => {
-              return prev + cur.ExtraHours;
-            }, 0)
-            .toFixed(this.$store.getters.settings.ToFixed);
 
-          this.tempForm.DelayHours = this.list
-            .reduce((prev, cur) => {
-              return prev + cur.DelayHours;
-            }, 0)
-            .toFixed(this.$store.getters.settings.ToFixed);
-          this.tempForm.NetSalary = (
-            parseFloat(this.tempForm.GrossSalary) +
-            this.tempForm.SalaryAdjustmentLogs.reduce((prev, cur) => {
-              return prev + parseFloat(cur.AdjustmentAmmount);
-            }, 0)
-          ).toFixed(this.$store.getters.settings.ToFixed);
-          //  console.log("this.list", this.list);
-          this.listLoading2 = false;
-        });
+        this.tempForm.NetSalary = (
+          parseFloat(this.tempForm.GrossSalary) +
+          this.tempForm.SalaryAdjustmentLogs.reduce((prev, cur) => {
+            return prev + parseFloat(cur.AdjustmentAmmount);
+          }, 0)
+        ).toFixed(this.$store.getters.settings.ToFixed);
+        this.listLoading = false;
       });
       this.loading = false;
     },
@@ -379,94 +250,6 @@ export default {
             this.DisabledSave = false;
           }
         });
-    },
-    GenerateWorkHoursLog(startDate, endDate, log) {
-      const WorkHoursLogs = [];
-      startDate = new Date(startDate);
-      endDate = new Date(endDate);
-
-      // Strip hours minutes seconds etc.
-      let currentDate = new Date(
-        startDate.getFullYear(),
-        startDate.getMonth(),
-        startDate.getDate()
-      );
-      while (currentDate <= endDate) {
-        let logs = log.filter((x) => {
-          return new Date(x.DateTime).getDate() === currentDate.getDate();
-        });
-        let MinMaxD = [
-          new Date(
-            Math.min.apply(
-              null,
-              logs.map((x) => new Date(x.DateTime))
-            )
-          ),
-          new Date(
-            Math.max.apply(
-              null,
-              logs.map((x) => new Date(x.DateTime))
-            )
-          ),
-        ];
-        // Work Time
-        let WorkTime =
-          parseInt((Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60 * 60)) % 24) +
-            parseInt(
-              (Math.abs(MinMaxD[1].getTime() - MinMaxD[0].getTime()) / (1000 * 60)) % 60
-            ) /
-              100 || 0;
-        //  Extra Hours && Delay Hours
-        let ExtraHours =
-            WorkTime - this.tempForm.WorkingHours > 0
-              ? WorkTime - this.tempForm.WorkingHours
-              : 0 || 0,
-          DelayHours =
-            WorkTime - this.tempForm.WorkingHours < 0
-              ? WorkTime - this.tempForm.WorkingHours
-              : 0 || 0;
-
-        WorkHoursLogs.push({
-          Id: WorkHoursLogs.length + 1,
-          Day: currentDate.getDay(),
-          Date: currentDate,
-          StartDateTime: MinMaxD[0], // minDate
-          EndDateTime: MinMaxD[1], // maxDate,
-          WorkTime: WorkTime,
-          ExtraHours: ExtraHours,
-          DelayHours: DelayHours,
-          absent: logs.length <= 0 ? true : false,
-          logs: logs,
-        });
-        currentDate = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          currentDate.getDate() + 1 // Will increase month if over range
-        );
-      }
-      return WorkHoursLogs;
-    },
-    handleFilter() {
-      this.listQuery.Page = 1;
-      this.getdata();
-    },
-    sortChange(data) {
-      const { prop, order } = data;
-      if (prop === "id") {
-        this.sortById(order);
-      }
-    },
-    sortById(order) {
-      if (order === "ascending") {
-        this.listQuery.sort = "+id";
-      } else {
-        this.listQuery.sort = "-id";
-      }
-      this.handleFilter();
-    },
-    getSortClass: function (key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}` ? "ascending" : "descending";
     },
   },
 };

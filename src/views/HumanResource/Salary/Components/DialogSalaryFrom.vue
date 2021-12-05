@@ -7,7 +7,12 @@
       @click="Visibles = true"
       >{{ isEdit ? "تعديل" : "إضافة" }} الراتب</el-button
     >
-    <el-dialog style="margin-top: -13vh" title="تعديل الراتب" :visible.sync="Visibles">
+    <el-dialog
+      @opened="getDate"
+      style="margin-top: -13vh"
+      title="تعديل الراتب"
+      :visible.sync="Visibles"
+    >
       <el-form
         :model="tempForm"
         ref="SalaryForm"
@@ -30,6 +35,7 @@
           <el-col :span="24">
             <el-form-item label="الفترة" prop="SalaryFrom">
               <Search-By-Date
+                :withOptions="false"
                 :Value="[tempForm.SalaryFrom, tempForm.SalaryTo]"
                 @Set="
                   (v) => {
@@ -118,29 +124,30 @@ export default {
       Visibles: false,
     };
   },
-  created() {
-    if (this.isEdit) {
-      GetById({ Id: this.Id }).then((res) => {
-        this.tempForm = res;
-      });
-    } else {
-      if (this.EmployeeId != undefined && this.EmployeeId > 0) {
-        this.tempForm.EmployeeId = this.EmployeeId;
 
-        GetLastSalaryById({ Id: this.EmployeeId }).then((res) => {
-          if (res) {
-            this.tempForm.GrossSalary = res.GrossSalary;
-            this.tempForm.WorkingHours = res.WorkingHours;
-            this.tempForm.SalaryFrom = res.SalaryFrom;
-            this.tempForm.SalaryTo = res.SalaryTo;
-          }
-        });
-      }
-      if (this.EmployeeName != undefined && this.EmployeeName != "")
-        this.tempForm.Name = this.EmployeeName;
-    }
-  },
   methods: {
+    getDate() {
+      if (this.isEdit && this.Id > 0) {
+        GetById({ Id: this.Id }).then((res) => {
+          this.tempForm = res;
+        });
+      } else {
+        if (this.EmployeeId != undefined && this.EmployeeId > 0) {
+          this.tempForm.EmployeeId = this.EmployeeId;
+
+          GetLastSalaryById({ Id: this.EmployeeId }).then((res) => {
+            if (res) {
+              this.tempForm.GrossSalary = res.GrossSalary;
+              this.tempForm.WorkingHours = res.WorkingHours;
+              this.tempForm.SalaryFrom = res.SalaryFrom;
+              this.tempForm.SalaryTo = res.SalaryTo;
+            }
+          });
+        }
+        if (this.EmployeeName != undefined && this.EmployeeName != "")
+          this.tempForm.Name = this.EmployeeName;
+      }
+    },
     confirmData() {
       this.$refs["SalaryForm"].validate(async (valid) => {
         if (valid) {

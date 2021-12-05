@@ -120,6 +120,7 @@ export default {
             type: "success",
             duration: 2000,
           });
+          this.$emit("Done");
         })
         .catch((error) => {
           console.log(error);

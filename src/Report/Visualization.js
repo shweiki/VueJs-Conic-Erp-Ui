@@ -7,6 +7,7 @@ import checkPermission from "@/utils/permission";
 let toFixed = store.getters.settings.ToFixed;
 var JsBarcode = require('jsbarcode');
 var { createCanvas } = require("canvas");
+var days = ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"]
 
 export default function Visualization(Data, Html, Type) {
   console.log("Visualization Data : =>", Data);
@@ -15,6 +16,8 @@ export default function Visualization(Data, Html, Type) {
   let TimeConvert = TimeConvertX;
   let ToFixed = ToFixedX;
   let tr = (v) => i18n.t(v);
+  let Days = (v) => days[v];
+  let Absent = (v) => v ? "غياب" : "حضور";
   let Barcode = (v) => {
     var canvas = createCanvas();
     JsBarcode(canvas, v, {

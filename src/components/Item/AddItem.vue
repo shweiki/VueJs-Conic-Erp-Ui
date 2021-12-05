@@ -63,7 +63,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
@@ -81,7 +80,7 @@
                 v-model="tempForm.Tax"
                 :precision="2"
                 :step="0.01"
-                :min="0.01"
+                :min="0.0"
                 :max="1"
                 @focus="$event.target.select()"
               />

@@ -30,6 +30,7 @@ export default {
             type: "danger",
             duration: 2000,
           });
+          this.$emit("done");
         })
         .catch((error) => {
           console.log(error);

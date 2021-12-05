@@ -119,9 +119,16 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     this.resetTempForm();
-    //this.getData(this.SalaryPaymentId);
+    console.log(
+      this.EmployeeId,
+      this.EmployeeName,
+      this.SalaryPaymentId,
+      this.GrossSalary,
+      this.ExtraHours,
+      this.DelayHours
+    );
   },
   methods: {
     getData(val) {},

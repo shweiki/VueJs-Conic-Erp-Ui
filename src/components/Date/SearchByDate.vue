@@ -12,7 +12,9 @@
       v-bind:range-separator="$t('Sales.until')"
       v-bind:start-placeholder="$t('Sales.From')"
       v-bind:end-placeholder="$t('Sales.To')"
-      :picker-options="$store.getters.settings.pickerOptions"
+      v-bind:picker-options="
+        WithOptions === false ? {} : $store.getters.settings.pickerOptions
+      "
       @change="SetVal"
       :default-time="['00:00:00', '23:59:59']"
     ></el-date-picker>
@@ -28,10 +30,11 @@ import {
 } from "@js-joda/core";
 
 export default {
-  props: ["Value"],
+  props: ["Value", "withOptions"],
   data() {
     return {
       date: [],
+      WithOptions: this.withOptions || true,
     };
   },
   watch: {
@@ -44,7 +47,7 @@ export default {
       ) {
         let start = new Date(val[0]);
         let end = new Date(val[1]);
-        this.SetVal([start.setHours(0, 0, 0, 0), end.setHours(23, 59, 59, 999)]);
+        this.SetVal([start, end]);
       }
     },
   },
@@ -61,8 +64,11 @@ export default {
     if (this.Value[0] != "" && this.Value[1] != "") {
       start = new Date(this.Value[0]);
       end = new Date(this.Value[1]);
+    } else {
+      start = start.setHours(0, 0, 0, 0);
+      end = end.setHours(23, 59, 59, 999);
+      this.SetVal([start, end]);
     }
-    this.SetVal([start.setHours(0, 0, 0, 0), end.setHours(23, 59, 59, 999)]);
     //  this.date = [new Date(), new Date()];
   },
   methods: {

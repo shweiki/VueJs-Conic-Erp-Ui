@@ -165,7 +165,9 @@ export default {
       var minutes = Math.floor(total_seconds / 60) % 60;
 
       return new Date(
-        date_info.getFullYear(),
+        date_info.getFullYear() < 1922
+          ? date_info.getFullYear() + 100
+          : date_info.getFullYear(),
         date_info.getMonth(),
         date_info.getDate(),
         hours,
