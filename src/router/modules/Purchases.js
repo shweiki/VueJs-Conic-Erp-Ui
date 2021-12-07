@@ -45,6 +45,14 @@ const PurchasesRouter = {
       meta: {
         title: 'ListBillOfEntery', icon: 'cost'
       },
+    },{
+      path: 'EditBillOfEntery/:id(\\d+)',
+      component: () => import('@/views/Purchase/BillOfEntery/Edit'),
+      name: 'EditBillOfEntery',
+      meta: {
+         title: 'EditBillOfEntery', noCache: true, activeMenu: '/Purchase/BillOfEntery/List'
+      },
+      hidden: true,
     },
   ]
 }

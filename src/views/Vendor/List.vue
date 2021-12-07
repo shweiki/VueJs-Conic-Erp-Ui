@@ -125,10 +125,14 @@
       @selection-change="handleSelectionChange"
       @row-dblclick="
         (row) => {
-          let r = $router.resolve({
-            path: '/Vendor/Edit/' + row.Id,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+          if (DblClickRow == 'AddAsRow') {
+            $emit('dblclick', row);
+          } else {
+            let r = $router.resolve({
+              path: '/Vendor/Edit/' + row.Id,
+            });
+            window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+          }
         }
       "
     >
@@ -229,6 +233,8 @@ import Export from "@/components/Export";
 
 export default {
   name: "ComplexTable",
+  props: ["DblClickRow"],
+
   components: {
     StatusTag,
     NextOprations,

@@ -39,6 +39,9 @@
           :Data="{
             Items: list,
             Dates: [listQuery.DateFrom, listQuery.DateTo],
+            Name: Name,
+            Id: UserId,
+            Totals: Totals,
           }"
         />
       </el-col>
@@ -125,7 +128,7 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
 
 export default {
-  props: ["UserId", "TableName", "FromDate", "ToDate", "WorkingHours"],
+  props: ["UserId", "Name", "TableName", "FromDate", "ToDate", "WorkingHours"],
   components: {
     DialogLogDevice,
     SortOptions,
@@ -145,6 +148,11 @@ export default {
         TableName: this.TableName,
         UserId: undefined,
       },
+      Totals: {
+        WorkingDays: 0,
+        ExtraHours: 0,
+        DelayHours: 0,
+      },
       listLoading: false,
       days: ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"],
     };
@@ -160,8 +168,12 @@ export default {
   methods: {
     TimeConvert,
     getdata(v) {
-      this.listQuery.UserId = v || this.UserId;
       this.listLoading = true;
+
+      this.listQuery.UserId = v || this.UserId;
+      this.listQuery.DateFrom = v || this.FromDate;
+      this.listQuery.DateTo = v || this.ToDate;
+      console.log(" this.listQuery", this.listQuery);
 
       GetLogByUserId(this.listQuery).then(async (response) => {
         this.list = await this.GenerateWorkHoursLog(
@@ -177,7 +189,7 @@ export default {
     },
     Done(vlist) {
       let list = vlist;
-      let Sets = {
+      this.Totals = {
         WorkingDays:
           30 -
           list
@@ -197,7 +209,7 @@ export default {
           }, 0)
           .toFixed(this.$store.getters.settings.ToFixed),
       };
-      this.$emit("Done", Sets);
+      this.$emit("Done", this.Totals);
     },
     GenerateWorkHoursLog(startDate, endDate, log) {
       return new Promise((resolve) => {
@@ -213,11 +225,23 @@ export default {
         while (currentDate <= endDate) {
           let logs = log.filter((x) => {
             x.DateTime = new Date(x.DateTime);
+            let startShiftDate = new Date(
+              currentDate.getFullYear(),
+              currentDate.getMonth(),
+              currentDate.getDate(),
+              startDate.getHours() - 5,
+              startDate.getMinutes()
+            );
+            let endShiftDate = new Date(
+              currentDate.getFullYear(),
+              currentDate.getMonth(),
+              currentDate.getDate() + (startDate.getHours() > endDate.getHours() ? 1 : 0),
+              endDate.getHours() + 5,
+              endDate.getMinutes()
+            );
 
-            if (x.DateTime.getHours() < startDate.getHours() - 1)
-              return x.DateTime.getDate() - 1 === currentDate.getDate();
-
-            return x.DateTime.getDate() === currentDate.getDate();
+            if (x.DateTime > startShiftDate && x.DateTime < endShiftDate)
+              return x.DateTime;
           });
           let MinMaxD = [
             new Date(
@@ -242,11 +266,35 @@ export default {
               ) /
                 100 || 0;
           //  Extra Hours && Delay Hours
-          let ExtraHours =
-              WorkTime - this.WorkingHours > 0 ? WorkTime - this.WorkingHours : 0 || 0,
-            DelayHours =
-              WorkTime - this.WorkingHours < 0 ? WorkTime - this.WorkingHours : 0 || 0;
+          let ExtraHours = 0,
+            DelayHours = 0,
+            CalHours;
+          CalHours = this.CalDelayExtraHours(
+            MinMaxD[1],
+            new Date(
+              MinMaxD[1].getFullYear(),
+              MinMaxD[1].getMonth(),
+              MinMaxD[1].getDate(),
+              endDate.getHours(),
+              endDate.getMinutes()
+            )
+          );
+          if (CalHours > 0) ExtraHours += Math.abs(CalHours);
+          else DelayHours += Math.abs(CalHours);
+          CalHours = this.CalDelayExtraHours(
+            MinMaxD[0],
+            new Date(
+              MinMaxD[0].getFullYear(),
+              MinMaxD[0].getMonth(),
+              MinMaxD[0].getDate(),
+              startDate.getHours(),
+              startDate.getMinutes()
+            )
+          );
+          if (CalHours < 0) ExtraHours += Math.abs(CalHours);
+          else DelayHours += Math.abs(CalHours);
 
+          //    console.log("Hours", ExtraHours, DelayHours);
           WorkHoursLogs.push({
             Id: WorkHoursLogs.length + 1,
             Day: currentDate.getDay(),
@@ -267,6 +315,21 @@ export default {
         }
         resolve(WorkHoursLogs);
       });
+    },
+    CalDelayExtraHours(Time, ShouldTime) {
+      if (Time - ShouldTime < 0)
+        return (
+          -1 *
+          (parseInt((Math.abs(Time - ShouldTime) / (1000 * 60 * 60)) % 24) +
+            parseInt((Math.abs(Time.getTime() - ShouldTime) / (1000 * 60)) % 60) / 100 ||
+            0)
+        );
+      else
+        return (
+          parseInt((Math.abs(Time - ShouldTime) / (1000 * 60 * 60)) % 24) +
+            parseInt((Math.abs(Time.getTime() - ShouldTime) / (1000 * 60)) % 60) / 100 ||
+          0
+        );
     },
     handleFilter() {
       this.listQuery.Page = 1;

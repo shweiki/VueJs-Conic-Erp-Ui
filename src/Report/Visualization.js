@@ -17,7 +17,7 @@ export default function Visualization(Data, Html, Type) {
   let ToFixed = ToFixedX;
   let tr = (v) => i18n.t(v);
   let Days = (v) => days[v];
-  let Absent = (v) => v ? "غياب" : "حضور";
+  let Absent = (v) => { return v.toString().toLowerCase() === "true" ? "غياب" : "حضور" };
   let Barcode = (v) => {
     var canvas = createCanvas();
     JsBarcode(canvas, v, {
@@ -35,7 +35,7 @@ export default function Visualization(Data, Html, Type) {
       type: 'image/png',
       quality: 1,
       margin: 1,
-      width : w,
+      width: w,
       height: h,
     }
     var imgurl = '';
@@ -48,8 +48,8 @@ export default function Visualization(Data, Html, Type) {
       })
     return '<img src="' + imgurl + '"  width="' + w + '" height="' + h + '" />'
   }
-  let checkpermission  = (v) => {
-    if(!checkPermission(v)){
+  let checkpermission = (v) => {
+    if (!checkPermission(v)) {
       return "display: none;"
     }
   }

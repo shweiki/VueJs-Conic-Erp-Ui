@@ -8,45 +8,23 @@
       class="demo-ruleForm"
     >
       <el-card class="box-card">
-        <el-row type="flex" slot="header">
-          <el-col :span="10">
-            <router-link
-              class="pan-btn tiffany-btn"
-              style="
-                float: right;
-                margin-left: 20px;
-                padding: 10px 15px;
-                border-radius: 6px;
-              "
-              icon="el-icon-plus"
-              to="/Purchase/List"
-              >{{ $t("route.ListPurchaseInvoice") }}</router-link
-            >
-          </el-col>
-          <el-col :span="6"
-            ><Add-Bill-Of-Entery
-              :PurchaseId="tempForm.Id"
-              @Done="(v) => (BillOfEntery = v)"
-          /></el-col>
-
-          <el-col :span="4">
-            <Drawer-Print
-              v-bind:disabled="OldInvoice == null ? false : true"
-              Type="PurchaseInvoice"
-              :Data="OldInvoice"
-            />
-          </el-col>
-          <el-col :span="4">
-            <el-button
-              :disabled="DisabledSave"
-              style="float: left"
-              type="success"
-              icon="fa fa-save"
-              @click="isEdit != true ? confirmData() : confirmData()"
-              >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-            >
-          </el-col>
-        </el-row>
+        <div slot="header">
+          <el-button
+            :disabled="DisabledSave"
+            style="float: left"
+            type="success"
+            icon="fa fa-save"
+            @click="isEdit != true ? createData() : updateData()"
+            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
+          >
+          <router-link
+            class="pan-btn tiffany-btn"
+            style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
+            icon="el-icon-plus"
+            to="/Purchase/List"
+            >{{ $t("route.ListPurchaseInvoice") }}</router-link
+          >
+        </div>
         <el-row type="flex">
           <el-col :span="4">
             <el-form-item
@@ -67,7 +45,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="8">
+          <el-col :span="4">
             <el-form-item
               label="الى حساب"
               prop="VendorId"
@@ -79,11 +57,11 @@
                 },
               ]"
             >
-              <vendor-search-any
+              <Vendor-Search-Any
                 :VendorId="tempForm.VendorId"
                 @Set="
                   (v) => {
-                    Vendor = v;
+                    tempForm.Name = v.Name;
                     tempForm.VendorId = v.Id;
                   }
                 "
@@ -144,49 +122,36 @@
           <el-table-column align="center" prop="Name">
             <template slot="header" slot-scope="{}"
               >{{ $t("NewPurchaseInvoice.Items") }} ({{
-                tempForm.InventoryMovements.length.toFixed(
-                  $store.getters.settings.ToFixed
-                )
+                TotalItems.toFixed($store.getters.settings.ToFixed)
               }})</template
             >
             <template slot-scope="scope">
               {{ tempForm.InventoryMovements[scope.$index].Name }}
-              <el-button
-                style="float: left"
-                icon="el-icon-edit"
-                type="primary"
-                @click="
-                  () => {
-                    let r = $router.resolve({
-                      path:
-                        '/Item/Edit/' + tempForm.InventoryMovements[scope.$index].ItemsId,
-                    });
-                    window.open(
-                      r.href,
-                      r.route.name,
-                      $store.getters.settings.windowStyle
-                    );
-                  }
-                "
-              ></el-button>
+              <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="وحدة القياس" prop="UnitItem">
+          <el-table-column label="EXP" width="175" align="center">
             <template slot-scope="scope">
-              {{ tempForm.InventoryMovements[scope.$index].UnitItem }}
+              <Select-Item-Exp-Column
+                @SetVal="
+                  (v) => {
+                    tempForm.InventoryMovements[scope.$index].EXP = v;
+                  }
+                "
+                :Value="tempForm.InventoryMovements[scope.$index].EXP"
+                :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
+              />
             </template>
           </el-table-column>
           <el-table-column width="130" align="center">
             <template slot="header" slot-scope="{}"
               >{{ $t("NewPurchaseInvoice.quantity") }} ({{
-                tempForm.InventoryMovements.reduce(
-                  (a, b) => a + (b["Qty"] || 0),
-                  0
-                ).toFixed($store.getters.settings.ToFixed)
+                TotalQty.toFixed($store.getters.settings.ToFixed)
               }})</template
             >
             <template slot-scope="scope">
               <el-input-number
+                @change="SumTotalAmmount"
                 controls-position="right"
                 v-model="tempForm.InventoryMovements[scope.$index].Qty"
                 :precision="2"
@@ -197,14 +162,15 @@
               ></el-input-number>
             </template>
           </el-table-column>
-          <el-table-column width="220" align="center">
+          <el-table-column width="" align="center">
             <template slot="header" slot-scope="{}">{{
               $t("NewPurchaseInvoice.Price")
             }}</template>
             <template slot-scope="scope">
               <currency-input
+                @change="SumTotalAmmount"
                 class="currency-input"
-                :precision="10"
+                :precision="3"
                 @focus="$event.target.select()"
                 v-model="tempForm.InventoryMovements[scope.$index].SellingPrice"
               />
@@ -281,25 +247,19 @@
             <el-divider direction="vertical"></el-divider>
             <span>{{ $t("NewPurchaseInvoice.Items") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{
-              tempForm.InventoryMovements.length.toFixed($store.getters.settings.ToFixed)
-            }}</span>
+            <span>{{ TotalItems.toFixed($store.getters.settings.ToFixed) }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.QuantityAmount") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span>{{
-              tempForm.InventoryMovements.reduce(
-                (a, b) => a + (b["Qty"] || 0),
-                0
-              ).toFixed($store.getters.settings.ToFixed)
-            }}</span>
+            <span>{{ TotalQty.toFixed($store.getters.settings.ToFixed) }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.TotalDiscount") }}</span>
             <el-divider direction="vertical"></el-divider>
             <span>
               <el-input-number
+                @change="SumTotalAmmount"
                 v-model="tempForm.Discount"
                 :precision="2"
                 :step="1"
@@ -312,21 +272,11 @@
 
             <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
             <el-divider direction="vertical"></el-divider>
-            <span
-              >{{
-                (
-                  tempForm.InventoryMovements.reduce((prev, cur) => {
-                    return prev + cur.Qty * cur.SellingPrice;
-                  }, 0) - tempForm.Discount
-                ).toFixed($store.getters.settings.ToFixed)
-              }}
-              JOD</span
-            >
+            <span>{{ TotalAmmount.toFixed($store.getters.settings.ToFixed) }} JOD</span>
             <el-divider direction="vertical"></el-divider>
           </el-card>
         </el-col>
       </el-row>
-
       <el-col :span="10">
         <el-form-item>
           <el-input
@@ -336,8 +286,7 @@
           ></el-input>
         </el-form-item>
       </el-col>
-
-      <el-col :span="6">
+      <el-col :span="12">
         <el-input
           prop="Name"
           placeholder="اسم المستلم"
@@ -348,31 +297,25 @@
   </div>
 </template>
 <script>
-import { Create, Edit, GetPurchaseInvoiceById } from "@/api/PurchaseInvoice";
+import { Create, Edit, GetBillOfEnteryById } from "@/api/BillOfEntery";
 import FakeDate from "@/components/Date/FakeDate";
-import {
-  Create as CreateBillOfEntery,
-  Edit as EditBillOfEntery,
-  GetBillOfEnteryById,
-} from "@/api/BillOfEntery";
-import { GetActiveVendor } from "@/api/Vendor";
+
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
-import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
-import AddBillOfEntery from "@/views/Purchase/BillOfEntery/components/AddBillOfEntery.vue";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import ExpDate from "@/components/Date/ExpDate";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
+import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
+import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
 
 export default {
-  name: "NewPurchaseInvoice",
   components: {
     ItemsSearch,
     EditItem,
     FakeDate,
-    DrawerPrint,
-    RadioActiveInventory,
-    AddBillOfEntery,
+    ExpDate,
     VendorSearchAny,
+    SelectItemExpColumn,
+    RadioActiveInventory,
   },
   props: {
     isEdit: {
@@ -382,12 +325,14 @@ export default {
   },
   data() {
     return {
+      TotalQty: 0,
+      TotalItems: 0,
+      TotalAmmount: 0,
       ValidateNote: "",
       DisabledSave: false,
-      OldInvoice: {},
       tempForm: {
         Id: undefined,
-        Name: "-",
+        Name: "",
         Tax: 0.0,
         AccountInvoiceNumber: "",
         FakeDate: "",
@@ -398,8 +343,6 @@ export default {
         Status: 0,
         InventoryMovements: [],
       },
-      BillOfEntery: {},
-
       rules: {
         InventoryMovements: [
           {
@@ -410,7 +353,6 @@ export default {
           },
         ],
       },
-      Vendor: {},
       CashAccounts: [],
       tempRoute: {},
     };
@@ -420,32 +362,17 @@ export default {
       this.getdata(this.$route.params && this.$route.params.id);
     }
     this.tempRoute = Object.assign({}, this.$route);
-
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
   },
   methods: {
-    restTempForm() {
-      this.tempForm = {
-        Id: undefined,
-        Name: "-",
-        Tax: 0.0,
-        AccountInvoiceNumber: "",
-        FakeDate: "",
-        InvoicePurchaseDate: "",
-        PaymentMethod: "Cash",
-        Discount: 0,
-        VendorId: 2,
-        Status: 0,
-        InventoryMovements: [],
-      };
-    },
     getdata(val) {
-      GetPurchaseInvoiceById({ Id: val })
+      GetBillOfEnteryById({ Id: val })
         .then((response) => {
           console.log(response);
           this.tempForm = response;
+          this.SumTotalAmmount();
           // set tagsview title
           this.setTagsViewTitle();
 
@@ -457,7 +384,7 @@ export default {
         });
     },
     AddItem(item) {
-      this.tempForm.InventoryMovements.unshift({
+      this.tempForm.InventoryMovements.push({
         Id: undefined,
         ItemsId: item != undefined ? item.Id : undefined,
         TypeMove: "In",
@@ -467,128 +394,106 @@ export default {
         Tax: 0.0,
         InventoryItemId: 1,
         Name: item.Name,
-        UnitItem: item.UnitItem,
         PurchaseInvoiceId: undefined,
         Description: "",
       });
+      this.SumTotalAmmount();
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
+      this.SumTotalAmmount();
+    },
+    SumTotalAmmount() {
+      this.TotalItems = this.tempForm.InventoryMovements.length;
+      this.TotalQty = this.tempForm.InventoryMovements.reduce(
+        (a, b) => a + (b["Qty"] || 0),
+        0
+      );
+      this.TotalAmmount = this.tempForm.InventoryMovements.reduce(function (prev, cur) {
+        return prev + cur.Qty * cur.SellingPrice;
+      }, 0);
+      this.TotalAmmount -= this.tempForm.Discount;
+      document.getElementById("barcode").focus();
     },
 
-    confirmData() {
-      this.$refs["tempForm"].validate(async (valid) => {
-        this.tempForm.Tax = parseInt(this.tempForm.Tax);
-        this.tempForm.Total =
-          this.tempForm.InventoryMovements.reduce((prev, cur) => {
-            return prev + cur.Qty * cur.SellingPrice;
-          }, 0) - this.tempForm.Discount;
-        if (
-          valid &&
-          this.tempForm.Total > 0 &&
-          this.tempForm.InventoryMovements.length > 0 &&
-          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
-        ) {
-          let Done;
-          if (this.isEdit != true) {
-            Done = await Create(this.tempForm)
-              .then((res) => {
-                if (res) {
-                  this.tempForm.Id = res;
-                  this.BillOfEntery.PurchaseInvoiceId = res;
-                  this.restTempForm();
-
-                  return res;
-                } else return false;
+    updateData() {
+      this.$refs["tempForm"].validate((valid) => {
+        if (valid) {
+          this.tempForm.Tax = parseInt(this.tempForm.Tax);
+          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
+            Edit(this.tempForm)
+              .then((response) => {
+                this.$notify({
+                  title: "تم تعديل  بنجاح",
+                  message: "تم تعديل بنجاح",
+                  type: "success",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                  onClose: () => {
+                    if (response) {
+                      this.$router.push({ path: `/Purchase/List` });
+                    }
+                  },
+                });
               })
               .catch((error) => {
-                return false;
+                console.log(error);
               });
-          } else {
-            Done = await Edit(this.tempForm)
-              .then((res) => {
-                if (res) return res;
-                else return false;
-              })
-              .catch((error) => {
-                return false;
-              });
-          }
-
-          if (Done && this.$store.getters.settings.Purchase.BillOfEntery == true) {
-            let DoneBillOfEntery;
-            if (this.isEdit != true) {
-              DoneBillOfEntery = await CreateBillOfEntery(this.BillOfEntery)
-                .then((res) => {
-                  return res;
-                })
-                .catch((error) => {
-                  return false;
-                });
-            } else {
-              DoneBillOfEntery = await EditBillOfEntery(this.BillOfEntery)
-                .then((res) => {
-                  if (res) return res;
-                  else return false;
-                })
-                .catch((error) => {
-                  return false;
-                });
-            }
-            if (DoneBillOfEntery) {
-              this.$notify({
-                title: "تم " + this.isEdit === true ? "تعديل" : "إضافة" + " ",
-                message:
-                  "تم " + this.isEdit === true ? "تعديل" : "إضافة" + " بيان جمركي بنجاح",
-                type: "success",
-                position: "top-left",
-                duration: 1000,
-                showClose: false,
-              });
-            }
-          }
-          if (Done) {
-            this.OldInvoice = this.tempForm;
-            this.$notify({
-              title: "تم " + !this.isEdit === true ? "تعديل" : "إضافة" + "  بنجاح",
-              message: "تم " + !this.isEdit === true ? "تعديل" : "إضافة" + " ",
-              type: "success",
-              position: "top-left",
-              duration: 1000,
-              showClose: false,
-            });
-            this.$confirm("هل تريد العودة ")
-              .then((_) => {
-                this.$router.back();
-              })
-              .catch((_) => {});
-          } else {
-            this.$notify({
-              title: "مشكلة",
-              message: "حصلت مشكلة في عملية الحفظ",
-              type: "error",
-              position: "top-left",
-              duration: 1000,
-              showClose: false,
-            });
-          }
-          this.DisabledSave = false;
+          } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
         } else {
-          this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
-          this.DisabledSave = false;
+          console.log("error submit!!");
           return false;
         }
       });
     },
+    createData() {
+      this.$refs["tempForm"].validate((valid) => {
+        if (valid) {
+          this.tempForm.Tax = parseInt(this.tempForm.Tax);
+
+          if (this.TotalAmmount > 0 && this.TotalItems > 0 && this.TotalQty > 0) {
+            this.DisabledSave = true;
+
+            Create(this.tempForm)
+              .then((response) => {
+                this.$router.push({ path: `/Purchase/List` });
+
+                this.$notify({
+                  title: "تم الإضافة بنجاح",
+                  message: "تم الإضافة بنجاح",
+                  type: "success",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                this.DisabledSave = false;
+              });
+          } else this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    Copy(Text) {
+      this.Text = Text;
+    },
+    Paste(Index) {
+      this.tempForm.InventoryMovements[Index].Description = this.Text;
+    },
     setTagsViewTitle() {
-      const title = "Edit Purchase";
+      const title = "Edit ";
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Edit Purchase";
+      const title = "Edit ";
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

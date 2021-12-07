@@ -2,7 +2,6 @@
   <div>
     <el-col :span="4">
       <add-vendor
-        :Phone="NewPhone"
         @Set="
           (v) => {
             change(v);
@@ -10,81 +9,39 @@
         "
       />
     </el-col>
-    <el-col :span="16">
-      <div :class="{ show: show }" class="vendor-search">
-        <el-input :disabled="true" v-model="Vendor.Name" class="input-with-select">
-          <svg-icon
-            slot="append"
-            class-name="search-icon"
-            icon-class="search"
-            @click.stop="click"
-          />
-        </el-input>
-        <el-select
-          ref="VendorSearchSelect"
-          v-model="search"
-          :remote-method="querySearch"
-          filterable
-          default-first-option
-          remote
-          v-bind:placeholder="$t('Vendors.Search') + '/ هاتف / الرقم الوطني /'"
-          @change="change"
-          class="vendor-search-select"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.Id"
-            :value="item"
-            :label="item.Name"
-          >
-            <span style="color: #8492a6; font-size: 12px">( {{ item.Id }} )</span>
-            <span style="float: left">{{ item.Name }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px">{{
-              item.Ssn
-            }}</span>
-            <span style="color: #8492a6; font-size: 13px"
-              >( {{ item.PhoneNumber1 }} )</span
-            >
-            <span style="color: #8492a6; font-size: 13px">( {{ item.Region }} )</span>
-          </el-option>
-        </el-select>
-      </div>
+    <el-col :span="4">
+      <dialog-search-vendor @add="Add" />
     </el-col>
+    <el-col :span="12">
+      <el-input :disabled="true" v-model="Vendor.Name"> </el-input>
+    </el-col>
+
     <el-col :span="4">
       <edit-vendor :VendorId="VendorId" />
     </el-col>
   </div>
 </template>
 <script>
-import { GetVendorByAny, GetById } from "@/api/Vendor";
+import { GetById } from "@/api/Vendor";
 
 import AddVendor from "@/components/Vendor/AddVendor.vue";
 import EditVendor from "@/components/Vendor/EditVendor.vue";
-
+import DialogSearchVendor from "@/components/Vendor/DialogSearchVendor.vue";
+import { number } from "echarts/lib/export";
 export default {
-  props: ["VendorId"],
-  components: { AddVendor, EditVendor },
+  props: {
+    VendorId: {
+      type: number,
+      default: 2,
+    },
+  },
+  components: { AddVendor, EditVendor, DialogSearchVendor },
   data() {
     return {
-      search: "",
-      options: [],
-      NewPhone: "",
-      show: false,
       Vendor: {},
     };
   },
-  created() {
-    if (
-      this.VendorId != null &&
-      this.VendorId != undefined &&
-      this.VendorId != "" &&
-      this.VendorId > 0
-    ) {
-      GetById({ Id: this.VendorId }).then((res) => {
-        this.change(res);
-      });
-    }
-  },
+  created() {},
   watch: {
     VendorId(value) {
       if (value != null && value != undefined && value != "" && value > 0) {
@@ -95,43 +52,15 @@ export default {
         this.change({ Id: 2, Name: "زبون نقدي", AccountId: 6 });
       }
     },
-    show(value) {
-      if (value) {
-        document.body.addEventListener("click", this.close);
-      } else {
-        document.body.removeEventListener("click", this.close);
-      }
-    },
   },
   methods: {
     change(val) {
-      this.search = "";
-      this.options = [];
       this.Vendor = val;
-      this.show = false;
       this.$emit("Set", val);
     },
-    querySearch(query) {
-      if (query !== "" && query.length > 1) {
-        GetVendorByAny({ Any: query }).then((res) => {
-          this.options = res;
-          if (res.length == 0) this.NewPhone = query;
-          //  if (res.length == 1) this.change(res[0]);
-        });
-      } else {
-        this.options = [];
-      }
-    },
-    click() {
-      this.show = !this.show;
-      if (this.show) {
-        this.$refs.VendorSearchSelect && this.$refs.VendorSearchSelect.focus();
-      }
-    },
-    close() {
-      this.$refs.VendorSearchSelect && this.$refs.VendorSearchSelect.blur();
-      this.options = [];
-      this.show = false;
+
+    Add(v) {
+      this.change(v);
     },
   },
 };

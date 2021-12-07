@@ -1,6 +1,17 @@
 <template>
   <el-popover placement="left" width="400" v-model="visible">
-    <p>بيان جمركي</p>
+    <el-row type="flex">
+      <el-col :span="18">
+        <el-button
+          icon="fa fa-save"
+          type="primary"
+          :size="$store.getters.size"
+          @click="Save()"
+        ></el-button>
+      </el-col>
+
+      <el-col :span="6"><h4>بيان جمركي</h4></el-col>
+    </el-row>
 
     <el-form-item
       prop="FakeDate"
@@ -24,13 +35,6 @@
         v-model="tempForm.Description"
         :rules="[{ required: true, message: 'لايمكن ترك الخصم فارغ', trigger: 'blur' }]"
       ></el-input>
-
-      <el-button
-        icon="fa fa-save"
-        type="primary"
-        :size="$store.getters.size"
-        @click="Save()"
-      ></el-button>
     </div>
     <el-button icon="el-icon-circle-plus" slot="reference">بيان جمركي</el-button>
   </el-popover>
@@ -38,9 +42,9 @@
 
 <script>
 import FakeDate from "@/components/Date/FakeDate";
-
+import { GetBillOfEnteryById as GetById } from "@/api/BillOfEntery";
 export default {
-  props: {},
+  props: ["PurchaseId"],
   components: { FakeDate },
   data() {
     return {
@@ -55,6 +59,16 @@ export default {
         PurchaseInvoiceId: undefined,
       },
     };
+  },
+  watch: {
+    PurchaseId(value) {
+      if (value != null && value != undefined && value != "" && value > 0) {
+        GetById({ Id: value }).then((res) => {
+          this.tempForm = res;
+          this.$emit("Done", this.tempForm);
+        });
+      }
+    },
   },
   methods: {
     Save() {

@@ -44,6 +44,16 @@
       </el-col>
       <el-col :span="6">
         <Export :list="list" />
+        <el-col :span="3">
+          <Drawer-Print
+            Type="BillOfEnteryList"
+            :Data="{
+              Items: list,
+              Dates: [listQuery.DateFrom, listQuery.DateTo],
+              Totals: Totals,
+            }"
+          />
+        </el-col>
         <el-button
           v-waves
           class="filter-item"
@@ -82,16 +92,8 @@
       fit
       highlight-current-row
       style="width: 100%"
-      @sort-change="sortChange"
     >
-      <el-table-column
-        label="Id"
-        prop="Id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
+      <el-table-column label="Id" prop="Id" sortable="custom" align="center" width="80">
         <template slot-scope="{ row }">
           <span>{{ row.Id }}</span>
         </template>
@@ -129,36 +131,127 @@
       <el-table-column type="expand" align="center">
         <template slot-scope="props">
           <el-table :data="props.row.InventoryMovements">
+            <el-table-column prop="ItemsId" label="رقم \ باركود الصنف" align="center">
+              <template slot-scope="scope">
+                {{ scope.row.Items.Id + " - " + scope.row.Items.Barcode }}
+              </template>
+            </el-table-column>
             <el-table-column
-              prop="ItemsId"
-              label="رقم الصنف"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="Name"
               v-bind:label="$t('CashPool.Items')"
               width="130"
               align="center"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">{{
+                scope.row.Items.Name
+              }}</template></el-table-column
+            >
             <el-table-column
               prop="Qty"
               v-bind:label="$t('CashPool.quantity')"
               align="center"
-            ></el-table-column>
-            <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
+            >
+              <template slot-scope="scope"
+                >{{ scope.row.Qty.toFixed($store.getters.settings.ToFixed) }}
+              </template></el-table-column
+            >
+            <el-table-column label="الكمية المباعة" align="center">
               <template slot-scope="scope">{{
-                scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
+                scope.row.SalesItemMovements.reduce(
+                  (a, b) => a + (b["Qty"] || 0),
+                  0
+                ).toFixed($store.getters.settings.ToFixed)
               }}</template>
             </el-table-column>
-            <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
+            <el-table-column label="الباقي" align="center">
               <template slot-scope="scope"
                 >{{
-                  (scope.row.SellingPrice * scope.row.Qty).toFixed(
-                    $store.getters.settings.ToFixed
-                  )
+                  scope.row.Qty -
+                  scope.row.SalesItemMovements.reduce(
+                    (a, b) => a + (b["Qty"] || 0),
+                    0
+                  ).toFixed($store.getters.settings.ToFixed)
                 }}
-                JOD</template
-              >
+              </template>
+            </el-table-column>
+            <el-table-column label="الحالة" align="center">
+              <template slot-scope="scope"
+                >{{
+                  scope.row.Qty -
+                    scope.row.SalesItemMovements.reduce(
+                      (a, b) => a + (b["Qty"] || 0),
+                      0
+                    ) ==
+                  0
+                    ? " مغلق "
+                    : "مفتوح"
+                }}
+              </template>
+            </el-table-column>
+            <el-table-column type="expand" align="center">
+              <template slot-scope="props">
+                <el-table
+                  v-loading="listLoading"
+                  :data="props.row.SalesItemMovements"
+                  border
+                  fit
+                  highlight-current-row
+                  style="width: 100%"
+                  @row-dblclick="
+                    (row) => {
+                      let r = $router.resolve({
+                        path: '/Sales/Edit/' + row.SalesInvoice.Id,
+                      });
+                      window.open(
+                        r.href,
+                        r.route.name,
+                        $store.getters.settings.windowStyle
+                      );
+                    }
+                  "
+                >
+                  <el-table-column
+                    v-bind:label="$t('Vendors.ID')"
+                    align="center"
+                    width="80"
+                  >
+                    <template slot-scope="{ row }">
+                      <span>{{ row.SalesInvoice.Id }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    v-bind:label="$t('Sales.Date')"
+                    width="150px"
+                    align="center"
+                  >
+                    <template slot-scope="{ row }">
+                      <span>{{
+                        row.SalesInvoice.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}")
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    v-bind:label="$t('AddVendors.Name')"
+                    prop="VendorName"
+                    align="center"
+                  >
+                  </el-table-column>
+                  <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
+                    <template slot-scope="scope">{{
+                      scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
+                    }}</template>
+                  </el-table-column>
+                  <el-table-column label="الكمية المباعة" align="center">
+                    <template slot-scope="scope">{{
+                      scope.row.Qty.toFixed($store.getters.settings.ToFixed)
+                    }}</template>
+                  </el-table-column>
+                  <el-table-column label="الباقي" align="center">
+                    <template slot-scope="scope"
+                      >{{ scope.row.Qty.toFixed($store.getters.settings.ToFixed) }}
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </template>
             </el-table-column>
           </el-table>
         </template>
@@ -236,24 +329,6 @@ export default {
     handleFilter() {
       this.listQuery.Page = 1;
       this.getList();
-    },
-    sortChange(data) {
-      const { prop, order } = data;
-      if (prop === "id") {
-        this.sortById(order);
-      }
-    },
-    sortById(order) {
-      if (order === "ascending") {
-        this.listQuery.sort = "+id";
-      } else {
-        this.listQuery.sort = "-id";
-      }
-      this.handleFilter();
-    },
-    getSortClass: function (key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}` ? "ascending" : "descending";
     },
   },
 };

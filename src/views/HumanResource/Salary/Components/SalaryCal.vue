@@ -9,7 +9,10 @@
         <Drawer-Print Type="SalaryPayment" :Data="tempForm" />
       </el-col>
       <el-col :span="3">
-        <Dialog-Salary-From :isEdit="true" :Id="$route.params && $route.params.id" />
+        <Dialog-Salary-From
+          :isEdit="true"
+          :Id="parseInt($route.params && $route.params.id)"
+        />
       </el-col>
       <el-col :span="3">
         <el-button
@@ -148,6 +151,7 @@
     <Device-Log
       TableName="Employee"
       :UserId="tempForm.EmployeeId"
+      :Name="tempForm.Name"
       :FromDate="tempForm.SalaryFrom"
       :ToDate="tempForm.SalaryTo"
       :WorkingHours="tempForm.WorkingHours"
