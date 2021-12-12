@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div style="overflow: hidden">
     <el-form ref="F-SaleInvoice" :rules="rules" :model="tempForm">
       <div
@@ -108,35 +108,7 @@
                   <template slot="paneL">
                     <el-card class="card" :body-style="{ padding: '4px' }">
                       <el-row type="flex">
-                        <el-col :span="3">
-                          <drawer-search-invoice />
-                        </el-col>
-                        <el-col :span="3">
-                          <el-tooltip class="item" effect="dark" content="Auto Print" placement="bottom">
-                            <el-switch
-                            v-model="AutoPrint"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                          ></el-switch>
-                            </el-tooltip>
-                        </el-col>
-                        <el-col :span="6">
-                           <el-tooltip class="item" effect="dark" content="Open Cash Drawer" placement="bottom">
-                          <el-button
-                            @click="OpenCashDrawer()"
-                            type="warning"
-                            icon="el-icon-takeaway-box"
-                          ></el-button>
-                           </el-tooltip>
-                        </el-col>
-                        <el-col :span="6">
-                          <Drawer-Print
-                            v-bind:disabled="OldInvoice == null ? false : true"
-                            Type="SaleInvoice"
-                            :Data="OldInvoice"
-                          />
-                        </el-col>
-                        <el-col :span="6">
+                        <el-col :span="24">
                           <Rest-Of-Bill
                             :Total="
                               tempForm.InventoryMovements.reduce((prev, cur) => {
@@ -151,11 +123,11 @@
                             "
                             @Done="isEdit != true ? createData() : updateData()"
                           />
-                          <el-tooltip class="item" effect="dark" content="Checkout" placement="bottom">
+                         <el-tooltip class="item" effect="dark" content="Checkout" placement="bottom">
                           <el-button
-                          style="float: left;"
-                          size="medium"
+                          style="float: left; font-size: 40px;"
                             :disabled="DisabledSave"
+                            size="medium"
                             @click="
                               $store.state.settings.showRestOfBill != true
                                 ? isEdit != true
@@ -164,7 +136,7 @@
                                 : (OpenRestOfBill = true)
                             "
                             type="primary"
-                            icon="el-icon-check"
+                            icon="el-icon-shopping-cart-2"
                           ></el-button>
                           </el-tooltip>
                         </el-col>
@@ -335,8 +307,9 @@
                                     scope.$index
                                   ].Description = v;
                                 }
-                              " /></template
-                        ></el-table-column>
+                              " />
+                              </template>
+                        </el-table-column>
                         <el-table-column prop="ItemsId" align="center">
                           <template slot="header" slot-scope="{}"
                             >{{ $t("NewPurchaseInvoice.Items") }} ({{
@@ -411,7 +384,7 @@
 
                         <el-table-column width="60" label="#" align="center">
                           <template slot-scope="scope">
-                             <el-tooltip class="item" effect="dark" content="حذف" placement="bottom">
+                            <el-tooltip class="item" effect="dark" content="حذف" placement="bottom">
                             <el-button
                               style="float: left"
                               type="danger"

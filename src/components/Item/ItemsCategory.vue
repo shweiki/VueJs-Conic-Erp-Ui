@@ -56,10 +56,10 @@
           class="box-card"
           shadow="always"
           style="background: #607d8b"
-          :body-style="{ padding: '12px' }"
+          :body-style="{ padding: '10px' }"
         >
           <div @click="AddItem(Item)">
-            <img v-if="WithImage" :src="Item.Avatar" class="image" />
+            <img v-if="WithImage" :src="Item.Avatar" class="image"/>
 
             <div class="name">{{ Item.Name }}</div>
             <div class="price">
@@ -205,7 +205,8 @@ export default {
 }
 .image {
   width: 100%;
-  height: 55px;
   display: block;
+  height: 100px; 
+  margin-bottom: 5px;
 }
 </style>

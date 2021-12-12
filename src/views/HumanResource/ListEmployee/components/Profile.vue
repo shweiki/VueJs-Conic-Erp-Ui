@@ -45,11 +45,7 @@
 
         <el-card class="box-card">
           <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
-            <el-tab-pane label="بيانات" name="Details">
-              <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
-              <User-Card :Employee="tempForm" />
-            </el-tab-pane>
-
+            
             <el-tab-pane label="دوامات" name="timeline">
               <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
               <DeviceLog :EmployeeId="tempForm.Id" />
@@ -64,7 +60,15 @@
                 :EmployeeName="tempForm.Name"
               />
             </el-tab-pane>
-            <el-tab-pane label="رواتب" name="salary">
+           <el-tab-pane label="مستندات" name="Documents">
+              <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
+              <Documents :ObjectId="tempForm.Id" TableName="Employee" />
+            </el-tab-pane>
+            <el-tab-pane label="تواصل" name="communication">
+              <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
+              <Communication />
+            </el-tab-pane>
+             <el-tab-pane label="رواتب" name="salary">
               <span slot="label"><i class="el-icon-refresh"></i> رواتب</span>
               <Salary
                 :SalaryPayment="SalaryPayment"
@@ -72,13 +76,13 @@
                 :EmployeeName="tempForm.Name"
               />
             </el-tab-pane>
-            <el-tab-pane label="تواصل" name="communication">
-              <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
-              <Communication />
+             <el-tab-pane label="دوامات" name="timeline">
+              <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
+              <Timeline :timeline="log" :EmployeeId="tempForm.Id" />
             </el-tab-pane>
-            <el-tab-pane label="مستندات" name="Documents">
-              <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
-              <Documents :ObjectId="tempForm.Id" TableName="Employee" />
+            <el-tab-pane label="بيانات" name="Details">
+              <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
+              <User-Card :Employee="tempForm" />
             </el-tab-pane>
           </el-tabs>
         </el-card>
@@ -240,4 +244,7 @@ export default {
 .el-tabs__content {
   max-height: 700px;
 }
+.el-tabs__nav-scroll{
+float: right;
+direction: ltr;}
 </style>

@@ -52,33 +52,33 @@
         </el-card>
         <el-card class="box-card">
           <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
-            <el-tab-pane label="بيانات" name="Details">
-              <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
-              <User-Card :Vendor="tempForm" />
-            </el-tab-pane>
-            <el-tab-pane label="مبيعات" name="SaleInvoice">
-              <span slot="label"><i class="el-icon-refresh"></i> مبيعات</span>
-              <Sale-Invoice :VendorId="tempForm.Id" />
-            </el-tab-pane>
-            <el-tab-pane label="مشتريات" name="PurchaseInvoice">
-              <span slot="label"><i class="el-icon-refresh"></i> مشتريات</span>
-              <Purchase-Invoice :VendorId="tempForm.Id" />
-            </el-tab-pane>
-            <el-tab-pane label="مقبوضات" name="Payment">
-              <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
-              <Payment :VendorId="tempForm.Id" />
-            </el-tab-pane>
-            <el-tab-pane label="مصروفات" name="Receive">
-              <span slot="label"><i class="el-icon-refresh"></i> مصروفات</span>
-              <Receive :VendorId="tempForm.Id" />
+            <el-tab-pane label="تواصل" name="communication">
+              <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
+              <Communication />
             </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
               <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
             </el-tab-pane>
-            <el-tab-pane label="تواصل" name="communication">
-              <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
-              <Communication />
+            <el-tab-pane label="مصروفات" name="Receive">
+              <span slot="label"><i class="el-icon-refresh"></i> مصروفات</span>
+              <Receive :VendorId="tempForm.Id" />
+            </el-tab-pane>
+            <el-tab-pane label="مقبوضات" name="Payment">
+              <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
+              <Payment :VendorId="tempForm.Id" />
+            </el-tab-pane>
+            <el-tab-pane label="مشتريات" name="PurchaseInvoice">
+              <span slot="label"><i class="el-icon-refresh"></i> مشتريات</span>
+              <Purchase-Invoice :VendorId="tempForm.Id" />
+            </el-tab-pane>
+            <el-tab-pane label="مبيعات" name="SaleInvoice">
+              <span slot="label"><i class="el-icon-refresh"></i> مبيعات</span>
+              <Sale-Invoice :VendorId="tempForm.Id" />
+            </el-tab-pane>
+            <el-tab-pane label="بيانات" name="Details">
+              <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
+              <User-Card :Vendor="tempForm" />
             </el-tab-pane>
           </el-tabs>
         </el-card>
@@ -218,4 +218,7 @@ export default {
 .el-tabs__content {
   max-height: 700px;
 }
+.el-tabs__nav-scroll{
+float: right;
+direction: ltr;}
 </style>

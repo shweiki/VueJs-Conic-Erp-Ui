@@ -92,51 +92,45 @@
 
       <el-card class="box-card">
         <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
-          <el-tab-pane label="بيانات" name="Details">
-            <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
-
-            <User-Card :Member="tempForm" />
+          
+          <el-tab-pane label="تواصل" name="communication">
+            <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
+            <Communication />
           </el-tab-pane>
 
-          <el-tab-pane label="اشتراكات" name="activity">
-            <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
-
-            <Activity :MembershipMovements="MembershipMovements" />
-          </el-tab-pane>
-
-          <el-tab-pane label="مقبوضات" name="Payment">
-            <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
-
-            <Payment :Payments="Payments" />
-          </el-tab-pane>
-
-          <el-tab-pane label="زيارات" name="timeline">
-            <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
-
-            <Timeline :MemberId="tempForm.Id" />
+          <el-tab-pane label="مستندات" name="Documents">
+            <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
+            <Documents :ObjectId="tempForm.Id" TableName="Member" />
           </el-tab-pane>
 
           <el-tab-pane label="مالية" name="account">
             <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-
             <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
+          </el-tab-pane>
+
+          <el-tab-pane label="مقبوضات" name="Payment">
+            <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
+            <Payment :Payments="Payments" />
           </el-tab-pane>
 
           <el-tab-pane label="خدمات" name="Service">
             <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
-
             <Service :ServiceInvoices="ServiceInvoices" />
           </el-tab-pane>
 
-          <el-tab-pane label="تواصل" name="communication">
-            <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
-
-            <Communication />
+          <el-tab-pane label="زيارات" name="timeline">
+            <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
+            <Timeline :MemberId="tempForm.Id" />
           </el-tab-pane>
-          <el-tab-pane label="مستندات" name="Documents">
-            <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
 
-            <Documents :ObjectId="tempForm.Id" TableName="Member" />
+           <el-tab-pane label="اشتراكات" name="activity">
+            <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
+            <Activity :MembershipMovements="MembershipMovements" />
+          </el-tab-pane>
+
+          <el-tab-pane label="بيانات" name="Details">
+            <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
+            <User-Card :Member="tempForm" />
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -373,4 +367,7 @@ export default {
 .el-tabs__content {
   max-height: 700px;
 }
+.el-tabs__nav-scroll{
+float: right;
+direction: ltr;}
 </style>

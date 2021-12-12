@@ -128,6 +128,16 @@ export const asyncRoutes = [{
         icon: 'bill'
     },
 },
+{
+    path: '/Sales/CustomerPOS',
+    component: () =>
+        import('@/views/Sales/SaleInvoice/CustomerPOS'),
+    name: 'CustomerPOS',
+    meta: {
+        title: 'CustomerPOS',
+        icon: 'bill'
+    },
+},
 
     /** when your routing map is too long, you can split it into small modules **/
     //componentsRouter,

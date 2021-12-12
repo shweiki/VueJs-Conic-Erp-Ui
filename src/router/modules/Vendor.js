@@ -8,12 +8,12 @@ const VendorRouter = {
     title: 'Vendors', icon: 'customer-service'
   },
   children: [
-    {
-      path: 'Create',
-      component: () => import('@/views/Vendor/Create'),
-      name: 'NewVendor',
-      meta: { title: 'NewVendor', icon: 'edit' }
-    },
+    // {
+    //   path: 'Create',
+    //   component: () => import('@/views/Vendor/Create'),
+    //   name: 'NewVendor',
+    //   meta: { title: 'NewVendor', icon: 'edit' }
+    // },
     {
       path: 'Edit/:id(\\d+)',
       component: () => import('@/views/Vendor/Edit'),

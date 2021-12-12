@@ -1,4 +1,5 @@
 <template>
+<el-tooltip effect="dark" content="اضافات" placement="left">
   <div>
     <el-popover popper-class="popover" trigger="click">
       <el-checkbox-group @change="SetVal" v-model="value" size="small">
@@ -37,11 +38,13 @@
         type="success"
         icon="el-icon-s-order"
         slot="reference"
-      />
+      >
+      </el-button>
     </el-popover>
-  </div>
-</template>
 
+  </div>
+</el-tooltip>
+</template>
 <script>
 import ElDragSelect from "@/components/DragSelect"; // base on element-ui
 
@@ -79,4 +82,7 @@ export default {
     margin-top: 30px;
   width: 50%;
 }
+ .el-tooltip__popper {
+      margin-top: 20px;
+    }
 </style>
