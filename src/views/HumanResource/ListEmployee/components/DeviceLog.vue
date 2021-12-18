@@ -75,18 +75,58 @@
           <span>{{ row.Date | parseTime("{y}-{m}-{d}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="الدخول" width="80px" align="center">
+      <el-table-column width="130px" align="center">
+        <template slot="header" slot-scope="{}">
+          دخول
+          <span
+            >({{
+              listQuery.DateFrom != "Invalid Date"
+                ? TimeConvert(listQuery.DateFrom)
+                : " ****"
+            }})</span
+          >
+        </template>
         <template slot-scope="{ row }">
-          <span>{{
-            row.StartDateTime != "Invalid Date" ? TimeConvert(row.StartDateTime) : " ****"
-          }}</span>
+          <span
+            v-bind:style="
+              row.logs.length > 1 &&
+              row.logs[1].Id == undefined &&
+              row.logs[1].Type == 'In'
+                ? 'color : red'
+                : ''
+            "
+            >{{
+              row.StartDateTime != "Invalid Date"
+                ? TimeConvert(row.StartDateTime)
+                : " ****"
+            }}</span
+          >
         </template>
       </el-table-column>
-      <el-table-column label="الخروج" width="80px" align="center">
+      <el-table-column width="130px" align="center">
+        <template slot="header" slot-scope="{}">
+          خروج
+          <span
+            >({{
+              listQuery.DateTo != "Invalid Date"
+                ? TimeConvert(listQuery.DateTo)
+                : " ****"
+            }})</span
+          >
+        </template>
         <template slot-scope="{ row }">
-          <span>{{
-            row.EndDateTime != "Invalid Date" ? TimeConvert(row.EndDateTime) : "****"
-          }}</span>
+          <span
+            v-bind:style="
+              row.logs.length > 1 &&
+              row.logs[1].Id == undefined &&
+              row.logs[1].Type == 'Out'
+                ? 'color : red'
+                : ''
+            "
+            >{{
+              row.EndDateTime != "Invalid Date" ? TimeConvert(row.EndDateTime) : "****"
+            }}</span
+          >
         </template>
       </el-table-column>
       <el-table-column label="غياب" align="center">
@@ -171,8 +211,8 @@ export default {
       this.listLoading = true;
 
       this.listQuery.UserId = v || this.UserId;
-      this.listQuery.DateFrom = v || this.FromDate;
-      this.listQuery.DateTo = v || this.ToDate;
+      this.listQuery.DateFrom = this.FromDate;
+      this.listQuery.DateTo = this.ToDate;
       console.log(" this.listQuery", this.listQuery);
 
       GetLogByUserId(this.listQuery).then(async (response) => {
@@ -217,10 +257,13 @@ export default {
         startDate = new Date(startDate);
         endDate = new Date(endDate);
         // Strip hours minutes seconds etc.
+
         let currentDate = new Date(
           startDate.getFullYear(),
           startDate.getMonth(),
-          startDate.getDate()
+          startDate.getDate(),
+          endDate.getHours() + 5,
+          endDate.getMinutes()
         );
         while (currentDate <= endDate) {
           let logs = log.filter((x) => {
@@ -229,20 +272,59 @@ export default {
               currentDate.getFullYear(),
               currentDate.getMonth(),
               currentDate.getDate(),
-              startDate.getHours() - 5,
+              startDate.getHours() - 5, // في حل اجى بدري ب 5 ساعات
               startDate.getMinutes()
             );
             let endShiftDate = new Date(
               currentDate.getFullYear(),
               currentDate.getMonth(),
               currentDate.getDate() + (startDate.getHours() > endDate.getHours() ? 1 : 0),
-              endDate.getHours() + 5,
+              endDate.getHours() + 5, // في حل اشتغل اضافي بدري ب 5 ساعات
               endDate.getMinutes()
             );
 
             if (x.DateTime > startShiftDate && x.DateTime < endShiftDate)
               return x.DateTime;
           });
+          if (logs.length == 1) {
+            if (logs[0].DateTime.getHours() < startDate.getHours() - 5)
+              logs.push({
+                DateTime: new Date(
+                  currentDate.getFullYear(),
+                  currentDate.getMonth(),
+                  currentDate.getDate(),
+                  startDate.getHours(),
+                  startDate.getMinutes()
+                ),
+                Description: "",
+                DeviceId: logs[0].DeviceId,
+                Fk: logs[0].Fk,
+                Id: undefined,
+                Name: "",
+                Status: undefined,
+                TableName: "Employee",
+                Type: "In",
+              });
+            else
+              logs.push({
+                DateTime: new Date(
+                  currentDate.getFullYear(),
+                  currentDate.getMonth(),
+                  currentDate.getDate() +
+                    (startDate.getHours() > endDate.getHours() ? 1 : 0),
+                  endDate.getHours(),
+                  endDate.getMinutes()
+                ),
+                Description: "",
+                DeviceId: logs[0].DeviceId,
+                Fk: logs[0].Fk,
+                Id: undefined,
+                Name: "",
+                Status: undefined,
+                TableName: "Employee",
+                Type: "Out",
+              });
+          }
           let MinMaxD = [
             new Date(
               Math.min.apply(
@@ -261,40 +343,16 @@ export default {
           // Work Time
           let WorkTime =
             parseInt((Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60 * 60)) % 24) +
-              parseInt(
-                (Math.abs(MinMaxD[1].getTime() - MinMaxD[0].getTime()) / (1000 * 60)) % 60
-              ) /
+              parseInt((Math.abs(MinMaxD[1].getTime() - MinMaxD[0]) / (1000 * 60)) % 60) /
                 100 || 0;
           //  Extra Hours && Delay Hours
           let ExtraHours = 0,
-            DelayHours = 0,
-            CalHours;
-          CalHours = this.CalDelayExtraHours(
-            MinMaxD[1],
-            new Date(
-              MinMaxD[1].getFullYear(),
-              MinMaxD[1].getMonth(),
-              MinMaxD[1].getDate(),
-              endDate.getHours(),
-              endDate.getMinutes()
-            )
-          );
-          if (CalHours > 0) ExtraHours += Math.abs(CalHours);
-          else DelayHours += Math.abs(CalHours);
-          CalHours = this.CalDelayExtraHours(
-            MinMaxD[0],
-            new Date(
-              MinMaxD[0].getFullYear(),
-              MinMaxD[0].getMonth(),
-              MinMaxD[0].getDate(),
-              startDate.getHours(),
-              startDate.getMinutes()
-            )
-          );
-          if (CalHours < 0) ExtraHours += Math.abs(CalHours);
-          else DelayHours += Math.abs(CalHours);
+            DelayHours = 0;
+          if (WorkTime > this.WorkingHours) ExtraHours = WorkTime - this.WorkingHours;
+          else if (WorkTime == 0) DelayHours = 0;
+          else DelayHours = this.WorkingHours - (WorkTime + 0.41);
 
-          //    console.log("Hours", ExtraHours, DelayHours);
+          // console.log("Hours", (this.WorkingHours / (1000 * 60 * 60)) % 24);
           WorkHoursLogs.push({
             Id: WorkHoursLogs.length + 1,
             Day: currentDate.getDay(),
