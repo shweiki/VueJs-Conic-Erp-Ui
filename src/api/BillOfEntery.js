@@ -33,3 +33,10 @@ export function Edit(data) {
     data: qs.stringify(data)
   })
 }
+export function PinBillOfEntery(data) {
+  return request({
+    url: '/BillOfEntery/PinBillOfEntery',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}

@@ -457,20 +457,27 @@ export default {
         });
     },
     AddItem(item) {
-      this.tempForm.InventoryMovements.unshift({
-        Id: undefined,
-        ItemsId: item != undefined ? item.Id : undefined,
-        TypeMove: "In",
-        Status: 0,
-        Qty: 1.0,
-        SellingPrice: item.CostPrice,
-        Tax: 0.0,
-        InventoryItemId: 1,
-        Name: item.Name,
-        UnitItem: item.UnitItem,
-        PurchaseInvoiceId: undefined,
-        Description: "",
-      });
+      var find = this.tempForm.InventoryMovements.findIndex(
+        (value) => value.ItemsId == item.Id
+      );
+      //console.log(qty);
+      if (find != -1) this.tempForm.InventoryMovements[find].Qty += 1;
+      else {
+        this.tempForm.InventoryMovements.unshift({
+          Id: undefined,
+          ItemsId: item != undefined ? item.Id : undefined,
+          TypeMove: "In",
+          Status: 0,
+          Qty: 1.0,
+          SellingPrice: item.CostPrice,
+          Tax: 0.0,
+          InventoryItemId: 1,
+          Name: item.Name,
+          UnitItem: item.UnitItem,
+          PurchaseInvoiceId: undefined,
+          Description: "",
+        });
+      }
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);
