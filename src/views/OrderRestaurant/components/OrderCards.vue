@@ -99,27 +99,44 @@
                   </el-col>
                   <el-col :span="12">
                     <div class="card-panel-description">
-                      <div class="card-panel-name">{{ option.Region }}</div>
+                      <div class="card-panel-name">{{ option.TableNo }}</div>
                     </div>
                   </el-col>
                 </el-row>
                 <el-row :gutter="24">
                   <el-col :span="12">
                     <div class="card-panel-description">
-                      <div class="card-panel-id" v-if="option.Driver != null">
-                        {{ option.Driver.Name }}
+                      <div class="card-panel-id" v-if="option.Vendor != null">
+                        {{ option.Vendor.Name }}
                       </div>
-                      <div class="card-panel-id" v-else>لا يوجد سائق</div>
+                      <div class="card-panel-id" v-else>لا يوجد زبون</div>
                     </div>
                   </el-col>
                   <el-col :span="12">
                     <div class="card-panel-description">
-                      <div class="card-panel-name">اسم السائق</div>
+                      <div class="card-panel-name">اسم الزبون</div>
                     </div>
                   </el-col>
                 </el-row>
+                     <el-row v-if="option.Status == 2">
+                      <el-popconfirm
+                        confirm-button-text="نعم"
+                        cancel-button-text="لا, شكرا"
+                        confirm-button-type="warning"
+                        icon="el-icon-info"
+                        :title="` ${option.Id} تأكيد انتهاء محاسبة طلب رقم`"
+                        @confirm="OrdrerCheck(option.Id)"
+                      >
+                        <el-button
+                          slot="reference"
+                          type="warning"
+                          :size="$store.getters.size"
+                          >تمت المحاسبة 
+                        </el-button>
+                      </el-popconfirm>
+                    </el-row>
                 <el-row v-if="$store.getters.device != 'mobile'" :gutter="24">
-                  <driver-to-order :Temp="option" @Done="handleFilter()" />
+                  <order-delivered :Temp="option" @Done="handleFilter()" />
                   <order-details :Temp="option" />
                   <el-col :span="12" style="padding-top: 10px">
                     <div v-if="option.Status == 3">
@@ -161,7 +178,7 @@
                       </el-button>
                     </el-popconfirm>
                   </el-col>
-                  <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
+                  <order-delivered-mobile :Temp="option" @Done="handleFilter()" />
                   <order-details-mobile :Temp="option" caller="Manager" />
                 </el-row>
               </div>
@@ -181,26 +198,26 @@
 </template>
 <script>
 import OrderDetails from "./OrderDetails.vue";
-import DriverToOrder from "./DriverToOrder.vue";
-import { GetOrderDelivery, OrderDone } from "@/api/OrderDelivery";
+import OrderDelivered from "./OrderDelivered.vue";
+import { GetOrderRestaurant, OrderDone, OrdrerCheckout } from "@/api/OrderRestaurant";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
-import DriverToOrderMobile from "./DriverToOrderMobile.vue";
+import OrderDeliveredMobile from "./OrderDeliveredMobile.vue";
 import OrderDetailsMobile from "./OrderDetailsMobile.vue";
 
 export default {
-  name: "DeliveryCards",
+  name: "OrderCards",
   components: {
     OrderDetails,
-    DriverToOrder,
+    OrderDelivered,
     Pagination,
     SortOptions,
     RadioOprations,
     StatusIcon,
-    DriverToOrderMobile,
+    OrderDeliveredMobile,
     OrderDetailsMobile,
   },
   directives: { waves },
@@ -224,7 +241,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      GetOrderDelivery(this.listQuery)
+      GetOrderRestaurant(this.listQuery)
         .then((res) => {
           // handle success
           this.list = res.items;
@@ -250,6 +267,25 @@ export default {
             position: "top-left",
           });
           this.getList();
+        } else {
+          this.$notify.error({
+            title: "error",
+            message: "حصلت مشكلة ما",
+            position: "top-left",
+          });
+        }
+      });
+    },
+        OrdrerCheck(id) {
+      OrdrerCheckout({ id: id }).then((res) => {
+        if (res) {
+          this.$notify({
+            title: "تم ارسال بنجاح",
+            message: "تم ارسال بنجاح - " + +" ",
+            type: "success",
+            position: "top-left",
+          });
+          this.getdata();
         } else {
           this.$notify.error({
             title: "error",

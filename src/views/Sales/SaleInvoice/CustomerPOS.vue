@@ -5,99 +5,11 @@
         class="components-container"
         v-bind:style="this.$i18n.locale == 'ar' ? 'direction: rtl' : 'direction: ltr'"
       >
-        <split-pane split="horizontal" :min-percent="92" :default-percent="92">
-          <template slot="paneR">
-            <el-row class="card">
-              <el-col :span="8">
-                <Right-Menu />
-              </el-col>
-              <el-col :span="6">
-                <el-form-item
-                  prop="VendorId"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'لايمكن ترك حساب فارغ',
-                      trigger: 'blur',
-                    },
-                  ]"
-                >
-                  <Vendor-Search-Any
-                    :VendorId="tempForm.VendorId"
-                    @Set="
-                      (v) => {
-                        tempForm.Name = v.Name;
-                        tempForm.PhoneNumber = v.PhoneNumber1;
-                        tempForm.Region = v.Region;
-                        tempForm.VendorId = v.Id;
-                      }
-                    "
-                  />
-                  <!--  <vendor-select @Set="v => (tempForm.Vendor = v)" />-->
-                </el-form-item>
-              </el-col>
-              <el-col v-permission="['admin']" :span="4">
-                <el-form-item
-                  prop="FakeDate"
-                  :rules="[
-                    {
-                      required: true,
-                      message: 'لايمكن ترك التاريخ فارغ',
-                      trigger: 'blur',
-                    },
-                  ]"
-                >
-                  <Fake-Date
-                    :Value="tempForm.FakeDate"
-                    @Set="(v) => (tempForm.FakeDate = v)"
-                  />
-                </el-form-item>
-              </el-col>
-
-              <el-col :span="2">
-                <el-button
-                  type="primary"
-                  icon="el-icon-s-home"
-                  @click="
-                    $router.replace({
-                      path: '/redirect' + $store.getters.defulate_redirect,
-                    })
-                  "
-                ></el-button>
-              </el-col>
-              <el-col :span="2">
-                <el-button
-                  type="primary"
-                  icon="el-icon-s-claim"
-                  @click="
-                    $router.replace({
-                      path: '/redirect' + '/CashPool/Create/SaleInvoice',
-                    })
-                  "
-                ></el-button>
-              </el-col>
-              <el-col :span="2">
-                <el-button
-                  type="primary"
-                  icon="el-icon-plus"
-                  @click="
-                    let r = $router.resolve({
-                      path: '/Sales/PonitOfSale',
-                    });
-                    window.open(
-                      r.href,
-                      r.route.name,
-                      $store.getters.settings.windowStyle
-                    );
-                  "
-                ></el-button>
-              </el-col>
-            </el-row>
-          </template>
+        <split-pane split="horizontal" :min-percent="92" :default-percent="120">
           <template slot="paneL">
-            <split-pane split="vertical" :min-percent="50" :default-percent="55">
+            <split-pane split="vertical" :min-percent="50" :default-percent="65">
               <template slot="paneL">
-                <split-pane split="horizontal" :min-percent="5" :default-percent="6.5">
+                <split-pane split="horizontal" :min-percent="5" :default-percent="5">
                   <template slot="paneR">
                     <!--  <items-search :WithBarCode="false" @add="AddItem" />-->
                     <Items-Category
@@ -180,7 +92,7 @@
                           </el-radio-group>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="10">
+                      <!-- <el-col :span="10">
                         <el-form-item>
                           <el-radio-group
                             @change="
@@ -198,9 +110,10 @@
                             >
                           </el-radio-group>
                         </el-form-item>
-                      </el-col></el-row
+                      </el-col> -->
+                      </el-row
                     >
-                    <el-row v-if="tempForm.Type == 'Delivery'" type="flex" class="card">
+                    <el-row type="flex" class="card">
                       <el-col :span="24">
                         <delivery-el
                           :name="tempForm.Name"
@@ -431,7 +344,7 @@ import FakeDate from "@/components/Date/FakeDate";
 import { PrintReport, VisualizationReportHtml } from "@/Report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
-import { Create as CreateDelivery, CreateWithDriver } from "@/api/OrderDelivery";
+import { Create as CreateRestaurnat } from "@/api/OrderRestaurant";
 
 //import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
@@ -441,7 +354,7 @@ import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
 import DrawerSearchInvoice from "@/components/Sales/DrawerSearchInvoice.vue";
 import { Create as CreateVendor, CheckIsExist as CheckVendorIsExist } from "@/api/Vendor";
-
+import { mapGetters } from "vuex";
 import { SendSMS } from "@/api/SMS";
 import { Now } from "@/utils";
 
@@ -476,6 +389,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       OldInvoice: null,
       PriceMethod: "retail",
       DisabledSave: false,
@@ -520,6 +434,9 @@ export default {
       ],
     };
   },
+    computed: {
+    ...mapGetters(["id", "name"]),
+  },
   created() {
     if (this.isEdit) {
       this.getdata(this.$route.params && this.$route.params.id);
@@ -546,7 +463,7 @@ export default {
         Description: "",
         VendorId: 2,
         IsPrime: false,
-        Type: "Takeaway",
+        Type: "Delivery",
         DeliveryPrice: 0,
         Region: "",
         PhoneNumber: "",
@@ -581,6 +498,10 @@ export default {
         });
     },
     getdata(val) {
+      this.user = {
+        Id: this.Id,
+        name: this.name,
+      };
       GetSaleInvoiceById({ Id: val })
         .then((response) => {
           this.tempForm = response;
@@ -622,21 +543,7 @@ export default {
                     this.tempForm.PhoneNumber,
                     this.tempForm.Region
                   );
-
-                  if (
-                    this.OldInvoice.Type == "Delivery" &&
-                    this.$store.getters.settings.PointOfSale.CreateDelivery == true &&
-                    this.$store.getters.settings.OrderIsAutomatic == false
-                  ) {
-                    this.CreateDelivery(this.OldInvoice);
-                  }
-                  if (
-                    this.OldInvoice.Type == "Delivery" &&
-                    this.$store.getters.settings.PointOfSale.CreateDelivery == true &&
-                    this.$store.getters.settings.OrderIsAutomatic == true
-                  ) {
-                    this.CreateWithDriver(this.OldInvoice);
-                  }
+                  this.CreateRestaurnat(this.OldInvoice);
                   if (this.AutoPrint == true) {
                     PrintReport("SaleInvoice", this.OldInvoice, true);
                   }
@@ -686,27 +593,27 @@ export default {
         }
       });
     },
-    async CreateDelivery(temp) {
+    async CreateRestaurnat(temp) {
       let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
 
       var items = temp.InventoryMovements;
       var itemsnames = items.map(function (item) {
         return item["Name"] + " [ " + item["Description"] + " ] ";
       });
-      CreateDelivery({
+      CreateRestaurnat({
         Id: undefined,
         OrderId: temp.Id.toString().slice(-4),
         Name: temp.Name,
-        TotalPrice: 0, // temp.DeliveryPrice + temp.Total,
+        TotalPrice: temp.Total, // temp.DeliveryPrice + temp.Total,
         Status: 0,
         Description: temp.Description,
         FakeDate: temp.FakeDate,
         PhoneNumber: temp.PhoneNumber,
-        Region: temp.Region,
+        TableNo: temp.TableNo,
         DeliveryPrice: temp.DeliveryPrice,
-        TotalPill: 0, //temp.Total,
+        TotalPill: temp.Total, //temp.Total,
         Content: itemsnames.toString(),
-        DriverId: undefined,
+        UserId: this.user.id,
       }).then((res) => {
         if (res) {
           this.$notify({
@@ -726,45 +633,7 @@ export default {
         }
       });
     },
-    async CreateWithDriver(temp) {
-      let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
-      var items = temp.InventoryMovements;
-      var names = items.map(function (item) {
-        return item["Name"];
-      });
-      CreateWithDriver({
-        Id: undefined,
-        OrderId: temp.Id,
-        Name: temp.Name,
-        TotalPrice: temp.DeliveryPrice + temp.Total,
-        Status: 0,
-        Description: temp.Description,
-        FakeDate: temp.FakeDate,
-        PhoneNumber: temp.PhoneNumber,
-        Region: temp.Region,
-        DeliveryPrice: temp.DeliveryPrice,
-        TotalPill: temp.Total,
-        DriverId: undefined,
-        Content: names.toString(),
-      }).then((res) => {
-        if (res) {
-          this.$notify({
-            title: "تم ",
-            message: "تم ارسال الطلب لشركة التوصيل بنجاح",
-            type: "success",
-            duration: 2000,
-          });
-        } else {
-          this.$notify({
-            position: "top-left",
-            title: "تم ",
-            message: " حصلت مشكلة في عملية ارسال طلب التوصيل",
-            type: "error",
-            duration: 20000,
-          });
-        }
-      });
-    },
+
     CheckVendor(Name, PhoneNumber, Region) {
       CheckVendorIsExist({
         // Name: Name,

@@ -1,6 +1,5 @@
 import request from '@/utils/RequestApi'
 import qs from 'qs';
-import store from '@/store'
 
 export function GetByListQ(data) {
   return request({
@@ -28,7 +27,7 @@ export function GetCustomerOrder(query) {
 
 export function Create(data) {
   return request({
-    url: store.getters.settings.PointOfSale.DeliveryUrl,
+    url: '/OrderResaurant/Create',
     method: 'post',
     data: qs.stringify(data)
   })
@@ -41,9 +40,23 @@ export function OrderReceived(data) {
     data: qs.stringify(data)
   })
 }
+export function OrderOnTable(data) {
+  return request({
+    url: '/OrderRestaurant/OrderOnTable',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function OrderDelivered(data) {
   return request({
     url: '/OrderRestaurant/OrderDelivered',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+export function VendorDone(data) {
+  return request({
+    url: '/OrderRestaurant/VendorDone',
     method: 'post',
     data: qs.stringify(data)
   })
@@ -55,9 +68,16 @@ export function OrderDone(data) {
     data: qs.stringify(data)
   })
 }
-export function GetByListQByCustomer(data) {
+export function OrdrerCheckout(data) {
   return request({
-    url: '/OrderRestaurant/GetByListQByCustomer',
+    url: '/OrderRestaurant/OrdrerCheckout',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+export function GetByListQByVendor(data) {
+  return request({
+    url: '/OrderRestaurant/GetByListQByVendor',
     method: 'post',
     data: qs.stringify(data)
   })

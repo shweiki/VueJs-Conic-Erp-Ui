@@ -67,3 +67,11 @@ export function GetVendorCheque(query) {
       params: query
     })
   }
+  
+  export function CreateCustomer(data) {
+    return request({
+      url: '/Vendor/CreateCustomer',
+      method: 'post',
+      data: qs.stringify(data)
+    })
+  }

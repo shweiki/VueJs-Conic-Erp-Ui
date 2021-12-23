@@ -132,8 +132,8 @@
           align="center"
         ></el-table-column>
         <el-table-column
-          prop="Region"
-          v-bind:label="$t('AddVendors.Region')"
+          prop="TableNo"
+          label="Table No"
           width="130"
           align="center"
         ></el-table-column>
@@ -144,12 +144,6 @@
           JOD
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Area.DelievryPrice')" width="100" align="center">
-        <template slot-scope="{ row }">
-          {{ row.DeliveryPrice.toFixed($store.getters.settings.ToFixed) }}
-          JOD
-        </template>
-      </el-table-column>
       <el-table-column v-bind:label="$t('CashPool.Amountv')" width="100" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalPrice.toFixed($store.getters.settings.ToFixed) }}
@@ -157,8 +151,8 @@
         </template>
       </el-table-column>
       <el-table-column
-        v-bind:label="$t('Delivery.DriverName')"
-        prop="Driver.Name"
+        v-bind:label="$t('Vendors.Name')"
+        prop="Vendor.Name"
         align="center"
       >
       </el-table-column>
@@ -197,7 +191,7 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/OrderDelivery";
+import { GetByListQ } from "@/api/OrderRestaurant";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";

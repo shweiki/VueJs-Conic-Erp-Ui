@@ -71,24 +71,12 @@
   </el-descriptions>
   </el-row>
   <br>
-  <el-row type="flex">
-       <driver-select
-      @Set="
-        (v) => {
-          SetDriver(v.value, Temp.Id);
-        }
-      "
-    />
-   </el-row>
       </el-dialog>
 </div>
 </template>
 <script>
-import DriverSelect from "./DriverSelect.vue"
-import { SetDriver } from "@/api/OrderDelivery";
 export default {
   name: 'DriverToOrderMobile',
-  components: {DriverSelect},
   props: ["Temp" ],
    data () {
     
@@ -97,14 +85,7 @@ export default {
     }
   },
   methods: {
-    SetDriver(driverid, orderid) {
-      SetDriver({ DriverId: driverid, OrderId: orderid }).then((res) => {
-        if (res) {
-          this.dialogFormVisible = false;
-          this.$emit("Done");
-        }
-      });
-    },     
+    
       
     }
   

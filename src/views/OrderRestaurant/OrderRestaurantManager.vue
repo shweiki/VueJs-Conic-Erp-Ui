@@ -1,15 +1,15 @@
 ﻿<template>
   <div class="app-container">
-    <delivery-cards />
+    <order-cards />
   </div>
 </template>
 
 <script>
-import DeliveryCards from "./components/OrderCards.vue";
+import OrderCards from "./components/OrderCards.vue";
 export default {
-  name: "DeliveryManager",
+  name: "RestaurantManager",
   components: {
-    DeliveryCards,
+    OrderCards,
   },
   data() {
     return {

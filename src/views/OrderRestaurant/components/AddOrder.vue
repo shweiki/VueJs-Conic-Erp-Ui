@@ -116,11 +116,10 @@
 
 <script>
 import { Create } from "@/api/OrderDelivery";
-import DriverSelect from "./DriverSelect.vue";
 import VuePhoneNumberInput from "vue-phone-number-input";
 export default {
   name: "AddOrder",
-  components:{DriverSelect, VuePhoneNumberInput},
+  components:{ VuePhoneNumberInput},
   data() {
     return {
       tval:0,

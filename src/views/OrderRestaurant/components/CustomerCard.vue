@@ -115,34 +115,18 @@
                         confirm-button-text="نعم"
                         cancel-button-text="لا, شكرا"
                         icon="el-icon-info"
-                        :title="` ${option.Id} تأكيد استلام طلب رقم`"
-                        @confirm="HasReceived(option.Id)"
+                        :title="` ${option.Id} تأكيد محاسبة طلب رقم`"
+                        @confirm="VDone(option.Id)"
                       >
                         <el-button
                           slot="reference"
                           type="success"
                           :size="$store.getters.size"
-                          >استلام الطلب
+                          >طلب الفاتورة
                         </el-button>
                       </el-popconfirm>
                     </div>
-                    <div v-if="option.Status == 2">
-                      <el-popconfirm
-                        confirm-button-text="نعم"
-                        cancel-button-text="لا, شكرا"
-                        confirm-button-type="warning"
-                        icon="el-icon-info"
-                        :title="` ${option.Id} تأكيد توصيل طلب رقم`"
-                        @confirm="HasDelivered(option.Id)"
-                      >
-                        <el-button
-                          slot="reference"
-                          type="warning"
-                          :size="$store.getters.size"
-                          >توصيل الطلب
-                        </el-button>
-                      </el-popconfirm>
-                    </div>
+               
                   </el-col>
                 </el-row>
                 <!-- <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
@@ -166,7 +150,7 @@
 </template>
 <script>
 import OrderDetailsMobile from "./OrderDetailsMobile.vue";
-import { GetDriverOrder, OrderReceived, OrderDelivered } from "@/api/OrderDelivery";
+import { GetCustomerOrder, VendorDone, OrdrerCheckout } from "@/api/OrderRestaurant";
 import { mapGetters } from "vuex";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
@@ -174,7 +158,7 @@ import waves from "@/directive/waves";
 import Pagination from "@/components/Pagination";
 import SortOptions from "@/components/SortOptions";
 export default {
-  name: "DeliveryCards",
+  name: "CustomerCard",
   components: {
     OrderDetailsMobile,
     RadioOprations,
@@ -211,7 +195,7 @@ export default {
         name: this.name,
       };
       this.listLoading = true;
-      GetDriverOrder({
+      GetCustomerOrder({
         id: this.user.Id,
         name: this.user.name,
         Page: this.listQuery.Page,
@@ -236,8 +220,8 @@ export default {
       this.listQuery.Page = 1;
       this.getdata();
     },
-    HasReceived(id) {
-      OrderReceived({ id: id }).then((res) => {
+    VDone(id) {
+      VendorDone({ id: id }).then((res) => {
         if (res) {
           this.$notify({
             title: "تم ارسال بنجاح",
@@ -255,25 +239,7 @@ export default {
         }
       });
     },
-    HasDelivered(id) {
-      OrderDelivered({ id: id }).then((res) => {
-        if (res) {
-          this.$notify({
-            title: "تم ارسال بنجاح",
-            message: "تم ارسال بنجاح - " + +" ",
-            type: "success",
-            position: "top-left",
-          });
-          this.getdata();
-        } else {
-          this.$notify.error({
-            title: "error",
-            message: "حصلت مشكلة ما",
-            position: "top-left",
-          });
-        }
-      });
-    },
+
   },
 };
 </script>

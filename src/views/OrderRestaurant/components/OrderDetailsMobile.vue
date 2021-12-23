@@ -51,9 +51,9 @@
         >
           <template slot="label">
             <i class="el-icon-location-outline"></i>
-            {{ $t("AddVendors.Region") }}
+            Table No
           </template>
-          <el-tag size="small">{{ Temp.Region }}</el-tag>
+          <el-tag size="small">{{ Temp.TableNo }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
@@ -115,16 +115,7 @@
           </template>
           <Status-Tag :Status="Temp.Status" TableName="OrderDelivery" />
         </el-descriptions-item>
-        <el-descriptions-item
-          :label-style="{ 'text-align': 'right' }"
-          :content-style="{ 'text-align': 'right' }"
-        >
-          <template slot="label">
-            <i class="el-icon-money"></i>
-            {{ $t("Delivery.DeliveryPrice") }}
-          </template>
-          <el-tag size="small">{{ Temp.DeliveryPrice }}</el-tag>
-        </el-descriptions-item>
+        
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
           :content-style="{ 'text-align': 'right' }"
@@ -145,17 +136,7 @@
           </template>
           <el-tag size="small">{{ Temp.TotalPrice }}</el-tag>
         </el-descriptions-item>
-        <el-descriptions-item
-          v-if="Temp.Status != 0 && caller == 'Manager'"
-          :label-style="{ 'text-align': 'right' }"
-          :content-style="{ 'text-align': 'right' }"
-        >
-          <template slot="label">
-            <i class="el-icon-user-solid"></i>
-            {{ $t("Delivery.DriverName") }}
-          </template>
-          <el-tag size="small">{{ Temp.Driver.Name }}</el-tag>
-        </el-descriptions-item>
+     
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
           :content-style="{ 'text-align': 'right' }"

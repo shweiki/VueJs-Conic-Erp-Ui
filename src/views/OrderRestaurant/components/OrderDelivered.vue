@@ -8,22 +8,13 @@
       icon="el-icon-plus"
       @click="dialogFormVisible = true"
     >
-      {{ $t("Delivery.AssignDriver") }}</el-button>
+      تسليم الطلب</el-button>
     </el-col>
-    <el-col :span="12" v-if="Temp.Status == 1" style="padding-top: 10px;">
-     <el-button
-    v-if="Temp.Status == 1"
-      style="float: left"
-      type="success"
-      :size="$store.getters.size"
-      icon="el-icon-plus"
-      @click="dialogFormVisible = true"
-    >
-      Delivery</el-button></el-col>
+
     <el-dialog
       ref="dataForm"
       style="margin-top: -13vh"
-      :title="$t('Delivery.SetDriver')"
+      title="تسليم الطلب للزبون"
       :show-close="false"
       :visible.sync="dialogFormVisible"
     >
@@ -42,7 +33,7 @@
               <i class="el-icon-star-off"></i>
               {{ $t("Delivery.OrderNo") }}
             </template>
-            <el-tag size="small">{{ Temp.Id }}</el-tag>
+            <el-tag size="small">{{ Temp.OrderId }}</el-tag>
           </el-descriptions-item>
           <el-descriptions-item
             :label-style="{ 'text-align': 'right' }"
@@ -62,9 +53,9 @@
           >
             <template slot="label">
               <i class="el-icon-location-outline"></i>
-              {{ $t("AddVendors.Region") }}
+              رقم الطاولة
             </template>
-            <el-tag size="small">{{ Temp.Region }}</el-tag>
+            <el-tag size="small">{{ Temp.TableNo }}</el-tag>
           </el-descriptions-item>
           <el-descriptions-item
             :label-style="{ 'text-align': 'right' }"
@@ -72,9 +63,9 @@
           >
             <template slot="label">
               <i class="el-icon-money"></i>
-              {{ $t("Delivery.DeliveryPrice") }}
+              الإسم
             </template>
-            <el-tag size="small">{{ Temp.DeliveryPrice }}</el-tag>
+            <el-tag size="small">{{ Temp.Name }}</el-tag>
           </el-descriptions-item>
           <el-descriptions-item
             :label-style="{ 'text-align': 'right' }"
@@ -99,40 +90,49 @@
         </el-descriptions>
       </el-row>
       <br />
-      <el-row type="flex">
-        <driver-select
-          @Set="
-            (v) => {
-              SetDriver(v.value, Temp.Id);
-            }
-          "
-        />
-      </el-row>
+         <el-button
+      style="float: left"
+      type="primary"
+      :size="$store.getters.size"
+      icon="el-icon-check"
+      @click="OrderTable(Temp.Id)"
+    >
+      تسليم الطلب</el-button>
+      <br />
     </el-dialog>
   </div>
 </template>
 <script>
-import { SetDriver } from "@/api/OrderDelivery";
 
-import DriverSelect from "./DriverSelect.vue";
+import { OrderOnTable } from "@/api/OrderRestaurant";
 export default {
-  name: "DriverToOrder",
-  components: { DriverSelect },
+  name: "OrderDelivered",
   props: ["Temp"],
   data() {
     return {
       dialogFormVisible: false,
     };
   },
-  methods: {
-    SetDriver(driverid, orderid) {
-      SetDriver({ DriverId: driverid, OrderId: orderid }).then((res) => {
+methods: {
+  OrderTable(id){
+     OrderOnTable({ OrderId: id }).then((res) => {
         if (res) {
-          this.dialogFormVisible = false;
-          this.$emit("Done");
+          this.$notify({
+            title: "تم ارسال بنجاح",
+            message: "تم ارسال بنجاح - " + +" ",
+            type: "success",
+            position: "top-left",
+          });
+        } else {
+          this.$notify.error({
+            title: "error",
+            message: "حصلت مشكلة ما",
+            position: "top-left",
+          });
         }
+        this.dialogFormVisible= false
       });
-    },
-  },
+  }
+}
 };
 </script>

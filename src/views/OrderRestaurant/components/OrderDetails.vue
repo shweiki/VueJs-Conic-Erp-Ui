@@ -50,9 +50,9 @@
         >
           <template slot="label">
             <i class="el-icon-location-outline"></i>
-            {{ $t("AddVendors.Region") }}
+           table no
           </template>
-          <el-tag size="small">{{ Temp.Region }}</el-tag>
+          <el-tag size="small">{{ Temp.TableNo }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
@@ -121,16 +121,7 @@
             </el-col>
           </el-row>
         </el-descriptions-item>
-        <el-descriptions-item
-          :label-style="{ 'text-align': 'right' }"
-          :content-style="{ 'text-align': 'right' }"
-        >
-          <template slot="label">
-            <i class="el-icon-money"></i>
-            {{ $t("Delivery.DeliveryPrice") }}
-          </template>
-          <el-tag size="small">{{ Temp.DeliveryPrice }}</el-tag>
-        </el-descriptions-item>
+ 
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
           :content-style="{ 'text-align': 'right' }"
@@ -151,18 +142,7 @@
           </template>
           <el-tag size="small">{{ Temp.TotalPrice }}</el-tag>
         </el-descriptions-item>
-        <el-descriptions-item
-          v-if="Temp.Status != 0"
-          :label-style="{ 'text-align': 'right' }"
-          :content-style="{ 'text-align': 'right' }"
-          :span="2"
-        >
-          <template slot="label">
-            <i class="el-icon-user-solid"></i>
-            {{ $t("Delivery.DriverName") }}
-          </template>
-          <el-tag size="small">{{ Temp.Driver.Name }}</el-tag>
-        </el-descriptions-item>
+       
         <el-descriptions-item
           :span="2"
           :label-style="{ 'text-align': 'right' }"
@@ -175,29 +155,15 @@
           <el-tag size="small">{{ Temp.Content }}</el-tag>
         </el-descriptions-item>
       </el-descriptions>
-      <div>
-        <el-col v-if="Temp.Status == 1">
-          <driver-select
-            @Set="
-              (v) => {
-                SetDriver(v.value, Temp.Id);
-              }
-            "
-          />
-        </el-col>
-      </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import DriverSelect from "./DriverSelect.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import { SetDriver } from "@/api/OrderDelivery";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 export default {
   components: {
     StatusTag,
-    DriverSelect,
     DialogActionLog,
   },
   name: "OrderDetails",
@@ -208,14 +174,7 @@ export default {
     };
   },
   methods: {
-    SetDriver(driverid, orderid) {
-      SetDriver({ DriverId: driverid, OrderId: orderid }).then((res) => {
-        if (res) {
-          this.dialogFormVisible = false;
-          this.$emit("Done");
-        }
-      });
-    },
+
   },
 };
 </script>

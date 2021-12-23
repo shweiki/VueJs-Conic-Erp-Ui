@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import { GetByListQByDriver } from "@/api/OrderDelivery";
+import { GetByListQByVendor } from "@/api/OrderRestaurant";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -182,7 +182,7 @@ export default {
       };
       this.listLoading = true;
       //    console.log("sdsad", this.listQuery);
-      GetByListQByDriver({
+      GetByListQByVendor({
         id: this.user.Id,
         name: this.user.name,
         Page: this.listQuery.Page,
