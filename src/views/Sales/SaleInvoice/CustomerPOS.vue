@@ -613,7 +613,6 @@ export default {
         DeliveryPrice: temp.DeliveryPrice,
         TotalPill: temp.Total, //temp.Total,
         Content: itemsnames.toString(),
-        UserId: this.user.id,
       }).then((res) => {
         if (res) {
           this.$notify({
