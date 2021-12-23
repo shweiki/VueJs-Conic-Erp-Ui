@@ -21,6 +21,7 @@ import SettingsRouter from './modules/Settings'
 import UploadData from './modules/UploadData'
 import OrderDeliveryRouter from './modules/OrderDelivery'
 import HumanResource from './modules/HumanResource'
+import OrderRestaurantRouter from './modules/OrderRestaurant'
 
 /* Router Modules */
 //import componentsRouter from './modules/components'
@@ -154,6 +155,7 @@ export const asyncRoutes = [{
     ReceiveRouter,
     AccountingRouter,
     OrderDeliveryRouter,
+    OrderRestaurantRouter,
     SettingsRouter,
     UploadData,
 {

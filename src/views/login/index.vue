@@ -68,14 +68,16 @@
         {{ loginFailed }}
       </span>
       <el-button :loading="loading" @click.native.prevent="handleLogin">Login</el-button>
+      <new-user-sign-up />
     </el-form>
   </div>
 </template>
 
 <script>
 import { validUsername } from "@/utils/validate";
-
+import NewUserSignUp from './components/NewUser.vue';
 export default {
+  components: { NewUserSignUp },
   name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
