@@ -1,5 +1,6 @@
 import { GetCompanyInfo } from "@/api/CompanyInfo";
 import { GetOpration } from "@/api/Oprationsys";
+
 const state = {
     CompanyInfo: {},
     Oprations: []

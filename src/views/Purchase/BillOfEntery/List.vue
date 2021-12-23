@@ -92,6 +92,7 @@
       fit
       highlight-current-row
       style="width: 100%"
+      default-expand-all
     >
       <el-table-column label="Id" prop="Id" sortable="custom" align="center" width="80">
         <template slot-scope="{ row }">
@@ -105,6 +106,20 @@
       </el-table-column>
 
       <el-table-column v-bind:label="$t('AddVendors.BonId')" prop="BonId" align="center">
+      </el-table-column>
+      <el-table-column
+        label="رقم فاتورة شراء"
+        prop="PurchaseInvoiceId"
+        align="center"
+        width="80"
+      >
+        <template slot-scope="{ row }">
+          <router-link :to="'/Purchase/Edit/' + row.PurchaseInvoiceId">
+            <strong style="font-size: 10px; cursor: pointer">{{
+              row.PurchaseInvoiceId
+            }}</strong>
+          </router-link>
+        </template>
       </el-table-column>
       <el-table-column
         v-bind:label="$t('AddVendors.Description')"
@@ -156,7 +171,7 @@
             >
             <el-table-column label="الكمية المباعة" align="center">
               <template slot-scope="scope">{{
-                scope.row.SalesItemMovements.reduce(
+                scope.row.BillOfEnteryItemMovements.reduce(
                   (a, b) => a + (b["Qty"] || 0),
                   0
                 ).toFixed($store.getters.settings.ToFixed)
@@ -166,7 +181,7 @@
               <template slot-scope="scope"
                 >{{
                   scope.row.Qty -
-                  scope.row.SalesItemMovements.reduce(
+                  scope.row.BillOfEnteryItemMovements.reduce(
                     (a, b) => a + (b["Qty"] || 0),
                     0
                   ).toFixed($store.getters.settings.ToFixed)
@@ -177,7 +192,7 @@
               <template slot-scope="scope"
                 >{{
                   scope.row.Qty -
-                    scope.row.SalesItemMovements.reduce(
+                    scope.row.BillOfEnteryItemMovements.reduce(
                       (a, b) => a + (b["Qty"] || 0),
                       0
                     ) ==
@@ -191,7 +206,19 @@
               <template slot-scope="props">
                 <el-table
                   v-loading="listLoading"
-                  :data="props.row.SalesItemMovements"
+                  v-bind:data="
+                    props.row.Qty -
+                      props.row.BillOfEnteryItemMovements.reduce(
+                        (a, b) => a + (b['Qty'] || 0),
+                        0
+                      ) ==
+                    0
+                      ? props.row.BillOfEnteryItemMovements
+                      : props.row.BillOfEnteryItemMovements.concat(
+                          props.row.SalesItemMovements
+                        )
+                  "
+                  ref="BillOfEnteryItemMovementsTable"
                   border
                   fit
                   highlight-current-row
@@ -199,7 +226,7 @@
                   @row-dblclick="
                     (row) => {
                       let r = $router.resolve({
-                        path: '/Sales/Edit/' + row.SalesInvoice.Id,
+                        path: '/Sales/Edit/' + row.SalesInvoiceId,
                       });
                       window.open(
                         r.href,
@@ -215,7 +242,7 @@
                     width="80"
                   >
                     <template slot-scope="{ row }">
-                      <span>{{ row.SalesInvoice.Id }}</span>
+                      <span>{{ row.SalesInvoiceId }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -225,7 +252,7 @@
                   >
                     <template slot-scope="{ row }">
                       <span>{{
-                        row.SalesInvoice.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}")
+                        row.SalesInvoiceFakeDate | parseTime("{y}-{m}-{d} {h}:{i}")
                       }}</span>
                     </template>
                   </el-table-column>
@@ -246,8 +273,18 @@
                     }}</template>
                   </el-table-column>
                   <el-table-column label="الباقي" align="center">
-                    <template slot-scope="scope"
-                      >{{ scope.row.Qty.toFixed($store.getters.settings.ToFixed) }}
+                    <template slot-scope="props"
+                      >{{ (props.row.Total = props.row.Qty - scope.row.Total) }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="#" align="center">
+                    <template slot-scope="scope">
+                      <Pin-Movement
+                        :InventoryMovementsId="scope.row.Id"
+                        :BillOfEnteryId="scope.row.BillOfEnteryId"
+                        :RootBillOfEnteryId="scope.row.RootBillOfEnteryId"
+                        @Done="handleFilter"
+                      />
                     </template>
                   </el-table-column>
                 </el-table>
@@ -275,6 +312,7 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import PinMovement from "./components/PinMovement.vue";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -294,6 +332,7 @@ export default {
     RadioOprations,
     SortOptions,
     Export,
+    PinMovement,
   },
   directives: { waves },
   data() {

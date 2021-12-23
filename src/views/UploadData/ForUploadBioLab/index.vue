@@ -45,6 +45,7 @@ import UploadExcelComponent from "@/components/UploadExcel/index.vue";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Export from "@/components/Export";
+import CountriesNationality from "./Countries_Nationality";
 
 export default {
   name: "ForUploadBioLab",
@@ -82,13 +83,7 @@ export default {
 
       this.data = results.map((x) => {
         let VDateBirthday = new Date(x["DATE OF BIRTH"]);
-        console.log(
-          this.ExcelDateToJSDate(x["DATE OF BIRTH"]),
-          VDateBirthday,
-          "//",
-          x["DATE OF BIRTH"],
-          this.formatDate(this.ExcelDateToJSDate(x["DATE OF BIRTH"]))
-        );
+        console.log(x["NAT"]);
         return {
           Arabicname:
             x["CABIN"] != undefined || null || ""
@@ -111,7 +106,12 @@ export default {
               : "785907000",
           PatNationality:
             x["NAT"] != undefined || null || ""
-              ? x["NAT"].toString().replaceAll(",", " ")
+              ? CountriesNationality.find((obj) => {
+                  return (
+                    obj.value.toUpperCase() ===
+                    x["NAT"].replaceAll(",", " ").toUpperCase()
+                  );
+                }).key
               : "",
           DocumentNumber:
             x["PASS NR"] != undefined || null || ""

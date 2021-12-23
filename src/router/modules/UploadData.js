@@ -85,7 +85,7 @@ const UploadData = {
     },
     {
       path: 'Upload/ForUploadBioLab',
-      component: () => import('@/views/UploadData/ForUploadBioLab'),
+      component: () => import('@/views/UploadData/ForUploadBioLab/index'),
       name: 'ForUploadBioLab',
       meta: {
         title: 'ForUploadBioLab', icon: 'execution'
