@@ -8,7 +8,7 @@
       icon="el-icon-plus"
       @click="dialogFormVisible = true"
     >
-      تسليم الطلب</el-button>
+      انتهاء التحضير</el-button>
     </el-col>
 
     <el-dialog
@@ -97,7 +97,7 @@
       icon="el-icon-check"
       @click="OrderTable(Temp.Id)"
     >
-      تسليم الطلب</el-button>
+      تسليم للزبون</el-button>
       <br />
     </el-dialog>
   </div>

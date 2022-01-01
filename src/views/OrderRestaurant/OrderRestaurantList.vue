@@ -35,15 +35,7 @@
           />
         </el-col>
         <el-col :span="6">
-          <!-- <drawer-print
-            style="float: left"
-            Type="OrderDeliveryList"
-            :Data="{
-              Totals: Totals,
-              Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo],
-            }"
-          /> -->
+         
           <Export :list="list" />
           <el-button
             v-waves
@@ -55,7 +47,7 @@
             Search
           </el-button>
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <el-switch
             style="direction: ltr"
             v-model="IsAuto"
@@ -63,18 +55,14 @@
             inactive-text="يدوي"
           >
           </el-switch>
-        </el-col>
+        </el-col> -->
       </el-row>
     </div>
     <el-row :gutter="20">
-      <el-col :span="10" style="float: left">
-        <div style="float: left">
-          <Add-Order />
-        </div>
-      </el-col>
-      <el-col :span="14">
+     
+      <el-col :span="24">
         <Radio-Oprations
-          TableName="OrderDelivery"
+          TableName="OrderRestaurant"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -164,17 +152,17 @@
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="OrderDelivery" />
+          <Status-Tag :Status="scope.row.Status" TableName="OrderRestaurant" />
         </template>
       </el-table-column>
       <el-table-column label="#" width="100" align="center">
         <template slot-scope="scope">
-          <Dialog-Action-Log TableName="OrderDelivery" :ObjId="scope.row.Id" />
-          <Drawer-Print Type="OrderDelivery" :Data="scope.row" />
+          <Dialog-Action-Log TableName="OrderRestaurant" :ObjId="scope.row.Id" />
+          
           <Next-Oprations
             :ObjId="scope.row.Id"
             :Status="scope.row.Status"
-            TableName="OrderDelivery"
+            TableName="OrderRestaurant"
             @Done="getList"
           />
         </template>

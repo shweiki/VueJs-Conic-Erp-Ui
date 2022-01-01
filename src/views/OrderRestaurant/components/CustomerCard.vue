@@ -21,9 +21,9 @@
           "
         />
       </el-col>
-      <el-col :span="10">
+      <el-col :span="12">
         <Radio-Oprations
-          TableName="DriverOrder"
+          TableName="CustomerOrder"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -56,7 +56,7 @@
                       <Status-Icon
                         class="card-panel-icon"
                         :Status="option.Status"
-                        TableName="DriverOrder"
+                        TableName="CustomerOrder"
                       />
                     </div>
                   </el-col>
@@ -115,7 +115,7 @@
                         confirm-button-text="نعم"
                         cancel-button-text="لا, شكرا"
                         icon="el-icon-info"
-                        :title="` ${option.Id} تأكيد محاسبة طلب رقم`"
+                        :title="` ${option.Id} طلب الفاتورة لطلب رقم`"
                         @confirm="VDone(option.Id)"
                       >
                         <el-button

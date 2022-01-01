@@ -75,3 +75,10 @@ export function GetVendorCheque(query) {
       data: qs.stringify(data)
     })
   }
+  export function GetVendorByUserId(query) {
+    return request({
+      url: '/Vendor/GetVendorByUserId',
+      method: 'get',
+      params: query
+    })
+  }

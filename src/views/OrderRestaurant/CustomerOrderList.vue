@@ -35,15 +35,7 @@
           />
         </el-col>
         <el-col :span="6">
-          <!-- <drawer-print
-            style="float: left"
-            Type="OrderDeliveryList"
-            :Data="{
-              Totals: Totals,
-              Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo],
-            }"
-          /> -->
+          
           <Export :list="list" />
           <el-button
             v-waves
@@ -57,15 +49,7 @@
         </el-col>
       </el-row>
     </div>
-    <Radio-Oprations
-      TableName="DriverOrder"
-      @Set="
-        (v) => {
-          listQuery.Status = v;
-          handleFilter();
-        }
-      "
-    />
+   
 
     <el-table
       v-loading="listLoading"
@@ -108,7 +92,7 @@
 
       <el-table-column v-bind:label="$t('Sales.Status')" width="160" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="DriverOrder" />
+          <Status-Tag :Status="scope.row.Status" TableName="CustomerOrder" />
         </template>
       </el-table-column>
     </el-table>

@@ -113,7 +113,7 @@
             <i class="el-icon-s-flag"></i>
             {{ $t("OrderInventories.Status") }}
           </template>
-          <Status-Tag :Status="Temp.Status" TableName="OrderDelivery" />
+          <Status-Tag :Status="Temp.Status" TableName="OrderRestaurant" />
         </el-descriptions-item>
         
         <el-descriptions-item

@@ -114,7 +114,17 @@
                       </el-row
                     >
                     <el-row type="flex" class="card">
-                      <el-col :span="24">
+                       <el-col :span="12">
+                         Table Number
+                         <el-form-item prop="TableNo">
+                          <el-input
+                            ref="Tablenumber"
+                            placeholder="رقم الطاولة"
+                            v-model="tempForm.TableNo"
+                          ></el-input>
+                        </el-form-item>
+    </el-col>
+                      <!-- <el-col :span="24">
                         <delivery-el
                           :name="tempForm.Name"
                           :phone="tempForm.PhoneNumber"
@@ -133,58 +143,12 @@
                             inactive-color="#ff4949"
                           ></el-switch>
                         </el-col>
-                      </el-col>
+                      </el-col> -->
                     </el-row>
-                    <el-row type="flex" class="card" v-permission="['admin']">
-                      <el-col :span="10">
-                        <el-form-item prop="Tax">
-                          <el-select
-                            v-model="tempForm.Tax"
-                            v-bind:placeholder="$t('Items.Tax')"
-                          >
-                            <el-option
-                              v-for="tax in TaxOptions"
-                              :key="tax.value"
-                              :label="tax.label"
-                              :value="tax.value"
-                            ></el-option>
-                          </el-select>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-input-number
-                          prop="Discount"
-                          v-model="tempForm.Discount"
-                          controls-position="right"
-                          :precision="2"
-                          :step="1"
-                          :min="0.0"
-                          :max="100"
-                          @focus="$event.target.select()"
-                        ></el-input-number>
-                      </el-col>
-                      <!--    <el-col :span="6">{{
-                          $t("NewPurchaseInvoice.TotalDiscount")
-                        }}</el-col> -->
-                    </el-row>
+                   
                     <el-row type="flex" class="card">
-                      <el-col
-                        v-if="tempForm.Type == 'Delivery'"
-                        :span="12"
-                        class="TotalAmmount"
-                      >
-                        <span>سعر التوصيل</span>
-                        <el-divider direction="vertical"></el-divider>
-                        <span
-                          >{{
-                            tempForm.DeliveryPrice.toFixed(
-                              $store.getters.settings.ToFixed
-                            )
-                          }}
-                          JOD</span
-                        >
-                      </el-col>
-                      <el-col :span="12" class="TotalAmmount">
+                     
+                      <el-col :span="24" class="TotalAmmount">
                         <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
                         <el-divider direction="vertical"></el-divider>
                         <span
@@ -353,7 +317,7 @@ import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
 import DrawerSearchInvoice from "@/components/Sales/DrawerSearchInvoice.vue";
-import { Create as CreateVendor, CheckIsExist as CheckVendorIsExist } from "@/api/Vendor";
+import { Create as CreateVendor, CheckIsExist as CheckVendorIsExist, GetVendorByUserId } from "@/api/Vendor";
 import { mapGetters } from "vuex";
 import { SendSMS } from "@/api/SMS";
 import { Now } from "@/utils";
@@ -389,13 +353,14 @@ export default {
   },
   data() {
     return {
-      user: {},
+      uid:"",
       OldInvoice: null,
       PriceMethod: "retail",
       DisabledSave: false,
       AutoPrint: true,
       AutoSendSMS: true,
       OpenRestOfBill: false,
+      NewName:"",
       tempForm: {
         Id: undefined,
         Name: "",
@@ -410,6 +375,7 @@ export default {
         DeliveryPrice: 0,
         Region: "",
         PhoneNumber: "",
+        TableNo:0,
         InventoryMovements: [],
       },
       rules: {
@@ -435,9 +401,12 @@ export default {
     };
   },
     computed: {
-    ...mapGetters(["id", "name"]),
+    ...mapGetters(["Id", "name"]),
   },
   created() {
+    this.Get();
+      console.log("tttttttt",this.Id);
+      
     if (this.isEdit) {
       this.getdata(this.$route.params && this.$route.params.id);
     }
@@ -452,6 +421,13 @@ export default {
     loading.close();
   },
   methods: {
+    Get(){
+      this.user = {
+        Id: this.Id,
+      }
+      this.uid = this.Id;
+      console.log("ressssss",this.uid);
+    },
     restTempForm() {
       this.tempForm = {
         Id: undefined,
@@ -531,18 +507,22 @@ export default {
           ) {
             this.DisabledSave = true;
             this.tempForm.FakeDate = Now();
-            Create(this.tempForm)
+            this.tempForm.Description = this.uid;
+            Create(this.tempForm )
               .then((response) => {
                 if (response) {
                   this.ValidateDescription = "";
-                  this.tempForm.Id = response;
+                  this.tempForm.Id = response.Id;
+                  this.tempForm.Name = response.Name;
+                  this.NewName = response.Name;
+                  this.tempForm.PhoneNumber = response.PhoneNumber
                   this.tempForm.Total = Total;
                   this.OldInvoice = this.tempForm;
-                  this.CheckVendor(
-                    this.tempForm.Name,
-                    this.tempForm.PhoneNumber,
-                    this.tempForm.Region
-                  );
+                  // this.CheckVendor(
+                  //   this.tempForm.Name,
+                  //   this.tempForm.PhoneNumber,
+                  //   this.tempForm.Region
+                  // );
                   this.CreateRestaurnat(this.OldInvoice);
                   if (this.AutoPrint == true) {
                     PrintReport("SaleInvoice", this.OldInvoice, true);
@@ -603,7 +583,7 @@ export default {
       CreateRestaurnat({
         Id: undefined,
         OrderId: temp.Id.toString().slice(-4),
-        Name: temp.Name,
+        Name: this.NewName,
         TotalPrice: temp.Total, // temp.DeliveryPrice + temp.Total,
         Status: 0,
         Description: temp.Description,
@@ -612,6 +592,7 @@ export default {
         TableNo: temp.TableNo,
         DeliveryPrice: temp.DeliveryPrice,
         TotalPill: temp.Total, //temp.Total,
+        TableNo: temp.TableNo,
         Content: itemsnames.toString(),
       }).then((res) => {
         if (res) {

@@ -46,7 +46,6 @@
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
-
 export default {
   components: { PanThumb, WebCam, ImageCropper },
   data() {

@@ -114,10 +114,10 @@
           </template>
           <el-row type="flex">
             <el-col :span="10">
-              <Dialog-Action-Log TableName="OrderDelivery" :ObjId="Temp.Id" />
+              <Dialog-Action-Log TableName="OrderRestaurant" :ObjId="Temp.Id" />
             </el-col>
             <el-col :span="14">
-              <Status-Tag :Status="Temp.Status" TableName="OrderDelivery" />
+              <Status-Tag :Status="Temp.Status" TableName="OrderRestaurant" />
             </el-col>
           </el-row>
         </el-descriptions-item>

@@ -23,7 +23,7 @@
       </el-col>
       <el-col :span="14">
         <Radio-Oprations
-          TableName="OrderDelivery"
+          TableName="OrderRestaurant"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -56,7 +56,7 @@
                       <Status-Icon
                         class="card-panel-icon"
                         :Status="option.Status"
-                        TableName="OrderDelivery"
+                        TableName="OrderRestaurant"
                       />
                     </div>
                   </el-col>
@@ -306,7 +306,7 @@ export default {
   }
 
   .card-panel {
-    height: 170px;
+    height: 190px;
     cursor: pointer;
     font-size: 14px;
     position: relative;
@@ -375,7 +375,7 @@ export default {
 @media only screen and (max-width: 767px) {
   .el-col-xs-24 {
     .card-panel {
-      height: 190px;
+      height: 200px;
       padding-top: 5px;
       .card-panel-description {
         float: none;
