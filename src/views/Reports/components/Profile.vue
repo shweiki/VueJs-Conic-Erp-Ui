@@ -82,7 +82,7 @@
       </el-row>
       <el-row type="flex">
         <el-col :span="24">
-          <tinymce v-bind:id="'tinymce-' + 0" v-model="tempForm.Html" />
+          <tinymce height="950" v-bind:id="'tinymce-' + 0" v-model="tempForm.Html" />
         </el-col>
       </el-row>
       <el-row type="flex">

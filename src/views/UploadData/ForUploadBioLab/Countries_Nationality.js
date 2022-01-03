@@ -506,7 +506,7 @@ const Countries_Nationality = [
     },
     {
       "key": 103,
-      "value": "North Korea",
+      "value": "Korea  Republic of",//"North Korea",
       "desc": "كوريا الشمالية"
     },
     {

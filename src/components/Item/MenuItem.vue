@@ -33,8 +33,9 @@ export default {
       options: [],
     };
   },
-  mounted() {
-    if (this.Value) this.value = Array.from(this.Value.split(","));
+  created() {
+    if (this.Value != "" && this.Value != undefined)
+      this.value = Array.from(this.Value.split(","));
     GetActiveMenuItem()
       .then((response) => {
         // handle success

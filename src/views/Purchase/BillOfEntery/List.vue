@@ -148,7 +148,7 @@
           <el-table :data="props.row.InventoryMovements">
             <el-table-column prop="ItemsId" label="رقم \ باركود الصنف" align="center">
               <template slot-scope="scope">
-                {{ scope.row.Items.Id + " - " + scope.row.Items.Barcode }}
+                {{ scope.row.ItemsId + " - " + scope.row.Barcode }}
               </template>
             </el-table-column>
             <el-table-column
@@ -157,7 +157,7 @@
               align="center"
             >
               <template slot-scope="scope">{{
-                scope.row.Items.Name
+                scope.row.Name
               }}</template></el-table-column
             >
             <el-table-column
@@ -171,48 +171,27 @@
             >
             <el-table-column label="الكمية المباعة" align="center">
               <template slot-scope="scope">{{
-                scope.row.BillOfEnteryItemMovements.reduce(
-                  (a, b) => a + (b["Qty"] || 0),
-                  0
-                ).toFixed($store.getters.settings.ToFixed)
+                scope.row.Total.toFixed($store.getters.settings.ToFixed)
               }}</template>
             </el-table-column>
             <el-table-column label="الباقي" align="center">
               <template slot-scope="scope"
                 >{{
-                  scope.row.Qty -
-                  scope.row.BillOfEnteryItemMovements.reduce(
-                    (a, b) => a + (b["Qty"] || 0),
-                    0
-                  ).toFixed($store.getters.settings.ToFixed)
+                  (scope.row.Qty - scope.row.Total).toFixed(
+                    $store.getters.settings.ToFixed
+                  )
                 }}
               </template>
             </el-table-column>
             <el-table-column label="الحالة" align="center">
-              <template slot-scope="scope"
-                >{{
-                  scope.row.Qty -
-                    scope.row.BillOfEnteryItemMovements.reduce(
-                      (a, b) => a + (b["Qty"] || 0),
-                      0
-                    ) ==
-                  0
-                    ? " مغلق "
-                    : "مفتوح"
-                }}
-              </template>
+              <template slot-scope="scope">{{ scope.row.Status }} </template>
             </el-table-column>
             <el-table-column type="expand" align="center">
               <template slot-scope="props">
                 <el-table
                   v-loading="listLoading"
                   v-bind:data="
-                    props.row.Qty -
-                      props.row.BillOfEnteryItemMovements.reduce(
-                        (a, b) => a + (b['Qty'] || 0),
-                        0
-                      ) ==
-                    0
+                    props.row.SalesItemMovements == null
                       ? props.row.BillOfEnteryItemMovements
                       : props.row.BillOfEnteryItemMovements.concat(
                           props.row.SalesItemMovements
@@ -267,15 +246,13 @@
                       scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
                     }}</template>
                   </el-table-column>
-                  <el-table-column label="الكمية المباعة" align="center">
+                  <el-table-column label="الكمية " align="center">
                     <template slot-scope="scope">{{
                       scope.row.Qty.toFixed($store.getters.settings.ToFixed)
                     }}</template>
                   </el-table-column>
                   <el-table-column label="الباقي" align="center">
-                    <template slot-scope="props"
-                      >{{ (props.row.Total = props.row.Qty - scope.row.Total) }}
-                    </template>
+                    <template slot-scope="props">{{ props.row.Total }} </template>
                   </el-table-column>
                   <el-table-column label="#" align="center">
                     <template slot-scope="scope">

@@ -240,7 +240,7 @@ export default {
 
         ExtraHours: list
           .reduce((prev, cur) => {
-            return prev + cur.ExtraHours;
+            return prev + (cur.ExtraHours + 0.41);
           }, 0)
           .toFixed(this.$store.getters.settings.ToFixed),
         DelayHours: list
