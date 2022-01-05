@@ -75,7 +75,7 @@ export default {
           if (dis.type == "Hours" && dis.amount > 0)
             this.$emit("SetAdjustmentAmount", dis.amount * (this.ExtraHours || 1));
           if (dis.type == "Hours" && dis.amount < 0)
-            this.$emit("SetAdjustmentAmount", dis.amount * (-this.DelayHours || 1));
+            this.$emit("SetAdjustmentAmount", dis.amount * (this.DelayHours || 1));
         }
       }
     },

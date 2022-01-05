@@ -3,6 +3,7 @@ import { nArabicWords } from "./nArabicWords.js";
 import i18n from "@/lang";
 import QRCode from 'qrcode'
 import checkPermission from "@/utils/permission";
+import {  TimeConvert as TimeConvertX, MinutesConvert as MinutesConvertX } from "@/utils";
 
 let toFixed = store.getters.settings.ToFixed;
 var JsBarcode = require('jsbarcode');
@@ -14,6 +15,8 @@ export default function Visualization(Data, Html, Type) {
   let ConvetNumberToArabicWords = nArabicWords;
   let formatDate = formatDateX;
   let TimeConvert = TimeConvertX;
+  let MinutesConvert = MinutesConvertX;
+
   let ToFixed = ToFixedX;
   let tr = (v) => i18n.t(v);
   let Days = (v) => days[v];
@@ -58,7 +61,7 @@ export default function Visualization(Data, Html, Type) {
     Html = Html.replaceAll("{{" + key + "}}", Data[key]);
     if (Data[key] != null && typeof Data[key] == "object") {
       Object.keys(Data[key]).forEach(keyo => {
-        Html = Html.replaceAll("{{" + key + "." + keyo + "}}", Data[key][keyo]);
+        Html = Html.replaceAll("{{" + key + "." + keyo + "}}", Data[key][keyo] == null ? "" :  Data[key][keyo] );
       })
     }
     if (Array.isArray(Data[key])) {
@@ -72,7 +75,7 @@ export default function Visualization(Data, Html, Type) {
         let row = res;
         Object.keys(element).forEach(keya => {
           // replace All keys to values
-          row = row.replaceAll("{{" + key + "." + keya + "}}", element[keya]);
+          row = row.replaceAll("{{" + key + "." + keya + "}}", element[keya]== null ? "" :  element[keya]);
           // find if have Equation {#  /}
           var searchKeyword = "{#";
           var startingIndices = [];
@@ -138,15 +141,4 @@ export function formatDateX(date) {
   if (day.length < 2) day = "0" + day;
 
   return [day, month, year].join("/");
-}
-export function TimeConvertX(date) {
-  date = new Date(date);
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  let strTime = " " + hours + ":" + minutes + "  " + ampm;
-  return strTime;
 }

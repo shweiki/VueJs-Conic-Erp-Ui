@@ -51,7 +51,15 @@ export function TimeConvert(time) {
   let strTime = " " + hours + ":" + minutes + "  " + ampm;
   return strTime;
 }
-
+export function MinutesConvert(MinutesCount, delmiter = ":") {
+  var num = MinutesCount;
+  var hours = (num / 60);
+  var rhours = Math.floor(hours);
+  var minutes = (hours - rhours) * 60;
+  var rminutes = Math.round(minutes);
+  //console.log(minutes, rminutes)
+  return rhours + delmiter + rminutes;
+}
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null

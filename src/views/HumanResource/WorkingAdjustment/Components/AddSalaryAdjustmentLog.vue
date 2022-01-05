@@ -121,14 +121,6 @@ export default {
 
   created() {
     this.resetTempForm();
-    console.log(
-      this.EmployeeId,
-      this.EmployeeName,
-      this.SalaryPaymentId,
-      this.GrossSalary,
-      this.ExtraHours,
-      this.DelayHours
-    );
   },
   methods: {
     getData(val) {},

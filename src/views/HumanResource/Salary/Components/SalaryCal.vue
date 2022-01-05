@@ -69,14 +69,14 @@
                   :content-style="{ 'text-align': 'right' }"
                 >
                   <template slot="label"> مجموع ساعات التأخير </template>
-                  <el-tag size="small">{{ DelayHours || 0 }}</el-tag>
+                  <el-tag size="small">{{ MinutesConvert(TotalDelayMinute) }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
                   :content-style="{ 'text-align': 'right' }"
                 >
                   <template slot="label"> مجموع ساعات إضافي </template>
-                  <el-tag size="small">{{ ExtraHours }}</el-tag>
+                  <el-tag size="small">{{ MinutesConvert(TotalExtraMinute) }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
@@ -103,8 +103,15 @@
             :EmployeeName="tempForm.Name"
             :SalaryPaymentId="tempForm.Id"
             :GrossSalary="tempForm.GrossSalary"
-            :ExtraHours="ExtraHours"
-            :DelayHours="DelayHours"
+            :Absent="AbsentCount"
+            v-bind:ExtraHours="
+              (parseFloat(MinutesConvert(TotalExtraMinute, '.')) + 0.4) *
+              (tempForm.GrossSalary / tempForm.DaysCount / tempForm.WorkingHours)
+            "
+            v-bind:DelayHours="
+              (parseFloat(MinutesConvert(TotalDelayMinute, '.')) + 0.4) *
+              (tempForm.GrossSalary / tempForm.DaysCount / tempForm.WorkingHours)
+            "
           />
           <el-row type="flex">
             <el-col :span="24">
@@ -171,6 +178,7 @@ import EditSalaryAdjustmentLog from "../../WorkingAdjustment/Components/EditSala
 import DeleteSalaryAdjustmentLog from "../../WorkingAdjustment/Components/DeleteSalaryAdjustmentLog.vue";
 import DeviceLog from "@/views/HumanResource/ListEmployee/components/DeviceLog.vue";
 import DialogSalaryFrom from "../../Salary/Components/DialogSalaryFrom.vue";
+import { parseTime, TimeConvert, MinutesConvert } from "@/utils";
 
 export default {
   components: {
@@ -190,8 +198,8 @@ export default {
       DisabledSave: false,
       loading: true,
       tableData: [],
-      ExtraHours: 0,
-      DelayHours: 0,
+      TotalExtraMinute: 0,
+      TotalDelayMinute: 0,
       WorkingDays: 0,
 
       tempForm: {
@@ -201,6 +209,7 @@ export default {
         NetSalary: 0,
         SalaryFrom: "",
         SalaryTo: "",
+        DaysCount: 0,
         status: 0,
         WorkingHours: 0,
         Name: "",
@@ -214,10 +223,12 @@ export default {
     this.getdata();
   },
   methods: {
+    MinutesConvert,
     SetValue(e) {
+      console.log("e", e);
       this.WorkingDays = parseFloat(e.WorkingDays);
-      this.ExtraHours = parseFloat(e.ExtraHours);
-      this.DelayHours = parseFloat(e.DelayHours);
+      this.TotalExtraMinute = parseFloat(e.ExtraMinute);
+      this.TotalDelayMinute = parseFloat(e.DelayMinute);
       this.getdata();
     },
     getdata() {

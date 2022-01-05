@@ -131,7 +131,9 @@
       </el-table-column>
       <el-table-column label="غياب" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.absent ? "غياب" : "حضور" }}</span>
+          <span v-bind:style="row.absent ? 'color : red' : 'color : green'">{{
+            row.absent ? "غياب" : "حضور"
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column label="عدد ساعات الدوام" width="150" align="center">
@@ -141,12 +143,12 @@
       </el-table-column>
       <el-table-column label="ساعات تأخير" width="120" align="center">
         <template slot-scope="scope">{{
-          scope.row.DelayHours.toFixed($store.getters.settings.ToFixed)
+          MinutesConvert(scope.row.DelayMinute)
         }}</template>
       </el-table-column>
       <el-table-column label="ساعات إضافي" width="120" align="center">
         <template slot-scope="scope">{{
-          scope.row.ExtraHours.toFixed($store.getters.settings.ToFixed)
+          MinutesConvert(scope.row.ExtraMinute)
         }}</template>
       </el-table-column>
       <el-table-column label="#" width="80" align="center">
@@ -163,7 +165,7 @@ import DialogLogDevice from "@/components/Device/DialogLogDevice.vue";
 import waves from "@/directive/waves"; // waves directive
 import { GetLogByUserId } from "@/api/DeviceLog";
 import SortOptions from "@/components/SortOptions";
-import { parseTime, TimeConvert } from "@/utils";
+import { parseTime, TimeConvert, MinutesConvert } from "@/utils";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
 
@@ -190,8 +192,8 @@ export default {
       },
       Totals: {
         WorkingDays: 0,
-        ExtraHours: 0,
-        DelayHours: 0,
+        ExtraMinute: 0,
+        DelayMinute: 0,
       },
       listLoading: false,
       days: ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"],
@@ -206,6 +208,7 @@ export default {
   },
 
   methods: {
+    MinutesConvert,
     TimeConvert,
     getdata(v) {
       this.listLoading = true;
@@ -238,14 +241,14 @@ export default {
             }, 0)
             .toFixed(this.$store.getters.settings.ToFixed),
 
-        ExtraHours: list
+        ExtraMinute: list
           .reduce((prev, cur) => {
-            return prev + (cur.ExtraHours + 0.41);
+            return prev + cur.ExtraMinute;
           }, 0)
           .toFixed(this.$store.getters.settings.ToFixed),
-        DelayHours: list
+        DelayMinute: list
           .reduce((prev, cur) => {
-            return prev + cur.DelayHours;
+            return prev + cur.DelayMinute;
           }, 0)
           .toFixed(this.$store.getters.settings.ToFixed),
       };
@@ -343,16 +346,35 @@ export default {
           // Work Time
           let WorkTime =
             parseInt((Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60 * 60)) % 24) +
-              parseInt((Math.abs(MinMaxD[1].getTime() - MinMaxD[0]) / (1000 * 60)) % 60) /
-                100 || 0;
+              Math.ceil((Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60)) % 60) / 100 ||
+            0;
           //  Extra Hours && Delay Hours
           let ExtraHours = 0,
-            DelayHours = 0;
-          if (WorkTime > this.WorkingHours) ExtraHours = WorkTime - this.WorkingHours;
-          else if (WorkTime == 0) DelayHours = 0;
-          else DelayHours = this.WorkingHours - (WorkTime + 0.41);
-
-          // console.log("Hours", (this.WorkingHours / (1000 * 60 * 60)) % 24);
+            ExtraMinute = 0,
+            DelayHours = 0,
+            DelayMinute = 0;
+          if (WorkTime > this.WorkingHours) {
+            ExtraHours = WorkTime - this.WorkingHours;
+            ExtraMinute =
+              Math.floor(ExtraHours) * 60 + (ExtraHours - Math.floor(ExtraHours)) * 100;
+          } else if (WorkTime == 0 || WorkTime == this.WorkingHours) DelayHours = 0;
+          else if (WorkTime < this.WorkingHours) {
+            console.log(WorkTime, this.WorkingHours);
+            DelayHours = this.WorkingHours - (WorkTime + 0.4);
+            DelayMinute =
+              Math.floor(DelayHours) * 60 + (DelayHours - Math.floor(DelayHours)) * 100;
+          }
+          /*  console.log(
+            "WorkTime",
+            Math.round((Math.abs(MinMaxD[1].getTime() - MinMaxD[0]) / (1000 * 60)) % 60) /
+              100,
+            WorkTime
+          );
+*/
+          //  var MinutesCount = parseInt(
+          //  Math.floor(ExtraHours) * 60 + (ExtraHours - Math.floor(ExtraHours)) * 100
+          //  );
+          // console.log("Hours", MinutesCount, MinutesConvert(MinutesCount));
           WorkHoursLogs.push({
             Id: WorkHoursLogs.length + 1,
             Day: currentDate.getDay(),
@@ -362,6 +384,8 @@ export default {
             WorkTime: WorkTime,
             ExtraHours: ExtraHours,
             DelayHours: DelayHours,
+            ExtraMinute: ExtraMinute,
+            DelayMinute: DelayMinute,
             absent: logs.length <= 0 ? true : false,
             logs: logs,
           });

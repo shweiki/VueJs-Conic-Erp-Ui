@@ -146,7 +146,7 @@ const Countries_Nationality = [
     },
     {
       "key": 30,
-      "value": "Brunei",
+      "value": "Brunei Darussalam",//      ""Brunei",
       "desc": "بروني"
     },
     {
