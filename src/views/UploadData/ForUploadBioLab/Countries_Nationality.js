@@ -676,7 +676,7 @@ const Countries_Nationality = [
     },
     {
       "key": 137,
-      "value": "Myanmar Burma",
+      "value": "Myanmar",//"Myanmar Burma",
       "desc": "ميانمار"
     },
     {

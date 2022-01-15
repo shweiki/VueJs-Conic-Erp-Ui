@@ -66,13 +66,16 @@
       </el-col>
     </el-row>
     <el-row type="flex">
-      <el-col :span="18">
+      <el-col :span="12">
         <el-divider direction="vertical"></el-divider>
         <span>عدد </span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Rows }}</span>
         <el-divider direction="vertical"></el-divider>
       </el-col>
+      <el-col :span="6">
+        <el-button @click="ReCalBillOfEntery" type="warning"> احتساب </el-button></el-col
+      >
       <el-col :span="6">
         <Radio-Oprations
           TableName="BillOfEntery"
@@ -190,13 +193,7 @@
               <template slot-scope="props">
                 <el-table
                   v-loading="listLoading"
-                  v-bind:data="
-                    props.row.SalesItemMovements == null
-                      ? props.row.BillOfEnteryItemMovements
-                      : props.row.BillOfEnteryItemMovements.concat(
-                          props.row.SalesItemMovements
-                        )
-                  "
+                  :data="props.row.BillOfEnteryItemMovements"
                   ref="BillOfEnteryItemMovementsTable"
                   border
                   fit
@@ -254,7 +251,7 @@
                   <el-table-column label="الباقي" align="center">
                     <template slot-scope="props">{{ props.row.Total }} </template>
                   </el-table-column>
-                  <el-table-column label="#" align="center">
+                  <!--  <el-table-column label="#" align="center">
                     <template slot-scope="scope">
                       <Pin-Movement
                         :InventoryMovementsId="scope.row.Id"
@@ -263,7 +260,7 @@
                         @Done="handleFilter"
                       />
                     </template>
-                  </el-table-column>
+                  </el-table-column>-->
                 </el-table>
               </template>
             </el-table-column>
@@ -282,7 +279,7 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/BillOfEntery";
+import { GetByListQ, CalBillOfEntery } from "@/api/BillOfEntery";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -321,7 +318,7 @@ export default {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
-        Sort: "-id",
+        Sort: "+id",
         User: undefined,
         DateFrom: "",
         DateTo: "",
@@ -340,6 +337,13 @@ export default {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
+      });
+    },
+    ReCalBillOfEntery() {
+      this.listLoading = true;
+      //    console.log("sdsad", this.listQuery);
+      CalBillOfEntery().then((response) => {
+        if (response) this.getList();
       });
     },
     handleFilter() {

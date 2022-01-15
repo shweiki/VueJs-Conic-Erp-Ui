@@ -3,8 +3,8 @@
     <el-divider> الكمية المتوفرة </el-divider>
     <el-row type="flex">
       <el-col v-for="(Inventory, index) in InventoryQty" :key="index">
-        <el-card class="box-card">
-          <div slot="header" >
+        <el-card style="text-align: center" class="box-card">
+          <div slot="header">
             <span> اسم المخزن : {{ Inventory.InventoryName }}</span>
           </div>
           <div>
@@ -13,7 +13,11 @@
             {{ Inventory.QtyOut }}
             <br />
             {{ $t("Items.Credit") }}
-            <el-tag>{{ (Inventory.QtyIn - Inventory.QtyOut).toFixed($store.getters.settings.ToFixed) }}</el-tag>
+            <el-tag>{{
+              (Inventory.QtyIn - Inventory.QtyOut).toFixed(
+                $store.getters.settings.ToFixed
+              )
+            }}</el-tag>
           </div>
         </el-card>
       </el-col>
@@ -27,15 +31,18 @@ export default {
   props: {
     ItemId: { type: Number },
   },
-  mounted() {
-    this.getdata();
+  watch: {
+    ItemId(v) {
+      console.log("here", v);
+      this.getdata(v);
+    },
   },
   data() {
     return { InventoryQty: [] };
   },
   methods: {
-    getdata() {
-      CalculateInventoryItemQty({ Id: this.ItemId }).then((response) => {
+    getdata(id) {
+      CalculateInventoryItemQty({ Id: id }).then((response) => {
         // handle success
         this.InventoryQty = response;
       });

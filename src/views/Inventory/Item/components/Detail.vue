@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import InventoryQty from "@/components/Item/InventoryQty";
+import InventoryQty from "@/components/Item/InventoryQty.vue";
 import ItemForm from "@/components/Item/ItemForm.vue";
 import Ingredient from "@/components/Item/Ingredient.vue";
 import Movements from "./Movements.vue";
@@ -87,7 +87,7 @@ export default {
         });
     },
     setTagsViewTitle() {
-      const title = "Item";
+      const title = this.tempForm.Name;
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });

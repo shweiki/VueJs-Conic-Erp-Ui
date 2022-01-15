@@ -16,6 +16,20 @@ export function GetBillOfEnteryById(query) {
     params: query
   })
 }
+export function GetBillOfEnteryByPurchaseId(query) {
+  return request({
+    url: '/BillOfEntery/GetBillOfEnteryByPurchaseId',
+    method: 'get',
+    params: query
+  })
+}
+export function CalBillOfEntery(query) {
+  return request({
+    url: '/BillOfEntery/CalBillOfEntery',
+    method: 'get',
+    params: query
+  })
+}
 
 
 export function Create(data) {

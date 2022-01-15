@@ -270,11 +270,6 @@ export default {
               duration: 1000,
               showClose: false,
             });
-            this.$confirm("هل تريد العودة ")
-              .then((_) => {
-                this.$router.back();
-              })
-              .catch((_) => {});
           }
         } else {
           console.log("error submit!!");

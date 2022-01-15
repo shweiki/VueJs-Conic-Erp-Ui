@@ -353,7 +353,6 @@ import FakeDate from "@/components/Date/FakeDate";
 import {
   Create as CreateBillOfEntery,
   Edit as EditBillOfEntery,
-  GetBillOfEnteryById,
 } from "@/api/BillOfEntery";
 import { GetActiveVendor } from "@/api/Vendor";
 import ItemsSearch from "@/components/Item/ItemsSearch";

@@ -134,6 +134,11 @@
                 </el-radio-group>
               </template>
             </el-table-column>
+            <el-table-column label="المتوفر" width="80" align="center">
+              <template slot-scope="scope">
+                {{ scope.row.Item.TotalIn - scope.row.Item.TotalOut }}
+              </template>
+            </el-table-column>
             <el-table-column label="EXP" width="175" align="center">
               <template slot-scope="scope">
                 <Select-Item-Exp-Column
@@ -273,6 +278,7 @@ export default {
         InventoryItemId: 1,
         Name: item.Name,
         OrderInventoryId: undefined,
+        Item: item,
       });
     },
 

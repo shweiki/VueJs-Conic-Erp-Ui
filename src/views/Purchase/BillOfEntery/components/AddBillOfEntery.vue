@@ -42,7 +42,7 @@
 
 <script>
 import FakeDate from "@/components/Date/FakeDate";
-import { GetBillOfEnteryById as GetById } from "@/api/BillOfEntery";
+import { GetBillOfEnteryByPurchaseId as GetByPurchaseId } from "@/api/BillOfEntery";
 export default {
   props: ["PurchaseId"],
   components: { FakeDate },
@@ -63,7 +63,7 @@ export default {
   watch: {
     PurchaseId(value) {
       if (value != null && value != undefined && value != "" && value > 0) {
-        GetById({ Id: value }).then((res) => {
+        GetByPurchaseId({ Id: value }).then((res) => {
           this.tempForm = res;
           this.$emit("Done", this.tempForm);
         });

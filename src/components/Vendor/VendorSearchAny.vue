@@ -27,30 +27,29 @@ import { GetById } from "@/api/Vendor";
 import AddVendor from "@/components/Vendor/AddVendor.vue";
 import EditVendor from "@/components/Vendor/EditVendor.vue";
 import DialogSearchVendor from "@/components/Vendor/DialogSearchVendor.vue";
-import { number } from "echarts/lib/export";
 export default {
   props: {
     VendorId: {
-      type: number,
-      default: 2,
+      type: Number,
+      default: undefined,
     },
   },
   components: { AddVendor, EditVendor, DialogSearchVendor },
   data() {
     return {
-      Vendor: {},
+      Vendor: { Id: this.VendorId, Name: "", AccountId: 0 },
     };
   },
-  created() {},
+  created() {
+    GetById({ Id: this.VendorId }).then((res) => {
+      this.Vendor = res;
+    });
+  },
   watch: {
     VendorId(value) {
-      if (value != null && value != undefined && value != "" && value > 0) {
-        GetById({ Id: value }).then((res) => {
-          this.change(res);
-        });
-      } else {
-        this.change({ Id: 2, Name: "زبون نقدي", AccountId: 6 });
-      }
+      GetById({ Id: value }).then((res) => {
+        this.change(res);
+      });
     },
   },
   methods: {
@@ -60,6 +59,8 @@ export default {
     },
 
     Add(v) {
+      console.log("Add", v);
+
       this.change(v);
     },
   },

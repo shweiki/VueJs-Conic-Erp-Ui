@@ -58,7 +58,7 @@
               ]"
             >
               <vendor-search-any
-                :VendorId="tempForm.VendorId"
+                v-bind:VendorId="tempForm.VendorId"
                 @Set="
                   (v) => {
                     Vendor = v;
@@ -102,7 +102,7 @@
           </el-col>
         </el-row>
         <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-          <items-search :WithBarCode="false" @add="AddItem" />
+          <items-search :WithBarCode="true" @add="AddItem" />
         </el-card>
         <el-table :data="tempForm.InventoryMovements" fit border>
           <el-table-column align="center" prop="Name">
@@ -135,7 +135,10 @@
                 :precision="2"
                 :step="1"
                 :min="0.0"
-                :max="1000000"
+                v-bind:max="
+                  isEdit ? 1000000 : scope.row.Item.TotalIn - scope.row.Item.TotalOut
+                "
+                select
                 @focus="$event.target.select()"
               ></el-input-number>
             </template>
@@ -401,18 +404,26 @@ export default {
         });
     },
     AddItem(item) {
-      this.tempForm.InventoryMovements.unshift({
-        Id: undefined,
-        ItemsId: item != undefined ? item.Id : undefined,
-        TypeMove: "Out",
-        Status: 0,
-        Qty: 1.0,
-        SellingPrice: item.CostPrice,
-        Tax: 0.0,
-        InventoryItemId: 1,
-        Name: item.Name,
-        Description: "",
-      });
+      var find = this.tempForm.InventoryMovements.findIndex(
+        (value) => value.ItemsId == item.Id
+      );
+
+      if (find != -1) this.tempForm.InventoryMovements[find].Qty += 1;
+      else {
+        this.tempForm.InventoryMovements.unshift({
+          Id: undefined,
+          ItemsId: item != undefined ? item.Id : undefined,
+          TypeMove: "Out",
+          Status: 0,
+          Qty: 1.0,
+          SellingPrice: item.SellingPrice,
+          Tax: 0.0,
+          InventoryItemId: 1,
+          Name: item.Name,
+          Description: "",
+          Item: item,
+        });
+      }
     },
     RemoveItem(index) {
       this.tempForm.InventoryMovements.splice(index, 1);

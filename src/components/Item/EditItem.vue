@@ -28,145 +28,132 @@
       </div>
 
       <el-form ref="dataForm" :rules="rulesForm" :model="tempForm">
-        <el-collapse style="display: table-row-group" v-model="activeNames" accordion>
-          <el-collapse-item title="Info" name="Info">
-            <el-row type="flex">
-              <el-col :span="16">
-                <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
-                  <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
-                  <el-checkbox v-model="tempForm.IsPrime"
-                    >اظهار على شاشة المبيعات</el-checkbox
-                  >
-                  <el-checkbox v-model="tempForm.TakeBon">تتبع جمركي</el-checkbox>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <pan-thumb
-                  :image="tempForm.Avatar"
-                  :height="'100px'"
-                  :width="'100px'"
-                  :hoverable="false"
-                >
-                  <el-button
-                    type="primary"
-                    icon="el-icon-upload"
-                    @click="imagecropperShow = true"
-                  ></el-button>
-                  <web-cam TableName="Item" :ObjectId="tempForm.Id" />
-                </pan-thumb>
-                <image-cropper
-                  v-show="imagecropperShow"
-                  :key="imagecropperKey"
-                  :width="150"
-                  :height="150"
-                  lang-type="ar"
-                  TableName="Item"
-                  :ObjectId="tempForm.Id"
-                  @close="close"
-                  @crop-upload-success="cropSuccess"
-                /> </el-col
-            ></el-row>
-
-            <el-row type="flex">
-              <el-col :span="8">
-                <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
-                  <el-input-number
-                    v-model="tempForm.CostPrice"
-                    :precision="2"
-                    :step="0.1"
-                    :min="0.0"
-                    :max="1500"
-                    @focus="$event.target.select()"
-                  ></el-input-number>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item v-bind:label="$t('Items.PurchaseCost')" prop="OtherPrice">
-                  <el-input-number
-                    v-model="tempForm.OtherPrice"
-                    :precision="2"
-                    :step="0.1"
-                    :min="0.0"
-                    :max="1500"
-                    @focus="$event.target.select()"
-                  ></el-input-number>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item v-bind:label="$t('Items.SellingPrice')" prop="SellingPrice">
-                  <el-input-number
-                    v-model="tempForm.SellingPrice"
-                    :precision="2"
-                    :step="0.1"
-                    :min="0.0"
-                    :max="1500"
-                    @focus="$event.target.select()"
-                  ></el-input-number>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row type="flex">
-              <el-col :span="12">
-                <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
-                  <el-input-number
-                    v-model="tempForm.LowOrder"
-                    :min="1"
-                    :max="100000000"
-                    @focus="$event.target.select()"
-                  ></el-input-number>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item v-bind:label="$t('Items.Tax')" prop="Tax">
-                  <el-input-number
-                    v-model="tempForm.Tax"
-                    :precision="2"
-                    :step="0.01"
-                    :min="0.0"
-                    :max="1"
-                    @focus="$event.target.select()"
-                  />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row type="flex">
-              <el-col :span="12">
-                <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
-                  <el-input
-                    v-model="tempForm.Barcode"
-                    suffix-icon="fa fa-barcode"
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
-                  <el-input type="textarea" v-model="tempForm.Description"></el-input>
-                </el-form-item>
-              </el-col> </el-row
-          ></el-collapse-item>
-          <el-collapse-item title="Qty" name="Qty">
-            <inventory-qty :ItemId="tempForm.Id" />
-          </el-collapse-item>
-          <el-collapse-item title="MenuItem" name="MenuItem">
-            <Menu-Item
-              :Value="tempForm.MenuItem"
-              @Set="
-                (v) => {
-                  tempForm.MenuItem = v;
-                }
-              "
-            />
-            <el-tag
-              v-for="item of Array.from((tempForm.MenuItem || '').split(','))"
-              :key="item"
+        <el-row type="flex">
+          <el-col :span="16">
+            <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
+              <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
+              <el-checkbox v-model="tempForm.IsPrime"
+                >اظهار على شاشة المبيعات</el-checkbox
+              >
+              <el-checkbox v-model="tempForm.TakeBon">تتبع جمركي</el-checkbox>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <pan-thumb
+              :image="tempForm.Avatar"
+              :height="'100px'"
+              :width="'100px'"
+              :hoverable="false"
             >
-              {{ item }}
-            </el-tag>
-          </el-collapse-item>
-          <el-collapse-item title="Ingredients" name="Ingredients">
-            <ingredient :Value="tempForm.Ingredients" />
-          </el-collapse-item>
-        </el-collapse>
+              <el-button
+                type="primary"
+                icon="el-icon-upload"
+                @click="imagecropperShow = true"
+              ></el-button>
+              <web-cam TableName="Item" :ObjectId="tempForm.Id" />
+            </pan-thumb>
+            <image-cropper
+              v-show="imagecropperShow"
+              :key="imagecropperKey"
+              :width="150"
+              :height="150"
+              lang-type="ar"
+              TableName="Item"
+              :ObjectId="tempForm.Id"
+              @close="close"
+              @crop-upload-success="cropSuccess"
+            /> </el-col
+        ></el-row>
+
+        <el-row type="flex">
+          <el-col :span="8">
+            <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
+              <el-input-number
+                v-model="tempForm.CostPrice"
+                :precision="2"
+                :step="0.1"
+                :min="0.0"
+                :max="1500"
+                @focus="$event.target.select()"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item v-bind:label="$t('Items.PurchaseCost')" prop="OtherPrice">
+              <el-input-number
+                v-model="tempForm.OtherPrice"
+                :precision="2"
+                :step="0.1"
+                :min="0.0"
+                :max="1500"
+                @focus="$event.target.select()"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item v-bind:label="$t('Items.SellingPrice')" prop="SellingPrice">
+              <el-input-number
+                v-model="tempForm.SellingPrice"
+                :precision="2"
+                :step="0.1"
+                :min="0.0"
+                :max="1500"
+                @focus="$event.target.select()"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="12">
+            <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
+              <el-input-number
+                v-model="tempForm.LowOrder"
+                :min="1"
+                :max="100000000"
+                @focus="$event.target.select()"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item v-bind:label="$t('Items.Tax')" prop="Tax">
+              <el-input-number
+                v-model="tempForm.Tax"
+                :precision="2"
+                :step="0.01"
+                :min="0.0"
+                :max="1"
+                @focus="$event.target.select()"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row type="flex">
+          <el-col :span="12">
+            <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
+              <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
+              <el-input type="textarea" v-model="tempForm.Description"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <Inventory-Qty v-bind:ItemId="tempForm.Id" />
+        <Menu-Item
+          :Value="tempForm.MenuItem"
+          @Set="
+            (v) => {
+              tempForm.MenuItem = v;
+            }
+          "
+        />
+        <el-tag
+          v-for="item of Array.from((tempForm.MenuItem || '').split(','))"
+          :key="item"
+        >
+          {{ item }}
+        </el-tag>
       </el-form>
     </el-dialog>
   </div>
@@ -174,7 +161,7 @@
 
 <script>
 import { Edit, GetItemById } from "@/api/Item";
-import InventoryQty from "@/components/Item/InventoryQty";
+import InventoryQty from "@/components/Item/InventoryQty.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
@@ -182,10 +169,9 @@ import { GetFileByObjId } from "@/api/File";
 import permission from "@/directive/permission/index.js";
 import MenuItem from "./MenuItem.vue";
 import elDragDialog from "@/directive/el-drag-dialog"; // base on element-ui
-import Ingredient from "./Ingredient.vue";
 
 export default {
-  components: { InventoryQty, PanThumb, WebCam, ImageCropper, MenuItem, Ingredient },
+  components: { InventoryQty, PanThumb, WebCam, ImageCropper, MenuItem },
   props: {
     ItemId: {
       type: Number,
