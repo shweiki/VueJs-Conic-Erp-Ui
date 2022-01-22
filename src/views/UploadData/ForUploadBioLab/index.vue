@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
+    <Upload-Excel-Component :on-success="handleSuccess" :before-upload="beforeUpload" />
     <Export :list="data" />
 
     <el-row type="flex">
@@ -165,7 +165,7 @@ export default {
       var minutes = Math.floor(total_seconds / 60) % 60;
 
       return new Date(
-        date_info.getFullYear() < 1922
+        date_info.getFullYear() < new Date().getFullYear() - 99
           ? date_info.getFullYear() + 100
           : date_info.getFullYear(),
         date_info.getMonth(),

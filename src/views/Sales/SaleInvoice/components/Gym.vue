@@ -656,7 +656,7 @@ export default {
                   type: "success",
                   position: "top-left",
                 });
-                this.tempForm.Id = response;
+                this.tempForm.Id = response.Id;
                 this.tempForm.Total = Total;
 
                 this.OldInvoice = this.tempForm;

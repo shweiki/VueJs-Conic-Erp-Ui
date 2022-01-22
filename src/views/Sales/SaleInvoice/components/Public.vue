@@ -446,7 +446,7 @@ export default {
             Done = await Create(this.tempForm)
               .then((res) => {
                 if (res) {
-                  this.tempForm.Id = res;
+                  this.tempForm.Id = res.Id;
                   return res;
                 } else return false;
               })

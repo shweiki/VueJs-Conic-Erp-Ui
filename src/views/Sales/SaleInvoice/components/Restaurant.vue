@@ -112,22 +112,32 @@
                           <drawer-search-invoice />
                         </el-col>
                         <el-col :span="3">
-                          <el-tooltip class="item" effect="dark" content="Auto Print" placement="bottom">
+                          <el-tooltip
+                            class="item"
+                            effect="dark"
+                            content="Auto Print"
+                            placement="bottom"
+                          >
                             <el-switch
-                            v-model="AutoPrint"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                          ></el-switch>
-                            </el-tooltip>
+                              v-model="AutoPrint"
+                              active-color="#13ce66"
+                              inactive-color="#ff4949"
+                            ></el-switch>
+                          </el-tooltip>
                         </el-col>
                         <el-col :span="6">
-                           <el-tooltip class="item" effect="dark" content="Open Cash Drawer" placement="bottom">
-                          <el-button
-                            @click="OpenCashDrawer()"
-                            type="warning"
-                            icon="el-icon-takeaway-box"
-                          ></el-button>
-                           </el-tooltip>
+                          <el-tooltip
+                            class="item"
+                            effect="dark"
+                            content="Open Cash Drawer"
+                            placement="bottom"
+                          >
+                            <el-button
+                              @click="OpenCashDrawer()"
+                              type="warning"
+                              icon="el-icon-takeaway-box"
+                            ></el-button>
+                          </el-tooltip>
                         </el-col>
                         <el-col :span="6">
                           <Drawer-Print
@@ -151,21 +161,26 @@
                             "
                             @Done="isEdit != true ? createData() : updateData()"
                           />
-                          <el-tooltip class="item" effect="dark" content="Checkout" placement="bottom">
-                          <el-button
-                          style="float: left;"
-                          size="medium"
-                            :disabled="DisabledSave"
-                            @click="
-                              $store.state.settings.showRestOfBill != true
-                                ? isEdit != true
-                                  ? createData()
-                                  : updateData()
-                                : (OpenRestOfBill = true)
-                            "
-                            type="primary"
-                            icon="el-icon-check"
-                          ></el-button>
+                          <el-tooltip
+                            class="item"
+                            effect="dark"
+                            content="Checkout"
+                            placement="bottom"
+                          >
+                            <el-button
+                              style="float: left"
+                              size="medium"
+                              :disabled="DisabledSave"
+                              @click="
+                                $store.state.settings.showRestOfBill != true
+                                  ? isEdit != true
+                                    ? createData()
+                                    : updateData()
+                                  : (OpenRestOfBill = true)
+                              "
+                              type="primary"
+                              icon="el-icon-check"
+                            ></el-button>
                           </el-tooltip>
                         </el-col>
                       </el-row>
@@ -411,13 +426,18 @@
 
                         <el-table-column width="60" label="#" align="center">
                           <template slot-scope="scope">
-                             <el-tooltip class="item" effect="dark" content="حذف" placement="bottom">
-                            <el-button
-                              style="float: left"
-                              type="danger"
-                              icon="el-icon-delete"
-                              @click="RemoveItem(scope.$index)"
-                            />
+                            <el-tooltip
+                              class="item"
+                              effect="dark"
+                              content="حذف"
+                              placement="bottom"
+                            >
+                              <el-button
+                                style="float: left"
+                                type="danger"
+                                icon="el-icon-delete"
+                                @click="RemoveItem(scope.$index)"
+                              />
                             </el-tooltip>
                           </template>
                         </el-table-column>
@@ -641,7 +661,7 @@ export default {
               .then((response) => {
                 if (response) {
                   this.ValidateDescription = "";
-                  this.tempForm.Id = response;
+                  this.tempForm.Id = response.Id;
                   this.tempForm.Total = Total;
                   this.OldInvoice = this.tempForm;
                   this.CheckVendor(

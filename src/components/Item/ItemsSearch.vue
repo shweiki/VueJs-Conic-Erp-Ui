@@ -77,7 +77,7 @@
 </template>
 <script>
 import AddItem from "./AddItem";
-import DialogSearchItem from "./DialogSearchItem";
+import DialogSearchItem from "./DialogSearchItem.vue";
 import { GetItemByBarcode, GetItemById } from "@/api/Item";
 import ItemSearchAny from "./ItemSearchAny";
 import permission from "@/directive/permission/index.js";

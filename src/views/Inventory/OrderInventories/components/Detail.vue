@@ -78,7 +78,7 @@
           </el-col>
         </el-row>
         <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-          <items-search :WithBarCode="true" @add="AddItem" />
+          <Items-Search :WithBarCode="true" @add="AddItem" />
         </el-card>
         <el-form-item prop="InventoryMovements">
           <el-table
@@ -134,7 +134,12 @@
                 </el-radio-group>
               </template>
             </el-table-column>
-            <el-table-column label="المتوفر" width="80" align="center">
+            <el-table-column
+              v-if="isEdit == false"
+              label="المتوفر"
+              width="80"
+              align="center"
+            >
               <template slot-scope="scope">
                 {{ scope.row.Item.TotalIn - scope.row.Item.TotalOut }}
               </template>
@@ -214,7 +219,7 @@
 </template>
 <script>
 import { Create, Edit, GetOrderInventoryById } from "@/api/OrderInventory";
-import ItemsSearch from "@/components/Item/ItemsSearch";
+import ItemsSearch from "@/components/Item/ItemsSearch.vue";
 import EditItem from "@/components/Item/EditItem";
 import ExpDate from "@/components/Date/ExpDate.vue";
 import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
@@ -265,6 +270,15 @@ export default {
     this.tempRoute = Object.assign({}, this.$route);
   },
   methods: {
+    restTempForm() {
+      this.tempForm = {
+        Id: undefined,
+        FakeDate: new Date(),
+        OrderType: "ادخال: بضاعة اول المدة / بونص",
+        Description: "",
+        InventoryMovements: [],
+      };
+    },
     AddItem(item) {
       this.tempForm.InventoryMovements.unshift({
         Id: undefined,
@@ -321,6 +335,7 @@ export default {
                 showClose: false,
                 onClose: () => {
                   if (response) {
+                    this.restTempForm();
                     /*    this.$nextTick(() => {
                       this.$router.replace({
                         path: "/redirect" + "/OrderInventories/List"
@@ -353,11 +368,11 @@ export default {
                 showClose: false,
                 onClose: () => {
                   if (response) {
-                    /*    this.$nextTick(() => {
+                    this.$nextTick(() => {
                       this.$router.replace({
-                        path: "/redirect" + "/OrderInventories/List"
+                        path: "/redirect" + "/OrderInventories/List",
                       });
-                    });*/
+                    });
                   }
                 },
               });

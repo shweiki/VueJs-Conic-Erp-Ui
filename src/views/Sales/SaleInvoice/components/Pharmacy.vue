@@ -670,7 +670,7 @@ export default {
                   duration: 1000,
                   onClose: () => {
                     this.ValidateDescription = "";
-                    this.tempForm.Id = response;
+                    this.tempForm.Id = response.Id;
                     this.tempForm.Total = Total;
                     this.OldInvoice = this.tempForm;
                     //     this.restTempForm();
@@ -688,7 +688,7 @@ export default {
                   duration: 1000,
                   onClose: () => {
                     this.ValidateDescription = "";
-                    this.tempForm.Id = response;
+                    this.tempForm.Id = response.Id;
                     this.tempForm.Total = Total;
                     this.OldInvoice = this.tempForm;
                     this.restTempForm();
@@ -735,7 +735,7 @@ export default {
                   showClose: false,
                   onClose: () => {
                     this.ValidateDescription = "";
-                    this.tempForm.Id = response;
+                    this.tempForm.Id = response.Id;
                     this.tempForm.Total = Total;
                     this.OldInvoice = this.tempForm;
                     this.AutoPrint ? this.Print() : undefined;

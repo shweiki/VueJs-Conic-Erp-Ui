@@ -235,6 +235,24 @@ export default {
     focus() {
       this.$emit("focus");
     },
+    restTemp() {
+      this.tempForm = {
+        Id: undefined,
+        Name: "",
+        CostPrice: 0.0,
+        SellingPrice: 0.0,
+        OtherPrice: 0.0,
+        LowOrder: 0,
+        Tax: 0.0,
+        Rate: 0,
+        IsPrime: false,
+        TakeBon: false,
+        Barcode: "",
+        Description: "",
+        Ingredients: null,
+        UnitItem: "",
+      };
+    },
     confirmData() {
       this.$refs["dataForm"].validate(async (valid) => {
         if (valid) {
@@ -262,6 +280,7 @@ export default {
           console.log(("done", this.isEdit));
 
           if (Done) {
+            this.restTemp();
             this.$notify({
               title: "تم " + this.isEdit == true ? "تعديل" : "إضافة" + " ",
               message: "تم " + this.isEdit == true ? "تعديل" : "إضافة" + "   بنجاح",
