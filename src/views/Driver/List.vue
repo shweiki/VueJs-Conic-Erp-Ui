@@ -31,7 +31,9 @@
               >Email</el-button
             >
           </div>
-          <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
+          <el-button icon="el-icon-circle-plus" slot="reference"
+            >ارسال رسالة</el-button
+          >
         </el-popover>
         <el-row type="flex">
           <el-col :span="3">
@@ -102,11 +104,19 @@
           let r = $router.resolve({
             path: '/Driver/Edit/' + row.Id,
           });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+          window.open(
+            r.href,
+            r.route.name,
+            $store.getters.settings.windowStyle
+          );
         }
       "
     >
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      ></el-table-column>
       <el-table-column
         v-bind:label="$t('Vendors.ID')"
         prop="Id"
@@ -119,7 +129,11 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
+      <el-table-column
+        v-bind:label="$t('AddVendors.Name')"
+        prop="Name"
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         v-bind:label="$t('CashDrawer.Company')"
@@ -137,7 +151,11 @@
         prop="PhoneNumber2"
         width="120"
       ></el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Sales.Status')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Driver" />
         </template>

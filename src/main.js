@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Cookies from 'js-cookie'
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import Element from 'element-ui'
-import './styles/element-variables.scss'
+import '@/styles/element-variables.scss'
 import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
@@ -14,15 +14,14 @@ import './utils/error-log' // error log
 import * as filters from './filters' // global filters
 import VueCurrencyInput from 'vue-currency-input'
 import VueBarcodeScanner from 'vue-barcode-scanner'
-import OpenCashSound from '@/assets/Sounds/PointOfSaleOpenCashDrawer.wav'
+// import OpenCashSound from '@/assets/Sounds/PointOfSaleOpenCashDrawer.wav'
 import BarCodeSound from '@/assets/Sounds/BarCode.wav'
-
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // You can also use <link> for styles
-// ..
-store.dispatch("settings/GetSetting");
 import VueNativeNotification from 'vue-native-notification'
- 
+
+import AOS from 'aos'
+import 'aos/dist/aos.css' // You can also use <link> for styles
+// ..
+store.dispatch('settings/GetSetting')
 Vue.use(VueNativeNotification, {
   // Automatic permission request before
   // showing notification (default: true)
@@ -30,13 +29,13 @@ Vue.use(VueNativeNotification, {
 })
 Vue.notification.requestPermission()
   .then(console.log)
-AOS.init();
+AOS.init()
 const pluginOptions = {
   /* see config reference */
-  globalOptions: { currency: 'JOD' },
+  globalOptions: { currency: 'JOD' }
 }
 Vue.directive('focus', {
-  inserted: function (el, binding, vnode) {
+  inserted: function(el, binding, vnode) {
     Vue.nextTick(function() {
       el.focus()
     })
@@ -44,7 +43,7 @@ Vue.directive('focus', {
 })
 Vue.use(VueCurrencyInput, pluginOptions)
 Vue.use(Element, {
-  size:  'mini', // ||Cookies.get('size') || // store.getters.settings.size, // set element-ui default size
+  size: Cookies.get('size') || 'mini', // ||Cookies.get('size') || // store.getters.settings.size, // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
 // register global utility filters
@@ -54,8 +53,7 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 
-
-let options = {
+const options = {
   sound: true, // default is false
   soundSrc: BarCodeSound, // default is blank
   sensitivity: 300, // default is 100
@@ -63,10 +61,9 @@ let options = {
   controlSequenceKeys: ['NumLock', 'Clear'], // default is null
   callbackAfterTimeout: true // default is false
 }
+
 Vue.use(VueBarcodeScanner, options)
-Vue.prototype.window = window;
-
-
+Vue.prototype.window = window
 
 new Vue({
   el: '#app',
