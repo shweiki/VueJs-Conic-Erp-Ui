@@ -24,6 +24,18 @@
               prop="Fk"
               v-bind:label="TableName == 'Employee' ? 'موظف' : 'مشترك'"
             >
+              <el-input
+                :disabled="true"
+                v-model="Temp.Fk"
+                class="input-with-select"
+              >
+                <svg-icon
+                  slot="append"
+                  class-name="search-icon"
+                  icon-class="search"
+                  @click.stop="click"
+                />
+              </el-input>
               <Member-Search-Any
                 v-if="TableName == 'Member'"
                 @Set="
