@@ -1,5 +1,10 @@
 <template>
-  <el-popover v-permission="['admin']" placement="bottom" width="500" trigger="hover">
+  <el-popover
+    v-permission="['admin']"
+    placement="bottom"
+    width="500"
+    trigger="hover"
+  >
     <FilenameOption v-model="filename" />
     <AutoWidthOption v-model="autoWidth" />
     <BookTypeOption v-model="bookType" />
@@ -25,7 +30,7 @@
 </template>
 
 <script>
-import { parseTime } from "@/utils";
+import { parseTime } from "@/utils/index";
 // options components
 import FilenameOption from "./components/FilenameOption";
 import AutoWidthOption from "./components/AutoWidthOption";
@@ -50,15 +55,17 @@ export default {
   created() {},
   methods: {
     handleDownload() {
+      console.log("this.list", this.list);
       this.downloadLoading = true;
       import("@/Report/Excel/Export2Excel").then((excel) => {
         const tHeader = Object.keys(this.list[0]); // ['Id', 'Title', 'Author', 'Readings', 'Date']
         const filterVal = Object.keys(this.list[0]); //['id', 'title', 'author', 'pageviews', 'display_time']
         const list = this.list;
-        const data = this.formatJson(filterVal, list);
+        let formatJson = this.formatJson(filterVal, list);
+        console.log("this.list",this.filename, this.autoWidth, this.bookType);
         excel.export_json_to_excel({
           header: tHeader,
-          data,
+          data: formatJson,
           filename: this.filename,
           autoWidth: this.autoWidth,
           bookType: this.bookType,
@@ -70,7 +77,7 @@ export default {
       return jsonData.map((v) =>
         filterVal.map((j) => {
           if (j === "timestamp") {
-            return parseTime(v[j]);
+            return parseTime(v[j],"{y}-{m}-{d} {h}:{i}");
           }
           if (j === "InventoryMovements") {
             return JSON.stringify(v[j]);
@@ -79,7 +86,7 @@ export default {
             return JSON.stringify(v[j]);
           }
           if (j === "FakeDate") {
-            return parseTime(v[j]);
+            return parseTime(v[j],"{y}-{m}-{d} {h}:{i}");
           } else {
             return v[j];
           }

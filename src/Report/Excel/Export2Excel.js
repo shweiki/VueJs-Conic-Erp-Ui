@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { saveAs } from 'file-saver'
-import XLSX from 'xlsx'
+import { read, utils, XLSX ,writeFileXLSX  } from 'xlsx';
 
 function generateArray(table) {
   var out = [];
@@ -80,7 +80,7 @@ function sheet_from_array_of_arrays(data, opts) {
         v: data[R][C]
       };
       if (cell.v == null) continue;
-      var cell_ref = XLSX.utils.encode_cell({
+      var cell_ref = utils.encode_cell({
         c: C,
         r: R
       });
@@ -96,7 +96,7 @@ function sheet_from_array_of_arrays(data, opts) {
       ws[cell_ref] = cell;
     }
   }
-  if (range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
+  if (range.s.c < 10000000) ws['!ref'] = utils.encode_range(range);
   return ws;
 }
 
@@ -107,6 +107,7 @@ function Workbook() {
 }
 
 function s2ab(s) {
+  console.log("ss")
   var buf = new ArrayBuffer(s.length);
   var view = new Uint8Array(buf);
   for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
@@ -133,11 +134,7 @@ export function export_table_to_excel(id) {
   wb.SheetNames.push(ws_name);
   wb.Sheets[ws_name] = ws;
 
-  var wbout = XLSX.write(wb, {
-    bookType: 'xlsx',
-    bookSST: false,
-    type: 'binary'
-  });
+  var wbout = writeFileXLSX(wb, "test.xlsx");
 
   saveAs(new Blob([s2ab(wbout)], {
     type: "application/octet-stream"
@@ -169,7 +166,7 @@ export function export_json_to_excel({
   if (merges.length > 0) {
     if (!ws['!merges']) ws['!merges'] = [];
     merges.forEach(item => {
-      ws['!merges'].push(XLSX.utils.decode_range(item))
+      ws['!merges'].push(utils.decode_range(item))
     })
   }
 
@@ -209,11 +206,7 @@ export function export_json_to_excel({
   wb.SheetNames.push(ws_name);
   wb.Sheets[ws_name] = ws;
 
-  var wbout = XLSX.write(wb, {
-    bookType: bookType,
-    bookSST: false,
-    type: 'binary'
-  });
+  var wbout = writeFileXLSX(wb, `${filename}.${bookType}`);
   saveAs(new Blob([s2ab(wbout)], {
     type: "application/octet-stream"
   }), `${filename}.${bookType}`);

@@ -82,6 +82,13 @@ const UploadData = {
       meta: {
         title: 'UploadOprationsys', icon: 'execution'
       },
+    },    {
+      path: 'Upload/Report',
+      component: () => import('@/views/UploadData/Report'),
+      name: 'UploadReport',
+      meta: {
+        title: 'UploadReport', icon: 'execution'
+      },
     },
     {
       path: 'Upload/ForUploadBioLab',
