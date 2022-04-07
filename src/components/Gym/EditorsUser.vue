@@ -10,10 +10,13 @@
 </template>
 <script>
 import { GetEditorsUser } from "@/api/EditorsUser";
+import { mapGetters } from "vuex";
 
 export default {
   props: ["Value"],
-
+  computed: {
+    ...mapGetters(["Id", "name", "phone", "avatar", "roles"]),
+  },
   data() {
     return {
       options: [],
@@ -24,6 +27,7 @@ export default {
     GetEditorsUser()
       .then((response) => {
         this.options = response;
+        this.options.push({ Id: this.Id, Name: this.name });
       })
       .catch((error) => {
         reject(error);

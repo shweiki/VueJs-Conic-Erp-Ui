@@ -68,7 +68,7 @@
         {{ loginFailed }}
       </span>
       <el-button :loading="loading" @click.native.prevent="handleLogin">Login</el-button>
-      <new-user-sign-up />
+     <!-- <new-user-sign-up /> -->
     </el-form>
   </div>
 </template>
