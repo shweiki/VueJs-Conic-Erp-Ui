@@ -7,7 +7,11 @@
       @click="Visibles = true"
     />
 
-    <el-dialog style="margin-top: -13vh" title="تسجيل دخول" :visible.sync="Visibles">
+    <el-dialog
+      style="margin-top: -13vh"
+      title="تسجيل دخول"
+      :visible.sync="Visibles"
+    >
       <el-form
         :model="Temp"
         ref="DeviceLogForm"
@@ -16,12 +20,25 @@
       >
         <el-row type="flex">
           <el-col :span="12">
-            <el-form-item prop="Fk" label="الموظف">
+            <el-form-item
+              prop="Fk"
+              v-bind:label="TableName == 'Employee' ? 'موظف' : 'مشترك'"
+            >
+              <Member-Search-Any
+                v-if="TableName == 'Member'"
+                @Set="
+                  (v) => {
+                    Temp.Fk = v.Id;
+                  }
+                "
+              />
+
               <employee-search-any
+                v-if="TableName == 'Employee'"
                 :EmployeeId="Fk"
                 @Set="
                   (v) => {
-                    Temp.TableName = 'Employee';
+                    //  Temp.TableName = 'Employee';
                     Temp.Fk = v.Id;
                   }
                 "
@@ -29,12 +46,18 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <select-device :Value="Temp.DeviceId" @Set="(v) => (Temp.DeviceId = v.Id)" />
+            <select-device
+              :Value="Temp.DeviceId"
+              @Set="(v) => (Temp.DeviceId = v.Id)"
+            />
           </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="DateTime">
+            <el-form-item
+              v-bind:label="$t('AddVendors.Description')"
+              prop="DateTime"
+            >
               <Fake-Date
                 :Value="Temp.DateTime"
                 @Set="
@@ -46,14 +69,19 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+            <el-form-item
+              v-bind:label="$t('AddVendors.Description')"
+              prop="Description"
+            >
               <el-input v-model="Temp.Description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button @click="Visibles = false">{{
+          $t("AddVendors.Cancel")
+        }}</el-button>
         <el-button type="primary" @click="create()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -68,10 +96,12 @@ import permission from "@/directive/permission/index.js";
 import FakeDate from "@/components/Date/FakeDate.vue";
 import SelectDevice from "./SelectDevice.vue";
 import EmployeeSearchAny from "../HumanResource/EmployeeSearchAny.vue";
+import MemberSearchAny from "@/components/Member/MemberSearchAny.vue";
+
 export default {
   name: "AddDeviceLog",
-  props: ["Fk"],
-  components: { FakeDate, SelectDevice, EmployeeSearchAny },
+  props: ["Fk", "TableName"],
+  components: { FakeDate, SelectDevice, EmployeeSearchAny, MemberSearchAny },
   directives: { permission },
   data() {
     return {
@@ -82,7 +112,7 @@ export default {
         DateTime: "",
         DeviceId: 1,
         Status: 0,
-        TableName: "",
+        TableName: this.TableName,
         Description: "Manual Register Log",
       },
       Visibles: false,

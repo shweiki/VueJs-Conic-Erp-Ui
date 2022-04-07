@@ -3,10 +3,13 @@
     <el-card style="margin-bottom: 20px">
       <el-row type="flex">
         <el-col :span="8">
-          <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
+          <el-button
+            @click="reverse = !reverse"
+            icon="el-icon-sort"
+          ></el-button>
         </el-col>
         <el-col :span="8">
-          <add-member-log />
+          <Add-Device-Log :Fk="Fk" TableName="Member" />
         </el-col>
         <el-col :span="8">
           <el-button
@@ -32,11 +35,10 @@
           infinite-scroll-disabled="disabled"
           :reverse="reverse"
           style="
-            margin-left: -25px;
             margin-top: 15px;
-            margin-right: -45px;
             height: 550px;
             overflow: scroll;
+            text-align: center;
           "
         >
           <el-timeline-item
@@ -54,7 +56,11 @@
                   let r = $router.resolve({
                     path: '/Gym/Edit/' + Log.Fk,
                   });
-                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                  window.open(
+                    r.href,
+                    r.route.name,
+                    $store.getters.settings.windowStyle
+                  );
                 }
               "
               :color="Log.User.Style.Color"
@@ -62,15 +68,20 @@
                 Log.User.Name
               }}</strong></el-tag
             >
-            <Status-Tag :Status="Log.User.Status" TableName="Member"> </Status-Tag>
+            <Status-Tag :Status="Log.User.Status" TableName="Member">
+            </Status-Tag>
             <el-tag
               v-if="Log.User.ActiveMemberShip != null"
               v-bind:type="
-                Log.User.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'
+                Log.User.ActiveMemberShip.Type == 'Morning'
+                  ? 'warning'
+                  : 'success'
               "
               >{{ Log.User.ActiveMemberShip.Type }}</el-tag
             >
-            <el-tag v-if="Log.User.TotalCredit - Log.User.TotalDebit > 0" type="info"
+            <el-tag
+              v-if="Log.User.TotalCredit - Log.User.TotalDebit > 0"
+              type="info"
               >مدين</el-tag
             >
             <el-time-picker
@@ -89,20 +100,20 @@
 </template>
 
 <script>
-import { GetByStatus, RemoveDuplicate } from "@/api/DeviceLog";
+import { GetByStatus } from "@/api/DeviceLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import AddMemberLog from "./Dialogs/AddMemberLog.vue";
+import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
 
 export default {
   name: "MemberLog",
-  components: { StatusTag, AddMemberLog },
+  components: { StatusTag, AddDeviceLog },
   data() {
     return {
       loading: false,
       MembersLogs: [],
       reverse: false,
       listQuery: {
-        Page: 1,
+        Page: 0,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
@@ -120,7 +131,7 @@ export default {
     },
   },
   created() {
-    this.getdata();
+    // this.getdata();
   },
   methods: {
     getdata() {
@@ -130,6 +141,7 @@ export default {
           Array.prototype.push.apply(this.MembersLogs, response);
           //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
           //  RemoveDuplicate();
+          if (response.length == 0) this.listQuery.Page = 13;
           this.loading = false;
         })
         .catch((error) => {
