@@ -193,7 +193,8 @@ export default {
       Totals: {
         WorkingDays: 0,
         ExtraMinute: 0,
-        DelayMinute: 0,
+        DelayMinute: 0,     
+        WorkingHours: 0,
       },
       listLoading: false,
       days: ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"],
@@ -251,6 +252,11 @@ export default {
             return prev + cur.DelayMinute;
           }, 0)
           .toFixed(this.$store.getters.settings.ToFixed),
+          WorkingHours:list
+          .reduce((prev, cur) => {
+            return prev + cur.WorkTime;
+          }, 0)
+          .toFixed(this.$store.getters.settings.ToFixed)
       };
       this.$emit("Done", this.Totals);
     },
