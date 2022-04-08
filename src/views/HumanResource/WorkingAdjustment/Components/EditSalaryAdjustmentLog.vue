@@ -110,7 +110,6 @@ export default {
     },
     Edit() {
       this.$refs["dataForm"];
-      this.tempForm.SalaryPaymentId = this.SalaryPaymentId;
       Edit(this.tempForm)
         .then((response) => {
           this.dialogFormVisible = false;
