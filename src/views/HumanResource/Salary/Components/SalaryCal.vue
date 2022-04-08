@@ -237,7 +237,9 @@ export default {
 
       GetById({ Id: this.$route.params && this.$route.params.id }).then((response) => {
         this.tempForm = response;
-
+this.setTagsViewTitle();
+          // set page title
+          this.setPageTitle();
         this.tempForm.NetSalary = (
           parseFloat(this.tempForm.GrossSalary) +
           this.tempForm.SalaryAdjustmentLogs.reduce((prev, cur) => {
@@ -265,6 +267,16 @@ export default {
             this.DisabledSave = false;
           }
         });
+    },  setTagsViewTitle() {
+      const title = "احتساب راتب "+this.tempForm.Name+" لشهر "+this.tempForm.SalaryFrom ;
+      const route = Object.assign({}, this.tempRoute, {
+        title: `${this.tempForm.Id} - ${title}`,
+      });
+      this.$store.dispatch("tagsView/updateVisitedView", route);
+    },
+    setPageTitle() {
+      const title = "موظف";
+      document.title = `${title} - ${this.tempForm.Id}`;
     },
   },
 };
