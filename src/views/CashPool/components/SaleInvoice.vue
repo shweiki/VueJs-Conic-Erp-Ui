@@ -342,7 +342,7 @@ export default {
       tableData: [],
       CashPool: {},
       Data: undefined,
-      AutoSent: true,
+      AutoSent: false,
       CashAccountId: undefined,
       InComeAccountId: undefined,
       Totals: {
