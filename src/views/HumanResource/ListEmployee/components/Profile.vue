@@ -35,7 +35,7 @@
               <el-col :span="24">
                 <send-to-device
                   :ObjectId="tempForm.Id"
-                  :Name="tempForm.LatinName"
+                  :Name="tempForm.Name"
                   TableName="Employee"
                 />
               </el-col>

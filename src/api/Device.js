@@ -66,9 +66,9 @@ export function Edit(data) {
     data: qs.stringify(data)
   })
 }
-export function SetAllMembers(query) {
+export function SetAll(query) {
   return request({
-    url: '/Device/SetAllMembers',
+    url: '/Device/SetAll',
     method: 'get',
     params: query
   })
