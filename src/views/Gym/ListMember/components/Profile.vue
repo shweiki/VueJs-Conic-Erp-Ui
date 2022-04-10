@@ -117,11 +117,11 @@
             <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
             <Service :ServiceInvoices="ServiceInvoices" />
           </el-tab-pane>
+    <el-tab-pane label="زيارات" name="timeline">
+              <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
+              <DeviceLog TableName="Member" :UserId="tempForm.Id" />
+            </el-tab-pane>
 
-          <el-tab-pane label="زيارات" name="timeline">
-            <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
-            <Timeline :MemberId="tempForm.Id" />
-          </el-tab-pane>
 
            <el-tab-pane label="اشتراكات" name="activity">
             <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
@@ -153,11 +153,11 @@ import MemberSearch from "./MemberSearch.vue";
 import Payment from "./Payment.vue";
 
 import Activity from "./Activity.vue";
-import Timeline from "./Timeline.vue";
 import Account from "./Account.vue";
 import Service from "./Service.vue";
 import Communication from "./Communication.vue";
 import Documents from "@/components/Documents/Documents.vue";
+import DeviceLog from "@/components/Device/DeviceLog.vue";
 
 import { GetMemberById } from "@/api/Member";
 import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
@@ -177,7 +177,7 @@ export default {
     Details,
     UserCard,
     Activity,
-    Timeline,
+    DeviceLog,
     Account,
     Service,
     Payment,

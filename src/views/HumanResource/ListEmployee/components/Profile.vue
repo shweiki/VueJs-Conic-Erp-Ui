@@ -48,7 +48,7 @@
             
             <el-tab-pane label="دوامات" name="timeline">
               <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
-              <DeviceLog :EmployeeId="tempForm.Id" />
+              <DeviceLog TableName="Employee" :UserId="tempForm.Id" />
             </el-tab-pane>
 
             <el-tab-pane label="مالية" name="account">
@@ -76,10 +76,7 @@
                 :EmployeeName="tempForm.Name"
               />
             </el-tab-pane>
-             <el-tab-pane label="دوامات" name="timeline">
-              <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
-              <Timeline :timeline="log" :EmployeeId="tempForm.Id" />
-            </el-tab-pane>
+
             <el-tab-pane label="بيانات" name="Details">
               <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
               <User-Card :Employee="tempForm" />
@@ -101,7 +98,7 @@ import Account from "./Account.vue";
 import Salary from "./Salary.vue";
 import Communication from "./Communication.vue";
 import Documents from "@/components/Documents/Documents.vue";
-import DeviceLog from "./DeviceLog.vue";
+import DeviceLog from "../../../../components/Device/DeviceLog.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetProfilePictureByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";

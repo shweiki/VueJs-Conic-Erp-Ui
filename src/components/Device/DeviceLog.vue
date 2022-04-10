@@ -3,7 +3,7 @@
     <el-row type="flex">
       <el-col :span="8">
         <Search-By-Date
-          :Value="[FromDate, ToDate]"
+          :Value="[listQuery.DateFrom, listQuery.ToDate]"
           @Set="
             (v) => {
               listQuery.DateFrom = v[0];
@@ -124,7 +124,9 @@
                 : ''
             "
             >{{
-              row.EndDateTime != "Invalid Date" ? TimeConvert(row.EndDateTime) : "****"
+              row.EndDateTime != "Invalid Date"
+                ? TimeConvert(row.EndDateTime)
+                : "****"
             }}</span
           >
         </template>
@@ -153,7 +155,11 @@
       </el-table-column>
       <el-table-column label="#" width="80" align="center">
         <template slot-scope="scope">
-          <dialog-log-device :Log="scope.row.logs" :Fk="listQuery.UserId" @Done="Done" />
+          <dialog-log-device
+            :Log="scope.row.logs"
+            :Fk="listQuery.UserId"
+            @Done="Done"
+          />
         </template>
       </el-table-column>
     </el-table>
@@ -193,11 +199,19 @@ export default {
       Totals: {
         WorkingDays: 0,
         ExtraMinute: 0,
-        DelayMinute: 0,     
+        DelayMinute: 0,
         WorkingHours: 0,
       },
       listLoading: false,
-      days: ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"],
+      days: [
+        "الاحد",
+        "الاثنين",
+        "الثلاثاء",
+        "الاربعاء",
+        "الخميس",
+        "الجمعة",
+        "السبت",
+      ],
     };
   },
   directives: { waves },
@@ -205,6 +219,14 @@ export default {
     UserId(v) {
       console.log("v", v);
       if (v) this.getdata(this.UserId);
+    },
+    FromDate(v) {
+      console.log("FromDate", v);
+      if (v != "") this.listQuery.FromDate = v;
+    },
+    ToDate(v) {
+      console.log("ToDate", v);
+      if (v != "") this.listQuery.ToDate = v;
     },
   },
 
@@ -215,8 +237,6 @@ export default {
       this.listLoading = true;
 
       this.listQuery.UserId = v || this.UserId;
-      this.listQuery.DateFrom = this.FromDate;
-      this.listQuery.DateTo = this.ToDate;
       console.log(" this.listQuery", this.listQuery);
 
       GetLogByUserId(this.listQuery).then(async (response) => {
@@ -252,11 +272,11 @@ export default {
             return prev + cur.DelayMinute;
           }, 0)
           .toFixed(this.$store.getters.settings.ToFixed),
-          WorkingHours:list
+        WorkingHours: list
           .reduce((prev, cur) => {
             return prev + cur.WorkTime;
           }, 0)
-          .toFixed(this.$store.getters.settings.ToFixed)
+          .toFixed(this.$store.getters.settings.ToFixed),
       };
       this.$emit("Done", this.Totals);
     },
@@ -287,7 +307,8 @@ export default {
             let endShiftDate = new Date(
               currentDate.getFullYear(),
               currentDate.getMonth(),
-              currentDate.getDate() + (startDate.getHours() > endDate.getHours() ? 1 : 0),
+              currentDate.getDate() +
+                (startDate.getHours() > endDate.getHours() ? 1 : 0),
               endDate.getHours() + 5, // في حل اشتغل اضافي بدري ب 5 ساعات
               endDate.getMinutes()
             );
@@ -351,9 +372,13 @@ export default {
 
           // Work Time
           let WorkTime =
-            parseInt((Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60 * 60)) % 24) +
-              Math.ceil((Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60)) % 60) / 100 ||
-            0;
+            parseInt(
+              (Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60 * 60)) % 24
+            ) +
+              Math.ceil(
+                (Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60)) % 60
+              ) /
+                100 || 0;
           //  Extra Hours && Delay Hours
           let ExtraHours = 0,
             ExtraMinute = 0,
@@ -362,13 +387,16 @@ export default {
           if (WorkTime > this.WorkingHours) {
             ExtraHours = WorkTime - this.WorkingHours;
             ExtraMinute =
-              Math.floor(ExtraHours) * 60 + (ExtraHours - Math.floor(ExtraHours)) * 100;
-          } else if (WorkTime == 0 || WorkTime == this.WorkingHours) DelayHours = 0;
+              Math.floor(ExtraHours) * 60 +
+              (ExtraHours - Math.floor(ExtraHours)) * 100;
+          } else if (WorkTime == 0 || WorkTime == this.WorkingHours)
+            DelayHours = 0;
           else if (WorkTime < this.WorkingHours) {
             console.log(WorkTime, this.WorkingHours);
             DelayHours = this.WorkingHours - (WorkTime + 0.4);
             DelayMinute =
-              Math.floor(DelayHours) * 60 + (DelayHours - Math.floor(DelayHours)) * 100;
+              Math.floor(DelayHours) * 60 +
+              (DelayHours - Math.floor(DelayHours)) * 100;
           }
           /*  console.log(
             "WorkTime",
@@ -409,14 +437,18 @@ export default {
         return (
           -1 *
           (parseInt((Math.abs(Time - ShouldTime) / (1000 * 60 * 60)) % 24) +
-            parseInt((Math.abs(Time.getTime() - ShouldTime) / (1000 * 60)) % 60) / 100 ||
-            0)
+            parseInt(
+              (Math.abs(Time.getTime() - ShouldTime) / (1000 * 60)) % 60
+            ) /
+              100 || 0)
         );
       else
         return (
           parseInt((Math.abs(Time - ShouldTime) / (1000 * 60 * 60)) % 24) +
-            parseInt((Math.abs(Time.getTime() - ShouldTime) / (1000 * 60)) % 60) / 100 ||
-          0
+            parseInt(
+              (Math.abs(Time.getTime() - ShouldTime) / (1000 * 60)) % 60
+            ) /
+              100 || 0
         );
     },
     handleFilter() {
