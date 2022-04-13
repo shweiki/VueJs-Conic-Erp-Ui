@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-row type="flex">
-      <el-col :span="6" :xs="24">
+  <!--    <el-col :span="6" :xs="24">
         <member-log />
-      </el-col>
-      <el-col :span="18" :xs="24" v-loading="loading">
+      </el-col>-->
+      <el-col :span="24" :xs="24" v-loading="loading">
         <member-search />
 
         <el-col
@@ -44,7 +44,7 @@
 
 <script>
 import permission from "@/directive/permission/index.js";
-import MemberLog from "./components/MemberLog";
+// import MemberLog from "@/components/Gym/MemberLog.vue";
 import MemberSearch from "./components/MemberSearch.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
@@ -55,7 +55,7 @@ import LastLog from "@/components/Gym/LastLog.vue";
 export default {
   name: "MemberList",
   directives: { permission },
-  components: { MemberSearch, MemberLog, PanThumb, WebCam, LastLog },
+  components: { MemberSearch, PanThumb, WebCam, LastLog },
   data() {
     return {
       loading: true,

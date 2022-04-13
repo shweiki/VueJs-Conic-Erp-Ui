@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie'
 import JSPM from "jsprintmanager";
 import store from '@/store'
-
 const state = {
+  baseUrl : window.location.protocol + "//" + window.location.host + "/",
   sidebar: {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false

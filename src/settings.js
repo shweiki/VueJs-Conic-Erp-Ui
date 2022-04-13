@@ -42,6 +42,8 @@ module.exports = {
     StatusQuery: 0,
     Member: {
         CheckMemberIsExist: true,
+        SsnIsRequired: false,
+
     },
     Employee: {
         CheckEmployeeIsExist: true,
@@ -64,7 +66,7 @@ module.exports = {
     PointOfSale: {
         Layout: "Public",
         WithImage: false,
-        QtyCounter:false,
+        QtyCounter: false,
         CreateEntry: false,
         CreateDelivery: false,
         DeliveryUrl: "http://localhost:8090/test1/OrderDelivery/Create"
@@ -72,7 +74,7 @@ module.exports = {
     Purchase: {
         Layout: "Public",
         BillOfEntery: true,
-        QtyCounter:false,
+        QtyCounter: false,
         CreateEntry: false,
     },
     CashPoolLayout: "Restaurant",
@@ -86,6 +88,7 @@ module.exports = {
         CreateEntry: true
     },
     MembershipMovement: {
+        OneInBodyFreeForeach30Days: false,
         InComeAccountId: 2,
     },
     Visit: {

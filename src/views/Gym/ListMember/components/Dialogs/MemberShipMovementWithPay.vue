@@ -14,12 +14,22 @@
         >
       </el-col></el-row
     >
-    <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك" :visible.sync="Visibles">
+    <el-dialog
+      style="margin-top: -13vh"
+      title="تسجيل اشتراك"
+      :visible.sync="Visibles"
+    >
       <el-form :model="tempForm" ref="dataForm">
         <el-form-item
           label="الفترة"
           prop="Type"
-          :rules="[{ required: true, message: 'الرجاء اختيار الفترة', trigger: 'blur' }]"
+          :rules="[
+            {
+              required: true,
+              message: 'الرجاء اختيار الفترة',
+              trigger: 'blur',
+            },
+          ]"
         >
           <el-radio-group v-model="tempForm.Type" @change="calc">
             <el-radio label="Morning" border>Morning</el-radio>
@@ -117,7 +127,9 @@
         </el-form-item>
 
         <el-form-item
-          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
+          :rules="[
+            { required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' },
+          ]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -155,7 +167,9 @@
         <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
           <span
             >JOD
-            {{ tempForm.TotalAmmount.toFixed($store.getters.settings.ToFixed) }}</span
+            {{
+              tempForm.TotalAmmount.toFixed($store.getters.settings.ToFixed)
+            }}</span
           >
         </el-form-item>
       </el-form>
@@ -185,8 +199,14 @@
             @Set="(v) => (Payment.PaymentMethod = v)"
           />
         </el-form-item>
-        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
-          <el-input style="width: 220px" v-model="Payment.Description"></el-input>
+        <el-form-item
+          v-bind:label="$t('AddVendors.Description')"
+          prop="Description"
+        >
+          <el-input
+            style="width: 220px"
+            v-model="Payment.Description"
+          ></el-input>
         </el-form-item>
         <el-row type="flex">
           <el-col :span="24">
@@ -210,10 +230,15 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button :disabled="EnableSave" type="primary" @click="createData()">{{
-          $t("AddVendors.Save")
+        <el-button @click="Visibles = false">{{
+          $t("AddVendors.Cancel")
         }}</el-button>
+        <el-button
+          :disabled="EnableSave"
+          type="primary"
+          @click="createData()"
+          >{{ $t("AddVendors.Save") }}</el-button
+        >
       </div>
       <el-col :span="12">
         <span>{{ $t("Account.InCome") }}</span>
@@ -384,8 +409,13 @@ export default {
                       if (res) {
                         //  if(this.Discount.ValueOfDays >0)
                         // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
-                        this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
-
+                        if (
+                          this.$store.getters.settings.MembershipMovement
+                            .OneInBodyFreeForeach30Days == true
+                        )
+                          this.OneInBodyFreeForeach30Days(
+                            this.Membership.NumberDays
+                          );
                         this.Payment.MemberId = this.MemberId;
                         this.Payment.Description +=
                           this.tempForm.Description +
@@ -426,6 +456,7 @@ export default {
                                 this.EnableSave = false;
                               },
                             });
+                            this.$emit("Done");
                           })
                           .catch((error) => {
                             console.log(error);

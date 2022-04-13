@@ -117,7 +117,9 @@
         </el-form-item>
 
         <el-form-item
-          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
+          :rules="[
+            { required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' },
+          ]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -158,10 +160,15 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button :disabled="EnableSave" type="primary" @click="createData()">{{
-          $t("AddVendors.Save")
+        <el-button @click="Visibles = false">{{
+          $t("AddVendors.Cancel")
         }}</el-button>
+        <el-button
+          :disabled="EnableSave"
+          type="primary"
+          @click="createData()"
+          >{{ $t("AddVendors.Save") }}</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -237,13 +244,18 @@ export default {
                 // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
                 this.Visibles = false;
                 this.EnableSave = false;
-                this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
+                if (
+                  this.$store.getters.settings.MembershipMovement
+                    .OneInBodyFreeForeach30Days == true
+                )
+                  this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
                 this.$notify({
                   title: "تم ",
                   message: "تم الإضافة بنجاح",
                   type: "success",
                   duration: 2000,
                 });
+                this.$emit("Done");
               }
             })
             .catch((error) => {

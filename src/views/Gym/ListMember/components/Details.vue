@@ -151,7 +151,7 @@
               @close="close"
               @crop-upload-success="cropSuccess"
             />
-            <web-cam TableName="Member" :ObjectId="Member.Id" />
+            <web-cam  TableName="Member" :ObjectId="Member.Id" />
           </pan-thumb>
 
           <el-col :span="24">
