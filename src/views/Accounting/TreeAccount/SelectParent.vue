@@ -9,8 +9,8 @@
     <el-option
       v-for="item in options"
       :key="item.value"
-      :label="item.label"
-      :value="item.value"
+      v-bind:label="item.label + '  (' + item.Code + ')'"
+      :value="item.Code"
     />
   </el-select>
 </template>
@@ -19,31 +19,34 @@ import { GetMainAccount } from "@/api/Account";
 
 export default {
   props: {
-    Value: Number
+    Value: Number,
   },
   data() {
     return {
       value: "",
-      options: []
+      options: [],
     };
   },
   watch: {
     Value(val) {
       this.SetVal(val);
-    }
+    },
   },
   created() {
-    GetMainAccount().then(res => {
+    GetMainAccount().then((res) => {
       this.options = res;
-      console.log("val " ,this.Value )
+      console.log("val ", this.Value);
       this.value = this.Value;
     });
   },
   methods: {
     SetVal(val) {
       this.value = val;
-      this.$emit("Set", this.options.find(obj => obj.value == val).value);
-    }
-  }
+      this.$emit(
+        "Set",
+        this.options.find((obj) => obj.value == val)
+      );
+    },
+  },
 };
 </script>

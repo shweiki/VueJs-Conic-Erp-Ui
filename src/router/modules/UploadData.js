@@ -18,6 +18,13 @@ const UploadData = {
       meta: {
         title: 'GenerateQr', icon: 'execution'
       },
+    },    {
+      path: 'Upload/TreeAccount',
+      component: () => import('@/views/UploadData/TreeAccount'),
+      name: 'TreeAccount',
+      meta: {
+        title: 'TreeAccount', icon: 'execution'
+      },
     },
     {
       path: 'Upload/Item',
