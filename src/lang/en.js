@@ -113,6 +113,11 @@ export default {
         Employees: "Employees",
         ListEmployee: "Employees List",
         HumanResource: "Human Resource",
+        OrderRestaurant:"Restaurant Orders",
+        OrderRestaurantList :"Orders List",
+        OrderRestaurantManager:"Orders Manager",
+        CustomerPage:"Customer POS",
+        CustomerOrderList:"Customer Orders List",
     },
     Settings: {
         settings: "Settings",

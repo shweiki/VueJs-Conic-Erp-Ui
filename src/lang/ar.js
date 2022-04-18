@@ -121,6 +121,13 @@ export default {
         Employees: "الموظفين",
         ListEmployee: "قائمة الموظفين",
         HumanResource: "الموارد البشرية",
+        OrderRestaurant: "طلبات المطعم",
+        OrderRestaurantList :"قائمة الطلبات",
+        OrderRestaurantManager:"ادارة الطلبات",
+        CustomerPage:" صفحة الزبائن",
+        CustomerPOS:"نقاط البيع للزبائن",
+        CustomerOrderList:"قائمة الطلبات",
+
     },
     Settings: {
         settings: "اعدادات",
