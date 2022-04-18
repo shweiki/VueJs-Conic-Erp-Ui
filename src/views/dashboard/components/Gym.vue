@@ -1,6 +1,5 @@
 <template>
   <div class="dashboard-editor-container">
-    <router-menu />
 
     <panel-group />
     <el-card class="box-card">
@@ -37,12 +36,10 @@ import Payable from "@/components/Gym/Payable";
 import LowOrderItem from "@/components/Item/LowOrderItem.vue";
 import EXPItem from "@/components/Item/EXPItem.vue";
 
-import RouterMenu from "@/components/RouterMenu";
 
 export default {
   name: "DashboardAdmin",
   components: {
-    RouterMenu,
     PanelGroup,
     MembershipmentOrdar,
     Receivables,
