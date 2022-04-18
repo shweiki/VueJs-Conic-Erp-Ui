@@ -10,7 +10,8 @@
         <el-col :span="24">
           <el-row type="flex">
             <el-col :span="10">
-              <el-input placeholder="بحث عن اسم الحساب" v-model="filterText"> </el-input>
+              <el-input placeholder="بحث عن اسم الحساب" v-model="filterText">
+              </el-input>
             </el-col>
             <el-col :span="3">
               <Entry-Movements-Dialog :AccountId="Selected.Id" />
@@ -23,8 +24,10 @@
             </el-col>
             <el-col :span="4">
               <Add-Account-Dialog
-                v-bind:Code="Selected.Code + '-0' + (Selected.children.length + 1)"
-                :ParentId="Selected.Id"
+                v-bind:Code="
+                  Selected.Code + ((Selected.children.length || 0) + 1)
+                "
+                :ParentId="Selected.Code"
                 @Done="getdata()"
               />
             </el-col>
@@ -45,10 +48,21 @@
               icon-class="el-icon-folder"
               :filter-node-method="filterNode"
               @node-click="Select"
+              @node-drag-start="handleDragStart"
+              @node-drag-enter="handleDragEnter"
+              @node-drag-leave="handleDragLeave"
+              @node-drag-over="handleDragOver"
+              @node-drag-end="handleDragEnd"
+              @node-drop="handleDrop"
+              draggable
+              :allow-drop="allowDrop"
+              :allow-drag="allowDrag"
               ref="AccountTree"
             >
               <span class="custom-tree-node" slot-scope="{ data }">
-                <span style="color: black">({{ data.Code }}) {{ data.Name }} </span>
+                <span style="color: black"
+                  >({{ data.Code }}) {{ data.Name }}
+                </span>
                 <span>
                   <span style="color: red">{{
                     (data.TotalCredit - data.TotalDebit).toFixed(
@@ -68,7 +82,7 @@
   </div>
 </template>
 <script>
-import { GetTreeAccount } from "@/api/Account";
+import { GetTreeAccount, EditParent } from "@/api/Account";
 import EditAccount from "./EditAccount.vue";
 import AddAccountDialog from "@/components/TreeAccount/AddAccountDialog.vue";
 import Create from "../EntryAccounting/Create.vue";
@@ -147,14 +161,15 @@ export default {
         roots = [],
         i;
       for (i = 0; i < list.length; i += 1) {
-        map[list[i].Id] = i; // initialize the map
+        map[list[i].Code] = i; // initialize the map
         list[i].children = []; // initialize the children
       }
 
       // for (i = list.length - 1; i >= 0; i--) {
       for (i = 0; i < list.length; i += 1) {
         node = list[i];
-        if (node.ParentId !== 0) {
+        if (node.ParentId != 0 && node.ParentId != undefined) {
+          console.log("list[map[node.ParentId]]", node);
           // if you have dangling branches check that map[node.parentId] exists
           list[map[node.ParentId]].children.push(node);
 
@@ -165,7 +180,51 @@ export default {
         }
       }
       //   return roots.reverse();
-      return roots.sort((a, b) => (a.Code > b.Code ? 1 : b.Code > a.Code ? -1 : 0));
+      return roots.sort((a, b) =>
+        a.Code > b.Code ? 1 : b.Code > a.Code ? -1 : 0
+      );
+    },
+    handleDragStart(node, ev) {
+      this.Selected = node;
+
+      console.log("drag start", node);
+    },
+    handleDragEnter(draggingNode, dropNode, ev) {
+      console.log("tree drag enter: ", dropNode.data.Name);
+    },
+    handleDragLeave(draggingNode, dropNode, ev) {
+      console.log("tree drag leave: ", dropNode.data.Name);
+    },
+    handleDragOver(draggingNode, dropNode, ev) {
+      console.log("tree drag over: ", dropNode.data.Name);
+    },
+    handleDragEnd(draggingNode, dropNode, dropType, ev) {
+      console.log("tree drag end: ", dropNode && dropNode.data.Name, dropType);
+    },
+    handleDrop(draggingNode, dropNode, dropType, ev) {
+      EditParent({ ID: this.Selected.data.Id, ParentId: dropNode.data.Code })
+        .then((response) => {
+          this.$notify({
+            title: "تم ",
+            message: "تم الإضافة بنجاح",
+            type: "success",
+            duration: 2000,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      console.log("tree drop: ", dropNode.data.Name, dropType);
+    },
+    allowDrop(draggingNode, dropNode, type) {
+      if (dropNode.data.Name === "Level two 3-1") {
+        return type !== "inner";
+      } else {
+        return true;
+      }
+    },
+    allowDrag(draggingNode) {
+      return draggingNode.data.Name.indexOf("Level three 3-1-1") === -1;
     },
   },
 };

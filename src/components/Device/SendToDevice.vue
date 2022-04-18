@@ -14,6 +14,12 @@
         type="primary"
         icon="el-icon-arrow-right"
         >انشاء بصمة وجه {{ item.Name }}</el-button
+      ><el-button
+        :loading="loading"
+        @click="ConnectDevice(item.Id, item.Name)"
+        :size="$store.getters.size"
+        type="warning"
+        >اتصال</el-button
       >
       <el-button
         :loading="loading"
@@ -28,7 +34,13 @@
   </el-popover>
 </template>
 <script>
-import { GetDevice, SetUser, StartEnrollUser, RestartDevice } from "@/api/Device";
+import {
+  GetDevice,
+  SetUser,
+  StartEnrollUser,
+  RestartDevice,
+  CheckDevice,
+} from "@/api/Device";
 
 export default {
   props: ["ObjectId", "TableName", "Name"],
@@ -52,7 +64,15 @@ export default {
         Name: this.Name,
         TableName: this.TableName,
       }).then((response) => {
-        if (response) {
+        if (response == "Device Is Not Connected") {
+          this.$notify({
+            title: "تم",
+            message: "الجهاز " + Name + " - غير متصل ) " + response + "( ",
+            type: "error",
+            duration: 3000,
+            position: "top-right",
+          });
+        } else {
           this.$notify({
             title: "تم",
             message: "تم ارسال البيانات لاجهاز " + Name + "  " + response + " ",
@@ -70,7 +90,15 @@ export default {
         DeviceId: DeviceId,
         UserId: this.ObjectId,
       }).then((response) => {
-        if (response) {
+        if (response == "Device Is Not Connected") {
+          this.$notify({
+            title: "تم",
+            message: "الجهاز " + Name + " - غير متصل ) " + response + "( ",
+            type: "error",
+            duration: 3000,
+            position: "top-right",
+          });
+        } else {
           this.$notify({
             title: "تم",
             message: "بدء " + Name + "  " + response + " ",
@@ -82,17 +110,49 @@ export default {
         this.loading = false;
       });
     },
+    ConnectDevice(id, Name) {
+      this.loading = true;
+      CheckDevice({ Id: id }).then((response) => {
+        if (!response) {
+          this.$notify({
+            title: "تم",
+            message: "الجهاز " + Name + " - غير متصل ) " + response + "( ",
+            type: "error",
+            duration: 3000,
+            position: "top-right",
+          });
+        } else {
+          this.$notify({
+            title: "تم",
+            message: "تم إتصال " + Name + "  " + response + " ",
+            type: "success",
+            duration: 3000,
+            position: "top-right",
+          });
+        }
+        this.loading = false;
+      });
+    },
     RestartDevice(id, Name) {
       this.loading = true;
       RestartDevice({ DeviceId: id }).then((response) => {
-        // handle success
-        this.$notify({
-          title: "تم",
-          message: "اعادة تشغيل  " + Name + "  " + response + " ",
-          type: "success",
-          duration: 3000,
-          position: "top-right",
-        });
+        if (response == "Device Is Not Connected") {
+          this.$notify({
+            title: "تم",
+            message: "الجهاز " + Name + " - غير متصل ) " + response + "( ",
+            type: "error",
+            duration: 3000,
+            position: "top-right",
+          });
+        } else {
+          this.$notify({
+            title: "تم",
+            message: "اعادة تشغيل  " + Name + "  " + response + " ",
+            type: "success",
+            duration: 3000,
+            position: "top-right",
+          });
+        }
         this.loading = false;
       });
     },

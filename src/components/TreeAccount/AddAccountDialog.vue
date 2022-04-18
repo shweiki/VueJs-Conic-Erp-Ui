@@ -36,7 +36,7 @@
             :Value="tempForm.ParentId"
             @Set="
               (v) => {
-                tempForm.ParentId = v;
+                tempForm.ParentId = v.Code;
               }
             "
           />

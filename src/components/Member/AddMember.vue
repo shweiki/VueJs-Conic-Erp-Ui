@@ -22,7 +22,11 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input type="text" ref="MemberName" v-model="tempForm.Name"></el-input>
+              <el-input
+                type="text"
+                ref="MemberName"
+                v-model="tempForm.Name"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -64,13 +68,17 @@
             <el-form-item
               label="الرقم الوطني"
               prop="Ssn"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك الرقم الوطني فارغ',
-                  trigger: 'blur',
-                },
-              ]"
+              v-bind:rules="
+                $store.getters.settings.Member.SsnIsRequired == true
+                  ? [
+                      {
+                        required: true,
+                        message: 'لايمكن ترك الرقم الوطني فارغ',
+                        trigger: 'blur',
+                      },
+                    ]
+                  : []
+              "
             >
               <el-input
                 type="text"
@@ -95,7 +103,10 @@
                 },
               ]"
             >
-              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
+              <el-input
+                type="text"
+                v-model="tempForm.Email"
+              ></el-input> </el-form-item
           ></el-col>
         </el-row>
 
@@ -141,15 +152,23 @@
           ></el-col>
         </el-row>
 
-        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+        <el-form-item
+          v-bind:label="$t('AddVendors.Description')"
+          prop="Description"
+        >
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button :loading="createLoading" type="primary" @click="createData()">{{
-          $t("AddVendors.Save")
+        <el-button @click="Visible = false">{{
+          $t("AddVendors.Cancel")
         }}</el-button>
+        <el-button
+          :loading="createLoading"
+          type="primary"
+          @click="createData()"
+          >{{ $t("AddVendors.Save") }}</el-button
+        >
       </div>
     </el-dialog>
   </div>

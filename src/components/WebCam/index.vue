@@ -10,7 +10,12 @@
     <el-dialog style="margin-top: -13vh" title="تصوير" :visible.sync="Visible">
       <el-row type="flex">
         <el-col :span="24">
-          <video id="video-player" class="video" width="300" height="300"></video>
+          <video
+            id="video-player"
+            class="video"
+            width="300"
+            height="300"
+          ></video>
         </el-col>
       </el-row>
       <el-row type="flex">
@@ -21,7 +26,9 @@
         <img :src="img" height="50" />
       </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button @click="Visible = false">{{
+          $t("AddVendors.Cancel")
+        }}</el-button>
         <el-button type="primary" @click="createData()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -44,6 +51,12 @@ export default {
       type: String,
       default: () => {
         return undefined;
+      },
+    },
+    Type: {
+      type: String,
+      default: () => {
+        return "ProfilePicture";
       },
     },
   },
@@ -71,7 +84,9 @@ export default {
     },
     capture() {
       this.canvas = document.getElementById("canvas");
-      var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
+      var context = this.canvas
+        .getContext("2d")
+        .drawImage(this.video, 0, 0, 640, 480);
       this.img = canvas.toDataURL("image/png");
     },
     createData() {
@@ -81,6 +96,7 @@ export default {
           FileType: "image",
           File: this.img.replace(/^data:image\/(png|jpg);base64,/, ""),
           Status: 0,
+          Type: this.Type,
           TableName: this.TableName,
           FKTable: this.ObjectId,
         };

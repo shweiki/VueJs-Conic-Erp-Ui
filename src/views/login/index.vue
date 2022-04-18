@@ -175,7 +175,8 @@ export default {
               this.loginFailed = err;
               this.loading = false;
             });
-        } else {
+        } else {              this.loading = false;
+
           console.log("error submit!!");
           return false;
         }

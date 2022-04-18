@@ -27,6 +27,12 @@ export function GetMainAccount(query) {
     method: 'get',
     params: query
   })
+} export function CheckIsExist(query) {
+  return request({
+    url: '/Account/CheckIsExist',
+    method: 'get',
+    params: query
+  })
 }
 export function GetActiveAccounts(query) {
   return request({
@@ -42,7 +48,13 @@ export function GetAccountByAny(query) {
     params: query
   })
 }
-
+export function EditParent(data) {
+  return request({
+    url: '/Account/EditParent',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function GetByListQ(data) {
   return request({
     url: '/Account/GetByListQ',
@@ -62,7 +74,7 @@ export function GetPayables(query) {
     method: 'get',
     params: query
   })
-} 
+}
 export function GetReceivables(query) {
   return request({
     url: '/Account/GetReceivables',

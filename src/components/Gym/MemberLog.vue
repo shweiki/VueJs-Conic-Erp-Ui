@@ -9,7 +9,7 @@
           ></el-button>
         </el-col>
         <el-col :span="8">
-          <Add-Device-Log :Fk="Fk" TableName="Member" />
+          <Add-Device-Log  TableName="Member" />
         </el-col>
         <el-col :span="8">
           <el-button

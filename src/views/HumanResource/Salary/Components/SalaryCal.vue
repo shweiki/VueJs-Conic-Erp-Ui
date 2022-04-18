@@ -103,7 +103,6 @@
             :EmployeeName="tempForm.Name"
             :SalaryPaymentId="tempForm.Id"
             :GrossSalary="tempForm.GrossSalary"
-            :Absent="AbsentCount"
             v-bind:ExtraHours="
               (parseFloat(MinutesConvert(TotalExtraMinute, '.')) + 0.4) *
               (tempForm.GrossSalary / tempForm.DaysCount / tempForm.WorkingHours)
@@ -176,7 +175,7 @@ import AddSalaryAdjustmentLog from "../../WorkingAdjustment/Components/AddSalary
 import waves from "@/directive/waves"; // waves directive
 import EditSalaryAdjustmentLog from "../../WorkingAdjustment/Components/EditSalaryAdjustmentLog.vue";
 import DeleteSalaryAdjustmentLog from "../../WorkingAdjustment/Components/DeleteSalaryAdjustmentLog.vue";
-import DeviceLog from "@/views/HumanResource/ListEmployee/components/DeviceLog.vue";
+import DeviceLog from "@/components/Device/DeviceLog.vue";
 import DialogSalaryFrom from "../../Salary/Components/DialogSalaryFrom.vue";
 import { parseTime, TimeConvert, MinutesConvert } from "@/utils";
 

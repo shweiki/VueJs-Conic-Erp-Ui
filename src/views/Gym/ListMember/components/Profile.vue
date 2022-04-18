@@ -1,10 +1,10 @@
 <template>
   <el-row type="flex" v-if="tempForm">
-    <el-col :span="6" :xs="24">
-      <Member-Log />
-    </el-col>
+    <!--    <el-col :span="6" :xs="24">
+        <member-log />
+      </el-col>-->
 
-    <el-col :span="18" :xs="24" v-loading="loading">
+    <el-col :span="24" :xs="24" v-loading="loading">
       <Member-Search />
 
       <el-card
@@ -19,7 +19,9 @@
                   style="width: 100px"
                   type="info"
                   icon="el-icon-zoom-in"
-                  @click="$router.replace({ path: '/redirect' + '/Gym/ListMember' })"
+                  @click="
+                    $router.replace({ path: '/redirect' + '/Gym/ListMember' })
+                  "
                   >جميع مشتركين</el-button
                 >
               </el-col>
@@ -27,18 +29,24 @@
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Ship-Movement
+                <Member-Ship-Movement                @Done="getdata"
+
                   :MemberId="tempForm.Id"
                   :AccountId="tempForm.AccountId"
                   :Name="tempForm.Name"
-                  :Enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
+                  :Enable="
+                    tempForm.TotalCredit - tempForm.TotalDebit > 0
+                      ? true
+                      : false
+                  "
                 />
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Pay
+                <Member-Pay                @Done="getdata"
+
                   :MemberId="tempForm.Id"
                   :Name="tempForm.Name"
                   :NumberPhone1="tempForm.PhoneNumber1"
@@ -49,11 +57,16 @@
             <el-row type="flex">
               <el-col :span="24">
                 <Member-Ship-Movement-With-Pay
+                @Done="getdata"
                   :MemberId="tempForm.Id"
                   :AccountId="tempForm.AccountId"
                   :Name="tempForm.Name"
                   :NumberPhone1="tempForm.PhoneNumber1"
-                  :Enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
+                  :Enable="
+                    tempForm.TotalCredit - tempForm.TotalDebit > 0
+                      ? true
+                      : false
+                  "
                 />
               </el-col>
             </el-row>
@@ -74,7 +87,9 @@
               </el-col>
             </el-row>
 
-            <el-row v-if="tempForm.MembershipsCount > 0 || checkPermission(['admin'])">
+            <el-row
+              v-if="tempForm.MembershipsCount > 0 || checkPermission(['admin'])"
+            >
               <el-col :span="24">
                 <send-to-device
                   :ObjectId="tempForm.Id"
@@ -92,7 +107,6 @@
 
       <el-card class="box-card">
         <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
-          
           <el-tab-pane label="تواصل" name="communication">
             <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
             <Communication />
@@ -105,7 +119,10 @@
 
           <el-tab-pane label="مالية" name="account">
             <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-            <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
+            <Account
+              :EntryMovements="EntryMovements"
+              :AccountId="tempForm.AccountId"
+            />
           </el-tab-pane>
 
           <el-tab-pane label="مقبوضات" name="Payment">
@@ -117,13 +134,12 @@
             <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
             <Service :ServiceInvoices="ServiceInvoices" />
           </el-tab-pane>
-
           <el-tab-pane label="زيارات" name="timeline">
-            <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
-            <Timeline :MemberId="tempForm.Id" />
+            <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
+            <DeviceLog TableName="Member" :UserId="tempForm.Id" />
           </el-tab-pane>
 
-           <el-tab-pane label="اشتراكات" name="activity">
+          <el-tab-pane label="اشتراكات" name="activity">
             <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
             <Activity :MembershipMovements="MembershipMovements" />
           </el-tab-pane>
@@ -139,7 +155,7 @@
 </template>
 
 <script>
-import MemberLog from "./MemberLog.vue";
+//import MemberLog from "@/components/Gym/MemberLog.vue";
 
 import Details from "./Details.vue";
 import UserCard from "./UserCard.vue";
@@ -153,11 +169,11 @@ import MemberSearch from "./MemberSearch.vue";
 import Payment from "./Payment.vue";
 
 import Activity from "./Activity.vue";
-import Timeline from "./Timeline.vue";
 import Account from "./Account.vue";
 import Service from "./Service.vue";
 import Communication from "./Communication.vue";
 import Documents from "@/components/Documents/Documents.vue";
+import DeviceLog from "@/components/Device/DeviceLog.vue";
 
 import { GetMemberById } from "@/api/Member";
 import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
@@ -177,7 +193,7 @@ export default {
     Details,
     UserCard,
     Activity,
-    Timeline,
+    DeviceLog,
     Account,
     Service,
     Payment,
@@ -186,7 +202,6 @@ export default {
     MemberShipMovementWithPay,
     MemberPay,
     ServiceInvoice,
-    MemberLog,
     Massage,
     MemberSearch,
     SendToDevice,
@@ -221,6 +236,8 @@ export default {
   methods: {
     checkPermission,
     getdata(val) {
+      if (val == "" || val == undefined)
+        val = this.$route.params && this.$route.params.id;
       GetMemberById({ Id: val })
         .then((response) => {
           this.tempForm = response;
@@ -367,7 +384,8 @@ export default {
 .el-tabs__content {
   max-height: 700px;
 }
-.el-tabs__nav-scroll{
-float: right;
-direction: ltr;}
+.el-tabs__nav-scroll {
+  float: right;
+  direction: ltr;
+}
 </style>
