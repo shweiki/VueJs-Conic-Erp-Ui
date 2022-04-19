@@ -127,6 +127,9 @@ export default {
         CustomerPage:" صفحة الزبائن",
         CustomerPOS:"نقاط البيع للزبائن",
         CustomerOrderList:"قائمة الطلبات",
+        MembersLog:"سجل الأعضاء",
+        UploadReport:"رفع تقرير",
+        ForUploadBioLab:"تقارير بيو لاب",
 
     },
     Settings: {
@@ -328,6 +331,9 @@ export default {
         CreditLimit: 'سقف الدين',
         Description: 'الوصف',
         Status: 'الحالة',
+        TotalDebit:'مجموع الدائن (عليك)',
+        TotalCredit:'مجموع المدين (لك)',
+        PersonsCount:"عدد الأشخاص"
     },
     AddVendors: {
         Customer: 'عميل',
@@ -423,6 +429,7 @@ export default {
         CouponNoteId: 'رقم الدفتر ',
         In: 'الدخول',
         Out: 'الخروج',
+        LastVisit:"اخر زيارة",
 
     },
     NewPurchaseInvoice: {
@@ -624,8 +631,14 @@ export default {
         Tax: 'الضريبة',
         Notes: 'ملاحظات',
         Name: 'الإسم',
-        NumberDays: 'عددالأيام'
-
+        NumberDays: 'عددالأيام',
+        MembersCount: 'عدد المشتركين',
+        CheckBlackList:"فحص القائمة السوداء",
+        SendSMS:"ارسال رسالة",
+        FixPhoneNumber:"إصلاح رقم الهاتف",
+        SendBy:"إرسال عبر",
+        Export:"إستخراج",
+        SearchAll:" البحث حسب اسم الحساب أو رقمه",
     },
     Bank: {
         Banks: "البنوك",
@@ -689,7 +702,8 @@ export default {
         To: "لغاية :",
         remaining: "الأيام المتبقية :",
         Phone: 'الهاتف',
-        funds: "الرصيد :"
+        funds: "الرصيد :",
+        MembershipCount:"عدد الاشتراكات",
     },
     Report: {
         Accounting: "المحاسبة",

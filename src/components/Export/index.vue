@@ -24,7 +24,7 @@
       icon="el-icon-document"
       type="primary"
       slot="reference"
-      >Export</el-button
+      >{{$t("Members.Export")}}</el-button
     >
   </el-popover>
 </template>

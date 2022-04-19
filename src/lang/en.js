@@ -118,6 +118,9 @@ export default {
         OrderRestaurantManager:"Orders Manager",
         CustomerPage:"Customer POS",
         CustomerOrderList:"Customer Orders List",
+        MembersLog:"Members Log",
+        UploadReport:"Upload Report",
+        ForUploadBioLab:"For Upload Bio Lab",
     },
     Settings: {
         settings: "Settings",
@@ -316,6 +319,9 @@ export default {
         CreditLimit: 'Credit Limit',
         Description: 'Description',
         Status: 'Status',
+        TotalDebit:'Total Debit',
+        TotalCredit:'Total Credit',
+        PersonsCount:'Persons Count',
     },
     AddVendors: {
         Customer: 'Customer',
@@ -415,6 +421,7 @@ export default {
         CouponNoteId: 'Coupon Note Id',
         In: 'In',
         Out: 'Out',
+        LastVisit:"Last Visit",
     },
     NewPurchaseInvoice: {
         PurchaseInvoice: 'Purchase Invoice',
@@ -609,8 +616,14 @@ export default {
         Tax: 'Tax',
         Notes: 'Notes',
         Name: 'Name',
-        NumberDays: 'Days Number'
-
+        NumberDays: 'Days Number',
+        MembersCount: 'Members Count',
+        CheckBlackList:"Check Black List",
+        SendSMS:"Send SMS",
+        FixPhoneNumber:"Fix Phone Number",
+        SendBy:"Send By",
+        Export:"Export",
+        SearchAll:"Search By Any Acount Name Or Id"
     },
     Bank: {
         Banks: "Banks",
@@ -673,7 +686,8 @@ export default {
         To: "To:",
         remaining: "Remaining Days:",
         Phone: 'Phone',
-        funds: "Funds:"
+        funds: "Funds:",
+        MembershipCount:"Membership Count"
     },
     Report: {
         Accounting: "Accounting",

@@ -91,22 +91,22 @@
         "
       />
       <el-divider direction="vertical"></el-divider>
-      <span>عدد الاشخاص</span>
+      <span>{{$t('Vendors.PersonsCount')}}</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Rows }}</span>
       <el-divider direction="vertical"></el-divider>
 
-      <span>مجموع المدين (لك)</span>
+      <span>{{$t('Vendors.TotalCredit')}}</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
-      <span> (عليك) مجموع الدائن </span>
+      <span>{{$t('Vendors.TotalDebit')}}</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
-      <span>الرصيد</span>
+      <span>{{$t('MinOrd.Balance')}}</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>

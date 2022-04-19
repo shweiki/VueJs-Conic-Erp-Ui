@@ -2,12 +2,13 @@
   <div class="app-container">
     <el-card class="box-card">
       <div class="filter-container">
-        <el-button @click="FixPhoneNumber">FixPhoneNumber</el-button>
+        <el-button @click="FixPhoneNumber">
+          {{$t("Members.FixPhoneNumber")}}
+        </el-button>
         <el-button @click="CheckBlackListActionLogMembers"
-          >CheckBlackListActionLogMembers</el-button
-        >
+          >{{$t("Members.CheckBlackList")}}</el-button>
         <el-popover placement="left" width="400">
-          <p>ارسال عبر</p>
+          <p>{{$t("Members.SendBy")}}</p>
           <div style="text-align: right; margin: 0">
             <el-input
               type="textarea"
@@ -32,10 +33,10 @@
               type="primary"
               :size="$store.getters.size"
               @click="SendEmail()"
-              >Email</el-button
+              >{{$t('Vendors.Email')}}</el-button
             >
           </div>
-          <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
+          <el-button icon="el-icon-circle-plus" slot="reference">{{$t('Members.SendSMS')}}</el-button>
         </el-popover>
         <add-member />
 
@@ -43,7 +44,7 @@
           <el-col :span="12">
             <el-input
               v-model="listQuery.Any"
-              placeholder="Search By Any Acount Name Or Id"
+              v-bind:placeholder="$t('Members.SearchAll')" 
               class="filter-item"
               @keyup.enter.native="handleFilter"
             />
@@ -68,7 +69,7 @@
               icon="el-icon-search"
               @click="handleFilter"
             >
-              Search
+              {{$t('Members.Search')}}
             </el-button>
           </el-col>
         </el-row>
@@ -87,26 +88,26 @@
         </el-col>
         <el-col v-permission="['admin']" :span="18">
           <el-divider direction="vertical"></el-divider>
-          <span>عدد المشتركين</span>
+          <span>{{$t('Vendors.PersonsCount')}}</span>
           <el-divider direction="vertical"></el-divider>
           <span>{{ Totals.Rows }}</span>
           <el-divider direction="vertical"></el-divider>
 
-          <span>مجموع المدين (لك)</span>
+          <span>{{$t('Vendors.TotalCredit')}}</span>
           <el-divider direction="vertical"></el-divider>
           <span
             >{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span
           >
           <el-divider direction="vertical"></el-divider>
 
-          <span> (عليك) مجموع الدائن </span>
+          <span>{{$t('Vendors.TotalDebit')}}</span>
           <el-divider direction="vertical"></el-divider>
           <span
             >{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span
           >
           <el-divider direction="vertical"></el-divider>
 
-          <span>الرصيد</span>
+          <span>{{$t('MinOrd.Balance')}}</span>
           <el-divider direction="vertical"></el-divider>
           <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
           <el-divider direction="vertical"></el-divider>
@@ -136,7 +137,7 @@
     >
       <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
-        label="Id"
+        v-bind:label="$t('Vendors.ID')" 
         prop="Id"
         sortable="custom"
         align="center"
@@ -148,7 +149,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
+      <el-table-column 
+      v-bind:label="$t('AddVendors.Name')" 
+      prop="Name" align="center"> 
+      </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
         prop="PhoneNumber1"
@@ -157,7 +161,7 @@
       <el-table-column
         prop="lastLogByMember"
         sortable
-        label="اخر زيارة"
+        v-bind:label="$t('Visit.LastVisit')"
         width="140"
         align="center"
       >
@@ -168,7 +172,7 @@
       <el-table-column
         prop="MembershipsCount"
         sortable
-        label="عدد اشتراكات"
+        v-bind:label="$t('MemberList.MembershipCount')"
         width="120"
         align="center"
       >
