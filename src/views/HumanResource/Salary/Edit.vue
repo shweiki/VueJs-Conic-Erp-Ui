@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import SalaryDetails from '../Components/SalaryDetails.vue'
+import SalaryDetails from './Components/SalaryDetails.vue'
 
 export default {
-  name: 'SalaryDetails',
+  name: 'Salary',
   components: { SalaryDetails }
 }
 </script>

@@ -57,7 +57,7 @@
                 type="success"
                 :size="$store.getters.size"
                 v-if="row.Status == 0"
-                @click="$router.push({ path: `/HumanResource/SalaryCal/${row.Id}` })"
+                @click="$router.push({ path: `/HumanResource/EditSalary/${row.Id}` })"
               >
                 احتساب الراتب
               </el-button></el-col
@@ -75,12 +75,11 @@
 
 <script>
 import DialogSalaryFrom from "../../Salary/Components/DialogSalaryFrom.vue";
-import SalaryCal from "../../Salary/Components/SalaryCal";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
-  components: { DialogSalaryFrom, SalaryCal, StatusTag, DrawerPrint },
+  components: { DialogSalaryFrom, StatusTag, DrawerPrint },
   props: {
     SalaryPayment: {
       type: Array,

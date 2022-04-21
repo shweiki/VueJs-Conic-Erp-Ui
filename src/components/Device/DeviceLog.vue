@@ -3,7 +3,7 @@
     <el-row type="flex">
       <el-col :span="8">
         <Search-By-Date
-          :Value="[listQuery.DateFrom, listQuery.ToDate]"
+         v-bind:Value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
             (v) => {
               listQuery.DateFrom = v[0];
@@ -222,11 +222,11 @@ export default {
     },
     FromDate(v) {
       console.log("FromDate", v);
-      if (v != "") this.listQuery.FromDate = v;
+      if (v != "") this.listQuery.DateFrom = v;
     },
     ToDate(v) {
       console.log("ToDate", v);
-      if (v != "") this.listQuery.ToDate = v;
+      if (v != "") this.listQuery.DateTo = v;
     },
   },
 

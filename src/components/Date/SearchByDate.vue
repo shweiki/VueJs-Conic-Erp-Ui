@@ -6,7 +6,9 @@
       :size="$store.getters.size"
       :format="$store.getters.settings.DateTimeFormat"
       v-bind:type="
-        $store.getters.settings.DateTimeFormat.length > 10 ? 'datetimerange' : 'daterange'
+        $store.getters.settings.DateTimeFormat.length > 10
+          ? 'datetimerange'
+          : 'daterange'
       "
       align="right"
       v-bind:range-separator="$t('Sales.until')"
@@ -39,6 +41,7 @@ export default {
   },
   watch: {
     Value(val) {
+      console.log("val ", val);
       if (
         val[0] != "" &&
         val[0] != this.date[0] &&
@@ -65,9 +68,9 @@ export default {
       start = new Date(this.Value[0]);
       end = new Date(this.Value[1]);
     } else {
-      start = start.setHours(0, 0, 0, 0);
+      //start = start.setHours(0, 0, 0, 0);
       end = end.setHours(23, 59, 59, 999);
-      this.SetVal([start, end]);
+     this.SetVal([start, end]);
     }
     //  this.date = [new Date(), new Date()];
   },

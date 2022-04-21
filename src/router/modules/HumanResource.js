@@ -43,11 +43,11 @@ const HumanResource = {
       },
     },
     {
-      path: 'SalaryCal/:id(\\d+)',
-      component: () => import('@/views/HumanResource/Salary/Components/SalaryCal'),
-      name: 'SalaryCal',
+      path: 'EditSalary/:id(\\d+)',
+      component: () => import('@/views/HumanResource/Salary/Edit'),
+      name: 'EditSalary',
       meta: {
-        title: 'SalaryCal', noCache: true, activeMenu: '/HumanResource/ListEmployee/index'
+        title: 'EditSalary', noCache: true, activeMenu: '/HumanResource/ListEmployee/index'
       },
       hidden: true,
     },
