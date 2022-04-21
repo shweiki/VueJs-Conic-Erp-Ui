@@ -25,7 +25,8 @@
                   prop="MemberId"
                   :rules="[
                     {
-                      required:()=> tempForm.MemberId != undefined ? true : false,
+                      required: () =>
+                        tempForm.MemberId != undefined ? true : false,
                       message: 'لايمكن ترك حساب فارغ',
                       trigger: 'blur',
                     },
@@ -47,7 +48,8 @@
                   prop="VendorId"
                   :rules="[
                     {
-                      required: ()=> tempForm.VendorId != undefined ? true : false,
+                      required: () =>
+                        tempForm.VendorId != undefined ? true : false,
                       message: 'لايمكن ترك حساب فارغ',
                       trigger: 'blur',
                     },
