@@ -1,54 +1,39 @@
 <template>
   <div>
     <el-col :span="4">
-      <add-vendor
-        @Set="
-          (v) => {
-            change(v);
-          }
-        "
-      />
+      <Dialog-Search-Member @add="Add" />
     </el-col>
-    <el-col :span="4">
-      <dialog-search-vendor @add="Add" />
-    </el-col>
-    <el-col :span="12">
-      <el-input :disabled="true" v-model="Vendor.Name"> </el-input>
-    </el-col>
-
-    <el-col :span="4">
-      <edit-vendor :VendorId="VendorId" />
+    <el-col :span="20">
+      <el-input :disabled="true" v-model="Member.Name"> </el-input>
     </el-col>
   </div>
 </template>
 <script>
-import { GetById } from "@/api/Vendor";
+import { GetMemberById as GetById } from "@/api/Member";
 
-import AddVendor from "@/components/Vendor/AddVendor.vue";
-import EditVendor from "@/components/Vendor/EditVendor.vue";
-import DialogSearchVendor from "@/components/Vendor/DialogSearchVendor.vue";
+import DialogSearchMember from "@/components/Member/DialogSearchMember.vue";
 export default {
   props: {
-    VendorId: {
+    MemberId: {
       type: Number,
       default: undefined,
     },
   },
-  components: { AddVendor, EditVendor, DialogSearchVendor },
+  components: { DialogSearchMember },
   data() {
     return {
-      Vendor: { Id: undefined, Name: "", AccountId: 0 },
+      Member: { Id: this.MemberId, Name: "", AccountId: 0 },
     };
   },
   created() {
-    if (this.VendorId != undefined) {
-      GetById({ Id: this.VendorId }).then((res) => {
-        this.change(res);
+    if (this.MemberId != undefined) {
+      GetById({ Id: this.MemberId }).then((res) => {
+        this.Member = res;
       });
     }
   },
   watch: {
-    VendorId(value) {
+    MemberId(value) {
       if (value != undefined) {
         GetById({ Id: value }).then((res) => {
           this.change(res);
@@ -58,7 +43,7 @@ export default {
   },
   methods: {
     change(val) {
-      this.Vendor = val;
+      this.Member = val;
       this.$emit("Set", val);
     },
 
@@ -71,7 +56,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.vendor-search {
+.Member-search {
   font-size: 0 !important;
 
   .search-icon {
@@ -80,7 +65,7 @@ export default {
     vertical-align: middle;
   }
 
-  .vendor-search-select {
+  .Member-search-select {
     font-size: 18px;
     transition: width 0.2s;
     width: 0;
@@ -102,7 +87,7 @@ export default {
   }
 
   &.show {
-    .vendor-search-select {
+    .Member-search-select {
       width: 210px;
       margin-left: 10px;
     }

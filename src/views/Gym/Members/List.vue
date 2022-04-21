@@ -3,12 +3,13 @@
     <el-card class="box-card">
       <div class="filter-container">
         <el-button @click="FixPhoneNumber">
-          {{$t("Members.FixPhoneNumber")}}
+          {{ $t("Members.FixPhoneNumber") }}
         </el-button>
-        <el-button @click="CheckBlackListActionLogMembers"
-          >{{$t("Members.CheckBlackList")}}</el-button>
+        <el-button @click="CheckBlackListActionLogMembers">{{
+          $t("Members.CheckBlackList")
+        }}</el-button>
         <el-popover placement="left" width="400">
-          <p>{{$t("Members.SendBy")}}</p>
+          <p>{{ $t("Members.SendBy") }}</p>
           <div style="text-align: right; margin: 0">
             <el-input
               type="textarea"
@@ -33,10 +34,12 @@
               type="primary"
               :size="$store.getters.size"
               @click="SendEmail()"
-              >{{$t('Vendors.Email')}}</el-button
+              >{{ $t("Vendors.Email") }}</el-button
             >
           </div>
-          <el-button icon="el-icon-circle-plus" slot="reference">{{$t('Members.SendSMS')}}</el-button>
+          <el-button icon="el-icon-circle-plus" slot="reference">{{
+            $t("Members.SendSMS")
+          }}</el-button>
         </el-popover>
         <add-member />
 
@@ -44,7 +47,7 @@
           <el-col :span="12">
             <el-input
               v-model="listQuery.Any"
-              v-bind:placeholder="$t('Members.SearchAll')" 
+              v-bind:placeholder="$t('Members.SearchAll')"
               class="filter-item"
               @keyup.enter.native="handleFilter"
             />
@@ -69,7 +72,7 @@
               icon="el-icon-search"
               @click="handleFilter"
             >
-              {{$t('Members.Search')}}
+              {{ $t("Members.Search") }}
             </el-button>
           </el-col>
         </el-row>
@@ -88,28 +91,39 @@
         </el-col>
         <el-col v-permission="['admin']" :span="18">
           <el-divider direction="vertical"></el-divider>
-          <span>{{$t('Vendors.PersonsCount')}}</span>
+          <span>{{ $t("Vendors.PersonsCount") }}</span>
           <el-divider direction="vertical"></el-divider>
           <span>{{ Totals.Rows }}</span>
           <el-divider direction="vertical"></el-divider>
 
-          <span>{{$t('Vendors.TotalCredit')}}</span>
+          <span>{{ $t("Vendors.TotalCredit") }}</span>
           <el-divider direction="vertical"></el-divider>
           <span
-            >{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+            >{{
+              Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</span
           >
           <el-divider direction="vertical"></el-divider>
 
-          <span>{{$t('Vendors.TotalDebit')}}</span>
+          <span>{{ $t("Vendors.TotalDebit") }}</span>
           <el-divider direction="vertical"></el-divider>
           <span
-            >{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+            >{{
+              Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</span
           >
           <el-divider direction="vertical"></el-divider>
 
-          <span>{{$t('MinOrd.Balance')}}</span>
+          <span>{{ $t("MinOrd.Balance") }}</span>
           <el-divider direction="vertical"></el-divider>
-          <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+          <span
+            >{{
+              Totals.Totals.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</span
+          >
           <el-divider direction="vertical"></el-divider>
         </el-col>
       </el-row>
@@ -128,16 +142,28 @@
       @selection-change="handleSelectionChange"
       @row-dblclick="
         (row) => {
-          let r = $router.resolve({
-            path: '/Gym/Edit/' + row.Id,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+          if (DblClickRow == 'AddAsRow') {
+            $emit('dblclick', row);
+          } else {
+            let r = $router.resolve({
+              path: '/Gym/Edit/' + row.Id,
+            });
+            window.open(
+              r.href,
+              r.route.name,
+              $store.getters.settings.windowStyle
+            );
+          }
         }
       "
     >
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
-        v-bind:label="$t('Vendors.ID')" 
+        type="selection"
+        width="55"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        v-bind:label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"
@@ -149,9 +175,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column 
-      v-bind:label="$t('AddVendors.Name')" 
-      prop="Name" align="center"> 
+      <el-table-column
+        v-bind:label="$t('AddVendors.Name')"
+        prop="Name"
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
@@ -166,7 +194,9 @@
         align="center"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.lastLogByMember | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+          <span>{{
+            row.lastLogByMember | parseTime("{y}-{m}-{d} {h}:{i}")
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -200,14 +230,22 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Account.funds')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
           )
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Sales.Status')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Member" />
         </template>
@@ -235,7 +273,11 @@
 </template>
 
 <script>
-import { GetByListQ, FixPhoneNumber, CheckBlackListActionLogMembers } from "@/api/Member";
+import {
+  GetByListQ,
+  FixPhoneNumber,
+  CheckBlackListActionLogMembers,
+} from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
@@ -251,7 +293,8 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
+  name: "ComplexTable",  props: ["DblClickRow"],
+
   components: {
     StatusTag,
     NextOprations,
