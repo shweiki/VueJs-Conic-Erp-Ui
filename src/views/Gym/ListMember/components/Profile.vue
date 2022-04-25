@@ -29,8 +29,8 @@
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Ship-Movement                @Done="getdata"
-
+                <Member-Ship-Movement
+                  @Done="getdata"
                   :MemberId="tempForm.Id"
                   :AccountId="tempForm.AccountId"
                   :Name="tempForm.Name"
@@ -45,8 +45,8 @@
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Pay                @Done="getdata"
-
+                <Member-Pay
+                  @Done="getdata"
                   :MemberId="tempForm.Id"
                   :Name="tempForm.Name"
                   :NumberPhone1="tempForm.PhoneNumber1"
@@ -57,7 +57,7 @@
             <el-row type="flex">
               <el-col :span="24">
                 <Member-Ship-Movement-With-Pay
-                @Done="getdata"
+                  @Done="getdata"
                   :MemberId="tempForm.Id"
                   :AccountId="tempForm.AccountId"
                   :Name="tempForm.Name"
@@ -124,7 +124,10 @@
               :AccountId="tempForm.AccountId"
             />
           </el-tab-pane>
-
+          <el-tab-pane label="مبيعات" name="SaleInvoice">
+            <span slot="label"><i class="el-icon-refresh"></i> مبيعات</span>
+            <Sale-Invoice :MemberId="tempForm.Id" />
+          </el-tab-pane>
           <el-tab-pane label="مقبوضات" name="Payment">
             <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
             <Payment :Payments="Payments" />
@@ -167,6 +170,7 @@ import ServiceInvoice from "./Dialogs/ServiceInvoice.vue";
 import MemberSearch from "./MemberSearch.vue";
 
 import Payment from "./Payment.vue";
+import SaleInvoice from "./SaleInvoice.vue";
 
 import Activity from "./Activity.vue";
 import Account from "./Account.vue";
@@ -206,6 +210,7 @@ export default {
     MemberSearch,
     SendToDevice,
     Documents,
+    SaleInvoice,
   },
   props: {
     isEdit: {
@@ -281,6 +286,7 @@ export default {
       if (tab.label == "خدمات")
         GetSaleInvoiceByMemberId({
           Id: this.tempForm.Id,
+          IsService: true,
         }).then((response) => {
           console.log("log :", response);
           this.ServiceInvoices = response.reverse();

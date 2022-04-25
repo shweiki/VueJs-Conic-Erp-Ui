@@ -3,12 +3,13 @@
     v-model="value"
     placeholder="ضمن قائمة"
     clearable
+    filterable
     class="filter-item"
     @change="SetVal"
   >
     <el-option
       v-for="item in options"
-      :key="item.value"
+      :key="item.Code"
       v-bind:label="item.label + '  (' + item.Code + ')'"
       :value="item.Code"
     />
@@ -19,7 +20,7 @@ import { GetMainAccount } from "@/api/Account";
 
 export default {
   props: {
-    Value: Number,
+    Value: String,
   },
   data() {
     return {
@@ -44,7 +45,7 @@ export default {
       this.value = val;
       this.$emit(
         "Set",
-        this.options.find((obj) => obj.value == val)
+        this.options.find((obj) => obj.Code == val)
       );
     },
   },

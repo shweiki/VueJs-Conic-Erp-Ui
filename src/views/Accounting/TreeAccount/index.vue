@@ -43,8 +43,10 @@
           <div class="custom-tree-container">
             <el-tree
               :data="Tree"
-              node-key="Id"
+              node-key="Code"
+              default-expand-all
               accordion
+              show-checkbox
               icon-class="el-icon-folder"
               :filter-node-method="filterNode"
               @node-click="Select"
@@ -76,16 +78,12 @@
         </el-col>
       </el-row>
     </el-card>
-    <el-row type="flex">
-      <el-col :span="24"> <create /> </el-col
-    ></el-row>
   </div>
 </template>
 <script>
 import { GetTreeAccount, EditParent } from "@/api/Account";
 import EditAccount from "./EditAccount.vue";
 import AddAccountDialog from "@/components/TreeAccount/AddAccountDialog.vue";
-import Create from "../EntryAccounting/Create.vue";
 import EntryMovementsDialog from "./EntryMovementsDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import DeleteAccount from "./DeleteAccount.vue";
@@ -94,7 +92,6 @@ export default {
   components: {
     EditAccount,
     AddAccountDialog,
-    Create,
     EntryMovementsDialog,
     DrawerPrint,
     DeleteAccount,
@@ -114,7 +111,7 @@ export default {
         Description: "",
         Id: 0,
         Name: "",
-        ParentId: 0,
+        ParentId: "",
         Status: 0,
         TotalCredit: 0,
         TotalDebit: 0,
@@ -140,8 +137,9 @@ export default {
       GetTreeAccount()
         .then((response) => {
           // handle success
-          console.log(response);
           this.Tree = this.generateTree(response);
+          console.log("this.Tree", this.Tree);
+
           this.loading = false;
         })
         .catch((error) => {
@@ -160,17 +158,33 @@ export default {
         node,
         roots = [],
         i;
+      list = list.sort((a, b) =>
+        a.Code.length > b.Code.length
+          ? 1
+          : b.Code.length > a.Code.length
+          ? -1
+          : 0
+      );
       for (i = 0; i < list.length; i += 1) {
+        list[i].Code = parseInt(list[i].Code);
         map[list[i].Code] = i; // initialize the map
         list[i].children = []; // initialize the children
       }
+      console.log(list);
+
+      console.log(map);
 
       // for (i = list.length - 1; i >= 0; i--) {
       for (i = 0; i < list.length; i += 1) {
         node = list[i];
-        if (node.ParentId != 0 && node.ParentId != undefined) {
-          console.log("list[map[node.ParentId]]", node);
+        if (
+          node.ParentId !== 0 &&
+          map[node.ParentId] != undefined &&
+          node.ParentId !== node.Code
+        ) {
           // if you have dangling branches check that map[node.parentId] exists
+          console.log(list[map[node.ParentId]]);
+
           list[map[node.ParentId]].children.push(node);
 
           list[map[node.ParentId]].TotalCredit += node.TotalCredit;
@@ -179,10 +193,12 @@ export default {
           roots.push(node);
         }
       }
+      return roots;
+
       //   return roots.reverse();
-      return roots.sort((a, b) =>
-        a.Code > b.Code ? 1 : b.Code > a.Code ? -1 : 0
-      );
+      //  return roots.sort((a, b) =>
+      //    a.Code > b.Code ? 1 : b.Code > a.Code ? -1 : 0
+      //);
     },
     handleDragStart(node, ev) {
       this.Selected = node;
@@ -241,6 +257,8 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   padding-right: 8px;
+  border: outset;
+    margin: 5px;
 }
 .custom-tree-container {
   margin-top: 15px;

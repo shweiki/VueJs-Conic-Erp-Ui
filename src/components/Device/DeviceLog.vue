@@ -291,7 +291,7 @@ export default {
           startDate.getFullYear(),
           startDate.getMonth(),
           startDate.getDate(),
-          endDate.getHours() + 5,
+          endDate.getHours() + 9,
           endDate.getMinutes()
         );
         while (currentDate <= endDate) {
@@ -309,7 +309,7 @@ export default {
               currentDate.getMonth(),
               currentDate.getDate() +
                 (startDate.getHours() > endDate.getHours() ? 1 : 0),
-              endDate.getHours() + 5, // في حل اشتغل اضافي بدري ب 5 ساعات
+              endDate.getHours() + 9, // في حل اشتغل اضافي بدري ب 5 ساعات
               endDate.getMinutes()
             );
 
