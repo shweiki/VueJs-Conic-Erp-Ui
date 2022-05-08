@@ -13,25 +13,6 @@
               <el-input placeholder="بحث عن اسم الحساب" v-model="filterText">
               </el-input>
             </el-col>
-            <el-col :span="3">
-              <Entry-Movements-Dialog :AccountId="Selected.Id" />
-            </el-col>
-            <el-col :span="3">
-              <Edit-Account :AccountId="Selected.Id" @Done="getdata()" />
-            </el-col>
-            <el-col :span="3">
-              <Delete-Account :AccountId="Selected.Id" @Done="getdata()" />
-            </el-col>
-            <el-col :span="4">
-              <Add-Account-Dialog
-                v-bind:Code="
-                  Selected.Code + ((Selected.children.length || 0) + 1)
-                "
-                :ParentId="Selected.Code"
-                @Done="getdata()"
-              />
-            </el-col>
-            <Drawer-Print Type="" :Data="{}" />
             <el-col :span="4">
               <el-button
                 type="primary"
@@ -43,10 +24,7 @@
           <div class="custom-tree-container">
             <el-tree
               :data="Tree"
-              node-key="Code"
-              default-expand-all
-              accordion
-              show-checkbox
+              node-key="Id"
               icon-class="el-icon-folder"
               :filter-node-method="filterNode"
               @node-click="Select"
@@ -61,18 +39,50 @@
               :allow-drag="allowDrag"
               ref="AccountTree"
             >
-              <span class="custom-tree-node" slot-scope="{ data }">
-                <span style="color: black"
+              <div class="custom-tree-node" slot-scope="{ data }">
+                <el-col :span="24" style="color: black"
                   >({{ data.Code }}) {{ data.Name }}
-                </span>
-                <span>
-                  <span style="color: red">{{
-                    (data.TotalCredit - data.TotalDebit).toFixed(
-                      $store.getters.settings.ToFixed
-                    )
-                  }}</span>
-                </span>
-              </span>
+                </el-col>
+
+                <el-col :span="24">
+                  <el-col :span="4">
+                    <Entry-Movements-Dialog :AccountId="data.Id" />
+                  </el-col>
+                  <el-col :span="4">
+                    <Edit-Account :AccountId="data.Id" @Done="getdata()" />
+                  </el-col>
+                  <el-col :span="4">
+                    <Delete-Account :AccountId="data.Id" @Done="getdata()" />
+                  </el-col>
+                  <el-col :span="4">
+                    <Add-Account-Dialog
+                      v-bind:Code="
+                        data.Code +
+                        ((data.children.length != null
+                          ? data.children.length
+                          : 0) +
+                          1)
+                      "
+                      :ParentId="data.Code"
+                      @Done="getdata()"
+                    /> </el-col
+                  ><el-col :span="4">
+                    <Drawer-Print Type="Account" :Data="data"
+                  /></el-col>
+                </el-col>
+                <el-col :span="6" style="color: red">{{
+                  (data.TotalCredit - data.TotalDebit).toFixed(
+                    $store.getters.settings.ToFixed
+                  )
+                }}</el-col>
+                <el-col :span="6" style="color: green">{{
+                  calcCreditDebitParent(
+                    data.children,
+                    data.TotalCredit,
+                    data.TotalDebit
+                  )
+                }}</el-col>
+              </div>
             </el-tree>
           </div>
         </el-col>
@@ -129,7 +139,12 @@ export default {
   methods: {
     filterNode(value, data) {
       if (!value) return true;
-      return data.Name.indexOf(value) !== -1 || data.Code.indexOf(value) !== -1;
+      // console.log("value", value, data);
+      data.Name = data.Name == null ? "" : data.Name;
+      return (
+        data.Name.indexOf(value) !== -1 ||
+        data.Code.toString().indexOf(value) !== -1
+      );
     },
 
     getdata() {
@@ -138,6 +153,7 @@ export default {
         .then((response) => {
           // handle success
           this.Tree = this.generateTree(response);
+          //   this.calcCreditDebitParent(this.Tree);
           console.log("this.Tree", this.Tree);
 
           this.loading = false;
@@ -158,21 +174,24 @@ export default {
         node,
         roots = [],
         i;
-      list = list.sort((a, b) =>
-        a.Code.length > b.Code.length
+      list = list.sort((a, b) => {
+        //console.log(a.Code);
+        //  a.Code = a.Code.toString().match(/\d+/);
+        return a.Code.length > b.Code.length
           ? 1
           : b.Code.length > a.Code.length
           ? -1
-          : 0
-      );
+          : 0;
+      });
+
       for (i = 0; i < list.length; i += 1) {
         list[i].Code = parseInt(list[i].Code);
         map[list[i].Code] = i; // initialize the map
         list[i].children = []; // initialize the children
       }
-      console.log(list);
+      //console.log(list);
 
-      console.log(map);
+      // console.log(map);
 
       // for (i = list.length - 1; i >= 0; i--) {
       for (i = 0; i < list.length; i += 1) {
@@ -186,19 +205,33 @@ export default {
           console.log(list[map[node.ParentId]]);
 
           list[map[node.ParentId]].children.push(node);
-
-          list[map[node.ParentId]].TotalCredit += node.TotalCredit;
-          list[map[node.ParentId]].TotalDebit += node.TotalDebit;
         } else {
           roots.push(node);
         }
       }
-      return roots;
 
-      //   return roots.reverse();
-      //  return roots.sort((a, b) =>
-      //    a.Code > b.Code ? 1 : b.Code > a.Code ? -1 : 0
-      //);
+      return roots;
+    },
+    calcCreditDebitParent(tree = [], Credit, Debit) {
+      if (tree.length > 0) {
+        var Total = { TotalCredit: 0, TotalDebit: 0 };
+        tree.forEach(async (n) => {
+          if (n.children.length > 0) {
+            Total = await this.calcCreditDebitParent(n.children);
+            console.log("n", Total, n);
+
+            Total.TotalCredit += n.TotalCredit;
+            Total.TotalDebit += n.TotalDebit;
+          } else {
+            Total.TotalCredit += n.TotalCredit;
+            Total.TotalDebit += n.TotalDebit;
+          }
+          //    console.log("n", n);
+        });
+        return Total;
+      } else {
+        return { TotalCredit: Credit, TotalDebit: Debit };
+      }
     },
     handleDragStart(node, ev) {
       this.Selected = node;
@@ -257,8 +290,7 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   padding-right: 8px;
-  border: outset;
-    margin: 5px;
+  margin: 5px;
 }
 .custom-tree-container {
   margin-top: 15px;

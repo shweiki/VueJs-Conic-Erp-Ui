@@ -21,9 +21,9 @@ const UploadData = {
     },    {
       path: 'Upload/TreeAccount',
       component: () => import('@/views/UploadData/TreeAccount'),
-      name: 'TreeAccount',
+      name: 'UploadTreeAccount',
       meta: {
-        title: 'TreeAccount', icon: 'execution'
+        title: 'UploadTreeAccount', icon: 'execution'
       },
     },
     {

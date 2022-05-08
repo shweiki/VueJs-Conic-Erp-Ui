@@ -31,7 +31,7 @@
                 ]"
                 class="currency-input"
                 v-model="tempForm.TotalAmmount"
-                :value-range="{ min: 0.0, max: 100000 }"
+                :value-range="{ min: 0.0, max: 10000000 }"
                 @focus="$event.target.select()"
               />
             </el-col>

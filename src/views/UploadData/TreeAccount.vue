@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
-    <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
+    <upload-excel-component
+      :on-success="handleSuccess"
+      :before-upload="beforeUpload"
+    />
     <el-button @click="Add" plain :disabled="isDisabled" type="success"
       >Push</el-button
     >
@@ -48,46 +51,43 @@ export default {
     async Add() {
       this.loading = true;
       this.isDisabled = true;
-      if (this.radio == "Create") this.CreateAccount(this.data[0]);
+      if (this.radio == "Create") this.Create(this.data[0]);
 
       if (this.radio == "CreateWithCheck") {
         var found = await this.Check(this.data[0].Name, this.data[0].Type);
         if (!found) {
-          this.CreateAccount(this.data[0]);
+          Create(this.data[0])
+            .then((response) => {
+              console.log("tag", "" + response);
+              this.data.splice(0, 1);
+              if (this.data.length != 0) {
+                this.Add();
+              } else {
+                this.loading = false;
+                this.tableData = [];
+                this.$notify({
+                  title: "تم ",
+                  message: "تم الإضافة بنجاح",
+                  type: "success",
+                  duration: 2000,
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              //this.Add(100), 1000);
+            });
         } else {
           console.log("tag", "يوجد  نفس الاسم / نوع");
         }
       }
+    },
 
-      this.data.splice(0, 1);
-      if (this.data.length != 0) {
-        this.Add();
-      } else {
-        this.loading = false;
-        this.tableData = [];
-        this.$notify({
-          title: "تم ",
-          message: "تم الإضافة بنجاح",
-          type: "success",
-          duration: 2000,
-        });
-      }
-    },
-    CreateAccount(temp) {
-      Create(temp)
-        .then((response) => {
-          console.log("tag", "" + response);
-        })
-        .catch((error) => {
-          console.log(error);
-          //this.Add(100), 1000);
-        });
-    },
-    Check(Name,Type) {
+    Check(Name, Type) {
       return new Promise((resolve) => {
         CheckIsExist({
-           Name: Name,
-           Type: Type,
+          Name: Name,
+          Type: Type,
         }).then((res) => {
           resolve(res);
         });
@@ -110,7 +110,7 @@ export default {
       this.loading = true;
       this.tableData = results;
       console.log(this.tableData);
-      this.data = this.tableData
+      this.data = this.tableData;
       this.tableHeader = header;
       this.isDisabled = false;
       this.loading = false;
