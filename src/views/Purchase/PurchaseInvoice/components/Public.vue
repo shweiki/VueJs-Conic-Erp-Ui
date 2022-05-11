@@ -80,7 +80,7 @@
               ]"
             >
               <vendor-search-any
-                :VendorId="tempForm.VendorId"
+                :Id="tempForm.VendorId"
                 @Set="
                   (v) => {
                     Vendor = v;

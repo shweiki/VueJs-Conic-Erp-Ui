@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-col :span="24"> <member-search /> </el-col>
     <el-card style="margin-bottom: 20px">
       <el-row type="flex">
         <el-col :span="8">
@@ -9,7 +10,7 @@
           ></el-button>
         </el-col>
         <el-col :span="8">
-          <Add-Device-Log  TableName="Member" />
+          <Add-Device-Log TableName="Member" />
         </el-col>
         <el-col :span="8">
           <el-button
@@ -103,10 +104,11 @@
 import { GetByStatus } from "@/api/DeviceLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
+import MemberSearch from "@/components/Member/MemberSearch.vue";
 
 export default {
   name: "MemberLog",
-  components: { StatusTag, AddDeviceLog },
+  components: { StatusTag, AddDeviceLog ,MemberSearch },
   data() {
     return {
       loading: false,

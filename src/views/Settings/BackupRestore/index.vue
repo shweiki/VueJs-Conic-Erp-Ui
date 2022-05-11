@@ -35,10 +35,24 @@
     >
       <el-table-column label="#" prop="Id" width="50"></el-table-column>
 
-      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center"> </el-table-column>
-      <el-table-column v-bind:label="$t('Backup.DataBaseName')" prop="DataBaseName"></el-table-column>
-      <el-table-column v-bind:label="$t('Backup.DateTime')" prop="DateTime"></el-table-column>
-      <el-table-column v-bind:label="$t('Backup.UserId')" prop="UserId"></el-table-column>
+      <el-table-column
+        v-bind:label="$t('AddVendors.Name')"
+        prop="Name"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('Backup.DataBaseName')"
+        prop="DataBaseName"
+      ></el-table-column>
+      <el-table-column
+        v-bind:label="$t('Backup.DateTime')"
+        prop="DateTime"
+      ></el-table-column>
+      <el-table-column
+        v-bind:label="$t('Backup.UserId')"
+        prop="UserId"
+      ></el-table-column>
     </el-table>
   </div>
 </template>
@@ -53,7 +67,7 @@ export default {
       loading: false,
       tableData: [],
       search: "",
-      RestoreDirectory: "C:\\BackUp\\",
+      RestoreDirectory: this.$store.state.settings.triger.BackUp.Directory,
     };
   },
   created() {
@@ -92,11 +106,11 @@ export default {
     },
     SubmitBackUp() {
       this.loading = true;
-      BackUp().then((response) => {
+      BackUp({ BackUpPath: this.RestoreDirectory }).then((response) => {
         if (response) {
           this.$notify({
             title: "تم ",
-            message: "تم الإضافة بنجاح",
+            message: "تم اخذ نسخة احتياطية بنجاح",
             type: "success",
             duration: 2000,
           });

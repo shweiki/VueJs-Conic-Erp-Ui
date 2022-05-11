@@ -496,7 +496,6 @@ export default {
         Store: 'Store',
 
     },
-
     Inventory: {
         Wharehouse: 'Stores And Wharehouses',
         StoreName: 'Store Name',
@@ -579,6 +578,7 @@ export default {
         Save: 'Save',
     },
     OperationSys: {
+        All:'All',
         Operations: 'Operations',
         OprationName: 'Opration Name',
         ControllerName: 'Controller Name',

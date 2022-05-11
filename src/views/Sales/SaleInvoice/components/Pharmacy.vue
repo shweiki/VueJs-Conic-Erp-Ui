@@ -58,7 +58,7 @@
 
               <el-col :span="6">
                 <Vendor-Search-Any
-                  :VendorId="tempForm.VendorId"
+                  :Id="tempForm.VendorId"
                   @Set="
                     (v) => {
                       tempForm.Name = v.Name;

@@ -23,8 +23,8 @@
               icon="fa fa-save"
               @click="confirmData()"
               >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-            ></el-col
-          >
+            >
+          </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="4">
@@ -58,7 +58,7 @@
               ]"
             >
               <vendor-search-any
-                v-bind:VendorId="tempForm.VendorId"
+                :Id="tempForm.VendorId"
                 @Set="
                   (v) => {
                     Vendor = v;
@@ -90,7 +90,10 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="باسم" prop="Name">
-              <el-input placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
+              <el-input
+                placeholder="اسم المستلم"
+                v-model="tempForm.Name"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -115,7 +118,9 @@
             >
             <template slot-scope="scope">
               {{ tempForm.InventoryMovements[scope.$index].Name }}
-              <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
+              <edit-item
+                :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
+              />
             </template>
           </el-table-column>
 
@@ -136,7 +141,9 @@
                 :step="1"
                 :min="0.0"
                 v-bind:max="
-                  isEdit ? 1000000 : scope.row.Item.TotalIn - scope.row.Item.TotalOut
+                  $store.getters.settings.PointOfSale.CheckQtyItem
+                    ? scope.row.Item.TotalIn - scope.row.Item.TotalOut
+                    : 1000000
                 "
                 select
                 @focus="$event.target.select()"
@@ -173,10 +180,13 @@
             }}</template>
             <template slot-scope="scope">
               <radio-active-inventory
-                :InventoryId="tempForm.InventoryMovements[scope.$index].InventoryItemId"
+                :InventoryId="
+                  tempForm.InventoryMovements[scope.$index].InventoryItemId
+                "
                 @Set="
                   (v) =>
-                    (tempForm.InventoryMovements[scope.$index].InventoryItemId = v.value)
+                    (tempForm.InventoryMovements[scope.$index].InventoryItemId =
+                      v.value)
                 "
               />
             </template>
@@ -187,9 +197,13 @@
             align="center"
           >
             <template slot-scope="scope">
-              <el-form-item :prop="'InventoryMovements.' + scope.$index + '.Description'">
+              <el-form-item
+                :prop="'InventoryMovements.' + scope.$index + '.Description'"
+              >
                 <el-input
-                  v-model="tempForm.InventoryMovements[scope.$index].Description"
+                  v-model="
+                    tempForm.InventoryMovements[scope.$index].Description
+                  "
                   required
                   class="input-with-select"
                 >
@@ -227,7 +241,9 @@
             <span>{{ $t("NewPurchaseInvoice.Items") }}</span>
             <el-divider direction="vertical"></el-divider>
             <span>{{
-              tempForm.InventoryMovements.length.toFixed($store.getters.settings.ToFixed)
+              tempForm.InventoryMovements.length.toFixed(
+                $store.getters.settings.ToFixed
+              )
             }}</span>
             <el-divider direction="vertical"></el-divider>
 
@@ -300,7 +316,10 @@
 <script>
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import FakeDate from "@/components/Date/FakeDate";
-import { EditEntryByFktable, GenerateSaleInvoiceEntry } from "@/api/EntryAccounting";
+import {
+  EditEntryByFktable,
+  GenerateSaleInvoiceEntry,
+} from "@/api/EntryAccounting";
 import ItemsSearch from "@/components/Item/ItemsSearch.vue";
 import EditItem from "@/components/Item/EditItem";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
@@ -345,7 +364,8 @@ export default {
         PaymentMethod: "Receivables",
         Discount: 0,
         VendorId: 2,
-        Status: 0,
+        Status:
+          this.$store.getters.settings.PointOfSale.CreateEntry == true ? 1 : 0,
         InventoryMovements: [],
       },
       rules: {
@@ -384,7 +404,9 @@ export default {
         PaymentMethod: "Receivables",
         Discount: 0,
         VendorId: 2,
-        Status: 0,
+        Status:
+          this.$store.getters.settings.PointOfSale.CreateEntry == true ? 1 : 0,
+
         InventoryMovements: [],
       };
     },
@@ -439,7 +461,10 @@ export default {
           valid &&
           this.tempForm.Total > 0 &&
           this.tempForm.InventoryMovements.length > 0 &&
-          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
+          this.tempForm.InventoryMovements.reduce(
+            (a, b) => a + (b["Qty"] || 0),
+            0
+          ) > 0
         ) {
           let Done;
           if (this.isEdit != true) {
@@ -464,7 +489,10 @@ export default {
               });
           }
 
-          if (Done && this.$store.getters.settings.PointOfSale.CreateEntry == true) {
+          if (
+            Done &&
+            this.$store.getters.settings.PointOfSale.CreateEntry == true
+          ) {
             EditEntryByFktable({
               TableName: "SaleInvoice",
               Fktable: this.tempForm.Id,

@@ -10,6 +10,7 @@
         linkProps(v);
       }
     "
+    :Id="AccountId"
   >
     <slot />
   </component>

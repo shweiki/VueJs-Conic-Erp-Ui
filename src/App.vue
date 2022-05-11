@@ -9,6 +9,7 @@
 <script>
 export default {
   name: "App",
+
 };
 </script>
 <style>
@@ -29,6 +30,7 @@ export default {
 .v-modal {
   width: 0;
 }
+
 #progressBar {
   position: fixed;
   top: 0;
@@ -38,24 +40,31 @@ export default {
   height: 0;
   opacity: 0;
 }
+
 .el-row--flex {
   padding: 3.5px;
 }
+
 .el-input-number {
   width: fit-content;
 }
+
 .el-table {
   text-align: right;
 }
+
 .el-table thead {
   color: #2c3a47;
 }
+
 .el-date-range-picker__content {
   float: right;
 }
+
 .el-card__body {
   font-weight: 700;
 }
+
 .el-scrollbar {
   font: menu;
   font-weight: 700;
@@ -69,9 +78,11 @@ export default {
 .el-table--border {
   border: 1.5px solid #2f3542;
 }
+
 .el-form-item__error {
   left: unset;
 }
+
 .currency-input {
   position: relative;
   width: 100%;

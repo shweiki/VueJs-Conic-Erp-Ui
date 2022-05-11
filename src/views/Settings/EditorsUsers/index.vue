@@ -89,8 +89,8 @@ export default {
             trigger: 'blur'
           },
           {
-            minlength: 3,
-            maxlength: 50,
+            min: 3,
+            max: 50,
             message: "الرجاء إدخال اسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
             trigger: 'blur'
           }

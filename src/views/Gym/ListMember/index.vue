@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row type="flex">
-  <!--    <el-col :span="6" :xs="24">
+      <!--    <el-col :span="6" :xs="24">
         <member-log />
       </el-col>-->
       <el-col :span="24" :xs="24" v-loading="loading">
@@ -15,7 +15,11 @@
           v-for="(member, index) in ActiveMembers"
           :key="index"
         >
-          <el-card :body-style="{ padding: '0px' }" class="box-card" shadow="always">
+          <el-card
+            :body-style="{ padding: '0px' }"
+            class="box-card"
+            shadow="always"
+          >
             <div slot="header">
               <router-link :to="'/Gym/Edit/' + member.MemberId">
                 <strong style="font-size: 10px; cursor: pointer">{{
@@ -25,7 +29,8 @@
             </div>
             <el-row type="flex">
               <el-col :span="12"
-                >{{ $t("MemberList.MembershipType") }}{{ member.MembershipName }}</el-col
+                >{{ $t("MemberList.MembershipType")
+                }}{{ member.MembershipName }}</el-col
               >
               <el-col :span="12">
                 <span>اخر زيارة</span>
@@ -45,10 +50,11 @@
 <script>
 import permission from "@/directive/permission/index.js";
 // import MemberLog from "@/components/Gym/MemberLog.vue";
-import MemberSearch from "./components/MemberSearch.vue";
+import MemberSearch from "@/components/Member/MemberSearch.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 import LastLog from "@/components/Gym/LastLog.vue";
+import { GetActiveMember } from "@/api/Member";
 
 //import { GetActiveMember } from "@/api/Member";
 
@@ -59,29 +65,29 @@ export default {
   data() {
     return {
       loading: true,
+      Totals: {},
       ActiveMembers: [],
     };
   },
-  computed: {
-    Members() {
-      return this.$store.getters.ActiveMembers;
-    },
-  },
-  watch: {
-    Members() {
-      this.ActiveMembers = this.Members;
-    },
-  },
-  mounted() {
-    this.ActiveMembers = this.Members;
-  },
+
   created() {
     // this.getdata();
     this.getdata();
   },
   methods: {
     getdata() {
-      this.loading = false;
+      this.loading = true;
+      GetActiveMember()
+        .then((response) => {
+          this.ActiveMembers = response.items;
+          this.Totals = response.Totals;
+          this.loading = false;
+        })
+        .catch((error) => {
+          this.loading = false;
+
+          console.log(error);
+        });
     },
   },
 };

@@ -41,8 +41,9 @@
             $t("Members.SendSMS")
           }}</el-button>
         </el-popover>
-        <add-member />
-
+        <el-col :span="1">
+          <add-member />
+        </el-col>
         <el-row type="flex">
           <el-col :span="12">
             <el-input
@@ -65,6 +66,15 @@
           </el-col>
           <el-col :span="6">
             <Export :list="list" />
+            <el-col :span="1">
+              <drawer-print
+                Type="MemberList"
+                :Data="{
+                  Totals: Totals,
+                  Items: list,
+                }"
+              />
+            </el-col>
             <el-button
               v-waves
               class="filter-item"
@@ -76,9 +86,7 @@
             </el-button>
           </el-col>
         </el-row>
-      </div>
-      <el-row type="flex">
-        <el-col :span="6">
+        <el-col :span="24">
           <Radio-Oprations
             TableName="Member"
             @Set="
@@ -89,7 +97,10 @@
             "
           />
         </el-col>
-        <el-col v-permission="['admin']" :span="18">
+      </div>
+
+      <el-row type="flex">
+        <el-col v-permission="['admin']" :span="24">
           <el-divider direction="vertical"></el-divider>
           <span>{{ $t("Vendors.PersonsCount") }}</span>
           <el-divider direction="vertical"></el-divider>
@@ -280,7 +291,7 @@ import {
 } from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import permission from "@/directive/permission/index.js";
 
 import waves from "@/directive/waves"; // waves directive
@@ -291,9 +302,11 @@ import AddMember from "@/components/Member/AddMember.vue";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
-  name: "ComplexTable",  props: ["DblClickRow"],
+  name: "ComplexTable",
+  props: ["DblClickRow"],
 
   components: {
     StatusTag,
@@ -304,6 +317,7 @@ export default {
     DialogActionLog,
     SortOptions,
     Export,
+    DrawerPrint,
   },
   directives: { waves, permission },
   data() {

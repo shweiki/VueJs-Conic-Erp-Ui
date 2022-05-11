@@ -43,7 +43,7 @@
         :autocomplete="autoComplete"
         :max="max"
         :min="min"
-        :minlength="minlength"
+        :min="min"
         :maxlength="maxlength"
         :required="required"
         type="number"
@@ -92,7 +92,7 @@
         :readonly="readonly"
         :disabled="disabled"
         :autocomplete="autoComplete"
-        :minlength="minlength"
+        :min="min"
         :maxlength="maxlength"
         :required="required"
         type="text"
@@ -129,8 +129,8 @@ export default {
     min: String,
     max: String,
     step: String,
-    minlength: Number,
-    maxlength: Number,
+    min: Number,
+    max: Number,
     required: {
       type: Boolean,
       default: true

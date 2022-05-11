@@ -167,7 +167,7 @@ import MemberShipMovement from "./Dialogs/MemberShipMovement.vue";
 
 import MemberPay from "./Dialogs/MemberPay.vue";
 import ServiceInvoice from "./Dialogs/ServiceInvoice.vue";
-import MemberSearch from "./MemberSearch.vue";
+import MemberSearch from "@/components/Member/MemberSearch.vue";
 
 import Payment from "./Payment.vue";
 import SaleInvoice from "./SaleInvoice.vue";

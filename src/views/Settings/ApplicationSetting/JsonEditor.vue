@@ -1,17 +1,21 @@
 ﻿<template>
   <div>
-    <el-row
+    <el-card
       ><el-col :span="24">
         <el-button :loading="LoadingSave" type="success" @click="SaveJson"
           >Save</el-button
         >
+        <el-button type="success" @click="RestSetting"
+          >Rest Defualt Setting</el-button
+        >
         <json-editor ref="jsonEditor" v-model="JsonSettings" /> </el-col
-    ></el-row>
+    ></el-card>
   </div>
 </template>
 
 <script>
 import JsonEditor from "@/components/JsonEditor";
+import { RestDefualtSetting } from "@/api/Setting";
 
 export default {
   components: { JsonEditor },
@@ -37,6 +41,11 @@ export default {
         message: "تم حفظ بنجاح",
         type: "success",
         duration: 2000,
+      });
+    },
+    RestSetting() {
+      RestDefualtSetting().then((res) => {
+        if (res) location.reload();
       });
     },
   },

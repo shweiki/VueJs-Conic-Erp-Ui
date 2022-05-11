@@ -66,9 +66,7 @@
                       :ParentId="data.Code"
                       @Done="getdata()"
                     /> </el-col
-                  ><el-col :span="4">
-                    <Drawer-Print Type="Account" :Data="data"
-                  /></el-col>
+                  >
                 </el-col>
                 <el-col :span="6" style="color: red">{{
                   (data.TotalCredit - data.TotalDebit).toFixed(
@@ -290,7 +288,7 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   padding-right: 8px;
-  margin: 5px;
+  margin: 10px;
 }
 .custom-tree-container {
   margin-top: 15px;

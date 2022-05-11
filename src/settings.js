@@ -69,6 +69,7 @@ module.exports = {
         QtyCounter: false,
         CreateEntry: false,
         CreateDelivery: false,
+        CheckQtyItem: false,
         DeliveryUrl: "http://localhost:8090/test1/OrderDelivery/Create"
     },
     Purchase: {
@@ -98,8 +99,14 @@ module.exports = {
     timeQuery: ["00:00:00", "23:59:59"],
     printers: ["Casher", "WorkTable1", "WorkTable2"],
     triger: {
+        "BackUp": {
+            turnOn: true,
+            Directory: "C:\\BackUp\\",
+            LastRun: "July 21, 1983 01:15:00",
+            OnClock: 24 /// 24 base
+        },
         "CheckMembers": {
-            lock: false,
+            turnOn: false,
             LastRun: "July 21, 1983 01:15:00",
             OnClock: 7 /// 24 base
         }

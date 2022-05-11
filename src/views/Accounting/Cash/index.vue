@@ -210,8 +210,8 @@ export default {
             trigger: "blur",
           },
           {
-            minlength: 5,
-            maxlength: 150,
+            min: 5,
+            max: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 احرف و لا يزيد عن 150 حرف",
             trigger: "blur",
           },

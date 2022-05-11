@@ -6,6 +6,7 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 import { OpenCashDrawer } from "@/api/Device";
+import { BackUp } from "@/api/BackupRestore";
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -46,13 +47,31 @@ router.beforeEach(async (to, from, next) => {
                     // hack method to ensure that addRoutes is complete
                     // set the replace: true, so the navigation will not leave a history record
                     store.dispatch("CompanyInfo/GetCompanyInfo");
-                    if (store.state.settings.BusinessType == 'GymManagment') {
+                    if (store.state.settings.triger.CheckMembers.turnOn) {
                         var now = new Date();
                         var d = new Date(store.state.settings.triger.CheckMembers.LastRun)
                         d.setTime(d.getTime() + (store.state.settings.triger.CheckMembers.OnClock * 60 * 60 * 1000))
-                      //  console.log("-",d.getTime()+"-"+now.getTime())
+                        //  console.log("-",d.getTime()+"-"+now.getTime())
                         if (d.getTime() < now.getTime()) {
-                            const CheckMembers =  store.dispatch("Members/CheckMembers")
+                            const CheckMembers = store.dispatch("Members/CheckMembers")
+                        }
+                    }
+                    if (store.state.settings.triger.BackUp.turnOn) {
+                        var now = new Date();
+                        var d = new Date(store.state.settings.triger.BackUp.LastRun)
+                        d.setTime(d.getTime() + (store.state.settings.triger.BackUp.OnClock * 60 * 60 * 1000))
+                        //  console.log("-",d.getTime()+"-"+now.getTime())
+                        if (d.getTime() < now.getTime()) {
+                            BackUp({ BackUpPath: store.state.settings.triger.BackUp.Directory }).then((response) => {
+                                if (response) {
+                                    store.state.settings.triger.BackUp.LastRun = "" + Date() + ""
+                                    store.dispatch("settings/changeSetting", {
+                                        key: "triger",
+                                        value: store.getters.settings.triger,
+                                    });
+                                    Message.success(response + "تم اخذ نسخة احتياطية بنجاح")
+                                }
+                            });
                         }
                     }
                     store.dispatch("Devices/FeelDevice");
@@ -65,7 +84,7 @@ router.beforeEach(async (to, from, next) => {
                         e = e || window.event;
                         //debugger
                         if (e.code == store.state.settings.CashDrawerCOM.OpenKeyBoard) {
-                        //    window.event.code = 9;
+                            //    window.event.code = 9;
                             OpenCashDrawer({ Com: store.state.settings.CashDrawerCOM.COM })
                                 .then(response => { console.log("OpenCashDrawer", response) })
                                 .catch(err => {
@@ -73,8 +92,8 @@ router.beforeEach(async (to, from, next) => {
                                 });
                         }
                         if (window.event && window.event.keyCode == 13) {
-                          //  console.log(window)
-                          //  window.event.code = 9;
+                            //  console.log(window)
+                            //  window.event.code = 9;
                             //   $event.target.nextElementSibling.focus()
                             // e.target.nextElementSibling.focus()
                             //   e.code = 9;

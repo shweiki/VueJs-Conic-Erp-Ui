@@ -77,7 +77,7 @@
     />
     <el-card class="box-card">
       <el-divider direction="vertical"></el-divider>
-      <span>عدد مقبوضات</span>
+      <span>عدد المصروفات</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Rows }}</span>
       <el-divider direction="vertical"></el-divider>
@@ -87,10 +87,7 @@
       <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
-      <span>{{ $t("CashPool.Visa") }}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+
 
       <span>شيكات</span>
       <el-divider direction="vertical"></el-divider>
@@ -222,7 +219,7 @@ export default {
   data() {
     return {
       list: [],
-      Totals: { Rows: 0, Totals: 0, Cash: 0, Cheque: 0, Visa: 0 },
+      Totals: { Rows: 0, Totals: 0, Cash: 0, Cheque: 0 },
       listLoading: false,
       listQuery: {
         Page: 1,

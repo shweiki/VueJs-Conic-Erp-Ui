@@ -1,4 +1,5 @@
 {
     "vue3snippets.enable-compile-vue-file-on-did-save-code": true,
-    "python.pythonPath": "C:\\Users\\tana pc\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+    "python.pythonPath": "C:\\Users\\tana pc\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

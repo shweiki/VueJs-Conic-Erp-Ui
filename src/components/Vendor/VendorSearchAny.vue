@@ -17,7 +17,7 @@
     </el-col>
 
     <el-col :span="4">
-      <edit-vendor :VendorId="VendorId" />
+      <edit-vendor :VendorId="Id" />
     </el-col>
   </div>
 </template>
@@ -28,27 +28,15 @@ import AddVendor from "@/components/Vendor/AddVendor.vue";
 import EditVendor from "@/components/Vendor/EditVendor.vue";
 import DialogSearchVendor from "@/components/Vendor/DialogSearchVendor.vue";
 export default {
+  components: { AddVendor, EditVendor, DialogSearchVendor },
   props: {
-    VendorId: {
+    Id: {
       type: Number,
       default: undefined,
     },
   },
-  components: { AddVendor, EditVendor, DialogSearchVendor },
-  data() {
-    return {
-      Vendor: { Id: undefined, Name: "", AccountId: 0 },
-    };
-  },
-  created() {
-    if (this.VendorId != undefined) {
-      GetById({ Id: this.VendorId }).then((res) => {
-        this.change(res);
-      });
-    }
-  },
   watch: {
-    VendorId(value) {
+    Id(value) {
       if (value != undefined) {
         GetById({ Id: value }).then((res) => {
           this.change(res);
@@ -56,6 +44,12 @@ export default {
       }
     },
   },
+  data() {
+    return {
+      Vendor: { Id: undefined, Name: "", AccountId: 0 },
+    };
+  },
+
   methods: {
     change(val) {
       this.Vendor = val;

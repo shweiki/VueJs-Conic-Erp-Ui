@@ -29,7 +29,7 @@ export default {
         SalesItems: 'مبيعات صنف',
         CashPool: 'اغلاق صندوق',
         NewPurchaseInvoice: 'انشاء فاتورة شراء',
-        ListBillOfEntery:"بيانات جمركية",
+        ListBillOfEntery: "بيانات جمركية",
         NewEntryAccounting: 'انشاء قيد جديد',
         AccountStatement: "كشف حساب",
         EditEntryAccounting: 'تعديل القيود',
@@ -76,8 +76,8 @@ export default {
         Cheques: "الشيكات",
         Banks: "البنوك",
         Cash: "الكاش",
-        ListMember: "قائمة الأعضاء",
-        EditMember: "تعديل الأعضاء",
+        ListMember: "قائمة المشتركين",
+        EditMember: "تعديل المشترك",
         CreateMember: "إنشاء عضو",
         Permissions: "الصلاحيات",
         PagePermission: "صلاحيات الصفحات",
@@ -122,14 +122,14 @@ export default {
         ListEmployee: "قائمة الموظفين",
         HumanResource: "الموارد البشرية",
         OrderRestaurant: "طلبات المطعم",
-        OrderRestaurantList :"قائمة الطلبات",
-        OrderRestaurantManager:"ادارة الطلبات",
-        CustomerPage:" صفحة الزبائن",
-        CustomerPOS:"نقاط البيع للزبائن",
-        CustomerOrderList:"قائمة الطلبات",
-        MembersLog:"سجل الأعضاء",
-        UploadReport:"رفع تقرير",
-        ForUploadBioLab:"تقارير بيو لاب",
+        OrderRestaurantList: "قائمة الطلبات",
+        OrderRestaurantManager: "ادارة الطلبات",
+        CustomerPage: " صفحة الزبائن",
+        CustomerPOS: "نقاط البيع للزبائن",
+        CustomerOrderList: "قائمة الطلبات",
+        MembersLog: "سجل المشتركين",
+        UploadReport: "رفع تقرير",
+        ForUploadBioLab: "تقارير بيو لاب",
 
     },
     Settings: {
@@ -293,8 +293,8 @@ export default {
         loginBackground: "خلفية شاشة تسجيل الدخول",
         sidebarImages: 'صورة الشريط الجانبي',
         Images: 'الصور',
-        CashPoolLayout:"شكل نظام المجمع النقدي",
-        WorkShopLayout:"شكل نظام الورشات",
+        CashPoolLayout: "شكل نظام المجمع النقدي",
+        WorkShopLayout: "شكل نظام الورشات",
     },
     MinOrd: {
         SBy: "البحث بحسب الرقم /الاسم /الباركود /التصنيف",
@@ -331,9 +331,9 @@ export default {
         CreditLimit: 'سقف الدين',
         Description: 'الوصف',
         Status: 'الحالة',
-        TotalDebit:'مجموع الدائن (عليك)',
-        TotalCredit:'مجموع المدين (لك)',
-        PersonsCount:"عدد الأشخاص"
+        TotalDebit: 'مجموع الدائن (عليك)',
+        TotalCredit: 'مجموع المدين (لك)',
+        PersonsCount: "عدد الأشخاص"
     },
     AddVendors: {
         Customer: 'عميل',
@@ -350,7 +350,7 @@ export default {
         Save: 'حفظ',
         EditorName: 'محرر السند',
         Region: "المنطقة",
-        BonId:"رقم البيان"
+        BonId: "رقم البيان"
 
     },
     AccountStatement: {
@@ -400,7 +400,7 @@ export default {
         Payment: "سندات القبض",
         Visit: "زيارات",
         Receive: "سندات الصرف",
-        Coupon:"كوبون",
+        Coupon: "كوبون",
     },
     ItemSales: {
         Name: "الإسم",
@@ -429,7 +429,7 @@ export default {
         CouponNoteId: 'رقم الدفتر ',
         In: 'الدخول',
         Out: 'الخروج',
-        LastVisit:"اخر زيارة",
+        LastVisit: "اخر زيارة",
 
     },
     NewPurchaseInvoice: {
@@ -507,11 +507,11 @@ export default {
         TotalNumber: 'العدد الكلي',
 
     },
-    ItemMovement:{
-        PurchaseInvoice:"فاتورة شراء",
-        SalesInvoice:"فاتورة مبيعات",
-        OrderInventory:"سند مخزون",
-        WorkShop:"ورشة عمل",
+    ItemMovement: {
+        PurchaseInvoice: "فاتورة شراء",
+        SalesInvoice: "فاتورة مبيعات",
+        OrderInventory: "سند مخزون",
+        WorkShop: "ورشة عمل",
     },
     Inventory: {
         Wharehouse: 'المخازن و المستودعات',
@@ -535,10 +535,10 @@ export default {
         UnitName: 'إسم وحدة القياس',
         SearchBy: 'بحث حسب الإسم',
         Address: "العنوان",
-        Ip:"الاي بي",
-        Port:"البورت",
-        LastSetDateTime:"اخر تعيين للوقت والتاريخ",
-        Edit:"تعديل",
+        Ip: "الاي بي",
+        Port: "البورت",
+        LastSetDateTime: "اخر تعيين للوقت والتاريخ",
+        Edit: "تعديل",
 
     },
     Stocks: {
@@ -593,6 +593,7 @@ export default {
         Save: 'حفظ',
     },
     OperationSys: {
+        All: 'الكل',
         Operations: 'العمليات',
         OprationName: ' إسم العملية',
         ControllerName: 'إسم المتحكم',
@@ -633,12 +634,12 @@ export default {
         Name: 'الإسم',
         NumberDays: 'عددالأيام',
         MembersCount: 'عدد المشتركين',
-        CheckBlackList:"فحص القائمة السوداء",
-        SendSMS:"ارسال رسالة",
-        FixPhoneNumber:"إصلاح رقم الهاتف",
-        SendBy:"إرسال عبر",
-        Export:"إستخراج",
-        SearchAll:" البحث حسب اسم الحساب أو رقمه",
+        CheckBlackList: "فحص القائمة السوداء",
+        SendSMS: "ارسال رسالة",
+        FixPhoneNumber: "إصلاح رقم الهاتف",
+        SendBy: "إرسال عبر",
+        Export: "إستخراج",
+        SearchAll: " البحث حسب اسم الحساب أو رقمه",
     },
     Bank: {
         Banks: "البنوك",
@@ -703,7 +704,7 @@ export default {
         remaining: "الأيام المتبقية :",
         Phone: 'الهاتف',
         funds: "الرصيد :",
-        MembershipCount:"عدد الاشتراكات",
+        MembershipCount: "عدد الاشتراكات",
     },
     Report: {
         Accounting: "المحاسبة",
@@ -780,8 +781,8 @@ export default {
         CustomerName: "إاسم الزبون",
         Phone: "رقم الهاتف",
         DOrderInfo: "معلومات طلب التوصيل",
-        Account:"الحساب الشخصي",
-        DriverAccount:"حساب السائق",
+        Account: "الحساب الشخصي",
+        DriverAccount: "حساب السائق",
 
     }
 }

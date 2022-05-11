@@ -62,8 +62,8 @@
               ]"
             >
               <Search-By
-                Type = "VendorSearchAny"
-                :VendorId="tempForm.VendorId"
+                Type="VendorSearchAny"
+                :AccountId="tempForm.VendorId"
                 @Set="
                   (v) => {
                     AccountId = v.AccountId;
@@ -85,7 +85,10 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="باسم" prop="Name">
-              <el-input placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
+              <el-input
+                placeholder="اسم المستلم"
+                v-model="tempForm.Name"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -108,7 +111,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+            <el-form-item
+              v-bind:label="$t('AddVendors.Description')"
+              prop="Description"
+            >
               <el-input v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
@@ -159,7 +165,7 @@ import { CreateEntry, EditEntryByFktable } from "@/api/EntryAccounting";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
 import EditorsUser from "@/components/Gym/EditorsUser";
-import SearchBy from "@/components/DynamicComponents/SearchBy";
+import SearchBy from "@/components/DynamicComponents/SearchBy.vue";
 
 export default {
   name: "NewPayment",
@@ -168,7 +174,7 @@ export default {
     SelectCashAccounts,
     RadioPaymentMethod,
     EditorsUser,
-    SearchBy
+    SearchBy,
   },
   props: {
     isEdit: {
@@ -187,7 +193,8 @@ export default {
         PaymentMethod: "Cash",
         TotalAmmount: 0,
         Description: "",
-        Status: 0,
+        Status:
+          this.$store.getters.settings.Payment.CreateEntry == true ? 1 : 0,
         VendorId: 2,
         IsPrime: true,
         MemberId: undefined,
@@ -214,7 +221,8 @@ export default {
         PaymentMethod: "Cash",
         TotalAmmount: 0,
         Description: "",
-        Status: 0,
+        Status:
+          this.$store.getters.settings.Payment.CreateEntry == true ? 1 : 0,
         VendorId: undefined,
         IsPrime: true,
         MemberId: undefined,
@@ -241,7 +249,10 @@ export default {
         if (valid && this.tempForm.TotalAmmount > 0) {
           Edit(this.tempForm)
             .then((response) => {
-              if (response && this.$store.getters.settings.Payment.CreateEntry == true) {
+              if (
+                response &&
+                this.$store.getters.settings.Payment.CreateEntry == true
+              ) {
                 EditEntryByFktable({
                   TableName: "Payment",
                   Fktable: this.tempForm.Id,
@@ -336,7 +347,10 @@ export default {
           this.DisabledSave = true;
           Create(this.tempForm)
             .then((response) => {
-              if (response && this.$store.getters.settings.Payment.CreateEntry == true) {
+              if (
+                response &&
+                this.$store.getters.settings.Payment.CreateEntry == true
+              ) {
                 CreateEntry({
                   Id: undefined,
                   FakeDate: this.tempForm.FakeDate,

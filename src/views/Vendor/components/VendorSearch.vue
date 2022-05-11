@@ -2,7 +2,7 @@
   <el-row style="background: #2f3542; color: white">
     <el-col :span="24">
       <Vendor-Search-Any
-        :VendorId="VendorId"
+        :Id="VendorId"
         @Set="
           (v) => {
             $router.push({ path: `/Vendor/Edit/${v.Id}` }); // -> /user/123

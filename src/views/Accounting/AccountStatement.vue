@@ -136,11 +136,11 @@
         <el-table-column label="نوع الحركة" prop="TableName" align="center">
           <template slot-scope="{ row }">
             <router-link
-              v-if="row.TableName == 'Manual'"
+              v-if="row.Type == 'Manual'"
               :to="'/EntryAccounting/Edit/' + row.EntryId"
             >
               <strong style="font-size: 10px; cursor: pointer">{{
-                $t("AccountStatement." + row.TableName)
+                $t("AccountStatement." + row.Type)
               }}</strong>
             </router-link>
             <router-link
