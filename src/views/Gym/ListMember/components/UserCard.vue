@@ -51,7 +51,9 @@
           ]"
         >
           <el-date-picker
-            format="dd/MM/yyyy"
+            :format="
+              $store.getters.settings.DateTimeFormat.replace(' HH:mm', '')
+            "
             v-model="Member.DateofBirth"
             type="date"
             placeholder="تاريخ ميلاد"

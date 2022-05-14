@@ -20,7 +20,10 @@
           ></el-input> </el-form-item
       ></el-col>
       <el-col :span="8">
-        <el-form-item v-bind:label="$t('CashDrawer.LatinName')" prop="LatinName">
+        <el-form-item
+          v-bind:label="$t('CashDrawer.LatinName')"
+          prop="LatinName"
+        >
           <el-input
             type="text"
             v-model="Employee.LatinName"
@@ -59,7 +62,9 @@
           ]"
         >
           <el-date-picker
-            format="dd/MM/yyyy"
+            :format="
+              $store.getters.settings.DateTimeFormat.replace(' HH:mm', '')
+            "
             v-model="Employee.DateofBirth"
             type="date"
             placeholder="تاريخ ميلاد"

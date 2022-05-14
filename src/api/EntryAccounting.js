@@ -58,7 +58,7 @@ export function GenerateSaleInvoiceEntry(temp, vendor, InComeAccountId, CashAcco
             Id: undefined,
             FakeDate: temp.FakeDate,
             Description: "",
-            Type: "Auto",
+            Type: "SaleInvoice",
             EntryMovements: [
                 {
                     Id: undefined,

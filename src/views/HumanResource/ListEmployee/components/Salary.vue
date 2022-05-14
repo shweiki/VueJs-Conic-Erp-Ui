@@ -14,7 +14,7 @@
       <el-table-column label="من تاريخ" align="center" width="140">
         <template slot-scope="scope">
           <el-date-picker
-            format="dd/MM/yyyy"
+            :format="$store.getters.settings.DateTimeFormat"
             disabled
             v-model="scope.row.SalaryFrom"
           ></el-date-picker>
@@ -23,7 +23,7 @@
       <el-table-column label="الى تاريخ" align="center" width="140">
         <template slot-scope="scope">
           <el-date-picker
-            format="dd/MM/yyyy"
+            :format="$store.getters.settings.DateTimeFormat"
             disabled
             v-model="scope.row.SalaryTo"
           ></el-date-picker>

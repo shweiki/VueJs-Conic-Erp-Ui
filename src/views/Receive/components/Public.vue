@@ -275,7 +275,7 @@ export default {
                   Id: undefined,
                   FakeDate: this.tempForm.FakeDate,
                   Description: "",
-                  Type: "Auto",
+                  Type: "Receive",
                   EntryMovements: [
                     {
                       Id: undefined,

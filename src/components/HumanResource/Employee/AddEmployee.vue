@@ -34,7 +34,11 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input type="text" ref="EmployeeName" v-model="tempForm.Name"></el-input>
+              <el-input
+                type="text"
+                ref="EmployeeName"
+                v-model="tempForm.Name"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -55,7 +59,9 @@
                 v-model="tempForm.DateofBirth"
                 type="date"
                 placeholder="تاريخ ميلاد"
-                format="dd-MM-yyyy"
+                :format="
+                  $store.getters.settings.DateTimeFormat.replace(' HH:mm', '')
+                "
               ></el-date-picker>
               <!--
               <birth-datepicker
@@ -112,7 +118,10 @@
                 },
               ]"
             >
-              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
+              <el-input
+                type="text"
+                v-model="tempForm.Email"
+              ></el-input> </el-form-item
           ></el-col>
         </el-row>
         <el-row type="flex">
@@ -156,7 +165,10 @@
               /> </el-form-item
           ></el-col>
         </el-row>
-        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+        <el-form-item
+          v-bind:label="$t('AddVendors.Description')"
+          prop="Description"
+        >
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>

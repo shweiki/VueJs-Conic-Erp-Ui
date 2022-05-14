@@ -186,7 +186,7 @@
                 v-model="tempForm.FakeDate"
                 type="date"
                 v-bind:placeholder="$t('NewPurchaseInvoice.Date')"
-                format="dd/MM/yyyy"
+                :format="$store.getters.settings.DateTimeFormat"
               ></el-date-picker>
             </el-form-item>
           </el-col>

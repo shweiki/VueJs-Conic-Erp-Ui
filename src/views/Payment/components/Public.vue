@@ -260,7 +260,7 @@ export default {
                     Id: undefined,
                     FakeDate: this.tempForm.FakeDate,
                     Description: "",
-                    Type: "Auto",
+                    Type: "Payment",
                     EntryMovements: [
                       {
                         Id: undefined,
@@ -355,7 +355,7 @@ export default {
                   Id: undefined,
                   FakeDate: this.tempForm.FakeDate,
                   Description: "",
-                  Type: "Auto",
+                  Type: "Payment",
                   EntryMovements: [
                     {
                       Id: undefined,

@@ -78,7 +78,7 @@
           </el-col>
           <el-col :span="8">
             <el-date-picker
-              format="dd/MM/yyyy"
+              :format="$store.getters.settings.DateTimeFormat"
               v-model="Employee.DateofBirth"
               type="date"
               disabled

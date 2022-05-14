@@ -1,12 +1,23 @@
 <template>
   <el-row :gutter="20" class="panel-group" style="margin: 20px 2px">
-    <el-col v-if="Shows.MembersActive" :xs="6" :sm="6" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
-        <div class="card-panel-icon-wrapper icon-people">
+    <el-col
+      v-if="Shows.MembersActive"
+      :xs="6"
+      :sm="6"
+      :lg="6"
+      class="card-panel-col"
+    >
+      <div class="card-panel" @click="handleSetLineChartData('MembersActive')">
+        <div
+          @dblclick="$router.push({ path: `/Gym/MembersLogs` })"
+          class="card-panel-icon-wrapper icon-people"
+        >
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">{{ $t("PanelGroup.ActiveMembers") }}</div>
+          <div class="card-panel-text">
+            {{ $t("PanelGroup.ActiveMembers") }}
+          </div>
           <count-to
             :start-val="0"
             :end-val="Totals.MembersActive"
@@ -17,8 +28,14 @@
       </div>
     </el-col>
 
-    <el-col v-if="Shows.MsgCredit" :xs="6" :sm="6" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
+    <el-col
+      v-if="Shows.MsgCredit"
+      :xs="6"
+      :sm="6"
+      :lg="6"
+      class="card-panel-col"
+    >
+      <div class="card-panel" @click="handleSetLineChartData('MsgCredit')">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
@@ -34,8 +51,11 @@
       </div>
     </el-col>
     <el-col v-if="Shows.Members" :xs="6" :sm="6" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
-        <div class="card-panel-icon-wrapper icon-people">
+      <div class="card-panel" @click="handleSetLineChartData('Members')">
+        <div
+          @dblclick="$router.push({ path: `/Gym/MembersLogs` })"
+          class="card-panel-icon-wrapper icon-people"
+        >
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
@@ -50,8 +70,11 @@
       </div>
     </el-col>
     <el-col v-if="Shows.Items" :xs="6" :sm="6" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
-        <div class="card-panel-icon-wrapper icon-people">
+      <div class="card-panel" @click="handleSetLineChartData('Items')">
+        <div
+          @dblclick="$router.push({ path: `/Item` })"
+          class="card-panel-icon-wrapper icon-people"
+        >
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
@@ -66,8 +89,11 @@
       </div>
     </el-col>
     <el-col v-if="Shows.Clients" :xs="6" :sm="6" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
-        <div class="card-panel-icon-wrapper icon-people">
+      <div class="card-panel" @click="handleSetLineChartData('Clients')">
+        <div
+          @dblclick="$router.push({ path: `/Vendor/ListVendor` })"
+          class="card-panel-icon-wrapper icon-people"
+        >
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
@@ -82,10 +108,19 @@
       </div>
     </el-col>
 
-    <el-col v-if="Shows.Suppliers" :xs="6" :sm="6" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+    <el-col
+      v-if="Shows.Suppliers"
+      :xs="6"
+      :sm="6"
+      :lg="6"
+      class="card-panel-col"
+    >
+      <div class="card-panel" @click="handleSetLineChartData('Suppliers')">
+        <div
+          @dblclick="$router.push({ path: `/Vendor/ListVendor` })"
+          class="card-panel-icon-wrapper icon-people"
+        >
+          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">{{ $t("PanelGroup.Provider") }}</div>
@@ -98,9 +133,18 @@
         </div>
       </div>
     </el-col>
-    <el-col v-if="Shows.Purchases" :xs="6" :sm="6" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
-        <div class="card-panel-icon-wrapper icon-money">
+    <el-col
+      v-if="Shows.Purchases"
+      :xs="6"
+      :sm="6"
+      :lg="6"
+      class="card-panel-col"
+    >
+      <div class="card-panel" @click="handleSetLineChartData('Purchases')">
+        <div
+          @dblclick="$router.push({ path: `/Purchases` })"
+          class="card-panel-icon-wrapper icon-money"
+        >
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
@@ -115,15 +159,18 @@
       </div>
     </el-col>
     <el-col v-if="Shows.Sales" :xs="6" :sm="6" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-shopping">
+      <div class="card-panel" @click="handleSetLineChartData('Sales')">
+        <div
+          @dblclick="$router.push({ path: `/Sales` })"
+          class="card-panel-icon-wrapper icon-shopping"
+        >
           <svg-icon icon-class="shopping" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">{{ $t("PanelGroup.Sales") }}</div>
           <count-to
             :start-val="0"
-            :end-val="Totals.Sales"
+            :end-val="Totals.Sales.Count"
             :duration="3600"
             class="card-panel-num"
           />
@@ -136,21 +183,23 @@
 
 <script>
 import CountTo from "vue-count-to";
-import { GetTotal } from "@/api/Dashboard";
 
 export default {
+  props: {
+    Totals: {
+      type: Object,
+      require: true,
+    },
+  },
   components: {
     CountTo,
   },
   data() {
     return {
-      Totals: {},
       Shows: this.$store.getters.settings.Dashboard.ShowPanelGroup,
     };
   },
-  mounted() {
-    this.getdata();
-  },
+
   methods: {
     notify() {
       // https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification#Parameters
@@ -163,13 +212,8 @@ export default {
       );
     },
     handleSetLineChartData(type) {
+      console.log(type);
       this.$emit("handleSetLineChartData", type);
-    },
-    getdata() {
-      GetTotal().then((response) => {
-        console.log(response);
-        this.Totals = response;
-      });
     },
   },
 };

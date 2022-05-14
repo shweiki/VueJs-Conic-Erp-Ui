@@ -79,7 +79,7 @@
               <el-form-item prop="FreezeBetween" label="الفترة">
                 <el-date-picker
                   v-model="FreezeBetween"
-                  format="dd/MM/yyyy"
+                  :format="$store.getters.settings.DateTimeFormat"
                   type="daterange"
                   align="left"
                   unlink-panels

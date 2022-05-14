@@ -67,7 +67,7 @@
         <el-table-column label="تاريخ البدء" align="center">
           <template slot-scope="scope">
             <el-date-picker
-              format="dd/MM/yyyy"
+              :format="$store.getters.settings.DateTimeFormat"
               disabled
               v-model="scope.row.StartDate"
             ></el-date-picker>
@@ -76,7 +76,7 @@
         <el-table-column label="تاريخ الانتهاء" align="center">
           <template slot-scope="scope">
             <el-date-picker
-              format="dd/MM/yyyy"
+              :format="$store.getters.settings.DateTimeFormat"
               disabled
               v-model="scope.row.EndDate"
             ></el-date-picker>
@@ -96,7 +96,7 @@
               <el-form-item prop="FreezeBetween" label="الفترة">
                 <el-date-picker
                   v-model="FreezeBetween"
-                  format="dd/MM/yyyy"
+                  :format="$store.getters.settings.DateTimeFormat"
                   type="daterange"
                   align="left"
                   unlink-panels

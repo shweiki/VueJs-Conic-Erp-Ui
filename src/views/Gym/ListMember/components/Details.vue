@@ -32,7 +32,7 @@
           </el-col>
           <el-col :span="8">
             <el-date-picker
-              format="dd/MM/yyyy"
+    :format="$store.getters.settings.DateTimeFormat"
               v-model="Member.DateofBirth"
               type="date"
               disabled
@@ -61,7 +61,7 @@
           <el-col :span="8">
             <el-date-picker
               v-if="Member.ActiveMemberShip"
-              format="dd/MM/yyyy"
+              :format="$store.getters.settings.DateTimeFormat"
               disabled
               v-model="Member.ActiveMemberShip.StartDate"
               type="date"
@@ -73,7 +73,7 @@
           <el-col :span="8">
             <el-date-picker
               v-if="Member.ActiveMemberShip"
-              format="dd/MM/yyyy"
+              :format="$store.getters.settings.DateTimeFormat"
               disabled
               v-model="Member.ActiveMemberShip.EndDate"
               type="date"

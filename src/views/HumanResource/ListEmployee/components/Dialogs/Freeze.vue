@@ -21,7 +21,7 @@
               <el-date-picker
                 v-model="FreezeBetween"
                 :picker-options="pickerOptions"
-                format="dd/MM/yyyy"
+                :format="$store.getters.settings.DateTimeFormat"
                 type="daterange"
                 align="left"
                 unlink-panels

@@ -43,7 +43,7 @@
                 v-model="tempForm.FakeDate"
                 type="date"
                 placeholder="تاريخ"
-                format="dd/MM/yyyy"
+                :format="$store.getters.settings.DateTimeFormat"
               ></el-date-picker>
             </el-form-item>
           </el-col>

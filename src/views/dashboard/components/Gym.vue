@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard-editor-container">
 
-    <panel-group />
     <el-card class="box-card">
       <el-tabs v-model="activeTab" tab-position="top">
         <el-tab-pane v-bind:label="$t('PanelGroup.Receivables')" name="Receivables">
@@ -29,7 +28,6 @@
 </template>
 
 <script>
-import PanelGroup from "./PanelGroup";
 import MembershipmentOrdar from "@/components/Gym/MembershipmentOrdar";
 import Receivables from "@/components/Gym/Receivables.vue";
 import Payable from "@/components/Gym/Payable";
@@ -40,7 +38,6 @@ import EXPItem from "@/components/Item/EXPItem.vue";
 export default {
   name: "DashboardAdmin",
   components: {
-    PanelGroup,
     MembershipmentOrdar,
     Receivables,
     Payable,

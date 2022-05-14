@@ -360,7 +360,7 @@ export default {
         Receive: 'صرف',
         Manual: 'يدوي',
         BalanceCarried: "رصيد مدور",
-        null: ""
+
     },
     Sales: {
         ByDate: 'بحث حسب التاريخ',
@@ -687,8 +687,11 @@ export default {
         AccName: "إسم الحساب",
         AccType: "نوع الحساب",
         Save: "حفظ",
+        Statistics:"إحصائيات",
         cancel: "إلغاء",
-        InCome: "إيراد",
+        Profit : "صافي ربح",
+        InCome : "إيراد",
+        OutCome:"مصروف",
         Bank: "البنك",
 
     },

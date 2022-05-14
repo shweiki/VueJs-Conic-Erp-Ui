@@ -19,7 +19,7 @@
       <el-table-column label="التاريخ" align="center" width="150">
         <template slot-scope="scope">
           <el-date-picker
-            format="dd/MM/yyyy"
+            :format="$store.getters.settings.DateTimeFormat"
             disabled
             v-model="scope.row.FakeDate"
           ></el-date-picker>

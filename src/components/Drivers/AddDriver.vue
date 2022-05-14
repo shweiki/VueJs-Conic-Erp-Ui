@@ -30,7 +30,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-          <!-- <el-row type="flex">
+        <!-- <el-row type="flex">
           <el-col :span="24">
             <el-form-item label="الإسم اللاتيني (إسم المستخدم)" prop="UserName">
               <el-input
@@ -64,14 +64,17 @@
                 {
                   required: true,
                   message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-date-picker
                 v-model="tempForm.DateofBirth"
                 type="date"
                 placeholder="تاريخ ميلاد"
+                :format="
+                  $store.getters.settings.DateTimeFormat.replace(' HH:mm', '')
+                "
               ></el-date-picker>
               <!--
               <birth-datepicker
@@ -96,8 +99,8 @@
                 {
                   required: true,
                   message: 'لايمكن ترك الرقم الوطني فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <el-input
@@ -114,13 +117,13 @@
                 {
                   required: false,
                   message: 'Please input email address',
-                  trigger: 'blur'
+                  trigger: 'blur',
                 },
                 {
                   type: 'email',
                   message: 'Please input correct email address',
-                  trigger: ['blur', 'change']
-                }
+                  trigger: ['blur', 'change'],
+                },
               ]"
             >
               <el-input
@@ -139,15 +142,15 @@
                 {
                   required: true,
                   message: 'لايمكن ترك الرقم الهاتف فارغ',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
             >
               <VuePhoneNumberInput
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
                   countrySelectorError: 'تاكد من رقم',
-                  phoneNumberLabel: 'رقم الهاتف'
+                  phoneNumberLabel: 'رقم الهاتف',
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber1"
@@ -163,7 +166,7 @@
                 :translations="{
                   countrySelectorLabel: 'رمز البلد',
                   countrySelectorError: 'تاكد من رقم',
-                  phoneNumberLabel: 'رقم الهاتف'
+                  phoneNumberLabel: 'رقم الهاتف',
                 }"
                 default-country-code="JO"
                 v-model="tempForm.PhoneNumber2"
@@ -178,7 +181,7 @@
         >
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
-         <el-form-item label="password" prop="Pass">
+        <el-form-item label="password" prop="Pass">
           <el-input
             type="password"
             v-model="tempForm.Pass"
@@ -211,7 +214,7 @@ import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
-import { AddUserRouter} from "@/api/Role";
+import { AddUserRouter } from "@/api/Role";
 //import { UnLockout } from "@/api/User";
 export default {
   name: "Driver",
@@ -233,23 +236,23 @@ export default {
         Type: "New",
         DriverUserId: "",
         Pass: "",
-        Tag: null
+        Tag: null,
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "الرجاء ادخال الاسم",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             min: 3,
             max: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -258,7 +261,7 @@ export default {
   methods: {
     resetTempForm() {
       this.tempForm = {
-       Id: undefined,
+        Id: undefined,
         Name: "",
         Ssn: "",
         DateofBirth: "",
@@ -271,32 +274,32 @@ export default {
         Type: "New",
         DriverUserId: "",
         Pass: "",
-        Tag: null
+        Tag: null,
       };
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           CheckDriverIsExist({
             Ssn: this.tempForm.Ssn,
-            PhoneNumber: this.tempForm.PhoneNumber1
-          }).then(res => {
+            PhoneNumber: this.tempForm.PhoneNumber1,
+          }).then((res) => {
             console.log(res);
             if (!res) {
               this.tempForm.DateofBirth = new Date(this.tempForm.DateofBirth);
               //this.userTempForm.PhoneNumber = this.tempForm.PhoneNumber1;
               //this.userTempForm.Email = this.tempForm.Email;
               Create(this.tempForm)
-                .then(response => {
+                .then((response) => {
                   this.Visible = false;
                   this.$notify({
                     title: "تم ",
                     message: "تم الإضافة بنجاح",
                     type: "success",
-                    duration: 2000
+                    duration: 2000,
                   });
                 })
-                .catch(error => {
+                .catch((error) => {
                   console.log(error);
                 });
             } else {
@@ -305,7 +308,7 @@ export default {
                 title: "تم ",
                 message: "يوجد عضو يحمل نفس رقم الهاتف او الرقم الوطني",
                 type: "warning",
-                duration: 20000
+                duration: 20000,
               });
             }
           });
@@ -325,7 +328,7 @@ export default {
       }
 
       return age;
-    }
-  }
+    },
+  },
 };
 </script>

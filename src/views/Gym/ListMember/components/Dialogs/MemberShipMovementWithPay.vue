@@ -380,9 +380,9 @@ export default {
                   if (response) {
                     CreateEntry({
                       Id: undefined,
-                      FakeDate: this.tempForm.FakeDate,
+                      FakeDate: new Date(),
                       Description: "",
-                      Type: "Auto",
+                      Type: "MembershipMovement",
                       EntryMovements: [
                         {
                           Id: undefined,

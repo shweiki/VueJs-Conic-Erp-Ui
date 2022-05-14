@@ -671,8 +671,11 @@ export default {
         AccName: "AccName",
         AccType: "AccType",
         Save: "Save",
+        Statistics : "Statistics",
         cancel: "Cancel",
+        Profit : "Profit",
         InCome: "In Come",
+        OutCome:"Out Come",
         Bank: "Bank"
     },
     AddMembers: {

@@ -33,6 +33,10 @@ export default {
           value: "InCome",
         },
         {
+          label: "مصروف",
+          value: "OutCome",
+        },
+        {
           label: "خزينة كاش",
           value: "Cash",
         },

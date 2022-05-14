@@ -7,4 +7,10 @@ export function GetTotal(query) {
     params: query
   })
 }
-
+export function GetStatistics(query) {
+  return request({
+    url: '/Dashbord/GetStatistics',
+    method: 'get',
+    params: query
+  })
+}

@@ -278,9 +278,9 @@ export default {
                 // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
                 CreateEntry({
                   Id: undefined,
-                  FakeDate: this.tempForm.FakeDate,
+                  FakeDate: new Date(),
                   Description: "",
-                  Type: "Auto",
+                  Type: "MembershipMovement",
                   EntryMovements: [
                     {
                       Id: undefined,
@@ -320,7 +320,7 @@ export default {
                       type: "success",
                       duration: 2000,
                     });
-                    this.$emit("Done")
+                    this.$emit("Done");
                   }
                 });
               }

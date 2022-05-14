@@ -47,7 +47,7 @@
                 v-model="tempForm.DateofBirth"
                 type="date"
                 placeholder="تاريخ ميلاد"
-                format="dd-MM-yyyy"
+                :format="$store.getters.settings.DateTimeFormat.replace(' HH:mm','')"
               ></el-date-picker>
               <!--
               <birth-datepicker
