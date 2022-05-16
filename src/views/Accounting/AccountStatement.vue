@@ -252,7 +252,6 @@ export default {
       //    console.log("sdsad", this.listQuery);
       GetAccountStatement(this.listQuery).then((response) => {
         this.list = response.items.map((curr, i, array) => {
-          let Total = curr.Credit - curr.Debit;
           let lastTotal = i != 0 ? array[i - 1].TotalRow : 0;
           console.log("lastTotal", lastTotal);
 

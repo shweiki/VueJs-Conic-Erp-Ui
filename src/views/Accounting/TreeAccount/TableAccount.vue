@@ -198,16 +198,7 @@ export default {
 
         Status: undefined,
       },
-      TypeAccounts: [
-        {
-          label: "حساب",
-          value: "Vendor",
-        },
-        {
-          label: "خزينة كاش",
-          value: "Cash",
-        },
-      ],
+
     };
   },
   created() {

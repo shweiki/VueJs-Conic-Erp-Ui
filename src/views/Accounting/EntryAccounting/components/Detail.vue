@@ -11,7 +11,12 @@
         >
         <router-link
           class="pan-btn tiffany-btn"
-          style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
+          style="
+            float: left;
+            margin-left: 20px;
+            padding: 10px 15px;
+            border-radius: 6px;
+          "
           icon="el-icon-plus"
           to="/EntryAccounting/List"
           >{{ $t("route.EntryAccounting") }}</router-link
@@ -31,7 +36,10 @@
         <el-row type="flex">
           <el-col :span="18">
             <el-form-item v-bind:label="$t('Classification.Notes')">
-              <el-input type="textarea" v-model="tempForm.Description"></el-input>
+              <el-input
+                type="textarea"
+                v-model="tempForm.Description"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -54,7 +62,7 @@
           </el-col>
         </el-row>
         <Search-By
-        Type = "AccountSearchAny"
+          Type="AccountSearchAny"
           @Set="
             (v) => {
               AddEntryMovements(v);
@@ -68,26 +76,6 @@
           max-height="350"
           highlight-current-row
         >
-          <el-table-column align="center" v-bind:label="$t('Accounting.Account')">
-            <template slot-scope="scope">
-              <el-form-item
-                :prop="'EntryMovements.' + scope.$index + '.AccountId'"
-                :rules="[
-                  {
-                    required: true,
-                    message: 'لا يمكن ترك الحساب فارغ',
-                    trigger: 'blur',
-                  },
-                ]"
-              >
-                {{ tempForm.EntryMovements[scope.$index].Name }}
-                <el-col :span="4">
-                  <Edit-Account
-                    :AccountId="tempForm.EntryMovements[scope.$index].AccountId"
-                /></el-col>
-              </el-form-item>
-            </template>
-          </el-table-column>
           <el-table-column align="center" width="150">
             <template slot="header" slot-scope="{}"
               >{{ $t("Accounting.Credit") }} ({{
@@ -99,7 +87,9 @@
             <template slot-scope="scope">
               <el-input-number
                 v-bind:disabled="
-                  tempForm.EntryMovements[scope.$index].Debit != 0 ? true : false
+                  tempForm.EntryMovements[scope.$index].Debit != 0
+                    ? true
+                    : false
                 "
                 controls-position="right"
                 v-model="tempForm.EntryMovements[scope.$index].Credit"
@@ -122,7 +112,9 @@
             <template slot-scope="scope">
               <el-input-number
                 v-bind:disabled="
-                  tempForm.EntryMovements[scope.$index].Credit != 0 ? true : false
+                  tempForm.EntryMovements[scope.$index].Credit != 0
+                    ? true
+                    : false
                 "
                 controls-position="right"
                 v-model="tempForm.EntryMovements[scope.$index].Debit"
@@ -132,6 +124,31 @@
                 :max="1000000"
                 @focus="$event.target.select()"
               ></el-input-number>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            v-bind:label="$t('Accounting.Account')"
+          >
+            <template slot-scope="scope">
+              <el-form-item
+                :prop="'EntryMovements.' + scope.$index + '.AccountId'"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'لا يمكن ترك الحساب فارغ',
+                    trigger: 'blur',
+                  },
+                ]"
+              >
+                {{ tempForm.EntryMovements[scope.$index].Name }}
+                <el-col :span="4">
+                  <Edit-Account
+                    :AccountId="
+                      tempForm.EntryMovements[scope.$index].AccountId
+                    "
+                /></el-col>
+              </el-form-item>
             </template>
           </el-table-column>
           <el-table-column
@@ -197,7 +214,7 @@ import { CreateEntry, GetEntryById, Edit } from "@/api/EntryAccounting";
 import FakeDate from "@/components/Date/FakeDate";
 import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
 import EditAccount from "@/views/Accounting/TreeAccount/EditAccount.vue";
-import SearchBy from "@/components/DynamicComponents/SearchBy";
+import SearchBy from "@/components/DynamicComponents/SearchBy.vue";
 export default {
   name: "NewAccountingEntry",
   components: { FakeDate, AccountSearchAny, SearchBy, EditAccount },
@@ -320,7 +337,9 @@ export default {
               .catch((error) => {
                 console.log(error);
               });
-          } else this.ValidateNote = "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
+          } else
+            this.ValidateNote =
+              "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
@@ -358,7 +377,9 @@ export default {
               .catch((error) => {
                 console.log(error);
               });
-          } else this.ValidateNote = "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
+          } else
+            this.ValidateNote =
+              "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;

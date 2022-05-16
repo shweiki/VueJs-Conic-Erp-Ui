@@ -1,19 +1,26 @@
 <template>
-  <!-- <component v-bind="linkProps(to)">
+  <div>
+    <!-- <component v-bind="linkProps(to)">
     <slot />
   </component> -->
-
-  <component
-    :is="Type"
-    @Set="
-      (v) => {
-        linkProps(v);
-      }
-    "
-    :Id="AccountId"
-  >
-    <slot />
-  </component>
+      <el-radio-group v-model="SearchType" text-color="#f78123">
+        <el-radio label="MemberSearchAny" border>مشتركين</el-radio>
+        <el-radio label="VendorSearchAny" border>عملاء</el-radio>
+        <el-radio label="EmployeeSearchAny" border>موظفين</el-radio>
+        <el-radio label="AccountSearchAny" border>حسابات</el-radio>
+      </el-radio-group>
+    <component
+      :is="SearchType"
+      @Set="
+        (v) => {
+          linkProps(v);
+        }
+      "
+      :Id="AccountId"
+    >
+      <slot />
+    </component>
+  </div>
 </template>
 
 <script>
@@ -23,9 +30,15 @@ import MemberSearchAny from "@/components/Member/MemberSearchAny.vue";
 import EmployeeSearchAny from "@/components/HumanResource/EmployeeSearchAny.vue";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 export default {
-  components: { AccountSearchAny, MemberSearchAny, EmployeeSearchAny, VendorSearchAny },
+  components: {
+    AccountSearchAny,
+    MemberSearchAny,
+    EmployeeSearchAny,
+    VendorSearchAny,
+  },
   data() {
     return {
+      SearchType: "AccountSearchAny",
       Emp: "/HumanResource/Edit",
       Member: "/Gym/Edit",
       Path: "",

@@ -420,7 +420,7 @@ export default {
       this.tempForm.InventoryMovements.push({
         Id: undefined,
         ItemsId: item != undefined ? item.Id : undefined,
-        TypeMove: "In",
+        TypeMove: "Out",
         Status: 0,
         Qty: 1.0,
         SellingPrice: item.CostPrice,

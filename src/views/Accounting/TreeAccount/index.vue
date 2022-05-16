@@ -40,11 +40,11 @@
               ref="AccountTree"
             >
               <div class="custom-tree-node" slot-scope="{ data }">
-                <el-col :span="24" style="color: black"
+                <el-col :span="14" style="color: black"
                   >({{ data.Code }}) {{ data.Name }}
                 </el-col>
 
-                <el-col :span="24">
+                <el-col :span="18">
                   <el-col :span="4">
                     <Entry-Movements-Dialog :AccountId="data.Id" />
                   </el-col>
@@ -65,21 +65,37 @@
                       "
                       :ParentId="data.Code"
                       @Done="getdata()"
-                    /> </el-col
-                  >
+                    />
+                  </el-col>
                 </el-col>
-                <el-col :span="6" style="color: red">{{
-                  (data.TotalCredit - data.TotalDebit).toFixed(
-                    $store.getters.settings.ToFixed
-                  )
-                }}</el-col>
-                <el-col :span="6" style="color: green">{{
-                  calcCreditDebitParent(
-                    data.children,
-                    data.TotalCredit,
-                    data.TotalDebit
-                  )
-                }}</el-col>
+                <el-col :span="18" :gutter="20">
+                  <el-col :span="6" style="color: green">{{
+                    calcCreditDebitParent(
+                      data.children,
+                      data.TotalCredit,
+                      data.TotalDebit
+                    ).TotalCredit -
+                    calcCreditDebitParent(
+                      data.children,
+                      data.TotalCredit,
+                      data.TotalDebit
+                    ).TotalDebit
+                  }}</el-col>
+                  <el-col :span="6" style="color: red">{{
+                    calcCreditDebitParent(
+                      data.children,
+                      data.TotalCredit,
+                      data.TotalDebit
+                    ).TotalDebit
+                  }}</el-col>
+                  <el-col :span="6" style="color: blue">{{
+                    calcCreditDebitParent(
+                      data.children,
+                      data.TotalCredit,
+                      data.TotalDebit
+                    ).TotalCredit
+                  }}</el-col>
+                </el-col>
               </div>
             </el-tree>
           </div>
@@ -148,10 +164,11 @@ export default {
     getdata() {
       this.loading = true;
       GetTreeAccount()
-        .then((response) => {
+        .then(async (response) => {
           // handle success
-          this.Tree = this.generateTree(response);
-          //   this.calcCreditDebitParent(this.Tree);
+          var generateTree = this.generateTree(response);
+
+          this.Tree = generateTree;
           console.log("this.Tree", this.Tree);
 
           this.loading = false;
@@ -200,36 +217,38 @@ export default {
           node.ParentId !== node.Code
         ) {
           // if you have dangling branches check that map[node.parentId] exists
-          console.log(list[map[node.ParentId]]);
+          //  console.log(list[map[node.ParentId]]);
 
           list[map[node.ParentId]].children.push(node);
         } else {
           roots.push(node);
         }
       }
-
       return roots;
     },
     calcCreditDebitParent(tree = [], Credit, Debit) {
-      if (tree.length > 0) {
-        var Total = { TotalCredit: 0, TotalDebit: 0 };
-        tree.forEach(async (n) => {
-          if (n.children.length > 0) {
-            Total = await this.calcCreditDebitParent(n.children);
-            console.log("n", Total, n);
+      var Total = { TotalCredit: Credit, TotalDebit: Debit };
+      var node, i, Balancecarried;
+      for (i = 0; i < tree.length; i += 1) {
+        node = tree[i];
 
-            Total.TotalCredit += n.TotalCredit;
-            Total.TotalDebit += n.TotalDebit;
-          } else {
-            Total.TotalCredit += n.TotalCredit;
-            Total.TotalDebit += n.TotalDebit;
-          }
-          //    console.log("n", n);
-        });
-        return Total;
-      } else {
-        return { TotalCredit: Credit, TotalDebit: Debit };
+        if (node.children.length > 0) {
+          var newTotal = this.calcCreditDebitParent(
+            node.children,
+            Credit,
+            Debit
+          );
+
+          Total.TotalCredit += newTotal.TotalCredit;
+          Total.TotalDebit += newTotal.TotalDebit;
+        } else {
+          Balancecarried = node.TotalCredit - node.TotalDebit;
+          Total.TotalCredit +=
+            Balancecarried > 0 ? Math.abs(Balancecarried) : 0;
+          Total.TotalDebit += Balancecarried < 0 ? Math.abs(Balancecarried) : 0;
+        }
       }
+      return Total;
     },
     handleDragStart(node, ev) {
       this.Selected = node;

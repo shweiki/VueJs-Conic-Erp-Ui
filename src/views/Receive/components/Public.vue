@@ -83,7 +83,10 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="باسم" prop="Name">
-              <el-input placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
+              <el-input
+                placeholder="اسم المستلم"
+                v-model="tempForm.Name"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -106,7 +109,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+            <el-form-item
+              v-bind:label="$t('AddVendors.Description')"
+              prop="Description"
+            >
               <el-input v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
@@ -152,7 +158,7 @@
 <script>
 import { Create, Edit, GetById } from "@/api/Receive";
 import FakeDate from "@/components/Date/FakeDate";
-import { CreateEntry } from "@/api/EntryAccounting";
+import { CreateEntry, EditEntryByFktable } from "@/api/EntryAccounting";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import RadioReceiveMethod from "@/components/ReceiveMethod/RadioReceiveMethod.vue";
@@ -208,7 +214,7 @@ export default {
         Id: undefined,
         Name: "",
         FakeDate: "",
-        ReceiveMethod: "Cash",
+        Receive: "Cash",
         TotalAmmount: 0,
         Description: "",
         Status: 0,
@@ -238,10 +244,67 @@ export default {
         if (valid && this.tempForm.TotalAmmount > 0) {
           Edit(this.tempForm)
             .then((response) => {
-              if (response) {
+              if (
+                response &&
+                this.$store.getters.settings.Receive.CreateEntry == true
+              ) {
+                EditEntryByFktable({
+                  TableName: "Receive",
+                  Fktable: this.tempForm.Id,
+                  collection: {
+                    Id: undefined,
+                    FakeDate: this.tempForm.FakeDate,
+                    Description: "",
+                    Type: "Receive",
+                    EntryMovements: [
+                      {
+                        Id: undefined,
+                        AccountId: this.AccountId,
+                        Debit: 0.0,
+                        Credit: this.tempForm.TotalAmmount,
+                        Description: "سند صرف رقم " + this.tempForm.Id + " ",
+                        EntryId: undefined,
+                        TableName: "Receive",
+                        Fktable: this.tempForm.Id,
+                      },
+                      {
+                        Id: undefined,
+                        AccountId: this.CashAccountId,
+                        Credit: 0.0,
+                        Debit: this.tempForm.TotalAmmount,
+                        Description:
+                          " صرف الى " +
+                          this.tempForm.Name +
+                          "   رقم " +
+                          this.tempForm.Id +
+                          " ",
+                        EntryId: undefined,
+                        TableName: "Receive",
+                        Fktable: this.tempForm.Id,
+                      },
+                    ],
+                  },
+                }).then((res) => {
+                  if (res) {
+                    this.$notify({
+                      message: "تم تسجيل سند صرف مع قيد محاسبي بنجاح",
+                      title: "تم الإضافة بنجاح",
+                      type: "success",
+                      position: "top-left",
+                      duration: 1000,
+                      showClose: false,
+                    });
+                    this.$confirm("هل تريد العودة ")
+                      .then((_) => {
+                        this.$router.back();
+                      })
+                      .catch((_) => {});
+                  }
+                });
+              } else if (response) {
                 this.$notify({
-                  title: "تم تعديل  بنجاح",
-                  message: "تم تعديل بنجاح",
+                  title: "تم إضافة  بنجاح",
+                  message: "تم إضافة بنجاح",
                   type: "success",
                   position: "top-left",
                   duration: 1000,
@@ -250,9 +313,18 @@ export default {
                 this.restTempForm();
                 this.$confirm("هل تريد العودة ")
                   .then((_) => {
-                    this.$router.push({ path: `/Receive/List` });
+                    this.$router.back();
                   })
                   .catch((_) => {});
+              } else {
+                this.$notify({
+                  title: "مشكلة",
+                  message: "حصلت مشكلة في عملية الحفظ",
+                  type: "error",
+                  position: "top-left",
+                  duration: 1000,
+                  showClose: false,
+                });
               }
             })
             .catch((error) => {
@@ -270,7 +342,10 @@ export default {
           this.DisabledSave = true;
           Create(this.tempForm)
             .then((response) => {
-              if (response && this.$store.getters.settings.Receive.CreateEntry == true) {
+              if (
+                response &&
+                this.$store.getters.settings.Receive.CreateEntry == true
+              ) {
                 CreateEntry({
                   Id: undefined,
                   FakeDate: this.tempForm.FakeDate,
@@ -290,8 +365,8 @@ export default {
                     {
                       Id: undefined,
                       AccountId: this.CashAccountId,
-                      Debit: this.tempForm.TotalAmmount,
                       Credit: 0.0,
+                      Debit: this.tempForm.TotalAmmount,
                       Description: "سند صرف رقم " + response + " ",
                       EntryId: undefined,
                       TableName: "Receive",
@@ -301,7 +376,7 @@ export default {
                 }).then((res) => {
                   if (res) {
                     this.$notify({
-                      message: "تم تسجيل الفاتورة مع قيد محاسبي بنجاح",
+                      message: "تم تسجيل سند صرف مع قيد محاسبي بنجاح",
                       title: "تم الإضافة بنجاح",
                       type: "success",
                       position: "top-left",
@@ -311,7 +386,7 @@ export default {
                     this.restTempForm();
                     this.$confirm("هل تريد العودة ")
                       .then((_) => {
-                        this.$router.push({ path: `/Receive/List` });
+                        this.$router.back();
                       })
                       .catch((_) => {});
                   }

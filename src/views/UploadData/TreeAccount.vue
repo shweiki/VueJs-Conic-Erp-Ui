@@ -51,35 +51,36 @@ export default {
     async Add() {
       this.loading = true;
       this.isDisabled = true;
-      if (this.radio == "Create") this.Create(this.data[0]);
+      var found = false;
+      if (this.radio == "Create") found = false;
 
       if (this.radio == "CreateWithCheck") {
-        var found = await this.Check(this.data[0].Name, this.data[0].Type);
-        if (!found) {
-          Create(this.data[0])
-            .then((response) => {
-              console.log("tag", "" + response);
-              this.data.splice(0, 1);
-              if (this.data.length != 0) {
-                this.Add();
-              } else {
-                this.loading = false;
-                this.tableData = [];
-                this.$notify({
-                  title: "تم ",
-                  message: "تم الإضافة بنجاح",
-                  type: "success",
-                  duration: 2000,
-                });
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              //this.Add(100), 1000);
-            });
-        } else {
-          console.log("tag", "يوجد  نفس الاسم / نوع");
-        }
+        found = await this.Check(this.data[0].Name, this.data[0].Type);
+      }
+      if (!found) {
+        Create(this.data[0])
+          .then((response) => {
+            console.log("tag", "" + response);
+            this.data.splice(0, 1);
+            if (this.data.length != 0) {
+              this.Add();
+            } else {
+              this.loading = false;
+              this.tableData = [];
+              this.$notify({
+                title: "تم ",
+                message: "تم الإضافة بنجاح",
+                type: "success",
+                duration: 2000,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            //this.Add(100), 1000);
+          });
+      } else {
+        console.log("tag", "يوجد  نفس الاسم / نوع");
       }
     },
 
