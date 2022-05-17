@@ -55,8 +55,18 @@
         </el-button>
       </el-col>
     </el-row>
+    <el-col :span="24">
+      <Radio-Oprations
+        TableName="PurchaseInvoice"
+        @Set="
+          (v) => {
+            listQuery.Status = v;
+            handleFilter();
+          }
+        "
+    /></el-col>
     <el-row type="flex">
-      <el-col :span="18">
+      <el-col :span="24">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الفواتير</span>
         <el-divider direction="vertical"></el-divider>
@@ -65,34 +75,38 @@
 
         <span>{{ $t("CashPool.Cash") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <span
+          >{{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }} JOD</span
+        >
         <el-divider direction="vertical"></el-divider>
 
         <span>{{ $t("CashPool.Visa") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <span
+          >{{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }} JOD</span
+        >
         <el-divider direction="vertical"></el-divider>
 
         <span>الاجل</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Receivables.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <span
+          >{{
+            Totals.Receivables.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
         <el-divider direction="vertical"></el-divider>
 
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <span
+          >{{
+            Totals.Totals.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
         <el-divider direction="vertical"></el-divider
       ></el-col>
-      <el-col :span="6">
-        <Radio-Oprations
-          TableName="PurchaseInvoice"
-          @Set="
-            (v) => {
-              listQuery.Status = v;
-              handleFilter();
-            }
-          "
-      /></el-col>
     </el-row>
 
     <el-table
@@ -108,7 +122,11 @@
           let r = $router.resolve({
             path: '/Purchase/Edit/' + row.Id,
           });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+          window.open(
+            r.href,
+            r.route.name,
+            $store.getters.settings.windowStyle
+          );
         }
       "
     >
@@ -124,18 +142,32 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
+      <el-table-column
+        v-bind:label="$t('Sales.Date')"
+        width="150px"
+        align="center"
+      >
         <template slot-scope="{ row }">
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
+      <el-table-column
+        v-bind:label="$t('AddVendors.Name')"
+        prop="Name"
+        align="center"
+      >
       </el-table-column>
 
-      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
+      <el-table-column
+        v-bind:label="$t('Sales.Date')"
+        width="150px"
+        align="center"
+      >
         <template slot-scope="{ row }">
-          <span>{{ row.InvoicePurchaseDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+          <span>{{
+            row.InvoicePurchaseDate | parseTime("{y}-{m}-{d} {h}:{i}")
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -151,19 +183,31 @@
         prop="PaymentMethod"
       >
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('CashPool.Discount')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{
           scope.row.Discount.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('CashPool.Amountv')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="{ row }">
           {{ row.Total.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
 
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Sales.Status')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="PurchaseInvoice" />
         </template>

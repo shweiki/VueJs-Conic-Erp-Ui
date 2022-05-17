@@ -7,8 +7,8 @@
           type="success"
           icon="fa fa-save"
           @click="isEdit != true ? createData() : updateData()"
-          >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-        >
+        />
+        
         <router-link
           class="pan-btn tiffany-btn"
           style="
@@ -29,20 +29,10 @@
       <el-form
         ref="tempForm"
         :model="tempForm"
-        label-position="top"
-        label-width="70px"
         class="demo-ruleForm"
       >
         <el-row type="flex">
-          <el-col :span="18">
-            <el-form-item v-bind:label="$t('Classification.Notes')">
-              <el-input
-                type="textarea"
-                v-model="tempForm.Description"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
+          <el-col :span="12">
             <el-form-item
               prop="FakeDate"
               v-bind:label="$t('NewPurchaseInvoice.ReleaseDate')"
@@ -62,7 +52,7 @@
           </el-col>
         </el-row>
         <Search-By
-          Type="AccountSearchAny"
+          Type="AccountSearchBar"
           @Set="
             (v) => {
               AddEntryMovements(v);
@@ -143,7 +133,7 @@
               >
                 {{ tempForm.EntryMovements[scope.$index].Name }}
                 <el-col :span="4">
-                  <Edit-Account
+                  <EditAccount
                     :AccountId="
                       tempForm.EntryMovements[scope.$index].AccountId
                     "
@@ -205,6 +195,11 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-col :span="18">
+          <el-form-item v-bind:label="$t('Classification.Notes')">
+            <el-input type="textarea" v-model="tempForm.Description"></el-input>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-card>
   </div>
@@ -212,12 +207,11 @@
 <script>
 import { CreateEntry, GetEntryById, Edit } from "@/api/EntryAccounting";
 import FakeDate from "@/components/Date/FakeDate";
-import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
-import EditAccount from "@/views/Accounting/TreeAccount/EditAccount.vue";
+import EditAccount from "@/components/TreeAccount/EditAccount.vue";
 import SearchBy from "@/components/DynamicComponents/SearchBy.vue";
 export default {
   name: "NewAccountingEntry",
-  components: { FakeDate, AccountSearchAny, SearchBy, EditAccount },
+  components: { FakeDate,  SearchBy, EditAccount },
   props: {
     isEdit: {
       type: Boolean,
@@ -275,7 +269,7 @@ export default {
       this.tempForm.EntryMovements.splice(index, 1);
     },
     getdata(val) {
-      GetEntryById({ Id: val })
+      GetEntryById({ Id: val || this.$route.params && this.$route.params.id})
         .then((response) => {
           this.tempForm = response;
           // set tagsview title
@@ -369,7 +363,7 @@ export default {
                 this.getdata();
                 this.$notify({
                   title: "تم ",
-                  message: "تم الإضافة بنجاح",
+                  message: "تم تعديل بنجاح",
                   type: "success",
                   duration: 2000,
                 });

@@ -1,30 +1,29 @@
 import Layout from '@/layout'
 
 const PurchasesRouter = {
-  path: '/Purchase',
-  name: 'Purchase',
+  path: '/Purchases',
   component: Layout,
-  redirect: '/Purchase/List',
-  meta: { title: 'Purchases', icon: 'shopping-cart' },
+  redirect: '/Purchases/List',
+  meta: { title: 'Purchase', icon: 'shopping-cart' },
   children: [
     {
       path: 'Create',
-      component: () => import('@/views/Purchase/PurchaseInvoice/Create'),
+      component: () => import('@/views/Purchases/PurchaseInvoice/Create'),
       name: 'NewPurchaseInvoice',
       meta: { title: 'NewPurchaseInvoice', icon: 'edit' }
     },
     {
       path: 'Edit/:id(\\d+)',
-      component: () => import('@/views/Purchase/PurchaseInvoice/Edit'),
+      component: () => import('@/views/Purchases/PurchaseInvoice/Edit'),
       name: 'EditPurchaseInvoice',
       meta: {
-         title: 'EditInvoice', noCache: true, activeMenu: '/Purchase/PurchaseInvoice/List'
+         title: 'EditInvoice', noCache: true, activeMenu: '/Purchases/PurchaseInvoice/List'
       },
       hidden: true,
     },
     {
       path: 'List',
-      component: () => import('@/views/Purchase/PurchaseInvoice/List'),
+      component: () => import('@/views/Purchases/PurchaseInvoice/List'),
       name: 'ListPurchaseInvoice',
       meta: {
         title: 'ListPurchaseInvoice', icon: 'cost'
@@ -32,7 +31,7 @@ const PurchasesRouter = {
     },
     {
       path: 'PurchaseItems',
-      component: () => import('@/views/Purchase/PurchaseItems'),
+      component: () => import('@/views/Purchases/PurchaseItems'),
       name: 'PurchaseItems',
       meta: {
         title: 'PurchaseItems', icon: 'shopping-cart (1)'
@@ -40,17 +39,17 @@ const PurchasesRouter = {
     },
     {
       path: 'BillOfEnteryList',
-      component: () => import('@/views/Purchase/BillOfEntery/List'),
+      component: () => import('@/views/Purchases/BillOfEntery/List'),
       name: 'ListBillOfEntery',
       meta: {
         title: 'ListBillOfEntery', icon: 'cost'
       },
     },{
       path: 'EditBillOfEntery/:id(\\d+)',
-      component: () => import('@/views/Purchase/BillOfEntery/Edit'),
+      component: () => import('@/views/Purchases/BillOfEntery/Edit'),
       name: 'EditBillOfEntery',
       meta: {
-         title: 'EditBillOfEntery', noCache: true, activeMenu: '/Purchase/BillOfEntery/List'
+         title: 'EditBillOfEntery', noCache: true, activeMenu: '/Purchases/BillOfEntery/List'
       },
       hidden: true,
     },

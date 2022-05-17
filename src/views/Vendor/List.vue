@@ -63,7 +63,9 @@
                 >Email</el-button
               >
             </div>
-            <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
+            <el-button icon="el-icon-circle-plus" slot="reference"
+              >ارسال رسالة</el-button
+            >
           </el-popover>
         </el-col>
         <el-col :span="1">
@@ -91,24 +93,36 @@
         "
       />
       <el-divider direction="vertical"></el-divider>
-      <span>{{$t('Vendors.PersonsCount')}}</span>
+      <span>{{ $t("Vendors.PersonsCount") }}</span>
       <el-divider direction="vertical"></el-divider>
       <span>{{ Totals.Rows }}</span>
       <el-divider direction="vertical"></el-divider>
 
-      <span>{{$t('Vendors.TotalCredit')}}</span>
+      <span>{{ $t("Vendors.TotalCredit") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{
+          Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
+        }}
+        JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
-      <span>{{$t('Vendors.TotalDebit')}}</span>
+      <span>{{ $t("Vendors.TotalDebit") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{
+          Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
+        }}
+        JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
-      <span>{{$t('MinOrd.Balance')}}</span>
+      <span>{{ $t("MinOrd.Balance") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
     </el-card>
 
@@ -127,16 +141,15 @@
         (row) => {
           if (DblClickRow == 'AddAsRow') {
             $emit('dblclick', row);
-          } else {
-            let r = $router.resolve({
-              path: '/Vendor/Edit/' + row.Id,
-            });
-            window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-          }
+          } else this.$router.push({ path: '/Vendor/Edit/' + row.Id });
         }
       "
     >
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      ></el-table-column>
       <el-table-column
         v-bind:label="$t('Vendors.ID')"
         prop="Id"
@@ -150,7 +163,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
+      <el-table-column
+        v-bind:label="$t('AddVendors.Name')"
+        prop="Name"
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
@@ -180,14 +197,22 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Account.funds')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
           )
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Sales.Status')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Vendor" />
         </template>

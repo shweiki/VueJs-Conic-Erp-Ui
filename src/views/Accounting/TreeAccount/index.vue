@@ -20,6 +20,9 @@
                 @click="getdata()"
               ></el-button>
             </el-col>
+            <el-col :span="4">
+              <DrawerAddEntry />
+            </el-col>
           </el-row>
           <div class="custom-tree-container">
             <el-tree
@@ -46,16 +49,16 @@
 
                 <el-col :span="18">
                   <el-col :span="4">
-                    <Entry-Movements-Dialog :AccountId="data.Id" />
+                    <EntryMovementsDialog :AccountId="data.Id" />
                   </el-col>
                   <el-col :span="4">
-                    <Edit-Account :AccountId="data.Id" @Done="getdata()" />
+                    <EditAccount :AccountId="data.Id" @Done="getdata()" />
                   </el-col>
                   <el-col :span="4">
                     <Delete-Account :AccountId="data.Id" @Done="getdata()" />
                   </el-col>
                   <el-col :span="4">
-                    <Add-Account-Dialog
+                    <AddAccountDialog
                       v-bind:Code="
                         data.Code +
                         ((data.children.length != null
@@ -70,7 +73,7 @@
                 </el-col>
                 <el-col :span="18" :gutter="20">
                   <el-col :span="6" style="color: green">{{
-                    calcCreditDebitParent(
+                   ( calcCreditDebitParent(
                       data.children,
                       data.TotalCredit,
                       data.TotalDebit
@@ -79,7 +82,7 @@
                       data.children,
                       data.TotalCredit,
                       data.TotalDebit
-                    ).TotalDebit
+                    ).TotalDebit).toFixed($store.getters.settings.ToFixed)
                   }}</el-col>
                   <el-col :span="6" style="color: red">{{
                     calcCreditDebitParent(
@@ -106,11 +109,12 @@
 </template>
 <script>
 import { GetTreeAccount, EditParent } from "@/api/Account";
-import EditAccount from "./EditAccount.vue";
+import EditAccount from "@/components/TreeAccount/EditAccount.vue";
 import AddAccountDialog from "@/components/TreeAccount/AddAccountDialog.vue";
-import EntryMovementsDialog from "./EntryMovementsDialog.vue";
+import EntryMovementsDialog from "@/views/Accounting/EntryAccounting/components/EntryMovementsDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-import DeleteAccount from "./DeleteAccount.vue";
+import DeleteAccount from "@/components/TreeAccount/DeleteAccount.vue";
+import DrawerAddEntry from "@/views/Accounting/EntryAccounting/components/DrawerAddEntry.vue";
 
 export default {
   components: {
@@ -119,6 +123,7 @@ export default {
     EntryMovementsDialog,
     DrawerPrint,
     DeleteAccount,
+    DrawerAddEntry,
   },
   name: "TreeAccount",
   watch: {

@@ -13,7 +13,7 @@
 </template>
 <script>
 import SalesItems from "@/views/Sales/SalesItems.vue";
-import PurchaseItems from "@/views/Purchase/PurchaseItems.vue";
+import PurchaseItems from "@/views/Purchases/PurchaseItems.vue";
 import OrderInventoriesItems from "@/views/Inventory/OrderInventories/OrderInventoriesItems.vue";
 
 export default {

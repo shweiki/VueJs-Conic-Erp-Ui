@@ -17,7 +17,7 @@
     </el-col>
 
     <el-col :span="4">
-      <edit-vendor :VendorId="Id" />
+      <edit-vendor :VendorId="Vendor.Id" />
     </el-col>
   </div>
 </template>

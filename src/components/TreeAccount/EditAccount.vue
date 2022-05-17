@@ -4,7 +4,7 @@
       type="success"
       icon="el-icon-edit"
       @click="getdata()"
-      circle
+      
       v-bind:disabled="AccountId == undefined"
     ></el-button>
     <el-dialog
@@ -46,7 +46,7 @@
           <el-input type="text" v-model="tempForm.Code"></el-input>
         </el-form-item>
         <el-form-item label="تحت قائمة" prop="ParentId">
-          <Select-Parent
+          <SelectParent
             :Value="tempForm.ParentId"
             @Set="
               (v) => {
@@ -72,7 +72,7 @@
 <script>
 import { Edit, GetById } from "@/api/Account";
 import SelectAccountsType from "@/components/TreeAccount/SelectAccountsType.vue";
-import SelectParent from "./SelectParent.vue";
+import SelectParent from "@/components/TreeAccount/SelectParent.vue";
 
 export default {
   components: { SelectAccountsType, SelectParent },

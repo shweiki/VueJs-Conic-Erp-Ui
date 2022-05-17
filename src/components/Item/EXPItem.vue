@@ -92,16 +92,16 @@
       ref="multipleTable"
       @selection-change="handleSelectionChange"
       @row-dblclick="
-        (row) => {
+        (row) =>
           //  $emit('dblclick', row);
-          let r = $router.resolve({
-            path: '/Item/Edit/' + row.Id,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-        }
+          this.$router.push({ path: '/Item/Edit/' + row.Id })
       "
     >
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      ></el-table-column>
       <el-table-column
         label="Id"
         prop="Id"
@@ -115,7 +115,8 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
+      <el-table-column label="Name" prop="Name" align="center">
+      </el-table-column>
       <el-table-column
         v-bind:label="$t('Items.Barcode')"
         prop="Barcode"
@@ -136,7 +137,11 @@
           <Select-Item-Exp-Column :ItemId="scope.row.Id" />
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Sales.Status')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Item" />
         </template>
@@ -162,19 +167,27 @@
             <el-table-column v-bind:label="$t('Items.Cost')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{ scope.row.CostPrice.toFixed($store.getters.settings.ToFixed) }}
+                {{
+                  scope.row.CostPrice.toFixed($store.getters.settings.ToFixed)
+                }}
               </template>
             </el-table-column>
             <el-table-column v-bind:label="$t('Items.Packeges')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{ scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed) }}
+                {{
+                  scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed)
+                }}
               </template>
             </el-table-column>
             <el-table-column v-bind:label="$t('Items.Retail')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
+                {{
+                  scope.row.SellingPrice.toFixed(
+                    $store.getters.settings.ToFixed
+                  )
+                }}
               </template>
             </el-table-column>
             <el-table-column

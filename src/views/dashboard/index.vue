@@ -1,6 +1,7 @@
 <template>
   <div>
     <panel-group
+      v-if="checkPermission(['admin'])"
       :Totals="Totals"
       @handleSetLineChartData="handleSetLineChartData"
     />
@@ -24,7 +25,7 @@ import Gym from "./components/Gym.vue";
 import Public from "./components/Public.vue";
 import PanelGroup from "./components/PanelGroup";
 import LineChart from "@/components/Charts/LineChart";
-import MixChart from "@/components/Charts/MixChart";
+import MixChart from "@/components/Charts/MixChart.vue";
 import { GetTotal, GetStatistics } from "@/api/Dashboard";
 import checkPermission from "@/utils/permission";
 
@@ -44,7 +45,7 @@ export default {
   methods: {
     checkPermission,
     getdata() {
-      GetStatistics().then((response) => {
+      GetStatistics({ By: "MonthOfYear" }).then((response) => {
         this.Statistics = response;
       });
       GetTotal().then((response) => {

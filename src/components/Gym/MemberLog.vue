@@ -52,18 +52,7 @@
             :hide-timestamp="true"
           >
             <el-tag
-              @click="
-                () => {
-                  let r = $router.resolve({
-                    path: '/Gym/Edit/' + Log.Fk,
-                  });
-                  window.open(
-                    r.href,
-                    r.route.name,
-                    $store.getters.settings.windowStyle
-                  );
-                }
-              "
+              @click="this.$router.push({ path: '/Gym/Edit/' + Log.Fk })"
               :color="Log.User.Style.Color"
               ><strong style="font-size: 10px; cursor: pointer">{{
                 Log.User.Name
@@ -108,7 +97,7 @@ import MemberSearch from "@/components/Member/MemberSearch.vue";
 
 export default {
   name: "MemberLog",
-  components: { StatusTag, AddDeviceLog ,MemberSearch },
+  components: { StatusTag, AddDeviceLog, MemberSearch },
   data() {
     return {
       loading: false,

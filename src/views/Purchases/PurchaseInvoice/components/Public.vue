@@ -354,11 +354,10 @@ import {
   Create as CreateBillOfEntery,
   Edit as EditBillOfEntery,
 } from "@/api/BillOfEntery";
-import { GetActiveVendor } from "@/api/Vendor";
 import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
 import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
-import AddBillOfEntery from "@/views/Purchase/BillOfEntery/components/AddBillOfEntery.vue";
+import AddBillOfEntery from "@/views/Purchases/BillOfEntery/components/AddBillOfEntery.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 

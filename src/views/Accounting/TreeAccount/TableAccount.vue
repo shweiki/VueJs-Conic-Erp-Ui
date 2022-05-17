@@ -1,7 +1,5 @@
 <template>
   <div class="app-container">
-    <Add-Account-Dialog />
-
     <el-row type="flex">
       <el-col :span="12">
         <el-input
@@ -35,9 +33,9 @@
         </el-button>
       </el-col>
     </el-row>
-
-    <el-row type="flex">
-      <el-col :span="6">
+    <el-row type="flex"
+      ><el-col :span="6"> <AddAccountDialog /> </el-col>
+      <el-col :span="18">
         <Radio-Oprations
           TableName="Account"
           @Set="
@@ -47,7 +45,9 @@
             }
           "
       /></el-col>
-      <el-col v-permission="['admin']" :span="18">
+    </el-row>
+    <el-row type="flex">
+      <el-col v-permission="['admin']" :span="24">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الحسابات</span>
         <el-divider direction="vertical"></el-divider>
@@ -56,17 +56,32 @@
 
         <span>مجموع المدين (لك)</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <span
+          >{{
+            Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
         <el-divider direction="vertical"></el-divider>
 
         <span> (عليك) مجموع الدائن </span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <span
+          >{{
+            Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
         <el-divider direction="vertical"></el-divider>
 
         <span>الرصيد</span>
         <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <span
+          >{{
+            Totals.Totals.toFixed($store.getters.settings.ToFixed)
+          }}
+          JOD</span
+        >
         <el-divider direction="vertical"></el-divider>
       </el-col>
     </el-row>
@@ -79,6 +94,13 @@
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
+      @row-dblclick="
+        (row) => {
+          if (DblClickRow == 'AddAsRow') {
+            $emit('dblclick', row);
+          }
+        }
+      "
     >
       <el-table-column label="#" prop="Id" width="50"></el-table-column>
       <el-table-column prop="Code" width="60"> </el-table-column>
@@ -114,17 +136,25 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.funds')" width="100" align="center">
+      <el-table-column
+        v-bind:label="$t('Account.funds')"
+        width="100"
+        align="center"
+      >
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
           )
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.Status')" align="center" width="70">
+      <el-table-column
+        v-bind:label="$t('Account.Status')"
+        align="center"
+        width="70"
+      >
         <template slot-scope="scope">
-          <Edit-Account :AccountId="scope.row.Id" />
-          <Status-Tag :Status="scope.row.Status" TableName="Account" />
+          <EditAccount :AccountId="scope.row.Id" />
+          <StatusTag :Status="scope.row.Status" TableName="Account" />
         </template>
       </el-table-column>
 
@@ -161,12 +191,15 @@ import Pagination from "@/components/Pagination"; // secondary package based on 
 import permission from "@/directive/permission/index.js";
 import AddAccountDialog from "@/components/TreeAccount/AddAccountDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-import EditAccount from "./EditAccount.vue";
+import EditAccount from "@/components/TreeAccount/EditAccount.vue";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 import SortOptions from "@/components/SortOptions";
+import Export from "@/components/Export";
 
 export default {
   name: "TableAccount",
+  props: ["DblClickRow"],
+
   components: {
     StatusTag,
     RadioOprations,
@@ -177,6 +210,7 @@ export default {
     EditAccount,
     DialogActionLog,
     SortOptions,
+    Export,
   },
   directives: { waves, permission },
   data() {
@@ -198,7 +232,6 @@ export default {
 
         Status: undefined,
       },
-
     };
   },
   created() {

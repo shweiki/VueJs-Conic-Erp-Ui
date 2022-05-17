@@ -4,7 +4,7 @@
       <div class="filter-container">
         <el-row type="flex">
           <el-col :span="18">
-            <Search-By
+            <SearchBy
               Type="AccountSearchAny"
               :AccountId="listQuery.AccountId"
               @Set="
@@ -16,7 +16,7 @@
           /></el-col>
           <el-col :span="2">
             <el-popover placement="right" width="400" trigger="click">
-              <Search-By
+              <SearchBy
                 Type="AccountSearchAny"
                 :AccountId="listQuery.MergeAccountId"
                 @Set="
@@ -26,7 +26,11 @@
                   }
                 "
               />
-              <el-button type="primary" icon="fa fa-object-group" slot="reference">
+              <el-button
+                type="primary"
+                icon="fa fa-object-group"
+                slot="reference"
+              >
                 دمج
               </el-button>
             </el-popover>
@@ -73,6 +77,7 @@
                 TotalRows: Totals.Rows,
               }"
           /></el-col>
+          <el-col :span="2"> <DrawerAddEntry /></el-col>
         </el-row>
       </div>
 
@@ -84,17 +89,23 @@
 
       <span>مجموع المدين</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Credit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{ Totals.Credit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
       <span>مجموع الدائن</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Debit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{ Totals.Debit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
       <span>الرصيد</span>
       <el-divider direction="vertical"></el-divider>
-      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+      <span
+        >{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span
+      >
       <el-divider direction="vertical"></el-divider>
 
       <el-table
@@ -195,14 +206,26 @@
             scope.row.Debit.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column label="الرصيد" prop="TotalRow" width="80" align="center">
+        <el-table-column
+          label="الرصيد"
+          prop="TotalRow"
+          width="80"
+          align="center"
+        >
           <template slot-scope="scope">{{
             scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('Sales.Status')" width="100" align="center">
+        <el-table-column
+          v-bind:label="$t('Sales.Status')"
+          width="100"
+          align="center"
+        >
           <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="EntryAccounting" />
+            <Status-Tag
+              :Status="scope.row.Status"
+              TableName="EntryAccounting"
+            />
           </template>
         </el-table-column>
       </el-table>
@@ -217,9 +240,10 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import permission from "@/directive/permission/index.js";
 import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
 import waves from "@/directive/waves"; // waves directive
-import SearchBy from "@/components/DynamicComponents/SearchBy";
+import SearchBy from "@/components/DynamicComponents/SearchBy.vue";
 import { parseTime } from "@/utils";
 import Export from "@/components/Export";
+import DrawerAddEntry from "@/views/Accounting/EntryAccounting/components/DrawerAddEntry.vue";
 
 export default {
   name: "AccountStatement",
@@ -230,6 +254,7 @@ export default {
     AccountSearchAny,
     SearchBy,
     Export,
+    DrawerAddEntry,
   },
   directives: { waves, permission },
   data() {

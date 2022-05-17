@@ -2,11 +2,15 @@
   <div>
     <el-row style="background: #2f3542; color: white">
       <el-col :span="4">
-        <Add-Account-Dialog @Done="getdata()" />
+        <AddAccountDialog @Done="getdata()" />
       </el-col>
       <el-col :span="16">
         <div :class="{ show: show }" class="account-search">
-          <el-input :disabled="true" v-model="Account.Name" class="input-with-select">
+          <el-input
+            :disabled="true"
+            v-model="Account.Name"
+            class="input-with-select"
+          >
             <svg-icon
               slot="append"
               class-name="search-icon"
@@ -81,6 +85,7 @@ export default {
       this.options = [];
       this.Account = val;
       this.show = false;
+      val.AccountId = val.Id;
       this.$emit("Set", val);
     },
     querySearch(query) {
@@ -95,7 +100,8 @@ export default {
     click() {
       this.show = !this.show;
       if (this.show) {
-        this.$refs.AccountSearchSelect && this.$refs.AccountSearchSelect.focus();
+        this.$refs.AccountSearchSelect &&
+          this.$refs.AccountSearchSelect.focus();
       }
     },
     close() {
@@ -126,7 +132,7 @@ export default {
     display: inline-block;
     vertical-align: middle;
 
-   .el-input__inner {
+    .el-input__inner {
       border-radius: 0;
       border: 0;
       padding-left: 0;

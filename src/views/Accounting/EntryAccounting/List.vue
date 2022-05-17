@@ -68,7 +68,7 @@
             </el-button>
           </el-col>
           <el-col :span="1">
-            <Drawer-Print
+            <DrawerPrint
               Type="EntryAccountingList"
               :Data="{
                 Name: Account.Name,

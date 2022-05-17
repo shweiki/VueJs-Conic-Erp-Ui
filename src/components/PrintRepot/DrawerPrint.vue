@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-tooltip class="item" effect="dark" :content="Type" placement="top-start">
+    <el-tooltip
+      class="item"
+      effect="dark"
+      :content="Type"
+      placement="top-start"
+    >
       <el-button
         v-bind:disabled="Data != null ? false : true"
         v-bind:style="Css"
@@ -21,7 +26,11 @@
               icon="el-icon-plus"
               @click="
                 let r = $router.resolve({ path: '/Reports/Create' });
-                window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                window.open(
+                  r.href,
+                  r.route.name,
+                  $store.getters.settings.windowStyle
+                );
               "
           /></el-col>
           <el-col :span="21">
@@ -29,10 +38,18 @@
           </el-col>
         </el-row>
       </template>
-      <el-col v-bind:span="24 / Reports.length" v-for="item in Reports" :key="item.Id">
+      <el-col
+        v-bind:span="24 / Reports.length"
+        v-for="item in Reports"
+        :key="item.Id"
+      >
         <el-row type="flex">
           <el-col :span="2">
-            <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
+            <el-button
+              type="success"
+              icon="el-icon-printer"
+              @click="Print(item)"
+            />
           </el-col>
           <el-col v-permission="['admin']" :span="2">
             <el-button
@@ -51,7 +68,11 @@
                 let r = $router.resolve({
                   path: '/Reports/Edit/' + item.Id,
                 });
-                window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                window.open(
+                  r.href,
+                  r.route.name,
+                  $store.getters.settings.windowStyle
+                );
               "
             />
           </el-col>
@@ -125,6 +146,8 @@ export default {
   },
   watch: {
     Data(val) {
+      console.log(" Data val: =>", this.Data);
+
       if (val != null && val != undefined) {
         this.Reports.forEach((item, index) => {
           item.Html = this.Visualization(val, item.Html, "Set");

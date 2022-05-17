@@ -4,7 +4,6 @@
       type="success"
       icon="el-icon-plus"
       @click="Visible = true"
-      circle
     ></el-button>
     <el-dialog
       style="margin-top: -13vh"
@@ -32,7 +31,7 @@
           <el-input type="text" v-model="tempForm.Code"></el-input>
         </el-form-item>
         <el-form-item label="تحت قائمة" prop="ParentId">
-          <Select-Parent
+          <SelectParent
             :Value="tempForm.ParentId"
             @Set="
               (v) => {
@@ -58,7 +57,7 @@
 import { Create } from "@/api/Account";
 import SelectAccountsType from "@/components/TreeAccount/SelectAccountsType.vue";
 
-import SelectParent from "../../views/Accounting/TreeAccount/SelectParent.vue";
+import SelectParent from "./SelectParent.vue";
 export default {
   components: { SelectParent, SelectAccountsType },
   props: ["ParentId", "Code"],
@@ -123,7 +122,8 @@ export default {
         if (valid) {
           Create(this.tempForm)
             .then((response) => {
-              this.$emit("Done");
+              this.tempForm.Id = response
+              this.$emit("Done" , this.tempForm);
               this.Visible = false;
               this.$notify({
                 title: "تم ",
