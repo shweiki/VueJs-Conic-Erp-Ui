@@ -3,6 +3,8 @@
 </template>
 <script>
 import { GetlastLogByUserId } from "@/api/DeviceLog";
+import { parseTime } from "@/utils";
+
 export default {
   props: ["UserId", "TableName"],
   data() {
@@ -11,9 +13,11 @@ export default {
     };
   },
   mounted() {
-    GetlastLogByUserId({ UserId: this.UserId, TableName: this.TableName }).then((res) => {
-      this.lastLog = res;
-    });
+    GetlastLogByUserId({ UserId: this.UserId, TableName: this.TableName }).then(
+      (res) => {
+        this.lastLog = parseTime(res, "{y}-{m}-{d} {h}:{i}");
+      }
+    );
   },
 };
 </script>

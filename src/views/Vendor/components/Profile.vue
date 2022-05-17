@@ -35,7 +35,10 @@
               </el-row>
               <el-row type="flex">
                 <el-col :span="24"
-                  ><Vendor-Receive :VendorId="tempForm.Id" :Name="tempForm.Name" />
+                  ><Vendor-Receive
+                    :VendorId="tempForm.Id"
+                    :Name="tempForm.Name"
+                  />
                 </el-col>
               </el-row>
               <el-row type="flex">
@@ -56,9 +59,16 @@
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
               <Communication />
             </el-tab-pane>
+            <el-tab-pane label="مستندات" name="Documents">
+              <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
+              <Documents :ObjectId="tempForm.Id" TableName="Vendor" />
+            </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-              <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
+              <Account
+                :EntryMovements="EntryMovements"
+                :AccountId="tempForm.AccountId"
+              />
             </el-tab-pane>
             <el-tab-pane label="مصروفات" name="Receive">
               <span slot="label"><i class="el-icon-refresh"></i> مصروفات</span>
@@ -94,6 +104,7 @@ import VendorReceive from "./Dialogs/VendorReceive.vue";
 
 import VendorPay from "./Dialogs/VendorPay.vue";
 import VendorSearch from "./VendorSearch.vue";
+import Documents from "@/components/Documents/Documents.vue";
 
 import Payment from "./Payment.vue";
 import Receive from "./Receive.vue";
@@ -125,6 +136,7 @@ export default {
     SaleInvoice,
     PurchaseInvoice,
     VendorReceive,
+    Documents,
   },
   props: {
     isEdit: {
@@ -218,7 +230,8 @@ export default {
 .el-tabs__content {
   max-height: 700px;
 }
-.el-tabs__nav-scroll{
-float: right;
-direction: ltr;}
+.el-tabs__nav-scroll {
+  float: right;
+  direction: ltr;
+}
 </style>

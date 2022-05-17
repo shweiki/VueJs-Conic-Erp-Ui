@@ -12,10 +12,9 @@
         <el-col :span="8">
           <Add-Device-Log TableName="Member" />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="4">
           <el-button
             :loading="loading"
-            style="float: left"
             type="primary"
             icon="el-icon-refresh"
             :size="$store.getters.size"
@@ -26,6 +25,16 @@
                 getdata();
               }
             "
+          ></el-button>
+        </el-col>
+        <el-col :span="4">
+          <el-button
+            :loading="loading"
+            style="float: left"
+            type="danger"
+            icon="el-icon-time"
+            :size="$store.getters.size"
+            @click="RemoveDuplicate"
           ></el-button>
         </el-col>
       </el-row>
@@ -52,7 +61,7 @@
             :hide-timestamp="true"
           >
             <el-tag
-              @click="this.$router.push({ path: '/Gym/Edit/' + Log.Fk })"
+              @click="$router.push({ path: '/Gym/Edit/' + Log.Fk })"
               :color="Log.User.Style.Color"
               ><strong style="font-size: 10px; cursor: pointer">{{
                 Log.User.Name
@@ -90,7 +99,7 @@
 </template>
 
 <script>
-import { GetByStatus } from "@/api/DeviceLog";
+import { GetByStatus, RemoveDuplicate } from "@/api/DeviceLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
 import MemberSearch from "@/components/Member/MemberSearch.vue";
@@ -131,12 +140,23 @@ export default {
         .then((response) => {
           Array.prototype.push.apply(this.MembersLogs, response);
           //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
-          //  RemoveDuplicate();
           if (response.length == 0) this.listQuery.Page = 13;
           this.loading = false;
         })
         .catch((error) => {
           reject(error);
+          this.loading = false;
+        });
+    },
+    RemoveDuplicate() {
+      this.loading = true;
+      RemoveDuplicate()
+        .then((res) => {
+          this.loading = false;
+        })
+        .catch((error) => {
+          reject(error);
+          this.loading = false;
         });
     },
     load() {

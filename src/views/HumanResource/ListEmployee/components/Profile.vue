@@ -46,11 +46,11 @@
         <el-card class="box-card">
           <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
             
-            <el-tab-pane label="دوامات" name="timeline">
+            <el-tab-pane label="دوامات" name="DeviceLog">
               <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
               <DeviceLog TableName="Employee" :UserId="tempForm.Id" />
             </el-tab-pane>
-
+  
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
               <Account
@@ -98,7 +98,7 @@ import Account from "./Account.vue";
 import Salary from "./Salary.vue";
 import Communication from "./Communication.vue";
 import Documents from "@/components/Documents/Documents.vue";
-import DeviceLog from "../../../../components/Device/DeviceLog.vue";
+import DeviceLog from "@/components/Device/DeviceLog.vue";
 import { GetEmployeeById } from "@/api/Employee";
 import { GetProfilePictureByObjId } from "@/api/File";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";

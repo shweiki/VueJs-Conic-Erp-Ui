@@ -21,9 +21,15 @@
           @close="close"
           @crop-upload-success="cropSuccess"
       /></el-col>
-      <el-col :span="6"> <web-cam :TableName="TableName" :ObjectId="ObjectId" /> </el-col>
       <el-col :span="6">
-        <el-button type="primary" @click="GetFiles" icon="el-icon-refresh"></el-button>
+        <web-cam :TableName="TableName" :ObjectId="ObjectId" />
+      </el-col>
+      <el-col :span="6">
+        <el-button
+          type="primary"
+          @click="GetFiles"
+          icon="el-icon-refresh"
+        ></el-button>
       </el-col>
     </el-row>
     <el-col v-for="item in List" :key="item.Id" v-bind:span="24 / List.length">
@@ -38,7 +44,11 @@
           </div>
         </el-image>
         <div style="padding: 14px">
-          <el-select @change="SetType(item)" v-model="item.Type" placeholder="النوع">
+          <el-select
+            @change="SetType(item)"
+            v-model="item.Type"
+            placeholder="النوع"
+          >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -62,6 +72,9 @@ import ButtonScan from "@/components/Device/ButtonScan.vue";
 export default {
   props: ["ObjectId", "TableName"],
   components: { ImageCropper, WebCam, ButtonScan },
+  created() {
+    this.GetFiles();
+  },
   data() {
     return {
       srcList: [],
@@ -110,7 +123,11 @@ export default {
       const byteCharacters = atob(b64Data);
       const byteArrays = [];
 
-      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      for (
+        let offset = 0;
+        offset < byteCharacters.length;
+        offset += sliceSize
+      ) {
         const slice = byteCharacters.slice(offset, offset + sliceSize);
 
         const byteNumbers = new Array(slice.length);

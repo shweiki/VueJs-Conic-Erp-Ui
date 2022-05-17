@@ -198,21 +198,16 @@
         width="120"
       ></el-table-column>
       <el-table-column
-        prop="lastLogByMember"
-        sortable
+        width="150"
         v-bind:label="$t('Visit.LastVisit')"
-        width="140"
         align="center"
       >
-        <template slot-scope="{ row }">
-          <span>{{
-            row.lastLogByMember | parseTime("{y}-{m}-{d} {h}:{i}")
-          }}</span>
+        <template slot-scope="scope">
+          <LastLog :UserId="scope.row.Id" TableName="Member" />
         </template>
       </el-table-column>
       <el-table-column
         prop="MembershipsCount"
-        sortable
         v-bind:label="$t('MemberList.MembershipCount')"
         width="120"
         align="center"
@@ -293,6 +288,7 @@ import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import permission from "@/directive/permission/index.js";
+import LastLog from "@/components/Gym/LastLog.vue";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -318,6 +314,7 @@ export default {
     SortOptions,
     Export,
     DrawerPrint,
+    LastLog,
   },
   directives: { waves, permission },
   data() {

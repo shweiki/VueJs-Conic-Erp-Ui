@@ -18,16 +18,16 @@
       <add-member />
     </el-col>
     <el-col :span="14">
-      <Search-By Type="MemberSearchAny" />
+      <MemberSearchAny @Set="(v) => $router.push({ path: `/Gym/Edit/`+v.Id })" />
     </el-col>
   </el-row>
 </template>
 <script>
 import AddMember from "@/components/Member/AddMember.vue";
-import SearchBy from "@/components/DynamicComponents/SearchBy.vue";
+import MemberSearchAny from "@/components/Member/MemberSearchAny.vue";
 
 export default {
   name: "MemberSearch",
-  components: { AddMember, SearchBy },
+  components: { AddMember, MemberSearchAny },
 };
 </script>

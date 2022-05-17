@@ -1,5 +1,5 @@
 <template>
-  <el-popover placement="left-start" width="100%" trigger="click">
+  <!-- <el-popover placement="left-start" width="100%" trigger="click">
     <el-button
       v-bind:disabled="imagesScanned.length == 0"
       type="warning"
@@ -9,8 +9,17 @@
     <el-button @click="scanToJpg" type="primary">بدء</el-button>
 
     <div id="images"></div>
-    <el-button icon="el-icon-receiving" type="success" slot="reference"></el-button>
-  </el-popover>
+    <el-button
+      icon="el-icon-receiving"
+      type="success"
+      slot="reference"
+    ></el-button>
+  </el-popover> -->
+  <el-button
+    icon="el-icon-receiving"
+    type="success"
+    @click="scanToJpg"
+  ></el-button>
 </template>
 <script>
 // var scanner = require("scanner.js");
@@ -82,17 +91,26 @@ export default {
         console.error("Failed: " + mesg);
         return;
       }
-      if (successful && mesg != null && mesg.toLowerCase().indexOf("user cancel") >= 0) {
+      if (
+        successful &&
+        mesg != null &&
+        mesg.toLowerCase().indexOf("user cancel") >= 0
+      ) {
         // User cancelled.
         console.info("User cancelled");
         return;
       }
 
       var scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
-      for (var i = 0; scannedImages instanceof Array && i < scannedImages.length; i++) {
+      for (
+        var i = 0;
+        scannedImages instanceof Array && i < scannedImages.length;
+        i++
+      ) {
         var scannedImage = scannedImages[i];
         this.processScannedImage(scannedImage);
       }
+      this.createData();
     },
     processScannedImage(scannedImage) {
       this.imagesScanned.push(scannedImage);

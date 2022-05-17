@@ -1,5 +1,4 @@
 import { GetActiveMember, CheckMembers } from "@/api/Member";
-import { CheckMembershipMovement } from "@/api/MembershipMovement";
 import { CheckDeviceLog } from "@/api/DeviceLog";
 import { Notification } from 'element-ui';
 
@@ -26,7 +25,6 @@ const actions = {
                 duration: 5000
             });
             CheckMembers().then(response => {
-              //  CheckMembershipMovement().then(response => {
                     CheckDeviceLog().then(response => {
                         store.state.settings.triger.CheckMembers.LastRun = "" + Date() + ""
                         store.dispatch("settings/changeSetting", {
@@ -44,7 +42,6 @@ const actions = {
                     }).catch(error => {
                         reject(error)
                     })
-              //  }).catch(error => {reject(error)})
             }).catch(error => {
                 reject(error)
             })

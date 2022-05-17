@@ -1,88 +1,92 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div class="filter-container">
-        <el-button @click="FixPhoneNumber">FixPhoneNumber</el-button>
-        <el-popover placement="left" width="400">
-          <p>ارسال عبر</p>
-          <div style="text-align: right; margin: 0">
-            <el-input
-              type="textarea"
-              v-model="SmsBody"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك الخصم فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-            ></el-input>
-            <el-button
-              icon="el-icon-circle-plus"
-              type="primary"
-              :size="$store.getters.size"
-              @click="SendSms()"
-              >SMS</el-button
-            >
-            <el-button
-              icon="el-icon-circle-plus"
-              type="primary"
-              :size="$store.getters.size"
-              @click="SendEmail()"
-              >Email</el-button
-            >
-          </div>
-          <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
-        </el-popover>
-        <add-employee />
-
-        <el-row type="flex">
-          <el-col :span="12">
-            <el-input
-              v-model="listQuery.Any"
-              placeholder="Search By Any Acount Name Or Id"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
-          </el-col>
-          <el-col :span="3">
-            <Sort-Options
-              :Value="listQuery.Sort"
-              @Set="
-                (v) => {
-                  listQuery.Sort = v;
-                  handleFilter();
-                }
-              "
-            />
-          </el-col>
-          <el-col :span="6">
-            <Export :list="list" />
-            <el-button
-              v-waves
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleFilter"
-            >
-              Search
-            </el-button>
-          </el-col>
-        </el-row>
-      </div>
       <el-row type="flex">
-        <!-- <el-col :span="6">
-          <Radio-Oprations
-            TableName="Member"
+        <el-col :span="12">
+          <el-button @click="FixPhoneNumber">FixPhoneNumber</el-button>
+          <el-popover placement="left" width="400">
+            <p>ارسال عبر</p>
+            <div style="text-align: right; margin: 0">
+              <el-input
+                type="textarea"
+                v-model="SmsBody"
+                :rules="[
+                  {
+                    required: true,
+                    message: 'لايمكن ترك الخصم فارغ',
+                    trigger: 'blur',
+                  },
+                ]"
+              ></el-input>
+              <el-button
+                icon="el-icon-circle-plus"
+                type="primary"
+                :size="$store.getters.size"
+                @click="SendSms()"
+                >SMS</el-button
+              >
+              <el-button
+                icon="el-icon-circle-plus"
+                type="primary"
+                :size="$store.getters.size"
+                @click="SendEmail()"
+                >Email</el-button
+              >
+            </div>
+            <el-button icon="el-icon-circle-plus" slot="reference"
+              >ارسال رسالة</el-button
+            >
+          </el-popover>
+        </el-col>
+        <el-col :span="12"> <add-employee /></el-col>
+      </el-row>
+
+      <el-row type="flex">
+        <el-col :span="6">
+          <el-input
+            v-model="listQuery.Any"
+            placeholder="Search By Any Acount Name Or Id"
+            class="filter-item"
+            @keyup.enter.native="handleFilter"
+          />
+        </el-col>
+        <el-col :span="3">
+          <Sort-Options
+            :Value="listQuery.Sort"
             @Set="
-              v => {
+              (v) => {
+                listQuery.Sort = v;
+                handleFilter();
+              }
+            "
+          />
+        </el-col>
+        <el-col :span="6">
+          <Export :list="list" />
+          <el-button
+            v-waves
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            @click="handleFilter"
+          >
+            Search
+          </el-button>
+        </el-col>
+        <el-col :span="6">
+          <Radio-Oprations
+            TableName="Employee"
+            @Set="
+              (v) => {
                 listQuery.Status = v;
                 handleFilter();
               }
             "
           />
-        </el-col> -->
-        <el-col v-permission="['admin']" :span="18">
+        </el-col>
+      </el-row>
+      <el-row type="flex">
+        <el-col v-permission="['admin']" :span="24">
           <el-divider direction="vertical"></el-divider>
           <span>عدد الموظفين</span>
           <el-divider direction="vertical"></el-divider>
@@ -92,20 +96,31 @@
           <span>مجموع المدين (لك)</span>
           <el-divider direction="vertical"></el-divider>
           <span
-            >{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+            >{{
+              Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</span
           >
           <el-divider direction="vertical"></el-divider>
 
           <span> (عليك) مجموع الدائن </span>
           <el-divider direction="vertical"></el-divider>
           <span
-            >{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+            >{{
+              Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</span
           >
           <el-divider direction="vertical"></el-divider>
 
           <span>الرصيد</span>
           <el-divider direction="vertical"></el-divider>
-          <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+          <span
+            >{{
+              Totals.Totals.toFixed($store.getters.settings.ToFixed)
+            }}
+            JOD</span
+          >
           <el-divider direction="vertical"></el-divider>
         </el-col>
       </el-row>
@@ -124,14 +139,26 @@
       @selection-change="handleSelectionChange"
       @row-dblclick="
         (row) => {
-          let r = $router.resolve({
-            path: '/HumanResource/Edit/' + row.Id,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+          if (DblClickRow == 'AddAsRow') {
+            $emit('dblclick', row);
+          } else {
+            let r = $router.resolve({
+              path: '/HumanResource/Edit/' + row.Id,
+            });
+            window.open(
+              r.href,
+              r.route.name,
+              $store.getters.settings.windowStyle
+            );
+          }
         }
       "
     >
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      ></el-table-column>
       <el-table-column
         label="Id"
         prop="Id"
@@ -145,34 +172,22 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
+      <el-table-column label="Name" prop="Name" align="center">
+      </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
         prop="PhoneNumber1"
-        width="120"
+        width="110"
       ></el-table-column>
-      <!-- <el-table-column
-        prop="lastLogByMember"
-        sortable
-        label="اخر زيارة"
-        width="140"
+      <el-table-column
+        width="150"
+        v-bind:label="$t('Visit.LastVisit')"
         align="center"
       >
-        <template slot-scope="{ row }">
-          <span>{{
-            row.lastLogByMember | parseTime("{y}-{m}-{d} {h}:{i}")
-          }}</span>
+        <template slot-scope="scope">
+          <LastLog :UserId="scope.row.Id" TableName="Employee" />
         </template>
-      </el-table-column> -->
-      <!-- <el-table-column
-        prop="MembershipsCount"
-        sortable
-        label="عدد اشتراكات"
-        width="120"
-        align="center"
-      >
-        <template slot-scope="scope">{{ scope.row.MembershipsCount }}</template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column
         prop="totalCredit"
         sortable
@@ -195,33 +210,37 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Account.funds')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
           )
         }}</template>
       </el-table-column>
-      <!-- <el-table-column
+      <el-table-column
         v-bind:label="$t('Sales.Status')"
         width="120"
         align="center"
       >
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="Member" />
+          <Status-Tag :Status="scope.row.Status" TableName="Employee" />
         </template>
-      </el-table-column> -->
-      <!-- <el-table-column width="180" align="center">
+      </el-table-column>
+      <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <Next-Oprations
             :ObjId="scope.row.Id"
             :Status="scope.row.Status"
-            TableName="Member"
+            TableName="Employee"
             @Done="handleFilter"
           />
-          <Dialog-Action-Log TableName="Member" :ObjId="scope.row.Id" />
+          <Dialog-Action-Log TableName="Employee" :ObjId="scope.row.Id" />
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     <pagination
       v-show="Totals.Rows > 0"
@@ -239,6 +258,7 @@ import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import permission from "@/directive/permission/index.js";
+import LastLog from "@/components/Gym/LastLog.vue";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -250,6 +270,8 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 export default {
   name: "ComplexTable",
+  props: ["DblClickRow"],
+
   components: {
     StatusTag,
     NextOprations,
@@ -259,6 +281,7 @@ export default {
     AddEmployee,
     SortOptions,
     Export,
+    LastLog,
   },
   directives: { waves, permission },
   data() {
@@ -331,7 +354,7 @@ export default {
       } else {
         this.$notify({
           title: "تم ",
-          message: "الرجاء تحديد المشتركين",
+          message: "الرجاء تحديد ",
           type: "error",
           duration: 2000,
         });

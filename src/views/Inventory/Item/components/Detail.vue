@@ -16,6 +16,10 @@
             <el-tab-pane label="مكونات" name="Ingredient">
               <ingredient :Value="tempForm.Ingredients" :ItemId="tempForm.Id"
             /></el-tab-pane>
+            <el-tab-pane v-if="isEdit" label="مستندات" name="Documents">
+              <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
+              <Documents :ObjectId="tempForm.Id" TableName="Item" />
+            </el-tab-pane>
           </el-tabs>
         </el-card>
       </el-col>
@@ -30,10 +34,11 @@ import Ingredient from "@/components/Item/Ingredient.vue";
 import Movements from "./Movements.vue";
 import { GetFileByObjId } from "@/api/File";
 import { GetItemById } from "@/api/Item";
+import Documents from "@/components/Documents/Documents.vue";
 
 export default {
   name: "Details",
-  components: { InventoryQty, ItemForm, Ingredient, Movements },
+  components: { InventoryQty, ItemForm, Ingredient, Movements, Documents },
   props: {
     isEdit: {
       type: Boolean,

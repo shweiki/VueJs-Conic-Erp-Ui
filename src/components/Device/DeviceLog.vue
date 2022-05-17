@@ -8,6 +8,7 @@
             (v) => {
               listQuery.DateFrom = v[0];
               listQuery.DateTo = v[1];
+              handleFilter()
             }
           "
         />

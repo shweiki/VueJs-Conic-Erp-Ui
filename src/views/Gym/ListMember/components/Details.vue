@@ -32,7 +32,7 @@
           </el-col>
           <el-col :span="8">
             <el-date-picker
-    :format="$store.getters.settings.DateTimeFormat"
+              :format="$store.getters.settings.DateTimeFormat"
               v-model="Member.DateofBirth"
               type="date"
               disabled
@@ -44,7 +44,7 @@
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
-            <last-log :UserId="Member.Id" TableName="Member" />
+            <LastLog :UserId="Member.Id" TableName="Member" />
           </el-col>
           <el-col :span="4">
             <span>رقم الهاتف</span>
@@ -80,12 +80,14 @@
             ></el-date-picker>
           </el-col>
         </el-row>
-        <el-row type="flex">
-          <el-col :span="4">
-            <span>الايام المتبقية</span>
+        <el-row v-if="Member.ActiveMemberShip" type="flex">
+          <el-col :span="6"
+            ><span style="color: dodgerblue">الايام</span> \
+
+            <span style="color: orangered"> الحصص </span>
           </el-col>
-          <el-col :span="8">
-            <span v-if="Member.ActiveMemberShip"
+          <el-col :span="3">
+            <span style="color: dodgerblue"
               >(
               {{
                 Math.round(
@@ -98,11 +100,17 @@
               )</span
             >
           </el-col>
+          <el-col :span="3" style="color: orangered"
+            >({{
+              Member.ActiveMemberShip.NumberClass -
+              Member.ActiveMemberShip.VisitsUsed
+            }})</el-col
+          >
           <el-col :span="4">
             <span>نوع الاشتراك</span>
           </el-col>
           <el-col :span="8">
-            <el-tag v-if="Member.ActiveMemberShip"
+            <el-tag
               >{{ Member.ActiveMemberShip.Type + " - "
               }}{{ Member.ActiveMemberShip.Name }}</el-tag
             >
@@ -151,7 +159,7 @@
               @close="close"
               @crop-upload-success="cropSuccess"
             />
-            <web-cam  TableName="Member" :ObjectId="Member.Id" />
+            <WebCam TableName="Member" :ObjectId="Member.Id" />
           </pan-thumb>
 
           <el-col :span="24">
@@ -167,8 +175,14 @@
               >Black List</el-button
             >
           </el-col>
-          <el-col :span="24" v-if="checkPermission(['admin']) && Member.Status == -2">
-            <el-button @click="dialogOprationVisible2 = true" type="success" plain
+          <el-col
+            :span="24"
+            v-if="checkPermission(['admin']) && Member.Status == -2"
+          >
+            <el-button
+              @click="dialogOprationVisible2 = true"
+              type="success"
+              plain
               >الغاء Black List</el-button
             >
           </el-col>
@@ -199,7 +213,10 @@
             },
           ]"
         >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -232,11 +249,16 @@
             },
           ]"
         >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input
+            type="textarea"
+            v-model="tempOpration.Description"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="success" @click="RemoveBlackList()">فك الرفض</el-button>
+        <el-button type="success" @click="RemoveBlackList()"
+          >فك الرفض</el-button
+        >
         <Dialog-Action-Log TableName="Member" :ObjId="Member.Id" />
       </div>
     </el-dialog>
@@ -250,7 +272,7 @@ import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
 
-import LastLog from "@/components/Gym/LastLog";
+import LastLog from "@/components/Gym/LastLog.vue";
 
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";

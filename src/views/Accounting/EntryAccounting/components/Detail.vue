@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div>
     <el-card class="box-card">
       <div slot="header">
         <el-button
@@ -8,7 +8,7 @@
           icon="fa fa-save"
           @click="isEdit != true ? createData() : updateData()"
         />
-        
+
         <router-link
           class="pan-btn tiffany-btn"
           style="
@@ -26,11 +26,7 @@
           {{ ValidateNote }}
         </p>
       </div>
-      <el-form
-        ref="tempForm"
-        :model="tempForm"
-        class="demo-ruleForm"
-      >
+      <el-form ref="tempForm" :model="tempForm" class="demo-ruleForm">
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item
@@ -202,6 +198,9 @@
         </el-col>
       </el-form>
     </el-card>
+    <el-card v-if="tempForm.Id != undefined" class="box-card">
+      <Documents :ObjectId="tempForm.Id" TableName="AccountingEntry" />
+    </el-card>
   </div>
 </template>
 <script>
@@ -209,9 +208,10 @@ import { CreateEntry, GetEntryById, Edit } from "@/api/EntryAccounting";
 import FakeDate from "@/components/Date/FakeDate";
 import EditAccount from "@/components/TreeAccount/EditAccount.vue";
 import SearchBy from "@/components/DynamicComponents/SearchBy.vue";
+import Documents from "@/components/Documents/Documents.vue";
 export default {
   name: "NewAccountingEntry",
-  components: { FakeDate,  SearchBy, EditAccount },
+  components: { FakeDate, SearchBy, EditAccount, Documents },
   props: {
     isEdit: {
       type: Boolean,
@@ -269,7 +269,7 @@ export default {
       this.tempForm.EntryMovements.splice(index, 1);
     },
     getdata(val) {
-      GetEntryById({ Id: val || this.$route.params && this.$route.params.id})
+      GetEntryById({ Id: val || (this.$route.params && this.$route.params.id) })
         .then((response) => {
           this.tempForm = response;
           // set tagsview title

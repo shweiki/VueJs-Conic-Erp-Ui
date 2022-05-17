@@ -44,9 +44,3 @@ export function GetMembershipMovementByDateIn(query) {
   })
 }
 
-export function CheckMembershipMovement() {
-  return request({
-    url: '/MembershipMovement/CheckMembershipMovement',
-    method: 'get',
-  })
-}

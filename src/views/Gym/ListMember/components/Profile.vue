@@ -137,11 +137,11 @@
             <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
             <Service :ServiceInvoices="ServiceInvoices" />
           </el-tab-pane>
-          <el-tab-pane label="زيارات" name="timeline">
-            <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
-            <DeviceLog TableName="Member" :UserId="tempForm.Id" />
-          </el-tab-pane>
 
+          <el-tab-pane label="زيارات" name="timeline">
+            <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
+            <TimeLine TableName="Member" :UserId="tempForm.Id" />
+          </el-tab-pane>
           <el-tab-pane label="اشتراكات" name="activity">
             <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
             <Activity :MembershipMovements="MembershipMovements" />
@@ -175,6 +175,8 @@ import SaleInvoice from "./SaleInvoice.vue";
 import Activity from "./Activity.vue";
 import Account from "./Account.vue";
 import Service from "./Service.vue";
+import TimeLine from "./TimeLine.vue";
+
 import Communication from "./Communication.vue";
 import Documents from "@/components/Documents/Documents.vue";
 import DeviceLog from "@/components/Device/DeviceLog.vue";
@@ -211,6 +213,7 @@ export default {
     SendToDevice,
     Documents,
     SaleInvoice,
+    TimeLine,
   },
   props: {
     isEdit: {

@@ -4,7 +4,7 @@ const PurchasesRouter = {
   path: '/Purchases',
   component: Layout,
   redirect: '/Purchases/List',
-  meta: { title: 'Purchase', icon: 'shopping-cart' },
+  meta: { title: 'Purchases', icon: 'shopping-cart' },
   children: [
     {
       path: 'Create',

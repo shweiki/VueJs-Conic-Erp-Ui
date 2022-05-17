@@ -1,15 +1,15 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" >
-       <Add-Membership/>
+      <div slot="header">
+        <Add-Membership />
         <span>{{ $t("CashPool.Memberships") }}</span>
       </div>
       <el-table
         v-loading="loading"
         :data="
           tableData.filter(
-            data =>
+            (data) =>
               !search || data.Name.toLowerCase().includes(search.toLowerCase())
           )
         "
@@ -94,7 +94,11 @@
               >
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.MorningPrice.toFixed($store.getters.settings.ToFixed) }}
+                  {{
+                    scope.row.MorningPrice.toFixed(
+                      $store.getters.settings.ToFixed
+                    )
+                  }}
                 </template>
               </el-table-column>
               <el-table-column
@@ -103,7 +107,11 @@
               >
                 <template slot-scope="scope">
                   <i class="el-icon-money"></i>
-                  {{ scope.row.FullDayPrice.toFixed($store.getters.settings.ToFixed) }}
+                  {{
+                    scope.row.FullDayPrice.toFixed(
+                      $store.getters.settings.ToFixed
+                    )
+                  }}
                 </template>
               </el-table-column>
               <el-table-column
@@ -127,8 +135,8 @@
         </el-table-column>
       </el-table>
     </el-card>
-    
-<el-dialog
+
+    <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
       :visible.sync="dialogFormVisible"
@@ -153,16 +161,19 @@
         label-position="top"
         label-width="70px"
       >
-        <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item v-bind:label="$t('Members.Name')" prop="Name">
-              <el-input type="text" v-model="tempForm.Name" autofocus></el-input>
+              <el-input
+                type="text"
+                v-model="tempForm.Name"
+                autofocus
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row >
-          <el-col :span="8">
+        <el-row>    <el-col :span="4">
             <el-form-item
               v-bind:label="$t('Members.NumberDays')"
               prop="NumberDays"
@@ -171,8 +182,22 @@
                 v-model="tempForm.NumberDays"
                 :step="1"
                 :min="1"
-                :max="1000"                            @focus="$event.target.select()"
-
+                :max="1000"
+                @focus="$event.target.select()"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item
+              v-bind:label="$t('Members.NumberClass')"
+              prop="NumberClass"
+            >
+              <el-input-number
+                v-model="tempForm.NumberClass"
+                :step="1"
+                :min="1"
+                :max="1000"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -186,8 +211,8 @@
                 :precision="2"
                 :step="0.1"
                 :min="0.0"
-                :max="1500"                            @focus="$event.target.select()"
-
+                :max="1500"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -201,14 +226,14 @@
                 :precision="2"
                 :step="0.1"
                 :min="0.0"
-                :max="1500"                            @focus="$event.target.select()"
-
+                :max="1500"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row >
+        <el-row>
           <el-col :span="8">
             <el-form-item v-bind:label="$t('Members.Tax')" prop="Tax">
               <el-input-number
@@ -216,8 +241,8 @@
                 :precision="2"
                 :step="0.01"
                 :min="0.01"
-                :max="1"                            @focus="$event.target.select()"
-
+                :max="1"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -228,8 +253,8 @@
                 :precision="2"
                 :step="1"
                 :min="1"
-                :max="365"                            @focus="$event.target.select()"
-
+                :max="365"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -240,13 +265,13 @@
                 :precision="2"
                 :step="1"
                 :min="1"
-                :max="365"                            @focus="$event.target.select()"
-
+                :max="365"
+                @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row >
+        <el-row>
           <el-col :span="24">
             <el-form-item v-bind:label="$t('Members.Notes')" prop="Description">
               <el-input
@@ -303,10 +328,10 @@
 <script>
 import { GetMembership, Create, Edit } from "@/api/Membership";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import AddMembership from "@/components/Gym/AddMembership.vue"
+import AddMembership from "@/components/Gym/AddMembership.vue";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 export default {
-  components: { StatusTag,AddMembership },
+  components: { StatusTag, AddMembership },
   name: "Membership",
   data() {
     return {
@@ -318,102 +343,104 @@ export default {
       search: "",
       textMapForm: {
         update: "تعديل",
-        create: "إضافة"
+        create: "إضافة",
       },
       textOpration: {
         OprationDescription: "",
         ArabicOprationDescription: "",
         IconClass: "",
-        ClassName: ""
+        ClassName: "",
       },
-       tempForm: {
+      tempForm: {
         Id: undefined,
         Name: "",
         NumberDays: 30,
+        NumberClass:30,
         MorningPrice: 0.0,
         FullDayPrice: 0.0,
         Tax: 0.0,
         Rate: 0,
         Description: "",
         MinFreezeLimitDays: 3,
-        MaxFreezeLimitDays: 0
+        MaxFreezeLimitDays: 0,
       },
       rulesForm: {
         Name: [
           {
             required: true,
             message: "يجب إدخال إسم ",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             min: 3,
             max: 50,
             message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: ""
+        Description: "",
       },
       rulesOpration: {
         Description: [
           {
             required: true,
             message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             min: 5,
             max: 150,
             message: "الرجاء إدخال إسم لا يقل عن 5 أحرف و لا يزيد عن 150 حرف",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
     getdata() {
       this.loading = true;
-      GetMembership().then(response => {
+      GetMembership().then((response) => {
         // handle success
-        
+
         this.tableData = response;
         this.loading = false;
       });
     },
-  resetTempForm() {
+    resetTempForm() {
       this.tempForm = {
         Id: undefined,
         Name: "",
-        NumberDays: 30,
+        NumberDays: 30,        NumberClass:30,
+
         MorningPrice: 0.0,
         FullDayPrice: 0.0,
         Tax: 0.0,
         Rate: 0,
         Description: "",
         MinFreezeLimitDays: 3,
-        MaxFreezeLimitDays: 0
+        MaxFreezeLimitDays: 0,
       };
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Create(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.dialogFormVisible = false;
               this.getdata();
               this.$notify({
                 title: "تم ",
                 message: "تم الإضافة بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -435,6 +462,7 @@ export default {
       this.tempForm.Id = row.Id;
       this.tempForm.Name = row.Name;
       this.tempForm.NumberDays = row.NumberDays;
+      this.tempForm.NumberClass = row.NumberClass;
       this.tempForm.MorningPrice = row.MorningPrice;
       this.tempForm.FullDayPrice = row.FullDayPrice;
       this.tempForm.Tax = row.Tax;
@@ -470,8 +498,8 @@ export default {
           sums[index] = "Total";
           return;
         }
-        const values = data.map(item => Number(item[column.property]));
-        if (!values.every(value => isNaN(value))) {
+        const values = data.map((item) => Number(item[column.property]));
+        if (!values.every((value) => isNaN(value))) {
           sums[index] =
             "$ " +
             values.reduce((prev, curr) => {
@@ -490,20 +518,20 @@ export default {
       return sums;
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogFormVisible = false;
               this.$notify({
                 title: "تم",
                 message: "تم التعديل بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -513,25 +541,25 @@ export default {
       });
     },
     createOprationData() {
-      this.$refs["dataOpration"].validate(valid => {
+      this.$refs["dataOpration"].validate((valid) => {
         if (valid) {
           console.log(this.tempOpration);
           ChangeObjStatus({
             ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationId,
-            Description: this.tempOpration.Description
+            Description: this.tempOpration.Description,
           })
-            .then(response => {
+            .then((response) => {
               this.getdata();
               this.dialogOprationVisible = false;
               this.$notify({
                 title: "تم  ",
                 message: "تمت العملية بنجاح",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } else {
@@ -539,10 +567,10 @@ export default {
           return false;
         }
       });
-    }
+    },
   },
   created() {
     this.getdata();
-  }
+  },
 };
 </script>
