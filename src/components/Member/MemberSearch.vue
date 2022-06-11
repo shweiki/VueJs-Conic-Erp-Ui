@@ -15,7 +15,7 @@
       ></el-button>
     </el-col>
     <el-col :span="2">
-      <add-member />
+      <AddMember />
     </el-col>
     <el-col :span="14">
       <MemberSearchAny @Set="(v) => $router.push({ path: `/Gym/Edit/`+v.Id })" />
