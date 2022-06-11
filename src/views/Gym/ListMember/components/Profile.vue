@@ -247,9 +247,9 @@ export default {
       if (val == "" || val == undefined)
         val = this.$route.params && this.$route.params.id;
       GetMemberById({ Id: val })
-        .then((response) => {
+        .then(async (response) => {
           this.tempForm = response;
-          this.GetImage(this.tempForm.Id);
+       await   this.GetImage(this.tempForm.Id);
           this.getAge();
           this.loading = false;
           //this.GetMemberLogFromDevices(val);
