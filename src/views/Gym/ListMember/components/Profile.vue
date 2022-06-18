@@ -183,7 +183,6 @@ import DeviceLog from "@/components/Device/DeviceLog.vue";
 
 import { GetMemberById } from "@/api/Member";
 import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
-import { GetProfilePictureByObjId } from "@/api/File";
 import { GetPaymentsByMemberId } from "@/api/Payment";
 import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
 import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
@@ -226,7 +225,7 @@ export default {
       activeTab: "Details",
       loading: true,
       tempRoute: {},
-      tempForm: null,
+      tempForm: {},
       MembershipMovements: [],
       Payments: [],
       EntryMovements: [],
@@ -235,7 +234,7 @@ export default {
     };
   },
   created() {
-    if (this.isEdit) {
+        if (this.isEdit) {
       this.getdata(this.$route.params && this.$route.params.id);
       // console.log(this.$route.params )
     }
@@ -244,12 +243,9 @@ export default {
   methods: {
     checkPermission,
     getdata(val) {
-      if (val == "" || val == undefined)
-        val = this.$route.params && this.$route.params.id;
       GetMemberById({ Id: val })
-        .then(async (response) => {
+        .then( (response) => {
           this.tempForm = response;
-       await   this.GetImage(this.tempForm.Id);
           this.getAge();
           this.loading = false;
           //this.GetMemberLogFromDevices(val);
@@ -295,16 +291,7 @@ export default {
           this.ServiceInvoices = response.reverse();
         });
     },
-    GetImage(Id) {
-      GetProfilePictureByObjId({ TableName: "Member", ObjId: Id })
-        .then((response) => {
-          if (response) this.tempForm.Avatar = response.File;
-          else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+
     getAge() {
       var today = new Date();
       var birthDate = new Date(this.tempForm.DateofBirth);

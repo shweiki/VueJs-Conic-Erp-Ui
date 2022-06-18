@@ -44,7 +44,7 @@
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
-            <LastLog :UserId="Member.Id" TableName="Member" />
+            <last-log :UserId="Member.Id" TableName="Member" />
           </el-col>
           <el-col :span="4">
             <span>رقم الهاتف</span>
@@ -138,7 +138,7 @@
       <el-col :span="4">
         <div>
           <pan-thumb
-            :image="Member.Avatar"
+            :image="avatar"
             :height="'100px'"
             :width="'100px'"
             :hoverable="false"
@@ -277,6 +277,7 @@ import LastLog from "@/components/Gym/LastLog.vue";
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
+import { GetProfilePictureByObjId } from "@/api/File";
 
 export default {
   components: {
@@ -290,13 +291,18 @@ export default {
   props: {
     Member: {
       type: Object,
-      default: () => {
-        return undefined;
-      },
+      required: true,
+
+    },
+  },
+  watch: {
+    Member(v) {
+      if (v) this.GetImage(v.Id);
     },
   },
   data() {
     return {
+      avatar: "",
       dialogOprationVisible: false,
       dialogOprationVisible2: false,
       imagecropperShow: false,
@@ -310,6 +316,16 @@ export default {
   },
   methods: {
     checkPermission,
+    GetImage(Id) {
+      GetProfilePictureByObjId({ TableName: "Member", ObjId: Id })
+        .then((response) => {
+          if (response) this.avatar = response.File;
+          else this.avatar = this.$store.getters.CompanyInfo.Logo;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     RemoveBlackList() {
       this.$refs["dataOpration"].validate((valid) => {
         if (valid) {

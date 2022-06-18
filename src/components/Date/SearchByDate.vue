@@ -41,7 +41,6 @@ export default {
   },
   watch: {
     Value(val) {
-      console.log("val ", val);
       if (
         val[0] != "" &&
         val[0] != this.date[0] &&

@@ -203,7 +203,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          <LastLog :UserId="scope.row.Id" TableName="Member" />
+          <last-log :UserId="scope.row.Id" TableName="Member" />
         </template>
       </el-table-column>
       <el-table-column
@@ -288,7 +288,7 @@ import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import permission from "@/directive/permission/index.js";
-import LastLog from "@/components/Gym/LastLog.vue";
+import lastLog from "@/components/Gym/LastLog.vue";
 
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -314,7 +314,7 @@ export default {
     SortOptions,
     Export,
     DrawerPrint,
-    LastLog,
+    lastLog,
   },
   directives: { waves, permission },
   data() {
@@ -329,7 +329,7 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
-        Status: undefined,
+        Status: null,
       },
     };
   },

@@ -67,14 +67,18 @@ export default {
   props: {
     UserId: {
       type: Number,
-      default: 0,
+      required: true,
     },
     TableName: {
       type: String,
-      default: "",
+      required: true,
     },
   },
-
+  watch: {
+    UserId(val) {
+      if (val) this.getdata();
+    },
+  },
   data() {
     return {
       loading: false,
@@ -93,6 +97,7 @@ export default {
   methods: {
     getdata() {
       this.loading = true;
+      this.listQuery.UserId = this.UserId;
       GetLogByUserId(this.listQuery)
         .then((response) => {
           this.timeline = response;
