@@ -13,10 +13,13 @@
           "
         />
       </el-col>
-      <el-col :span="6">
+      <el-col :span="3">
         <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
       </el-col>
+            <el-col :span="3">
 
+          <Add-Device-Log TableName="Member" />
+</el-col>
       <el-col :span="4">
         <el-button
           class="filter-item"
@@ -61,22 +64,38 @@
 <script>
 import { GetLogByUserId } from "@/api/DeviceLog";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
+import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
 
 export default {
-  components: { SearchByDate },
+  components: { SearchByDate,AddDeviceLog },
   props: {
     UserId: {
       type: Number,
-      required: true,
+      required: false,
     },
     TableName: {
       type: String,
       required: true,
     },
+    DateFrom: {
+      type: String,
+      required: false,
+    },
+    DateTo: {
+      type: String,
+      required: false,
+    },
   },
   watch: {
     UserId(val) {
       if (val) this.getdata();
+    },
+    DateFrom(val) {
+      if (val != "" || val != undefined) this.listQuery.DateFrom = val;
+    },
+    DateTo(val) {
+      if (val != "" || val != undefined) this.listQuery.DateTo = val;
+
     },
   },
   data() {
