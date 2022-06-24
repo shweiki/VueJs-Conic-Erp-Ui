@@ -36,6 +36,14 @@ export function GetMembershipMovementByStatus(query) {
     params: query
   })
 }
+export function GetMembershipMovementByMembershipId(query) {
+  return request({
+    url: '/MembershipMovement/GetMembershipMovementByMembershipId',
+    method: 'get',
+    params: query
+  })
+}
+
 export function GetMembershipMovementByDateIn(query) {
   return request({
     url: '/MembershipMovement/GetMembershipMovementByDateIn',
