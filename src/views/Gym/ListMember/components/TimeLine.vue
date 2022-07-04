@@ -16,10 +16,9 @@
       <el-col :span="3">
         <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
       </el-col>
-            <el-col :span="3">
-
-          <Add-Device-Log TableName="Member" />
-</el-col>
+      <el-col :span="3">
+        <Add-Device-Log TableName="Member" />
+      </el-col>
       <el-col :span="4">
         <el-button
           class="filter-item"
@@ -30,6 +29,17 @@
         </el-button>
       </el-col>
     </el-row>
+
+      <el-row type="flex">
+        <el-col :span="24">
+          <el-divider direction="vertical"></el-divider>
+          <span>العدد</span>
+          <el-divider direction="vertical"></el-divider>
+          <span>{{ timeline.length }}</span>
+          <el-divider direction="vertical"></el-divider>
+
+        </el-col>
+      </el-row>
     <el-row :gutter="30">
       <el-col :span="24">
         <el-card shadow="always">
@@ -67,7 +77,7 @@ import SearchByDate from "@/components/Date/SearchByDate.vue";
 import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
 
 export default {
-  components: { SearchByDate,AddDeviceLog },
+  components: { SearchByDate, AddDeviceLog },
   props: {
     UserId: {
       type: Number,
@@ -95,13 +105,12 @@ export default {
     },
     DateTo(val) {
       if (val != "" || val != undefined) this.listQuery.DateTo = val;
-
     },
   },
   data() {
     return {
       loading: false,
-      reverse: false,
+      reverse: true,
 
       timeline: [],
       listQuery: {

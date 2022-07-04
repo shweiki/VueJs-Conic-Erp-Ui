@@ -101,7 +101,7 @@
             >
           </el-col>
           <el-col :span="3" style="color: orangered"
-            >({{
+            >({{ Member.ActiveMemberShip.NumberClass}}\{{
               Member.ActiveMemberShip.NumberClass -
               Member.ActiveMemberShip.VisitsUsed
             }})</el-col
