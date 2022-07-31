@@ -6,7 +6,7 @@
           <el-col :span="3">
             <span>{{ $t("Members.Member") }}</span>
           </el-col>
-          <el-col :span="9">
+          <el-col :span="7">
             <Select-Memberships
               @Set="
                 (v) => {
@@ -16,7 +16,16 @@
               "
             />
           </el-col>
-          <el-col :span="1">
+          <el-col :span="8">
+            <el-date-picker
+              v-model="DateIn"
+              @change="getdata()"
+              type="date"
+              placeholder="بحث حسب تاريخ ما بين البدء و الانتهاء"
+            >
+            </el-date-picker
+          ></el-col>
+          <el-col :span="2">
             <drawer-print
               Type="MemberShipList"
               :Data="{
@@ -35,23 +44,14 @@
         highlight-current-row
         max-height="500"
         style="width: 100%"
-        @row-dblclick="
-          (row) => {
-            if (DblClickRow == 'AddAsRow') {
-              $emit('dblclick', row);
-            } else {
-              let r = $router.resolve({
-                path: '/Gym/Edit/' + row.MemberId,
-              });
-              window.open(
-                r.href,
-                r.route.name,
-                $store.getters.settings.windowStyle
-              );
-            }
-          }
-        "
+        @selection-change="handleSelectionChange"
       >
+        <el-table-column
+          type="selection"
+          width="55"
+          align="center"
+        ></el-table-column>
+
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             Ids
@@ -111,12 +111,19 @@
 import { GetMembershipMovementByMembershipId } from "@/api/MembershipMovement";
 import SelectMemberships from "@/components/Gym/SelectMemberships.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-
+import {
+  LocalDateTime,
+  LocalDate,
+  LocalTime,
+  DateTimeFormatter,
+  Instant,
+} from "@js-joda/core";
 export default {
   components: { SelectMemberships, DrawerPrint },
   data() {
     return {
       tableData: [],
+      Selection: [],
       FreezeBetween: "",
       Description: "",
       Visibles: false,
@@ -124,20 +131,31 @@ export default {
       loading: false,
       search: "",
       MembershipId: "",
+      DateIn: "",
     };
   },
 
   methods: {
-    getdata(val) {
-      console.log(val);
+    getdata() {
+      let date;
       this.loading = true;
+      if (this.DateIn != "") {
+        date = LocalDate.ofInstant(Instant.ofEpochMilli(this.DateIn))
+          .atStartOfDay()
+          .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+      }
+
       GetMembershipMovementByMembershipId({
         MembershipId: this.MembershipId,
+        DateIn: date,
       }).then((response) => {
         //console.log(response)
         this.tableData = response;
         this.loading = false;
       });
+    },
+    handleSelectionChange(val) {
+      this.Selection = val;
     },
   },
 };

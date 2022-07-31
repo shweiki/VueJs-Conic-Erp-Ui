@@ -8,11 +8,25 @@ export function Create(data) {
     data: qs.stringify(data)
   })
 }
+export function Edit(data) {
+  return request({
+    url: '/MembershipMovementOrder/Edit',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function CreateMulti(data) {
   return request({
     url: '/MembershipMovementOrder/CreateMulti',
     method: 'post',
     data:  qs.stringify(data)
+  })
+}
+export function GetById(query) {
+  return request({
+    url: '/MembershipMovementOrder/GetById',
+    method: 'get',
+    params: query
   })
 }
 export function GetMembershipMovementOrderByMemberShipID(query) {

@@ -36,7 +36,7 @@
             },
           ]"
         >
-          <Select-Memberships
+          <Select-All-Memberships
             :MembershipId="tempForm.MembershipId"
             @Set="
               (v) => {
@@ -177,7 +177,7 @@
 <script>
 import { Edit, GetMembershipMovementById } from "@/api/MembershipMovement";
 import FakeDate from "@/components/Date/FakeDate.vue";
-import SelectMemberships from "@/components/Gym/SelectMemberships.vue";
+import SelectAllMemberships from "@/components/Gym/SelectAllMemberships.vue";
 import SelectDiscount from "@/components/Discount/SelectDiscount.vue";
 import EditorsUser from "@/components/Gym/EditorsUser";
 import { LocalDateTime, Instant } from "@js-joda/core";
@@ -185,7 +185,7 @@ import { GetActiveService } from "@/api/Service";
 import { Create as CreateSaleInvoice } from "@/api/SaleInvoice";
 
 export default {
-  components: { FakeDate, EditorsUser, SelectMemberships, SelectDiscount },
+  components: { FakeDate, EditorsUser, SelectAllMemberships, SelectDiscount },
   props: {
     MembershipMovementId: {
       type: Number,

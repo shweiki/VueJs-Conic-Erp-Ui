@@ -9,7 +9,7 @@
   </el-select>
 </template>
 <script>
-import { GetActiveMembership } from "@/api/Membership";
+import { GetMembership } from "@/api/Membership";
 
 export default {
   props: ["MembershipId"],
@@ -25,7 +25,7 @@ export default {
     },
   },
   created() {
-    GetActiveMembership()
+    GetMembership()
       .then((response) => {
         this.options = response;
         this.SetVal(response[0].Id);

@@ -41,10 +41,23 @@
         </el-row>
 
         <el-row type="flex">
-          <el-col :span="8">
+          <el-col :span="4">
             <el-form-item v-bind:label="$t('Members.NumberDays')" prop="NumberDays">
               <el-input-number
                 v-model="tempForm.NumberDays"
+                :step="1"
+                :min="1"
+                :max="1000"
+                @focus="$event.target.select()"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>      <el-col :span="4">
+            <el-form-item
+              v-bind:label="$t('Members.NumberClass')"
+              prop="NumberClass"
+            >
+              <el-input-number
+                v-model="tempForm.NumberClass"
                 :step="1"
                 :min="1"
                 :max="1000"
@@ -183,6 +196,7 @@ export default {
         Id: undefined,
         Name: "",
         NumberDays: 30,
+        NumberClass:30,
         MorningPrice: 0.0,
         FullDayPrice: 0.0,
         Tax: 0.0,

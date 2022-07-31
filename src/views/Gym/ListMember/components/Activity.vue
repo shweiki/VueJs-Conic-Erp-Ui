@@ -23,7 +23,7 @@
       <el-table-column label="تاريخ البدء" align="center" width="150">
         <template slot-scope="scope">
           <el-date-picker
-            :format="$store.getters.settings.DateTimeFormat"
+            format="yyyy-MM-dd"
             disabled
             v-model="scope.row.StartDate"
           ></el-date-picker>
@@ -32,7 +32,7 @@
       <el-table-column label="تاريخ الانتهاء" align="center" width="150">
         <template slot-scope="scope">
           <el-date-picker
-            :format="$store.getters.settings.DateTimeFormat"
+            format="yyyy-MM-dd"
             disabled
             v-model="scope.row.EndDate"
           ></el-date-picker>
@@ -135,6 +135,11 @@
         <template slot-scope="props">
           <el-table :data="props.row.MembershipMovementOrders">
             <el-table-column
+              label="#"
+              prop="Id"
+              align="center"
+            ></el-table-column>
+            <el-table-column
               label="النوع"
               prop="Type"
               align="center"
@@ -143,7 +148,7 @@
             <el-table-column width="160" label="تاريخ البدء" align="center">
               <template slot-scope="scope">
                 <el-date-picker
-                  :format="$store.getters.settings.DateTimeFormat"
+                  format="yyyy-MM-dd"
                   disabled
                   v-model="scope.row.StartDate"
                 ></el-date-picker>
@@ -152,7 +157,7 @@
             <el-table-column width="160" label="تاريخ الانتهاء" align="center">
               <template slot-scope="scope">
                 <el-date-picker
-                  :format="$store.getters.settings.DateTimeFormat"
+                  format="yyyy-MM-dd"
                   disabled
                   v-model="scope.row.EndDate"
                 ></el-date-picker>
@@ -189,6 +194,34 @@
               align="center"
               prop="EditorName"
             ></el-table-column>
+            <el-table-column width="80" v-if="checkPermission(['admin'])">
+              <template slot-scope="scope">
+                <EditFreeze
+                  :MaxFreezeLimit="
+                    props.row.MaxFreezeLimitDays -
+                    props.row.MembershipMovementOrders.reduce(
+                      (a, b) =>
+                        a +
+                        (b.Status != 0 &&
+                        b.Status != -1 &&
+                        b.Status != -2 &&
+                        b.Type != 'Extra'
+                          ? Math.round(
+                              Math.abs(
+                                (new Date(b.StartDate) - new Date(b.EndDate)) /
+                                  (24 * 60 * 60 * 1000)
+                              )
+                            )
+                          : 0),
+                      0
+                    )
+                  "
+                  :MinFreezeLimit="props.row.MinFreezeLimitDays"
+                  :MemberShipMovementOrderId="scope.row.Id"
+                />
+
+              </template>
+            </el-table-column>
           </el-table>
         </template>
       </el-table-column>
@@ -202,12 +235,14 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import Freeze from "./Dialogs/Freeze";
 import Extra from "./Dialogs/Extra";
 import MemberShipMovementEdit from "./Dialogs/MemberShipMovementEdit.vue";
+import EditFreeze from "./Dialogs/Edit-Freeze.vue";
 
 export default {
   components: {
     Freeze,
     Extra,
     MemberShipMovementEdit,
+    EditFreeze,
     StatusTag,
   },
   props: {

@@ -62,6 +62,12 @@
               circle
               @click="handleUpdate(scope.row)"
             ></el-button>
+            <Next-Oprations
+              :ObjId="scope.row.Id"
+              :Status="scope.row.Status"
+              TableName="Membership"
+              @Done="getdata()"
+            />
           </template>
         </el-table-column>
         <el-table-column type="expand" width="30" align="center">
@@ -173,7 +179,8 @@
           </el-col>
         </el-row>
 
-        <el-row>    <el-col :span="4">
+        <el-row>
+          <el-col :span="4">
             <el-form-item
               v-bind:label="$t('Members.NumberDays')"
               prop="NumberDays"
@@ -330,8 +337,10 @@ import { GetMembership, Create, Edit } from "@/api/Membership";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import AddMembership from "@/components/Gym/AddMembership.vue";
 import { ChangeObjStatus } from "@/api/Oprationsys";
+import NextOprations from "@/components/Oprationsys/NextOprations";
+
 export default {
-  components: { StatusTag, AddMembership },
+  components: { StatusTag, AddMembership, NextOprations },
   name: "Membership",
   data() {
     return {
@@ -355,7 +364,7 @@ export default {
         Id: undefined,
         Name: "",
         NumberDays: 30,
-        NumberClass:30,
+        NumberClass: 30,
         MorningPrice: 0.0,
         FullDayPrice: 0.0,
         Tax: 0.0,
@@ -415,7 +424,8 @@ export default {
       this.tempForm = {
         Id: undefined,
         Name: "",
-        NumberDays: 30,        NumberClass:30,
+        NumberDays: 30,
+        NumberClass: 30,
 
         MorningPrice: 0.0,
         FullDayPrice: 0.0,
