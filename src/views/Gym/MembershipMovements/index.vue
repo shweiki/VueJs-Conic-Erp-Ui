@@ -7,7 +7,7 @@
             <span>{{ $t("Members.Member") }}</span>
           </el-col>
           <el-col :span="7">
-            <Select-Memberships
+            <Select-All-Memberships
               @Set="
                 (v) => {
                   MembershipId = v.Id;
@@ -109,7 +109,7 @@
 
 <script>
 import { GetMembershipMovementByMembershipId } from "@/api/MembershipMovement";
-import SelectMemberships from "@/components/Gym/SelectMemberships.vue";
+import SelectAllMemberships from "@/components/Gym/SelectAllMemberships.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import {
   LocalDateTime,
@@ -119,7 +119,7 @@ import {
   Instant,
 } from "@js-joda/core";
 export default {
-  components: { SelectMemberships, DrawerPrint },
+  components: { SelectAllMemberships, DrawerPrint },
   data() {
     return {
       tableData: [],
