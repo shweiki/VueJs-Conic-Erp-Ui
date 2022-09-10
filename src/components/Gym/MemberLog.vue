@@ -69,6 +69,12 @@
             >
             <Status-Tag :Status="Log.User.Status" TableName="Member">
             </Status-Tag>
+            <el-tag v-if="Log.User.ActiveMemberShip != null" :span="3" style="color: orangered"
+            >({{ Log.User.ActiveMemberShip.NumberClass}}\{{
+              Log.User.ActiveMemberShip.NumberClass -
+              Log.User.ActiveMemberShip.VisitsUsed
+            }})</el-tag
+          >
             <el-tag
               v-if="Log.User.ActiveMemberShip != null"
               v-bind:type="
