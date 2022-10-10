@@ -120,7 +120,7 @@
       @row-dblclick="
         (row) => {
           let r = $router.resolve({
-            path: '/Purchase/Edit/' + row.Id,
+            path: '/Purchases/Edit/' + row.Id,
           });
           window.open(
             r.href,
