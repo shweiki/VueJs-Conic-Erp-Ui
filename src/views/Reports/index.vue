@@ -64,7 +64,7 @@ export default {
         {
           id: 2,
           name: this.$t("Report.Purchase"),
-          link: "/Purchase/Create",
+          link: "/Purchases/Create",
           tags: ["all", "S&P"],
           class: "pan-btn yellow-btn"
         },

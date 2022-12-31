@@ -19,7 +19,7 @@
                 border-radius: 6px;
               "
               icon="el-icon-plus"
-              to="/Purchase/List"
+              to="/Purchases/List"
               >{{ $t("route.ListPurchaseInvoice") }}</router-link
             >
           </el-col>

@@ -9,7 +9,7 @@
       @row-dblclick="
         row => {
           $router.replace({
-            path: '/Purchase/Edit/' + row.Id
+            path: '/Purchases/Edit/' + row.Id
           });
         }
       "

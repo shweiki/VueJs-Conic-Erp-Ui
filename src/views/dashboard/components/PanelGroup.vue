@@ -142,7 +142,7 @@
     >
       <div class="card-panel" @click="handleSetLineChartData('Purchases')">
         <div
-          @dblclick="$router.push({ path: `/Purchase` })"
+          @dblclick="$router.push({ path: `/Purchases` })"
           class="card-panel-icon-wrapper icon-money"
         >
           <svg-icon icon-class="money" class-name="card-panel-icon" />

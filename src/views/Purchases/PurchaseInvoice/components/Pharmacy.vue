@@ -21,7 +21,7 @@
             class="pan-btn tiffany-btn"
             style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
             icon="el-icon-plus"
-            to="/Purchase/List"
+            to="/Purchases/List"
             >{{ $t("route.ListPurchaseInvoice") }}</router-link
           >
         </div>
@@ -433,7 +433,7 @@ export default {
                   showClose: false,
                   onClose: () => {
                     if (response) {
-                      this.$router.push({ path: `/Purchase/List` });
+                      this.$router.push({ path: `/Purchases/List` });
                     }
                   },
                 });
@@ -458,7 +458,7 @@ export default {
 
             Create(this.tempForm)
               .then((response) => {
-                this.$router.push({ path: `/Purchase/List` });
+                this.$router.push({ path: `/Purchases/List` });
 
                 this.$notify({
                   title: "تم الإضافة بنجاح",

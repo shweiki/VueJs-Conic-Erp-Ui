@@ -109,7 +109,9 @@
         </el-card>
         <el-table :data="tempForm.InventoryMovements" fit border>
           <el-table-column align="center" prop="Name">
-            <template slot="header" slot-scope="{}"
+            <template 
+            slot="header"
+            slot-scope="{}"
               >{{ $t("NewPurchaseInvoice.Items") }} ({{
                 tempForm.InventoryMovements.length.toFixed(
                   $store.getters.settings.ToFixed
@@ -320,7 +322,7 @@ import {
   EditEntryByFktable,
   GenerateSaleInvoiceEntry,
 } from "@/api/EntryAccounting";
-import ItemsSearch from "@/components/Item/ItemsSearch.vue";
+import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";

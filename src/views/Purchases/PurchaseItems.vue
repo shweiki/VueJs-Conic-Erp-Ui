@@ -116,7 +116,7 @@
       @row-dblclick="
         (row) => {
           let r = $router.resolve({
-            path: '/Purchase/Edit/' + row.PurchaseInvoiceId,
+            path: '/Purchases/Edit/' + row.PurchaseInvoiceId,
           });
           window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }

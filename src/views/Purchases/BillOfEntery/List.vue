@@ -117,7 +117,7 @@
         width="80"
       >
         <template slot-scope="{ row }">
-          <router-link :to="'/Purchase/Edit/' + row.PurchaseInvoiceId">
+          <router-link :to="'/Purchases/Edit/' + row.PurchaseInvoiceId">
             <strong style="font-size: 10px; cursor: pointer">{{
               row.PurchaseInvoiceId
             }}</strong>

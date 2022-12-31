@@ -8,7 +8,7 @@
         <el-button
           icon="el-icon-circle-plus-outline"
           type="primary"
-          @click="this.$router.push({ path: '/Item/Create' })"
+          @click="$router.push({ path: '/Item/Create' })"
         ></el-button>
       </el-col>
       <el-col v-permission="['admin']" :span="2">
