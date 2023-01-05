@@ -1,23 +1,9 @@
 <template>
   <div :class="{ show: show }" class="header-search">
     <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />
-    <el-select
-      ref="headerSearchSelect"
-      v-model="search"
-      :remote-method="querySearch"
-      filterable
-      default-first-option
-      remote
-      placeholder="Search"
-      class="header-search-select"
-      @change="change"
-    >
-      <el-option
-        v-for="item in options"
-        :key="item.path"
-        :value="item"
-        :label="item.title.join(' > ')"
-      />
+    <el-select ref="headerSearchSelect" v-model="search" :remote-method="querySearch" filterable default-first-option
+      remote placeholder="Search" class="header-search-select" @change="change">
+      <el-option v-for="item in options" :key="item.item.path" :value="item" :label="item.item.title.join(' > ')" />
     </el-select>
   </div>
 </template>
@@ -82,7 +68,7 @@ export default {
       this.show = false;
     },
     change(val) {
-      this.$router.push(val.path);
+      this.$router.push(val.item.path);
       this.search = "";
       this.options = [];
       this.show = false;
@@ -128,7 +114,6 @@ export default {
           const i18ntitle = i18n.t(`route.${router.meta.title}`);
 
           data.title = [...data.title, i18ntitle];
-
           if (router.redirect !== "noRedirect") {
             // only push the routes with title
             // special case: need to exclude parent router without redirect
@@ -143,7 +128,7 @@ export default {
             res = [...res, ...tempRoutes];
           }
         }
-      }
+      }    
       return res;
     },
     querySearch(query) {
@@ -177,7 +162,7 @@ export default {
     display: inline-block;
     vertical-align: middle;
 
- .el-input__inner {
+    .el-input__inner {
       border-radius: 0;
       border: 0;
       padding-left: 0;

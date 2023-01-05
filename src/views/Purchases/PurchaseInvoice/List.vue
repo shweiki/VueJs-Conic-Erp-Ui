@@ -159,7 +159,7 @@
       >
       </el-table-column>
 
-      <el-table-column
+   <!--   <el-table-column
         v-bind:label="$t('Sales.Date')"
         width="150px"
         align="center"
@@ -169,7 +169,7 @@
             row.InvoicePurchaseDate | parseTime("{y}-{m}-{d} {h}:{i}")
           }}</span>
         </template>
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column
         v-bind:label="$t('CashPool.AccountInvoiceNumber')"
         width="120"
@@ -190,6 +190,15 @@
       >
         <template slot-scope="scope">{{
           scope.row.Discount.toFixed($store.getters.settings.ToFixed)
+        }}</template>
+      </el-table-column>
+      <el-table-column
+        v-bind:label="$t('NewPurchaseInvoice.Tax')"
+        width="120"
+        align="center"
+      >
+        <template slot-scope="scope">{{
+          scope.row.Tax.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
       <el-table-column

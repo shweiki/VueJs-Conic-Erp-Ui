@@ -436,6 +436,7 @@ export default {
         PurchaseInvoice: 'فاتورة مشتريات',
         ReleaseDate: 'تاريخ الاصدار',
         Date: 'التاريخ',
+        Tax: 'ضريبة',
         PaymentMethod: 'طريقة الدفع',
         Cash: 'نقدي',
         Visa: 'فيزا',

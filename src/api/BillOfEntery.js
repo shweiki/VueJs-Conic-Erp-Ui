@@ -54,3 +54,10 @@ export function PinBillOfEntery(data) {
     data: qs.stringify(data)
   })
 }
+export function PinST9BillOfEntery(data) {
+  return request({
+    url: '/BillOfEntery/PinST9BillOfEntery',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
