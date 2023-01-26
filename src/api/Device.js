@@ -73,6 +73,13 @@ export function SetAll(query) {
     params: query
   })
 }
+ export function SetAllMember(query) {
+  return request({
+    url: '/Device/SetAllMember',
+    method: 'get',
+    params: query
+  })
+}
 export function GetAllFingerPrints(query) {
   return request({
     url: '/Device/GetAllFingerPrints',
@@ -98,7 +105,7 @@ export function GetAllLog(query) {
     method: 'get',
     params: query
   })
-}export function TurnOff(query) {
+} export function TurnOff(query) {
   return request({
     url: '/Device/TurnOff',
     method: 'get',

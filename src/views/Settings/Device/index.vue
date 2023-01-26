@@ -7,26 +7,14 @@
 
         <span>جميع الاجهزة</span>
       </div>
-      <el-table
-        v-loading="loading"
-        :data="
-          tableData.filter(
-            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
-          )
-        "
-        fit
-        border
-        max-height="900"
-        highlight-current-row
-        style="width: 100%"
-      >
+      <el-table v-loading="loading" :data="
+        tableData.filter(
+          (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+        )
+      " fit border max-height="900" highlight-current-row style="width: 100%">
         <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata()"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
           </template>
         </el-table-column>
         <el-table-column prop="Name" align="center">
@@ -36,12 +24,8 @@
         </el-table-column>
         <el-table-column prop="Ip" :label="$t('Classification.Ip')" align="center"></el-table-column>
         <el-table-column prop="Port" :label="$t('Classification.Port')" align="center"></el-table-column>
-        <el-table-column
-          v-bind:label="$t('Classification.Notes')"
-          prop="Description"
-          width="220"
-          align="center"
-        ></el-table-column>
+        <el-table-column v-bind:label="$t('Classification.Notes')" prop="Description" width="220"
+          align="center"></el-table-column>
         <el-table-column :label="$t('Classification.Edit')" align="center">
           <template slot-scope="scope">
             <edit-device :DeviceId="scope.row.Id" />
@@ -49,70 +33,28 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot-scope="scope">
-            <el-button
-              @click="GetAllFingerPrints(scope.row.Id, 'Member')"
-              :size="$store.getters.size"
-              type="info"
-              >سحب جميع بصمات الوجه المشتركين</el-button
-            >
-            <el-button
-              @click="GetAllFingerPrints(scope.row.Id, 'Employee')"
-              :size="$store.getters.size"
-              type="info"
-              >سحب جميع بصمات الوجه الموظفين</el-button
-            >
-            <el-button
-              @click="GetAllLog(scope.row.Id, 'Member')"
-              :size="$store.getters.size"
-              type="primary"
-            >
+            <el-button @click="GetAllFingerPrints(scope.row.Id, 'Member')" :size="$store.getters.size" type="info">سحب
+              جميع بصمات الوجه المشتركين</el-button>
+            <el-button @click="GetAllFingerPrints(scope.row.Id, 'Employee')" :size="$store.getters.size" type="info">سحب
+              جميع بصمات الوجه الموظفين</el-button>
+            <el-button @click="GetAllLog(scope.row.Id, 'Member')" :size="$store.getters.size" type="primary">
               سحب جميع سجلات المشتركين
             </el-button>
-            <el-button
-              @click="GetAllLog(scope.row.Id, 'Employee')"
-              :size="$store.getters.size"
-              type="primary"
-            >
+            <el-button @click="GetAllLog(scope.row.Id, 'Employee')" :size="$store.getters.size" type="primary">
               سحب جميع سجلات الموظفين
             </el-button>
-            <el-button
-              @click="SetAll(scope.row.Id, 'Member')"
-              :size="$store.getters.size"
-              type="warning"
-            >
-              ارسال جميع معلومات المشتركين</el-button
-            >
-            <el-button
-              @click="SetAll(scope.row.Id, 'Employee')"
-              :size="$store.getters.size"
-              type="warning"
-            >
-              ارسال جميع معلومات الموظفين</el-button
-            >
-            <el-button
-              @click="ClearUserLog(scope.row.Id)"
-              :size="$store.getters.size"
-              type="danger"
-              >مسح سجلات المشتركين</el-button
-            >
-            <el-button
-              @click="ClearAdministrators(scope.row.Id)"
-              :size="$store.getters.size"
-              type="success"
-              >Clear Administrators</el-button
-            >
-            <el-button
-              @click="TurnOff(scope.row.Id)"
-              :size="$store.getters.size"
-              type="danger"
-              >إيقاف تشغيل الجهاز</el-button
-            >
-            <el-button
-              @click="RestartDevice(scope.row.Id)"
-              :size="$store.getters.size"
-              type="success"
-              >اعادة تشغيل الجهاز</el-button
-            >
+            <el-button @click="SetAllMember(scope.row.Id)" :size="$store.getters.size" type="warning">
+              ارسال جميع معلومات المشتركين</el-button>
+            <el-button @click="SetAll(scope.row.Id, 'Employee')" :size="$store.getters.size" type="warning">
+              ارسال جميع معلومات الموظفين</el-button>
+            <el-button @click="ClearUserLog(scope.row.Id)" :size="$store.getters.size" type="danger">مسح سجلات
+              المشتركين</el-button>
+            <el-button @click="ClearAdministrators(scope.row.Id)" :size="$store.getters.size" type="success">Clear
+              Administrators</el-button>
+            <el-button @click="TurnOff(scope.row.Id)" :size="$store.getters.size" type="danger">إيقاف تشغيل
+              الجهاز</el-button>
+            <el-button @click="RestartDevice(scope.row.Id)" :size="$store.getters.size" type="success">اعادة تشغيل
+              الجهاز</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -126,6 +68,7 @@ import {
   GetAllFingerPrints,
   GetAllLog,
   SetAll,
+  SetAllMember,
   ClearUserLog,
   ClearAdministrators,
   RestartDevice,
@@ -166,6 +109,21 @@ export default {
     },
     SetAll(id, TableName) {
       SetAll({ DeviceId: id, TableName: TableName })
+        .then((response) => {
+          // handle success
+          this.response = response;
+
+          console.log(response);
+        })
+        .catch((error) => {
+          // handle error
+          this.response = error;
+
+          console.log(error);
+        });
+    }, 
+    SetAllMember(id) {
+      SetAllMember({ DeviceId: id })
         .then((response) => {
           // handle success
           this.response = response;
