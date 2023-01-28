@@ -1,21 +1,11 @@
 <template>
   <div class="sidebar-logo-container" :class="{ collapse: collapse }">
     <transition name="sidebarLogoFade">
-      <router-link
-        v-if="collapse"
-        key="collapse"
-        class="sidebar-logo-link"
-        :to="$store.getters.defulate_redirect"
-      >
+      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" :to="$store.getters.defulate_redirect">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
         <h1 v-else class="sidebar-title">{{ title }}</h1>
       </router-link>
-      <router-link
-        v-else
-        key="expand"
-        class="sidebar-logo-link"
-        :to="$store.getters.defulate_redirect"
-      >
+      <router-link v-else key="expand" class="sidebar-logo-link" :to="$store.getters.defulate_redirect">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
         <h1 class="sidebar-title">{{ title }}</h1>
       </router-link>
@@ -35,7 +25,7 @@ export default {
   data() {
     return {
       title: "Conic Admin",
-      logo: "https://i.ibb.co/qM9YhNZ/Conic.gif",
+      logo: require("@/assets/logo/Conic.png"),
     };
   },
 };

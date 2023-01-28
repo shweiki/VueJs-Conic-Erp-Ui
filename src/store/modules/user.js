@@ -29,7 +29,12 @@ const mutations = {
     state.phone = phone
   },
   SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+    if (avatar) {
+      state.avatar = avatar
+
+    } else {
+      state.avatar = require("@/assets/logo/Conic.png")
+    }
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
@@ -45,7 +50,7 @@ const actions = {
         const data = response
         console.log("login", data)
 
-        if (!response || response == 'User account locked out.' || response =='User Name Or PassWord Is Not Correct') {
+        if (!response || response == 'User account locked out.' || response == 'User Name Or PassWord Is Not Correct') {
           reject(response)
         }
         commit('SET_TOKEN', data.token_type + " " + data.access_token)

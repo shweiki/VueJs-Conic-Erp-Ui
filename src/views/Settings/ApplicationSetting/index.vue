@@ -9,12 +9,8 @@
           <div slot="header">
             <span>جميع اعدادات</span>
             <el-button type="success" @click="CheckUpdate">Check UpDate</el-button>
-            <el-button type="success" @click="RestSetting"
-              >Rest Defualt Setting</el-button
-            >
-            <el-button type="success" @click="getPrinterDevice"
-              >get Printer Device</el-button
-            >
+            <el-button type="success" @click="RestSetting">Rest Defualt Setting</el-button>
+            <el-button type="success" @click="getPrinterDevice">get Printer Device</el-button>
           </div>
           <el-row type="flex">
             <el-col :span="8">
@@ -348,15 +344,19 @@ export default {
 .drawer-switch {
   float: right;
 }
+
 .el-row--flex {
   padding-bottom: 12px;
 }
+
 .el-row {
   padding-bottom: 12px;
 }
+
 .el-input--mini {
   padding-top: 5px;
 }
+
 .el-select {
   padding-top: 5px;
 }

@@ -1,18 +1,9 @@
 <template>
-  <div
-    class="login-container"
-    :style="{
-      backgroundImage: 'url(' + $store.getters.settings.loginBackground + ')',
-    }"
-  >
-    <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-      class="login-form"
-      autocomplete="on"
-      label-position="left"
-    >
+  <div class="login-container" :style="{
+    backgroundImage: `url(${$store.getters.settings.loginBackground})`
+  }">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
+      label-position="left">
       <div class="title-container">
         <h1 class="title">Login</h1>
       </div>
@@ -20,40 +11,18 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          autocomplete="on"
-        />
+        <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="text"
+          tabindex="1" autocomplete="on" />
       </el-form-item>
 
-      <el-tooltip
-        v-model="capsTooltip"
-        content="Caps lock is On"
-        placement="right"
-        manual
-      >
+      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
-          <el-input
-            :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
-            :type="passwordType"
-            placeholder="Password"
-            name="password"
-            tabindex="2"
-            autocomplete="on"
-            @keyup.native="checkCapslock"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
-          />
+          <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
+            placeholder="Password" name="password" tabindex="2" autocomplete="on" @keyup.native="checkCapslock"
+            @blur="capsTooltip = false" @keyup.enter.native="handleLogin" />
         </el-form-item>
       </el-tooltip>
 
@@ -68,7 +37,7 @@
         {{ loginFailed }}
       </span>
       <el-button :loading="loading" @click.native.prevent="handleLogin">Login</el-button>
-     <!-- <new-user-sign-up /> -->
+      <!-- <new-user-sign-up /> -->
     </el-form>
   </div>
 </template>
@@ -122,10 +91,13 @@ export default {
     },
   },
   created() {
-    if (this.loginForm.username === "") {
-      this.$refs.username;
-    } else if (this.loginForm.password === "") {
-      this.$refs.password;
+    // window.addEventListener('storage', this.afterQRScan)
+  },
+  mounted() {
+    if (this.loginForm.username === '') {
+      this.$refs.username.focus()
+    } else if (this.loginForm.password === '') {
+      this.$refs.password.focus()
     }
   },
   destroyed() {
@@ -175,7 +147,8 @@ export default {
               this.loginFailed = err;
               this.loading = false;
             });
-        } else {              this.loading = false;
+        } else {
+          this.loading = false;
 
           console.log("error submit!!");
           return false;
@@ -218,13 +191,15 @@ export default {
 $cursor: #000;
 $bg: #00000049;
 
-/* reset element-ui css */ //http://cdn.magdeleine.co/wp-content/uploads/2014/05/3jPYgeVCTWCMqjtb7Dqi_IMG_8251-1400x933.jpg
+/* reset element-ui css */
+//http://cdn.magdeleine.co/wp-content/uploads/2014/05/3jPYgeVCTWCMqjtb7Dqi_IMG_8251-1400x933.jpg
 
 .login-container {
   .el-input {
     display: inline-block;
     height: 47px;
     width: 85%;
+
     input {
       font-family: "Open Sans Condensed", sans-serif;
       background: rgba(3, 3, 3, 0.1);
@@ -243,11 +218,13 @@ $bg: #00000049;
       -o-transition: all 2s ease-in-out;
       transition: all 0.2s ease-in-out;
       -webkit-background-color: rgba(3, 3, 3, 0.1);
+
       &:-webkit-autofill {
         box-shadow: 0 0 0px 1000px $bg inset !important;
         // -webkit-text-fill-color: $bg !important;
       }
     }
+
     input:focus {
       outline: none;
       box-shadow: 3px 3px 20px #333;
@@ -257,19 +234,23 @@ $bg: #00000049;
     ::-webkit-input-placeholder {
       color: #ddd;
     }
+
     :-moz-placeholder {
       /* Firefox 18- */
       color: red;
     }
+
     ::-moz-placeholder {
       /* Firefox 19+ */
       color: red;
     }
+
     :-ms-input-placeholder {
       color: #333;
     }
   }
 }
+
 .el-form-item {
   text-decoration: none;
   //border: 1px solid rgba(255, 255, 255, 0.1);
@@ -287,6 +268,7 @@ $bg: #00000049;
   -o-background-size: cover;
   background-size: cover;
   overflow: hidden;
+
   .login-form {
     position: absolute;
     top: 0;
@@ -301,6 +283,7 @@ $bg: #00000049;
     background: rgba(3, 3, 3, 0.25);
     box-shadow: 1px 1px 50px #000;
   }
+
   .svg-container {
     padding: 6px 5px 6px 15px;
     color: #889aa4;
@@ -308,6 +291,7 @@ $bg: #00000049;
     width: 30px;
     display: inline-block;
   }
+
   .title-container {
     position: relative;
     font-family: "Open Sans Condensed", sans-serif;
@@ -316,10 +300,12 @@ $bg: #00000049;
     font-size: 40px;
     color: #ddd;
     text-shadow: 3px 3px 10px #000;
+
     .title {
       font-size: 40px;
     }
   }
+
   .el-button {
     font-family: "Open Sans Condensed", sans-serif;
     text-decoration: none;
@@ -339,6 +325,7 @@ $bg: #00000049;
     text-align: center;
     background: rgba(107, 255, 3, 0.3);
   }
+
   .el-button:hover {
     opacity: 0.7;
   }

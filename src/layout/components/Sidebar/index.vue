@@ -3,7 +3,7 @@
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar
       :style="{
-        backgroundImage: 'url(' + $store.getters.settings.SidebarImage + ')',
+        backgroundImage:`url(${$store.getters.settings.SidebarImage})`,
       }"
       wrap-class="scrollbar-wrapper"
     >
