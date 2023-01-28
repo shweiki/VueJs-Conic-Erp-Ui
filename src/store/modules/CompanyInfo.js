@@ -19,7 +19,7 @@ const actions = {
     GetCompanyInfo({ commit }) {
         return new Promise((resolve, reject) => {
             GetCompanyInfo().then(response => {
-             //   console.log(response)
+                //   console.log(response)
 
                 commit('SET_CompanyInfo', response)
                 resolve(response)
@@ -32,8 +32,6 @@ const actions = {
     GetOpration({ commit }) {
         return new Promise((resolve, reject) => {
             GetOpration().then(response => {
-                console.log(response)
-
                 commit('SET_GetOpration', response)
                 resolve(response)
 

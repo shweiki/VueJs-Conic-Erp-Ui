@@ -368,13 +368,13 @@ export default {
       Get()
         .then((response) => {
           // handle success
-          console.log(response);
+        //  console.log(response);
           this.tableData = response;
           this.loading = false;
         })
         .catch((error) => {
           // handle error
-          console.log(error);
+        //  console.log(error);
         });
     },
     resetTempForm() {
@@ -398,7 +398,6 @@ export default {
       this.dialogFormVisible = true;
     },
     handleUpdate(row) {
-      console.log(row);
       this.tempForm.Id = row.Id;
       this.tempForm.Name = row.Name;
       this.tempForm.Description = row.Description;
@@ -420,10 +419,9 @@ export default {
               });
             })
             .catch((error) => {
-              console.log(error);
             });
         } else {
-          console.log("error submit!!");
+         // console.log("error submit!!");
           return false;
         }
       });
@@ -443,10 +441,10 @@ export default {
               });
             })
             .catch((error) => {
-              console.log(error);
+             // console.log(error);
             });
         } else {
-          console.log("error submit!!");
+          //console.log("error submit!!");
           return false;
         }
       });

@@ -278,11 +278,11 @@ export default {
       GetAccountStatement(this.listQuery).then((response) => {
         this.list = response.items.map((curr, i, array) => {
           let lastTotal = i != 0 ? array[i - 1].TotalRow : 0;
-          console.log("lastTotal", lastTotal);
+        //  console.log("lastTotal", lastTotal);
 
           curr.TotalRow += lastTotal;
 
-          console.log(curr.TotalRow);
+        //  console.log(curr.TotalRow);
 
           return curr;
         });

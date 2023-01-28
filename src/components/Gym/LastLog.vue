@@ -9,7 +9,9 @@ export default {
   props: {
     UserId: {
       type: Number,
-      required: true,
+      default: () => {
+        return undefined;
+      },
     },
     TableName: {
       type: String,
@@ -18,7 +20,6 @@ export default {
   },
   watch: {
     UserId(val) {
-      console.log("user id", val);
       if (val) this.GetlastLog(val);
     },
   },

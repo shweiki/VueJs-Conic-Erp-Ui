@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button
-      @click="Delete"
+      @click="deleteAccount"
       type="danger"
       icon="el-icon-delete"
       circle
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { Delete as DeleteAccount } from "@/api/Account";
+import { Delete } from "@/api/Account";
 
 export default {
   props: {
@@ -22,8 +22,8 @@ export default {
   },
 
   methods: {
-    Delete() {
-      DeleteAccount({ Id: this.AccountId }).then((res) => {
+    deleteAccount() {
+      Delete({ Id: this.AccountId }).then((res) => {
         if (res)
           this.$notify({
             title: "تم حذف بنجاح",

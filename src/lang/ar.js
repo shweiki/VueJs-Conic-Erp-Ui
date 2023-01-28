@@ -49,6 +49,7 @@ export default {
         UploadMemberShip: "اشتراكات",
         UploadMember: "مشتركين",
         UploadMembershipMovement: "حركات اشتركات",
+        UploadTreeAccount:"شجرة المحاسبة",
         ListQ: "ListQ",
         Inventory: 'مخزون',
         Items: 'اصناف',
@@ -166,6 +167,10 @@ export default {
         Profile: 'الملف الشخصي',
         theme: 'الشكل',
         size: 'الحجم'
+    },
+    dashboard: {
+        Statistics: 'إحصائيات',
+        lastWeek: 'أخر اسبوع'
     },
     login: {
         title: 'نموذج تسجيل الدخول',
@@ -371,6 +376,7 @@ export default {
         SearchBy: 'بحث حسب الإسم',
         Total: 'القيمة الإجمالية',
         Status: 'الحالة',
+        Type: 'النوع',
     },
     CashPool: {
         Save: 'حفظ',

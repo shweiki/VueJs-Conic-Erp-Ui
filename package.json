@@ -27,7 +27,7 @@
         "downloadjs": "^1.4.7",
         "driver.js": "^0.9.8",
         "dropzone": "^5.9.3",
-        "echarts": "^5.4.1",
+        "echarts": "4.2.1",
         "element-ui": "2.13.2",
         "escpos": "^3.0.0-alpha.6",
         "file-saver": "^2.0.5",

@@ -5,56 +5,26 @@
         <button-scan :ObjectId="ObjectId" :TableName="TableName" />
       </el-col>
       <el-col :span="6">
-        <el-button
-          type="success"
-          icon="el-icon-upload"
-          @click="imagecropperShow = true"
-        ></el-button>
-        <image-cropper
-          v-show="imagecropperShow"
-          :key="imagecropperKey"
-          :width="150"
-          :height="150"
-          lang-type="ar"
-          :TableName="TableName"
-          :ObjectId="ObjectId"
-          @close="close"
-          @crop-upload-success="cropSuccess"
-      /></el-col>
+        <el-button type="success" icon="el-icon-upload" @click="imagecropperShow = true"></el-button>
+        <image-cropper v-show="imagecropperShow" :key="imagecropperKey" :width="150" :height="150" lang-type="ar"
+          :TableName="TableName" :ObjectId="ObjectId" @close="close" @crop-upload-success="cropSuccess" /></el-col>
       <el-col :span="6">
         <web-cam :TableName="TableName" :ObjectId="ObjectId" />
       </el-col>
       <el-col :span="6">
-        <el-button
-          type="primary"
-          @click="GetFiles"
-          icon="el-icon-refresh"
-        ></el-button>
+        <el-button type="primary" @click="GetFiles" icon="el-icon-refresh"></el-button>
       </el-col>
     </el-row>
     <el-col v-for="item in List" :key="item.Id" v-bind:span="24 / List.length">
       <el-card :body-style="{ padding: '3px' }">
-        <el-image
-          style="width: 100px; height: 100px"
-          :src="item.File"
-          :preview-src-list="srcList"
-        >
+        <el-image style="width: 100px; height: 100px" :src="item.File" :preview-src-list="srcList">
           <div slot="error" class="image-slot">
             <i class="el-icon-picture-outline"></i>
           </div>
         </el-image>
         <div style="padding: 14px">
-          <el-select
-            @change="SetType(item)"
-            v-model="item.Type"
-            placeholder="النوع"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+          <el-select @change="SetType(item)" v-model="item.Type" placeholder="النوع">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </div>
@@ -70,10 +40,28 @@ import ImageCropper from "@/components/ImageCropper";
 import ButtonScan from "@/components/Device/ButtonScan.vue";
 
 export default {
-  props: ["ObjectId", "TableName"],
   components: { ImageCropper, WebCam, ButtonScan },
+  props: {
+    ObjectId: {
+      type: Number,
+      default: () => {
+        return undefined;
+      },
+    }, TableName: {
+      type: String,
+      default: () => {
+        return undefined;
+      },
+    },
+  },
+   watch: {
+    ObjectId(val) {
+      if (val) this.GetFiles();
+    },
+  },
+  //  props: ["ObjectId", "TableName"],
   created() {
-    this.GetFiles();
+    //   this.GetFiles();
   },
   data() {
     return {

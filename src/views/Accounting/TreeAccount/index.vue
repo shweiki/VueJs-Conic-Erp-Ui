@@ -55,7 +55,7 @@
                     <EditAccount :AccountId="data.Id" @Done="getdata()" />
                   </el-col>
                   <el-col :span="4">
-                    <Delete-Account :AccountId="data.Id" @Done="getdata()" />
+                    <DeleteAccount :AccountId="data.Id" @Done="getdata()" />
                   </el-col>
                   <el-col :span="4">
                     <AddAccountDialog

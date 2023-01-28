@@ -64,7 +64,9 @@ const options = {
 
 Vue.use(VueBarcodeScanner, options)
 Vue.prototype.window = window
-
+if(process.env.NODE_ENV == "staging"){
+  console.log = function () {};
+}
 new Vue({
   el: '#app',
   router,

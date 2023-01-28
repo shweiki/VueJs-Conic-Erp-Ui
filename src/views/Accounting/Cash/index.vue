@@ -228,13 +228,13 @@ export default {
       GetCash()
         .then((response) => {
           // handle success
-          console.log(response);
           this.tableData = response;
-          this.loading = false;
         })
         .catch((error) => {
           // handle error
-          console.log(error);
+         // console.log(error);
+        }).finally(()=>{
+          this.loading = false;
         });
     },
     resetTempForm() {

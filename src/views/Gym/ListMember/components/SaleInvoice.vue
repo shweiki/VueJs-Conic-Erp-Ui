@@ -34,7 +34,7 @@
         }}</template></el-table-column
       >
       <el-table-column
-        v-bind:label="$t('Type')"
+        v-bind:label="$t('Sales.Type')"
         width="80"
         align="center"
         prop="Type"

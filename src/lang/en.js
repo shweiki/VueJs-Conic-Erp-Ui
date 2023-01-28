@@ -42,6 +42,7 @@ export default {
         UploadMemberShip: "Upload Membership",
         UploadMember: "Upload Member",
         UploadMembershipMovement: "Upload Membership Movement",
+        UploadTreeAccount:"Upload Tree Account",
         UploadSaleInvoice: "Sales Invoices",
         UploadOprationsys: "System Oprations",
         Inventory: 'Inventory',
@@ -156,6 +157,10 @@ export default {
         Profile: 'Profile',
         theme: 'Theme',
         size: 'Global Size'
+    },  
+      dashboard: {
+        Statistics: 'Statistics',
+        lastWeek: 'lastWeek'
     },
     login: {
         title: 'Login Form',
@@ -349,6 +354,7 @@ export default {
         SearchBy: 'Search By Name',
         Total: 'Total Amount',
         Status: 'Status',
+        Type: 'Type',
     },
     AccountStatement: {
         SaleInvoice: 'Sale Invoice',
