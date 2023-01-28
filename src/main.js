@@ -64,7 +64,8 @@ const options = {
 
 Vue.use(VueBarcodeScanner, options)
 Vue.prototype.window = window
-if(process.env.NODE_ENV == "staging"){
+console.log("process.env.NODE_ENV" ,process.env.NODE_ENV)
+if(process.env.NODE_ENV !== "development"){
   console.log = function () {};
 }
 new Vue({
