@@ -5,9 +5,10 @@
     :size="$store.getters.size"
     @change="SetVal"
     v-model="date"
-    type="datetime"
+    :type="type"
     v-bind:placeholder="$t('CashPool.Date')"
     :format="$store.getters.settings.DateTimeFormat"
+    :disabled ="disabled"
   ></el-date-picker>
 </template>
 <script>
@@ -21,6 +22,14 @@ import {
 export default {
   props: {
     Value: String,
+    disabled:{
+      type: Boolean,
+      default: false
+    },
+    type:{
+      type: String,
+      default: "datetime"
+    }
   },
   data() {
     return {

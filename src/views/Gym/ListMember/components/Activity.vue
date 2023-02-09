@@ -5,7 +5,7 @@
       <el-table-column prop="Id" label="رقم" align="center"></el-table-column>
 
       <el-table-column prop="Name" label="الاشتراك" align="center"></el-table-column>
-      <el-table-column prop="Type" label="الفترة" align="center"></el-table-column>
+      <el-table-column prop="TotalDays" label="مجموع الايام" align="center"></el-table-column>
       <el-table-column label="تاريخ البدء" align="center" width="150">
         <template slot-scope="scope">
           <el-date-picker format="yyyy-MM-dd" disabled v-model="scope.row.StartDate"></el-date-picker>

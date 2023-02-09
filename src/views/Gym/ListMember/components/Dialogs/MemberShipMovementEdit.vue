@@ -81,12 +81,9 @@
         >
           <Fake-Date
             :Value="tempForm.EndDate"
-            @Set="
-              (v) => {
-                tempForm.EndDate = v;
-              }
-            "
-          />
+            disabled="true"
+            type="date"
+            />
         </el-form-item>
         <el-form-item label="خصم" prop="Discount">
           <Select-Discount
@@ -176,7 +173,7 @@
 
 <script>
 import { Edit, GetMembershipMovementById } from "@/api/MembershipMovement";
-import FakeDate from "@/components/Date/FakeDate.vue";
+import FakeDate from "@/components/Date/FakeDate";
 import SelectAllMemberships from "@/components/Gym/SelectAllMemberships.vue";
 import SelectDiscount from "@/components/Discount/SelectDiscount.vue";
 import EditorsUser from "@/components/Gym/EditorsUser";
@@ -275,11 +272,8 @@ export default {
           : Membership.FullDayPrice;
       this.tempForm.TotalAmmount = this.Price - this.tempForm.Discount;
       //  this.tempForm.MemberId = this.MemberId;
-      this.tempForm.EndDate = LocalDateTime.ofInstant(
-        Instant.ofEpochMilli(new Date(this.tempForm.StartDate))
-      )
-        .plusDays(Membership.NumberDays)
-        .toString();
+    //  this.tempForm.EndDate = LocalDateTime.ofInstant( Instant.ofEpochMilli(new Date(this.tempForm.StartDate))    )        .plusDays(Membership.NumberDays)
+    //    .toString();
     },
     AddExtraToMembership(Days, MemberShipMovementId) {
       let MembershipMovementOrder = {
