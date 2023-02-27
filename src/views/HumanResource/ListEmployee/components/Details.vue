@@ -35,12 +35,12 @@
               >لا يوجد بصمة وجه</el-tag
             >
           </el-col>
-          <el-col :span="24" v-if="Employee.Status != -2">
+          <el-col :span="24" v-if="Employee.Status != -1">
             <el-button @click="dialogOprationVisible = true" type="danger" plain
               >إستقالة</el-button
             >
           </el-col>
-          <el-col :span="24" v-if="checkPermission(['admin']) && Employee.Status == -2">
+          <el-col :span="24" v-if="checkPermission(['admin']) && Employee.Status == -1">
             <el-button @click="dialogOprationVisible2 = true" type="success" plain
               >الغاء إستقالة</el-button
             >
@@ -259,7 +259,7 @@ export default {
           ChangeObjStatusByTableName({
             ObjId: this.Employee.Id,
             TableName: "Employee",
-            Status: -2,
+            Status: -1,
             Description: this.tempOpration.Description,
           }).then((response) => {
             this.$notify({

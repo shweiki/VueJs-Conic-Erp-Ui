@@ -51,7 +51,7 @@
           />
         </el-col>
         <el-col :span="3">
-          <Sort-Options
+          <SortOptions
             :Value="listQuery.Sort"
             @Set="
               (v) => {
@@ -74,8 +74,9 @@
           </el-button>
         </el-col>
         <el-col :span="6">
-          <Radio-Oprations
+          <RadioOprations
             TableName="Employee"
+            :default="listQuery.Status"
             @Set="
               (v) => {
                 listQuery.Status = v;
@@ -261,7 +262,6 @@ import permission from "@/directive/permission/index.js";
 import LastLog from "@/components/Gym/LastLog.vue";
 
 import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import { SendMultiSMS } from "@/api/SMS";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
@@ -296,7 +296,7 @@ export default {
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
-        Status: undefined,
+        Status: 0,
       },
     };
   },

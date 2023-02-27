@@ -1,14 +1,9 @@
 <template>
   <div>
     <el-radio-group style="direction: ltr" v-model="Status" @change="SetVal">
-      <el-radio-button
-        v-for="op in $store.getters.Oprations.filter((Item) => {
-          return Item.TableName == TableName;
-        })"
-        :key="op.Id"
-        v-bind:label="op.Status"
-        :fill="op.Color"
-        >{{ op.OprationDescription }}
+      <el-radio-button v-for="op in $store.getters.Oprations.filter((Item) => {
+        return Item.TableName == TableName;
+      })" :key="op.Id" v-bind:label="op.Status" :fill="op.Color">{{ op.OprationDescription }}
         <i v-if="op.IconClass != null" :class="op.IconClass"></i>
       </el-radio-button>
       <el-radio-button label="null">{{
@@ -18,14 +13,17 @@
   </div>
 </template>
 <script>
+
 export default {
   props: {
     TableName: String,
+    default: Number,
   },
+
   data() {
     return {
       Oprations: [],
-      Status: null,
+      Status: undefined,
     };
   },
   created() {

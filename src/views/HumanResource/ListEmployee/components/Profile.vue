@@ -5,14 +5,14 @@
         <Employee-Search />
         <el-card
           class="box-card"
-          v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
+          v-bind:class="{ BlackList: tempForm.Status === -1 ? true : false }"
         >
           <el-row type="flex">
             <el-col :span="19">
               <Details :Employee="tempForm" />
             </el-col>
 
-            <el-col :span="5" v-if="tempForm.Status != -2">
+            <el-col :span="5" v-if="tempForm.Status != -1">
               <el-row type="flex">
                 <el-col :span="24">
                   <Massage
@@ -45,12 +45,12 @@
 
         <el-card class="box-card">
           <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
-            
+
             <el-tab-pane label="دوامات" name="DeviceLog">
               <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
               <DeviceLog TableName="Employee" :UserId="tempForm.Id" />
             </el-tab-pane>
-  
+
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
               <Account
