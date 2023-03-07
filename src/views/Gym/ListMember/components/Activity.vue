@@ -92,6 +92,7 @@
       <el-table-column width="40" v-if="checkPermission(['admin'])">
         <template slot-scope="scope">
           <Member-Ship-Movement-Edit :MembershipMovementId="scope.row.Id" />
+          <Member-Ship-Movement-Delete :MembershipMovementId="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column type="expand">
@@ -172,6 +173,7 @@ import StatusTag from "@/components/Oprationsys/StatusTag";
 import Freeze from "./Dialogs/Freeze";
 import Extra from "./Dialogs/Extra";
 import MemberShipMovementEdit from "./Dialogs/MemberShipMovementEdit.vue";
+import MemberShipMovementDelete from "./Dialogs/MemberShipMovementDelete.vue";
 import EditFreeze from "./Dialogs/Edit-Freeze.vue";
 import DeleteFreeze from "./Dialogs/Delete-Freeze.vue";
 
@@ -180,6 +182,7 @@ export default {
     Freeze,
     Extra,
     MemberShipMovementEdit,
+    MemberShipMovementDelete,
     EditFreeze,
     DeleteFreeze,
     StatusTag,
