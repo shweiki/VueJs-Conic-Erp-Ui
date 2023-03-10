@@ -1,13 +1,17 @@
 <template>
   <div>
-     <el-popconfirm title="هل انتا متاكد" @confirm="deleteData">
-      <el-button icon="el-icon-delete" type="danger" slot="reference">
-        حذف اشتراك رقم {{ MembershipMovementId }}</el-button>
-    </el-popconfirm>
+    <el-dialog :show-close="false" title="هل انتا متأكد ؟" :visible.sync="Visible" width="30%">
+      <span> </span>
 
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="Visible = false">لا</el-button>
+        <el-button type="primary" @click="deleteData">نعم</el-button>
+      </span>
+    </el-dialog>
+    <el-button @click="Visible = true" type="danger" icon="el-icon-delete" circle
+      v-bind:disabled="MembershipMovementId == undefined"></el-button>
   </div>
 </template>
-
 <script>
 import { Delete } from "@/api/MembershipMovement";
 
@@ -18,25 +22,33 @@ export default {
       default: undefined,
     },
   },
-
+  data() { return { Visible: false, } },
   methods: {
-
     deleteData() {
-      Delete({ Id: this.MembershipMovementId })
-        .then((response) => {
-          if (response) {
-            this.$notify({
-              title: "تم ",
-              message: "تم حذف بنجاح",
-              type: "success",
-              duration: 2000,
-            });
-            this.$emit("Done");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (this.MembershipMovementId) {
+        Delete({ Id: this.MembershipMovementId })
+          .then((response) => {
+            if (response) {
+              this.Visible = false;
+              this.$notify({
+                title: "تم  ",
+                message: "تم حذف بنجاح",
+                type: "success",
+                duration: 2000,
+              });
+              this.$nextTick(() => {
+                //  this.$emit("Done");
+                this.$router.replace({
+                  path: "/redirect" + this.$route.fullPath
+                });
+              });
+
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
   },
 };

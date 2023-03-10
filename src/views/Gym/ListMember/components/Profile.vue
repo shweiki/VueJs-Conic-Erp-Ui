@@ -7,67 +7,43 @@
     <el-col :span="24" :xs="24" v-loading="loading">
       <Member-Search />
 
-      <el-card
-        class="box-card"
-        v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
-      >
+      <el-card class="box-card" v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }">
         <el-row type="flex">
           <el-col :span="5" v-if="tempForm.Status != -2">
             <el-row type="flex">
               <el-col :span="24">
-                <el-button
-                  style="width: 100px"
-                  type="info"
-                  icon="el-icon-zoom-in"
-                  @click="
-                    $router.replace({ path: '/redirect' + '/Gym/ListMember' })
-                  "
-                  >جميع مشتركين</el-button
-                >
+                <el-button style="width: 100px" type="info" icon="el-icon-zoom-in" @click="
+                  $router.replace({ path: '/redirect' + '/Gym/ListMember' })
+                ">جميع مشتركين</el-button>
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Ship-Movement
-                  @Done="getdata"
-                  :MemberId="tempForm.Id"
-                  :AccountId="tempForm.AccountId"
-                  :Name="tempForm.Name"
-                  :Enable="
+                <Member-Ship-Movement @Done="getdata" :MemberId="tempForm.Id" :AccountId="tempForm.AccountId"
+                  :Name="tempForm.Name" :Enable="
                     tempForm.TotalCredit - tempForm.TotalDebit > 0
                       ? true
                       : false
-                  "
-                />
+                  " />
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Pay
-                  @Done="getdata"
-                  :MemberId="tempForm.Id"
-                  :Name="tempForm.Name"
-                  :NumberPhone1="tempForm.PhoneNumber1"
-                />
+                <Member-Pay @Done="getdata" :MemberId="tempForm.Id" :Name="tempForm.Name"
+                  :NumberPhone1="tempForm.PhoneNumber1" />
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Ship-Movement-With-Pay
-                  @Done="getdata"
-                  :MemberId="tempForm.Id"
-                  :AccountId="tempForm.AccountId"
-                  :Name="tempForm.Name"
-                  :NumberPhone1="tempForm.PhoneNumber1"
-                  :Enable="
+                <Member-Ship-Movement-With-Pay @Done="getdata" :MemberId="tempForm.Id" :AccountId="tempForm.AccountId"
+                  :Name="tempForm.Name" :NumberPhone1="tempForm.PhoneNumber1" :Enable="
                     tempForm.TotalCredit - tempForm.TotalDebit > 0
                       ? true
                       : false
-                  "
-                />
+                  " />
               </el-col>
             </el-row>
 
@@ -79,23 +55,14 @@
 
             <el-row type="flex">
               <el-col :span="24">
-                <Massage
-                  :NumberPhone1="tempForm.PhoneNumber1"
-                  :NumberPhone2="tempForm.PhoneNumber2"
-                  :Email="tempForm.Email"
-                />
+                <Massage :NumberPhone1="tempForm.PhoneNumber1" :NumberPhone2="tempForm.PhoneNumber2"
+                  :Email="tempForm.Email" />
               </el-col>
             </el-row>
 
-            <el-row
-              v-if="tempForm.MembershipsCount > 0 || checkPermission(['admin'])"
-            >
+            <el-row v-if="tempForm.MembershipsCount > 0 || checkPermission(['admin'])">
               <el-col :span="24">
-                <send-to-device
-                  :ObjectId="tempForm.Id"
-                  :Name="tempForm.Name"
-                  TableName="Member"
-                />
+                <send-to-device :ObjectId="tempForm.Id" :Name="tempForm.Name" TableName="Member" />
               </el-col>
             </el-row>
           </el-col>
@@ -119,10 +86,7 @@
 
           <el-tab-pane label="مالية" name="account">
             <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-            <Account
-              :EntryMovements="EntryMovements"
-              :AccountId="tempForm.AccountId"
-            />
+            <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
           </el-tab-pane>
           <el-tab-pane label="مبيعات" name="SaleInvoice">
             <span slot="label"><i class="el-icon-refresh"></i> مبيعات</span>
@@ -144,7 +108,7 @@
           </el-tab-pane>
           <el-tab-pane label="اشتراكات" name="activity">
             <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
-            <Activity :MembershipMovements="MembershipMovements" />
+            <Activity @Done="GetMembershipMovement" :MembershipMovements="MembershipMovements" />
           </el-tab-pane>
 
           <el-tab-pane label="بيانات" name="Details">
@@ -234,7 +198,7 @@ export default {
     };
   },
   created() {
-        if (this.isEdit) {
+    if (this.isEdit) {
       this.getdata(this.$route.params && this.$route.params.id);
       // console.log(this.$route.params )
     }
@@ -244,7 +208,7 @@ export default {
     checkPermission,
     getdata(val) {
       GetMemberById({ Id: val })
-        .then( (response) => {
+        .then((response) => {
           this.tempForm = response;
           this.getAge();
           this.loading = false;
@@ -259,12 +223,7 @@ export default {
     },
     tabClick(tab, event) {
       if (tab.label == "اشتراكات")
-        GetMembershipMovementByMemberId({
-          MemberId: this.tempForm.Id,
-        }).then((response) => {
-          //    console.log("log :", response);
-          this.MembershipMovements = response.reverse();
-        });
+        this.GetMembershipMovement()
       if (tab.label == "مقبوضات")
         GetPaymentsByMemberId({
           MemberId: this.tempForm.Id,
@@ -291,7 +250,14 @@ export default {
           this.ServiceInvoices = response.reverse();
         });
     },
-
+    GetMembershipMovement() {
+      GetMembershipMovementByMemberId({
+        MemberId: this.tempForm.Id,
+      }).then((response) => {
+        //    console.log("log :", response);
+        this.MembershipMovements = response.reverse();
+      });
+    },
     getAge() {
       var today = new Date();
       var birthDate = new Date(this.tempForm.DateofBirth);
@@ -380,6 +346,7 @@ export default {
 .el-tabs__content {
   max-height: 700px;
 }
+
 .el-tabs__nav-scroll {
   float: right;
   direction: ltr;

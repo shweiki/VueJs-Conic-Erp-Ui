@@ -7,19 +7,20 @@
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item prop="Fk" v-bind:label="TableName == 'Employee' ? 'موظف' : 'مشترك'">
-              <el-input :disabled="true" v-model="Temp.Fk" class="input-with-select">
+              <el-input :disabled="true" v-model="Temp.FkName" class="input-with-select">
                 <svg-icon slot="append" class-name="search-icon" icon-class="search" @click.stop="click" />
               </el-input>
               <Member-Search-Any v-if="TableName == 'Member'" @Set="
                 (v) => {
                   Temp.Fk = v.Id;
+                  Temp.FkName = `(${v.Id}) ${v.Name}`;
                 }
               " />
 
               <employee-search-any v-if="TableName == 'Employee'" :EmployeeId="Fk" @Set="
                 (v) => {
-                  //  Temp.TableName = 'Employee';
                   Temp.Fk = v.Id;
+                  Temp.FkName = `(${v.Id}) ${v.Name}`;
                 }
               " />
             </el-form-item>
@@ -76,6 +77,7 @@ export default {
         Id: undefined,
         Type: "Manual",
         Fk: undefined,
+        FkName: "",
         DateTime: "",
         DeviceId: 1,
         Status: 0,

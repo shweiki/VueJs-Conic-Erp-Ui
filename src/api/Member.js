@@ -35,7 +35,13 @@ export function CheckMemberIsExist(query) {
     params: query
   })
 }
-
+export function MergeTwoMembers(data) {
+  return request({
+    url: '/Member/MergeTwoMembers',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 export function GetReceivablesMember(query) {
   return request({
     url: '/Member/GetReceivablesMember',
@@ -70,8 +76,8 @@ export function GetMemberById(query) {
   return request({
     url: '/Member/GetMemberById',
     method: 'get',
-    params:  query 
-    
+    params: query
+
   })
 }
 

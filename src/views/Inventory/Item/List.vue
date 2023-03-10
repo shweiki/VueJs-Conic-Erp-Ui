@@ -3,67 +3,42 @@
     <div class="filter-container">
       <el-row type="flex">
         <el-col :span="12">
-          <el-input
-            v-model="listQuery.Any"
-            placeholder="البحث بحسب رقم / الاسم / الباركود  / التصنيف"
-            class="filter-item"
-            @keyup.enter.native="handleFilter"
-          />
+          <el-input v-model="listQuery.Any" placeholder="البحث بحسب رقم / الاسم / الباركود  / التصنيف" class="filter-item"
+            @keyup.enter.native="handleFilter" />
         </el-col>
         <el-col :span="3">
-          <Sort-Options
-            :Value="listQuery.Sort"
-            @Set="
-              (v) => {
-                listQuery.Sort = v;
-                handleFilter();
-              }
-            "
-          />
+          <Sort-Options :Value="listQuery.Sort" @Set="
+            (v) => {
+              listQuery.Sort = v;
+              handleFilter();
+            }
+          " />
         </el-col>
         <el-col :span="6">
-          <Drawer-Print
-            style="float: left"
-            Type="ItemList"
-            :Data="{
-              Totals: Totals,
-              Items: list,
-            }"
-          />
-          <Drawer-Print
-            style="float: left"
-            Type="ItemListlabel"
-            :Data="{
-              Totals: Totals,
-              Items: list,
-            }"
-          />
+          <Drawer-Print style="float: left" Type="ItemList" :Data="{
+            Totals: Totals,
+            Items: list,
+          }" />
+          <Drawer-Print style="float: left" Type="ItemListlabel" :Data="{
+            Totals: Totals,
+            Items: list,
+          }" />
           <Export :list="list" />
-          <el-button
-            v-waves
-            class="filter-item"
-            type="primary"
-            icon="el-icon-search"
-            @click="handleFilter"
-          >
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
             Search
           </el-button>
         </el-col>
         <el-col :span="3">
           <el-button @click="CalculateCostPrice">CalculateCostPrice</el-button>
-          <add-item
-        /></el-col>
+          <add-item /></el-col>
       </el-row>
     </div>
-    <Radio-Oprations
-      TableName="Item"
-      @Set="
-        (v) => {
-          listQuery.Status = v;
-          handleFilter();
-        }
-      "
-    />
+    <Radio-Oprations TableName="Item" @Set="
+      (v) => {
+        listQuery.Status = v;
+        handleFilter();
+      }
+    " />
     <el-divider direction="vertical"></el-divider>
     <span>عدد </span>
     <el-divider direction="vertical"></el-divider>
@@ -85,17 +60,8 @@
     <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} </span>
     <el-divider direction="vertical"></el-divider>
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%"
-      @sort-change="sortChange"
-      ref="multipleTable"
-      @selection-change="handleSelectionChange"
-      @row-dblclick="
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
+      @sort-change="sortChange" ref="multipleTable" @selection-change="handleSelectionChange" @row-dblclick="
         (row) => {
           if (DblClickRow == 'AddAsRow') {
             $emit('dblclick', row);
@@ -106,17 +72,10 @@
             window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
           }
         }
-      "
-    >
+      ">
       <el-table-column type="selection" width="55" align="center"></el-table-column>
-      <el-table-column
-        v-bind:label="$t('Vendors.ID')"
-        prop="Id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
+      <el-table-column v-bind:label="$t('Vendors.ID')" prop="Id" sortable="custom" align="center" width="80"
+        :class-name="getSortClass('id')">
         <template slot-scope="{ row }">
           <span>{{ row.Id }}</span>
         </template>
@@ -124,30 +83,14 @@
 
       <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Items.Barcode')"
-        prop="Barcode"
-        width="120"
-        align="center"
-      ></el-table-column>
+      <el-table-column v-bind:label="$t('Items.Barcode')" prop="Barcode" width="120" align="center"></el-table-column>
       <el-table-column align="center" v-bind:label="$t('Items.QuantityInventory')">
-        <el-table-column
-          v-bind:label="$t('Items.TotalIn')"
-          prop="TotalIn"
-          width="80"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          v-bind:label="$t('Items.TotalOut')"
-          prop="TotalOut"
-          width="80"
-          align="center"
-        ></el-table-column>
+        <el-table-column v-bind:label="$t('Items.TotalIn')" prop="TotalIn" width="80" align="center"></el-table-column>
+        <el-table-column v-bind:label="$t('Items.TotalOut')" prop="TotalOut" width="80" align="center"></el-table-column>
         <el-table-column v-bind:label="$t('Items.Total')" width="80" align="center">
           <template slot-scope="scope">
             {{ scope.row.TotalIn - scope.row.TotalOut }}
-          </template></el-table-column
-        >
+          </template></el-table-column>
       </el-table-column>
       <!--   <el-table-column
         v-bind:label="$t('Items.QuantityInventory')"
@@ -160,20 +103,14 @@
       </el-table-column>-->
       <el-table-column v-bind:label="$t('Items.MenuItem')" align="center" width="120">
         <template slot-scope="scope">
-          <el-tag
-            v-for="item of Array.from((scope.row.MenuItem || '').split(','))"
-            :key="item"
-          >
+          <el-tag v-for="item of Array.from((scope.row.MenuItem || '').split(','))" :key="item">
             {{ item }}
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Items.UnitItem')" align="center" width="120">
         <template slot-scope="scope">
-          <el-tag
-            v-for="item of Array.from((scope.row.UnitItem || '').split(','))"
-            :key="item"
-          >
+          <el-tag v-for="item of Array.from((scope.row.UnitItem || '').split(','))" :key="item">
             {{ item }}
           </el-tag>
         </template>
@@ -185,17 +122,14 @@
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <el-col :span="8">
-            <Next-Oprations
-              :ObjId="scope.row.Id"
-              :Status="scope.row.Status"
-              TableName="Item"
-              @Done="handleFilter"
-          /></el-col>
-          <el-col :span="8"> <edit-item :ItemId="scope.row.Id" /> </el-col>
-          <el-col :span="8">
-            <Drawer-Print Type="Item" :Data="scope.row" />
-          </el-col>
+          <el-row>
+            <el-col :span="8">
+              <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="Item"
+                @Done="handleFilter" /></el-col>
+            <el-col :span="8"> <edit-item :ItemId="scope.row.Id" /> </el-col>
+            <el-col :span="8">
+              <Drawer-Print Type="Item" :Data="scope.row" />
+            </el-col></el-row>
         </template>
       </el-table-column>
       <el-table-column type="expand" width="30">
@@ -219,41 +153,18 @@
                 {{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
-            <el-table-column
-              v-bind:label="$t('Items.LowerOrder')"
-              prop="LowOrder"
-              width="110"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              v-bind:label="$t('Items.Tax')"
-              prop="Tax"
-              width="100"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              v-bind:label="$t('Items.Rate')"
-              prop="Rate"
-              width="100"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              v-bind:label="$t('Items.Notes')"
-              prop="Description"
-              width="150"
-              align="center"
-            ></el-table-column>
+            <el-table-column v-bind:label="$t('Items.LowerOrder')" prop="LowOrder" width="110"
+              align="center"></el-table-column>
+            <el-table-column v-bind:label="$t('Items.Tax')" prop="Tax" width="100" align="center"></el-table-column>
+            <el-table-column v-bind:label="$t('Items.Rate')" prop="Rate" width="100" align="center"></el-table-column>
+            <el-table-column v-bind:label="$t('Items.Notes')" prop="Description" width="150"
+              align="center"></el-table-column>
           </el-table>
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="Totals.Rows > 0"
-      :total="Totals.Rows"
-      :page.sync="listQuery.Page"
-      :limit.sync="listQuery.limit"
-      @pagination="getList"
-    />
+    <pagination v-show="Totals.Rows > 0" :total="Totals.Rows" :page.sync="listQuery.Page" :limit.sync="listQuery.limit"
+      @pagination="getList" />
   </div>
 </template>
 
