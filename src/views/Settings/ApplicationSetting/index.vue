@@ -34,6 +34,7 @@
                 <el-option label="Gym" value="Gym"> </el-option>
                 <el-option label="Public" value="Public"> </el-option>
                 <el-option label="KidsPlayArea" value="KidsPlayArea"> </el-option>
+                <el-option label="BillOfEntery" value="BillOfEntery"> </el-option>
               </el-select>
             </el-col>
             <el-col :span="8">

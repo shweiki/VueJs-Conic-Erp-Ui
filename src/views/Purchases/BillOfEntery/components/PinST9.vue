@@ -10,7 +10,7 @@
         <el-input placeholder="رقم ST9" v-model="tempForm.St9"></el-input>
       </el-form-item>
     </el-form>
-    <el-button slot="reference">St9 :{{ ST9 }}</el-button>
+    <el-button type="success" slot="reference">St9 :{{ ST9 }}</el-button>
   </el-popover>
 </template>
 <script>
