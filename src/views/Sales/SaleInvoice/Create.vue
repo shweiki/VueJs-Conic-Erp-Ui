@@ -41,7 +41,7 @@ import Pharmacy from "./components/Pharmacy.vue";
 import Gym from "./components/Gym.vue";
 import KidsPlayArea from "./components/KidsPlayArea.vue";
 import Public from "./components/Public.vue";
-import BillOfEntery from "./components/Public.vue";
+import BillOfEntery from "./components/BillOfEntery.vue";
 
 export default {
   name: "CreateInvoice",

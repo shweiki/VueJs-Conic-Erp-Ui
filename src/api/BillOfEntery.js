@@ -22,6 +22,12 @@ export function GetBillOfEnteryByPurchaseId(query) {
     method: 'get',
     params: query
   })
+}export function GetActiveBillOfEnteryForItemId(query) {
+  return request({
+    url: '/BillOfEntery/GetActiveBillOfEnteryForItemId',
+    method: 'get',
+    params: query
+  })
 }
 export function CalBillOfEntery(query) {
   return request({

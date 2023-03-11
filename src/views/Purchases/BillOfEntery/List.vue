@@ -47,13 +47,23 @@
     <el-row type="flex">
       <el-col :span="12">
         <el-divider direction="vertical"></el-divider>
-        <span>عدد </span>
+        <span>الاجمالي العدد </span>
         <el-divider direction="vertical"></el-divider>
         <span>{{ Totals.Rows }}</span>
         <el-divider direction="vertical"></el-divider>
+        <el-divider direction="vertical"></el-divider>
+        <span>الاجمالي مغلق</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Close }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <el-divider direction="vertical"></el-divider>
+        <span> الاجمالي مفتوح </span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Open }}</span>
+        <el-divider direction="vertical"></el-divider>
       </el-col>
-      <el-col :span="6">
-        <el-button @click="ReCalBillOfEntery" type="warning"> احتساب </el-button></el-col>
+      <!-- <el-col v-if="$store.getters.settings.BillOfEntery.ReCalBillOfEntery" :span="6">
+        <el-button @click="ReCalBillOfEntery" type="warning"> احتساب </el-button></el-col> -->
       <el-col :span="6">
         <Radio-Oprations TableName="BillOfEntery" @Set="
           (v) => {
@@ -65,7 +75,7 @@
 
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
       default-expand-all>
-      <el-table-column v-bind:label="$t('Sales.Sequence')" prop="Id"   align="center" width="80">
+      <el-table-column v-bind:label="$t('Sales.Sequence')" prop="Id" align="center" width="80">
         <template slot-scope="{ row }">
           <span>{{ row.Id }}</span>
         </template>
@@ -143,7 +153,9 @@
               </template>
             </el-table-column>
             <el-table-column label="الحالة" align="center">
-              <template slot-scope="scope">{{ scope.row.Status }} </template>
+              <template slot-scope="scope">
+                <Status-Tag :Status="scope.row.Status" TableName="BillOfEntery" />
+              </template>
             </el-table-column>
             <el-table-column type="expand" align="center">
               <template slot-scope="props">
@@ -187,16 +199,12 @@
                   <el-table-column label="الباقي" align="center">
                     <template slot-scope="props">{{ props.row.Total }} </template>
                   </el-table-column>
-                  <!--  <el-table-column label="#" align="center">
+                  <el-table-column label="#" align="center">
                     <template slot-scope="scope">
-                      <Pin-Movement
-                        :InventoryMovementsId="scope.row.Id"
-                        :BillOfEnteryId="scope.row.BillOfEnteryId"
-                        :RootBillOfEnteryId="scope.row.RootBillOfEnteryId"
-                        @Done="handleFilter"
-                      />
+                      <pin-movement :InventoryMovementsId="scope.row.Id" :BillOfEnteryId="scope.row.BillOfEnteryId"
+                        :RootBillOfEnteryId="scope.row.RootBillOfEnteryId" @Done="handleFilter" />
                     </template>
-                  </el-table-column>-->
+                  </el-table-column>
                 </el-table>
               </template>
             </el-table-column>
@@ -210,7 +218,7 @@
 </template>
 
 <script>
-import { GetByListQ, CalBillOfEntery } from "@/api/BillOfEntery";
+import { GetByListQ } from "@/api/BillOfEntery";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -227,7 +235,6 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
   components: {
     StatusTag,
     NextOprations,
@@ -256,27 +263,19 @@ export default {
         DateFrom: "",
         DateTo: "",
         Status: undefined,
+        FromScratch: this.$store.getters.settings.Purchase.CalBillOfEnteryFromScratch
       },
     };
   },
   created() {
-    // this.getList();
   },
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
         this.listLoading = false;
-      });
-    },
-    ReCalBillOfEntery() {
-      this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
-      CalBillOfEntery().then((response) => {
-        if (response) this.getList();
       });
     },
     handleFilter() {

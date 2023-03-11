@@ -4,50 +4,50 @@
       <el-card class="box-card">
         <el-row type="flex" slot="header">
           <el-col :span="20">
-            <Drawer-Print v-bind:disabled="OldInvoice == null ? false : true" Type="SaleInvoice" :Data="OldInvoice" />
+            <Drawer-Print v-bind:disabled="tempForm == null ? false : true" Type="SaleInvoice" :Data="tempForm" />
           </el-col>
           <el-col :span="4">
             <el-button :disabled="DisabledSave" type="success" icon="fa fa-save" @click="confirmData()">{{ isEdit !=
-    true ? "حفظ" : "تعديل"
-}}</el-button>
+              true ? "حفظ" : "تعديل"
+            }}</el-button>
           </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="4">
             <el-form-item prop="FakeDate" v-bind:label="$t('NewPurchaseInvoice.ReleaseDate')" :rules="[
-  {
-    required: true,
-    message: 'لايمكن ترك التاريخ فارغ',
-    trigger: 'blur',
-  },
-]">
+              {
+                required: true,
+                message: 'لايمكن ترك التاريخ فارغ',
+                trigger: 'blur',
+              },
+            ]">
               <Fake-Date :Value="tempForm.FakeDate" @Set="(v) => (tempForm.FakeDate = v)" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="الى حساب" prop="VendorId" :rules="[
-  {
-    required: true,
-    message: 'لايمكن ترك حساب فارغ',
-    trigger: 'blur',
-  },
-]">
+              {
+                required: true,
+                message: 'لايمكن ترك حساب فارغ',
+                trigger: 'blur',
+              },
+            ]">
               <vendor-search-any :Id="tempForm.VendorId" @Set="
-  (v) => {
-    Vendor = v;
-    tempForm.VendorId = v.Id;
-  }
-" />
+                (v) => {
+                  Vendor = v;
+                  tempForm.VendorId = v.Id;
+                }
+              " />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="طريقة الدفع" prop="PaymentMethod" :rules="[
-  {
-    required: true,
-    message: 'Please Choose Payment Method',
-    trigger: 'blur',
-  },
-]">
+              {
+                required: true,
+                message: 'Please Choose Payment Method',
+                trigger: 'blur',
+              },
+            ]">
               <radio-payment-method :Value="tempForm.PaymentMethod" :VendorId="tempForm.VendorId" Type="SaleInvoice"
                 @Set="(v) => (tempForm.PaymentMethod = v)" />
             </el-form-item>
@@ -61,8 +61,8 @@
         <el-row type="flex">
           <el-col>
             <span style="color: #f56c6c; font-size: 16px; text-align: center">{{
-    ValidateNote
-}}</span>
+              ValidateNote
+            }}</span>
           </el-col>
         </el-row>
         <el-card style="background: #545454" :body-style="{ padding: '1px' }">
@@ -71,36 +71,44 @@
         <el-table :data="tempForm.InventoryMovements" fit border>
           <el-table-column align="center" prop="Name">
             <template slot="header" slot-scope="{}">{{ $t("NewPurchaseInvoice.Items") }} ({{
-    tempForm.InventoryMovements.length.toFixed(
-      $store.getters.settings.ToFixed
-    )
-}})</template>
+              tempForm.InventoryMovements.length.toFixed(
+                $store.getters.settings.ToFixed
+              )
+            }})</template>
             <template slot-scope="scope">
-              {{ tempForm.InventoryMovements[scope.$index].Name }}
-              <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
+              <el-row type="flex">
+                <el-col :span="4"> <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
+                </el-col>
+                <el-col :span="20"> {{ tempForm.InventoryMovements[scope.$index].Name }}
+                </el-col>
+              </el-row>
             </template>
           </el-table-column>
-
+          <el-table-column v-if="isEdit == false" label="المتوفر" width="80" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.Item.TotalIn - scope.row.Item.TotalOut }}
+            </template>
+          </el-table-column>
           <el-table-column width="130" align="center">
             <template slot="header" slot-scope="{}">{{ $t("NewPurchaseInvoice.quantity") }} ({{
-    tempForm.InventoryMovements.reduce(
-      (a, b) => a + (b["Qty"] || 0),
-      0
-    ).toFixed($store.getters.settings.ToFixed)
-}})</template>
+              tempForm.InventoryMovements.reduce(
+                (a, b) => a + (b["Qty"] || 0),
+                0
+              ).toFixed($store.getters.settings.ToFixed)
+            }})</template>
             <template slot-scope="scope">
               <el-input-number controls-position="right" v-model="tempForm.InventoryMovements[scope.$index].Qty"
                 :precision="2" :step="1" :min="0.0" v-bind:max="
-  $store.getters.settings.PointOfSale.CheckQtyItem
-    ? scope.row.TotalIn - scope.row.TotalOut
-    : 1000000
-" select @focus="$event.target.select()"></el-input-number>
+                  $store.getters.settings.PointOfSale.CheckQtyItem
+                    ? scope.row.TotalIn - scope.row.TotalOut
+                    : 1000000
+                " select @focus="$event.target.select()"></el-input-number>
             </template>
           </el-table-column>
           <el-table-column width="220" align="center">
             <template slot="header" slot-scope="{}">{{
-    $t("NewPurchaseInvoice.Price")
-}}</template>
+              $t("NewPurchaseInvoice.Price")
+            }}</template>
             <template slot-scope="scope">
               <currency-input class="currency-input" :precision="10" @focus="$event.target.select()"
                 v-model="tempForm.InventoryMovements[scope.$index].SellingPrice" />
@@ -108,35 +116,31 @@
           </el-table-column>
           <el-table-column width="120" align="center">
             <template slot="header" slot-scope="{}">{{
-    $t("NewPurchaseInvoice.TotalValue")
-}}</template>
+              $t("NewPurchaseInvoice.TotalValue")
+            }}</template>
             <template slot-scope="scope">{{
-    (
-      tempForm.InventoryMovements[scope.$index].SellingPrice *
-      tempForm.InventoryMovements[scope.$index].Qty
-    ).toFixed($store.getters.settings.ToFixed)
-}}</template>
+              (
+                tempForm.InventoryMovements[scope.$index].SellingPrice *
+                tempForm.InventoryMovements[scope.$index].Qty
+              ).toFixed($store.getters.settings.ToFixed)
+            }}</template>
           </el-table-column>
           <el-table-column align="center">
             <template slot="header" slot-scope="{}">{{
-    $t("NewPurchaseInvoice.Inventory")
-}}</template>
+              $t("NewPurchaseInvoice.BillOfEntery")
+            }}</template>
             <template slot-scope="scope">
-              <radio-active-inventory :InventoryId="
-  tempForm.InventoryMovements[scope.$index].InventoryItemId
-" @Set="
-  (v) =>
-  (tempForm.InventoryMovements[scope.$index].InventoryItemId =
-    v.value)
-" />
+              <SelectBillOfEntery :Id="scope.row.BillOfEnteryId" :ItemId="scope.row.ItemsId" @Set="
+                (v) =>
+                  (tempForm.InventoryMovements[scope.$index].BillOfEnteryId = v)" />
             </template>
           </el-table-column>
           <el-table-column v-bind:label="$t('NewPurchaseInvoice.description')" width="200" align="center">
             <template slot-scope="scope">
               <el-form-item :prop="'InventoryMovements.' + scope.$index + '.Description'">
                 <el-input v-model="
-  tempForm.InventoryMovements[scope.$index].Description
-" required class="input-with-select">
+                  tempForm.InventoryMovements[scope.$index].Description
+                " required class="input-with-select">
                   <template slot="prepend">
                     <el-button @click="Copy(scope.row.Description)" icon="fa fa-copy"></el-button>
                   </template>
@@ -161,20 +165,20 @@
             <span>{{ $t("NewPurchaseInvoice.Items") }}</span>
             <el-divider direction="vertical"></el-divider>
             <span>{{
-    tempForm.InventoryMovements.length.toFixed(
-      $store.getters.settings.ToFixed
-    )
-}}</span>
+              tempForm.InventoryMovements.length.toFixed(
+                $store.getters.settings.ToFixed
+              )
+            }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.QuantityAmount") }}</span>
             <el-divider direction="vertical"></el-divider>
             <span>{{
-    tempForm.InventoryMovements.reduce(
-      (a, b) => a + (b["Qty"] || 0),
-      0
-    ).toFixed($store.getters.settings.ToFixed)
-}}</span>
+              tempForm.InventoryMovements.reduce(
+                (a, b) => a + (b["Qty"] || 0),
+                0
+              ).toFixed($store.getters.settings.ToFixed)
+            }}</span>
             <el-divider direction="vertical"></el-divider>
 
             <span>{{ $t("NewPurchaseInvoice.TotalDiscount") }}</span>
@@ -196,12 +200,12 @@
             <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
             <el-divider direction="vertical"></el-divider>
             <span>{{
-    (tempForm.Tax + (
-      tempForm.InventoryMovements.reduce((prev, cur) => {
-        return prev + cur.Qty * cur.SellingPrice;
-      }, 0) - tempForm.Discount)
-    ).toFixed($store.getters.settings.ToFixed)
-}}
+              (tempForm.Tax + (
+                tempForm.InventoryMovements.reduce((prev, cur) => {
+                  return prev + cur.Qty * cur.SellingPrice;
+                }, 0) - tempForm.Discount)
+              ).toFixed($store.getters.settings.ToFixed)
+            }}
               JOD</span>
             <el-divider direction="vertical"></el-divider>
           </el-card>
@@ -241,6 +245,7 @@ import ItemsSearch from "@/components/Item/ItemsSearch";
 import EditItem from "@/components/Item/EditItem";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
+import SelectBillOfEntery from "@/views/Purchases/BillOfEntery/components/SelectBillOfEntery.vue";
 import SelectBankAccounts from "@/components/TreeAccount/SelectBankAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
@@ -254,6 +259,7 @@ export default {
     EditItem,
     FakeDate,
     VendorSearchAny,
+    SelectBillOfEntery,
     SelectInComeAccounts,
     SelectCashAccounts,
     RadioActiveInventory,
@@ -298,7 +304,7 @@ export default {
       CashAccountId: undefined,
       InComeAccountId: undefined,
       BankAccountId: undefined,
-      Vendor: undefined,
+      Vendor: {},
       tempRoute: {},
     };
   },
@@ -343,7 +349,7 @@ export default {
         });
     },
     AddItem(item) {
-      var find = this.$store.getters.settings.PointOfSale.QtyCounter
+      let find = this.$store.getters.settings.PointOfSale.QtyCounter
         ? this.tempForm.InventoryMovements.findIndex((value) => value.ItemsId == Item.Id)
         : -1;
       if (find != -1) this.tempForm.InventoryMovements[find].Qty += 1;
@@ -360,6 +366,7 @@ export default {
           Name: item.Name,
           Description: "",
           Item: item,
+          BillOfEnteryId: null,
           TotalIn: item.TotalIn,
           TotalOut: item.TotalOut,
         });
@@ -452,11 +459,7 @@ export default {
               duration: 1000,
               showClose: false,
             });
-            this.$confirm("هل تريد العودة ")
-              .then((_) => {
-                this.$router.back();
-              })
-              .catch((_) => { });
+
           } else {
             this.$notify({
               title: "مشكلة",
@@ -467,7 +470,7 @@ export default {
               showClose: false,
             });
           }
-          this.restTempForm();
+          if (!this.isEdit) this.restTempForm();
           this.DisabledSave = false;
         } else {
           this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";

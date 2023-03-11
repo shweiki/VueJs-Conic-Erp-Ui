@@ -57,7 +57,7 @@
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item prop="PaymentMethod" label="طريقة الدفع">
-              <radio-payment-method
+              <radio-payment-method-from-settings
                 Type="Payment"
                 :Value="tempForm.PaymentMethod"
                 :VendorId="tempForm.MemberId"
@@ -107,12 +107,13 @@ import { Create as CreatePayment } from "@/api/Payment";
 // report
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import FakeDate from "@/components/Date/FakeDate";
-import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
+//import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
+import RadioPaymentMethodFromSettings from "@/components/PaymentMethod/RadioPaymentMethodFromSettings.vue";
 import EditorsUser from "@/components/Gym/EditorsUser.vue";
 import { SendSMS } from "@/api/SMS";
 
 export default {
-  components: { EditorsUser, DrawerPrint, FakeDate, RadioPaymentMethod },
+  components: { EditorsUser, DrawerPrint, FakeDate, RadioPaymentMethodFromSettings },
   props: {
     MemberId: {
       type: Number,

@@ -14,13 +14,15 @@
 </template>
 
 <script>
+import store from '@/store'
 
 export default {
   name: "PanThumb",
   props: {
     image: {
       type: String,
-      required: true,
+      default : store.getters.CompanyInfo.Logo,
+      required: false,
     },
     zIndex: {
       type: Number,

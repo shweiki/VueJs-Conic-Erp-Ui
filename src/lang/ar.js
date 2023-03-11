@@ -154,7 +154,16 @@ export default {
     errorLog: "سجل اخطاء",
     datepickerQuery: "فترة الزمنية المعتمدة",
     timeQuery: "الوقت المعتمد",
-    pickerOptions: "خيارات التاريخ"
+    pickerOptions: "خيارات التاريخ",
+    PurchaseLayout: "تنسيق الشراء",
+    DateFormat: "صيغة البيانات",
+    DateTimeFormat: "صيغة الوقت والتاريخ",
+    PointOfSaleLayout: 'شكل نظام البيع',
+    showRestOfBill: "إظهار بقية الفاتورة",
+    BarcodeIsId: "الباركود هو رقم المنتج (ID)",
+    Images: 'الصور',
+    CashPoolLayout: "شكل نظام المجمع النقدي",
+    WorkShopLayout: "شكل نظام الورشات",
   },
   SortOptions: {
     Ascending: 'تنازلي',
@@ -269,38 +278,16 @@ export default {
     Forward: 'الى الامام',
     Copy: "نسخ",
     Paste: "لصق",
-    Forward: "تقدم"
-
   },
   PaymentMethod: {
     Cash: 'نقدي',
     Visa: 'فيزا',
     Receivables: 'الاجل ',
     Cheque: 'شيك',
+    ZainCash: 'ZainCash',
+    CliQ: 'CliQ'
   },
-  Settings: {
-    title: 'إعداد نمط الصفحة',
-    theme: 'لون الشكل',
-    tagsView: 'فتح علامات مشاهدة',
-    fixedHeader: 'رأس ثابت',
-    sidebarLogo: 'شعار الشريط الجانبي ',
-    PurchaseLayout: "تنسيق الشراء",
-    DateFormat: "صيغة البيانات",
-    DateTimeFormat: "صيغة الوقت والتاريخ",
-    CashDrawerCOM: 'درج الكاش',
-    PointOfSaleLayout: 'شكل نظام البيع',
-    BusinessType: "نوع العمل",
-    showSettings: "إظهار الإعدادات",
-    showRestOfBill: "إظهار بقية الفاتورة",
-    sidebarOpen: 'فتح الشريط الجانبي',
-    WithOutCheckItemIsExist: 'دون البحث بالأصناف الموجودة',
-    BarcodeIsId: "الباركود هو رقم المنتج (ID)",
-    loginBackground: "خلفية شاشة تسجيل الدخول",
-    sidebarImages: 'صورة الشريط الجانبي',
-    Images: 'الصور',
-    CashPoolLayout: "شكل نظام المجمع النقدي",
-    WorkShopLayout: "شكل نظام الورشات",
-  },
+
   MinOrd: {
     SBy: "البحث بحسب الرقم /الاسم /الباركود /التصنيف",
     Qty: "عدد",
@@ -440,6 +427,7 @@ export default {
 
   },
   NewPurchaseInvoice: {
+    BillOfEntery:"البيان الجمركي",
     PurchaseInvoice: 'فاتورة مشتريات',
     ReleaseDate: 'تاريخ الاصدار',
     Date: 'التاريخ',

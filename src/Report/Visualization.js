@@ -6,9 +6,9 @@ import checkPermission from "@/utils/permission";
 import { TimeConvert as TimeConvertX, MinutesConvert as MinutesConvertX } from "@/utils";
 
 let toFixed = store.getters.settings.ToFixed;
-var JsBarcode = require('jsbarcode');
-var { createCanvas } = require("canvas");
-var days = ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"]
+let JsBarcode = require('jsbarcode');
+let { createCanvas } = require("canvas");
+let days = ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"]
 
 export default function Visualization(Data, Html, Type) {
   console.log("Visualization Data : =>", Data);
@@ -51,17 +51,12 @@ function handle(Data, Html) {
         startTagKey,
         endTagKey + 5
       );
-      console.log(key, startTagKey, endTagKey)
 
       let tabelArray = "";
       Data[key].forEach(element => {
         let row = res;
-        //  console.log("row", row)
-
         Object.keys(element).forEach(keya => {
           if (Array.isArray(element[keya])) {
-            console.log(row)
-
             row = handle(element, row)
           }
           // replace All keys to values
@@ -123,7 +118,7 @@ let tr = (v) => i18n.t(v);
 let Days = (v) => days[v];
 let Absent = (v) => { return v.toString().toLowerCase() === "true" ? "غياب" : "حضور" };
 let Barcode = (v) => {
-  var canvas = createCanvas();
+  let canvas = createCanvas();
   JsBarcode(canvas, v, {
     format: "CODE128",
     lineColor: "#000000",
@@ -134,7 +129,7 @@ let Barcode = (v) => {
   return '<img src="' + canvas.toDataURL() + '" />'
 }
 let QRcode = (v, w = 50, h = 50) => {
-  var opts = {
+  let opts = {
     errorCorrectionLevel: 'H',
     type: 'image/png',
     quality: 1,
@@ -142,7 +137,7 @@ let QRcode = (v, w = 50, h = 50) => {
     width: w,
     height: h,
   }
-  var imgurl = '';
+  let imgurl = '';
   QRCode.toDataURL(
     v,
     opts
