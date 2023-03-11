@@ -58,7 +58,6 @@ export default {
     ListOrderInventory: 'حركات المخزون',
     NewOrderInventory: 'سندات مخزون',
     Inventories: 'مخازن',
-    Inventory: 'مخزن',
     TreeAccount: 'شجرة الحسابات',
     AccountReceivablesPayables: "ذمم مدينة / دائنة",
     EntryAccounting: 'قيود',
@@ -130,8 +129,7 @@ export default {
     CustomerOrderList: "قائمة الطلبات",
     MembersLog: "سجل المشتركين",
     UploadReport: "رفع تقرير",
-    ForUploadBioLab: "تقارير بيو لاب",
-
+    ForUploadBioLab: "تقارير بيو لاب"
   },
   Settings: {
     settings: "اعدادات",
@@ -427,7 +425,7 @@ export default {
 
   },
   NewPurchaseInvoice: {
-    BillOfEntery:"البيان الجمركي",
+    BillOfEntery: "البيان الجمركي",
     PurchaseInvoice: 'فاتورة مشتريات',
     ReleaseDate: 'تاريخ الاصدار',
     Date: 'التاريخ',
@@ -627,7 +625,6 @@ export default {
     Rate: 'التقييم',
     Tax: 'الضريبة',
     Notes: 'ملاحظات',
-    Name: 'الإسم',
     NumberDays: 'عددالأيام',
     NumberClass: 'عددالحصص',
     MembersCount: 'عدد المشتركين',
