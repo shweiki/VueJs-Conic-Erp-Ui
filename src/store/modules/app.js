@@ -1,14 +1,18 @@
 import Cookies from 'js-cookie'
 import JSPM from "jsprintmanager";
 import store from '@/store'
+import { getLanguage } from '@/lang/index'
+import defaultSettings from '@/settings'
+const { size } = defaultSettings
+
 const state = {
-  baseUrl : window.location.protocol + "//" + window.location.host + "/",
   sidebar: {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false
   },
   device: 'desktop',
-  size: Cookies.get('size'),
+  language: getLanguage(),
+  size: Cookies.get('size')  || size,
   printers: []
 }
 
@@ -27,12 +31,12 @@ const mutations = {
     state.sidebar.opened = false
     state.sidebar.withoutAnimation = withoutAnimation
   },
-  SET_LANGUAGE: (state, language) => {
-    state.language = language
-    Cookies.set('language', language)
-  },
   TOGGLE_DEVICE: (state, device) => {
     state.device = device
+  },
+   SET_LANGUAGE: (state, language) => {
+    state.language = language
+    Cookies.set('language', language)
   },
   SET_SIZE: (state, size) => {
     state.size = size

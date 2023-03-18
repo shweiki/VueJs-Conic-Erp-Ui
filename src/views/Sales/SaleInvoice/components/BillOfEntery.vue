@@ -98,11 +98,8 @@
             }})</template>
             <template slot-scope="scope">
               <el-input-number controls-position="right" v-model="tempForm.InventoryMovements[scope.$index].Qty"
-                :precision="2" :step="1" :min="0.0" v-bind:max="
-                  $store.getters.settings.PointOfSale.CheckQtyItem
-                    ? scope.row.TotalIn - scope.row.TotalOut
-                    : 1000000
-                " select @focus="$event.target.select()"></el-input-number>
+                :precision="2" :step="1" :min="0.0" :max="1000000" select
+                @focus="$event.target.select()"></el-input-number>
             </template>
           </el-table-column>
           <el-table-column width="220" align="center">

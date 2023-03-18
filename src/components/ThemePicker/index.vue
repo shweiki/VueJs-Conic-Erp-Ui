@@ -44,7 +44,7 @@ export default {
       if (typeof val !== "string") return;
       const themeCluster = this.getThemeCluster(val.replace("#", ""));
       const originalCluster = this.getThemeCluster(oldVal.replace("#", ""));
-      console.log(themeCluster, originalCluster);
+    //  console.log(themeCluster, originalCluster);
 
       const $message = this.$message({
         message: "  Compiling the theme",
@@ -161,7 +161,7 @@ export default {
 
       const clusters = [theme];
       for (let i = 0; i <= 9; i++) {
-        clusters.push(tintColor(theme, Number((i / 10).toFixed($store.getters.settings.ToFixed))));
+        clusters.push(tintColor(theme, Number((i / 10).toFixed(2))));
       }
       clusters.push(shadeColor(theme, 0.1));
       return clusters;

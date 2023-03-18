@@ -45,7 +45,7 @@
       </el-col>
     </el-row>
     <el-row type="flex">
-      <el-col :span="12">
+      <el-col :span="16">
         <el-divider direction="vertical"></el-divider>
         <span>الاجمالي العدد </span>
         <el-divider direction="vertical"></el-divider>
@@ -64,7 +64,7 @@
       </el-col>
       <!-- <el-col v-if="$store.getters.settings.BillOfEntery.ReCalBillOfEntery" :span="6">
         <el-button @click="ReCalBillOfEntery" type="warning"> احتساب </el-button></el-col> -->
-      <el-col :span="6">
+      <el-col :span="8">
         <Radio-Oprations TableName="BillOfEntery" @Set="
           (v) => {
             listQuery.Status = v;
@@ -127,86 +127,94 @@
       <el-table-column type="expand" align="center">
         <template slot-scope="props">
           <el-table :data="props.row.InventoryMovements">
-            <el-table-column prop="ItemsId" label="رقم \ باركود الصنف" align="center">
-              <template slot-scope="scope">
-                {{ scope.row.ItemsId + " - " + scope.row.Barcode }}
-              </template>
-            </el-table-column>
-            <el-table-column v-bind:label="$t('CashPool.Items')" width="130" align="center">
-              <template slot-scope="scope">{{
-                scope.row.Name
-              }}</template></el-table-column>
-            <el-table-column prop="Qty" v-bind:label="$t('CashPool.quantity')" align="center">
-              <template slot-scope="scope">{{ scope.row.Qty.toFixed($store.getters.settings.ToFixed) }}
-              </template></el-table-column>
-            <el-table-column label="الكمية المباعة" align="center">
-              <template slot-scope="scope">{{
-                scope.row.Total.toFixed($store.getters.settings.ToFixed)
-              }}</template>
-            </el-table-column>
-            <el-table-column label="الباقي" align="center">
-              <template slot-scope="scope">{{
-                (scope.row.Qty - scope.row.Total).toFixed(
-                  $store.getters.settings.ToFixed
-                )
-              }}
-              </template>
-            </el-table-column>
-            <el-table-column label="الحالة" align="center">
-              <template slot-scope="scope">
-                <Status-Tag :Status="scope.row.Status" TableName="BillOfEntery" />
-              </template>
-            </el-table-column>
-            <el-table-column type="expand" align="center">
-              <template slot-scope="props">
-                <el-table v-loading="listLoading" :data="props.row.BillOfEnteryItemMovements"
-                  ref="BillOfEnteryItemMovementsTable" border fit highlight-current-row style="width: 100%" @row-dblclick="
-                    (row) => {
-                      let r = $router.resolve({
-                        path: '/Sales/Edit/' + row.SalesInvoiceId,
-                      });
-                      window.open(
-                        r.href,
-                        r.route.name,
-                        $store.getters.settings.windowStyle
-                      );
-                    }
-                  ">
-                  <el-table-column v-bind:label="$t('Vendors.ID')" align="center" width="80">
-                    <template slot-scope="{ row }">
-                      <span>{{ row.SalesInvoiceId }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
-                    <template slot-scope="{ row }">
-                      <span>{{
-                        row.SalesInvoiceFakeDate | parseTime("{y}-{m}-{d} {h}:{i}")
-                      }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column v-bind:label="$t('AddVendors.Name')" prop="VendorName" align="center">
-                  </el-table-column>
-                  <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
-                    <template slot-scope="scope">{{
-                      scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
-                    }}</template>
-                  </el-table-column>
-                  <el-table-column label="الكمية " align="center">
-                    <template slot-scope="scope">{{
-                      scope.row.Qty.toFixed($store.getters.settings.ToFixed)
-                    }}</template>
-                  </el-table-column>
-                  <el-table-column label="الباقي" align="center">
-                    <template slot-scope="props">{{ props.row.Total }} </template>
-                  </el-table-column>
-                  <el-table-column label="#" align="center">
-                    <template slot-scope="scope">
-                      <pin-movement :InventoryMovementsId="scope.row.Id" :BillOfEnteryId="scope.row.BillOfEnteryId"
-                        :RootBillOfEnteryId="scope.row.RootBillOfEnteryId" @Done="handleFilter" />
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </template>
+            <el-table-column align="center" label="الاصناف \ المواد">
+              <el-table-column prop="ItemsId" align="center">
+                <template slot="header" slot-scope="{}">{{ props.row.Barcode == null ? "رقم" : "رقم \ باركود الصنف" }} ({{
+                  props.row.InventoryMovements.length
+                }})</template>
+                <template slot-scope="scope">
+                  {{ scope.row.ItemsId }} {{ scope.row.Barcode == null ? "" : " - " + scope.row.Barcode }}
+                </template>
+              </el-table-column>
+              <el-table-column v-bind:label="$t('CashPool.Items')" width="130" align="center">
+                <template slot-scope="scope">{{ scope.row.Name }}</template>
+              </el-table-column>
+              <el-table-column prop="Qty" v-bind:label="$t('CashPool.quantity')" align="center">
+                <template slot-scope="scope">{{ scope.row.Qty.toFixed($store.getters.settings.ToFixed) }}
+                </template></el-table-column>
+              <el-table-column label="الكمية المباعة" align="center">
+                <template slot-scope="scope">{{
+                  scope.row.Total.toFixed($store.getters.settings.ToFixed)
+                }}</template>
+              </el-table-column>
+              <el-table-column label="الباقي" align="center">
+                <template slot-scope="scope">{{
+                  (scope.row.Qty - scope.row.Total).toFixed(
+                    $store.getters.settings.ToFixed
+                  )
+                }}
+                </template>
+              </el-table-column>
+              <el-table-column label="الحالة" align="center">
+                <template slot-scope="scope">
+                  <Status-Tag :Status="scope.row.Status" TableName="BillOfEntery" />
+                </template>
+              </el-table-column>
+              <el-table-column type="expand" align="center">
+                <template slot-scope="props">
+                  <el-table v-loading="listLoading" :data="props.row.BillOfEnteryItemMovements"
+                    ref="BillOfEnteryItemMovementsTable" border fit highlight-current-row style="width: 100%"
+                    @row-dblclick="
+                      (row) => {
+                        let r = $router.resolve({
+                          path: '/Sales/Edit/' + row.SalesInvoiceId,
+                        });
+                        window.open(
+                          r.href,
+                          r.route.name,
+                          $store.getters.settings.windowStyle
+                        );
+                      }
+                    ">
+                    <el-table-column align="center" label="فواتير بيع">
+
+                      <el-table-column v-bind:label="$t('Vendors.ID')" align="center" width="80">
+                        <template slot-scope="{ row }">
+                          <span>{{ row.SalesInvoiceId }}</span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
+                        <template slot-scope="{ row }">
+                          <span>{{
+                            row.SalesInvoiceFakeDate | parseTime("{y}-{m}-{d} {h}:{i}")
+                          }}</span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="VendorName" align="center">
+                      </el-table-column>
+                      <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
+                        <template slot-scope="scope">{{
+                          scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
+                        }}</template>
+                      </el-table-column>
+                      <el-table-column label="الكمية " align="center">
+                        <template slot-scope="scope">{{
+                          scope.row.Qty.toFixed($store.getters.settings.ToFixed)
+                        }}</template>
+                      </el-table-column>
+                      <el-table-column label="الباقي" align="center">
+                        <template slot-scope="props">{{ props.row.Total }} </template>
+                      </el-table-column>
+                      <el-table-column label="#" align="center">
+                        <template slot-scope="scope">
+                          <pin-movement :InventoryMovementsId="scope.row.Id" :BillOfEnteryId="scope.row.BillOfEnteryId"
+                            :RootBillOfEnteryId="scope.row.RootBillOfEnteryId" @Done="handleFilter" />
+                        </template>
+                      </el-table-column>
+                    </el-table-column>
+                  </el-table>
+                </template>
+              </el-table-column>
             </el-table-column>
           </el-table>
         </template>

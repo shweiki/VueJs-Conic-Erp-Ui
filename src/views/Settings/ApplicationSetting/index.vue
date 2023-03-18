@@ -17,10 +17,6 @@
               <span>{{ $t("Settings.DateTimeFormat") }}</span>
               <el-input v-model="DateTimeFormat" />
             </el-col>
-            <el-col :span="8">
-              <span>{{ $t("Settings.title") }}</span>
-              <el-input v-model="title" />
-            </el-col>
           </el-row>
 
           <el-row type="flex">
@@ -60,15 +56,6 @@
               <span>{{ $t("Settings.WorkShopLayout") }}</span>
               <el-select v-model="WorkShopLayout" placeholder="WorkShopLayout">
                 <el-option label="Pubilc" value="Pubilc"> </el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="8">
-              <span>{{ $t("Settings.BusinessType") }}</span>
-              <el-select v-model="BusinessType" placeholder="Select">
-                <el-option label="SuperMarkit" value="SuperMarkit"> </el-option>
-                <el-option label="CarsSpare" value="CarsSpare"> </el-option>
-                <el-option label="GymManagment" value="GymManagment"> </el-option>
-                <el-option label="Restaurant" value="Restaurant"> </el-option>
               </el-select>
             </el-col>
           </el-row>
@@ -127,19 +114,7 @@ export default {
 
   computed: {
     isShowJob() {
-      return this.$store.getters.settings.language;
-    },
-
-    title: {
-      get() {
-        return this.$store.state.settings.title;
-      },
-      set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "title",
-          value: val,
-        });
-      },
+      return this.$store.state.settings.language;
     },
     DateTimeFormat: {
       get() {
@@ -224,7 +199,6 @@ export default {
       },
       set(val) {
         this.$store.dispatch("app/toggleSideBar");
-
         this.$store.dispatch("settings/changeSetting", {
           key: "sidebarOpen",
           value: val,
@@ -249,17 +223,6 @@ export default {
       set(val) {
         this.$store.dispatch("settings/changeSetting", {
           key: "showRestOfBill",
-          value: val,
-        });
-      },
-    },
-    BusinessType: {
-      get() {
-        return this.$store.state.settings.BusinessType;
-      },
-      set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "BusinessType",
           value: val,
         });
       },

@@ -1,16 +1,13 @@
 module.exports = {
   theme: "#74b9ff",
-  title: "High  Fit",
-  language: "ar",
   size: "mini",
   customtheme: false,
   showSettings: true,
-  BusinessType: "SuperMarkit",
   tagsView: true,
   CashDrawerCOM: { COM: "COM7", OpenKeyBoard: "F4" },
   fixedHeader: false,
-  SidebarImage: "", // require("@/assets/Sidebar_images/sidebar-1.jpg"),
-  loginBackground: "", // require("@/assets/Login_images/Login-1.jpg"),
+  SidebarImage: "",
+  loginBackground: "",
   showSidebar: true,
   sidebarLogo: true,
   sidebarOpen: true,
@@ -27,16 +24,16 @@ module.exports = {
   Sms: {
     baseURLSendSingleMessage: "",
     baseURLSendBulkMessages: "",
-    senderid: "", //"High Fit"
-    AccName: "", //"highfit",
-    AccPass: "", //"D7!cT5!SgU0"
+    senderid: "",
+    AccName: "",
+    AccPass: "",
   },
   OutgoingMailServer: {
-    SecureToken: "",//b713dae2-4536-43e1-99d7-fb7bfc9bff7a
-    Host: "", //mail.privateemail.com
-    Username: "", // hello@conic-isv.com
-    Password: "", // *****
-    From: "", // hello@conic-isv.com
+    SecureToken: "",
+    Host: "",
+    Username: "",
+    Password: "",
+    From: "",
   },
   errorLog: "production",
   DateTimeFormat: "yyyy-MM-dd HH:mm",
