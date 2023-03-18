@@ -2,66 +2,38 @@
   <div>
     <el-row type="flex">
       <el-col :span="8">
-        <Search-By-Date
-         v-bind:Value="[listQuery.DateFrom, listQuery.DateTo]"
-          @Set="
-            (v) => {
-              listQuery.DateFrom = v[0];
-              listQuery.DateTo = v[1];
-              handleFilter()
-            }
-          "
-        />
+        <Search-By-Date v-bind:Value="[listQuery.DateFrom, listQuery.DateTo]" @Set="
+          (v) => {
+            listQuery.DateFrom = v[0];
+            listQuery.DateTo = v[1];
+            handleFilter()
+          }
+        " />
       </el-col>
       <el-col :span="3">
-        <Sort-Options
-          :Value="listQuery.Sort"
-          @Set="
-            (v) => {
-              listQuery.Sort = v;
-              handleFilter();
-            }
-          "
-        />
+        <Sort-Options :Value="listQuery.Sort" @Set="
+          (v) => {
+            listQuery.Sort = v;
+            handleFilter();
+          }
+        " />
       </el-col>
       <el-col :span="3">
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleFilter"
-        >
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         </el-button>
       </el-col>
       <el-col :span="3">
-        <Drawer-Print
-          Type="WorkHoursLog"
-          :Data="{
-            Items: list,
-            Dates: [listQuery.DateFrom, listQuery.DateTo],
-            Name: Name,
-            Id: UserId,
-            Totals: Totals,
-          }"
-        />
+        <Drawer-Print Type="WorkHoursLog" :Data="{
+          Items: list,
+          Dates: [listQuery.DateFrom, listQuery.DateTo],
+          Name: Name,
+          Id: UserId,
+          Totals: Totals,
+        }" />
       </el-col>
     </el-row>
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%"
-    >
-      <el-table-column
-        v-bind:label="$t('Vendors.ID')"
-        prop="Id"
-        sortable="custom"
-        align="center"
-        width="80"
-      >
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+      <el-table-column v-bind:label="$t('Vendors.ID')" prop="Id" sortable="custom" align="center" width="80">
         <template slot-scope="{ row }">
           <span>{{ row.Id }}</span>
         </template>
@@ -79,57 +51,47 @@
       <el-table-column width="130px" align="center">
         <template slot="header" slot-scope="{}">
           دخول
-          <span
-            >({{
-              listQuery.DateFrom != "Invalid Date"
-                ? TimeConvert(listQuery.DateFrom)
-                : " ****"
-            }})</span
-          >
+          <span>({{
+            listQuery.DateFrom != "Invalid Date"
+            ? TimeConvert(listQuery.DateFrom)
+            : " ****"
+          }})</span>
         </template>
         <template slot-scope="{ row }">
-          <span
-            v-bind:style="
-              row.logs.length > 1 &&
+          <span v-bind:style="
+            row.logs.length > 1 &&
               row.logs[1].Id == undefined &&
               row.logs[1].Type == 'In'
-                ? 'color : red'
-                : ''
-            "
-            >{{
-              row.StartDateTime != "Invalid Date"
-                ? TimeConvert(row.StartDateTime)
-                : " ****"
-            }}</span
-          >
+              ? 'color : red'
+              : ''
+          ">{{
+  row.StartDateTime != "Invalid Date"
+  ? TimeConvert(row.StartDateTime)
+  : " ****"
+}}</span>
         </template>
       </el-table-column>
       <el-table-column width="130px" align="center">
         <template slot="header" slot-scope="{}">
           خروج
-          <span
-            >({{
-              listQuery.DateTo != "Invalid Date"
-                ? TimeConvert(listQuery.DateTo)
-                : " ****"
-            }})</span
-          >
+          <span>({{
+            listQuery.DateTo != "Invalid Date"
+            ? TimeConvert(listQuery.DateTo)
+            : " ****"
+          }})</span>
         </template>
         <template slot-scope="{ row }">
-          <span
-            v-bind:style="
-              row.logs.length > 1 &&
+          <span v-bind:style="
+            row.logs.length > 1 &&
               row.logs[1].Id == undefined &&
               row.logs[1].Type == 'Out'
-                ? 'color : red'
-                : ''
-            "
-            >{{
-              row.EndDateTime != "Invalid Date"
-                ? TimeConvert(row.EndDateTime)
-                : "****"
-            }}</span
-          >
+              ? 'color : red'
+              : ''
+          ">{{
+  row.EndDateTime != "Invalid Date"
+  ? TimeConvert(row.EndDateTime)
+  : "****"
+}}</span>
         </template>
       </el-table-column>
       <el-table-column label="غياب" align="center">
@@ -156,11 +118,7 @@
       </el-table-column>
       <el-table-column label="#" width="80" align="center">
         <template slot-scope="scope">
-          <dialog-log-device
-            :Log="scope.row.logs"
-            :Fk="listQuery.UserId"
-            @Done="Done"
-          />
+          <dialog-log-device :Log="scope.row.logs" :Fk="listQuery.UserId" @Done="Done" />
         </template>
       </el-table-column>
     </el-table>
@@ -168,6 +126,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import DialogLogDevice from "@/components/Device/DialogLogDevice.vue";
 import waves from "@/directive/waves"; // waves directive
 import { GetLogByUserId } from "@/api/DeviceLog";
@@ -187,7 +146,7 @@ export default {
   data() {
     return {
       list: [],
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('DeviceLog_ListQuery') || null) || {
         Page: 1,
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
@@ -246,6 +205,8 @@ export default {
           this.listQuery.DateTo,
           response
         );
+        Cookies.set('DeviceLog_ListQuery', JSON.stringify(this.listQuery))
+
         this.Done(this.list);
 
         //  console.log("this.list", this.list);
@@ -309,7 +270,7 @@ export default {
               currentDate.getFullYear(),
               currentDate.getMonth(),
               currentDate.getDate() +
-                (startDate.getHours() > endDate.getHours() ? 1 : 0),
+              (startDate.getHours() > endDate.getHours() ? 1 : 0),
               endDate.getHours() + 9, // في حل اشتغل اضافي بدري ب 5 ساعات
               endDate.getMinutes()
             );
@@ -342,7 +303,7 @@ export default {
                   currentDate.getFullYear(),
                   currentDate.getMonth(),
                   currentDate.getDate() +
-                    (startDate.getHours() > endDate.getHours() ? 1 : 0),
+                  (startDate.getHours() > endDate.getHours() ? 1 : 0),
                   endDate.getHours(),
                   endDate.getMinutes()
                 ),
@@ -376,10 +337,10 @@ export default {
             parseInt(
               (Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60 * 60)) % 24
             ) +
-              Math.ceil(
-                (Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60)) % 60
-              ) /
-                100 || 0;
+            Math.ceil(
+              (Math.abs(MinMaxD[1] - MinMaxD[0]) / (1000 * 60)) % 60
+            ) /
+            100 || 0;
           //  Extra Hours && Delay Hours
           let ExtraHours = 0,
             ExtraMinute = 0,
@@ -441,15 +402,15 @@ export default {
             parseInt(
               (Math.abs(Time.getTime() - ShouldTime) / (1000 * 60)) % 60
             ) /
-              100 || 0)
+            100 || 0)
         );
       else
         return (
           parseInt((Math.abs(Time - ShouldTime) / (1000 * 60 * 60)) % 24) +
-            parseInt(
-              (Math.abs(Time.getTime() - ShouldTime) / (1000 * 60)) % 60
-            ) /
-              100 || 0
+          parseInt(
+            (Math.abs(Time.getTime() - ShouldTime) / (1000 * 60)) % 60
+          ) /
+          100 || 0
         );
     },
     handleFilter() {

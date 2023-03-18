@@ -240,6 +240,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { GetByListQ } from "@/api/Vendor";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -247,7 +248,6 @@ import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import permission from "@/directive/permission/index.js";
 
 import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import AddVendor from "@/components/Vendor/AddVendor.vue";
 import EditVendor from "@/components/Vendor/EditVendor.vue";
@@ -257,9 +257,7 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
   props: ["DblClickRow"],
-
   components: {
     StatusTag,
     NextOprations,
@@ -279,7 +277,7 @@ export default {
       listLoading: false,
       Selection: [],
       SmsBody: "",
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('Vendor_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -294,10 +292,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('Vendor_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

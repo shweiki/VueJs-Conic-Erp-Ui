@@ -3,78 +3,53 @@
     <div class="filter-container">
       <el-row type="flex">
         <el-col :span="4">
-          <el-input
-            v-model="listQuery.Any"
-            placeholder="Search By Any Acount Name Or Id"
-            class="filter-item"
-            @keyup.enter.native="handleFilter"
-          />
+          <el-input v-model="listQuery.Any" placeholder="Search By Any Acount Name Or Id" class="filter-item"
+            @keyup.enter.native="handleFilter" />
         </el-col>
         <el-col :span="8">
-          <Search-By-Date
-            :Value="[listQuery.DateFrom, listQuery.DateTo]"
-            @Set="
-              (v) => {
-                listQuery.DateFrom = v[0];
-                listQuery.DateTo = v[1];
-                handleFilter();
-              }
-            "
-          />
+          <Search-By-Date :Value="[listQuery.DateFrom, listQuery.DateTo]" @Set="
+            (v) => {
+              listQuery.DateFrom = v[0];
+              listQuery.DateTo = v[1];
+              handleFilter();
+            }
+          " />
         </el-col>
         <el-col :span="3">
-          <user-select
-            @Set="
-              (v) => {
-                listQuery.User = v;
-                handleFilter();
-              }
-            "
-          />
+          <user-select @Set="
+            (v) => {
+              listQuery.User = v;
+              handleFilter();
+            }
+          " />
         </el-col>
         <el-col :span="3">
-          <Sort-Options
-            :Value="listQuery.Sort"
-            @Set="
-              (v) => {
-                listQuery.Sort = v;
-                handleFilter();
-              }
-            "
-          />
+          <Sort-Options :Value="listQuery.Sort" @Set="
+            (v) => {
+              listQuery.Sort = v;
+              handleFilter();
+            }
+          " />
         </el-col>
         <el-col :span="6">
-          <Drawer-Print
-            style="float: left"
-            Type="ReceiveList"
-            :Data="{
-              Totals: Totals,
-              Items: list,
-              Dates: [listQuery.DateFrom, listQuery.DateTo],
-            }"
-          />
+          <Drawer-Print style="float: left" Type="ReceiveList" :Data="{
+            Totals: Totals,
+            Items: list,
+            Dates: [listQuery.DateFrom, listQuery.DateTo],
+          }" />
           <Export :list="list" />
-          <el-button
-            v-waves
-            class="filter-item"
-            type="primary"
-            icon="el-icon-search"
-            @click="handleFilter"
-          >
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
             Search
           </el-button>
         </el-col>
       </el-row>
     </div>
-    <Radio-Oprations
-      TableName="Receive"
-      @Set="
-        (v) => {
-          listQuery.Status = v;
-          handleFilter();
-        }
-      "
-    />
+    <Radio-Oprations TableName="Receive" @Set="
+      (v) => {
+        listQuery.Status = v;
+        handleFilter();
+      }
+    " />
     <el-card class="box-card">
       <el-divider direction="vertical"></el-divider>
       <span>عدد المصروفات</span>
@@ -100,28 +75,13 @@
       <el-divider direction="vertical"></el-divider>
     </el-card>
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%"
-      @sort-change="sortChange"
-      @row-dblclick="
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
+      @sort-change="sortChange" @row-dblclick="
         (row) => {
           $router.push({ path: `/Receive/Edit/${row.Id}` });
         }
-      "
-    >
-      <el-table-column
-        label="Id"
-        prop="Id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
+      ">
+      <el-table-column label="Id" prop="Id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{ row }">
           <span>{{ row.Id }}</span>
         </template>
@@ -141,13 +101,7 @@
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="ReceiveMethod"
-        sortable
-        label="طريقة الصرف"
-        width="150"
-        align="center"
-      ></el-table-column>
+      <el-table-column prop="ReceiveMethod" sortable label="طريقة الصرف" width="150" align="center"></el-table-column>
       <el-table-column label="المحرر" prop="EditorName" align="center"> </el-table-column>
 
       <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
@@ -164,28 +118,19 @@
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <Next-Oprations
-            :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="Receive"
-            @Done="handleFilter"
-          />
+          <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="Receive" @Done="handleFilter" />
           <Dialog-Action-Log TableName="Receive" :ObjId="scope.row.Id" />
           <Drawer-Print Type="Receive" :Data="scope.row" />
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="Totals.Rows > 0"
-      :total="Totals.Rows"
-      :page.sync="listQuery.Page"
-      :limit.sync="listQuery.limit"
-      @pagination="getList"
-    />
+    <pagination v-show="Totals.Rows > 0" :total="Totals.Rows" :page.sync="listQuery.Page" :limit.sync="listQuery.limit"
+      @pagination="getList" />
   </div>
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { GetByListQ } from "@/api/Receive";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -202,7 +147,6 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
   components: {
     StatusTag,
     NextOprations,
@@ -221,7 +165,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, Cash: 0, Cheque: 0 },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('Receive_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -239,10 +183,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('Receive_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

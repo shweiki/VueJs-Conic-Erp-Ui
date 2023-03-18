@@ -2,80 +2,57 @@
   <div class="app-container">
     <el-row type="flex">
       <el-col :span="4">
-        <el-input
-          v-model="listQuery.Any"
-          placeholder="Search By Any Acount Name Or Id"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
+        <el-input v-model="listQuery.Any" placeholder="Search By Any Acount Name Or Id" class="filter-item"
+          @keyup.enter.native="handleFilter" />
       </el-col>
       <el-col :span="8">
-        <Search-By-Date
-          :Value="[listQuery.DateFrom, listQuery.DateTo]"
-          @Set="
-            (v) => {
-              listQuery.DateFrom = v[0];
-              listQuery.DateTo = v[1];
-              handleFilter();
-            }
-          "
-        />
-        <Item-Search-Any
-          @Set="
-            (v) => {
-              ItemName = v.Name;
-              listQuery.ItemId = v.Id;
-              handleFilter();
-            }
-          "
-        />
+        <Search-By-Date :Value="[listQuery.DateFrom, listQuery.DateTo]" @Set="
+          (v) => {
+            listQuery.DateFrom = v[0];
+            listQuery.DateTo = v[1];
+            handleFilter();
+          }
+        " />
+        <Item-Search-Any @Set="
+          (v) => {
+            ItemName = v.Name;
+            listQuery.ItemId = v.Id;
+            handleFilter();
+          }
+        " />
         <el-tag>{{ ItemName }}</el-tag>
       </el-col>
       <el-col :span="3">
-        <user-select
-          @Set="
-            (v) => {
-              listQuery.User = v;
-              handleFilter();
-            }
-          "
-        />
+        <user-select @Set="
+          (v) => {
+            listQuery.User = v;
+            handleFilter();
+          }
+        " />
       </el-col>
       <el-col :span="3">
-        <Sort-Options
-          :Value="listQuery.Sort"
-          @Set="
-            (v) => {
-              listQuery.Sort = v;
-              handleFilter();
-            }
-          "
-        />
+        <Sort-Options :Value="listQuery.Sort" @Set="
+          (v) => {
+            listQuery.Sort = v;
+            handleFilter();
+          }
+        " />
       </el-col>
       <el-col :span="6">
         <Export :list="list" />
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleFilter"
-        >
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         </el-button>
       </el-col>
     </el-row>
 
     <el-row type="flex">
       <el-col :span="6">
-        <Radio-Oprations
-          TableName="OrderInventory"
-          @Set="
-            (v) => {
-              listQuery.Status = v;
-              handleFilter();
-            }
-          "
-      /></el-col>
+        <Radio-Oprations TableName="OrderInventory" @Set="
+          (v) => {
+            listQuery.Status = v;
+            handleFilter();
+          }
+        " /></el-col>
       <el-col v-permission="['admin']" :span="18">
         <el-divider direction="vertical"></el-divider>
         <span>عدد الطلبات</span>
@@ -85,15 +62,8 @@
       </el-col>
     </el-row>
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%"
-      @sort-change="sortChange"
-      @row-dblclick="
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
+      @sort-change="sortChange" @row-dblclick="
         (row) => {
           //  $emit('dblclick', row);
           let r = $router.resolve({
@@ -101,16 +71,8 @@
           });
           window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
         }
-      "
-    >
-      <el-table-column
-        label="Id"
-        prop="Id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
+      ">
+      <el-table-column label="Id" prop="Id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{ row }">
           <span>{{ row.Id }}</span>
         </template>
@@ -121,16 +83,8 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        prop="OrderType"
-        v-bind:label="$t('OrderInventories.OrderType')"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="Description"
-        label="ملاحظات"
-        align="center"
-      ></el-table-column>
+      <el-table-column prop="OrderType" v-bind:label="$t('OrderInventories.OrderType')" align="center"></el-table-column>
+      <el-table-column prop="Description" label="ملاحظات" align="center"></el-table-column>
 
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
@@ -139,44 +93,27 @@
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <Next-Oprations
-            :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="OrderInventory"
-            @Done="handleFilter"
-          />
+          <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="OrderInventory"
+            @Done="handleFilter" />
           <Dialog-Action-Log TableName="OrderInventory" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
         <template slot-scope="props">
           <el-table :data="props.row.InventoryMovements">
-            <el-table-column
-              prop="Name"
-              v-bind:label="$t('CashPool.Items')"
-              width="130"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="Qty"
-              v-bind:label="$t('CashPool.quantity')"
-              align="center"
-            ></el-table-column>
+            <el-table-column prop="Name" v-bind:label="$t('CashPool.Items')" width="130" align="center"></el-table-column>
+            <el-table-column prop="Qty" v-bind:label="$t('CashPool.quantity')" align="center"></el-table-column>
           </el-table>
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="Totals.Rows > 0"
-      :total="Totals.Rows"
-      :page.sync="listQuery.Page"
-      :limit.sync="listQuery.limit"
-      @pagination="getList"
-    />
+    <pagination v-show="Totals.Rows > 0" :total="Totals.Rows" :page.sync="listQuery.Page" :limit.sync="listQuery.limit"
+      @pagination="getList" />
   </div>
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { GetByItem } from "@/api/OrderInventory";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -196,7 +133,6 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
   components: {
     StatusTag,
     NextOprations,
@@ -227,7 +163,7 @@ export default {
         Discount: 0,
       },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('OrderInventoriesItems_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -245,10 +181,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
       GetByItem(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('OrderInventoriesItems_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

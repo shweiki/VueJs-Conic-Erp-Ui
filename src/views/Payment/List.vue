@@ -188,6 +188,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { GetByListQ } from "@/api/Payment";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -204,7 +205,6 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
   components: {
     StatusTag,
     NextOprations,
@@ -223,7 +223,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, Cash: 0, Cheque: 0, Visa: 0 },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('Payment_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -241,10 +241,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('Payment_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

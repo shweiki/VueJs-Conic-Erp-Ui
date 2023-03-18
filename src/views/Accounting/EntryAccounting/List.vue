@@ -2,97 +2,69 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
-        <router-link
-          class="pan-btn tiffany-btn"
-          style="float: left; padding: 10px 15px; border-radius: 6px"
-          icon="el-icon-plus"
-          to="/EntryAccounting/Create"
-          >{{ $t("Accounting.NewAccountingEntry") }}</router-link
-        >
+        <router-link class="pan-btn tiffany-btn" style="float: left; padding: 10px 15px; border-radius: 6px"
+          icon="el-icon-plus" to="/EntryAccounting/Create">{{ $t("Accounting.NewAccountingEntry") }}</router-link>
         <span>{{ $t("Accounting.AccountingEntryinquiries") }}</span>
       </div>
       <div class="filter-container">
         <el-row type="flex">
           <el-col :span="4">
-            <el-input
-              v-model="listQuery.Any"
-              placeholder="Search By Any Acount Name Or Id"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
+            <el-input v-model="listQuery.Any" placeholder="Search By Any Acount Name Or Id" class="filter-item"
+              @keyup.enter.native="handleFilter" />
           </el-col>
           <el-col :span="8">
-            <Search-By-Date
-              :Value="[listQuery.DateFrom, listQuery.DateTo]"
-              @Set="
-                (v) => {
-                  listQuery.DateFrom = v[0];
-                  listQuery.DateTo = v[1];
-                  handleFilter();
-                }
-              "
-            />
+            <Search-By-Date :Value="[listQuery.DateFrom, listQuery.DateTo]" @Set="
+              (v) => {
+                listQuery.DateFrom = v[0];
+                listQuery.DateTo = v[1];
+                handleFilter();
+              }
+            " />
           </el-col>
           <el-col :span="3">
-            <Sort-Options
-              :Value="listQuery.Sort"
-              @Set="
-                (v) => {
-                  listQuery.Sort = v;
-                  handleFilter();
-                }
-              "
-            />
+            <Sort-Options :Value="listQuery.Sort" @Set="
+              (v) => {
+                listQuery.Sort = v;
+                handleFilter();
+              }
+            " />
           </el-col>
           <el-col :span="3">
-            <user-select
-              @Set="
-                (v) => {
-                  listQuery.User = v;
-                  handleFilter();
-                }
-              "
-            />
+            <user-select @Set="
+              (v) => {
+                listQuery.User = v;
+                handleFilter();
+              }
+            " />
           </el-col>
 
           <el-col :span="5">
             <Export :list="list" />
-            <el-button
-              v-waves
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleFilter"
-            >
+            <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
               Search
             </el-button>
           </el-col>
           <el-col :span="1">
-            <DrawerPrint
-              Type="EntryAccountingList"
-              :Data="{
-                Name: Account.Name,
-                Id: Account.Id,
-                DateFrom: listQuery.DateFrom,
-                DateTo: listQuery.DateTo,
-                InventoryMovements: list,
-                TotalCredit: Totals.Credit,
-                TotalDebit: Totals.Debit,
-                TotalDebitCredit: Totals.Totals,
-                TotalRows: Totals.Rows,
-              }"
-          /></el-col>
+            <DrawerPrint Type="EntryAccountingList" :Data="{
+              Name: Account.Name,
+              Id: Account.Id,
+              DateFrom: listQuery.DateFrom,
+              DateTo: listQuery.DateTo,
+              InventoryMovements: list,
+              TotalCredit: Totals.Credit,
+              TotalDebit: Totals.Debit,
+              TotalDebitCredit: Totals.Totals,
+              TotalRows: Totals.Rows,
+            }" />
+          </el-col>
         </el-row>
       </div>
-      <Radio-Oprations
-        TableName="EntryAccounting"
-        @Set="
-          (v) => {
-            listQuery.Status = v;
-            handleFilter();
-          }
-        "
-      />
+      <Radio-Oprations TableName="EntryAccounting" @Set="
+        (v) => {
+          listQuery.Status = v;
+          handleFilter();
+        }
+      " />
       <el-divider direction="vertical"></el-divider>
       <span>عدد القيود</span>
       <el-divider direction="vertical"></el-divider>
@@ -114,36 +86,19 @@
       <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
-      <el-table
-        v-loading="listLoading"
-        :data="list"
-        fit
-        border
-        highlight-current-row
-        style="width: 100%"
-        @row-dblclick="
-          (row) => {
-            $router.push({ path: `/EntryAccounting/Edit/${row.Id}` });
-          }
-        "
-      >
-        <el-table-column
-          v-bind:label="$t('Accounting.EntryId')"
-          prop="Id"
-          width="120"
-          align="center"
-        >
+      <el-table v-loading="listLoading" :data="list" fit border highlight-current-row style="width: 100%" @row-dblclick="
+        (row) => {
+          $router.push({ path: `/EntryAccounting/Edit/${row.Id}` });
+        }
+      ">
+        <el-table-column v-bind:label="$t('Accounting.EntryId')" prop="Id" width="120" align="center">
         </el-table-column>
         <el-table-column label="التاريخ" align="center" width="140">
           <template slot-scope="{ row }">
             <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('Accounting.Notes')"
-          prop="Description"
-          align="center"
-        ></el-table-column>
+        <el-table-column v-bind:label="$t('Accounting.Notes')" prop="Description" align="center"></el-table-column>
         <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
           <template slot-scope="scope">
             <Status-Tag :Status="scope.row.Status" TableName="EntryAccounting" />
@@ -152,35 +107,19 @@
         <el-table-column width="180" align="center">
           <template slot-scope="scope">
             <Dialog-Action-Log TableName="EntryAccounting" :ObjId="scope.row.Id" />
-            <Next-Oprations
-              :ObjId="scope.row.Id"
-              :Status="scope.row.Status"
-              TableName="EntryAccounting"
-              @Done="handleFilter"
-            />
+            <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="EntryAccounting"
+              @Done="handleFilter" />
             <Drawer-Print Type="EntryAccounting" :Data="scope.row" />
           </template>
         </el-table-column>
         <el-table-column type="expand" align="center">
           <template slot-scope="props">
             <el-table :data="props.row.EntryMovements">
-              <el-table-column
-                v-bind:label="$t('Accounting.EntryId')"
-                prop="Id"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('Accounting.EntryId')" prop="Id" align="center">
               </el-table-column>
-              <el-table-column
-                v-bind:label="$t('Accounting.AccountId')"
-                prop="AccountId"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('Accounting.AccountId')" prop="AccountId" align="center">
               </el-table-column>
-              <el-table-column
-                v-bind:label="$t('Accounting.Name')"
-                prop="Name"
-                align="center"
-              >
+              <el-table-column v-bind:label="$t('Accounting.Name')" prop="Name" align="center">
               </el-table-column>
               <el-table-column label="مدين" prop="Credit" align="center">
                 <template slot-scope="scope">{{
@@ -204,6 +143,7 @@
   </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
 import { GetByListQ } from "@/api/EntryAccounting";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -241,7 +181,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, Debit: 0, Credit: 0 },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('EntryAccounting_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -256,10 +196,11 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('EntryAccounting_ListQuery', JSON.stringify(this.listQuery))
+
         this.listLoading = false;
       });
     },

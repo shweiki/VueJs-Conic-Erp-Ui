@@ -1,4 +1,4 @@
-﻿<!-- 
+﻿<!--
 تاريخ البدء والانتهاء
 + القيمة المتفق عليها
 القيمة الاجمالية = قيمة التكلفة
@@ -247,7 +247,7 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
+
   components: {
     StatusTag,
     NextOprations,
@@ -283,7 +283,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
+
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;

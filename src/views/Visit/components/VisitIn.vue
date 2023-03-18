@@ -81,7 +81,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime, TimeConvert } from "@/utils";
 
 export default {
-  name: "ComplexTable",
+
   components: {
     ButtonOprations,
   },
@@ -106,7 +106,7 @@ export default {
     TimeConvert,
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
+
       GetByStatus(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;

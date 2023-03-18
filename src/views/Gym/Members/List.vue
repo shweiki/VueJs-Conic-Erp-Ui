@@ -180,6 +180,8 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
+
 import {
   GetByListQ,
   FixPhoneNumber,
@@ -202,9 +204,7 @@ import Export from "@/components/Export";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 
 export default {
-  name: "ComplexTable",
   props: ["DblClickRow"],
-
   components: {
     StatusTag,
     NextOprations,
@@ -226,7 +226,7 @@ export default {
       listLoading: false,
       Selection: [],
       SmsBody: "",
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('Member_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -243,10 +243,11 @@ export default {
     CheckBlackListActionLogMembers,
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
+
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('Member_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

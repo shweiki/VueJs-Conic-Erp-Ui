@@ -35,7 +35,7 @@
           />
         </el-col>
         <el-col :span="6">
-         
+
           <Export :list="list" />
           <el-button
             v-waves
@@ -59,7 +59,7 @@
       </el-row>
     </div>
     <el-row :gutter="20">
-     
+
       <el-col :span="24">
         <Radio-Oprations
           TableName="OrderRestaurant"
@@ -158,7 +158,7 @@
       <el-table-column label="#" width="100" align="center">
         <template slot-scope="scope">
           <Dialog-Action-Log TableName="OrderRestaurant" :ObjId="scope.row.Id" />
-          
+
           <Next-Oprations
             :ObjId="scope.row.Id"
             :Status="scope.row.Status"
@@ -194,7 +194,7 @@ import AddOrder from "./components/AddOrder.vue";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
+
   components: {
     StatusTag,
     NextOprations,
@@ -244,7 +244,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
+
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;

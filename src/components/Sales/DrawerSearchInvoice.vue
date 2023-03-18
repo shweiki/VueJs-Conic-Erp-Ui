@@ -114,6 +114,7 @@
 </template>
 
 <script>
+
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import { GetByAny } from "@/api/SaleInvoice";
@@ -139,7 +140,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
+
       GetByAny(this.listQuery).then((response) => {
         this.list = response;
         this.listLoading = false;

@@ -229,6 +229,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { GetEXP, CalculateCostPrice } from "@/api/Item";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -239,7 +240,6 @@ import EditItem from "@/components/Item/EditItem.vue";
 import AddItem from "@/components/Item/AddItem.vue";
 
 import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
@@ -247,7 +247,6 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
   components: {
     StatusTag,
     NextOprations,
@@ -269,7 +268,7 @@ export default {
       Totals: { Rows: 0, Totals: 0, TotalIn: 0, TotalOut: 0 },
       listLoading: false,
       Selection: [],
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('EXPItem_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -288,10 +287,12 @@ export default {
 
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
+
       GetEXP(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('EXPItem_ListQuery', JSON.stringify(this.listQuery))
+
         this.listLoading = false;
       });
     },

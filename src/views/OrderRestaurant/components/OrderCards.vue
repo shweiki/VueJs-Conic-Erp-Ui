@@ -2,44 +2,28 @@
   <section class="overview-block-ptb">
     <el-row type="flex">
       <el-col :span="4">
-        <el-input
-          v-model="listQuery.Any"
-          placeholder="Search By Any  Name Or Id"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
+        <el-input v-model="listQuery.Any" placeholder="Search By Any  Name Or Id" class="filter-item"
+          @keyup.enter.native="handleFilter" />
       </el-col>
 
       <el-col :span="3">
-        <Sort-Options
-          :Value="listQuery.Sort"
-          @Set="
-            (v) => {
-              listQuery.Sort = v;
-              handleFilter();
-            }
-          "
-        />
+        <Sort-Options :Value="listQuery.Sort" @Set="
+          (v) => {
+            listQuery.Sort = v;
+            handleFilter();
+          }
+        " />
       </el-col>
       <el-col :span="14">
-        <Radio-Oprations
-          TableName="OrderRestaurant"
-          @Set="
-            (v) => {
-              listQuery.Status = v;
-              handleFilter();
-            }
-          "
-        />
+        <Radio-Oprations TableName="OrderRestaurant" @Set="
+          (v) => {
+            listQuery.Status = v;
+            handleFilter();
+          }
+        " />
       </el-col>
       <el-col :span="2">
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleFilter"
-        >
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
           Search
         </el-button>
       </el-col>
@@ -53,11 +37,7 @@
                 <el-row :gutter="20">
                   <el-col :span="8">
                     <div class="card-panel-icon-wrapper icon-people">
-                      <Status-Icon
-                        class="card-panel-icon"
-                        :Status="option.Status"
-                        TableName="OrderRestaurant"
-                      />
+                      <Status-Icon class="card-panel-icon" :Status="option.Status" TableName="OrderRestaurant" />
                     </div>
                   </el-col>
                   <el-col :span="4">
@@ -118,42 +98,24 @@
                     </div>
                   </el-col>
                 </el-row>
-                     <el-row v-if="option.Status == 2">
-                      <el-popconfirm
-                        confirm-button-text="نعم"
-                        cancel-button-text="لا, شكرا"
-                        confirm-button-type="warning"
-                        icon="el-icon-info"
-                        :title="` ${option.Id} تأكيد انتهاء محاسبة طلب رقم`"
-                        @confirm="OrdrerCheck(option.Id)"
-                      >
-                        <el-button
-                          slot="reference"
-                          type="warning"
-                          :size="$store.getters.size"
-                          >تمت المحاسبة 
-                        </el-button>
-                      </el-popconfirm>
-                    </el-row>
+                <el-row v-if="option.Status == 2">
+                  <el-popconfirm confirm-button-text="نعم" cancel-button-text="لا, شكرا" confirm-button-type="warning"
+                    icon="el-icon-info" :title="` ${option.Id} تأكيد انتهاء محاسبة طلب رقم`"
+                    @confirm="OrdrerCheck(option.Id)">
+                    <el-button slot="reference" type="warning" :size="$store.getters.size">تمت المحاسبة
+                    </el-button>
+                  </el-popconfirm>
+                </el-row>
                 <el-row v-if="$store.getters.device != 'mobile'" :gutter="24">
                   <order-delivered :Temp="option" @Done="handleFilter()" />
                   <order-details :Temp="option" />
                   <el-col :span="12" style="padding-top: 10px">
                     <div v-if="option.Status == 3">
-                      <el-popconfirm
-                        confirm-button-text="ترحيل"
-                        cancel-button-text="لا, شكرا"
-                        confirm-button-type="warning"
-                        icon="el-icon-info"
-                        :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`"
-                        @confirm="HasDone(option.Id)"
-                      >
-                        <el-button
-                          slot="reference"
-                          style="float: right"
-                          type="warning"
-                          :size="$store.getters.size"
-                          >ترحيل الطلب
+                      <el-popconfirm confirm-button-text="ترحيل" cancel-button-text="لا, شكرا"
+                        confirm-button-type="warning" icon="el-icon-info" :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`"
+                        @confirm="HasDone(option.Id)">
+                        <el-button slot="reference" style="float: right" type="warning" :size="$store.getters.size">ترحيل
+                          الطلب
                         </el-button>
                       </el-popconfirm>
                     </div>
@@ -161,20 +123,10 @@
                 </el-row>
                 <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
                   <el-col :span="12" v-if="option.Status == 3" style="padding-top: 18px">
-                    <el-popconfirm
-                      confirm-button-text="ترحيل"
-                      cancel-button-text="لا, شكرا"
-                      confirm-button-type="warning"
-                      icon="el-icon-info"
-                      :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`"
-                      @confirm="HasDone(option.Id)"
-                    >
-                      <el-button
-                        slot="reference"
-                        style="float: right"
-                        type="warning"
-                        :size="$store.getters.size"
-                        >ترحيل الطلب
+                    <el-popconfirm confirm-button-text="ترحيل" cancel-button-text="لا, شكرا" confirm-button-type="warning"
+                      icon="el-icon-info" :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`" @confirm="HasDone(option.Id)">
+                      <el-button slot="reference" style="float: right" type="warning" :size="$store.getters.size">ترحيل
+                        الطلب
                       </el-button>
                     </el-popconfirm>
                   </el-col>
@@ -187,16 +139,12 @@
         </el-row>
       </div>
     </div>
-    <pagination
-      v-show="Totals.Rows > 0"
-      :total="Totals.Rows"
-      :page.sync="listQuery.Page"
-      :limit.sync="listQuery.limit"
-      @pagination="getList"
-    />
+    <pagination v-show="Totals.Rows > 0" :total="Totals.Rows" :page.sync="listQuery.Page" :limit.sync="listQuery.limit"
+      @pagination="getList" />
   </section>
 </template>
 <script>
+import Cookies from 'js-cookie'
 import OrderDetails from "./OrderDetails.vue";
 import OrderDelivered from "./OrderDelivered.vue";
 import { GetOrderRestaurant, OrderDone, OrdrerCheckout } from "@/api/OrderRestaurant";
@@ -209,7 +157,6 @@ import OrderDeliveredMobile from "./OrderDeliveredMobile.vue";
 import OrderDetailsMobile from "./OrderDetailsMobile.vue";
 
 export default {
-  name: "OrderCards",
   components: {
     OrderDetails,
     OrderDelivered,
@@ -226,7 +173,7 @@ export default {
       list: [],
       Totals: { Rows: 0 },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('OrderCards_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -246,6 +193,7 @@ export default {
           // handle success
           this.list = res.items;
           this.Totals = res.Totals;
+          Cookies.set('OrderCards_ListQuery', JSON.stringify(this.listQuery))
           this.listLoading = false;
         })
         .catch((error) => {
@@ -276,7 +224,7 @@ export default {
         }
       });
     },
-        OrdrerCheck(id) {
+    OrdrerCheck(id) {
       OrdrerCheckout({ id: id }).then((res) => {
         if (res) {
           this.$notify({
@@ -349,6 +297,7 @@ export default {
         font-size: 12px;
         text-align: right;
       }
+
       .card-panel-time {
         line-height: 20px;
         color: rgba(0, 0, 0, 0.45);
@@ -356,12 +305,14 @@ export default {
         margin-bottom: 4px;
         text-align: right;
       }
+
       .card-panel-phone {
         text-align: left;
         line-height: 20px;
         color: rgba(0, 0, 0, 0.8);
         font-size: 12px;
       }
+
       .card-panel-id {
         text-align: left;
         line-height: 20px;
@@ -377,16 +328,20 @@ export default {
     .card-panel {
       height: 200px;
       padding-top: 5px;
+
       .card-panel-description {
         float: none;
+
         .card-panel-id {
           text-align: center;
           line-height: 25px;
         }
+
         .card-panel-name {
           text-align: center;
           line-height: 25px;
         }
+
         .card-panel-time {
           text-align: center;
           line-height: 25px;

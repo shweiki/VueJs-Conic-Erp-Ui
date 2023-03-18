@@ -5,11 +5,11 @@
         <el-col :span="2">
           <el-popover placement="right" width="400" trigger="click">
             <Item-Search-Any :ItemId="listQuery.MergeItemId" @Set="
-  (v) => {
-    //  Account = v;
-    listQuery.MergeItemId = v.Id;
-  }
-" />
+              (v) => {
+                //  Account = v;
+                listQuery.MergeItemId = v.Id;
+              }
+            " />
             <el-button type="primary" icon="fa fa-object-group" slot="reference">
               دمج
             </el-button>
@@ -19,11 +19,11 @@
       <el-row type="flex">
         <el-col :span="16">
           <Search-By-Date :Value="[listQuery.DateFrom, listQuery.DateTo]" @Set="
-  (v) => {
-    listQuery.DateFrom = v[0];
-    listQuery.DateTo = v[1];
-  }
-" />
+            (v) => {
+              listQuery.DateFrom = v[0];
+              listQuery.DateTo = v[1];
+            }
+          " />
         </el-col>
         <el-col :span="3">
           <Export :list="list" />
@@ -35,17 +35,17 @@
         </el-col>
         <el-col :span="1">
           <Drawer-Print Type="ItemMoveStatement" :Data="{
-  Name: Item.Name,
-  Id: Item.Id,
-  Code: Item.BarCode,
-  DateFrom: listQuery.DateFrom,
-  DateTo: listQuery.DateTo,
-  ItemMovement: list,
-  TotalIn: Totals.In,
-  TotalOut: Totals.Out,
-  Total: Totals.Totals,
-  TotalRows: Totals.Rows,
-}" /></el-col>
+            Name: Item.Name,
+            Id: Item.Id,
+            Code: Item.BarCode,
+            DateFrom: listQuery.DateFrom,
+            DateTo: listQuery.DateTo,
+            ItemMovement: list,
+            TotalIn: Totals.In,
+            TotalOut: Totals.Out,
+            Total: Totals.Totals,
+            TotalRows: Totals.Rows,
+          }" /></el-col>
       </el-row>
     </div>
 
@@ -88,39 +88,39 @@
         <template slot-scope="{ row }">
           <router-link v-if="row.FkObject.Type == 'SalesInvoice'" :to="'/Sales/Edit/' + row.FkObject.Id">
             <strong style="font-size: 10px; cursor: pointer">{{
-    $t("ItemMovement." + row.FkObject.Type)
-}}</strong>
+              $t("ItemMovement." + row.FkObject.Type)
+            }}</strong>
           </router-link>
           <router-link v-if="row.FkObject.Type == 'PurchaseInvoice'" :to="'/Purchases/Edit/' + row.FkObject.Id">
             <strong style="font-size: 10px; cursor: pointer">{{
-    $t("ItemMovement." + row.FkObject.Type)
-}}</strong>
+              $t("ItemMovement." + row.FkObject.Type)
+            }}</strong>
           </router-link>
           <router-link v-if="row.FkObject.Type == 'OrderInventory'" :to="'/OrderInventory/Edit/' + row.FkObject.Id">
             <strong style="font-size: 10px; cursor: pointer">{{
-    $t("ItemMovement." + row.FkObject.Type)
-}}</strong>
+              $t("ItemMovement." + row.FkObject.Type)
+            }}</strong>
           </router-link>
           <router-link v-if="row.FkObject.Type == 'WorkShop'" :to="'/WorkShop/Edit/' + row.FkObject.Id">
             <strong style="font-size: 10px; cursor: pointer">{{
-    $t("ItemMovement." + row.FkObject.Type)
-}}</strong>
+              $t("ItemMovement." + row.FkObject.Type)
+            }}</strong>
           </router-link>
         </template></el-table-column>
       <el-table-column label="الداخل" prop="In" width="80" align="center">
         <template slot-scope="scope">{{
-    scope.row.In.toFixed($store.getters.settings.ToFixed)
-}}</template>
+          scope.row.In.toFixed($store.getters.settings.ToFixed)
+        }}</template>
       </el-table-column>
       <el-table-column label="الخارج" prop="Out" width="80" align="center">
         <template slot-scope="scope">{{
-    scope.row.Out.toFixed($store.getters.settings.ToFixed)
-}}</template>
+          scope.row.Out.toFixed($store.getters.settings.ToFixed)
+        }}</template>
       </el-table-column>
       <el-table-column label="الرصيد" prop="TotalRow" width="80" align="center">
         <template slot-scope="scope">{{
-    scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
-          }}</template>
+          scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
+        }}</template>
       </el-table-column>
       <!--  <el-table-column v-bind:label="$t('Sales.Status')" width="100" align="center">
         <template slot-scope="scope">
@@ -131,6 +131,7 @@
   </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
 import { GetItemMove } from "@/api/Item";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -143,7 +144,6 @@ import { parseTime } from "@/utils";
 import Export from "@/components/Export";
 
 export default {
-  name: "ItemMoveStatement",
   props: ["Item"],
   components: {
     StatusTag,
@@ -159,7 +159,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, In: 0, Out: 0 },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('ItemMoveStatement_ListQuery') || null) || {
         DateFrom: "",
         DateTo: "",
         ItemId: this.Item.Id,
@@ -174,21 +174,19 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
       this.listQuery.ItemId = this.Item.Id;
       GetItemMove(this.listQuery).then((response) => {
         this.list = response.items.map((curr, i, array) => {
           let Total = curr.In - curr.Out;
           let lastTotal = i != 0 ? array[i - 1].TotalRow : 0;
-          console.log("lastTotal", lastTotal);
 
           curr.TotalRow += lastTotal;
-
-          console.log(curr.TotalRow);
 
           return curr;
         });
         this.Totals = response.Totals;
+        Cookies.set('ItemMoveStatement_ListQuery', JSON.stringify(this.listQuery))
+
         this.listLoading = false;
       });
     },

@@ -2,70 +2,49 @@
   <div class="app-container">
     <el-row type="flex">
       <el-col :span="4">
-        <el-input
-          v-model="listQuery.Any"
-          placeholder="Search By Any Acount Name Or Id"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
+        <el-input v-model="listQuery.Any" placeholder="Search By Any Acount Name Or Id" class="filter-item"
+          @keyup.enter.native="handleFilter" />
       </el-col>
       <el-col :span="8">
-        <Search-By-Date
-          :Value="[listQuery.DateFrom, listQuery.DateTo]"
-          @Set="
-            (v) => {
-              listQuery.DateFrom = v[0];
-              listQuery.DateTo = v[1];
-              handleFilter();
-            }
-          "
-        />
+        <Search-By-Date :Value="[listQuery.DateFrom, listQuery.DateTo]" @Set="
+          (v) => {
+            listQuery.DateFrom = v[0];
+            listQuery.DateTo = v[1];
+            handleFilter();
+          }
+        " />
       </el-col>
       <el-col :span="3">
-        <user-select
-          @Set="
-            (v) => {
-              listQuery.User = v;
-              handleFilter();
-            }
-          "
-        />
+        <user-select @Set="
+          (v) => {
+            listQuery.User = v;
+            handleFilter();
+          }
+        " />
       </el-col>
       <el-col :span="3">
-        <Sort-Options
-          :Value="listQuery.Sort"
-          @Set="
-            (v) => {
-              listQuery.Sort = v;
-              handleFilter();
-            }
-          "
-        />
+        <Sort-Options :Value="listQuery.Sort" @Set="
+          (v) => {
+            listQuery.Sort = v;
+            handleFilter();
+          }
+        " />
       </el-col>
       <el-col :span="6">
         <Drawer-Print style="float: left" Type="CashPoolList" :Data="Data" />
 
         <Export :list="list" />
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleFilter"
-        >
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         </el-button>
       </el-col>
     </el-row>
     <el-row type="flex">
       <el-col :span="24">
-        <Radio-Oprations
-          TableName="CashPool"
-          @Set="
-            (v) => {
-              listQuery.Status = v;
-            }
-          "
-      /></el-col>
+        <Radio-Oprations TableName="CashPool" @Set="
+          (v) => {
+            listQuery.Status = v;
+          }
+        " /></el-col>
     </el-row>
     <el-row type="flex">
       <el-col v-permission="['admin']" :span="24">
@@ -104,35 +83,20 @@
         <el-divider direction="vertical"></el-divider>
         <span>{{ $t("CashPool.Amount") }}</span>
         <el-divider direction="vertical"></el-divider>
-        <span
-          >{{
-            list.reduce((prev, cur) => {
-              return prev + cur.Totals.Totals;
-            }, 0)
-          }}
-          JOD</span
-        >
+        <span>{{
+          list.reduce((prev, cur) => {
+            return prev + cur.Totals.Totals;
+          }, 0)
+        }}
+          JOD</span>
         <el-divider direction="vertical"></el-divider>
       </el-col>
     </el-row>
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%"
-      @sort-change="sortChange"
-    >
-      <el-table-column
-        v-bind:label="$t('Vendors.ID')"
-        prop="Id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
+      @sort-change="sortChange">
+      <el-table-column v-bind:label="$t('Vendors.ID')" prop="Id" sortable="custom" align="center" width="80"
+        :class-name="getSortClass('id')">
         <template slot-scope="{ row }">
           <span>{{ row.Id }}</span>
         </template>
@@ -142,38 +106,19 @@
           <span>{{ row.DateTime | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('AddVendors.EditorName')"
-        prop="EditorName"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('AddVendors.EditorName')" prop="EditorName" align="center">
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('AddVendors.Description')"
-        prop="Description"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('AddVendors.Description')" prop="Description" align="center">
       </el-table-column>
 
-      <el-table-column
-        v-bind:label="$t('table.type')"
-        width="100"
-        align="center"
-        prop="Type"
-      >
+      <el-table-column v-bind:label="$t('table.type')" width="100" align="center" prop="Type">
         <template slot-scope="{ row }">
-          <router-link
-            v-if="row.Type == 'SaleInvoice'"
-            :to="'/CashPool/Edit/SaleInvoice/' + row.Id"
-          >
+          <router-link v-if="row.Type == 'SaleInvoice'" :to="'/CashPool/Edit/SaleInvoice/' + row.Id">
             <strong style="font-size: 10px; cursor: pointer">{{
               $t("CashPool." + row.Type)
             }}</strong>
           </router-link>
-          <router-link
-            v-if="row.Type == 'Payment'"
-            :to="'/CashPool/Edit/Payment/' + row.Id"
-          >
+          <router-link v-if="row.Type == 'Payment'" :to="'/CashPool/Edit/Payment/' + row.Id">
             <strong style="font-size: 10px; cursor: pointer">{{
               $t("CashPool." + row.Type)
             }}</strong>
@@ -235,28 +180,19 @@
       </el-table-column>
       <el-table-column align="center">
         <template slot-scope="scope">
-          <Next-Oprations
-            :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="CashPool"
-            @Done="handleFilter"
-          />
+          <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="CashPool" @Done="handleFilter" />
           <Drawer-Print Type="CashPool" :Data="scope.row" />
           <Dialog-Action-Log TableName="CashPool" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="Totals.Rows > 0"
-      :total="Totals.Rows"
-      :page.sync="listQuery.Page"
-      :limit.sync="listQuery.limit"
-      @pagination="getList"
-    />
+    <pagination v-show="Totals.Rows > 0" :total="Totals.Rows" :page.sync="listQuery.Page" :limit.sync="listQuery.limit"
+      @pagination="getList" />
   </div>
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { GetByListQ } from "@/api/CashPool";
 import { GetSaleInvoiceByListId } from "@/api/SaleInvoice";
 import { GetPaymentByListId } from "@/api/Payment";
@@ -279,7 +215,6 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
   components: {
     StatusTag,
     NextOprations,
@@ -308,7 +243,7 @@ export default {
         Restitution: 0,
       },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('CashPool_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -326,7 +261,7 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
+
       await GetByListQ(this.listQuery).then(async (response) => {
         this.Totals = response.Totals;
         await response.items.forEach(async (element) => {
@@ -334,8 +269,7 @@ export default {
         });
 
         this.list = await response.items;
-
-        //console.log("sdsad", this.list);
+        Cookies.set('CashPool_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

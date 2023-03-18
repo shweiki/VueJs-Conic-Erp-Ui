@@ -229,6 +229,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { GetByItem } from "@/api/SaleInvoice";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -247,7 +248,6 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
   components: {
     StatusTag,
     NextOprations,
@@ -278,7 +278,7 @@ export default {
         Discount: 0,
       },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('SaleItem_ListQuery') || null) || {
         ItemId: undefined,
         Page: 1,
         Any: "",
@@ -297,10 +297,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
       GetByItem(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('SaleItem_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

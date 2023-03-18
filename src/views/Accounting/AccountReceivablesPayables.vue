@@ -12,47 +12,31 @@
             </el-radio-group>
           </el-col>
           <el-col :span="4">
-            <el-switch
-              active-text="With Zero"
-              inactive-text="Without Zero"
-              v-model="listQuery.WithZero"
-            >
+            <el-switch active-text="With Zero" inactive-text="Without Zero" v-model="listQuery.WithZero">
             </el-switch>
           </el-col>
           <el-col :span="3">
-            <Sort-Options
-              :Value="listQuery.Sort"
-              @Set="
-                (v) => {
-                  listQuery.Sort = v;
-                  handleFilter();
-                }
-              "
-            />
+            <Sort-Options :Value="listQuery.Sort" @Set="
+              (v) => {
+                listQuery.Sort = v;
+                handleFilter();
+              }
+            " />
           </el-col>
           <el-col :span="9">
             <Export :list="list" />
-            <el-button
-              v-waves
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleFilter"
-            >
+            <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
               Search
             </el-button>
           </el-col>
           <el-col :span="1">
-            <Drawer-Print
-              Type="AccountReceivablesPayables"
-              :Data="{
-                EntryMovement: list,
-                TotalCredit: Totals.Credit,
-                TotalDebit: Totals.Debit,
-                TotalDebitCredit: Totals.Totals,
-                TotalRows: Totals.Rows,
-              }"
-          /></el-col>
+            <Drawer-Print Type="AccountReceivablesPayables" :Data="{
+              EntryMovement: list,
+              TotalCredit: Totals.Credit,
+              TotalDebit: Totals.Debit,
+              TotalDebitCredit: Totals.Totals,
+              TotalRows: Totals.Rows,
+            }" /></el-col>
         </el-row>
       </div>
 
@@ -77,28 +61,12 @@
       <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
-      <el-table
-        v-loading="listLoading"
-        :data="list"
-        fit
-        border
-        highlight-current-row
-        style="width: 100%"
-        @sort-change="sortChange"
-      >
-        <el-table-column
-          v-bind:label="$t('Accounting.Id')"
-          prop="Id"
-          width="120"
-          align="center"
-        >
+      <el-table v-loading="listLoading" :data="list" fit border highlight-current-row style="width: 100%"
+        @sort-change="sortChange">
+        <el-table-column v-bind:label="$t('Accounting.Id')" prop="Id" width="120" align="center">
         </el-table-column>
 
-        <el-table-column
-          v-bind:label="$t('Accounting.Name')"
-          prop="Name"
-          align="center"
-        ></el-table-column>
+        <el-table-column v-bind:label="$t('Accounting.Name')" prop="Name" align="center"></el-table-column>
         <el-table-column label="مدين" prop="Credit" width="100" align="center">
           <template slot-scope="scope">{{
             scope.row.TotalCredit.toFixed($store.getters.settings.ToFixed)
@@ -122,23 +90,18 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
-        v-show="Totals.Rows > 0"
-        :total="Totals.Rows"
-        :page.sync="listQuery.Page"
-        :limit.sync="listQuery.limit"
-        @pagination="getList"
-      />
+      <pagination v-show="Totals.Rows > 0" :total="Totals.Rows" :page.sync="listQuery.Page" :limit.sync="listQuery.limit"
+        @pagination="getList" />
     </el-card>
   </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
 import { GetPayables, GetReceivables } from "@/api/Account";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import permission from "@/directive/permission/index.js";
 import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
@@ -159,7 +122,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, TotalDebit: 0, TotalCredit: 0 },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('PayablesReceivables_ListQuery') || null) || {
         WithZero: false,
         Page: 1,
         Any: "",
@@ -193,6 +156,8 @@ export default {
           this.listLoading = false;
         });
       }
+      Cookies.set('PayablesReceivables_ListQuery', JSON.stringify(this.listQuery))
+
     },
     handleFilter() {
       this.listQuery.Page = 1;

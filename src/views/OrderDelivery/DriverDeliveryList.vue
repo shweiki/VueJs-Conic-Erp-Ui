@@ -138,7 +138,7 @@ import { mapGetters } from "vuex";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
+
   components: {
     StatusTag,
     NextOprations,
@@ -181,7 +181,7 @@ export default {
         name: this.name,
       };
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
+
       GetByListQByDriver({
         id: this.user.Id,
         name: this.user.name,

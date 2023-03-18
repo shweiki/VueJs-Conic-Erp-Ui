@@ -169,6 +169,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { GetByListQ, CalculateCostPrice } from "@/api/Item";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -179,13 +180,11 @@ import EditItem from "@/components/Item/EditItem";
 import AddItem from "@/components/Item/AddItem.vue";
 
 import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
   props: ["DblClickRow"],
   components: {
     StatusTag,
@@ -206,7 +205,7 @@ export default {
       Totals: { Rows: 0, Totals: 0, TotalIn: 0, TotalOut: 0 },
       listLoading: false,
       Selection: [],
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('Item_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -223,10 +222,10 @@ export default {
 
     getList() {
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('Item_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

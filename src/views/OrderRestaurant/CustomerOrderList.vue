@@ -35,7 +35,7 @@
           />
         </el-col>
         <el-col :span="6">
-          
+
           <Export :list="list" />
           <el-button
             v-waves
@@ -49,7 +49,7 @@
         </el-col>
       </el-row>
     </div>
-   
+
 
     <el-table
       v-loading="listLoading"
@@ -122,7 +122,7 @@ import { mapGetters } from "vuex";
 import Export from "@/components/Export";
 
 export default {
-  name: "ComplexTable",
+
   components: {
     StatusTag,
     NextOprations,
@@ -165,7 +165,7 @@ export default {
         name: this.name,
       };
       this.listLoading = true;
-      //    console.log("sdsad", this.listQuery);
+
       GetByListQByVendor({
         id: this.user.Id,
         name: this.user.name,
