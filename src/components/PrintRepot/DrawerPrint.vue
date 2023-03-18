@@ -1,118 +1,62 @@
 <template>
   <div>
-    <el-tooltip
-      class="item"
-      effect="dark"
-      :content="Type"
-      placement="top-start"
-    >
-      <el-button
-        v-bind:disabled="Data != null ? false : true"
-        v-bind:style="Css"
-        icon="el-icon-printer"
-        type="info"
-        :size="$store.getters.size"
-        @click="drawer = true"
-      ></el-button>
+    <el-tooltip class="item" effect="dark" :content="Type" placement="top-start">
+      <el-button v-bind:disabled="Data != null ? false : true" v-bind:style="Css" icon="el-icon-printer" type="info"
+        :size="$store.getters.size" @click="drawer = true"></el-button>
     </el-tooltip>
 
     <el-drawer size="80%" :visible.sync="drawer" @opened="getdata()">
       <template slot="title">
         <el-row type="flex">
           <el-col :span="3">
-            <el-button
-              :size="$store.getters.size"
-              type="primary"
-              icon="el-icon-plus"
-              @click="
-                let r = $router.resolve({ path: '/Reports/Create' });
-                window.open(
-                  r.href,
-                  r.route.name,
-                  $store.getters.settings.windowStyle
-                );
-              "
-          /></el-col>
+            <el-button :size="$store.getters.size" type="primary" icon="el-icon-plus" @click="
+              let r = $router.resolve({ path: '/Reports/Create' });
+            window.open(
+              r.href,
+              r.route.name,
+              $store.getters.settings.windowStyle
+            );
+                                                                                                  " /></el-col>
           <el-col :span="21">
             <ElTag type="success">{{ Type }}</ElTag>
           </el-col>
         </el-row>
       </template>
-      <el-col
-        v-bind:span="24 / Reports.length"
-        v-for="item in Reports"
-        :key="item.Id"
-      >
+      <el-col v-bind:span="24 / Reports.length" v-for="item in Reports" :key="item.Id">
         <el-row type="flex">
           <el-col :span="2">
-            <el-button
-              type="success"
-              icon="el-icon-printer"
-              @click="Print(item)"
-            />
+            <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
           </el-col>
           <el-col v-permission="['admin']" :span="2">
-            <el-button
-              class="filter-item"
-              type="primary"
-              icon="el-icon-download"
-              @click="handleDownload(item)"
-            >
+            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload(item)">
             </el-button>
           </el-col>
           <el-col v-permission="['admin']" :span="2">
-            <el-button
-              type="warning"
-              icon="el-icon-edit"
-              @click="
-                let r = $router.resolve({
-                  path: '/Reports/Edit/' + item.Id,
-                });
-                window.open(
-                  r.href,
-                  r.route.name,
-                  $store.getters.settings.windowStyle
-                );
-              "
-            />
+            <el-button type="warning" icon="el-icon-edit" @click="
+              let r = $router.resolve({
+                path: '/Reports/Edit/' + item.Id,
+              });
+            window.open(
+              r.href,
+              r.route.name,
+              $store.getters.settings.windowStyle
+            );
+                                                                                                  " />
           </el-col>
           <el-col v-permission="['admin']" :span="9">
-            <el-input
-              placeholder="Please input Email"
-              v-model="item.EmailSent"
-              class="input-with-select"
-            >
-              <el-button
-                @click="SendEmail(item)"
-                slot="append"
-                icon="el-icon-s-promotion"
-              ></el-button>
+            <el-input placeholder="Please input Email" v-model="item.EmailSent" class="input-with-select">
+              <el-button @click="SendEmail(item)" slot="append" icon="el-icon-s-promotion"></el-button>
             </el-input>
           </el-col>
           <el-col v-permission="['admin']" :span="9">
-            <el-input
-              placeholder="Please input Number as 79xxxxxxx"
-              v-model="PhoneNumber"
-              class="input-with-select"
-            >
-              <el-button
-                @click="SendWhatsApp(item)"
-                slot="append"
-                icon="el-icon-chat-round"
-                type="success"
-              ></el-button>
+            <el-input placeholder="Please input Number as 79xxxxxxx" v-model="PhoneNumber" class="input-with-select">
+              <el-button @click="SendWhatsApp(item)" slot="append" icon="el-icon-chat-round" type="success"></el-button>
             </el-input>
           </el-col>
         </el-row>
-        <iframe
-          height="800px"
-          frameborder="0"
-          style="overflow: hidden; width: 100%"
-          v-bind:id="'Report-' + item.Id"
-          class="iframeR"
-          :srcdoc="'<head><style> body {zoom: 60%;}</style></head>' + item.Html"
-          :title="item.Name"
-        ></iframe>
+        <iframe height="800px" frameborder="0" style="overflow: hidden; width: 100%" v-bind:id="'Report-' + item.Id"
+          class="iframeR" :srcdoc="'<head><style> body {zoom: 60%;}</style></head>' + item.Html"
+          :title="item.Name"></iframe>
       </el-col>
     </el-drawer>
     <img id="qr_code" style="display: none" />
@@ -146,7 +90,7 @@ export default {
   },
   watch: {
     Data(val) {
-      console.log(" Data val: =>", this.Data);
+      //   console.log(" Data val: =>", this.Data);
 
       if (val != null && val != undefined) {
         this.Reports.forEach((item, index) => {
@@ -173,10 +117,10 @@ export default {
     eval(funName, printer) {
       eval(
         "this." +
-          funName +
-          "(" +
-          JSON.stringify(this.Data) +
-          (printer ? ",`" + printer + "`)" : ")")
+        funName +
+        "(" +
+        JSON.stringify(this.Data) +
+        (printer ? ",`" + printer + "`)" : ")")
       );
     },
     Print(item) {
@@ -229,10 +173,10 @@ export default {
         .then((dataUrl) => {
           window.open(
             "https://wa.me/962" +
-              this.PhoneNumber +
-              "?public.image=" +
-              //dataUrl +
-              ""
+            this.PhoneNumber +
+            "?public.image=" +
+            //dataUrl +
+            ""
           );
         })
         .catch((error) => {
@@ -246,15 +190,22 @@ export default {
       oDoc.write("<head><title>title</title>");
       oDoc.write("</head><body >");
       oDoc.write(item.Html + "</body>");
-      console.log(oDoc.body);
+      //  console.log(oDoc.body);
       htmlToImage
         .toPng(oDoc.body)
         .then((dataUrl) => {
-          var pdf = new jsPDF("p", "mm", "a4");
-          var width = pdf.internal.pageSize.getWidth();
-          var height = pdf.internal.pageSize.getHeight();
+          let pdf = new jsPDF("p", "mm", "a4");
+          let width = pdf.internal.pageSize.getWidth();
+          let height = pdf.internal.pageSize.getHeight();
           pdf.addImage(dataUrl, "PNG", 0, 0, width, height);
-          pdf.save("Invoice #" + this.Data.Id + ".pdf");
+          let fileName = "";
+          if (this.Data.Dates) {
+            fileName = this.Data.Dates[0] + " To " + this.Data.Dates[1]
+          }
+          if (this.Data.Id) {
+            fileName = this.Data.Id
+          }
+          pdf.save(this.Type.replace(/([A-Z])/g, ' $1').trim() + " - " + fileName + ".pdf");
           oDoc.close();
         })
         .catch((error) => {
@@ -263,8 +214,8 @@ export default {
     },
     JSPM(printer, item) {
       if (printer) {
-        var oIframe = document.getElementById("ifrmPrint");
-        var oDoc = oIframe.contentWindow || oIframe.contentDocument;
+        let oIframe = document.getElementById("ifrmPrint");
+        let oDoc = oIframe.contentWindow || oIframe.contentDocument;
         if (oDoc.document) oDoc = oDoc.document;
         oDoc.write("<head><title>title</title>");
         oDoc.write("</head><body >");

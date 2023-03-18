@@ -1,8 +1,8 @@
 <template>
   <div :class="{ 'has-logo': showLogo }">
     <logo v-if="showLogo" :collapse="isCollapse" />
-    <el-scrollbar v-bind:style="{
-      backgroundImage: `url(${sidebarImage})`,
+    <el-scrollbar :style="{
+      backgroundImage: `url(${$store.getters.settings.SidebarImage})`,
     }" wrap-class="scrollbar-wrapper">
       <el-menu :default-active="activeMenu" :collapse="isCollapse" :text-color="variables.menuText" :unique-opened="false"
         :active-text-color="variables.menuActiveText" :collapse-transition="false" mode="vertical">
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 import Logo from "./Logo";
 import SidebarItem from "./SidebarItem.vue";
 import variables from "@/styles/variables.scss";
@@ -21,10 +21,6 @@ import variables from "@/styles/variables.scss";
 export default {
   components: { SidebarItem, Logo },
   computed: {
-    ...mapState({
-      sidebarImage: (state) => state.settings.SidebarImage,
-
-    }),
     ...mapGetters(["permission_routes", "sidebar"]),
     activeMenu() {
       const route = this.$route;

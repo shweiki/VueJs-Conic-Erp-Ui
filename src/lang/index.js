@@ -20,7 +20,7 @@ const messages = {
   }
 }
 export function getLanguage() {
-  const chooseLanguage = Cookies.get('language')
+  const chooseLanguage = Cookies.get('language') || 'ar'
   if (chooseLanguage) return chooseLanguage
 
   // if has not choose language
@@ -31,7 +31,7 @@ export function getLanguage() {
       return locale
     }
   }
-  return 'ar'
+  return 'en'
 }
 const i18n = new VueI18n({
   // set locale

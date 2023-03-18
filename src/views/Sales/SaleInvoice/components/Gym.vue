@@ -491,7 +491,7 @@ import permission from "@/directive/permission/index.js";
 
 // components
 import ItemsSearch from "@/components/Item/ItemsSearch";
-import ItemsCategory from "@/components/Item/ItemsCategory";
+import ItemsCategory from "@/components/Item/ItemsCategory.vue";
 import EditItem from "@/components/Item/EditItem";
 import RestOfBill from "@/components/Sales/RestOfBill";
 import RightMenu from "@/components/RightMenu";

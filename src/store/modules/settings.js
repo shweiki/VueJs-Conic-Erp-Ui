@@ -5,8 +5,7 @@ import store from '@/store'
 import { toggleClass } from "@/utils";
 import variables from '@/styles/element-variables.scss'
 
-
-
+const state = {}
 
 const mutations = {
   CHANGE_SETTING: (state, { key, value }) => {
@@ -85,7 +84,7 @@ const actions = {
 
   },
 }
-const state = {}/*{
+/*const state = {
   theme: JSON.parse(Cookies.get('theme') || null) || defaultSettings["theme"],
   size: JSON.parse(Cookies.get('size') || null) || defaultSettings["size"],
   customtheme: JSON.parse(Cookies.get('customtheme') || null) || defaultSettings["customtheme"],

@@ -73,8 +73,19 @@
         " /></el-col>
     </el-row>
 
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
-      default-expand-all>
+    <el-table v-for="row in list" :key="row.Id" v-loading="listLoading" :data="[row]" border fit highlight-current-row
+      style="width: 100%" @row-dblclick="
+        (row) => {
+          let r = $router.resolve({
+            path: '/Purchases/Edit/' + row.PurchaseInvoiceId,
+          });
+          window.open(
+            r.href,
+            r.route.name,
+            $store.getters.settings.windowStyle
+          );
+        }
+      ">
       <el-table-column v-bind:label="$t('Sales.Sequence')" prop="Id" align="center" width="80">
         <template slot-scope="{ row }">
           <span>{{ row.Id }}</span>
@@ -90,11 +101,9 @@
       </el-table-column>
       <el-table-column label="رقم فاتورة شراء" prop="PurchaseInvoiceId" align="center" width="120">
         <template slot-scope="{ row }">
-          <router-link :to="'/Purchases/Edit/' + row.PurchaseInvoiceId">
-            <strong style="font-size: 10px; cursor: pointer">{{
-              row.PurchaseInvoiceId
-            }}</strong>
-          </router-link>
+          <strong style="font-size: 10px; cursor: pointer">{{
+            row.PurchaseInvoiceId
+          }}</strong>
         </template>
       </el-table-column>
       <el-table-column v-bind:label="$t('AddVendors.Description')" prop="Description" align="center">
@@ -141,10 +150,24 @@
               </el-table-column>
               <el-table-column prop="Qty" v-bind:label="$t('CashPool.quantity')" align="center">
                 <template slot-scope="scope">{{ scope.row.Qty.toFixed($store.getters.settings.ToFixed) }}
-                </template></el-table-column>
+                </template>
+              </el-table-column>
+              <el-table-column v-bind:label="$t('CashPool.Price') + ' شراء'" align="center">
+                <template slot-scope="scope">{{
+                  scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
+                }}</template>
+              </el-table-column>
               <el-table-column label="الكمية المباعة" align="center">
                 <template slot-scope="scope">{{
                   scope.row.Total.toFixed($store.getters.settings.ToFixed)
+                }}</template>
+              </el-table-column>
+              <el-table-column v-bind:label="$t('NewPurchaseInvoice.TotalJD')" align="center">
+                <template slot-scope="scope">{{
+                  (
+                    scope.row.SellingPrice *
+                    scope.row.Total
+                  ).toFixed($store.getters.settings.ToFixed)
                 }}</template>
               </el-table-column>
               <el-table-column label="الباقي" align="center">
@@ -192,18 +215,29 @@
                       </el-table-column>
                       <el-table-column v-bind:label="$t('AddVendors.Name')" prop="VendorName" align="center">
                       </el-table-column>
-                      <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
+                      <el-table-column v-bind:label="$t('CashPool.Price') + ' بيع'" align="center">
                         <template slot-scope="scope">{{
                           scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
                         }}</template>
                       </el-table-column>
+
                       <el-table-column label="الكمية " align="center">
                         <template slot-scope="scope">{{
                           scope.row.Qty.toFixed($store.getters.settings.ToFixed)
                         }}</template>
                       </el-table-column>
+                      <el-table-column v-bind:label="$t('NewPurchaseInvoice.TotalJD')" align="center">
+                        <template slot-scope="scope">{{
+                          (
+                            scope.row.SellingPrice *
+                            scope.row.Qty
+                          ).toFixed($store.getters.settings.ToFixed)
+                        }}</template>
+                      </el-table-column>
                       <el-table-column label="الباقي" align="center">
-                        <template slot-scope="props">{{ props.row.Total }} </template>
+                        <template slot-scope="props">{{ props.row.Total.toFixed(
+                          $store.getters.settings.ToFixed
+                        ) }} </template>
                       </el-table-column>
                       <el-table-column label="#" align="center">
                         <template slot-scope="scope">
@@ -226,11 +260,12 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { GetByListQ } from "@/api/BillOfEntery";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 import UserSelect from "@/components/User/UserSelect";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import PinMovement from "./components/PinMovement.vue";
@@ -262,7 +297,7 @@ export default {
       list: [],
       Totals: { Rows: 0 },
       listLoading: false,
-      listQuery: {
+      listQuery: JSON.parse(Cookies.get('BillOfEntery_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -283,6 +318,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        Cookies.set('BillOfEntery_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },
@@ -293,3 +329,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.el-table {
+  margin-bottom: 10px;
+}
+</style>

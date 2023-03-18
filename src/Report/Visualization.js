@@ -5,7 +5,6 @@ import QRCode from 'qrcode'
 import checkPermission from "@/utils/permission";
 import { TimeConvert as TimeConvertX, MinutesConvert as MinutesConvertX } from "@/utils";
 
-let toFixed = store.getters.settings.ToFixed;
 let JsBarcode = require('jsbarcode');
 let { createCanvas } = require("canvas");
 let days = ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت"]
@@ -23,7 +22,7 @@ function handle(Data, Html) {
     if (typeof Data[key] == "function") {
       Data[key] = Data[key]()
     }
-    Html = Html.replaceAll("{{" + key + "}}", Data[key]);
+    Html = Html.replaceAll("{{" + key + "}}", Data[key] == null ? "" : Data[key]);
 
     if (Data[key] != null && typeof Data[key] == "object") {
       Object.keys(Data[key]).forEach(keyo => {
@@ -112,7 +111,15 @@ let ConvetNumberToArabicWords = nArabicWords;
 let formatDate = formatDateX;
 let TimeConvert = TimeConvertX;
 let MinutesConvert = MinutesConvertX;
-
+let Status = (s, t) => {
+  let status = store.getters.Oprations.find((obj) => {
+    return obj.TableName == t && obj.Status == s;
+  });
+  if (status) {
+    return status.ArabicOprationDescription;
+  }
+  return s;
+}
 let ToFixed = ToFixedX;
 let tr = (v) => i18n.t(v);
 let Days = (v) => days[v];
