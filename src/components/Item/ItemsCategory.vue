@@ -41,16 +41,16 @@
     </el-col>-->
     <el-col :span="24">
       <el-col
-        :xs="12"
-        :sm="8"
-        :md="6"
-        :lg="6"
-        :xl="4"
         v-for="(Item, index) in List.filter(
           (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
           //||data.MenuItem.includes(search.toLowerCase())
         )"
         :key="index"
+        :xs="12"
+        :sm="8"
+        :md="6"
+        :lg="6"
+        :xl="4"
       >
         <el-card
           class="box-card"
@@ -59,7 +59,7 @@
           :body-style="{ padding: '10px' }"
         >
           <div @click="AddItem(Item)">
-            <img v-if="WithImage" :src="Item.Avatar" class="image"/>
+            <img v-if="WithImage" :src="Item.Avatar" class="image">
 
             <div class="name">{{ Item.Name }}</div>
             <div class="price">
@@ -67,7 +67,7 @@
               JD
             </div>
           </div>
-          <!--  <el-col v-permission="['admin']"> 
+          <!--  <el-col v-permission="['admin']">
               <el-tooltip
                 v-for="(Inventory, index) in Item.InventoryQty"
                 :key="index"
@@ -109,87 +109,87 @@
   </div>
 </template>
 <script>
-import permission from "@/directive/permission/index.js";
-import { GetItemByAny } from "@/api/Item";
-import { GetFileByObjId } from "@/api/File";
-import { GetActiveMenuItem } from "@/api/MenuItem";
+import permission from '@/directive/permission/index.js'
+import { GetItemByAny } from '@/api/Item'
+import { GetFileByObjId } from '@/api/File'
+import { GetActiveMenuItem } from '@/api/MenuItem'
 
 export default {
-  name: "ItemsCategory",
+  name: 'ItemsCategory',
   directives: { permission },
-  props: ["WithImage"],
+  props: ['withImage'],
   data() {
     return {
       cats: [],
-      query: "",
-      search: "",
+      query: '',
+      search: '',
       List: [],
-      tabPosition: "top",
-      order: false,
-    };
+      tabPosition: 'top',
+      order: false
+    }
   },
   created() {
     GetActiveMenuItem()
       .then((response) => {
         // handle success
-        console.log(response);
-        this.cats = response;
-        this.query = response[0].value;
-        this.getdata();
-        this.loading = false;
+        console.log(response)
+        this.cats = response
+        this.query = response[0].value
+        this.getdata()
+        this.loading = false
       })
       .catch((error) => {
         // handle error
-        console.log(error);
-      });
+        console.log(error)
+      })
   },
   methods: {
     AddItem(item) {
-      this.$emit("add", item, 1);
+      this.$emit('add', item, 1)
     },
     focus() {
-      this.$emit("focus");
+      this.$emit('focus')
     },
     SortByName() {
-      this.order = !this.order;
+      this.order = !this.order
       this.List.sort((a, b) => {
-        var x = a.Name.toUpperCase(); // ignore upper and lowercase
-        var y = b.Name.toUpperCase(); // ignore upper and lowercase
+        var x = a.Name.toUpperCase() // ignore upper and lowercase
+        var y = b.Name.toUpperCase() // ignore upper and lowercase
         if (this.order ? x > y : x < y) {
-          return -1;
+          return -1
         }
         if (!this.order ? x > y : x < y) {
-          return 1;
+          return 1
         }
         // names must be equal
-        return 0;
-      });
-      this.focus();
+        return 0
+      })
+      this.focus()
     },
     getdata() {
-      GetItemByAny({ Any: this.query }).then((response) => {
+      GetItemByAny({ Any: this.query, IsDisplay: true }).then((response) => {
         if (this.WithImage) {
           Promise.all(response.map((item) => this.GetImageItem(item))).then(
             (responses) => (this.List = responses)
-          );
-        } else this.List = response;
-      });
+          )
+        } else this.List = response
+      })
     },
     GetImageItem(item) {
-      let defImg = this.$store.getters.CompanyInfo.Logo;
-      return new Promise(function (resolve, reject) {
-        GetFileByObjId({ TableName: "Item", ObjId: item.Id })
+      const defImg = this.$store.getters.CompanyInfo.Logo
+      return new Promise(function(resolve, reject) {
+        GetFileByObjId({ TableName: 'Item', ObjId: item.Id })
           .then((response) => {
-            response ? (item.Avatar = response.File) : (item.Avatar = defImg);
-            resolve(item);
+            response ? (item.Avatar = response.File) : (item.Avatar = defImg)
+            resolve(item)
           })
           .catch((err) => {
-            reject(err);
-          });
-      });
-    },
-  },
-};
+            reject(err)
+          })
+      })
+    }
+  }
+}
 </script>
 <style scoped>
 .price {
@@ -206,7 +206,7 @@ export default {
 .image {
   width: 100%;
   display: block;
-  height: 100px; 
+  height: 100px;
   margin-bottom: 5px;
 }
 </style>
