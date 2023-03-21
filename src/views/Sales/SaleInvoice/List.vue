@@ -95,7 +95,7 @@
   Items: list,
   Dates: [listQuery.DateFrom, listQuery.DateTo],
 }" />
-        <Export :list="list" />
+        <Export :list="list" Type="SaleInvoicesList" />
         <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         </el-button>
       </el-col>

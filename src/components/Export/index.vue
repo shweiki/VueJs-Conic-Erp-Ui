@@ -1,31 +1,14 @@
 <template>
-  <el-popover
-    v-permission="['admin']"
-    placement="bottom"
-    width="500"
-    trigger="hover"
-  >
+  <el-popover v-permission="['admin']" placement="bottom" width="500" trigger="hover">
     <FilenameOption v-model="filename" />
     <AutoWidthOption v-model="autoWidth" />
     <BookTypeOption v-model="bookType" />
 
-    <el-button
-      v-waves
-      :loading="downloadLoading"
-      class="filter-item"
-      type="primary"
-      icon="el-icon-download"
-      @click="handleDownload"
-    >
+    <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download"
+      @click="handleDownload">
     </el-button>
-    <el-button
-      class="filter-item"
-      v-bind:disabled="list[0] == null"
-      icon="el-icon-document"
-      type="primary"
-      slot="reference"
-      >{{$t("Members.Export")}}</el-button
-    >
+    <el-button class="filter-item" v-bind:disabled="list[0] == null" icon="el-icon-document" type="primary"
+      slot="reference">{{ $t("Members.Export") }}</el-button>
   </el-popover>
 </template>
 
@@ -40,7 +23,7 @@ import permission from "@/directive/permission/index.js";
 
 export default {
   name: "Export",
-  props: ["list"],
+  props: ["list", "Type"],
   directives: { waves, permission },
   components: { FilenameOption, AutoWidthOption, BookTypeOption },
   data() {
@@ -52,21 +35,23 @@ export default {
       bookType: "xlsx",
     };
   },
-  created() {},
+  created() { },
   methods: {
     handleDownload() {
-      console.log("this.list", this.list);
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2Excel").then((excel) => {
-        const tHeader = Object.keys(this.list[0]); // ['Id', 'Title', 'Author', 'Readings', 'Date']
-        const filterVal = Object.keys(this.list[0]); //['id', 'title', 'author', 'pageviews', 'display_time']
+      import("@/Report/Excel/Export2ExcelOrginal").then((excel) => {
+        const tHeader = Object.keys(this.list[0]);
+        const filterVal = Object.keys(this.list[0]);
         const list = this.list;
         let formatJson = this.formatJson(filterVal, list);
-        console.log("this.list",this.filename, this.autoWidth, this.bookType);
+        let fileName = this.Type
+        if (this.fileName) {
+          fileName += " " + this.fileName;
+        }
         excel.export_json_to_excel({
           header: tHeader,
           data: formatJson,
-          filename: this.filename,
+          filename: fileName,
           autoWidth: this.autoWidth,
           bookType: this.bookType,
         });
@@ -77,7 +62,7 @@ export default {
       return jsonData.map((v) =>
         filterVal.map((j) => {
           if (j === "timestamp") {
-            return parseTime(v[j],"{y}-{m}-{d} {h}:{i}");
+            return parseTime(v[j], "{y}-{m}-{d} {h}:{i}");
           }
           if (j === "InventoryMovements") {
             return JSON.stringify(v[j]);
@@ -86,7 +71,7 @@ export default {
             return JSON.stringify(v[j]);
           }
           if (j === "FakeDate") {
-            return parseTime(v[j],"{y}-{m}-{d} {h}:{i}");
+            return parseTime(v[j], "{y}-{m}-{d} {h}:{i}");
           } else {
             return v[j];
           }

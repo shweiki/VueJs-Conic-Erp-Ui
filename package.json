@@ -70,7 +70,7 @@
         "vue-splitpane": "^1.0.6",
         "vuedraggable": "^2.24.3",
         "vuex": "3.1.0",
-        "xlsx": "^0.18.5"
+        "xlsx": "0.14.1"
     },
     "devDependencies": {
         "@dangvanthanh/vue-clock": "^0.2.5",
