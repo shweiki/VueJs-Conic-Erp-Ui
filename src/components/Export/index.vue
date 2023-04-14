@@ -39,7 +39,7 @@ export default {
   methods: {
     handleDownload() {
       this.downloadLoading = true;
-      import("@/Report/Excel/Export2ExcelOrginal").then((excel) => {
+      import("@/report/Excel/Export2ExcelOrginal").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
         const list = this.list;

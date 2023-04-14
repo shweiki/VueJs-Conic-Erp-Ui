@@ -75,7 +75,7 @@ export default {
       loading: false,
       MembersLogs: [],
       reverse: false,
-      listQuery: JSON.parse(Cookies.get('MemberLog_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('MemberLog_ListQuery') || null) || {
         Page: 0,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -104,7 +104,7 @@ export default {
           Array.prototype.push.apply(this.MembersLogs, response);
           //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
           if (response.length == 0) this.listQuery.Page = 13;
-          Cookies.set('MemberLog_ListQuery', JSON.stringify(this.listQuery))
+          localStorage.setItem('MemberLog_ListQuery', JSON.stringify(this.listQuery))
           this.loading = false;
         })
         .catch((error) => {

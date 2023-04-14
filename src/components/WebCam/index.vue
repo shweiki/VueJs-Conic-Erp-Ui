@@ -3,37 +3,36 @@
     <el-button
       type="success"
       icon="el-icon-camera-solid"
-      circle
       @click="Visible = true"
     ></el-button>
 
-    <el-dialog style="margin-top: -13vh" title="تصوير" :visible.sync="Visible">
+    <el-dialog style="margin-top: -13vh" title="كاميرا" :visible.sync="Visible">
       <el-row type="flex">
-        <el-col :span="24">
-          <video
-            id="video-player"
-            class="video"
-            width="300"
-            height="300"
-          ></video>
+        <el-col :span="6">
+          <el-row type="flex">
+            <el-button type="primary" @click="start()">لبدء اضغط 2 مرة</el-button>
+          </el-row>
+          <el-row type="flex">
+            <el-button type="success" @click="capture()">التقاط</el-button>
+          </el-row>
+          <el-row type="flex">
+            <canvas id="canvas" class="canvas" width="640" height="480"></canvas>
+            <img :src="img" height="50" />
+          </el-row>
+        </el-col>
+        <el-col :span="18">
+          <video id="video-player" class="video" width="300" height="300"></video>
         </el-col>
       </el-row>
-      <el-row type="flex">
-        <el-button type="primary" @click="start()">لبدء اضغط 2 مرة</el-button>
-
-        <el-button type="success" @click="capture()">التقاط</el-button>
-        <canvas id="canvas" class="canvas" width="640" height="480"></canvas>
-        <img :src="img" height="50" />
-      </el-row>
+      <el-row type="flex"> </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
-        <el-button type="primary" @click="createData()">{{
+        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button type="primary" v-bind:disabled="img == null" @click="createData()">{{
           $t("AddVendors.Save")
         }}</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 <script>
@@ -79,18 +78,16 @@ export default {
         this.video.srcObject = this.stream;
 
         this.video.play();
-        console.log(this.video, this.stream);
+        //    console.log(this.video, this.stream);
       }
     },
     capture() {
       this.canvas = document.getElementById("canvas");
-      var context = this.canvas
-        .getContext("2d")
-        .drawImage(this.video, 0, 0, 640, 480);
-      this.img = canvas.toDataURL("image/png");
+      var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
+      this.img = canvas.toDataURL("image/jpeg");
     },
     createData() {
-      if (this.img != null) {
+      if (this.img) {
         let file = {
           Id: undefined,
           FileType: "image",
@@ -122,7 +119,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .video {
   background-color: #000000;
 }

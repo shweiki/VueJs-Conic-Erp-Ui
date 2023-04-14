@@ -317,8 +317,8 @@ import CashPoolDialog from "./CashPoolDialog.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import { parseTime } from "@/utils";
-import { VisualizationReportHtml, PrintReport } from "@/Report/FunctionalityReport";
-import { Send as SendEmail } from "@/api/Email";
+import { VisualizationReportHtml, PrintReport } from "@/report/FunctionalityReport";
+import { Send as SendEmailTo } from "@/api/Email";
 
 export default {
   name: "SaleInvoice",
@@ -504,7 +504,7 @@ export default {
                         Dates: [new Date(), new Date()],
                       }
                     );
-                    const ResolveSendEmail = await SendEmail({
+                    const ResolveSendEmail = await SendEmailTo({
                       to: this.$store.getters.CompanyInfo.Email,
                       subject:
                         "إغلاق صندوق " +

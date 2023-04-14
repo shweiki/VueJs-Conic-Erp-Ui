@@ -268,7 +268,7 @@ export default {
       Totals: { Rows: 0, Totals: 0, TotalIn: 0, TotalOut: 0 },
       listLoading: false,
       Selection: [],
-      listQuery: JSON.parse(Cookies.get('EXPItem_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('EXPItem_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -291,7 +291,7 @@ export default {
       GetEXP(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('EXPItem_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('EXPItem_ListQuery', JSON.stringify(this.listQuery))
 
         this.listLoading = false;
       });

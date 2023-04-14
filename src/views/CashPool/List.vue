@@ -243,7 +243,7 @@ export default {
         Restitution: 0,
       },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('CashPool_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('CashPool_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -269,7 +269,7 @@ export default {
         });
 
         this.list = await response.items;
-        Cookies.set('CashPool_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('CashPool_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

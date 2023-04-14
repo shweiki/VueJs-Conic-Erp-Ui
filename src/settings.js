@@ -28,20 +28,12 @@ module.exports = {
     AccName: "",
     AccPass: "",
   },
-  OutgoingMailServer: {
-    SecureToken: "",
-    Host: "",
-    Username: "",
-    Password: "",
-    From: "",
-  },
   errorLog: "production",
   DateTimeFormat: "yyyy-MM-dd HH:mm",
   StatusQuery: 0,
   Member: {
     CheckMemberIsExist: true,
     SsnIsRequired: false,
-
   },
   Employee: {
     CheckEmployeeIsExist: true,

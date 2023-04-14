@@ -1,8 +1,9 @@
 import request from '@/utils/RequestApi'
 import qs from 'qs';
-export function Send(data) {
+
+export function SendTo(data) {
   return request({
-    url: '/Email/Send',
+    url: '/Email/SendTo',
     method:'post',
     data: qs.stringify(data)
   })

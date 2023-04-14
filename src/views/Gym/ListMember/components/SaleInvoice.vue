@@ -2,7 +2,7 @@
   <div class="app-container" style="direction: rtl">
     <el-table
       height="250"
-      :data="List"
+      :data="ServiceInvoices"
       fit
       border
       highlight-current-row
@@ -16,11 +16,7 @@
     >
       <el-table-column label="#" prop="Id" width="120" align="center">
         <template slot="header" slot-scope="{}">
-          <el-button
-            type="primary"
-            icon="el-icon-refresh"
-            @click="getdata()"
-          ></el-button>
+          <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -29,9 +25,7 @@
         width="120"
         align="center"
       >
-        <template slot-scope="{ row }">{{
-          row.FakeDate
-        }}</template></el-table-column
+        <template slot-scope="{ row }">{{ row.FakeDate }}</template></el-table-column
       >
       <el-table-column
         v-bind:label="$t('Sales.Type')"
@@ -46,20 +40,12 @@
         width="150"
         align="center"
       ></el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Discount')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
         <template slot-scope="scope">{{
           scope.row.Discount.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Amountv')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="scope">
           {{
             scope.row.InventoryMovements.reduce((prev, cur) => {
@@ -119,38 +105,19 @@
 import checkPermission from "@/utils/permission";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
-import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
 
 export default {
   components: { StatusTag, DrawerPrint },
   props: {
-    MemberId: {
-      type: Number,
+    ServiceInvoices: {
+      type: Array,
       default: () => {
-        return undefined;
+        return null;
       },
     },
   },
-  data() {
-    return {
-      List: [],
-    };
-  },
-  created() {
-    this.getdata();
-  },
   methods: {
     checkPermission,
-    getdata() {
-      GetSaleInvoiceByMemberId({
-        Id: this.MemberId,
-        IsService: false,
-      }).then((response) => {
-        //   console.log("log :", response);
-        this.List = response.reverse();
-      });
-    },
   },
 };
 </script>
-

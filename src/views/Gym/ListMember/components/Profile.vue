@@ -90,7 +90,7 @@
           </el-tab-pane>
           <el-tab-pane label="مبيعات" name="SaleInvoice">
             <span slot="label"><i class="el-icon-refresh"></i> مبيعات</span>
-            <Sale-Invoice :MemberId="tempForm.Id" />
+            <Sale-Invoice :ServiceInvoices="ServiceInvoices"  />
           </el-tab-pane>
           <el-tab-pane label="مقبوضات" name="Payment">
             <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
@@ -194,6 +194,7 @@ export default {
       Payments: [],
       EntryMovements: [],
       ServiceInvoices: [],
+      SaleInvoices: [],
       log: [],
     };
   },
@@ -206,7 +207,7 @@ export default {
   },
   methods: {
     checkPermission,
-    getdata(val) {
+    getdata(val = this.$route.params && this.$route.params.id) {
       GetMemberById({ Id: val })
         .then((response) => {
           this.tempForm = response;
@@ -228,8 +229,14 @@ export default {
         GetPaymentsByMemberId({
           MemberId: this.tempForm.Id,
         }).then((response) => {
-          //   console.log("log :", response);
           this.Payments = response.reverse();
+        });
+        if (tab.label == "مبيعات")
+        GetSaleInvoiceByMemberId({
+          Id: this.tempForm.Id,
+          IsService: false,
+        }).then((response) => {
+          this.ServiceInvoices = response.reverse();
         });
       if (tab.label == "مالية")
         GetEntryMovementsByAccountId({

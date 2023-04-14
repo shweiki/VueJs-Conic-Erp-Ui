@@ -79,11 +79,7 @@
             },
           ]"
         >
-          <Fake-Date
-            :Value="tempForm.EndDate"
-            disabled="true"
-            type="date"
-            />
+          <Fake-Date :Value="tempForm.EndDate" :disabled="true" type="date" />
         </el-form-item>
         <el-form-item label="خصم" prop="Discount">
           <Select-Discount
@@ -114,9 +110,7 @@
         </el-form-item>
 
         <el-form-item
-          :rules="[
-            { required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' },
-          ]"
+          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -157,15 +151,11 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
-          $t("AddVendors.Cancel")
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button           :loading="EnableSave"
+ type="primary" @click="createData()">{{
+          $t("AddVendors.Save")
         }}</el-button>
-        <el-button
-          :disabled="EnableSave"
-          type="primary"
-          @click="createData()"
-          >{{ $t("AddVendors.Save") }}</el-button
-        >
       </div>
     </el-dialog>
   </div>
@@ -198,7 +188,7 @@ export default {
       Price: 0,
       Membership: {
         Description: "",
-        FullDayPrice: 45,
+        FullDayPrice: 0,
         Id: 2,
         MaxFreezeLimitDays: 6,
         MinFreezeLimitDays: 3,
@@ -223,6 +213,12 @@ export default {
         .then((response) => {
           console.log(response);
           this.tempForm = response;
+          this.tempForm.StartDate = LocalDateTime.ofInstant(
+            Instant.ofEpochMilli(new Date(this.tempForm.StartDate))
+          ).toString();
+          this.tempForm.EndDate = LocalDateTime.ofInstant(
+            Instant.ofEpochMilli(new Date(this.tempForm.EndDate))
+          ).toString();
           this.Visibles = true;
         })
         .catch((err) => {
@@ -248,7 +244,7 @@ export default {
                   this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
                 this.$notify({
                   title: "تم ",
-                  message: "تم الإضافة بنجاح",
+                  message: "تم تعديل بنجاح",
                   type: "success",
                   duration: 2000,
                 });
@@ -272,8 +268,11 @@ export default {
           : Membership.FullDayPrice;
       this.tempForm.TotalAmmount = this.Price - this.tempForm.Discount;
       //  this.tempForm.MemberId = this.MemberId;
-    //  this.tempForm.EndDate = LocalDateTime.ofInstant( Instant.ofEpochMilli(new Date(this.tempForm.StartDate))    )        .plusDays(Membership.NumberDays)
-    //    .toString();
+      // this.tempForm.EndDate = LocalDateTime.ofInstant(
+      //   Instant.ofEpochMilli(new Date(this.tempForm.StartDate))
+      // )
+      //   .plusDays(Membership.NumberDays)
+      //   .toString();
     },
     AddExtraToMembership(Days, MemberShipMovementId) {
       let MembershipMovementOrder = {

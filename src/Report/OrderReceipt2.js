@@ -1,5 +1,5 @@
 import jsPDF from "jspdf"
-import { AmiriRegular } from "@/Report/Font/Amiri-Regular.js";
+import { AmiriRegular } from "@/report/Font/Amiri-Regular.js";
 import store from '@/store'
 import JSPM from "jsprintmanager";
 import printJS from "print-js";

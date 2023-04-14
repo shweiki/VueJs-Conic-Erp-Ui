@@ -146,7 +146,7 @@ export default {
   data() {
     return {
       list: [],
-      listQuery: JSON.parse(Cookies.get('DeviceLog_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('DeviceLog_ListQuery') || null) || {
         Page: 1,
         limit: this.$store.getters.settings.LimitQurey,
         Sort: "-id",
@@ -205,7 +205,7 @@ export default {
           this.listQuery.DateTo,
           response
         );
-        Cookies.set('DeviceLog_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('DeviceLog_ListQuery', JSON.stringify(this.listQuery))
 
         this.Done(this.list);
 

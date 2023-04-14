@@ -59,3 +59,10 @@ export function GetMembershipMovementByDateIn(query) {
   })
 }
 
+export function CheckEntryAccountForMembershipMovement(query) {
+  return request({
+    url: '/MembershipMovement/CheckEntryAccountForMembershipMovement',
+    method: 'get',
+    params: query
+  })
+}

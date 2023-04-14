@@ -45,14 +45,14 @@
   </el-popover>
 </template>
 <script>
-import { SaleInvoiceLabel } from "@/Report/POSInvoice";
-import { SaleInvoiceA4 } from "@/Report/SaleInvoice";
-import { PurchaseInvoiceA4 } from "@/Report/PurchaseInvoice";
+import { SaleInvoiceLabel } from "@/report/POSInvoice";
+import { SaleInvoiceA4 } from "@/report/SaleInvoice";
+import { PurchaseInvoiceA4 } from "@/report/PurchaseInvoice";
 import printJS from "print-js";
-import T1 from "raw-loader!@/Report/Html/T1.txt";
-import { OrderReceipt } from "@/Report/OrderReceipt.js";
-import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
-import { ShawermaSheesh } from "@/Report/ShawermaSheesh";
+import T1 from "raw-loader!@/report/Html/T1.txt";
+import { OrderReceipt } from "@/report/OrderReceipt.js";
+import { OrderReceipt2 } from "@/report/OrderReceipt2.js";
+import { ShawermaSheesh } from "@/report/ShawermaSheesh";
 export default {
   name: "PrintButton",
 

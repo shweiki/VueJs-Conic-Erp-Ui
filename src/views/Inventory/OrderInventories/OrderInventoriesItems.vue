@@ -163,7 +163,7 @@ export default {
         Discount: 0,
       },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('OrderInventoriesItems_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('OrderInventoriesItems_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -184,7 +184,7 @@ export default {
       GetByItem(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('OrderInventoriesItems_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('OrderInventoriesItems_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

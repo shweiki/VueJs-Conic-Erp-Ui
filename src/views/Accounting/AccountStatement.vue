@@ -180,7 +180,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, Debit: 0, Credit: 0 },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('AccountStatement_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('AccountStatement_ListQuery') || null) || {
         DateFrom: "",
         DateTo: "",
         AccountId: undefined,
@@ -205,7 +205,7 @@ export default {
           return curr;
         });
         this.Totals = response.Totals;
-        Cookies.set('AccountStatement_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('AccountStatement_ListQuery', JSON.stringify(this.listQuery))
 
         this.listLoading = false;
       });

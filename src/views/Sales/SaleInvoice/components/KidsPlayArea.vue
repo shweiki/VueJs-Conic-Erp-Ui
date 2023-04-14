@@ -397,7 +397,7 @@ import VisitIn from "@/views/Visit/components/VisitIn";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
 import FakeDate from "@/components/Date/FakeDate";
-import { PrintReport } from "@/Report/FunctionalityReport";
+import { PrintReport } from "@/report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 

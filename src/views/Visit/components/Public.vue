@@ -203,7 +203,7 @@
 import { Create, Edit, GetById } from "@/api/Visit";
 import FakeDate from "@/components/Date/FakeDate";
 import checkPermission from "@/utils/permission";
-import { PrintReport } from "@/Report/FunctionalityReport";
+import { PrintReport } from "@/report/FunctionalityReport";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import { Now, addMinutes } from "@/utils";
 

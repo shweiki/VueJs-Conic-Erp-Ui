@@ -1,5 +1,5 @@
 const getters = {
-    baseUrl: state => state.app.baseUrl,
+    baseImagesUrl: state => state.app.baseImagesUrl,
     sidebar: state => state.app.sidebar,
     language: state => state.app.language,
     size: state => state.app.size,

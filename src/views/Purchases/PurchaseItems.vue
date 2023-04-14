@@ -201,7 +201,7 @@ export default {
       ItemName: "",
       Totals: { Rows: 0, Totals: 0, Cash: 0, Receivables: 0, Visa: 0 },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('PurchaseItem_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('PurchaseItem_ListQuery') || null) || {
         ItemId: undefined,
         Page: 1,
         Any: "",
@@ -223,7 +223,7 @@ export default {
       GetByItem(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('PurchaseItem_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('PurchaseItem_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

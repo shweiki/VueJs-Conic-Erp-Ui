@@ -173,7 +173,7 @@ export default {
       list: [],
       Totals: { Rows: 0 },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('OrderCards_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('OrderCards_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -193,7 +193,7 @@ export default {
           // handle success
           this.list = res.items;
           this.Totals = res.Totals;
-          Cookies.set('OrderCards_ListQuery', JSON.stringify(this.listQuery))
+          localStorage.setItem('OrderCards_ListQuery', JSON.stringify(this.listQuery))
           this.listLoading = false;
         })
         .catch((error) => {

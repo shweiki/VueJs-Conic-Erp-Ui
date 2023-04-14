@@ -63,9 +63,9 @@
   </div>
 </template>
 <script>
-import { OrderReceipt } from "@/Report/OrderReceipt.js";
-import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
-import { ShawermaSheesh } from "@/Report/ShawermaSheesh";
+import { OrderReceipt } from "@/report/OrderReceipt.js";
+import { OrderReceipt2 } from "@/report/OrderReceipt2.js";
+import { ShawermaSheesh } from "@/report/ShawermaSheesh";
 import printJS from "print-js";
 import JSPM from "jsprintmanager";
 import * as htmlToImage from "html-to-image";

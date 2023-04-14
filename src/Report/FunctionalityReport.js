@@ -2,12 +2,12 @@ import store from "@/store";
 import { GetReportByType } from "@/api/Report";
 import Visualization from "./Visualization";
 import * as htmlToImage from "html-to-image";
-import { Send as SendEmail } from "@/api/Email";
+import { SendTo as SendEmailTo } from "@/api/Email";
 import JSPM from "jsprintmanager";
 import download from "downloadjs";
 
-import { ShawermaSheesh as ShawermaSheeshx } from "@/Report/ShawermaSheesh";
-import { OrderReceipt as OrderReceiptx } from "@/Report/OrderReceipt";
+import { ShawermaSheesh as ShawermaSheeshx } from "@/report/ShawermaSheesh";
+import { OrderReceipt as OrderReceiptx } from "@/report/OrderReceipt";
 
 export function PrintReport(Type, Data, JSPMT = false) {
   GetReportByType({
@@ -61,7 +61,7 @@ export function SendReportByEmail(Email, Type, Data, Subject = "") {
   }).then((res) => {
     res.forEach(async (item, index) => {
       item.Html = Visualization(Data, item.Html, "Set");
-      const ResolveSendEmail = await SendEmail(
+      const ResolveSendEmail = await SendEmailTo(
         {
           to: Email,
           subject: item.Name + " - " + Subject,
@@ -70,7 +70,7 @@ export function SendReportByEmail(Email, Type, Data, Subject = "") {
       )
       this.$notify({
         title: "تم الإضافة بنجاح",
-        message: "تم ارسال " + ResolveSendEmail,
+        message: "تم ارسال ",
         type: "success",
         position: "top-left",
         duration: 3000,

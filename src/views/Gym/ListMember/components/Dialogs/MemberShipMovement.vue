@@ -163,7 +163,7 @@
           $t("AddVendors.Cancel")
         }}</el-button>
         <el-button
-          :disabled="EnableSave"
+          :loading="EnableSave"
           type="primary"
           @click="createData()"
           >{{ $t("AddVendors.Save") }}</el-button
@@ -287,20 +287,20 @@ export default {
                       AccountId: this.AccountId,
                       Debit: 0.0,
                       Credit: this.tempForm.TotalAmmount,
-                      Description: "اشتراك رقم " + response + " ",
+                      Description: "اشتراك رقم " + response.Id + " ",
                       EntryId: undefined,
                       TableName: "MembershipMovement",
-                      Fktable: response,
+                      Fktable: response.Id,
                     },
                     {
                       Id: undefined,
                       AccountId: this.InComeAccountId,
                       Debit: this.tempForm.TotalAmmount,
                       Credit: 0.0,
-                      Description: "اشتراك رقم " + response + " ",
+                      Description: "اشتراك رقم " + response.Id + " ",
                       EntryId: undefined,
                       TableName: "MembershipMovement",
-                      Fktable: response,
+                      Fktable: response.Id,
                     },
                   ],
                 }).then((res) => {

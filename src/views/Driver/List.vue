@@ -130,7 +130,7 @@ export default {
       listLoading: false,
       Selection: [],
       SmsBody: "",
-      listQuery: JSON.parse(Cookies.get('Driver_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('Driver_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -149,7 +149,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('Driver_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('Driver_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

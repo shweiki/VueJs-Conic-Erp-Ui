@@ -475,7 +475,7 @@ import VendorSelect from "@/components/Vendor/VendorSelect";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
 import FakeDate from "@/components/Date/FakeDate";
-import { PrintReport, VisualizationReportHtml } from "@/Report/FunctionalityReport";
+import { PrintReport, VisualizationReportHtml } from "@/report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import { Create as CreateDelivery, CreateWithDriver } from "@/api/OrderDelivery";

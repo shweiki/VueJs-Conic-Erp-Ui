@@ -25,6 +25,15 @@ export function GetProfilePictureByObjId(query) {
     
   })
 }
+export function FixBase64ToPathWithLoaded(query) {
+  return request({
+    url: '/Files/FixBase64ToPathWithLoaded',
+    method: 'get',
+    params:  query 
+    
+  })
+}
+
 export function GetFileByObjId(query) {
   return request({
     url: '/Files/GetFileByObjId',

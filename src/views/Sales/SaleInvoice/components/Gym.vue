@@ -506,7 +506,7 @@ import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import MemberSearchAnyDialog from "@/components/Member/MemberSearchAnyDialog.vue";
 
 import FakeDate from "@/components/Date/FakeDate.vue";
-import { PrintReport } from "@/Report/FunctionalityReport";
+import { PrintReport } from "@/report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import { GetActiveMenuItem } from "@/api/MenuItem";

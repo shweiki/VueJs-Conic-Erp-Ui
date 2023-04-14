@@ -159,7 +159,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, In: 0, Out: 0 },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('ItemMoveStatement_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('ItemMoveStatement_ListQuery') || null) || {
         DateFrom: "",
         DateTo: "",
         ItemId: this.Item.Id,
@@ -185,7 +185,7 @@ export default {
           return curr;
         });
         this.Totals = response.Totals;
-        Cookies.set('ItemMoveStatement_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('ItemMoveStatement_ListQuery', JSON.stringify(this.listQuery))
 
         this.listLoading = false;
       });

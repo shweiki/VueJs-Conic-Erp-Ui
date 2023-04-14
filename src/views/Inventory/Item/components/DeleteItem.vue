@@ -16,16 +16,16 @@
       type="danger"
       icon="el-icon-delete"
       circle
-      v-bind:disabled="MembershipMovementId == undefined"
+      v-bind:disabled="ItemId == undefined"
     ></el-button>
   </div>
 </template>
 <script>
-import { Delete } from "@/api/MembershipMovement";
+import { Delete } from "@/api/Item";
 
 export default {
   props: {
-    MembershipMovementId: {
+    ItemId: {
       type: Number,
       default: undefined,
     },
@@ -35,9 +35,9 @@ export default {
   },
   methods: {
     deleteData() {
-      if (this.MembershipMovementId) {
+      if (this.ItemId) {
         this.loading = true;
-        Delete({ Id: this.MembershipMovementId })
+        Delete({ ItemId: this.ItemId })
           .then((response) => {
             if (response) {
               this.Visible = false;
@@ -47,11 +47,13 @@ export default {
                 type: "success",
                 duration: 2000,
               });
-              this.$nextTick(() => {
-                //  this.$emit("Done");
-                this.$router.replace({
-                  path: "/redirect" + this.$route.fullPath,
-                });
+              this.$emit("Done");
+            } else {
+              this.$notify({
+                title: "لا يمكن  ",
+                message: "بسبب وجود حراكات ع صنف",
+                type: "warning",
+                duration: 2000,
               });
             }
           })

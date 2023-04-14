@@ -1,5 +1,7 @@
 // cover some element-ui styles
-
+.el-tabs__header {
+  z-index: 0;
+}
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
   font-weight: 400 !important;

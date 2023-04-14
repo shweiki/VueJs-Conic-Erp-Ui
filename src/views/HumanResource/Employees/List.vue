@@ -193,7 +193,7 @@ export default {
       listLoading: false,
       Selection: [],
       SmsBody: "",
-      listQuery: JSON.parse(Cookies.get('Employee_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('Employee_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -212,7 +212,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('Employee_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('Employee_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

@@ -9,6 +9,10 @@
   font-family: NEOSANSARABIC;
   src: url(./NEOSANSARABIC-BOLD.woff);
 }
+.el-dialog__headerbtn{
+  left: 20px;
+  right: unset;
+}
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;

@@ -8,7 +8,14 @@
         <el-button
           icon="el-icon-circle-plus-outline"
           type="primary"
-          @click="$router.push({ path: '/Item/Create' })"
+          @click="
+            () => {
+              let r = $router.resolve({
+                path: '/Item/Create',
+              });
+              window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+            }
+          "
         ></el-button>
       </el-col>
       <el-col v-permission="['admin']" :span="2">
@@ -51,9 +58,7 @@
     >
       <el-row type="flex">
         <el-col :span="3">
-          <el-button type="success" icon="el-plus" @click="AddItemByQty"
-            >Add</el-button
-          >
+          <el-button type="success" icon="el-plus" @click="AddItemByQty">Add</el-button>
         </el-col>
 
         <el-col :span="12">

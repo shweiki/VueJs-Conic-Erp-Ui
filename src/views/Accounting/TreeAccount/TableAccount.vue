@@ -158,7 +158,7 @@ export default {
         TotalDebit: 0,
       },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('TableAccount_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('TableAccount_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -179,7 +179,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('TableAccount_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('TableAccount_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

@@ -45,7 +45,7 @@
 
 <script>
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
-import { PrintReport } from "@/Report/FunctionalityReport";
+import { PrintReport } from "@/report/FunctionalityReport";
 
 export default {
   props: {

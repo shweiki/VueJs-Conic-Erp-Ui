@@ -1,9 +1,18 @@
 <template>
-  <div class="login-container" :style="{
-    backgroundImage: `url(${$store.getters.settings.loginBackground})`
-  }">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
-      label-position="left">
+  <div
+    class="login-container"
+    :style="{
+      backgroundImage: `url(${$store.getters.settings.loginBackground})`,
+    }"
+  >
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      autocomplete="on"
+      label-position="left"
+    >
       <div class="title-container">
         <h1 class="title">Login</h1>
       </div>
@@ -11,18 +20,40 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="text"
-          tabindex="1" autocomplete="on" />
+        <el-input
+          ref="username"
+          v-model="loginForm.username"
+          placeholder="Username"
+          name="username"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
       </el-form-item>
 
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+      <el-tooltip
+        v-model="capsTooltip"
+        content="Caps lock is On"
+        placement="right"
+        manual
+      >
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
-          <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
-            placeholder="Password" name="password" tabindex="2" autocomplete="on" @keyup.native="checkCapslock"
-            @blur="capsTooltip = false" @keyup.enter.native="handleLogin" />
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="Password"
+            name="password"
+            tabindex="2"
+            autocomplete="on"
+            @keyup.native="checkCapslock"
+            @blur="capsTooltip = false"
+            @keyup.enter.native="handleLogin"
+          />
         </el-form-item>
       </el-tooltip>
 
@@ -44,7 +75,7 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
-import NewUserSignUp from './components/NewUser.vue';
+import NewUserSignUp from "./components/NewUser.vue";
 export default {
   components: { NewUserSignUp },
   name: "Login",
@@ -94,10 +125,10 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
+    if (this.loginForm.username === "") {
+      this.$refs.username.focus();
+    } else if (this.loginForm.password === "") {
+      this.$refs.password.focus();
     }
   },
   destroyed() {
@@ -140,16 +171,15 @@ export default {
                 path: this.redirect || "/",
                 query: this.otherQuery,
               });
-              this.loading = false;
               this.loginFailed = "";
             })
             .catch((err) => {
               this.loginFailed = err;
+            })
+            .finally(() => {
               this.loading = false;
             });
         } else {
-          this.loading = false;
-
           console.log("error submit!!");
           return false;
         }

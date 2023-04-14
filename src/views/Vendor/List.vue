@@ -277,7 +277,7 @@ export default {
       listLoading: false,
       Selection: [],
       SmsBody: "",
-      listQuery: JSON.parse(Cookies.get('Vendor_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('Vendor_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -295,7 +295,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('Vendor_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('Vendor_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

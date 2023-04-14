@@ -278,7 +278,7 @@ export default {
         Discount: 0,
       },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('SaleItem_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('SaleItem_ListQuery') || null) || {
         ItemId: undefined,
         Page: 1,
         Any: "",
@@ -300,7 +300,7 @@ export default {
       GetByItem(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('SaleItem_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('SaleItem_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

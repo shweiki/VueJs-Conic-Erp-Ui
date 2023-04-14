@@ -11,17 +11,31 @@
         <el-popover placement="left" width="400">
           <p>{{ $t("Members.SendBy") }}</p>
           <div style="text-align: right; margin: 0">
-            <el-input type="textarea" v-model="SmsBody" :rules="[
-              {
-                required: true,
-                message: 'لايمكن ترك الخصم فارغ',
-                trigger: 'blur',
-              },
-            ]"></el-input>
-            <el-button icon="el-icon-circle-plus" type="primary" :size="$store.getters.size"
-              @click="SendSms()">SMS</el-button>
-            <el-button icon="el-icon-circle-plus" type="primary" :size="$store.getters.size" @click="SendEmail()">{{
-              $t("Vendors.Email") }}</el-button>
+            <el-input
+              type="textarea"
+              v-model="SmsBody"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك الخصم فارغ',
+                  trigger: 'blur',
+                },
+              ]"
+            ></el-input>
+            <el-button
+              icon="el-icon-circle-plus"
+              type="primary"
+              :size="$store.getters.size"
+              @click="SendSms()"
+              >SMS</el-button
+            >
+            <el-button
+              icon="el-icon-circle-plus"
+              type="primary"
+              :size="$store.getters.size"
+              @click="SendEmail()"
+              >{{ $t("Vendors.Email") }}</el-button
+            >
           </div>
           <el-button icon="el-icon-circle-plus" slot="reference">{{
             $t("Members.SendSMS")
@@ -35,37 +49,56 @@
         </el-col>
         <el-row type="flex">
           <el-col :span="12">
-            <el-input v-model="listQuery.Any" v-bind:placeholder="$t('Members.SearchAll')" class="filter-item"
-              @keyup.enter.native="handleFilter" />
+            <el-input
+              v-model="listQuery.Any"
+              v-bind:placeholder="$t('Members.SearchAll')"
+              class="filter-item"
+              @keyup.enter.native="handleFilter"
+            />
           </el-col>
           <el-col :span="3">
-            <Sort-Options :Value="listQuery.Sort" @Set="
-              (v) => {
-                listQuery.Sort = v;
-                handleFilter();
-              }
-            " />
+            <Sort-Options
+              :Value="listQuery.Sort"
+              @Set="
+                (v) => {
+                  listQuery.Sort = v;
+                  handleFilter();
+                }
+              "
+            />
           </el-col>
           <el-col :span="6">
             <Export :list="list" />
             <el-col :span="1">
-              <drawer-print Type="MemberList" :Data="{
-                Totals: Totals,
-                Items: list,
-              }" />
+              <drawer-print
+                Type="MemberList"
+                :Data="{
+                  Totals: Totals,
+                  Items: list,
+                }"
+              />
             </el-col>
-            <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+            <el-button
+              v-waves
+              class="filter-item"
+              type="primary"
+              icon="el-icon-search"
+              @click="handleFilter"
+            >
               {{ $t("Members.Search") }}
             </el-button>
           </el-col>
         </el-row>
         <el-col :span="24">
-          <Radio-Oprations TableName="Member" @Set="
-            (v) => {
-              listQuery.Status = v;
-              handleFilter();
-            }
-          " />
+          <Radio-Oprations
+            TableName="Member"
+            @Set="
+              (v) => {
+                listQuery.Status = v;
+                handleFilter();
+              }
+            "
+          />
         </el-col>
       </div>
 
@@ -79,33 +112,38 @@
 
           <span>{{ $t("Vendors.TotalCredit") }}</span>
           <el-divider direction="vertical"></el-divider>
-          <span>{{
-            Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
-          }}
-            JOD</span>
+          <span
+            >{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+          >
           <el-divider direction="vertical"></el-divider>
 
           <span>{{ $t("Vendors.TotalDebit") }}</span>
           <el-divider direction="vertical"></el-divider>
-          <span>{{
-            Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
-          }}
-            JOD</span>
+          <span
+            >{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+          >
           <el-divider direction="vertical"></el-divider>
 
           <span>{{ $t("MinOrd.Balance") }}</span>
           <el-divider direction="vertical"></el-divider>
-          <span>{{
-            Totals.Totals.toFixed($store.getters.settings.ToFixed)
-          }}
-            JOD</span>
+          <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
           <el-divider direction="vertical"></el-divider>
         </el-col>
       </el-row>
     </el-card>
 
-    <el-table v-loading="listLoading" :data="list" border fit height="400" highlight-current-row style="width: 100%"
-      @sort-change="sortChange" ref="multipleTable" @selection-change="handleSelectionChange" @row-dblclick="
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      height="400"
+      highlight-current-row
+      style="width: 100%"
+      @sort-change="sortChange"
+      ref="multipleTable"
+      @selection-change="handleSelectionChange"
+      @row-dblclick="
         (row) => {
           if (DblClickRow == 'AddAsRow') {
             $emit('dblclick', row);
@@ -113,17 +151,20 @@
             let r = $router.resolve({
               path: '/Gym/Edit/' + row.Id,
             });
-            window.open(
-              r.href,
-              r.route.name,
-              $store.getters.settings.windowStyle
-            );
+            window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
           }
         }
-      ">
+      "
+    >
       <el-table-column type="selection" width="55" align="center"></el-table-column>
-      <el-table-column v-bind:label="$t('Vendors.ID')" prop="Id" sortable="custom" align="center" width="80"
-        :class-name="getSortClass('id')">
+      <el-table-column
+        v-bind:label="$t('Vendors.ID')"
+        prop="Id"
+        sortable="custom"
+        align="center"
+        width="80"
+        :class-name="getSortClass('id')"
+      >
         <template slot-scope="{ row }">
           <span>{{ row.Id }}</span>
         </template>
@@ -131,21 +172,42 @@
 
       <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
-      <el-table-column v-bind:label="$t('Members.Phone1')" prop="PhoneNumber1" width="120"></el-table-column>
+      <el-table-column
+        v-bind:label="$t('Members.Phone1')"
+        prop="PhoneNumber1"
+        width="120"
+      ></el-table-column>
       <el-table-column width="150" v-bind:label="$t('Visit.LastVisit')" align="center">
         <template slot-scope="scope">
           <last-log :UserId="scope.row.Id" TableName="Member" />
         </template>
       </el-table-column>
-      <el-table-column prop="MembershipsCount" v-bind:label="$t('MemberList.MembershipCount')" width="120" align="center">
+      <el-table-column
+        prop="MembershipsCount"
+        v-bind:label="$t('MemberList.MembershipCount')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{ scope.row.MembershipsCount }}</template>
       </el-table-column>
-      <el-table-column prop="totalCredit" sortable v-bind:label="$t('Account.Credit')" width="120" align="center">
+      <el-table-column
+        prop="totalCredit"
+        sortable
+        v-bind:label="$t('Account.Credit')"
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{
           scope.row.TotalCredit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.Debit')" prop="totalDebit" sortable width="120" align="center">
+      <el-table-column
+        v-bind:label="$t('Account.Debit')"
+        prop="totalDebit"
+        sortable
+        width="120"
+        align="center"
+      >
         <template slot-scope="scope">{{
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
@@ -169,24 +231,24 @@
               <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="Member" @Done="handleFilter" />
             </el-col>-->
             <el-col :span="24">
-              <Dialog-Action-Log TableName="Member" :ObjId="scope.row.Id" /></el-col>
+              <Dialog-Action-Log TableName="Member" :ObjId="scope.row.Id"
+            /></el-col>
           </el-row>
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="Totals.Rows > 0" :total="Totals.Rows" :page.sync="listQuery.Page" :limit.sync="listQuery.limit"
-      @pagination="getList" />
+    <pagination
+      v-show="Totals.Rows > 0"
+      :total="Totals.Rows"
+      :page.sync="listQuery.Page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
   </div>
 </template>
 
 <script>
-import Cookies from 'js-cookie'
-
-import {
-  GetByListQ,
-  FixPhoneNumber,
-  CheckBlackListActionLogMembers,
-} from "@/api/Member";
+import { GetByListQ, FixPhoneNumber, CheckBlackListActionLogMembers } from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
@@ -226,7 +288,7 @@ export default {
       listLoading: false,
       Selection: [],
       SmsBody: "",
-      listQuery: JSON.parse(Cookies.get('Member_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem("Member_ListQuery") || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -247,7 +309,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('Member_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem("Member_ListQuery", JSON.stringify(this.listQuery));
         this.listLoading = false;
       });
     },

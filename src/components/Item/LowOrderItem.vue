@@ -171,7 +171,7 @@ export default {
       Totals: { Rows: 0, Totals: 0, TotalIn: 0, TotalOut: 0 },
       listLoading: false,
       Selection: [],
-      listQuery: JSON.parse(Cookies.get('LowOrderItem_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('LowOrderItem_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -192,7 +192,7 @@ export default {
       GetLowOrder(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('LowOrderItem_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('LowOrderItem_ListQuery', JSON.stringify(this.listQuery))
 
 
         this.listLoading = false;

@@ -11,6 +11,8 @@
             <el-button type="success" @click="CheckUpdate">Check UpDate</el-button>
             <el-button type="success" @click="RestSetting">Rest Defualt Setting</el-button>
             <el-button type="success" @click="getPrinterDevice">get Printer Device</el-button>
+            <el-button type="success" @click="FixBase64ToPathWithLoaded">Fix Base64 To Path With Loaded</el-button>
+            <el-button type="success" @click="CheckEntryAccountForMembershipMovement">Check Entry Account For Membership Movement</el-button>
           </div>
           <el-row type="flex">
             <el-col :span="8">
@@ -108,6 +110,8 @@
 import { CheckUpdate, RestDefualtSetting } from "@/api/Setting";
 import Settings from "@/layout/components/Settings/index";
 import getPrinterDevice from "@/utils/get-printers";
+import { FixBase64ToPathWithLoaded } from "@/api/File";
+import { CheckEntryAccountForMembershipMovement } from "@/api/MembershipMovement";
 
 export default {
   components: { Settings },
@@ -278,8 +282,19 @@ export default {
   },
   methods: {
     getPrinterDevice,
+    
     RestSetting() {
       RestDefualtSetting().then((res) => {
+        if (res) location.reload();
+      });
+    },
+    FixBase64ToPathWithLoaded() {
+      FixBase64ToPathWithLoaded().then((res) => {
+        if (res) location.reload();
+      });
+    },
+    CheckEntryAccountForMembershipMovement() {
+      CheckEntryAccountForMembershipMovement().then((res) => {
         if (res) location.reload();
       });
     },

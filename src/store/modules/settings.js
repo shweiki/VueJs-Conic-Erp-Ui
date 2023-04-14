@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie'
 import defaultSettings from '@/settings'
 import { Edit, GetSetting } from '@/api/Setting'
 import store from '@/store'
@@ -84,52 +83,7 @@ const actions = {
 
   },
 }
-/*const state = {
-  theme: JSON.parse(Cookies.get('theme') || null) || defaultSettings["theme"],
-  size: JSON.parse(Cookies.get('size') || null) || defaultSettings["size"],
-  customtheme: JSON.parse(Cookies.get('customtheme') || null) || defaultSettings["customtheme"],
-  showSettings: JSON.parse(Cookies.get('showSettings') || null) || defaultSettings["showSettings"],
-  tagsView: JSON.parse(Cookies.get('tagsView') || null) || defaultSettings["tagsView"],
-  CashDrawerCOM: JSON.parse(Cookies.get('CashDrawerCOM') || null) || defaultSettings["CashDrawerCOM"],
-  fixedHeader: JSON.parse(Cookies.get('fixedHeader') || null) || defaultSettings["fixedHeader"],
-  SidebarImage: JSON.parse(Cookies.get('SidebarImage') || null) || defaultSettings["SidebarImage"],
-  loginBackground: JSON.parse(Cookies.get('loginBackground') || null) || defaultSettings["loginBackground"],
-  showSidebar: JSON.parse(Cookies.get('showSidebar') || null) || defaultSettings["showSidebar"],
-  sidebarLogo: JSON.parse(Cookies.get('sidebarLogo') || null) || defaultSettings["sidebarLogo"],
-  sidebarOpen: JSON.parse(Cookies.get('sidebarOpen') || null) || defaultSettings["sidebarOpen"],
-  showNavbar: JSON.parse(Cookies.get('showNavbar') || null) || defaultSettings["showNavbar"],
-  showBarcode: JSON.parse(Cookies.get('showBarcode') || null) || defaultSettings["showBarcode"],
-  showRestOfBill: JSON.parse(Cookies.get('showRestOfBill') || null) || defaultSettings["showRestOfBill"],
-  BarcodeIsId: JSON.parse(Cookies.get('BarcodeIsId') || null) || defaultSettings["BarcodeIsId"],
-  WithOutCheckItemIsExist: JSON.parse(Cookies.get('WithOutCheckItemIsExist') || null) || defaultSettings["WithOutCheckItemIsExist"],
-  OrderIsAutomatic: JSON.parse(Cookies.get('OrderIsAutomatic') || null) || defaultSettings["OrderIsAutomatic"],
-  ToFixed: JSON.parse(Cookies.get('ToFixed') || null) || defaultSettings["ToFixed"],
-  LimitQurey: JSON.parse(Cookies.get('LimitQurey') || null) || defaultSettings["LimitQurey"],
-  LimitGetInvoice: JSON.parse(Cookies.get('LimitGetInvoice') || null) || defaultSettings["LimitGetInvoice"],
-  PaymentMethods: JSON.parse(Cookies.get('PaymentMethods') || null) || defaultSettings["PaymentMethods"],
-  Sms: JSON.parse(Cookies.get('Sms') || null) || defaultSettings["Sms"],
-  OutgoingMailServer: JSON.parse(Cookies.get('OutgoingMailServer') || null) || defaultSettings["OutgoingMailServer"],
-  errorLog: JSON.parse(Cookies.get('errorLog') || null) || defaultSettings["errorLog"],
-  DateTimeFormat: JSON.parse(Cookies.get('DateTimeFormat') || null) || defaultSettings["DateTimeFormat"],
-  StatusQuery: JSON.parse(Cookies.get('StatusQuery') || null) || defaultSettings["StatusQuery"],
-  Member: JSON.parse(Cookies.get('Member') || null) || defaultSettings["Member"],
-  Employee: JSON.parse(Cookies.get('Employee') || null) || defaultSettings["Employee"],
-  Dashboard: JSON.parse(Cookies.get('Dashboard') || null) || defaultSettings["Dashboard"],
-  PointOfSale: JSON.parse(Cookies.get('PointOfSale') || null) || defaultSettings["PointOfSale"],
-  Purchase: JSON.parse(Cookies.get('Purchase') || null) || defaultSettings["Purchase"],
-  CashPoolLayout: JSON.parse(Cookies.get('CashPoolLayout') || null) || defaultSettings["CashPoolLayout"],
-  WorkShopLayout: JSON.parse(Cookies.get('WorkShopLayout') || null) || defaultSettings["WorkShopLayout"],
-  Payment: JSON.parse(Cookies.get('Payment') || null) || defaultSettings["Payment"],
-  Receive: JSON.parse(Cookies.get('Receive') || null) || defaultSettings["Receive"],
-  MembershipMovement: JSON.parse(Cookies.get('MembershipMovement') || null) || defaultSettings["MembershipMovement"],
-  Visit: JSON.parse(Cookies.get('Visit') || null) || defaultSettings["Visit"],
-  timeQuery: JSON.parse(Cookies.get('timeQuery') || null) || defaultSettings["timeQuery"],
-  printers: JSON.parse(Cookies.get('printers') || null) || defaultSettings["printers"],
-  triger: JSON.parse(Cookies.get('triger') || null) || defaultSettings["triger"],
-  windowStyle: JSON.parse(Cookies.get('windowStyle') || null) || defaultSettings["windowStyle"],
-  pickerOptions: JSON.parse(Cookies.get('pickerOptions') || null) || defaultSettings["pickerOptions"],
-  ItemMoveDec: JSON.parse(Cookies.get('ItemMoveDec') || null) || defaultSettings["ItemMoveDec"]
-}*/
+
 export default {
   namespaced: true,
   state,

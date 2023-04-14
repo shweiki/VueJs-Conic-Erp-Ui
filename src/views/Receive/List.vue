@@ -165,7 +165,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, Cash: 0, Cheque: 0 },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('Receive_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('Receive_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -186,7 +186,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('Receive_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('Receive_ListQuery', JSON.stringify(this.listQuery))
         this.listLoading = false;
       });
     },

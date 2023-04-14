@@ -122,7 +122,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, TotalDebit: 0, TotalCredit: 0 },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('PayablesReceivables_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('PayablesReceivables_ListQuery') || null) || {
         WithZero: false,
         Page: 1,
         Any: "",
@@ -156,7 +156,7 @@ export default {
           this.listLoading = false;
         });
       }
-      Cookies.set('PayablesReceivables_ListQuery', JSON.stringify(this.listQuery))
+      localStorage.setItem('PayablesReceivables_ListQuery', JSON.stringify(this.listQuery))
 
     },
     handleFilter() {

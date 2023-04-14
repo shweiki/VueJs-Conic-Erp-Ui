@@ -6,6 +6,7 @@ import defaultSettings from '@/settings'
 const { size } = defaultSettings
 
 const state = {
+  baseImagesUrl:process.env.VUE_APP_BASE_API + "/images",
   sidebar: {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false

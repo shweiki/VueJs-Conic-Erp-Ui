@@ -1,22 +1,29 @@
 <template>
   <div>
     <el-tooltip class="item" effect="dark" :content="Type" placement="top-start">
-      <el-button v-bind:disabled="Data != null ? false : true" v-bind:style="Css" icon="el-icon-printer" type="info"
-        :size="$store.getters.size" @click="drawer = true"></el-button>
+      <el-button
+        v-bind:disabled="Data != null ? false : true"
+        v-bind:style="Css"
+        icon="el-icon-printer"
+        type="info"
+        :size="$store.getters.size"
+        @click="drawer = true"
+      ></el-button>
     </el-tooltip>
 
     <el-drawer size="80%" :visible.sync="drawer" @opened="getdata()">
       <template slot="title">
         <el-row type="flex">
           <el-col :span="3">
-            <el-button :size="$store.getters.size" type="primary" icon="el-icon-plus" @click="
-              let r = $router.resolve({ path: '/Reports/Create' });
-            window.open(
-              r.href,
-              r.route.name,
-              $store.getters.settings.windowStyle
-            );
-                                                                                                  " /></el-col>
+            <el-button
+              :size="$store.getters.size"
+              type="primary"
+              icon="el-icon-plus"
+              @click="
+                let r = $router.resolve({ path: '/Reports/Create' });
+                window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+              "
+          /></el-col>
           <el-col :span="21">
             <ElTag type="success">{{ Type }}</ElTag>
           </el-col>
@@ -28,52 +35,80 @@
             <el-button type="success" icon="el-icon-printer" @click="Print(item)" />
           </el-col>
           <el-col v-permission="['admin']" :span="2">
-            <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload(item)">
+            <el-button
+              class="filter-item"
+              type="primary"
+              icon="el-icon-download"
+              @click="handleDownload(item)"
+            >
             </el-button>
           </el-col>
           <el-col v-permission="['admin']" :span="2">
-            <el-button type="warning" icon="el-icon-edit" @click="
-              let r = $router.resolve({
-                path: '/Reports/Edit/' + item.Id,
-              });
-            window.open(
-              r.href,
-              r.route.name,
-              $store.getters.settings.windowStyle
-            );
-                                                                                                  " />
+            <el-button
+              type="warning"
+              icon="el-icon-edit"
+              @click="
+                let r = $router.resolve({
+                  path: '/Reports/Edit/' + item.Id,
+                });
+                window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+              "
+            />
           </el-col>
           <el-col v-permission="['admin']" :span="9">
-            <el-input placeholder="Please input Email" v-model="item.EmailSent" class="input-with-select">
-              <el-button @click="SendEmail(item)" slot="append" icon="el-icon-s-promotion"></el-button>
+            <el-input
+              placeholder="Please input Email"
+              v-model="item.EmailSent"
+              class="input-with-select"
+            >
+              <el-button
+                @click="SendEmail(item)"
+                slot="append"
+                icon="el-icon-s-promotion"
+              ></el-button>
             </el-input>
           </el-col>
           <el-col v-permission="['admin']" :span="9">
-            <el-input placeholder="Please input Number as 79xxxxxxx" v-model="PhoneNumber" class="input-with-select">
-              <el-button @click="SendWhatsApp(item)" slot="append" icon="el-icon-chat-round" type="success"></el-button>
+            <el-input
+              placeholder="Please input Number as 79xxxxxxx"
+              v-model="PhoneNumber"
+              class="input-with-select"
+            >
+              <el-button
+                @click="SendWhatsApp(item)"
+                slot="append"
+                icon="el-icon-chat-round"
+                type="success"
+              ></el-button>
             </el-input>
           </el-col>
         </el-row>
-        <iframe height="800px" frameborder="0" style="overflow: hidden; width: 100%" v-bind:id="'Report-' + item.Id"
-          class="iframeR" :srcdoc="'<head><style> body {zoom: 60%;}</style></head>' + item.Html"
-          :title="item.Name"></iframe>
+        <iframe
+          height="800px"
+          frameborder="0"
+          style="overflow: hidden; width: 100%"
+          v-bind:id="'Report-' + item.Id"
+          class="iframeR"
+          :srcdoc="'<head><style> body {zoom: 60%;}</style></head>' + item.Html"
+          :title="item.Name"
+        ></iframe>
       </el-col>
     </el-drawer>
     <img id="qr_code" style="display: none" />
   </div>
 </template>
 <script>
-import { OrderReceipt } from "@/Report/OrderReceipt.js";
-import { OrderReceipt2 } from "@/Report/OrderReceipt2.js";
-import { ShawermaSheesh } from "@/Report/ShawermaSheesh";
-import Visualization from "@/Report/Visualization.js";
+import { OrderReceipt } from "@/report/OrderReceipt.js";
+import { OrderReceipt2 } from "@/report/OrderReceipt2.js";
+import { ShawermaSheesh } from "@/report/ShawermaSheesh";
+import Visualization from "@/report/Visualization.js";
 import jsPDF from "jspdf";
 
 import JSPM from "jsprintmanager";
 import * as htmlToImage from "html-to-image";
 import { GetReportByType } from "@/api/Report";
 
-import { Send as SendEmail } from "@/api/Email";
+import { SendTo as SendEmailTo } from "@/api/Email";
 
 import permission from "@/directive/permission/index.js";
 
@@ -106,6 +141,9 @@ export default {
       }).then((res) => {
         this.Reports = res;
         this.Reports.forEach((item, index) => {
+          if (!item.EmailSent) {
+            item.EmailSent = this.$store.getters.CompanyInfo.Email;
+          }
           item.Html = this.Visualization(this.Data, item.Html, "Set");
         });
       });
@@ -117,10 +155,10 @@ export default {
     eval(funName, printer) {
       eval(
         "this." +
-        funName +
-        "(" +
-        JSON.stringify(this.Data) +
-        (printer ? ",`" + printer + "`)" : ")")
+          funName +
+          "(" +
+          JSON.stringify(this.Data) +
+          (printer ? ",`" + printer + "`)" : ")")
       );
     },
     Print(item) {
@@ -147,17 +185,26 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      const ResolveSendEmail = await SendEmail({
+      const ResolveSendEmail = await SendEmailTo({
         to: item.EmailSent,
-        subject: "From Conic Erp App " + item.Name + "",
+        subject: "From Conic Erp" + item.Name + "",
         body: item.Html,
       });
-      this.$notify({
-        title: "تم ",
-        message: "تم ارسال " + ResolveSendEmail,
-        type: "success",
-        duration: 20000,
-      });
+      if (ResolveSendEmail) {
+        this.$notify({
+          title: "تم ",
+          message: "تم ارسال ",
+          type: "success",
+          duration: 20000,
+        });
+      } else {
+        this.$notify({
+          title: "خطأ ",
+          message: "خطأ في ارسال ",
+          type: "error",
+          duration: 20000,
+        });
+      }
       loading.close();
     },
     SendWhatsApp(item) {
@@ -173,10 +220,10 @@ export default {
         .then((dataUrl) => {
           window.open(
             "https://wa.me/962" +
-            this.PhoneNumber +
-            "?public.image=" +
-            //dataUrl +
-            ""
+              this.PhoneNumber +
+              "?public.image=" +
+              //dataUrl +
+              ""
           );
         })
         .catch((error) => {
@@ -200,12 +247,14 @@ export default {
           pdf.addImage(dataUrl, "PNG", 0, 0, width, height);
           let fileName = "";
           if (this.Data.Dates) {
-            fileName = this.Data.Dates[0] + " To " + this.Data.Dates[1]
+            fileName = this.Data.Dates[0] + " To " + this.Data.Dates[1];
           }
           if (this.Data.Id) {
-            fileName = this.Data.Id
+            fileName = this.Data.Id;
           }
-          pdf.save(this.Type.replace(/([A-Z])/g, ' $1').trim() + " - " + fileName + ".pdf");
+          pdf.save(
+            this.Type.replace(/([A-Z])/g, " $1").trim() + " - " + fileName + ".pdf"
+          );
           oDoc.close();
         })
         .catch((error) => {

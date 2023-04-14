@@ -59,7 +59,7 @@
 
 <script>
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-import { DownloadReportAsImage, ReportAsDataUrl } from "@/Report/FunctionalityReport";
+import { DownloadReportAsImage, ReportAsDataUrl } from "@/report/FunctionalityReport";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import UploadExcelComponent from "@/components/UploadExcel/index.vue";

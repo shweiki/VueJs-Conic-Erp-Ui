@@ -23,8 +23,9 @@ import 'aos/dist/aos.css' // You can also use <link> for styles
 // ..
 if (process.env.NODE_ENV !== "development") {
   console.log = function () { };
-}
-store.dispatch('settings/GetSetting').then(res => {
+}           
+         store.dispatch('settings/GetSetting').then(res => {});
+
   Vue.use(VueNativeNotification, {
     // Automatic permission request before
     // showing notification (default: true)
@@ -75,5 +76,3 @@ store.dispatch('settings/GetSetting').then(res => {
     i18n,
     render: h => h(App)
   })
-})
-

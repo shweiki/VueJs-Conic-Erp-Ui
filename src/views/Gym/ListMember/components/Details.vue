@@ -31,8 +31,12 @@
             <span>تاريخ الميلاد</span>
           </el-col>
           <el-col :span="8">
-            <el-date-picker :format="$store.getters.settings.DateTimeFormat" v-model="Member.DateofBirth" type="date"
-              disabled></el-date-picker>
+            <el-date-picker
+              :format="$store.getters.settings.DateTimeFormat"
+              v-model="Member.DateofBirth"
+              type="date"
+              disabled
+            ></el-date-picker>
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -55,40 +59,55 @@
             <span>تاريخ البدء</span>
           </el-col>
           <el-col :span="8">
-            <el-date-picker v-if="Member.ActiveMemberShip" :format="$store.getters.settings.DateTimeFormat" disabled
-              v-model="Member.ActiveMemberShip.StartDate" type="date"></el-date-picker>
+            <el-date-picker
+              v-if="Member.ActiveMemberShip"
+              :format="$store.getters.settings.DateTimeFormat"
+              disabled
+              v-model="Member.ActiveMemberShip.StartDate"
+              type="date"
+            ></el-date-picker>
           </el-col>
           <el-col :span="4">
             <span>تاريخ الانتهاء</span>
           </el-col>
           <el-col :span="8">
-            <el-date-picker v-if="Member.ActiveMemberShip" :format="$store.getters.settings.DateTimeFormat" disabled
-              v-model="Member.ActiveMemberShip.EndDate" type="date"></el-date-picker>
+            <el-date-picker
+              v-if="Member.ActiveMemberShip"
+              :format="$store.getters.settings.DateTimeFormat"
+              disabled
+              v-model="Member.ActiveMemberShip.EndDate"
+              type="date"
+            ></el-date-picker>
           </el-col>
         </el-row>
         <el-row v-if="Member.ActiveMemberShip" type="flex">
-          <el-col :span="6"><span style="color: dodgerblue">الايام</span> \
+          <el-col :span="6"
+            ><span style="color: dodgerblue">الايام</span> \
 
             <span style="color: orangered"> الحصص </span>
           </el-col>
           <el-col :span="3">
-            ( <span style="color: dodgerblue">{{ Member.ActiveMemberShip.Remaining }}</span>\ {{
-              Member.ActiveMemberShip.TotalDays
-            }})
+            (
+            <span style="color: dodgerblue">{{ Member.ActiveMemberShip.Remaining }}</span
+            >\ {{ Member.ActiveMemberShip.TotalDays }})
           </el-col>
           <el-col :span="3">
-            ( <span style="color: orangered"> {{
-              Member.ActiveMemberShip.NumberClass -
-                Member.ActiveMemberShip.VisitsUsed
-            }} </span>
-            \{{ Member.ActiveMemberShip.NumberClass }})</el-col>
+            (
+            <span style="color: orangered">
+              {{
+                Member.ActiveMemberShip.NumberClass - Member.ActiveMemberShip.VisitsUsed
+              }}
+            </span>
+            \{{ Member.ActiveMemberShip.NumberClass }})</el-col
+          >
           <el-col :span="4">
             <span>نوع الاشتراك</span>
           </el-col>
           <el-col :span="8">
-            <el-tag>{{
-              Member.ActiveMemberShip.Type + " - "
-            }}{{ Member.ActiveMemberShip.Name }}</el-tag>
+            <el-tag
+              >{{ Member.ActiveMemberShip.Type + " - "
+              }}{{ Member.ActiveMemberShip.Name }}</el-tag
+            >
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -97,9 +116,9 @@
           </el-col>
           <el-col :span="8">
             <span>{{
-            (Member.TotalCredit - Member.TotalDebit).toFixed(
-              this.$store.getters.settings.ToFixed
-            ) + $t("MemberList.JOD")
+              (Member.TotalCredit - Member.TotalDebit).toFixed(
+                this.$store.getters.settings.ToFixed
+              ) + $t("MemberList.JOD")
             }}</span>
           </el-col>
           <el-col :span="4">
@@ -112,54 +131,109 @@
       </el-col>
       <el-col :span="4">
         <div>
-          <pan-thumb :image="avatar" :height="'100px'" :width="'100px'" :hoverable="false">
-            <el-button type="primary" icon="el-icon-upload" @click="imagecropperShow = true"></el-button>
-            <image-cropper v-show="imagecropperShow" :key="imagecropperKey" :width="150" :height="150" lang-type="ar"
-              TableName="Member" :ObjectId="Member.Id" @close="close" @crop-upload-success="cropSuccess" />
+          <pan-thumb
+            :image="avatar"
+            :height="'100px'"
+            :width="'100px'"
+            :hoverable="false"
+          >
+            <el-button
+              type="primary"
+              icon="el-icon-upload"
+              @click="imagecropperShow = true"
+            ></el-button>
+            <image-cropper
+              v-show="imagecropperShow"
+              :key="imagecropperKey"
+              :width="150"
+              :height="150"
+              lang-type="ar"
+              TableName="Member"
+              :ObjectId="Member.Id"
+              @close="close"
+              @crop-upload-success="cropSuccess"
+            />
             <WebCam TableName="Member" :ObjectId="Member.Id" />
           </pan-thumb>
 
           <el-col :span="24">
-            <el-tag v-if="Member.HaveFaceOnDevice == true" type="success">يوجد بصمة وجه</el-tag>
-            <el-tag v-if="Member.HaveFaceOnDevice == false" type="danger">لا يوجد بصمة وجه</el-tag>
+            <el-tag v-if="Member.HaveFaceOnDevice == true" type="success"
+              >يوجد بصمة وجه</el-tag
+            >
+            <el-tag v-if="Member.HaveFaceOnDevice == false" type="danger"
+              >لا يوجد بصمة وجه</el-tag
+            >
           </el-col>
           <el-col :span="24" v-if="Member.Status != -2">
-            <el-button @click="dialogOprationVisible = true" type="danger" plain>Black List</el-button>
+            <el-button @click="dialogOprationVisible = true" type="danger" plain
+              >Black List</el-button
+            >
           </el-col>
           <el-col :span="24" v-if="checkPermission(['admin']) && Member.Status == -2">
-            <el-button @click="dialogOprationVisible2 = true" type="success" plain>الغاء Black List</el-button>
+            <el-button @click="dialogOprationVisible2 = true" type="success" plain
+              >الغاء Black List</el-button
+            >
           </el-col>
         </div>
       </el-col>
     </el-row>
-    <el-dialog style="margin-top: -13vh" :show-close="false" title="رفض العضو و ارساله الى القائمة السوداء"
-      :visible.sync="dialogOprationVisible">
-      <el-form ref="dataOpration" :model="tempOpration" label-position="top" label-width="70px"
-        style="width: 400px margin-left:50px">
-        <el-form-item label="ملاحظات للعملية " prop="Description" :rules="[
-          {
-            required: true,
-            message: 'لايمكن ترك السبب فارغ',
-            trigger: 'blur',
-          },
-        ]">
+    <el-dialog
+      style="margin-top: -13vh"
+      :show-close="false"
+      title="رفض العضو و ارساله الى القائمة السوداء"
+      :visible.sync="dialogOprationVisible"
+    >
+      <el-form
+        ref="dataOpration"
+        :model="tempOpration"
+        label-position="top"
+        label-width="70px"
+        style="width: 400px margin-left:50px"
+      >
+        <el-form-item
+          label="ملاحظات للعملية "
+          prop="Description"
+          :rules="[
+            {
+              required: true,
+              message: 'لايمكن ترك السبب فارغ',
+              trigger: 'blur',
+            },
+          ]"
+        >
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="danger" @click="BlackList()">ارسال الى القائمة السوداء</el-button>
+        <el-button type="danger" @click="BlackList()"
+          >ارسال الى القائمة السوداء</el-button
+        >
       </div>
     </el-dialog>
-    <el-dialog style="margin-top: -13vh" :show-close="false" title="الغاء الرفض" :visible.sync="dialogOprationVisible2">
-      <el-form ref="dataOpration" :model="tempOpration" label-position="top" label-width="70px"
-        style="width: 400px margin-left:50px">
-        <el-form-item label="ملاحظات للعملية " prop="Description" :rules="[
-          {
-            required: true,
-            message: 'لايمكن ترك السبب فارغ',
-            trigger: 'blur',
-          },
-        ]">
+    <el-dialog
+      style="margin-top: -13vh"
+      :show-close="false"
+      title="الغاء الرفض"
+      :visible.sync="dialogOprationVisible2"
+    >
+      <el-form
+        ref="dataOpration"
+        :model="tempOpration"
+        label-position="top"
+        label-width="70px"
+        style="width: 400px margin-left:50px"
+      >
+        <el-form-item
+          label="ملاحظات للعملية "
+          prop="Description"
+          :rules="[
+            {
+              required: true,
+              message: 'لايمكن ترك السبب فارغ',
+              trigger: 'blur',
+            },
+          ]"
+        >
           <el-input type="textarea" v-model="tempOpration.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -174,7 +248,7 @@
 <script>
 import checkPermission from "@/utils/permission";
 
-import PanThumb from "@/components/PanThumb";
+import PanThumb from "@/components/PanThumb/index.vue";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
 
@@ -198,7 +272,6 @@ export default {
     Member: {
       type: Object,
       required: true,
-
     },
   },
   watch: {
@@ -208,7 +281,7 @@ export default {
   },
   data() {
     return {
-      avatar: "",
+      avatar: undefined,
       dialogOprationVisible: false,
       dialogOprationVisible2: false,
       imagecropperShow: false,
@@ -225,7 +298,7 @@ export default {
     GetImage(Id) {
       GetProfilePictureByObjId({ TableName: "Member", ObjId: Id })
         .then((response) => {
-          if (response) this.avatar = response.File;
+          if (response) this.avatar = response;
           else this.avatar = this.$store.getters.CompanyInfo.Logo;
         })
         .catch((err) => {

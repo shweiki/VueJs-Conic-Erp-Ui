@@ -24,10 +24,10 @@
   </div>
 </template>
 <script>
-import SaleInvoiceReceipt from "@/Report/Template/SaleInvoiceReceipt.js";
-import ItemsIngredients from "@/Report/Template/ItemsIngredients.js";
-import ItemsSales from "@/Report/Template/ItemsSales.js";
-import SaleInvoicesList from "@/Report/Template/SaleInvoicesList.js";
+import SaleInvoiceReceipt from "@/report/Template/SaleInvoiceReceipt.js";
+import ItemsIngredients from "@/report/Template/ItemsIngredients.js";
+import ItemsSales from "@/report/Template/ItemsSales.js";
+import SaleInvoicesList from "@/report/Template/SaleInvoicesList.js";
 
 export default {
   methods: {

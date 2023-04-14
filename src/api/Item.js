@@ -107,6 +107,12 @@ export function EditIngredient(data) {
     method: 'post',
     data: qs.stringify(data)
   })
+}export function Delete(data) {
+  return request({
+    url: '/Item/Delete',
+    method: 'post',
+    data: qs.stringify(data)
+  })
 }
 export function EditTakeBon(data) {
   return request({

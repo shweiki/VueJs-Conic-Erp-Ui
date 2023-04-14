@@ -35,21 +35,26 @@
                             "
                             @Done="isEdit != true ? createData() : updateData()"
                           />
-                         <el-tooltip class="item" effect="dark" content="Checkout" placement="bottom">
-                          <el-button
-                          style="float: left; font-size: 40px;"
-                            :disabled="DisabledSave"
-                            size="medium"
-                            @click="
-                              $store.state.settings.showRestOfBill != true
-                                ? isEdit != true
-                                  ? createData()
-                                  : updateData()
-                                : (OpenRestOfBill = true)
-                            "
-                            type="primary"
-                            icon="el-icon-shopping-cart-2"
-                          ></el-button>
+                          <el-tooltip
+                            class="item"
+                            effect="dark"
+                            content="Checkout"
+                            placement="bottom"
+                          >
+                            <el-button
+                              style="float: left; font-size: 40px"
+                              :disabled="DisabledSave"
+                              size="medium"
+                              @click="
+                                $store.state.settings.showRestOfBill != true
+                                  ? isEdit != true
+                                    ? createData()
+                                    : updateData()
+                                  : (OpenRestOfBill = true)
+                              "
+                              type="primary"
+                              icon="el-icon-shopping-cart-2"
+                            ></el-button>
                           </el-tooltip>
                         </el-col>
                       </el-row>
@@ -111,19 +116,18 @@
                           </el-radio-group>
                         </el-form-item>
                       </el-col> -->
-                      </el-row
-                    >
+                    </el-row>
                     <el-row type="flex" class="card">
-                       <el-col :span="12">
-                         Table Number
-                         <el-form-item prop="TableNo">
+                      <el-col :span="12">
+                        Table Number
+                        <el-form-item prop="TableNo">
                           <el-input
                             ref="Tablenumber"
                             placeholder="رقم الطاولة"
                             v-model="tempForm.TableNo"
                           ></el-input>
                         </el-form-item>
-    </el-col>
+                      </el-col>
                       <!-- <el-col :span="24">
                         <delivery-el
                           :name="tempForm.Name"
@@ -145,9 +149,8 @@
                         </el-col>
                       </el-col> -->
                     </el-row>
-                   
+
                     <el-row type="flex" class="card">
-                     
                       <el-col :span="24" class="TotalAmmount">
                         <span>{{ $t("NewPurchaseInvoice.TotalJD") }}</span>
                         <el-divider direction="vertical"></el-divider>
@@ -166,7 +169,7 @@
                       </el-col>
                     </el-row>
                   </template>
-                  <template slot="paneL" class="card">
+                  <template slot="paneL">
                     <el-form-item prop="InventoryMovements">
                       <el-table
                         highlight-current-row
@@ -184,8 +187,9 @@
                                     scope.$index
                                   ].Description = v;
                                 }
-                              " />
-                              </template>
+                              "
+                            />
+                          </template>
                         </el-table-column>
                         <el-table-column prop="ItemsId" align="center">
                           <template slot="header" slot-scope="{}"
@@ -261,13 +265,18 @@
 
                         <el-table-column width="60" label="#" align="center">
                           <template slot-scope="scope">
-                            <el-tooltip class="item" effect="dark" content="حذف" placement="bottom">
-                            <el-button
-                              style="float: left"
-                              type="danger"
-                              icon="el-icon-delete"
-                              @click="RemoveItem(scope.$index)"
-                            />
+                            <el-tooltip
+                              class="item"
+                              effect="dark"
+                              content="حذف"
+                              placement="bottom"
+                            >
+                              <el-button
+                                style="float: left"
+                                type="danger"
+                                icon="el-icon-delete"
+                                @click="RemoveItem(scope.$index)"
+                              />
                             </el-tooltip>
                           </template>
                         </el-table-column>
@@ -305,7 +314,7 @@ import VendorSelect from "@/components/Vendor/VendorSelect";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
 import FakeDate from "@/components/Date/FakeDate";
-import { PrintReport, VisualizationReportHtml } from "@/Report/FunctionalityReport";
+import { PrintReport, VisualizationReportHtml } from "@/report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import { Create as CreateRestaurnat } from "@/api/OrderRestaurant";
@@ -317,7 +326,11 @@ import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
 import DrawerSearchInvoice from "@/components/Sales/DrawerSearchInvoice.vue";
-import { Create as CreateVendor, CheckIsExist as CheckVendorIsExist, GetVendorByUserId } from "@/api/Vendor";
+import {
+  Create as CreateVendor,
+  CheckIsExist as CheckVendorIsExist,
+  GetVendorByUserId,
+} from "@/api/Vendor";
 import { mapGetters } from "vuex";
 import { SendSMS } from "@/api/SMS";
 import { Now } from "@/utils";
@@ -353,14 +366,14 @@ export default {
   },
   data() {
     return {
-      uid:"",
+      uid: "",
       OldInvoice: null,
       PriceMethod: "retail",
       DisabledSave: false,
       AutoPrint: true,
       AutoSendSMS: true,
       OpenRestOfBill: false,
-      NewName:"",
+      NewName: "",
       tempForm: {
         Id: undefined,
         Name: "",
@@ -375,7 +388,7 @@ export default {
         DeliveryPrice: 0,
         Region: "",
         PhoneNumber: "",
-        TableNo:0,
+        TableNo: 0,
         InventoryMovements: [],
       },
       rules: {
@@ -400,13 +413,13 @@ export default {
       ],
     };
   },
-    computed: {
+  computed: {
     ...mapGetters(["Id", "name"]),
   },
   created() {
     this.Get();
-      console.log("tttttttt",this.Id);
-      
+    console.log("tttttttt", this.Id);
+
     if (this.isEdit) {
       this.getdata(this.$route.params && this.$route.params.id);
     }
@@ -421,12 +434,12 @@ export default {
     loading.close();
   },
   methods: {
-    Get(){
+    Get() {
       this.user = {
         Id: this.Id,
-      }
+      };
       this.uid = this.Id;
-      console.log("ressssss",this.uid);
+      console.log("ressssss", this.uid);
     },
     restTempForm() {
       this.tempForm = {
@@ -508,14 +521,14 @@ export default {
             this.DisabledSave = true;
             this.tempForm.FakeDate = Now();
             this.tempForm.Description = this.uid;
-            Create(this.tempForm )
+            Create(this.tempForm)
               .then((response) => {
                 if (response) {
                   this.ValidateDescription = "";
                   this.tempForm.Id = response.Id;
                   this.tempForm.Name = response.Name;
                   this.NewName = response.Name;
-                  this.tempForm.PhoneNumber = response.PhoneNumber
+                  this.tempForm.PhoneNumber = response.PhoneNumber;
                   this.tempForm.Total = Total;
                   this.OldInvoice = this.tempForm;
                   // this.CheckVendor(

@@ -162,7 +162,7 @@ export default {
       list: [],
       Totals: { Rows: 0 },
       listLoading: false,
-      listQuery: JSON.parse(Cookies.get('OrderDelivery_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem('OrderDelivery_ListQuery') || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -196,7 +196,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        Cookies.set('OrderDelivery_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem('OrderDelivery_ListQuery', JSON.stringify(this.listQuery))
 
         this.listLoading = false;
       });

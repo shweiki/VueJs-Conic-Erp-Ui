@@ -179,8 +179,8 @@ import CashPoolDialog from "./CashPoolDialog.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
-import { VisualizationReportHtml, PrintReport } from "@/Report/FunctionalityReport";
-import { Send as SendEmail } from "@/api/Email";
+import { VisualizationReportHtml, PrintReport } from "@/report/FunctionalityReport";
+import { Send as SendEmailTo } from "@/api/Email";
 import EditPaymentMethod from "@/components/PaymentMethod/EditPaymentMethod.vue";
 
 import { ChangeArrObjStatus } from "@/api/Oprationsys";
@@ -324,7 +324,7 @@ export default {
                       Items: this.tableData,
                       Dates: [new Date(), new Date()],
                     });
-                    const ResolveSendEmail = await SendEmail({
+                    const ResolveSendEmail = await SendEmailTo({
                       to: this.$store.getters.CompanyInfo.Email,
                       subject:
                         "إغلاق صندوق " +
