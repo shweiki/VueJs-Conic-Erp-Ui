@@ -10,47 +10,90 @@
           <Add-Device-Log TableName="Member" />
         </el-col>
         <el-col :span="4">
-          <el-button :loading="loading" type="primary" icon="el-icon-refresh" :size="$store.getters.size" @click="
-            () => {
-              listQuery.Page = 1;
-              MembersLogs = [];
-              getdata();
-            }
-          "></el-button>
+          <el-button
+            :loading="loading"
+            type="primary"
+            icon="el-icon-refresh"
+            :size="$store.getters.size"
+            @click="
+              () => {
+                listQuery.Page = 1;
+                MembersLogs = [];
+                getdata();
+              }
+            "
+          ></el-button>
         </el-col>
         <el-col :span="4">
-          <el-button :loading="loading" style="float: left" type="danger" icon="el-icon-time" :size="$store.getters.size"
-            @click="RemoveDuplicate"></el-button>
+          <el-button
+            :loading="loading"
+            style="float: left"
+            type="danger"
+            icon="el-icon-time"
+            :size="$store.getters.size"
+            @click="RemoveDuplicate"
+          ></el-button>
         </el-col>
       </el-row>
 
       <div style="margin-top: 10px">
-        <el-timeline v-infinite-scroll="load" infinite-scroll-disabled="disabled" :reverse="reverse" style="
-              margin-top: 15px;
-              height: 550px;
-              overflow: scroll;
-              text-align: center;
-            ">
-          <el-timeline-item v-for="(Log, index) in MembersLogs" :key="index" :icon="Log.User.Style.IconClass"
-            :color="Log.User.Style.Color" size="large" :timestamp="Log.DateTime" :hide-timestamp="true">
-            <el-tag @click="$router.push({ path: '/Gym/Edit/' + Log.Fk })" :color="Log.User.Style.Color"><strong
-                style="font-size: 10px; cursor: pointer">{{
-                  Log.User.Name
-                }}</strong></el-tag>
-            <Status-Tag :Status="Log.User.Status" TableName="Member">
-            </Status-Tag>
-            <el-tag v-if="Log.User.ActiveMemberShip != null" :span="3" style="color: orangered">({{
-              Log.User.ActiveMemberShip.NumberClass }}\{{
-    Log.User.ActiveMemberShip.NumberClass -
-    Log.User.ActiveMemberShip.VisitsUsed
-  }})</el-tag>
-            <el-tag v-if="Log.User.ActiveMemberShip != null" v-bind:type="
-              Log.User.ActiveMemberShip.Type == 'Morning'
-                ? 'warning'
-                : 'success'
-            ">{{ Log.User.ActiveMemberShip.Type }}</el-tag>
-            <el-tag v-if="Log.User.TotalCredit - Log.User.TotalDebit > 0" type="info">مدين</el-tag>
-            <el-time-picker :size="$store.getters.size" v-model="Log.DateTime" format="hh:mm A" disabled />
+        <el-timeline
+          v-infinite-scroll="load"
+          infinite-scroll-disabled="disabled"
+          :reverse="reverse"
+          style="margin-top: 15px; height: 550px; overflow: scroll; text-align: center"
+        >
+          <el-timeline-item
+            v-for="(Log, index) in MembersLogs"
+            :key="index"
+            :icon="Log.User.Style.IconClass"
+            :color="Log.User.Style.Color"
+            size="large"
+            :timestamp="Log.DateTime"
+            :hide-timestamp="true"
+          >
+            <el-row type="flex">
+              <el-col :span="6">
+                <el-time-picker
+                  :size="$store.getters.size"
+                  v-model="Log.DateTime"
+                  format="hh:mm A"
+                  disabled
+              /></el-col>
+              <el-col :span="5">
+                <el-tag
+                  @click="$router.push({ path: '/Gym/Edit/' + Log.Fk })"
+                  :color="Log.User.Style.Color"
+                  ><strong style="font-size: 10px; cursor: pointer">{{
+                    Log.User.Name
+                  }}</strong></el-tag
+                >
+              </el-col>
+              <el-col :span="4">
+                <Status-Tag :Status="Log.User.Status" TableName="Member"> </Status-Tag>
+              </el-col>
+              <el-col v-if="Log.User.ActiveMemberShip != null" :span="3">
+                <el-tag style="color: orangered"
+                  >({{ Log.User.ActiveMemberShip.NumberClass }}\{{
+                    Log.User.ActiveMemberShip.NumberClass -
+                    Log.User.ActiveMemberShip.VisitsUsed
+                  }})</el-tag
+                >
+              </el-col>
+              <el-col v-if="Log.User.ActiveMemberShip != null" :span="3">
+                <el-tag
+                  v-bind:type="
+                    Log.User.ActiveMemberShip.Type == 'Morning' ? 'warning' : 'success'
+                  "
+                  >{{ Log.User.ActiveMemberShip.Type }}</el-tag
+                >
+              </el-col>
+              <el-col :span="3">
+                <el-tag v-if="Log.User.TotalCredit - Log.User.TotalDebit > 0" type="info"
+                  >مدين</el-tag
+                >
+              </el-col>
+            </el-row>
           </el-timeline-item>
           <p v-if="loading">Loading...</p>
           <p v-if="noMore">No more</p>
@@ -61,7 +104,6 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
 import { GetByStatus, RemoveDuplicate } from "@/api/DeviceLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
@@ -75,7 +117,7 @@ export default {
       loading: false,
       MembersLogs: [],
       reverse: false,
-      listQuery: JSON.parse(localStorage.getItem('MemberLog_ListQuery') || null) || {
+      listQuery: {
         Page: 0,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -104,7 +146,7 @@ export default {
           Array.prototype.push.apply(this.MembersLogs, response);
           //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
           if (response.length == 0) this.listQuery.Page = 13;
-          localStorage.setItem('MemberLog_ListQuery', JSON.stringify(this.listQuery))
+          //  localStorage.setItem('MemberLog_ListQuery', JSON.stringify(this.listQuery))
           this.loading = false;
         })
         .catch((error) => {
