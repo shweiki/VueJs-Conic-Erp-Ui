@@ -27,12 +27,15 @@
       <el-row type="flex"> </el-row>
       <div slot="footer" class="dialog-footer">
         <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button type="primary" v-bind:disabled="img == null" @click="createData()">{{
-          $t("AddVendors.Save")
-        }}</el-button>
+        <el-button
+          type="primary"
+          :loading="loading"
+          v-bind:disabled="img == null"
+          @click="createData()"
+          >{{ $t("AddVendors.Save") }}</el-button
+        >
       </div>
     </el-dialog>
-
   </div>
 </template>
 <script>
@@ -62,6 +65,7 @@ export default {
   data() {
     return {
       Visible: false,
+      loading: false,
       stream: null,
       video: {},
       canvas: {},
@@ -97,22 +101,27 @@ export default {
           TableName: this.TableName,
           FKTable: this.ObjectId,
         };
-        Create(file).then((response) => {
-          if (response) {
-            this.Visibles = false;
-            this.$notify({
-              title: "تم ",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              duration: 2000,
-            });
-            this.$nextTick(() => {
-              this.$router.replace({
-                path: "/redirect" + this.$route.fullPath,
+        Create(file)
+          .then((response) => {
+            this.loading = true;
+            if (response) {
+              this.Visibles = false;
+              this.$notify({
+                title: "تم ",
+                message: "تم الإضافة بنجاح",
+                type: "success",
+                duration: 2000,
               });
-            });
-          }
-        });
+              this.$nextTick(() => {
+                this.$router.replace({
+                  path: "/redirect" + this.$route.fullPath,
+                });
+              });
+            }
+          })
+          .finally(() => {
+            this.loading = false;
+          });
       }
     },
   },

@@ -173,7 +173,7 @@ export default {
     GetImageItem(ID) {
       GetFileByObjId({ TableName: "Item", ObjId: ID })
         .then((response) => {
-          if (response) this.tempForm.Avatar = response.File;
+          if (response) this.tempForm.Avatar = response.FileUrl;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
         })
         .catch((err) => {

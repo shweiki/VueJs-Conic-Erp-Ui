@@ -142,7 +142,7 @@ import Service from "./Service.vue";
 import TimeLine from "./TimeLine.vue";
 
 import Communication from "./Communication.vue";
-import Documents from "@/components/Documents/Documents";
+import Documents from "@/components/Documents/Documents.vue";
 import DeviceLog from "@/components/Device/DeviceLog.vue";
 
 import { GetMemberById } from "@/api/Member";

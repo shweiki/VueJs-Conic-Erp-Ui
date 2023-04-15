@@ -137,7 +137,7 @@ export default {
         .then(response => {
           if (response) {
             this.ItemsPrime.find(element => element.Id == ID).Avatar =
-              response.File;
+              response.FileUrl;
           } else
             this.ItemsPrime.find(
               element => element.Id == ID

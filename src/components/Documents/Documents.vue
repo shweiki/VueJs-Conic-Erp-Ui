@@ -5,9 +5,22 @@
         <button-scan :ObjectId="ObjectId" :TableName="TableName" />
       </el-col>
       <el-col :span="6">
-        <el-button type="success" icon="el-icon-upload" @click="imagecropperShow = true"></el-button>
-        <image-cropper v-show="imagecropperShow" :key="imagecropperKey" :width="150" :height="150" lang-type="ar"
-          :TableName="TableName" :ObjectId="ObjectId" @close="close" @crop-upload-success="cropSuccess" /></el-col>
+        <el-button
+          type="success"
+          icon="el-icon-upload"
+          @click="imagecropperShow = true"
+        ></el-button>
+        <image-cropper
+          v-show="imagecropperShow"
+          :key="imagecropperKey"
+          :width="150"
+          :height="150"
+          lang-type="ar"
+          :TableName="TableName"
+          :ObjectId="ObjectId"
+          @close="close"
+          @crop-upload-success="cropSuccess"
+      /></el-col>
       <el-col :span="6">
         <web-cam :TableName="TableName" :ObjectId="ObjectId" />
       </el-col>
@@ -17,14 +30,23 @@
     </el-row>
     <el-col v-for="item in List" :key="item.Id" v-bind:span="24 / List.length">
       <el-card :body-style="{ padding: '3px' }">
-        <el-image style="width: 100px; height: 100px" :src="item.File" :preview-src-list="srcList">
+        <el-image
+          style="width: 100px; height: 100px"
+          :src="item.FileUrl"
+          :preview-src-list="srcList"
+        >
           <div slot="error" class="image-slot">
             <i class="el-icon-picture-outline"></i>
           </div>
         </el-image>
         <div style="padding: 14px">
           <el-select @change="SetType(item)" v-model="item.Type" placeholder="النوع">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
             </el-option>
           </el-select>
         </div>
@@ -47,14 +69,15 @@ export default {
       default: () => {
         return undefined;
       },
-    }, TableName: {
+    },
+    TableName: {
       type: String,
       default: () => {
         return undefined;
       },
     },
   },
-   watch: {
+  watch: {
     ObjectId(val) {
       if (val) this.GetFiles();
     },
@@ -91,7 +114,7 @@ export default {
       GetFilesByObjId({ TableName: this.TableName, ObjId: this.ObjectId })
         .then((response) => {
           this.List = response;
-          this.srcList = response.map((x) => x.File);
+          this.srcList = response.map((x) => x.FileUrl);
         })
         .catch((err) => {
           console.log(err);
@@ -111,11 +134,7 @@ export default {
       const byteCharacters = atob(b64Data);
       const byteArrays = [];
 
-      for (
-        let offset = 0;
-        offset < byteCharacters.length;
-        offset += sliceSize
-      ) {
+      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
         const slice = byteCharacters.slice(offset, offset + sliceSize);
 
         const byteNumbers = new Array(slice.length);

@@ -35,10 +35,7 @@
               </el-row>
               <el-row type="flex">
                 <el-col :span="24"
-                  ><Vendor-Receive
-                    :VendorId="tempForm.Id"
-                    :Name="tempForm.Name"
-                  />
+                  ><Vendor-Receive :VendorId="tempForm.Id" :Name="tempForm.Name" />
                 </el-col>
               </el-row>
               <el-row type="flex">
@@ -65,10 +62,7 @@
             </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-              <Account
-                :EntryMovements="EntryMovements"
-                :AccountId="tempForm.AccountId"
-              />
+              <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
             </el-tab-pane>
             <el-tab-pane label="مصروفات" name="Receive">
               <span slot="label"><i class="el-icon-refresh"></i> مصروفات</span>
@@ -190,7 +184,7 @@ export default {
     GetImage(Id) {
       GetFileByObjId({ TableName: "Vendor", ObjId: Id })
         .then((response) => {
-          if (response) this.tempForm.Avatar = response.File;
+          if (response) this.tempForm.Avatar = response.FileUrl;
           else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo;
         })
         .catch((err) => {

@@ -180,7 +180,7 @@ export default {
       return new Promise(function(resolve, reject) {
         GetFileByObjId({ TableName: 'Item', ObjId: item.Id })
           .then((response) => {
-            response ? (item.Avatar = response.File) : (item.Avatar = defImg)
+            response ? (item.Avatar = response.FileUrl) : (item.Avatar = defImg)
             resolve(item)
           })
           .catch((err) => {
