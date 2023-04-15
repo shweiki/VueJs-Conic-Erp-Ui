@@ -59,6 +59,14 @@ const GymRouter = {
       },
     },
     {
+      path: 'MembershipMovementsDateIn',
+      component: () => import('@/views/Gym/MembershipMovements/DateIn'),
+      name: 'MembershipMovementsDateIn',
+      meta: {
+        title: 'MembershipMovementsDateIn', icon: 'accounts'
+      },
+    },
+    {
       path: 'Services',
       component: () => import('@/views/Gym/Services/index'),
       name: 'Services',

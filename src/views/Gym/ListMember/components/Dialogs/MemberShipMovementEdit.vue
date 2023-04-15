@@ -152,8 +152,7 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
-        <el-button           :loading="EnableSave"
- type="primary" @click="createData()">{{
+        <el-button :loading="EnableSave" type="primary" @click="createData()">{{
           $t("AddVendors.Save")
         }}</el-button>
       </div>
@@ -248,7 +247,12 @@ export default {
                   type: "success",
                   duration: 2000,
                 });
-                this.$emit("Done");
+                this.$nextTick(() => {
+                  //  this.$emit("Done");
+                  this.$router.replace({
+                    path: "/redirect" + this.$route.fullPath,
+                  });
+                });
               }
             })
             .catch((error) => {

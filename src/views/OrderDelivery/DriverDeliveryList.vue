@@ -57,7 +57,8 @@
         </el-col>
       </el-row>
     </div>
-    <Radio-Oprations
+    <Radio-Oprations             :value="listQuery.Status"
+
       TableName="DriverOrder"
       @Set="
         (v) => {

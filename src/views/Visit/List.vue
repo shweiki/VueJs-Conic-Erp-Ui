@@ -85,6 +85,7 @@
       ></el-col>
       <el-col :span="6">
         <Radio-Oprations
+          :value="listQuery.Status"
           TableName="Visit"
           @Set="
             (v) => {
@@ -195,7 +196,6 @@ import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 
 export default {
-
   components: {
     StatusTag,
     NextOprations,

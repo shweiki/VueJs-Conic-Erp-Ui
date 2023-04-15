@@ -40,7 +40,8 @@
     </el-row>
     <el-row type="flex">
       <el-col :span="24">
-        <Radio-Oprations TableName="CashPool" @Set="
+        <Radio-Oprations             :value="listQuery.Status"
+ TableName="CashPool" @Set="
           (v) => {
             listQuery.Status = v;
           }

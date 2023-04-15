@@ -84,6 +84,7 @@ export default {
     DirectivePermission: 'صلاحيات التوجيه',
     RolePermission: 'صلاحيات الوظائف',
     MembershipMovements: 'حركات اشتركات',
+    MembershipMovementsDateIn :'كشف اشتركات حسب تاريخ',
     Services: 'خدمات',
     SaleInvoiceStatus: 'حالة فواتير المبيعات',
     UploadVendor: 'موردين',

@@ -4,11 +4,23 @@
     <AutoWidthOption v-model="autoWidth" />
     <BookTypeOption v-model="bookType" />
 
-    <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download"
-      @click="handleDownload">
+    <el-button
+      v-waves
+      :loading="downloadLoading"
+      class="filter-item"
+      type="primary"
+      icon="el-icon-download"
+      @click="handleDownload"
+    >
     </el-button>
-    <el-button class="filter-item" v-bind:disabled="list[0] == null" icon="el-icon-document" type="primary"
-      slot="reference">{{ $t("Members.Export") }}</el-button>
+    <el-button
+      class="filter-item"
+      v-bind:disabled="list[0] == null"
+      icon="el-icon-document"
+      type="primary"
+      slot="reference"
+      >{{ $t("Members.Export") }}</el-button
+    >
   </el-popover>
 </template>
 
@@ -35,7 +47,7 @@ export default {
       bookType: "xlsx",
     };
   },
-  created() { },
+  created() {},
   methods: {
     handleDownload() {
       this.downloadLoading = true;
@@ -44,14 +56,14 @@ export default {
         const filterVal = Object.keys(this.list[0]);
         const list = this.list;
         let formatJson = this.formatJson(filterVal, list);
-        let fileName = this.Type
-        if (this.fileName) {
-          fileName += " " + this.fileName;
+
+        if (this.Type && this.Type != "") {
+          this.filename = this.Type + " " + this.filename;
         }
         excel.export_json_to_excel({
           header: tHeader,
           data: formatJson,
-          filename: fileName,
+          filename: this.filename,
           autoWidth: this.autoWidth,
           bookType: this.bookType,
         });

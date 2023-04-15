@@ -63,9 +63,7 @@
                 >Email</el-button
               >
             </div>
-            <el-button icon="el-icon-circle-plus" slot="reference"
-              >ارسال رسالة</el-button
-            >
+            <el-button icon="el-icon-circle-plus" slot="reference">ارسال رسالة</el-button>
           </el-popover>
         </el-col>
         <el-col :span="1">
@@ -84,6 +82,7 @@
     </div>
     <el-card class="box-card">
       <Radio-Oprations
+        :value="listQuery.Status"
         TableName="Vendor"
         @Set="
           (v) => {
@@ -100,29 +99,17 @@
 
       <span>{{ $t("Vendors.TotalCredit") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          Totals.TotalCredit.toFixed($store.getters.settings.ToFixed)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("Vendors.TotalDebit") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{
-          Totals.TotalDebit.toFixed($store.getters.settings.ToFixed)
-        }}
-        JOD</span
-      >
+      <span>{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
 
       <span>{{ $t("MinOrd.Balance") }}</span>
       <el-divider direction="vertical"></el-divider>
-      <span
-        >{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span
-      >
+      <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
       <el-divider direction="vertical"></el-divider>
     </el-card>
 
@@ -145,11 +132,7 @@
         }
       "
     >
-      <el-table-column
-        type="selection"
-        width="55"
-        align="center"
-      ></el-table-column>
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
         v-bind:label="$t('Vendors.ID')"
         prop="Id"
@@ -163,11 +146,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        v-bind:label="$t('AddVendors.Name')"
-        prop="Name"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
       <el-table-column
         v-bind:label="$t('Members.Phone1')"
@@ -197,22 +176,14 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Account.funds')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
           )
         }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Status')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Vendor" />
         </template>
@@ -240,7 +211,7 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import { GetByListQ } from "@/api/Vendor";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -277,7 +248,7 @@ export default {
       listLoading: false,
       Selection: [],
       SmsBody: "",
-      listQuery: JSON.parse(localStorage.getItem('Vendor_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem("Vendor_ListQuery") || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -295,7 +266,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        localStorage.setItem('Vendor_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem("Vendor_ListQuery", JSON.stringify(this.listQuery));
         this.listLoading = false;
       });
     },

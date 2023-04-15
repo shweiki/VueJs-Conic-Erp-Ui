@@ -61,7 +61,8 @@
     <el-row :gutter="20">
 
       <el-col :span="24">
-        <Radio-Oprations
+        <Radio-Oprations             :value="listQuery.Status"
+
           TableName="OrderRestaurant"
           @Set="
             (v) => {

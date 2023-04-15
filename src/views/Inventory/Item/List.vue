@@ -4,6 +4,7 @@
       <el-row type="flex">
         <el-col :span="12">
           <el-input
+            clearable
             v-model="listQuery.Any"
             placeholder="البحث بحسب رقم / الاسم / الباركود  / التصنيف"
             class="filter-item"
@@ -55,7 +56,8 @@
         /></el-col>
       </el-row>
     </div>
-    <Radio-Oprations
+    <Radio-Oprations             :value="listQuery.Status"
+
       TableName="Item"
       @Set="
         (v) => {

@@ -75,6 +75,7 @@ export default {
     EditMember: "Edit Member",
     CreateMember: "Create Member",
     MembershipMovements: "Membership Movements",
+    MembershipMovementsDateIn :'Membership By Date In',
     Services: "Services",
     NewItem: "New Item",
     ListItem: "List Item",

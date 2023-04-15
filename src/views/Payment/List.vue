@@ -66,7 +66,8 @@
         </el-col>
       </el-row>
     </div>
-    <Radio-Oprations
+    <Radio-Oprations             :value="listQuery.Status"
+
       TableName="Payment"
       @Set="
         (v) => {

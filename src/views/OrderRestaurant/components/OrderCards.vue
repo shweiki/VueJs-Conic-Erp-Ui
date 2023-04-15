@@ -15,7 +15,8 @@
         " />
       </el-col>
       <el-col :span="14">
-        <Radio-Oprations TableName="OrderRestaurant" @Set="
+        <Radio-Oprations             :value="listQuery.Status"
+ TableName="OrderRestaurant" @Set="
           (v) => {
             listQuery.Status = v;
             handleFilter();

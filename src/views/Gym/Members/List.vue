@@ -42,7 +42,7 @@
           }}</el-button>
         </el-popover>
         <el-col :span="1">
-          <add-member />
+          <Add-Member />
         </el-col>
         <el-col :span="1">
           <merge-two-members @Done="getList()" />
@@ -50,6 +50,7 @@
         <el-row type="flex">
           <el-col :span="12">
             <el-input
+              clearable
               v-model="listQuery.Any"
               v-bind:placeholder="$t('Members.SearchAll')"
               class="filter-item"
@@ -91,6 +92,7 @@
         </el-row>
         <el-col :span="24">
           <Radio-Oprations
+            :value="listQuery.Status"
             TableName="Member"
             @Set="
               (v) => {

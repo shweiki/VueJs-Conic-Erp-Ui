@@ -14,11 +14,7 @@
         >
       </el-col></el-row
     >
-    <el-dialog
-      style="margin-top: -13vh"
-      title="تسجيل اشتراك"
-      :visible.sync="Visibles"
-    >
+    <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك" :visible.sync="Visibles">
       <el-form :model="tempForm" ref="dataForm">
         <el-form-item
           label="الفترة"
@@ -127,9 +123,7 @@
         </el-form-item>
 
         <el-form-item
-          :rules="[
-            { required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' },
-          ]"
+          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
           v-bind:label="$t('AddVendors.Description')"
           prop="Description"
         >
@@ -167,9 +161,7 @@
         <el-form-item v-bind:label="$t('NewPurchaseInvoice.TotalJD')">
           <span
             >JOD
-            {{
-              tempForm.TotalAmmount.toFixed($store.getters.settings.ToFixed)
-            }}</span
+            {{ tempForm.TotalAmmount.toFixed($store.getters.settings.ToFixed) }}</span
           >
         </el-form-item>
       </el-form>
@@ -199,14 +191,8 @@
             @Set="(v) => (Payment.PaymentMethod = v)"
           />
         </el-form-item>
-        <el-form-item
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
-          <el-input
-            style="width: 220px"
-            v-model="Payment.Description"
-          ></el-input>
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
+          <el-input style="width: 220px" v-model="Payment.Description"></el-input>
         </el-form-item>
         <el-row type="flex">
           <el-col :span="24">
@@ -230,15 +216,10 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
-          $t("AddVendors.Cancel")
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button :loading="EnableSave" type="primary" @click="createData()">{{
+          $t("AddVendors.Save")
         }}</el-button>
-        <el-button
-          :disabled="EnableSave"
-          type="primary"
-          @click="createData()"
-          >{{ $t("AddVendors.Save") }}</el-button
-        >
       </div>
       <el-col :span="12">
         <span>{{ $t("Account.InCome") }}</span>
@@ -389,20 +370,20 @@ export default {
                           AccountId: this.AccountId,
                           Debit: 0.0,
                           Credit: this.tempForm.TotalAmmount,
-                          Description: "اشتراك رقم " + response + " ",
+                          Description: "اشتراك رقم " + response.Id + " ",
                           EntryId: undefined,
                           TableName: "MembershipMovement",
-                          Fktable: response,
+                          Fktable: response.Id,
                         },
                         {
                           Id: undefined,
                           AccountId: this.InComeAccountId,
                           Debit: this.tempForm.TotalAmmount,
                           Credit: 0.0,
-                          Description: "اشتراك رقم " + response + " ",
+                          Description: "اشتراك رقم " + response.Id + " ",
                           EntryId: undefined,
                           TableName: "MembershipMovement",
-                          Fktable: response,
+                          Fktable: response.id,
                         },
                       ],
                     }).then((res) => {
@@ -413,14 +394,12 @@ export default {
                           this.$store.getters.settings.MembershipMovement
                             .OneInBodyFreeForeach30Days == true
                         )
-                          this.OneInBodyFreeForeach30Days(
-                            this.Membership.NumberDays
-                          );
+                          this.OneInBodyFreeForeach30Days(this.Membership.NumberDays);
                         this.Payment.MemberId = this.MemberId;
                         this.Payment.Description +=
                           this.tempForm.Description +
                           "  -  وذالك عن اشتراك رقم " +
-                          response +
+                          response.id +
                           "وينتهي في " +
                           this.formatDate(this.tempForm.EndDate, "no") +
                           "لفترة " +
@@ -456,7 +435,12 @@ export default {
                                 this.EnableSave = false;
                               },
                             });
-                            this.$emit("Done");
+                            this.$nextTick(() => {
+                              //  this.$emit("Done");
+                              this.$router.replace({
+                                path: "/redirect" + this.$route.fullPath,
+                              });
+                            });
                           })
                           .catch((error) => {
                             console.log(error);

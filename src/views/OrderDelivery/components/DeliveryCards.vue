@@ -22,7 +22,8 @@
         />
       </el-col>
       <el-col :span="14">
-        <Radio-Oprations
+        <Radio-Oprations             :value="listQuery.Status"
+
           TableName="OrderDelivery"
           @Set="
             (v) => {

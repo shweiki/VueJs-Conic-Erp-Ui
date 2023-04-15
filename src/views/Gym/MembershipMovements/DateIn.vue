@@ -3,11 +3,9 @@
     <el-card class="box-card">
       <div slot="header">
         <el-row type="flex">
-          <el-col :span="3">
-            <span>{{ $t("Members.Member") }}</span>
-          </el-col>
           <el-col :span="9">
             <el-date-picker
+              :clearable="false"
               v-model="DateIn"
               @change="FilterByDateIn"
               type="date"
@@ -15,25 +13,29 @@
             >
             </el-date-picker
           ></el-col>
-          <el-col :span="12">
-            <Radio-Oprations TableName="MembershipMovement" @Change="getdata" />
+          <el-col :span="6">
+            <Export :list="tableData" Type="Members" />
           </el-col>
+          <el-col :span="3">
+            <el-button
+              style="width: 100px"
+              type="primary"
+              icon="el-icon-plus"
+              @click="Visibles = true"
+              >تجميد</el-button
+            >
+          </el-col>
+          <el-col :span="6">
+            <el-button
+              icon="el-icon-setting"
+              type="primary"
+              :size="$store.getters.size"
+              @click="$store.dispatch('Members/CheckMembers')"
+              >CheckMemberShips</el-button
+            ></el-col
+          >
         </el-row>
-        <el-button
-          icon="el-icon-setting"
-          type="primary"
-          :size="$store.getters.size"
-          @click="$store.dispatch('Members/CheckMembers')"
-          >CheckMemberShips</el-button
-        >
       </div>
-      <el-button
-        style="width: 100px"
-        type="primary"
-        icon="el-icon-plus"
-        @click="Visibles = true"
-        >تجميد</el-button
-      >
       <el-table
         v-loading="loading"
         :data="tableData"
@@ -126,22 +128,16 @@
 </template>
 
 <script>
+import Export from "@/components/Export";
 import {
   GetMembershipMovementByStatus,
   GetMembershipMovementByDateIn,
 } from "@/api/MembershipMovement";
 import { CreateMulti } from "@/api/MembershipMovementOrder";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import {
-  LocalDateTime,
-  LocalDate,
-  LocalTime,
-  DateTimeFormatter,
-  Instant,
-} from "@js-joda/core";
+import { LocalDate, LocalTime, DateTimeFormatter, Instant } from "@js-joda/core";
 export default {
-  name: "Member",
-  components: { RadioOprations },
+  components: { RadioOprations, Export },
   data() {
     return {
       tableData: [],

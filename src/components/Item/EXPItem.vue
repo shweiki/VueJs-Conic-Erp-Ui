@@ -52,6 +52,7 @@
       </el-row>
     </div>
     <Radio-Oprations
+      :value="listQuery.Status"
       TableName="Item"
       @Set="
         (v) => {
@@ -97,11 +98,7 @@
           this.$router.push({ path: '/Item/Edit/' + row.Id })
       "
     >
-      <el-table-column
-        type="selection"
-        width="55"
-        align="center"
-      ></el-table-column>
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
         label="Id"
         prop="Id"
@@ -115,8 +112,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" prop="Name" align="center">
-      </el-table-column>
+      <el-table-column label="Name" prop="Name" align="center"> </el-table-column>
       <el-table-column
         v-bind:label="$t('Items.Barcode')"
         prop="Barcode"
@@ -137,11 +133,7 @@
           <Select-Item-Exp-Column :ItemId="scope.row.Id" />
         </template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Sales.Status')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
           <Status-Tag :Status="scope.row.Status" TableName="Item" />
         </template>
@@ -167,27 +159,19 @@
             <el-table-column v-bind:label="$t('Items.Cost')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{
-                  scope.row.CostPrice.toFixed($store.getters.settings.ToFixed)
-                }}
+                {{ scope.row.CostPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
             <el-table-column v-bind:label="$t('Items.Packeges')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{
-                  scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed)
-                }}
+                {{ scope.row.OtherPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
             <el-table-column v-bind:label="$t('Items.Retail')" align="center">
               <template slot-scope="scope">
                 <i class="el-icon-money"></i>
-                {{
-                  scope.row.SellingPrice.toFixed(
-                    $store.getters.settings.ToFixed
-                  )
-                }}
+                {{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
               </template>
             </el-table-column>
             <el-table-column
@@ -229,7 +213,7 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import { GetEXP, CalculateCostPrice } from "@/api/Item";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";
@@ -268,7 +252,7 @@ export default {
       Totals: { Rows: 0, Totals: 0, TotalIn: 0, TotalOut: 0 },
       listLoading: false,
       Selection: [],
-      listQuery: JSON.parse(localStorage.getItem('EXPItem_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem("EXPItem_ListQuery") || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -291,7 +275,7 @@ export default {
       GetEXP(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        localStorage.setItem('EXPItem_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem("EXPItem_ListQuery", JSON.stringify(this.listQuery));
 
         this.listLoading = false;
       });

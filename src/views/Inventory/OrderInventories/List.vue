@@ -39,7 +39,8 @@
 
     <el-row type="flex">
       <el-col :span="6">
-        <Radio-Oprations TableName="OrderInventory" @Set="
+        <Radio-Oprations             :value="listQuery.Status"
+ TableName="OrderInventory" @Set="
           (v) => {
             listQuery.Status = v;
             handleFilter();

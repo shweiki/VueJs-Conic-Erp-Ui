@@ -68,6 +68,7 @@
     <el-row type="flex">
       <el-col :span="6">
         <Radio-Oprations
+          :value="listQuery.Status"
           TableName="SalesInvoice"
           @Set="
             (v) => {
@@ -229,7 +230,7 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import { GetByItem } from "@/api/SaleInvoice";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -278,7 +279,7 @@ export default {
         Discount: 0,
       },
       listLoading: false,
-      listQuery: JSON.parse(localStorage.getItem('SaleItem_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem("SaleItem_ListQuery") || null) || {
         ItemId: undefined,
         Page: 1,
         Any: "",
@@ -300,7 +301,7 @@ export default {
       GetByItem(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        localStorage.setItem('SaleItem_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem("SaleItem_ListQuery", JSON.stringify(this.listQuery));
         this.listLoading = false;
       });
     },

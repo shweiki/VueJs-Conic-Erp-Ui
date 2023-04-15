@@ -43,7 +43,8 @@
           </el-col>
         </el-row>
       </div>
-      <Radio-Oprations TableName="Driver" @Set="
+      <Radio-Oprations             :value="listQuery.Status"
+ TableName="Driver" @Set="
         (v) => {
           listQuery.Status = v;
           handleFilter();
