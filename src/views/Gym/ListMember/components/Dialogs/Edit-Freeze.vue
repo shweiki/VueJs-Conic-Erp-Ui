@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-button icon="el-icon-edit" circle @click="Visibles = true"></el-button>
+    <el-button icon="el-icon-edit" @click="Visibles = true"></el-button>
 
     <el-dialog
-      style="margin-top: -13vh; text-align: center;"
+      style="margin-top: -13vh; text-align: center"
       title="تسجيل تجميد"
       @opened="getdata"
       :visible.sync="Visibles"
@@ -14,8 +14,7 @@
         label-position="top"
         class="demo-form-inline"
       >
-        عدد الايام المسموحة لتجميد : من {{ MinFreezeLimit }} الى
-        {{ MaxFreezeLimit }} ايام
+        عدد الايام المسموحة لتجميد : من {{ MinFreezeLimit }} الى {{ MaxFreezeLimit }} ايام
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item prop="FreezeBetween" label="الفترة">
@@ -92,9 +91,7 @@
         </el-col>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visibles = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
+        <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
         <el-button :disabled="EnableSave" type="primary" @click="create()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -138,7 +135,6 @@ export default {
       Visibles: false,
       Days: 0,
       ValidateNote: "",
-
     };
   },
   methods: {
@@ -147,7 +143,7 @@ export default {
         .then((response) => {
           console.log(response);
           this.tempForm = response;
-          this.FreezeBetween = [this.tempForm.StartDate,this.tempForm.EndDate] ;
+          this.FreezeBetween = [this.tempForm.StartDate, this.tempForm.EndDate];
           this.Visibles = true;
         })
         .catch((err) => {
@@ -162,10 +158,7 @@ export default {
         )
       );
       console.log(this.Days);
-      if (
-        this.Days >= this.MinFreezeLimit &&
-        this.Days <= this.MaxFreezeLimit
-      ) {
+      if (this.Days >= this.MinFreezeLimit && this.Days <= this.MaxFreezeLimit) {
         this.$refs["dataForm"].validate((valid) => {
           if (valid) {
             this.EnableSave = true;

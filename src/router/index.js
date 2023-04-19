@@ -107,28 +107,29 @@ export const constantRoutes = [{
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [{
-    path: '/dashboard',
-    component: Layout,
-    redirect: '/dashboard/index',
-    children: [{
-        path: 'index',
-        component: () =>
-            import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
-    }]
-},
-{
-    path: '/Sales/PonitOfSale',
-    component: () =>
-        import('@/views/Sales/SaleInvoice/Create'),
-    name: 'PonitOfSale',
-    meta: {
-        title: 'PonitOfSale',
-        icon: 'bill'
+export const asyncRoutes = [
+    {
+        path: '/dashboard',
+        component: Layout,
+        redirect: '/dashboard/index',
+        children: [{
+            path: 'index',
+            component: () =>
+                import('@/views/dashboard/index'),
+            name: 'Dashboard',
+            meta: { title: 'dashboard', icon: 'dashboard (1)', affix: true }
+        }]
     },
-},
+    {
+        path: '/Sales/PonitOfSale',
+        component: () =>
+            import('@/views/Sales/SaleInvoice/Create'),
+        name: 'PonitOfSale',
+        meta: {
+            title: 'PonitOfSale',
+            icon: 'bill'
+        },
+    },
 
     /** when your routing map is too long, you can split it into small modules **/
     //componentsRouter,
@@ -148,64 +149,64 @@ export const asyncRoutes = [{
     OrderRestaurantRouter,
     SettingsRouter,
     UploadData,
-{
-    path: '/Reports',
-    component: Layout,
-    redirect: '/Reports',
-    meta: {
-        title: 'Reports',
-        icon: 'report',
-        affix: true
-    },
-    children: [{
-        path: 'Create',
-        component: () =>
-            import('@/views/Reports/Create'),
-        name: 'NewReport',
-        meta: { title: 'NewReport', icon: 'edit' }
-    },
     {
-        path: 'Edit/:id(\\d+)',
-        component: () =>
-            import('@/views/Reports/Edit'),
-        name: 'EditReport',
+        path: '/Reports',
+        component: Layout,
+        redirect: '/Reports',
         meta: {
-            title: 'EditReport',
-            noCache: true,
-            activeMenu: '/Reports/List'
+            title: 'Reports',
+            icon: 'report',
+            affix: true
         },
-        hidden: true,
+        children: [{
+            path: 'Create',
+            component: () =>
+                import('@/views/Reports/Create'),
+            name: 'NewReport',
+            meta: { title: 'NewReport', icon: 'edit' }
+        },
+        {
+            path: 'Edit/:id(\\d+)',
+            component: () =>
+                import('@/views/Reports/Edit'),
+            name: 'EditReport',
+            meta: {
+                title: 'EditReport',
+                noCache: true,
+                activeMenu: '/Reports/List'
+            },
+            hidden: true,
+        },
+        {
+            path: 'List',
+            component: () =>
+                import('@/views/Reports/List'),
+            name: 'ListReport',
+            meta: {
+                title: 'ListReport',
+                icon: 'cost'
+            },
+        }
+        ]
     },
-    {
-        path: 'List',
-        component: () =>
-            import('@/views/Reports/List'),
-        name: 'ListReport',
-        meta: {
-            title: 'ListReport',
-            icon: 'cost'
-        },
-    }
-    ]
-},
 
-//Guide
-{
-    path: '/Guide',
-    component: Layout,
-    redirect: '/Guide/index',
-    children: [{
-        path: 'index',
-        component: () =>
-            import('@/views/Guide/index'),
-        name: 'Guide',
-        meta: {
-            title: 'Guide',
-            icon: 'guide',
-            noCache: true
-        },
-    }]
-},
+    //Guide
+    {
+        path: '/Guide',
+        component: Layout,
+        redirect: '/Guide/index',
+        children: [{
+            path: 'index',
+            component: () =>
+                import('@/views/Guide/index'),
+            name: 'Guide',
+            meta: {
+                title: 'Guide',
+                icon: 'guide',
+                noCache: true
+            },
+        }]
+    },
 
 
 ]

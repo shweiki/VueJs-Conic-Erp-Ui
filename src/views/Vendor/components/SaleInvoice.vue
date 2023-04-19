@@ -1,26 +1,25 @@
 <template>
-  <div class="app-container" style="direction : rtl ">
-    <el-table
-      height="250"
-      :data="List"
-      fit
-      border
-      highlight-current-row
-      @row-dblclick="
-        row => {
-          $router.replace({
-            path: '/Sales/Edit/' + row.Id
-          });
-        }
-      "
-    >
+  <div class="app-container" style="direction: rtl">
+    <el-table height="250" :data="List" fit border highlight-current-row>
       <el-table-column label="#" prop="Id" width="120" align="center">
         <template slot="header" slot-scope="{}">
-          <el-button
-            type="primary"
-            icon="el-icon-refresh"
-            @click="getdata()"
-          ></el-button>
+          <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+        </template>
+        <template slot-scope="{ row }">
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Sales/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            ></el-tag
+          >
         </template>
       </el-table-column>
       <el-table-column
@@ -29,9 +28,7 @@
         width="120"
         align="center"
       >
-        <template slot-scope="{ row }">{{
-          row.FakeDate
-        }}</template></el-table-column
+        <template slot-scope="{ row }">{{ row.FakeDate }}</template></el-table-column
       >
       <el-table-column
         v-bind:label="$t('Sales.Type')"
@@ -46,20 +43,12 @@
         width="150"
         align="center"
       ></el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Discount')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
         <template slot-scope="scope">{{
           scope.row.Discount.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('CashPool.Amountv')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="scope">
           {{
             scope.row.InventoryMovements.reduce((prev, cur) => {
@@ -128,12 +117,12 @@ export default {
       type: Number,
       default: () => {
         return undefined;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
-      List: []
+      List: [],
     };
   },
   created() {
@@ -143,13 +132,12 @@ export default {
     checkPermission,
     getdata() {
       GetSaleInvoiceByVendorId({
-        Id: this.VendorId
-      }).then(response => {
+        Id: this.VendorId,
+      }).then((response) => {
         //   console.log("log :", response);
         this.List = response.reverse();
       });
-    }
-  }
+    },
+  },
 };
 </script>
-

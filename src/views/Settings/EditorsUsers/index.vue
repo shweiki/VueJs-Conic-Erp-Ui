@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column align="right" width="200">
           <template slot-scope="scope">
-            <el-button icon="el-icon-edit" circle @click="handleUpdate(scope.row)"></el-button>
+            <el-button icon="el-icon-edit"  @click="handleUpdate(scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>

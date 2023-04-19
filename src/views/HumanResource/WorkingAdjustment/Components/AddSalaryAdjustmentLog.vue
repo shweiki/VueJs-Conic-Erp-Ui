@@ -4,7 +4,6 @@
       type="warning"
       icon="el-icon-circle-plus"
       @click="dialogFormVisible = true"
-      round
     >
       <span style="font-size: 14px">إيرادات \ إقتطاعات </span>
     </el-button>

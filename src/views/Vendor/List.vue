@@ -30,8 +30,8 @@
             icon="el-icon-search"
             @click="handleFilter"
           >
-            Search
-          </el-button>
+            {{ $t("table.search") }}
+        </el-button>
         </el-col>
         <el-col :span="2">
           <el-popover placement="left" width="400">
@@ -128,7 +128,7 @@
         (row) => {
           if (DblClickRow == 'AddAsRow') {
             $emit('dblclick', row);
-          } else this.$router.push({ path: '/Vendor/Edit/' + row.Id });
+          }
         }
       "
     >
@@ -142,7 +142,20 @@
         :class-name="getSortClass('id')"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.Id }}</span>
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Vendor/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            ></el-tag
+          >
         </template>
       </el-table-column>
 
@@ -190,13 +203,16 @@
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <Edit-Vendor :VendorId="scope.row.Id" />
-          <Next-Oprations
-            :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="Vendor"
-            @Done="handleFilter"
-          />
+          <el-row type="flex">
+            <el-col :span="12"> <Edit-Vendor :VendorId="scope.row.Id" /> </el-col>
+            <el-col :span="12">
+              <Next-Oprations
+                :ObjId="scope.row.Id"
+                :Status="scope.row.Status"
+                TableName="Vendor"
+                @Done="handleFilter"
+            /></el-col>
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -211,9 +227,8 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
 import { GetByListQ } from "@/api/Vendor";
-import NextOprations from "@/components/Oprationsys/NextOprations";
+import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import permission from "@/directive/permission/index.js";
@@ -258,7 +273,7 @@ export default {
     };
   },
   created() {
-    // this.getList();
+    this.getList();
   },
   methods: {
     getList() {
@@ -276,20 +291,20 @@ export default {
     },
     sortChange(data) {
       const { prop, order } = data;
-      if (prop === "id") {
+      if (prop === "Id") {
         this.sortById(order);
       }
     },
     sortById(order) {
       if (order === "ascending") {
-        this.listQuery.sort = "+id";
+        this.listQuery.Sort = "+id";
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.Sort = "-id";
       }
       this.handleFilter();
     },
     getSortClass: function (key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.Sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
     handleSelectionChange(val) {

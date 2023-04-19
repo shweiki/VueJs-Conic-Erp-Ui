@@ -61,7 +61,7 @@
           icon="el-icon-search"
           @click="handleFilter"
         >
-          Search
+          {{ $t("table.search") }}
         </el-button>
       </el-col>
     </el-row>
@@ -107,14 +107,6 @@
       fit
       highlight-current-row
       style="width: 100%"
-      @row-dblclick="
-        (row) => {
-          let r = $router.resolve({
-            path: '/Purchases/Edit/' + row.PurchaseInvoiceId,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-        }
-      "
     >
       <el-table-column
         v-bind:label="$t('Sales.Sequence')"
@@ -141,9 +133,20 @@
         width="120"
       >
         <template slot-scope="{ row }">
-          <strong style="font-size: 10px; cursor: pointer">{{
-            row.PurchaseInvoiceId
-          }}</strong>
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Purchases/Edit/' + row.PurchaseInvoiceId,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.PurchaseInvoiceId }}</strong
+            >
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -263,18 +266,6 @@
                     fit
                     highlight-current-row
                     style="width: 100%"
-                    @row-dblclick="
-                      (row) => {
-                        let r = $router.resolve({
-                          path: '/Sales/Edit/' + row.SalesInvoiceId,
-                        });
-                        window.open(
-                          r.href,
-                          r.route.name,
-                          $store.getters.settings.windowStyle
-                        );
-                      }
-                    "
                   >
                     <el-table-column align="center" label="فواتير بيع">
                       <el-table-column
@@ -283,7 +274,24 @@
                         width="80"
                       >
                         <template slot-scope="{ row }">
-                          <span>{{ row.SalesInvoiceId }}</span>
+                          <el-tag type="primary" disable-transitions>
+                            <strong
+                              style="font-size: 10px; cursor: pointer"
+                              @click="
+                                () => {
+                                  let r = $router.resolve({
+                                    path: '/Sales/Edit/' + row.SalesInvoiceId,
+                                  });
+                                  window.open(
+                                    r.href,
+                                    r.route.name,
+                                    $store.getters.settings.windowStyle
+                                  );
+                                }
+                              "
+                              >{{ row.SalesInvoiceId }}</strong
+                            ></el-tag
+                          >
                         </template>
                       </el-table-column>
                       <el-table-column

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button @click="deleteOrder" type="danger" icon="el-icon-delete" circle
+    <el-button @click="deleteOrder" type="danger" icon="el-icon-delete"
       v-bind:disabled="MemberShipMovementOrderId == undefined"></el-button>
   </div>
 </template>

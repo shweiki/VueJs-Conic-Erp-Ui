@@ -30,8 +30,8 @@
         </el-col>
         <el-col :span="3">
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-            Search
-          </el-button>
+            {{ $t("table.search") }}
+        </el-button>
         </el-col>
         <el-col :span="1">
           <Drawer-Print Type="ItemMoveStatement" :Data="{

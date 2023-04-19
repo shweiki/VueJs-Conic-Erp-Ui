@@ -64,7 +64,6 @@
             <el-button
               v-if="scope.row.Opration.Status != -1"
               type="success"
-              circle
               @click="ConvertToOrderInventory(scope.row)"
               >ترصيد</el-button
             >
@@ -73,7 +72,6 @@
               v-for="(NOprations, index) in scope.row.NextOprations"
               :key="index"
               :type="NOprations.ClassName"
-              round
               @click="handleOprationsys(scope.row.Id, NOprations)"
               >{{ NOprations.OprationDescription }}</el-button
             >

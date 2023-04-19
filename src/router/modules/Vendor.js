@@ -1,28 +1,27 @@
 import Layout from '@/layout'
 
 const VendorRouter = {
-  path: '/Vendor',
+  path: '/Vendors',
   component: Layout,
-  redirect: '/Vendor/List',
-  name: 'Vendor',
+  redirect: '/Vendors/List',
   meta: {
     title: 'Vendors', icon: 'customer-service'
   },
   children: [
     {
-      path: 'ListVendor',
+      path: 'List',
       component: () => import('@/views/Vendor/List'),
       name: 'ListVendor',
       meta: {
-        title: 'Vendors', icon: 'customer-service'
+        title: 'ListVendor', icon: 'customer-service'
       },
     },
-    {
+    /*{
       path: 'Create',
       component: () => import('@/views/Vendor/Create'),
       name: 'NewVendor',
       meta: { title: 'NewVendor', icon: 'edit' }
-    },
+    },*/
     {
       path: 'Edit/:id(\\d+)',
       component: () => import('@/views/Vendor/Edit'),

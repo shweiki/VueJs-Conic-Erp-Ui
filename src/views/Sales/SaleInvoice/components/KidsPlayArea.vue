@@ -72,7 +72,7 @@
                       :min-percent="68"
                       :default-percent="70"
                     >
-                      <template slot="paneL" class="card">
+                      <template slot="paneL">
                         <split-pane
                           split="horizontal"
                           :min-percent="10"
@@ -366,7 +366,7 @@
               <template slot="paneR">
                 <VisitIn @Done="focusBarcode()" />
               </template>
-              <template slot="paneL" class="card">
+              <template slot="paneL">
                 <VisitCreate @Done="focusBarcode()" :is-edit="false" />
               </template>
             </split-pane>
@@ -636,14 +636,14 @@ export default {
       });
     },
     setTagsViewTitle() {
-      const title = "Edit Sale";
+      const title = this.$t("route.EditSaleInvoice");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Edit Sale";
+      const title = this.$t("route.EditSaleInvoice");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

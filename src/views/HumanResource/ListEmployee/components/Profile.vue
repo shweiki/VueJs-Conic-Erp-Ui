@@ -45,7 +45,6 @@
 
         <el-card class="box-card">
           <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
-
             <el-tab-pane label="دوامات" name="DeviceLog">
               <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
               <DeviceLog TableName="Employee" :UserId="tempForm.Id" />
@@ -60,7 +59,7 @@
                 :EmployeeName="tempForm.Name"
               />
             </el-tab-pane>
-           <el-tab-pane label="مستندات" name="Documents">
+            <el-tab-pane label="مستندات" name="Documents">
               <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
               <Documents :ObjectId="tempForm.Id" TableName="Employee" />
             </el-tab-pane>
@@ -68,7 +67,7 @@
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
               <Communication />
             </el-tab-pane>
-             <el-tab-pane label="رواتب" name="salary">
+            <el-tab-pane label="رواتب" name="salary">
               <span slot="label"><i class="el-icon-refresh"></i> رواتب</span>
               <Salary
                 :SalaryPayment="SalaryPayment"
@@ -205,14 +204,14 @@ export default {
     },
 
     setTagsViewTitle() {
-      const title = "موظف";
+      const title = this.$t("route.EditEmployee");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "موظف";
+      const title = this.$t("route.EditEmployee");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },
@@ -241,7 +240,8 @@ export default {
 .el-tabs__content {
   max-height: 700px;
 }
-.el-tabs__nav-scroll{
-float: right;
-direction: ltr;}
+.el-tabs__nav-scroll {
+  float: right;
+  direction: ltr;
+}
 </style>

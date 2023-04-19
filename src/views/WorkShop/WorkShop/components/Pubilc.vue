@@ -524,14 +524,14 @@ export default {
       this.tempForm.InventoryMovements[Index].Description = this.Text;
     },
     setTagsViewTitle() {
-      const title = "Edit Purchase";
+      const title = this.$t("route.EditWorkShop");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Edit Purchase";
+      const title = this.$t("route.EditWorkShop");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

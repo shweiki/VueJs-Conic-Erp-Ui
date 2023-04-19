@@ -7,7 +7,7 @@
     icon-color="red"
     title="Are you sure to delete this?"
   >
-    <el-button type="danger" slot="reference" icon="el-icon-delete" round></el-button>
+    <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
   </el-popconfirm>
 </template>
 <script>

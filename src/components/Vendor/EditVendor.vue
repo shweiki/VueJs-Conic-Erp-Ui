@@ -11,6 +11,7 @@
     <el-dialog
       style="margin-top: -13vh"
       :visible.sync="Visible"
+      :show-close="false"
       @opened="$refs['Name'].focus()"
     >
       <div slot="title" class="dialog-footer">

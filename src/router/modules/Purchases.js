@@ -17,7 +17,7 @@ const PurchasesRouter = {
       component: () => import('@/views/Purchases/PurchaseInvoice/Edit'),
       name: 'EditPurchaseInvoice',
       meta: {
-         title: 'EditInvoice', noCache: true, activeMenu: '/Purchases/PurchaseInvoice/List'
+         title: 'EditPurchaseInvoice', noCache: true, activeMenu: '/Purchases/PurchaseInvoice/List'
       },
       hidden: true,
     },

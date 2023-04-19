@@ -59,7 +59,6 @@
           <template slot-scope="scope">
             <el-button
               icon="el-icon-edit"
-              circle
               @click="handleUpdate(scope.row)"
             ></el-button>
             <Next-Oprations

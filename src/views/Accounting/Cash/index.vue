@@ -28,7 +28,6 @@
         <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
-              circle
               type="success"
               icon="el-icon-refresh"
               @click="getdata()"
@@ -74,7 +73,6 @@
               <el-button
                 icon="el-icon-edit"
                 :size="$store.getters.size"
-                circle
                 @click="handleUpdate(scope.row)"
               ></el-button>
             </el-col>

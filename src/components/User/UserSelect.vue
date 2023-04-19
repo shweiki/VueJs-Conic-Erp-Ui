@@ -39,11 +39,11 @@ export default {
   },
   methods: {
     SetVal(val) {
-      //      console.log(" eee  " + this.Name);
-      this.$emit(
-        "Set",
-        this.options.find((obj) => obj.UserName == val).UserName
-      );
+      if (val && val != "" && val != null) {
+        this.$emit("Set", this.options.find((obj) => obj.UserName == val).UserName);
+      } else {
+        this.$emit("Set", null);
+      }
       this.value = val;
     },
   },

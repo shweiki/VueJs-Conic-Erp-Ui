@@ -79,7 +79,6 @@
             <Status-Tag :Status="scope.row.Status" TableName="Discount" />
             <el-button
               icon="el-icon-edit"
-              circle
               @click="handleUpdate(scope.row)"
             ></el-button>
           </template>
@@ -89,14 +88,12 @@
             <el-button
               v-if="scope.row.Opration.Status != -1"
               icon="el-icon-edit"
-              circle
               @click="handleUpdate(scope.row)"
             ></el-button>
             <el-button
               v-for="(NOprations, index) in scope.row.NextOprations"
               :key="index"
               :type="NOprations.ClassName"
-              round
               @click="handleOprationsys(scope.row.Id, NOprations)"
               >{{ NOprations.OprationDescription }}</el-button
             >

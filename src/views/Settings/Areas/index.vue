@@ -21,7 +21,6 @@
         <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
-              circle
               type="success"
               icon="el-icon-refresh"
               @click="getdata()"
@@ -71,7 +70,6 @@
           <template slot-scope="scope">
             <el-button
               icon="el-icon-edit"
-              circle
               @click="handleUpdate(scope.row)"
             ></el-button>
               <Next-Oprations

@@ -73,7 +73,6 @@
             <el-col :span="8">
               <el-button
                 icon="el-icon-edit"
-                circle
                 @click="handleUpdate(scope.row)"
               ></el-button>
             </el-col>

@@ -164,13 +164,6 @@
         border
         highlight-current-row
         ref="multipleTable"
-        @row-dblclick="
-          (row) => {
-            $router.replace({
-              path: '/Sales/Edit/' + row.Id,
-            });
-          }
-        "
       >
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
@@ -179,6 +172,26 @@
               icon="el-icon-refresh"
               @click="getdata()"
             ></el-button>
+          </template>
+          <template slot-scope="{ row }">
+            <el-tag type="primary" disable-transitions>
+              <strong
+                style="font-size: 10px; cursor: pointer"
+                @click="
+                  () => {
+                    let r = $router.resolve({
+                      path: '/Sales/Edit/' + row.Id,
+                    });
+                    window.open(
+                      r.href,
+                      r.route.name,
+                      $store.getters.settings.windowStyle
+                    );
+                  }
+                "
+                >{{ row.Id }}</strong
+              ></el-tag
+            >
           </template>
         </el-table-column>
         <el-table-column
@@ -606,14 +619,14 @@ export default {
       return [day, month, year].join("/");
     },
     setTagsViewTitle() {
-      const title = "Edit Sales";
+      const title = this.$t("route.EditSaleInvoice");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Edit Sales";
+      const title = this.$t("route.EditSaleInvoice");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

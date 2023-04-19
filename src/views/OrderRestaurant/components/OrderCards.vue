@@ -25,7 +25,7 @@
       </el-col>
       <el-col :span="2">
         <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-          Search
+          {{ $t("table.search") }}
         </el-button>
       </el-col>
     </el-row>

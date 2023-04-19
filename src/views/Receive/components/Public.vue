@@ -83,10 +83,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="باسم" prop="Name">
-              <el-input
-                placeholder="اسم المستلم"
-                v-model="tempForm.Name"
-              ></el-input>
+              <el-input placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -109,10 +106,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-              v-bind:label="$t('AddVendors.Description')"
-              prop="Description"
-            >
+            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
               <el-input v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
@@ -244,10 +238,7 @@ export default {
         if (valid && this.tempForm.TotalAmmount > 0) {
           Edit(this.tempForm)
             .then((response) => {
-              if (
-                response &&
-                this.$store.getters.settings.Receive.CreateEntry == true
-              ) {
+              if (response && this.$store.getters.settings.Receive.CreateEntry == true) {
                 EditEntryByFktable({
                   TableName: "Receive",
                   Fktable: this.tempForm.Id,
@@ -342,10 +333,7 @@ export default {
           this.DisabledSave = true;
           Create(this.tempForm)
             .then((response) => {
-              if (
-                response &&
-                this.$store.getters.settings.Receive.CreateEntry == true
-              ) {
+              if (response && this.$store.getters.settings.Receive.CreateEntry == true) {
                 CreateEntry({
                   Id: undefined,
                   FakeDate: this.tempForm.FakeDate,
@@ -427,14 +415,14 @@ export default {
       });
     },
     setTagsViewTitle() {
-      const title = "Edit Receive";
+      const title = this.$t("route.EditReceive");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Edit Receive";
+      const title = this.$t("route.EditReceive");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

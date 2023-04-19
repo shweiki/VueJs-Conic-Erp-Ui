@@ -61,13 +61,13 @@
             icon="el-icon-search"
             @click="handleFilter"
           >
-            Search
-          </el-button>
+            {{ $t("table.search") }}
+        </el-button>
         </el-col>
       </el-row>
     </div>
-    <Radio-Oprations             :value="listQuery.Status"
-
+    <Radio-Oprations
+      :value="listQuery.Status"
       TableName="Payment"
       @Set="
         (v) => {
@@ -112,14 +112,9 @@
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
-      @row-dblclick="
-        (row) => {
-          $router.push({ path: `/Payment/Edit/${row.Id}` });
-        }
-      "
     >
       <el-table-column
-        label="Id"
+        v-bind:label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"
@@ -127,7 +122,20 @@
         :class-name="getSortClass('id')"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.Id }}</span>
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Payment/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            ></el-tag
+          >
         </template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
@@ -189,7 +197,7 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import { GetByListQ } from "@/api/Payment";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -224,7 +232,7 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, Cash: 0, Cheque: 0, Visa: 0 },
       listLoading: false,
-      listQuery: JSON.parse(localStorage.getItem('Payment_ListQuery') || null) || {
+      listQuery: JSON.parse(localStorage.getItem("Payment_ListQuery") || null) || {
         Page: 1,
         Any: "",
         limit: this.$store.getters.settings.LimitQurey,
@@ -245,7 +253,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
-        localStorage.setItem('Payment_ListQuery', JSON.stringify(this.listQuery))
+        localStorage.setItem("Payment_ListQuery", JSON.stringify(this.listQuery));
         this.listLoading = false;
       });
     },
@@ -255,20 +263,20 @@ export default {
     },
     sortChange(data) {
       const { prop, order } = data;
-      if (prop === "id") {
+      if (prop === "Id") {
         this.sortById(order);
       }
     },
     sortById(order) {
       if (order === "ascending") {
-        this.listQuery.sort = "+id";
+        this.listQuery.Sort = "+id";
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.Sort = "-id";
       }
       this.handleFilter();
     },
     getSortClass: function (key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.Sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
   },

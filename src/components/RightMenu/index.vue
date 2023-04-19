@@ -21,7 +21,7 @@
       </el-tooltip>
 
       <lang-select class="Right-Menu-item hover-effect" />
-      <Shortcut-Add class="Right-Menu-item hover-effect" />
+      <!-- <Shortcut-Add class="Right-Menu-item hover-effect" />-->
     </template>
 
     <el-dropdown class="avatar-container Right-Menu-item hover-effect" trigger="click">

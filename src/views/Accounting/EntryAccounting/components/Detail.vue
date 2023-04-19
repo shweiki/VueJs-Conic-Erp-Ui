@@ -11,12 +11,7 @@
 
         <router-link
           class="pan-btn tiffany-btn"
-          style="
-            float: left;
-            margin-left: 20px;
-            padding: 10px 15px;
-            border-radius: 6px;
-          "
+          style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
           icon="el-icon-plus"
           to="/EntryAccounting/List"
           >{{ $t("route.EntryAccounting") }}</router-link
@@ -73,9 +68,7 @@
             <template slot-scope="scope">
               <el-input-number
                 v-bind:disabled="
-                  tempForm.EntryMovements[scope.$index].Debit != 0
-                    ? true
-                    : false
+                  tempForm.EntryMovements[scope.$index].Debit != 0 ? true : false
                 "
                 controls-position="right"
                 v-model="tempForm.EntryMovements[scope.$index].Credit"
@@ -98,9 +91,7 @@
             <template slot-scope="scope">
               <el-input-number
                 v-bind:disabled="
-                  tempForm.EntryMovements[scope.$index].Credit != 0
-                    ? true
-                    : false
+                  tempForm.EntryMovements[scope.$index].Credit != 0 ? true : false
                 "
                 controls-position="right"
                 v-model="tempForm.EntryMovements[scope.$index].Debit"
@@ -112,10 +103,7 @@
               ></el-input-number>
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            v-bind:label="$t('Accounting.Account')"
-          >
+          <el-table-column align="center" v-bind:label="$t('Accounting.Account')">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'EntryMovements.' + scope.$index + '.AccountId'"
@@ -130,9 +118,7 @@
                 {{ tempForm.EntryMovements[scope.$index].Name }}
                 <el-col :span="4">
                   <EditAccount
-                    :AccountId="
-                      tempForm.EntryMovements[scope.$index].AccountId
-                    "
+                    :AccountId="tempForm.EntryMovements[scope.$index].AccountId"
                 /></el-col>
               </el-form-item>
             </template>
@@ -184,7 +170,6 @@
                 <el-button
                   type="danger"
                   icon="el-icon-delete"
-                  circle
                   @click="RemoveEntryMovements(scope.$index)"
                 ></el-button>
               </el-tooltip>
@@ -331,9 +316,7 @@ export default {
               .catch((error) => {
                 console.log(error);
               });
-          } else
-            this.ValidateNote =
-              "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
+          } else this.ValidateNote = "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
@@ -371,9 +354,7 @@ export default {
               .catch((error) => {
                 console.log(error);
               });
-          } else
-            this.ValidateNote =
-              "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
+          } else this.ValidateNote = "قيمة الدائن و المدين غير متساويات او تساوي صفر  ";
         } else {
           console.log("error submit!!");
           return false;
@@ -381,14 +362,14 @@ export default {
       });
     },
     setTagsViewTitle() {
-      const title = "تعديل قيد";
+      const title = this.$t("route.EditEntryAccounting");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "تعديل قيد";
+      const title = this.$t("route.EditEntryAccounting");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

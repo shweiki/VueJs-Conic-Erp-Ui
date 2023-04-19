@@ -94,26 +94,30 @@
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
-      @row-dblclick="
-        (row) => {
-          //  $emit('dblclick', row);
-          let r = $router.resolve({
-            path: '/OrderInventories/Edit/' + row.OrderInventoryId,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-        }
-      "
     >
       <el-table-column
-        label="Id"
-        prop="Id"
+        v-bind:label="$t('Vendors.ID')"
+        prop="OrderInventoryId"
         sortable="custom"
         align="center"
         width="80"
         :class-name="getSortClass('id')"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.Id }}</span>
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/OrderInventories/Edit/' + row.OrderInventoryId,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.OrderInventoryId }}</strong
+            ></el-tag
+          >
         </template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
@@ -264,21 +268,21 @@ export default {
     },
     sortChange(data) {
       const { prop, order } = data;
-      if (prop === "id") {
+      if (prop === "Id") {
         this.sortById(order);
       }
     },
     sortById(order) {
       if (order === "ascending") {
-        this.listQuery.sort = "+id";
+        this.listQuery.Sort = "+id";
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.Sort = "-id";
       }
       this.handleFilter();
     },
 
     getSortClass: function (key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.Sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
     print(data) {

@@ -64,7 +64,7 @@
               icon="el-icon-search"
               @click="handleFilter"
             >
-              Search
+            {{ $t("table.search") }}
             </el-button>
           </el-col>
           <el-col :span="1">
@@ -123,11 +123,6 @@
         border
         highlight-current-row
         style="width: 100%"
-        @row-dblclick="
-          (row) => {
-            $router.push({ path: `/EntryAccounting/Edit/${row.Id}` });
-          }
-        "
       >
         <el-table-column
           v-bind:label="$t('Accounting.EntryId')"
@@ -135,6 +130,26 @@
           width="120"
           align="center"
         >
+          <template slot-scope="{ row }">
+            <el-tag type="primary" disable-transitions>
+              <strong
+                style="font-size: 10px; cursor: pointer"
+                @click="
+                  () => {
+                    let r = $router.resolve({
+                      path: '/EntryAccounting/Edit/' + row.Id,
+                    });
+                    window.open(
+                      r.href,
+                      r.route.name,
+                      $store.getters.settings.windowStyle
+                    );
+                  }
+                "
+                >{{ row.Id }}</strong
+              ></el-tag
+            >
+          </template>
         </el-table-column>
         <el-table-column label="التاريخ" align="center" width="140">
           <template slot-scope="{ row }">
@@ -275,7 +290,7 @@ export default {
     },
 
     getSortClass: function (key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.Sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
 

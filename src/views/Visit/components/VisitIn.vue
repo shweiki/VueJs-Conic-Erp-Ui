@@ -37,10 +37,9 @@
       :row-class-name="tableRowClassName"
     >
       <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column label="Id" prop="Id" align="center" width="80">
+      <el-table-column v-bind:label="$t('Vendors.ID')" prop="Id" align="center" width="80">
         <template slot="header" slot-scope="{}">
           <el-button
-            circle
             type="success"
             icon="el-icon-refresh"
             @click="getList()"
@@ -81,7 +80,6 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime, TimeConvert } from "@/utils";
 
 export default {
-
   components: {
     ButtonOprations,
   },

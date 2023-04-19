@@ -18,7 +18,7 @@
             <el-checkbox v-model="tempForm.TakeBon">تتبع جمركي</el-checkbox>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col v-if="isEdit" :span="8">
           <pan-thumb
             v-if="tempForm"
             :image="tempForm.Avatar"

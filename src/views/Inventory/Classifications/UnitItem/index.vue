@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" >
+      <div slot="header">
         <el-button
           style="float: left"
           type="success"
@@ -78,14 +78,12 @@
             <el-button
               v-if="scope.row.Opration.Status != -1"
               icon="el-icon-edit"
-              circle
               @click="handleUpdate(scope.row)"
             ></el-button>
             <el-button
               v-for="(NOprations, index) in scope.row.NextOprations"
               :key="index"
               :type="NOprations.ClassName"
-              round
               @click="handleOprationsys(scope.row.Id, NOprations)"
               >{{ NOprations.OprationDescription }}</el-button
             >

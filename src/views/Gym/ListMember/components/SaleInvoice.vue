@@ -1,22 +1,25 @@
 <template>
   <div class="app-container" style="direction: rtl">
-    <el-table
-      height="250"
-      :data="ServiceInvoices"
-      fit
-      border
-      highlight-current-row
-      @row-dblclick="
-        (row) => {
-          $router.replace({
-            path: '/Sales/Edit/' + row.Id,
-          });
-        }
-      "
-    >
+    <el-table height="250" :data="ServiceInvoices" fit border highlight-current-row>
       <el-table-column label="#" prop="Id" width="120" align="center">
         <template slot="header" slot-scope="{}">
           <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+        </template>
+        <template slot-scope="{ row }">
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Sales/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            ></el-tag
+          >
         </template>
       </el-table-column>
       <el-table-column

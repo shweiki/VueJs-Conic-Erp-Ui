@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="app-container">
     <el-row type="flex">
-      <el-col :span="4">
+      <el-col :span="8">
         <el-input
           v-model="listQuery.Any"
           placeholder="Search By Any Acount Name Or Id"
@@ -21,8 +21,8 @@
           "
         />
       </el-col>
-      <el-col :span="3">
-        <user-select
+      <el-col :span="2">
+        <User-Select
           @Set="
             (v) => {
               listQuery.User = v;
@@ -31,7 +31,7 @@
           "
         />
       </el-col>
-      <el-col :span="3">
+      <el-col :span="2">
         <Sort-Options
           :Value="listQuery.Sort"
           @Set="
@@ -42,7 +42,7 @@
           "
         />
       </el-col>
-      <el-col :span="6">
+      <el-col :span="4">
         <Export :list="list" />
         <el-button
           v-waves
@@ -51,7 +51,7 @@
           icon="el-icon-search"
           @click="handleFilter"
         >
-          Search
+          {{ $t("table.search") }}
         </el-button>
       </el-col>
     </el-row>
@@ -104,17 +104,9 @@
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
-      @row-dblclick="
-        (row) => {
-          let r = $router.resolve({
-            path: '/Purchases/Edit/' + row.Id,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-        }
-      "
     >
       <el-table-column
-        label="Id"
+        v-bind:label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"
@@ -122,7 +114,20 @@
         :class-name="getSortClass('id')"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.Id }}</span>
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Purchases/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            >
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
@@ -186,13 +191,18 @@
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <Next-Oprations
-            :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="PurchaseInvoice"
-            @Done="handleFilter"
-          />
-          <Drawer-Print Type="PurchaseInvoice" :Data="scope.row" />
+          <el-row type="flex">
+            <el-col :span="12">
+              <Next-Oprations
+                :ObjId="scope.row.Id"
+                :Status="scope.row.Status"
+                TableName="PurchaseInvoice"
+                @Done="handleFilter"
+            /></el-col>
+            <el-col :span="12">
+              <Drawer-Print Type="PurchaseInvoice" :Data="scope.row" />
+            </el-col>
+          </el-row>
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -245,7 +255,7 @@ import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-import UserSelect from "@/components/User/UserSelect";
+import UserSelect from "@/components/User/UserSelect.vue";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
 
 import waves from "@/directive/waves"; // waves directive
@@ -305,20 +315,20 @@ export default {
     },
     sortChange(data) {
       const { prop, order } = data;
-      if (prop === "id") {
+      if (prop === "Id") {
         this.sortById(order);
       }
     },
     sortById(order) {
       if (order === "ascending") {
-        this.listQuery.sort = "+id";
+        this.listQuery.Sort = "+id";
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.Sort = "-id";
       }
       this.handleFilter();
     },
     getSortClass: function (key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.Sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
   },

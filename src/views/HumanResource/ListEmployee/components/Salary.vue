@@ -10,7 +10,7 @@
       </el-col>
     </el-row>
     <el-table :data="SalaryPayment" fit border highlight-current-row height="500">
-      <el-table-column prop="Id" label="Id" width="60" align="center"></el-table-column>
+      <el-table-column prop="Id" v-bind:label="$t('Vendors.ID')" width="60" align="center"></el-table-column>
       <el-table-column label="من تاريخ" align="center" width="140">
         <template slot-scope="scope">
           <el-date-picker

@@ -42,14 +42,6 @@
         fit
         highlight-current-row
         style="width: 100%"
-        @row-dblclick="
-          (row) => {
-            let r = $router.resolve({
-              path: '/Sales/Edit/' + row.Id,
-            });
-            window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-          }
-        "
       >
         <el-table-column
           v-bind:label="$t('Vendors.ID')"
@@ -58,9 +50,22 @@
           align="center"
           width="80"
         >
-          <template slot-scope="{ row }">
-            <span>{{ row.Id }}</span>
-          </template>
+        <template slot-scope="{ row }">
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Sales/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            ></el-tag
+          >
+        </template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
           <template slot-scope="{ row }">

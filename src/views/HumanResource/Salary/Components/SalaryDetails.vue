@@ -2,12 +2,7 @@
   <div class="app-container">
     <el-row type="flex">
       <el-col :span="3">
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-        >
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search">
         </el-button>
       </el-col>
       <el-col :span="3">
@@ -36,10 +31,7 @@
               <div slot="header" class="clearfix">
                 احتساب الراتب :
                 <span>
-                  <Status-Tag
-                    :Status="tempForm.Status"
-                    TableName="SalaryPayment"
-                  />
+                  <Status-Tag :Status="tempForm.Status" TableName="SalaryPayment" />
                 </span>
               </div>
               <el-descriptions class="margin-top" :column="3" border>
@@ -77,18 +69,14 @@
                   :content-style="{ 'text-align': 'right' }"
                 >
                   <template slot="label"> مجموع ساعات التأخير </template>
-                  <el-tag size="small">{{
-                    MinutesConvert(TotalDelayMinute)
-                  }}</el-tag>
+                  <el-tag size="small">{{ MinutesConvert(TotalDelayMinute) }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
                   :content-style="{ 'text-align': 'right' }"
                 >
                   <template slot="label"> مجموع ساعات إضافي </template>
-                  <el-tag size="small">{{
-                    MinutesConvert(TotalExtraMinute)
-                  }}</el-tag>
+                  <el-tag size="small">{{ MinutesConvert(TotalExtraMinute) }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
                   :label-style="{ 'text-align': 'right' }"
@@ -117,15 +105,11 @@
             :GrossSalary="tempForm.GrossSalary"
             v-bind:ExtraHours="
               (parseFloat(MinutesConvert(TotalExtraMinute, '.')) + 0.4) *
-              (tempForm.GrossSalary /
-                tempForm.DaysCount /
-                tempForm.WorkingHours)
+              (tempForm.GrossSalary / tempForm.DaysCount / tempForm.WorkingHours)
             "
             v-bind:DelayHours="
               (parseFloat(MinutesConvert(TotalDelayMinute, '.')) + 0.4) *
-              (tempForm.GrossSalary /
-                tempForm.DaysCount /
-                tempForm.WorkingHours)
+              (tempForm.GrossSalary / tempForm.DaysCount / tempForm.WorkingHours)
             "
           />
           <el-row type="flex">
@@ -259,22 +243,20 @@ export default {
       this.listLoading = true;
       this.loading = true;
 
-      GetById({ Id: this.$route.params && this.$route.params.id }).then(
-        (response) => {
-          this.tempForm = response;
+      GetById({ Id: this.$route.params && this.$route.params.id }).then((response) => {
+        this.tempForm = response;
 
-          this.tempForm.NetSalary = (
-            parseFloat(this.tempForm.GrossSalary) +
-            this.tempForm.SalaryAdjustmentLogs.reduce((prev, cur) => {
-              return prev + parseFloat(cur.AdjustmentAmmount);
-            }, 0)
-          ).toFixed(this.$store.getters.settings.ToFixed);
-          // set page title
-          this.setTagsViewTitle();
-          this.setPageTitle();
-          this.listLoading = false;
-        }
-      );
+        this.tempForm.NetSalary = (
+          parseFloat(this.tempForm.GrossSalary) +
+          this.tempForm.SalaryAdjustmentLogs.reduce((prev, cur) => {
+            return prev + parseFloat(cur.AdjustmentAmmount);
+          }, 0)
+        ).toFixed(this.$store.getters.settings.ToFixed);
+        // set page title
+        this.setTagsViewTitle();
+        this.setPageTitle();
+        this.listLoading = false;
+      });
       this.loading = false;
     },
     confirmData() {
@@ -296,20 +278,22 @@ export default {
         });
     },
     setTagsViewTitle() {
-      const title =
-        "احتساب راتب " +
-        this.tempForm.Name +
-        " لشهر " +
-        parseTime(this.tempForm.SalaryFrom, "{m}\\{y}");
+      const title = this.$t("route.EditOrderInventory");
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}`,
+        title: `${title} - ${this.tempForm.Name} - ${parseTime(
+          this.tempForm.SalaryFrom,
+          "{m}\\{y}"
+        )}`,
       });
 
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "موظف";
-      document.title = `${title} - ${this.tempForm.Id}`;
+      const title = this.$t("route.EditOrderInventory");
+      document.title = `${title} - ${this.tempForm.Name} - ${parseTime(
+        this.tempForm.SalaryFrom,
+        "{m}\\{y}"
+      )}`;
     },
   },
 };

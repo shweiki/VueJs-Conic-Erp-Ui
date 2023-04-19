@@ -3,7 +3,6 @@
     <el-button
       type="primary"
       icon="el-icon-search"
-      circle
       @click="Open = true"
     ></el-button>
 

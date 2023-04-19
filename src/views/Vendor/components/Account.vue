@@ -5,18 +5,32 @@
       :AccountId1="3"
       :AccountId2="AccountId"
     />
-    <el-table
-      @row-dblclick="
-        (row) => {
-          $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
-        }
-      "
-      :data="EntryMovements"
-      fit
-      border
-      highlight-current-row
-    >
-      <el-table-column prop="Id" label="Id" width="80" align="center"></el-table-column>
+    <el-table :data="EntryMovements" fit border highlight-current-row>
+      <el-table-column prop="Id" label="رقم قيد" width="80" align="center">
+        <template slot-scope="{ row }">
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/EntryAccounting/Edit/' + row.EntryId,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.EntryId }}</strong
+            ></el-tag
+          >
+        </template></el-table-column
+      >
+
+      <el-table-column
+        prop="Id"
+        label="رقم حركة"
+        width="80"
+        align="center"
+      ></el-table-column>
       <el-table-column label="التاريخ" align="center" width="140">
         <template slot-scope="scope">
           <el-date-picker

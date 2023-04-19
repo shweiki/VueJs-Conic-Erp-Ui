@@ -7,43 +7,57 @@
     <el-col :span="24" :xs="24" v-loading="loading">
       <Member-Search />
 
-      <el-card class="box-card" v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }">
+      <el-card
+        class="box-card"
+        v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
+      >
         <el-row type="flex">
           <el-col :span="5" v-if="tempForm.Status != -2">
             <el-row type="flex">
               <el-col :span="24">
-                <el-button style="width: 100px" type="info" icon="el-icon-zoom-in" @click="
-                  $router.replace({ path: '/redirect' + '/Gym/ListMember' })
-                ">جميع مشتركين</el-button>
+                <el-button
+                  style="width: 100px"
+                  type="info"
+                  icon="el-icon-zoom-in"
+                  @click="$router.replace({ path: '/redirect' + '/Gym/ListMember' })"
+                  >جميع مشتركين</el-button
+                >
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Ship-Movement @Done="getdata" :MemberId="tempForm.Id" :AccountId="tempForm.AccountId"
-                  :Name="tempForm.Name" :Enable="
-                    tempForm.TotalCredit - tempForm.TotalDebit > 0
-                      ? true
-                      : false
-                  " />
+                <Member-Ship-Movement
+                  @Done="getdata"
+                  :MemberId="tempForm.Id"
+                  :AccountId="tempForm.AccountId"
+                  :Name="tempForm.Name"
+                  :Enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
+                />
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Pay @Done="getdata" :MemberId="tempForm.Id" :Name="tempForm.Name"
-                  :NumberPhone1="tempForm.PhoneNumber1" />
+                <Member-Pay
+                  @Done="getdata"
+                  :MemberId="tempForm.Id"
+                  :Name="tempForm.Name"
+                  :NumberPhone1="tempForm.PhoneNumber1"
+                />
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
-                <Member-Ship-Movement-With-Pay @Done="getdata" :MemberId="tempForm.Id" :AccountId="tempForm.AccountId"
-                  :Name="tempForm.Name" :NumberPhone1="tempForm.PhoneNumber1" :Enable="
-                    tempForm.TotalCredit - tempForm.TotalDebit > 0
-                      ? true
-                      : false
-                  " />
+                <Member-Ship-Movement-With-Pay
+                  @Done="getdata"
+                  :MemberId="tempForm.Id"
+                  :AccountId="tempForm.AccountId"
+                  :Name="tempForm.Name"
+                  :NumberPhone1="tempForm.PhoneNumber1"
+                  :Enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
+                />
               </el-col>
             </el-row>
 
@@ -55,14 +69,21 @@
 
             <el-row type="flex">
               <el-col :span="24">
-                <Massage :NumberPhone1="tempForm.PhoneNumber1" :NumberPhone2="tempForm.PhoneNumber2"
-                  :Email="tempForm.Email" />
+                <Massage
+                  :NumberPhone1="tempForm.PhoneNumber1"
+                  :NumberPhone2="tempForm.PhoneNumber2"
+                  :Email="tempForm.Email"
+                />
               </el-col>
             </el-row>
 
             <el-row v-if="tempForm.MembershipsCount > 0 || checkPermission(['admin'])">
               <el-col :span="24">
-                <send-to-device :ObjectId="tempForm.Id" :Name="tempForm.Name" TableName="Member" />
+                <send-to-device
+                  :ObjectId="tempForm.Id"
+                  :Name="tempForm.Name"
+                  TableName="Member"
+                />
               </el-col>
             </el-row>
           </el-col>
@@ -90,7 +111,7 @@
           </el-tab-pane>
           <el-tab-pane label="مبيعات" name="SaleInvoice">
             <span slot="label"><i class="el-icon-refresh"></i> مبيعات</span>
-            <Sale-Invoice :ServiceInvoices="ServiceInvoices"  />
+            <Sale-Invoice :ServiceInvoices="ServiceInvoices" />
           </el-tab-pane>
           <el-tab-pane label="مقبوضات" name="Payment">
             <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
@@ -108,7 +129,10 @@
           </el-tab-pane>
           <el-tab-pane label="اشتراكات" name="activity">
             <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
-            <Activity @Done="GetMembershipMovement" :MembershipMovements="MembershipMovements" />
+            <Activity
+              @Done="GetMembershipMovement"
+              :MembershipMovements="MembershipMovements"
+            />
           </el-tab-pane>
 
           <el-tab-pane label="بيانات" name="Details">
@@ -223,15 +247,14 @@ export default {
         });
     },
     tabClick(tab, event) {
-      if (tab.label == "اشتراكات")
-        this.GetMembershipMovement()
+      if (tab.label == "اشتراكات") this.GetMembershipMovement();
       if (tab.label == "مقبوضات")
         GetPaymentsByMemberId({
           MemberId: this.tempForm.Id,
         }).then((response) => {
           this.Payments = response.reverse();
         });
-        if (tab.label == "مبيعات")
+      if (tab.label == "مبيعات")
         GetSaleInvoiceByMemberId({
           Id: this.tempForm.Id,
           IsService: false,
@@ -317,14 +340,14 @@ export default {
       });
     },
     setTagsViewTitle() {
-      const title = "مشترك";
+      const title = this.$t("route.EditMember");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "مشترك";
+      const title = this.$t("route.EditMember");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

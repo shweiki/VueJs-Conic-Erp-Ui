@@ -3,9 +3,7 @@
     <el-form ref="F-SaleInvoice" :rules="rules" :model="tempForm">
       <div
         class="components-container"
-        v-bind:style="
-          this.$i18n.locale == 'ar' ? 'direction: rtl' : 'direction: ltr'
-        "
+        v-bind:style="this.$i18n.locale == 'ar' ? 'direction: rtl' : 'direction: ltr'"
       >
         <split-pane split="horizontal" :min-percent="8" :default-percent="8">
           <template slot="paneL">
@@ -25,8 +23,7 @@
                   prop="MemberId"
                   :rules="[
                     {
-                      required: () =>
-                        tempForm.MemberId != undefined ? true : false,
+                      required: () => (tempForm.MemberId != undefined ? true : false),
                       message: 'لايمكن ترك حساب فارغ',
                       trigger: 'blur',
                     },
@@ -48,8 +45,7 @@
                   prop="VendorId"
                   :rules="[
                     {
-                      required: () =>
-                        tempForm.VendorId != undefined ? true : false,
+                      required: () => (tempForm.VendorId != undefined ? true : false),
                       message: 'لايمكن ترك حساب فارغ',
                       trigger: 'blur',
                     },
@@ -134,17 +130,9 @@
             </el-row>
           </template>
           <template slot="paneR">
-            <split-pane
-              split="vertical"
-              :min-percent="50"
-              :default-percent="55"
-            >
+            <split-pane split="vertical" :min-percent="50" :default-percent="55">
               <template slot="paneL">
-                <split-pane
-                  split="horizontal"
-                  :min-percent="95"
-                  :default-percent="93.5"
-                >
+                <split-pane split="horizontal" :min-percent="95" :default-percent="93.5">
                   <template slot="paneL">
                     <!--  <items-search :WithBarCode="false" @add="AddItem" />-->
                     <Items-Category :WithImage="true" @add="AddItem" />
@@ -162,12 +150,9 @@
                         <el-col :span="6">
                           <Rest-Of-Bill
                             :Total="
-                              tempForm.InventoryMovements.reduce(
-                                (prev, cur) => {
-                                  return prev + cur.Qty * cur.SellingPrice;
-                                },
-                                0
-                              ) - tempForm.Discount
+                              tempForm.InventoryMovements.reduce((prev, cur) => {
+                                return prev + cur.Qty * cur.SellingPrice;
+                              }, 0) - tempForm.Discount
                             "
                             :Open="OpenRestOfBill"
                             @Closed="
@@ -212,20 +197,14 @@
                 </split-pane>
               </template>
               <template slot="paneR">
-                <split-pane
-                  split="horizontal"
-                  :min-percent="50"
-                  :default-percent="50"
-                >
+                <split-pane split="horizontal" :min-percent="50" :default-percent="50">
                   <template slot="paneR">
                     <el-row type="flex" class="card">
                       <el-col :span="24">
                         <el-form-item prop="Description">
                           <el-input
                             ref="InvoiceDescription"
-                            v-bind:placeholder="
-                              $t('NewPurchaseInvoice.statement')
-                            "
+                            v-bind:placeholder="$t('NewPurchaseInvoice.statement')"
                             v-model="tempForm.Description"
                           ></el-input>
                         </el-form-item>
@@ -249,9 +228,7 @@
                           <el-radio-group
                             @change="
                               (v) => {
-                                v == 'Takeaway'
-                                  ? (tempForm.DeliveryPrice = 0)
-                                  : null;
+                                v == 'Takeaway' ? (tempForm.DeliveryPrice = 0) : null;
                               }
                             "
                             v-model="tempForm.Type"
@@ -260,18 +237,13 @@
                               ><i class="el-icon-sell"></i>سفري</el-radio-button
                             >
                             <el-radio-button label="Delivery" border
-                              ><i class="el-icon-truck"></i>
-                              توصيل</el-radio-button
+                              ><i class="el-icon-truck"></i> توصيل</el-radio-button
                             >
                           </el-radio-group>
                         </el-form-item>
                       </el-col></el-row
                     >
-                    <el-row
-                      v-if="tempForm.Type == 'Delivery'"
-                      type="flex"
-                      class="card"
-                    >
+                    <el-row v-if="tempForm.Type == 'Delivery'" type="flex" class="card">
                       <el-col :span="24">
                         <delivery-el
                           :name="tempForm.Name"
@@ -282,9 +254,7 @@
                           @SetRegion="(v) => (tempForm.Region = v)"
                           @SetPhoneNumber="(v) => (tempForm.PhoneNumber = v)"
                           @SetName="(v) => (tempForm.Name = v)"
-                          @SetDeliveryPrice="
-                            (v) => (tempForm.DeliveryPrice = v)
-                          "
+                          @SetDeliveryPrice="(v) => (tempForm.DeliveryPrice = v)"
                         />
                         <el-col :span="6">
                           <el-switch
@@ -350,12 +320,9 @@
                         <span
                           >{{
                             (
-                              tempForm.InventoryMovements.reduce(
-                                (prev, cur) => {
-                                  return prev + cur.Qty * cur.SellingPrice;
-                                },
-                                0
-                              ) -
+                              tempForm.InventoryMovements.reduce((prev, cur) => {
+                                return prev + cur.Qty * cur.SellingPrice;
+                              }, 0) -
                               tempForm.Discount +
                               tempForm.DeliveryPrice
                             ).toFixed($store.getters.settings.ToFixed)
@@ -365,7 +332,7 @@
                       </el-col>
                     </el-row>
                   </template>
-                  <template slot="paneL" class="card">
+                  <template slot="paneL">
                     <el-form-item prop="InventoryMovements">
                       <el-table
                         highlight-current-row
@@ -412,9 +379,7 @@
                               <el-input-number
                                 :size="$store.getters.size"
                                 style="width: 37.5%"
-                                v-model="
-                                  tempForm.InventoryMovements[scope.$index].Qty
-                                "
+                                v-model="tempForm.InventoryMovements[scope.$index].Qty"
                                 :precision="0"
                                 :step="1"
                                 :min="1"
@@ -424,8 +389,8 @@
                             </div>
                             <el-col
                               v-if="
-                                tempForm.InventoryMovements[scope.$index]
-                                  .Description != ''
+                                tempForm.InventoryMovements[scope.$index].Description !=
+                                ''
                               "
                               :span="24"
                             >
@@ -453,8 +418,7 @@
                               JOD
                               {{
                                 (
-                                  tempForm.InventoryMovements[scope.$index]
-                                    .SellingPrice *
+                                  tempForm.InventoryMovements[scope.$index].SellingPrice *
                                   tempForm.InventoryMovements[scope.$index].Qty
                                 ).toFixed($store.getters.settings.ToFixed)
                               }}
@@ -708,10 +672,7 @@ export default {
           valid &&
           Total > 0 &&
           this.tempForm.InventoryMovements.length > 0 &&
-          this.tempForm.InventoryMovements.reduce(
-            (a, b) => a + (b["Qty"] || 0),
-            0
-          ) > 0
+          this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
         ) {
           this.DisabledSave = true;
           //  this.tempForm.Type == "Delivery"
@@ -724,8 +685,7 @@ export default {
               if (response) {
                 this.$notify({
                   title: "تم الإضافة بنجاح",
-                  message:
-                    "تم الإضافة بنجاح - " + this.tempForm.PhoneNumber + " ",
+                  message: "تم الإضافة بنجاح - " + this.tempForm.PhoneNumber + " ",
                   type: "success",
                   position: "top-left",
                 });
@@ -768,10 +728,7 @@ export default {
               this.tempForm.Discount >
               0 &&
             this.tempForm.InventoryMovements.length > 0 &&
-            this.tempForm.InventoryMovements.reduce(
-              (a, b) => a + (b["Qty"] || 0),
-              0
-            ) > 0
+            this.tempForm.InventoryMovements.reduce((a, b) => a + (b["Qty"] || 0), 0) > 0
           ) {
             this.DisabledSave = true;
             this.tempForm.FakeDate = Now();
@@ -799,8 +756,7 @@ export default {
                 console.log(error);
               });
           } else
-            this.ValidateDescription =
-              "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
+            this.ValidateDescription = "قيمة الدائن و المدين غير متساويات أو تساوي صفر  ";
           this.OpenRestOfBill = false;
         } else {
           console.log("error submit!!");
@@ -810,14 +766,14 @@ export default {
     },
 
     setTagsViewTitle() {
-      const title = "Edit Sale";
+      const title = this.$t("route.EditSaleInvoice");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Edit Sale";
+      const title = this.$t("route.EditSaleInvoice");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

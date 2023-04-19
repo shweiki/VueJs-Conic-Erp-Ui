@@ -92,14 +92,14 @@ export default {
         });
     },
     setTagsViewTitle() {
-      const title = this.tempForm.Name;
+      const title = this.$t("route.EditItem");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Item";
+      const title = this.$t("route.EditItem");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

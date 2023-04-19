@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="warning" icon="el-icon-edit" @click="getData" round />
+    <el-button type="warning" icon="el-icon-edit" @click="getData" />
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"

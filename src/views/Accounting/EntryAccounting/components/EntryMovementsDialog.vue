@@ -4,29 +4,36 @@
       type="success"
       icon="el-icon-view"
       @click="getdata()"
-      circle
       v-bind:disabled="AccountId == undefined"
     ></el-button>
-    <el-dialog
-      style="margin-top: -13vh"
-      :show-close="false"
-      :visible.sync="Visible"
-    >
-      <el-table
-        @row-dblclick="
-          row => {
-            $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
-          }
-        "
-        :data="list"
-        fit
-        border
-        highlight-current-row
-        height="500"
-      >
+    <el-dialog style="margin-top: -13vh" :show-close="false" :visible.sync="Visible">
+      <el-table :data="list" fit border highlight-current-row height="500">
+        <el-table-column prop="Id" label="رقم قيد" width="80" align="center">
+          <template slot-scope="{ row }">
+            <el-tag type="primary" disable-transitions>
+              <strong
+                style="font-size: 10px; cursor: pointer"
+                @click="
+                  () => {
+                    let r = $router.resolve({
+                      path: '/EntryAccounting/Edit/' + row.EntryId,
+                    });
+                    window.open(
+                      r.href,
+                      r.route.name,
+                      $store.getters.settings.windowStyle
+                    );
+                  }
+                "
+                >{{ row.EntryId }}</strong
+              ></el-tag
+            >
+          </template></el-table-column
+        >
+
         <el-table-column
           prop="Id"
-          label="رقم"
+          label="رقم حركة"
           width="80"
           align="center"
         ></el-table-column>
@@ -38,11 +45,7 @@
         <el-table-column label="البيان" align="center">
           <template slot-scope="scope">{{ scope.row.Description }}</template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('Account.Credit')"
-          width="100"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('Account.Credit')" width="100" align="center">
           <template slot-scope="scope">{{
             scope.row.Credit.toFixed($store.getters.settings.ToFixed)
           }}</template>
@@ -57,12 +60,7 @@
             scope.row.Debit.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column
-          label="الرصيد"
-          prop="TotalRow"
-          width="100"
-          align="center"
-        >
+        <el-table-column label="الرصيد" prop="TotalRow" width="100" align="center">
           <template slot-scope="scope">{{
             scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
           }}</template>
@@ -84,29 +82,28 @@ export default {
   props: {
     AccountId: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   data() {
     return {
       list: [],
-      Visible: false
+      Visible: false,
     };
   },
   methods: {
     checkPermission,
     getdata() {
       GetEntryMovementsByAccountId({
-        AccountId: this.AccountId
-      }).then(response => {
+        AccountId: this.AccountId,
+      }).then((response) => {
         this.list = response.map((curr, i, array) => {
-          curr.TotalRow =
-            array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
+          curr.TotalRow = array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
           return curr;
         });
         this.Visible = true;
       });
-    }
-  }
+    },
+  },
 };
 </script>

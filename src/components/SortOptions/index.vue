@@ -14,18 +14,16 @@ export default {
   props: ["Value"],
   data() {
     return {
-      Sort: "",
+      Sort: this.Value,
       sortOptions: [
         { label: "Ascending", key: "+id" },
         { label: "Descending", key: "-id" },
       ],
     };
   },
-  created() {
-    this.Sort = this.Value;
-  },
   watch: {
     Value(val) {
+      console.log("Sort", val);
       if (val != null && val != "") {
         this.Sort = val;
         this.SetVal(val);

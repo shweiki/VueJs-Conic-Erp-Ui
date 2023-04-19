@@ -15,7 +15,6 @@
       @click="Visible = true"
       type="danger"
       icon="el-icon-delete"
-      circle
       v-bind:disabled="ItemId == undefined"
     ></el-button>
   </div>

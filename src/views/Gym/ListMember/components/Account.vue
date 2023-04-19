@@ -5,24 +5,25 @@
       :AccountId1="3"
       :AccountId2="AccountId"
     />
-    <el-table
-      @row-dblclick="
-        row => {
-          $router.push({ path: `/EntryAccounting/Edit/${row.EntryId}` });
-        }
-      "
-      :data="EntryMovements"
-      fit
-      border
-      highlight-current-row
-      height="500"
-    >
-      <el-table-column
-        prop="Id"
-        label="Id"
-        width="80"
-        align="center"
-      ></el-table-column>
+    <el-table :data="EntryMovements" fit border highlight-current-row height="500">
+      <el-table-column prop="Id" v-bind:label="$t('Vendors.ID')" width="80" align="center">
+        <template slot-scope="{ row }">
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/EntryAccounting/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            ></el-tag
+          >
+        </template>
+      </el-table-column>
       <el-table-column label="التاريخ" align="center" width="140">
         <template slot-scope="scope">
           <el-date-picker
@@ -35,11 +36,7 @@
       <el-table-column label="البيان" align="center">
         <template slot-scope="scope">{{ scope.row.Description }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('Account.Credit')"
-        width="100"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('Account.Credit')" width="100" align="center">
         <template slot-scope="scope">{{
           scope.row.Credit.toFixed($store.getters.settings.ToFixed)
         }}</template>
@@ -54,13 +51,10 @@
           scope.row.Debit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column
-        label="الرصيد"
-        prop="TotalRow"
-        width="100"
-        align="center"
-      >
-        <template slot-scope="scope">{{ scope.row.TotalRow.toFixed($store.getters.settings.ToFixed) }}</template>
+      <el-table-column label="الرصيد" prop="TotalRow" width="100" align="center">
+        <template slot-scope="scope">{{
+          scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
+        }}</template>
       </el-table-column>
       <!--<el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
         <template slot-scope="scope">{{ (scope.row.Credit - scope.row.Debit).toFixed(this.$store.getters.settings.ToFixed) }}</template>
@@ -80,13 +74,13 @@ export default {
       type: Array,
       default: () => {
         return null;
-      }
+      },
     },
     AccountId: {
       type: Number,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
-  methods: { checkPermission }
+  methods: { checkPermission },
 };
 </script>

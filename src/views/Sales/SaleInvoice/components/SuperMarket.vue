@@ -424,7 +424,7 @@
                       </el-row>
                     </el-card>
                   </template>
-                  <template slot="paneR" style="background: #545454">
+                  <template slot="paneR">
                     <items-prime @add="AddItem" @focus="focusBarcode" />
                   </template>
                 </split-pane>
@@ -728,14 +728,14 @@ export default {
       });
     },
     setTagsViewTitle() {
-      const title = "Edit Sale";
+      const title = this.$t("route.EditSaleInvoice");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitedView", route);
     },
     setPageTitle() {
-      const title = "Edit Sale";
+      const title = this.$t("route.EditSaleInvoice");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

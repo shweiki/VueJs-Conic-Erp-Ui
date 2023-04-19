@@ -38,7 +38,7 @@
           <el-col :span="9">
             <Export :list="list" />
             <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-              Search
+              {{ $t("table.search") }}
             </el-button>
           </el-col>
           <el-col :span="1">

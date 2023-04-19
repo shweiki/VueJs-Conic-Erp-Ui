@@ -18,7 +18,6 @@
         <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
             <el-button
-              circle
               type="success"
               icon="el-icon-refresh"
               @click="getdata()"
@@ -74,7 +73,6 @@
               :key="index"
               :type="NOprations.ClassName"
               :size="$store.getters.size"
-              round
               @click="handleOprationsys(scope.row.Id, NOprations)"
               >{{ NOprations.OprationDescription }}</el-button
             >

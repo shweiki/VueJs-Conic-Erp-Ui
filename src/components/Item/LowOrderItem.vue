@@ -29,8 +29,8 @@
             icon="el-icon-search"
             @click="handleFilter"
           >
-            Search
-          </el-button>
+            {{ $t("table.search") }}
+        </el-button>
         </el-col>
         <el-col :span="3">
           <el-button @click="CalculateCostPrice">CalculateCostPrice</el-button>
@@ -79,27 +79,31 @@
       @sort-change="sortChange"
       ref="multipleTable"
       @selection-change="handleSelectionChange"
-      @row-dblclick="
-        (row) => {
-          //  $emit('dblclick', row);
-          let r = $router.resolve({
-            path: '/Item/Edit/' + row.Id,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-        }
-      "
     >
       <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column
-        label="Id"
+        v-bind:label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"
         width="80"
         :class-name="getSortClass('id')"
       >
-        <template slot-scope="{ row }">
-          <span>{{ row.Id }}</span>
+      <template slot-scope="{ row }">
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Item/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            ></el-tag
+          >
         </template>
       </el-table-column>
 
@@ -276,20 +280,20 @@ export default {
     },
     sortChange(data) {
       const { prop, order } = data;
-      if (prop === "id") {
+      if (prop === "Id") {
         this.sortById(order);
       }
     },
     sortById(order) {
       if (order === "ascending") {
-        this.listQuery.sort = "+id";
+        this.listQuery.Sort = "+id";
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.Sort = "-id";
       }
       this.handleFilter();
     },
     getSortClass: function (key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.Sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
     handleSelectionChange(val) {

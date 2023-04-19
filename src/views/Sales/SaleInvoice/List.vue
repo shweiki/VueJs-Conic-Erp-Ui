@@ -132,6 +132,7 @@
           icon="el-icon-search"
           @click="handleFilter"
         >
+          {{ $t("table.search") }}
         </el-button>
       </el-col>
     </el-row>
@@ -188,14 +189,6 @@
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
-      @row-dblclick="
-        (row) => {
-          let r = $router.resolve({
-            path: '/Sales/Edit/' + row.Id,
-          });
-          window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-        }
-      "
     >
       <el-table-column
         v-bind:label="$t('Vendors.ID')"
@@ -206,7 +199,20 @@
         :class-name="getSortClass('id')"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.Id }}</span>
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Sales/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            >
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
@@ -250,14 +256,21 @@
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <Next-Oprations
-            :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="SalesInvoice"
-            @Done="handleFilter"
-          />
-          <Drawer-Print Type="SaleInvoice" :Data="scope.row" />
-          <Dialog-Action-Log TableName="SalesInvoice" :ObjId="scope.row.Id" />
+          <el-row type="flex">
+            <el-col :span="8">
+              <Next-Oprations
+                :ObjId="scope.row.Id"
+                :Status="scope.row.Status"
+                TableName="SalesInvoice"
+                @Done="handleFilter"
+            /></el-col>
+            <el-col :span="8">
+              <Drawer-Print Type="SaleInvoice" :Data="scope.row"
+            /></el-col>
+            <el-col :span="8"
+              ><Dialog-Action-Log TableName="SalesInvoice" :ObjId="scope.row.Id"
+            /></el-col>
+          </el-row>
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
@@ -362,7 +375,7 @@ export default {
     };
   },
   created() {
-    // this.getList();
+    this.getList();
   },
   methods: {
     getList() {
@@ -380,20 +393,20 @@ export default {
     },
     sortChange(data) {
       const { prop, order } = data;
-      if (prop === "id") {
+      if (prop === "Id") {
         this.sortById(order);
       }
     },
     sortById(order) {
       if (order === "ascending") {
-        this.listQuery.sort = "+id";
+        this.listQuery.Sort = "+id";
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.Sort = "-id";
       }
       this.handleFilter();
     },
     getSortClass: function (key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.Sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
   },

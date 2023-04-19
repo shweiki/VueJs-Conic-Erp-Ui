@@ -4,7 +4,6 @@
       type="success"
       icon="el-icon-circle-plus"
       @click="dialogFormVisible = true"
-       round
     >
     <span style="font-size: 14px;">
     اضافة تسوية دورية

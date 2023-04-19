@@ -41,7 +41,7 @@
           icon="el-icon-search"
           @click="handleFilter"
         >
-          Search
+          {{ $t("table.search") }}
         </el-button>
       </el-col>
     </el-row>

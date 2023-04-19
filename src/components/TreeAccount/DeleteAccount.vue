@@ -4,7 +4,6 @@
       @click="deleteAccount"
       type="danger"
       icon="el-icon-delete"
-      circle
       v-bind:disabled="AccountId == undefined"
     ></el-button>
   </div>

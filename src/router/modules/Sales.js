@@ -17,9 +17,9 @@ const SalesRouter = {
     {
       path: 'Edit/:id(\\d+)',
       component: () => import('@/views/Sales/SaleInvoice/Edit'),
-      name: 'EditInvoice',
+      name: 'EditSaleInvoice',
       meta: {
-        title: 'EditInvoice', noCache: true, activeMenu: '/Sales/SalesInvoice/List'
+        title: 'EditSaleInvoice', noCache: true, activeMenu: '/Sales/SalesInvoice/List'
       },
       hidden: true,
     },

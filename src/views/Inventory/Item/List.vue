@@ -47,8 +47,8 @@
             icon="el-icon-search"
             @click="handleFilter"
           >
-            Search
-          </el-button>
+            {{ $t("table.search") }}
+        </el-button>
         </el-col>
         <el-col :span="3">
           <!--   <el-button @click="CalculateCostPrice">CalculateCostPrice</el-button>-->
@@ -56,8 +56,8 @@
         /></el-col>
       </el-row>
     </div>
-    <Radio-Oprations             :value="listQuery.Status"
-
+    <Radio-Oprations
+      :value="listQuery.Status"
       TableName="Item"
       @Set="
         (v) => {
@@ -101,11 +101,6 @@
         (row) => {
           if (DblClickRow == 'AddAsRow') {
             $emit('dblclick', row);
-          } else {
-            let r = $router.resolve({
-              path: '/Item/Edit/' + row.Id,
-            });
-            window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
           }
         }
       "
@@ -120,7 +115,20 @@
         :class-name="getSortClass('id')"
       >
         <template slot-scope="{ row }">
-          <span>{{ row.Id }}</span>
+          <el-tag type="primary" disable-transitions>
+            <strong
+              style="font-size: 10px; cursor: pointer"
+              @click="
+                () => {
+                  let r = $router.resolve({
+                    path: '/Item/Edit/' + row.Id,
+                  });
+                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+                }
+              "
+              >{{ row.Id }}</strong
+            >
+          </el-tag>
         </template>
       </el-table-column>
 
@@ -147,7 +155,11 @@
         ></el-table-column>
         <el-table-column v-bind:label="$t('Items.Total')" width="80" align="center">
           <template slot-scope="scope">
-            {{ scope.row.TotalIn - scope.row.TotalOut }}
+            {{
+              (scope.row.TotalIn - scope.row.TotalOut).toFixed(
+                $store.getters.settings.ToFixed
+              )
+            }}
           </template></el-table-column
         >
       </el-table-column>
@@ -265,12 +277,11 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
 import { GetByListQ, CalculateCostPrice } from "@/api/Item";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-import RadioOprations from "@/components/Oprationsys/RadioOprations";
+import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import ItemQty from "@/components/Item/ItemQty.vue";
 import EditItem from "@/components/Item/EditItem";
 import DeleteItem from "./components/DeleteItem";
@@ -313,7 +324,7 @@ export default {
     };
   },
   created() {
-    // this.getList();
+    this.getList();
   },
   methods: {
     CalculateCostPrice,
@@ -333,21 +344,21 @@ export default {
     },
     sortChange(data) {
       const { prop, order } = data;
-      if (prop === "id") {
+      if (prop === "Id") {
         this.sortById(order);
       }
     },
     sortById(order) {
       if (order === "ascending") {
-        this.listQuery.sort = "+id";
+        this.listQuery.Sort = "+id";
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.Sort = "-id";
       }
       this.handleFilter();
     },
 
     getSortClass: function (key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.Sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
     handleSelectionChange(val) {

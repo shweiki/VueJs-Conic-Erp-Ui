@@ -16,7 +16,7 @@
       <el-col :span="6">
         <Export :list="list" />
         <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-          Search
+          {{ $t("table.search") }}
         </el-button>
       </el-col>
     </el-row>
@@ -189,20 +189,20 @@ export default {
     },
     sortChange(data) {
       const { prop, order } = data;
-      if (prop === "id") {
+      if (prop === "Id") {
         this.sortById(order);
       }
     },
     sortById(order) {
       if (order === "ascending") {
-        this.listQuery.sort = "+id";
+        this.listQuery.Sort = "+id";
       } else {
-        this.listQuery.sort = "-id";
+        this.listQuery.Sort = "-id";
       }
       this.handleFilter();
     },
     getSortClass: function (key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.Sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
   },

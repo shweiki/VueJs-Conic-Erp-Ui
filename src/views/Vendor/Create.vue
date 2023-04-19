@@ -6,7 +6,7 @@
 import Profile from "./components/Profile.vue";
 
 export default {
-  name: "CreateVendor",
+  name: "Create",
   components: { Profile },
 };
 </script>

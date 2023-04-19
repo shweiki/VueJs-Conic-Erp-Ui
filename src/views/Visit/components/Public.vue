@@ -366,14 +366,14 @@ export default {
       });
     },
     setTagsViewTitle() {
-      const title = "Edit Visit";
+      const title = this.$t("route.EditVisit");
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.tempForm.Id}`,
       });
       this.$store.dispatch("tagsView/updateVisitdView", route);
     },
     setPageTitle() {
-      const title = "Edit Visit";
+      const title = this.$t("route.EditVisit");
       document.title = `${title} - ${this.tempForm.Id}`;
     },
   },

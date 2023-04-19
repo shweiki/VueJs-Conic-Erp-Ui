@@ -37,7 +37,7 @@
           >
             <el-table-column
               prop="Id"
-              label="Id"
+              v-bind:label="$t('Vendors.ID')"
               width="60"
               align="center"
             ></el-table-column>
@@ -111,7 +111,7 @@
           >
             <el-table-column
               prop="Id"
-              label="Id"
+              v-bind:label="$t('Vendors.ID')"
               width="80"
               align="center"
             ></el-table-column>

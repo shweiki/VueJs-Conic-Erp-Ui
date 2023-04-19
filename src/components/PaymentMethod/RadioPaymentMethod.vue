@@ -20,9 +20,10 @@ export default {
     };
   },
   watch: {
-    value(v) {
-      if (v != null && v != "") this.SetVal(v);
-      else {
+    Value(v) {
+      if (v != null && v != "") {
+        this.SetVal(v);
+      } else {
         this.SetVal("Cash");
       }
     },
