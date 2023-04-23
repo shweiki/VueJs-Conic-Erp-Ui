@@ -22,11 +22,7 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input
-                type="text"
-                ref="DriverName"
-                v-model="tempForm.Name"
-              ></el-input>
+              <el-input type="text" ref="DriverName" v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -43,15 +39,8 @@
         </el-row> -->
         <el-row type="flex">
           <el-col :span="24">
-            <el-form-item
-              v-bind:label="$t('CashDrawer.Company')"
-              prop="Company"
-            >
-              <el-input
-                type="text"
-                ref="Company"
-                v-model="tempForm.Company"
-              ></el-input>
+            <el-form-item v-bind:label="$t('CashDrawer.Company')" prop="Company">
+              <el-input type="text" ref="Company" v-model="tempForm.Company"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -72,9 +61,7 @@
                 v-model="tempForm.DateofBirth"
                 type="date"
                 placeholder="تاريخ ميلاد"
-                :format="
-                  $store.getters.settings.DateTimeFormat.replace(' HH:mm', '')
-                "
+                :format="$store.getters.settings.DateTimeFormat.replace(' HH:mm', '')"
               ></el-date-picker>
               <!--
               <birth-datepicker
@@ -126,10 +113,7 @@
                 },
               ]"
             >
-              <el-input
-                type="text"
-                v-model="tempForm.Email"
-              ></el-input> </el-form-item
+              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
           ></el-col>
         </el-row>
 
@@ -175,18 +159,11 @@
           ></el-col>
         </el-row>
 
-        <el-form-item
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
         <el-form-item label="password" prop="Pass">
-          <el-input
-            type="password"
-            v-model="tempForm.Pass"
-            autocomplete="off"
-          ></el-input>
+          <el-input type="password" v-model="tempForm.Pass" autocomplete="off"></el-input>
         </el-form-item>
         <!-- <el-form-item label="Confirm" prop="ConfirmPassword">
           <el-input
@@ -197,9 +174,7 @@
         </el-form-item>  -->
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{
-          $t("AddVendors.Cancel")
-        }}</el-button>
+        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
         <el-button type="primary" @click="createData()">{{
           $t("AddVendors.Save")
         }}</el-button>
@@ -209,13 +184,11 @@
 </template>
 
 <script>
-import { Create, CheckDriverIsExist, Register } from "@/api/Driver";
+import { Create, CheckDriverIsExist } from "@/api/Driver";
 import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
-import { AddUserRouter } from "@/api/Role";
-//import { UnLockout } from "@/api/User";
 export default {
   name: "Driver",
   components: { VuePhoneNumberInput, birthDatepicker },
