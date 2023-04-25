@@ -19,17 +19,17 @@ export default {
     ItemId: {
       type: Number,
       require: true,
-    }
+    },
   },
   watch: {
     Id(val) {
-      console.log("select", val);
+      //   console.log("select", val);
       if (val != null && val != undefined) {
         this.Id = val;
       }
     },
     ItemId(val) {
-      console.log("ItemId", val);
+      //   console.log("ItemId", val);
       if (val != null && val != undefined) {
         this.ItemId = val;
         this.getdata(val);
@@ -44,7 +44,7 @@ export default {
   },
   created() {
     if (this.ItemId) {
-      this.getdata(this.ItemId)
+      this.getdata(this.ItemId);
     }
   },
   methods: {
@@ -67,11 +67,7 @@ export default {
     },
     SetVal(val) {
       if (val) {
-        this.$emit(
-          "Set",
-          val
-        );
-
+        this.$emit("Set", val);
       }
     },
   },

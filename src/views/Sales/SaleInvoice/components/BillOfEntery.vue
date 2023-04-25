@@ -115,12 +115,7 @@
             >
             <template slot-scope="scope">
               <el-row type="flex">
-                <el-col :span="4">
-                  <edit-item
-                    :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
-                  />
-                </el-col>
-                <el-col :span="20">
+                <el-col :span="24">
                   {{ tempForm.InventoryMovements[scope.$index].Name }}
                 </el-col>
               </el-row>
