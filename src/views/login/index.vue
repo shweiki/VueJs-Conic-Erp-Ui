@@ -56,28 +56,18 @@
           />
         </el-form-item>
       </el-tooltip>
-
-      <el-form-item prop="rememberme">
-        <span class="svg-container">
-          <svg-icon icon-class="el-icon-timer" />
-        </span>
-        <el-checkbox v-model="loginForm.rememberme">Remember Me</el-checkbox>
-      </el-form-item>
       <span v-if="loginFailed != ''" style="color: red">
         <svg-icon icon-class="el-icon-error" />
         {{ loginFailed }}
       </span>
       <el-button :loading="loading" @click.native.prevent="handleLogin">Login</el-button>
-      <!-- <new-user-sign-up /> -->
     </el-form>
   </div>
 </template>
 
 <script>
 import { validUsername } from "@/utils/validate";
-import NewUserSignUp from "./components/NewUser.vue";
 export default {
-  components: { NewUserSignUp },
   name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -94,7 +84,6 @@ export default {
       loginForm: {
         username: "",
         password: "",
-        rememberme: true,
       },
       loginRules: {
         username: [{ required: true, trigger: "blur", validator: validateUsername }],
@@ -135,20 +124,9 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    checkCapslock({ shiftKey, key } = {}) {
-      if (key && key.length === 1) {
-        if (
-          (shiftKey && key >= "a" && key <= "z") ||
-          (!shiftKey && key >= "A" && key <= "Z")
-        ) {
-          this.capsTooltip = true;
-        } else {
-          this.capsTooltip = false;
-        }
-      }
-      if (key === "CapsLock" && this.capsTooltip === true) {
-        this.capsTooltip = false;
-      }
+    checkCapslock(e) {
+      const { key } = e;
+      this.capsTooltip = key && key.length === 1 && key >= "A" && key <= "Z";
     },
     showPwd() {
       if (this.passwordType === "password") {
@@ -157,7 +135,7 @@ export default {
         this.passwordType = "password";
       }
       this.$nextTick(() => {
-        this.$refs.password;
+        this.$refs.password.focus();
       });
     },
     handleLogin() {
@@ -171,6 +149,7 @@ export default {
                 path: this.redirect || "/",
                 query: this.otherQuery,
               });
+
               this.loginFailed = "";
             })
             .catch((err) => {

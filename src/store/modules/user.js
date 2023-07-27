@@ -44,21 +44,15 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password, rememberme } = userInfo
+    const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ Username: username.trim(), Password: password, RememberMe: rememberme }).then(response => {
+      login({ Username: username.trim(), Password: password}).then(response => {
         const data = response
-        console.log("login", data)
 
-        if (!response || response == 'User account locked out.' || response == 'User Name Or PassWord Is Not Correct') {
-          reject(response)
-        }
-        commit('SET_TOKEN', data.token_type + " " + data.access_token)
-        setToken(data.token_type + " " + data.access_token)
+        commit('SET_TOKEN', data.Token  )
+        setToken(data.Token )
         resolve()
       }).catch(error => {
-        console.log("login", response)
-
         reject(error)
       })
     })
@@ -67,8 +61,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      //console.log( 'HI : '+ state.token);
-      getInfo().then(response => {
+       getInfo(state.token).then(response => {
         const data = response
 
         if (!data) {
@@ -125,19 +118,18 @@ const actions = {
   },
 
   // dynamically modify permissions
-  changeRoles({ commit, dispatch }, role) {
-    return new Promise(async resolve => {
-      const token = role + '-token'
+  async changeRoles({ commit, dispatch }, role) {
+       const token = role + '-token'
 
       commit('SET_TOKEN', token)
       setToken(token)
 
       const { roles, userrouter } = await dispatch('getInfo')
       roles.userrouter = userrouter
+
       resetRouter()
       // generate accessible routes map based on roles
       const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-      console.log("here 2 ", accessRoutes)
 
       // dynamically add accessible routes
       router.addRoutes(accessRoutes)
@@ -146,8 +138,7 @@ const actions = {
       dispatch('tagsView/delAllViews', null, { root: true })
 
       resolve()
-    })
-  }
+   }
 }
 
 export default {
