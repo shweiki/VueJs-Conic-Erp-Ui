@@ -89,19 +89,6 @@ module.exports = {
   },
   timeQuery: ["00:00:00", "23:59:59"],
   printers: ["Casher", "WorkTable1", "WorkTable2"],
-  triger: {
-    "BackUp": {
-      turnOn: true,
-      Directory: "C:\\BackUp\\",
-      LastRun: "July 21, 1983 01:15:00",
-      OnClock: 24 /// 24 base
-    },
-    "CheckMembers": {
-      turnOn: false,
-      LastRun: "July 21, 1983 01:15:00",
-      OnClock: 7 /// 24 base
-    }
-  },
   windowStyle: "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=55,left=500",
   pickerOptions: {
     shortcuts: [{

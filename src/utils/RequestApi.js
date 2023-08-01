@@ -7,7 +7,7 @@ import store from '@/store'
 const service = axios.create({
   baseURL: process.env.NODE_ENV == "development" ? process.env.VUE_APP_BASE_API : window.location.protocol + "//" + window.location.host + "/",//'http://localhost:5000'
   // baseUrl || url = base url + request url
-  timeout: 10000,// request timeout
+  timeout: 100000,// request timeout
  // withCredentials: true,
 })
 // request interceptor
