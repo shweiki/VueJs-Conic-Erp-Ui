@@ -179,7 +179,7 @@ export default {
   props: {
     VendorId: {
       type: Number,
-      default: undefined,
+      required : true
     },
   },
   components: { VuePhoneNumberInput, SelectRegion },

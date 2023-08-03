@@ -44,16 +44,13 @@ export default {
   name: "WebCam",
   props: {
     ObjectId: {
-      type: Number,
-      default: () => {
-        return undefined;
-      },
+      type: String,
+      required:true
     },
     TableName: {
       type: String,
-      default: () => {
-        return undefined;
-      },
+      required:true
+
     },
     Type: {
       type: String,

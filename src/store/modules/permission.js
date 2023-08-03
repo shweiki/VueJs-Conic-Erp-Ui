@@ -67,7 +67,7 @@ const actions = {
     generateRoutes({ commit }, roles) {
         return new Promise(resolve => {
             let accessedRoutes
-            if (roles.includes('SystemAdmin')) {
+            if (roles.includes('systemadmin')) {
                 accessedRoutes = asyncRoutes || []
             } else {
                 if (roles.userrouter) {

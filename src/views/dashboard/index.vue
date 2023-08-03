@@ -65,13 +65,17 @@ export default {
   methods: {
     checkPermission,
     getdata() {
-      GetTotal().then((response) => {
+      if(checkPermission(['admin'])){
+        GetTotal().then((response) => {
         this.Totals = response;
         this.lineChartData = this.Totals['Sales'];
-      });
-      GetStatistics({ By: "MonthOfYear" }).then((response) => {
+        GetStatistics({ By: "MonthOfYear" }).then((response) => {
         this.Statistics = response;
       });
+      });
+      }
+
+ 
     },
     handleSetLineChartData(type) {
       this.lineChartData = this.Totals[type];

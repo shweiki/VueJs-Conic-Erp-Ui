@@ -8,7 +8,7 @@ const UploadData = {
   meta: {
     title: 'UploadData',
     icon: 'setting',
-    roles: ['SystemAdmin']
+    roles: ['systemadmin']
   },
   children: [
     {

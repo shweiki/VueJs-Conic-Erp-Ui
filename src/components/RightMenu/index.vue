@@ -41,12 +41,12 @@
             {{ $t("navbar.dashboard") }}
           </el-dropdown-item>
         </router-link>
-        <router-link v-permission="['SystemAdmin']" to="/Settings/ApplicationSetting">
+        <router-link v-permission="['systemadmin']" to="/Settings/ApplicationSetting">
           <el-dropdown-item>
             {{ $t("route.ApplicationSetting") }}
           </el-dropdown-item>
         </router-link>
-        <router-link v-permission="['SystemAdmin']" to="/Settings/Permission">
+        <router-link v-permission="['systemadmin']" to="/Settings/Permission">
           <el-dropdown-item>
             {{ $t("route.Permissions") }}
           </el-dropdown-item>

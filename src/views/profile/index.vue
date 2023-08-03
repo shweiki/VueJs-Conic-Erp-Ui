@@ -12,7 +12,7 @@
               <!--   <el-tab-pane
                 v-if="
                   this.DriverForm.DriverUserId == this.user.Id ||
-                  this.user.name == 'SystemAdmin'
+                  this.user.name == 'systemadmin'
                 "
                 :label="$t('Delivery.DriverAccount')"
                 name="DriverAccount"

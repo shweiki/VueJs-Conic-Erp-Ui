@@ -12,7 +12,7 @@
       @current-change="handleCurrentChange"
     >
       <el-col slot :span="3">
-        <el-input v-permission="['admin', 'SystemAdmin']" v-model="pageSize" />
+        <el-input v-permission="['admin', 'systemadmin']" v-model="pageSize" />
       </el-col>
     </el-pagination>
   </div>
