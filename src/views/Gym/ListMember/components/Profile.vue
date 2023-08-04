@@ -152,19 +152,15 @@ import Details from "./Details.vue";
 import UserCard from "./UserCard.vue";
 import MemberShipMovementWithPay from "./Dialogs/MemberShipMovementWithPay.vue";
 import MemberShipMovement from "./Dialogs/MemberShipMovement.vue";
-
 import MemberPay from "./Dialogs/MemberPay.vue";
 import ServiceInvoice from "./Dialogs/ServiceInvoice.vue";
 import MemberSearch from "@/components/Member/MemberSearch.vue";
-
 import Payment from "./Payment.vue";
 import SaleInvoice from "./SaleInvoice.vue";
-
 import Activity from "./Activity.vue";
 import Account from "./Account.vue";
 import Service from "./Service.vue";
 import TimeLine from "./TimeLine.vue";
-
 import Communication from "./Communication.vue";
 import Documents from "@/components/Documents/Documents.vue";
 import DeviceLog from "@/components/Device/DeviceLog.vue";
