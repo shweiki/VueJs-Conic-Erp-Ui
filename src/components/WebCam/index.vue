@@ -44,7 +44,6 @@ export default {
   name: "WebCam",
   props: {
     ObjectId: {
-      type: String,
       required:true
     },
     TableName: {

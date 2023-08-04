@@ -183,7 +183,6 @@ import { Create } from "@/api/File";
 export default {
   props: {
     ObjectId: {
-      type: String,
       required:true
       },
     TableName: {
