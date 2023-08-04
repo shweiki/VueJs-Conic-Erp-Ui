@@ -45,12 +45,11 @@ export default {
   props: {
     ObjectId: {
       type: String,
-      required:true
+      required: true,
     },
     TableName: {
       type: String,
-      required:true
-
+      required: true,
     },
     Type: {
       type: String,

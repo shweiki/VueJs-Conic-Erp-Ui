@@ -21,12 +21,11 @@
 </template>
 
 <script>
-import MembershipmentOrdar from "@/components/Gym/MembershipmentOrdar";
+import MembershipmentOrdar from "@/components/Gym/MembershipmentOrdar.vue";
 import Receivables from "@/components/Gym/Receivables";
 import Payable from "@/components/Gym/Payable";
 import LowOrderItem from "@/components/Item/LowOrderItem.vue";
 import EXPItem from "@/components/Item/EXPItem.vue";
-
 
 export default {
   name: "DashboardAdmin",
@@ -44,7 +43,7 @@ export default {
   },
 };
 </script>
-<style >
+<style>
 .el-tabs__nav-scroll {
   float: right;
   direction: ltr;

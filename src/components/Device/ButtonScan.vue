@@ -15,11 +15,7 @@
       slot="reference"
     ></el-button>
   </el-popover> -->
-  <el-button
-    icon="el-icon-receiving"
-    type="success"
-    @click="scanToJpg"
-  ></el-button>
+  <el-button icon="el-icon-receiving" type="success" @click="scanToJpg"></el-button>
 </template>
 <script>
 // var scanner = require("scanner.js");
@@ -27,16 +23,12 @@ import { Create } from "@/api/File";
 export default {
   props: {
     ObjectId: {
-      type: Number,
-      default: () => {
-        return undefined;
-      },
+      type: String,
+      required: true,
     },
     TableName: {
       type: String,
-      default: () => {
-        return undefined;
-      },
+      required: true,
     },
   },
   data() {
@@ -91,22 +83,14 @@ export default {
         console.error("Failed: " + mesg);
         return;
       }
-      if (
-        successful &&
-        mesg != null &&
-        mesg.toLowerCase().indexOf("user cancel") >= 0
-      ) {
+      if (successful && mesg != null && mesg.toLowerCase().indexOf("user cancel") >= 0) {
         // User cancelled.
         console.info("User cancelled");
         return;
       }
 
       var scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
-      for (
-        var i = 0;
-        scannedImages instanceof Array && i < scannedImages.length;
-        i++
-      ) {
+      for (var i = 0; scannedImages instanceof Array && i < scannedImages.length; i++) {
         var scannedImage = scannedImages[i];
         this.processScannedImage(scannedImage);
       }

@@ -86,9 +86,7 @@ export default {
   props: {
     MemberShipMovementId: {
       type: Number,
-      default: () => {
-        return undefined;
-      },
+      required: true,
     },
     EndDate: null,
   },

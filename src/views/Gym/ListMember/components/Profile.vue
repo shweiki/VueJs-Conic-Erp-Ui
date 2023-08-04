@@ -213,7 +213,7 @@ export default {
       activeTab: "Details",
       loading: true,
       tempRoute: {},
-      tempForm: {},
+      tempForm: null,
       MembershipMovements: [],
       Payments: [],
       EntryMovements: [],
@@ -234,6 +234,8 @@ export default {
     getdata(val = this.$route.params && this.$route.params.id) {
       GetMemberById({ Id: val })
         .then((response) => {
+          response.Id = response.Id.toString();
+
           this.tempForm = response;
           this.getAge();
           this.loading = false;

@@ -26,7 +26,7 @@ export default {
   props: {
     MembershipMovementId: {
       type: Number,
-      default: undefined,
+      required: true,
     },
   },
   data() {

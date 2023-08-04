@@ -8,10 +8,8 @@ import { parseTime } from "@/utils";
 export default {
   props: {
     UserId: {
-      type: Number,
-      default: () => {
-        return undefined;
-      },
+      type: String,
+      required: true,
     },
     TableName: {
       type: String,
@@ -31,7 +29,7 @@ export default {
   methods: {
     GetlastLog(val) {
       GetlastLogByUserId({
-        UserId: val,// || this.UserId,
+        UserId: val, // || this.UserId,
         TableName: this.TableName,
       }).then((res) => {
         if (res) this.lastLog = parseTime(res, "{y}-{m}-{d} {h}:{i}");

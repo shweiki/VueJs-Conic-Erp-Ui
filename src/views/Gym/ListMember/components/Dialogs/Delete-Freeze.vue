@@ -1,7 +1,11 @@
 <template>
   <div>
-    <el-button @click="deleteOrder" type="danger" icon="el-icon-delete"
-      v-bind:disabled="MemberShipMovementOrderId == undefined"></el-button>
+    <el-button
+      @click="deleteOrder"
+      type="danger"
+      icon="el-icon-delete"
+      v-bind:disabled="MemberShipMovementOrderId == undefined"
+    ></el-button>
   </div>
 </template>
 
@@ -12,8 +16,8 @@ export default {
   props: {
     MemberShipMovementOrderId: {
       type: Number,
-      require: true
-    }
+      require: true,
+    },
   },
   methods: {
     deleteOrder() {
@@ -39,7 +43,7 @@ export default {
             console.log(error);
           });
       }
-    }
+    },
   },
 };
 </script>

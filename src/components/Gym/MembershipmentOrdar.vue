@@ -1,10 +1,6 @@
 <template>
   <div>
-    <el-button
-      style="float: left"
-      type="success"
-      icon="fa fa-save"
-      @click="approval()"
+    <el-button style="float: left" type="success" icon="fa fa-save" @click="approval()"
       >موافقة</el-button
     >
     <el-table
@@ -17,26 +13,16 @@
       ref="multipleTable"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column
-        type="selection"
-        width="50"
-        align="center"
-      ></el-table-column>
+      <el-table-column type="selection" width="50" align="center"></el-table-column>
       <el-table-column label="#" prop="Id" width="120" align="center">
         <template slot="header" slot-scope="{}">
-          <el-button
-            type="primary"
-            icon="el-icon-refresh"
-            @click="getdata()"
-          ></el-button>
+          <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
         </template>
       </el-table-column>
       <el-table-column prop="Name" label="الاشتراك" align="center">
         <template slot-scope="scope">
           <router-link :to="'/Gym/Edit/' + scope.row.MemberId">
-            <strong style="font-size: 10px; cursor: pointer;">{{
-              scope.row.Name
-            }}</strong>
+            <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </router-link>
         </template>
       </el-table-column>
@@ -82,11 +68,7 @@
         label="ملاحظات"
         prop="Description"
       ></el-table-column>
-      <el-table-column
-        label="محرر"
-        align="center"
-        prop="EditorName"
-      ></el-table-column>
+      <el-table-column label="محرر" align="center" prop="EditorName"></el-table-column>
 
       <el-table-column width="120" align="center">
         <template slot-scope="scope">
@@ -113,7 +95,7 @@ export default {
     return {
       loading: true,
       tableData: [],
-      Selection: []
+      Selection: [],
     };
   },
   created() {
@@ -123,13 +105,13 @@ export default {
     getdata() {
       this.loading = true;
       GetMembershipMovementOrderByStatus({ Status: 0 })
-        .then(response => {
+        .then((response) => {
           // handle success
           console.log(response);
           this.tableData = response;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           // handle error
           console.log(error);
         });
@@ -141,26 +123,26 @@ export default {
     approval() {
       if (this.Selection.length > 0)
         ChangeArrObjStatus({
-          ObjsId: this.Selection.map(x => x.Id),
+          ObjsId: this.Selection.map((x) => x.Id),
           TableName: "MembershipMovementOrder",
           Status: 1,
-          Description: "طلب تجميد او زيادة موافق عليه"
-        }).then(response => {
-          console.log(response);
+          Description: "طلب تجميد او زيادة موافق عليه",
+        }).then((response) => {
+          this.getdata();
           this.$notify({
             title: "تم ",
             message: "تم الإضافة بنجاح",
             type: "success",
-            duration: 2000
+            duration: 2000,
           });
           this.$nextTick(() => {
             this.$router.replace({
-              path: "/redirect" + this.$route.fullPath
+              path: "/redirect" + this.$route.fullPath,
             });
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -6,7 +6,6 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 import { OpenCashDrawer } from "@/api/Device";
-import { BackUp } from "@/api/BackupRestore";
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -41,13 +40,13 @@ router.beforeEach(async (to, from, next) => {
                     roles.defulateRedirect = defulateRedirect == null ? '/index' : defulateRedirect
 
                     const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
-                    // dynamically add accessible routes  
+                    // dynamically add accessible routes
                     router.addRoutes(accessRoutes)
 
                     // hack method to ensure that addRoutes is complete
                     // set the replace: true, so the navigation will not leave a history record
                     store.dispatch("CompanyInfo/GetCompanyInfo");
- 
+
 
                     store.dispatch("Devices/FeelDevice");
 

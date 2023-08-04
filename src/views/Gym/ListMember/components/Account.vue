@@ -6,7 +6,12 @@
       :AccountId2="AccountId"
     />
     <el-table :data="EntryMovements" fit border highlight-current-row height="500">
-      <el-table-column prop="Id" v-bind:label="$t('Vendors.ID')" width="80" align="center">
+      <el-table-column
+        prop="Id"
+        v-bind:label="$t('Vendors.ID')"
+        width="80"
+        align="center"
+      >
         <template slot-scope="{ row }">
           <el-tag type="primary" disable-transitions>
             <strong
@@ -14,7 +19,7 @@
               @click="
                 () => {
                   let r = $router.resolve({
-                    path: '/EntryAccounting/Edit/' + row.Id,
+                    path: '/EntryAccounting/Edit/' + row.EntryId,
                   });
                   window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
                 }

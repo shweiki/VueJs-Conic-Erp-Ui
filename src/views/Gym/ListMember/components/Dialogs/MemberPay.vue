@@ -116,10 +116,8 @@ export default {
   components: { EditorsUser, DrawerPrint, FakeDate, RadioPaymentMethodFromSettings },
   props: {
     MemberId: {
-      type: Number,
-      default: () => {
-        return undefined;
-      },
+      type: String,
+      required: true,
     },
     NumberPhone1: {
       type: String,

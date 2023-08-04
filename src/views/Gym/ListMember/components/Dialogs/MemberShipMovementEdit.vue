@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button icon="el-icon-edit"  @click="Visibles = true"></el-button>
+    <el-button icon="el-icon-edit" @click="Visibles = true"></el-button>
 
     <el-dialog
       style="margin-top: -13vh"
@@ -175,7 +175,7 @@ export default {
   props: {
     MembershipMovementId: {
       type: Number,
-      default: undefined,
+      required: true,
     },
   },
   data() {

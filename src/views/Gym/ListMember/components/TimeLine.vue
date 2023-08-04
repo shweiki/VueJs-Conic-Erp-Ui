@@ -71,7 +71,6 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
 import { GetLogByUserId } from "@/api/DeviceLog";
 import SearchByDate from "@/components/Date/SearchByDate.vue";
 import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
@@ -80,8 +79,8 @@ export default {
   components: { SearchByDate, AddDeviceLog },
   props: {
     UserId: {
-      type: Number,
-      required: false,
+      type: String,
+      required: true,
     },
     TableName: {
       type: String,
@@ -112,7 +111,9 @@ export default {
       loading: false,
       reverse: true,
       timeline: [],
-      listQuery: JSON.parse(localStorage.getItem("TimeLineDeviceLog_ListQuery") || null) || {
+      listQuery: JSON.parse(
+        localStorage.getItem("TimeLineDeviceLog_ListQuery") || null
+      ) || {
         DateFrom: "",
         DateTo: "",
         TableName: this.TableName,
@@ -130,7 +131,10 @@ export default {
           .then((response) => {
             this.timeline = response;
             //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
-            localStorage.setItem("TimeLineDeviceLog_ListQuery", JSON.stringify(this.listQuery));
+            localStorage.setItem(
+              "TimeLineDeviceLog_ListQuery",
+              JSON.stringify(this.listQuery)
+            );
             this.loading = false;
           })
           .catch((error) => {

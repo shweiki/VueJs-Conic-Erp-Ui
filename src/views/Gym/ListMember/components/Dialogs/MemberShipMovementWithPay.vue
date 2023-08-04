@@ -261,15 +261,11 @@ export default {
   props: {
     AccountId: {
       type: Number,
-      default: () => {
-        return undefined;
-      },
+      required: true,
     },
     MemberId: {
-      type: Number,
-      default: () => {
-        return undefined;
-      },
+      type: String,
+      required: true,
     },
     NumberPhone1: {
       type: String,

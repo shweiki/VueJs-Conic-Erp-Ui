@@ -110,9 +110,7 @@ export default {
   props: {
     MemberShipMovementOrderId: {
       type: Number,
-      default: () => {
-        return undefined;
-      },
+      required: true,
     },
     MinFreezeLimit: {
       type: Number,

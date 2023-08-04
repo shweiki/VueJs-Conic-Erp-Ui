@@ -24,16 +24,6 @@
             "
           ></el-button>
         </el-col>
-        <el-col :span="4">
-          <el-button
-            :loading="loading"
-            style="float: left"
-            type="danger"
-            icon="el-icon-time"
-            :size="$store.getters.size"
-            @click="RemoveDuplicate"
-          ></el-button>
-        </el-col>
       </el-row>
 
       <div style="margin-top: 10px">
@@ -104,7 +94,7 @@
 </template>
 
 <script>
-import { GetByStatus, RemoveDuplicate } from "@/api/DeviceLog";
+import { GetByStatus } from "@/api/DeviceLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
 import MemberSearch from "@/components/Member/MemberSearch.vue";
@@ -147,17 +137,6 @@ export default {
           //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
           if (response.length == 0) this.listQuery.Page = 13;
           //  localStorage.setItem('MemberLog_ListQuery', JSON.stringify(this.listQuery))
-          this.loading = false;
-        })
-        .catch((error) => {
-          reject(error);
-          this.loading = false;
-        });
-    },
-    RemoveDuplicate() {
-      this.loading = true;
-      RemoveDuplicate()
-        .then((res) => {
           this.loading = false;
         })
         .catch((error) => {

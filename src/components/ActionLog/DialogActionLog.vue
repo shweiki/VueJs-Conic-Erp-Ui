@@ -1,10 +1,6 @@
 <template>
   <div>
-    <el-button
-      type="success"
-      icon="el-icon-data-line"
-      @click="getdata()"
-    ></el-button>
+    <el-button type="success" icon="el-icon-data-line" @click="getdata()"></el-button>
 
     <el-dialog style="margin-top: -13vh" :visible.sync="Visible">
       <el-timeline>
@@ -13,28 +9,28 @@
           :key="index"
           v-bind:timestamp="
             formatDate(new Date(log.PostingDateTime), 'no') +
-              ' - ' +
-              tConvert(new Date(log.PostingDateTime))
+            ' - ' +
+            tConvert(new Date(log.PostingDateTime))
           "
           placement="top"
           v-bind:color="
-            $store.getters.Oprations.find(obj => {
+            $store.getters.Oprations.find((obj) => {
               return obj.Id == log.OprationId;
             }).Color
           "
           v-bind:icon="
-            $store.getters.Oprations.find(obj => {
+            $store.getters.Oprations.find((obj) => {
               return obj.Id == log.OprationId;
             }).IconClass
           "
           v-bind:type="
-            $store.getters.Oprations.find(obj => {
+            $store.getters.Oprations.find((obj) => {
               return obj.Id == log.OprationId;
             }).ClassName
           "
         >
           {{
-            $store.getters.Oprations.find(obj => {
+            $store.getters.Oprations.find((obj) => {
               return obj.Id == log.OprationId;
             }).OprationDescription
           }}
@@ -51,26 +47,28 @@ import { GetLogByObjTable } from "@/api/ActionLog";
 export default {
   props: {
     TableName: {
-      type: String
+      type: String,
+      required: true,
     },
-    ObjId: Number
+    ObjId: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
       Visible: false,
-      actionlogs: []
+      actionlogs: [],
     };
   },
   methods: {
     getdata() {
-      GetLogByObjTable({ TableName: this.TableName, Id: this.ObjId }).then(
-        response => {
-          // handle success
-          this.actionlogs = response;
+      GetLogByObjTable({ TableName: this.TableName, Id: this.ObjId }).then((response) => {
+        // handle success
+        this.actionlogs = response;
 
-          this.Visible = true;
-        }
-      );
+        this.Visible = true;
+      });
     },
     tConvert(date) {
       let hours = date.getHours();
@@ -91,7 +89,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [day, month, year].join("/");
-    }
-  }
+    },
+  },
 };
 </script>

@@ -275,9 +275,16 @@ export default {
     },
   },
   watch: {
-    Member(v) {
-      if (v) this.GetImage(v.Id);
+    Member(value) {
+      if (value) {
+        this.GetImage(value.Id);
+      }
     },
+  },
+  created() {
+    if (this.Member) {
+      this.GetImage(this.Member.Id);
+    }
   },
   data() {
     return {
