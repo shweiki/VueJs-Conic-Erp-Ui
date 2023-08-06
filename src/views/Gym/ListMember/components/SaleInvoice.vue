@@ -106,7 +106,7 @@
 
 <script>
 import checkPermission from "@/utils/permission";
-import StatusTag from "@/components/Oprationsys/StatusTag";
+import StatusTag from "@/components/Oprationsys/StatusTag.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 
 export default {

@@ -489,7 +489,7 @@ import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
 import DrawerSearchInvoice from "@/components/Sales/DrawerSearchInvoice.vue";
 import { Create as CreateVendor, CheckIsExist as CheckVendorIsExist } from "@/api/Vendor";
 
-import { SendSMS } from "@/api/SMS";
+import { SendSMS } from "@/api/Sms";
 import { Now } from "@/utils";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";

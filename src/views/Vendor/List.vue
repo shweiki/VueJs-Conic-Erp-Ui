@@ -237,7 +237,7 @@ import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import AddVendor from "@/components/Vendor/AddVendor.vue";
 import EditVendor from "@/components/Vendor/EditVendor.vue";
-import { SendMultiSMS } from "@/api/SMS";
+import { SendMultiSMS } from "@/api/Sms";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";

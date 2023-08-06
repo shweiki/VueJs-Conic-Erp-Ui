@@ -389,7 +389,7 @@ export default {
     },
     handleFilter() {
       this.listQuery.Page = 1;
-      this.getList();
+      if (!this.listLoading) this.getList();
     },
     sortChange(data) {
       const { prop, order } = data;

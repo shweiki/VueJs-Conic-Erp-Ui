@@ -34,11 +34,7 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input
-                type="text"
-                ref="EmployeeName"
-                v-model="tempForm.Name"
-              ></el-input>
+              <el-input type="text" ref="EmployeeName" v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -59,9 +55,7 @@
                 v-model="tempForm.DateofBirth"
                 type="date"
                 placeholder="تاريخ ميلاد"
-                :format="
-                  $store.getters.settings.DateTimeFormat.replace(' HH:mm', '')
-                "
+                :format="$store.getters.settings.DateTimeFormat.replace(' HH:mm', '')"
               ></el-date-picker>
               <!--
               <birth-datepicker
@@ -118,10 +112,7 @@
                 },
               ]"
             >
-              <el-input
-                type="text"
-                v-model="tempForm.Email"
-              ></el-input> </el-form-item
+              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
           ></el-col>
         </el-row>
         <el-row type="flex">
@@ -165,10 +156,7 @@
               /> </el-form-item
           ></el-col>
         </el-row>
-        <el-form-item
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
@@ -182,7 +170,7 @@ import VuePhoneNumberInput, { async } from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
-import { SendSMS } from "@/api/SMS";
+import { SendSMS } from "@/api/Sms";
 
 export default {
   name: "Employee",

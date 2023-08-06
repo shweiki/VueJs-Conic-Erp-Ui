@@ -332,7 +332,7 @@ import {
   GetVendorByUserId,
 } from "@/api/Vendor";
 import { mapGetters } from "vuex";
-import { SendSMS } from "@/api/SMS";
+import { SendSMS } from "@/api/Sms";
 import { Now } from "@/utils";
 
 //import VueTouchKeyboard from "vue-touch-keyboard";

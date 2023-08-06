@@ -21,13 +21,6 @@ module.exports = {
   LimitQurey: 20,
   LimitGetInvoice: 200,
   PaymentMethods: ["Cash", "Visa", "Receivables", "Cheque", "ZainCash", "CliQ"],
-  Sms: {
-    baseURLSendSingleMessage: "",
-    baseURLSendBulkMessages: "",
-    senderid: "",
-    AccName: "",
-    AccPass: "",
-  },
   errorLog: "production",
   DateTimeFormat: "yyyy-MM-dd HH:mm",
   StatusQuery: 0,
@@ -50,7 +43,6 @@ module.exports = {
       Purchases: true,
       Sales: true,
       Visits: true,
-
     }
   },
   PointOfSale: {

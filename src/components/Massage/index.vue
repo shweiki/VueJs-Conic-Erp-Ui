@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { SendSMS } from "@/api/SMS";
+import { SendSMS } from "@/api/Sms";
 import axios from "axios";
 
 export default {

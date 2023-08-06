@@ -235,7 +235,7 @@
 <script>
 import { Create as CreatePayment } from "@/api/Payment";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-import { SendSMS } from "@/api/SMS";
+import { SendSMS } from "@/api/Sms";
 import { Create } from "@/api/MembershipMovement";
 import EditorsUser from "@/components/Gym/EditorsUser.vue";
 import SelectMemberships from "@/components/Gym/SelectMemberships.vue";

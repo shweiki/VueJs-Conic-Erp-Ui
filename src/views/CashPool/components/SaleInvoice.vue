@@ -93,14 +93,14 @@
         <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
         <el-divider direction="vertical"></el-divider>
         <!--  <span>إجمالي التكلفة</span>
-        <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.TotalCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-        <el-divider direction="vertical"></el-divider>
-       
-        <span>صافي الربح</span>
-        <el-divider direction="vertical"></el-divider>
-        <span>{{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-        <el-divider direction="vertical"></el-divider>-->
+            <el-divider direction="vertical"></el-divider>
+            <span>{{ Totals.TotalCost.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+            <el-divider direction="vertical"></el-divider>
+
+            <span>صافي الربح</span>
+            <el-divider direction="vertical"></el-divider>
+            <span>{{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+            <el-divider direction="vertical"></el-divider>-->
       </div>
     </el-card>
     <el-card v-permission="['admin']" class="box-card">
@@ -133,11 +133,14 @@
             المجموع الربح
             {{ Totals.Profit.toFixed($store.getters.settings.ToFixed) }}
           </template>
-          <template slot-scope="scope">{{
-            ((scope.row.AvgPrice - scope.row.CostPrice) * scope.row.TotalCount).toFixed(
-              $store.getters.settings.ToFixed
-            )
-          }}</template>
+
+          <template slot-scope="scope">
+            {{
+              ((scope.row.AvgPrice - scope.row.CostPrice) * scope.row.TotalCount).toFixed(
+                $store.getters.settings.ToFixed
+              )
+            }}
+          </template>
         </el-table-column>
         <el-table-column align="center">
           <template slot="header" slot-scope="{}">
@@ -148,11 +151,14 @@
               )
             }}
           </template>
-          <template slot-scope="scope">{{
-            (scope.row.AvgPrice * scope.row.TotalCount).toFixed(
-              $store.getters.settings.ToFixed
-            )
-          }}</template>
+
+          <template slot-scope="scope">
+            {{
+              (scope.row.AvgPrice * scope.row.TotalCount).toFixed(
+                $store.getters.settings.ToFixed
+              )
+            }}
+          </template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -167,12 +173,10 @@
       >
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata()"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata()">
+            </el-button>
           </template>
+
           <template slot-scope="{ row }">
             <el-tag type="primary" disable-transitions>
               <strong
@@ -202,8 +206,8 @@
         >
           <template slot-scope="{ row }">
             <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
-          </template></el-table-column
-        >
+          </template>
+        </el-table-column>
         <el-table-column
           prop="Name"
           v-bind:label="$t('CashPool.Customer')"
@@ -246,9 +250,9 @@
           width="120"
           align="center"
         >
-          <template slot-scope="scope">{{
-            scope.row.Discount.toFixed($store.getters.settings.ToFixed)
-          }}</template>
+          <template slot-scope="scope"
+            >{{ scope.row.Discount.toFixed($store.getters.settings.ToFixed) }}
+          </template>
         </el-table-column>
         <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
           <template slot-scope="scope">
@@ -281,19 +285,19 @@
                 align="center"
               ></el-table-column>
               <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
-                <template slot-scope="scope">{{
-                  scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
-                }}</template>
+                <template slot-scope="scope"
+                  >{{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
+                </template>
               </el-table-column>
               <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-                <template slot-scope="scope"
-                  >{{
+                <template slot-scope="scope">
+                  {{
                     (scope.row.SellingPrice * scope.row.Qty).toFixed(
                       $store.getters.settings.ToFixed
                     )
                   }}
-                  JOD</template
-                >
+                  JOD
+                </template>
               </el-table-column>
             </el-table>
           </template>
@@ -355,7 +359,7 @@ export default {
       tableData: [],
       CashPool: {},
       Data: undefined,
-      AutoSent: false,
+      AutoSent: true,
       CashAccountId: undefined,
       InComeAccountId: undefined,
       Totals: {
@@ -510,13 +514,13 @@ export default {
                         Dates: [new Date(), new Date()],
                       }
                     );
-                    const ItemsIngredients = await VisualizationReportHtml(
-                      "ItemsIngredients",
-                      {
-                        Items: this.ItemsIngredients(this.tableData),
-                        Dates: [new Date(), new Date()],
-                      }
-                    );
+                    /*  const ItemsIngredients = await VisualizationReportHtml(
+                                            "ItemsIngredients",
+                                            {
+                                              Items: this.ItemsIngredients(this.tableData),
+                                              Dates: [new Date(), new Date()],
+                                            }
+                                          );*/
                     const ResolveSendEmail = await SendEmailTo({
                       to: this.$store.getters.CompanyInfo.Email,
                       subject:
@@ -528,7 +532,7 @@ export default {
                         " - " +
                         "لغاية  " +
                         this.formatDate(new Date()),
-                      body: CashPool + ItemsSales + SaleInvoicesList + ItemsIngredients,
+                      body: CashPool + ItemsSales + SaleInvoicesList, // + ItemsIngredients,
                     });
                     this.$notify({
                       title: "تم الإضافة بنجاح",

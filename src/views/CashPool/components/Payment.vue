@@ -203,7 +203,7 @@ export default {
       tableData: [],
       CashPool: {},
       Data: undefined,
-      AutoSent: false,
+      AutoSent: true,
       CashAccountId: undefined,
       InComeAccountId: undefined,
       Totals: { Cash: 0, Cheque: 0, Rows: 0, Totals: 0, Visa: 0 },

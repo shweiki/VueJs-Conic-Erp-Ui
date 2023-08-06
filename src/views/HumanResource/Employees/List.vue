@@ -238,7 +238,7 @@ import LastLog from "@/components/Gym/LastLog.vue";
 
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-import { SendMultiSMS } from "@/api/SMS";
+import { SendMultiSMS } from "@/api/Sms";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 import AddEmployee from "@/components/HumanResource/Employee/AddEmployee.vue";
 import SortOptions from "@/components/SortOptions";

@@ -260,7 +260,7 @@ import lastLog from "@/components/Gym/LastLog.vue";
 
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-import { SendMultiSMS } from "@/api/SMS";
+import { SendMultiSMS } from "@/api/Sms";
 import AddMember from "@/components/Member/AddMember.vue";
 import MergeTwoMembers from "./components/MergeTwoMembers.vue";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";

@@ -7,14 +7,14 @@
       >{{ $t("AddVendors.Save") }}</el-button
     >
     <el-button @click="scanToJpg" type="primary">بدء</el-button>
-
-    <div id="images"></div>
+  <div id="images"></div>
     <el-button
       icon="el-icon-receiving"
       type="success"
       slot="reference"
     ></el-button>
   </el-popover> -->
+
   <el-button icon="el-icon-receiving" type="success" @click="scanToJpg"></el-button>
 </template>
 <script>
@@ -48,14 +48,11 @@ export default {
         ],
       });
     },
-    createData() {
+    createData(scannedImage) {
       let file = {
         Id: undefined,
         FileType: "image",
-        File: this.imagesScanned[0].src.replace(
-          /^data:image\/(png|jpg|jpeg);base64,/,
-          ""
-        ),
+        File: scannedImage.src.replace(/^data:image\/(png|jpg|jpeg);base64,/, ""),
         Status: 0,
         TableName: this.TableName,
         FKTable: this.ObjectId,
@@ -92,20 +89,22 @@ export default {
       var scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
       for (var i = 0; scannedImages instanceof Array && i < scannedImages.length; i++) {
         var scannedImage = scannedImages[i];
-        this.processScannedImage(scannedImage);
+        this.imagesScanned.push(scannedImage);
+        this.createData(scannedImage);
+
+        // this.processScannedImage(scannedImage);
       }
-      this.createData();
     },
     processScannedImage(scannedImage) {
       this.imagesScanned.push(scannedImage);
-      var elementImg = scanner.createDomElementFromModel({
-        name: "img",
-        attributes: {
-          class: "scanned",
-          src: scannedImage.src,
-        },
-      });
-      document.getElementById("images").appendChild(elementImg);
+      //  var elementImg = scanner.createDomElementFromModel({
+      //    name: "img",
+      //    attributes: {
+      //       class: "scanned",
+      //         src: scannedImage.src,
+      //      },
+      //    });
+      // document.getElementById("images").appendChild(elementImg);
     },
   },
 };

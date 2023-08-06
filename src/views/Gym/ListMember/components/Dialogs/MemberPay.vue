@@ -110,7 +110,7 @@ import FakeDate from "@/components/Date/FakeDate";
 //import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
 import RadioPaymentMethodFromSettings from "@/components/PaymentMethod/RadioPaymentMethodFromSettings.vue";
 import EditorsUser from "@/components/Gym/EditorsUser.vue";
-import { SendSMS } from "@/api/SMS";
+import { SendSMS } from "@/api/Sms";
 
 export default {
   components: { EditorsUser, DrawerPrint, FakeDate, RadioPaymentMethodFromSettings },

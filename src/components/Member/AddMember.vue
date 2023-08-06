@@ -180,7 +180,7 @@ import VuePhoneNumberInput, { async } from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
-import { SendSMS } from "@/api/SMS";
+import { SendSMS } from "@/api/Sms";
 
 export default {
   name: "Member",

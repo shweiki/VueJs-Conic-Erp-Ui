@@ -37,7 +37,6 @@ export function SendMultiSMS(numberPhones, msg) {
             break;
         }
     }
-    console.log(numbers100)
     if (store.getters.settings.Sms.baseURLSendBulkMessages)
         numbers100.forEach((element) => {
             request({
