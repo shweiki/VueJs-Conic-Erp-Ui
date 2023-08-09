@@ -82,8 +82,7 @@ export default {
     OpenDialog() {
       this.checkStrictly = true;
       this.$nextTick(() => {
-        console.log(this.Router);
-        this.$refs.tree.setCheckedKeys(JSON.parse(this.Router));
+         this.$refs.tree.setCheckedKeys(JSON.parse(this.Router));
 
         this.checkStrictly = false;
       });
@@ -92,8 +91,7 @@ export default {
     async getRoutes() {
       const res = await getRoutes();
       this.serviceRoutes = res;
-      console.log(res);
-      this.routes = this.generateRoutes(res);
+       this.routes = this.generateRoutes(res);
     },
     confirmRouter() {
       console.log( "routerxxxxx",

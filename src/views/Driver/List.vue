@@ -170,7 +170,6 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
 import { GetByListQ } from "@/api/Driver";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import StatusTag from "@/components/Oprationsys/StatusTag";

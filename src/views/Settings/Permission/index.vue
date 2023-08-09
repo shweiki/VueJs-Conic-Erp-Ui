@@ -227,7 +227,7 @@ export default {
       GetUsers()
         .then((response) => {
           // handle success
-
+console.log(response)
           this.tableData = response;
           GetRoles()
             .then((response) => {
