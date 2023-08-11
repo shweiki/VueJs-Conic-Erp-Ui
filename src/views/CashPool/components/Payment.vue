@@ -180,7 +180,7 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import { VisualizationReportHtml, PrintReport } from "@/report/FunctionalityReport";
-import { Send as SendEmailTo } from "@/api/Email";
+import { SendTo as SendEmailTo } from "@/api/Email";
 import EditPaymentMethod from "@/components/PaymentMethod/EditPaymentMethod.vue";
 
 import { ChangeArrObjStatus } from "@/api/Oprationsys";

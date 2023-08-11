@@ -335,7 +335,7 @@ import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue"
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
 import { parseTime } from "@/utils";
 import { VisualizationReportHtml, PrintReport } from "@/report/FunctionalityReport";
-import { Send as SendEmailTo } from "@/api/Email";
+import { SendTo as SendEmailTo } from "@/api/Email";
 
 export default {
   name: "SaleInvoice",
@@ -514,13 +514,13 @@ export default {
                         Dates: [new Date(), new Date()],
                       }
                     );
-                    /*  const ItemsIngredients = await VisualizationReportHtml(
-                                            "ItemsIngredients",
-                                            {
-                                              Items: this.ItemsIngredients(this.tableData),
-                                              Dates: [new Date(), new Date()],
-                                            }
-                                          );*/
+                    const ItemsIngredients = await VisualizationReportHtml(
+                      "ItemsIngredients",
+                      {
+                        Items: this.ItemsIngredients(this.tableData),
+                        Dates: [new Date(), new Date()],
+                      }
+                    );
                     const ResolveSendEmail = await SendEmailTo({
                       to: this.$store.getters.CompanyInfo.Email,
                       subject:
@@ -532,7 +532,7 @@ export default {
                         " - " +
                         "لغاية  " +
                         this.formatDate(new Date()),
-                      body: CashPool + ItemsSales + SaleInvoicesList, // + ItemsIngredients,
+                      body: CashPool + ItemsSales + SaleInvoicesList + ItemsIngredients,
                     });
                     this.$notify({
                       title: "تم الإضافة بنجاح",
@@ -550,7 +550,6 @@ export default {
                     Object.assign(this.$data, this.$options.data());
                   }
                 });
-              } else {
               }
             })
             .catch((error) => {
@@ -562,7 +561,7 @@ export default {
       });
     },
     ItemsSales(list) {
-      var res = [];
+      let res = [];
       for (var i = 0; i < list.length; i++) {
         list[i].InventoryMovements.map((m) => {
           var find = res.findIndex((value) => value.Name == m.Name);

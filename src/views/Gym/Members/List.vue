@@ -2,9 +2,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div class="filter-container">
-        <el-button @click="FixPhoneNumber">
-          {{ $t("Members.FixPhoneNumber") }}
-        </el-button>
+
         <el-button @click="CheckBlackListActionLogMembers">{{
           $t("Members.CheckBlackList")
         }}</el-button>
@@ -251,7 +249,7 @@
 </template>
 
 <script>
-import { GetByListQ, FixPhoneNumber, CheckBlackListActionLogMembers } from "@/api/Member";
+import { GetByListQ,    CheckBlackListActionLogMembers } from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
@@ -304,8 +302,7 @@ export default {
     // this.getList();
   },
   methods: {
-    FixPhoneNumber,
-    CheckBlackListActionLogMembers,
+     CheckBlackListActionLogMembers,
     getList() {
       this.listLoading = true;
 

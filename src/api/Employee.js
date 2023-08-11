@@ -14,13 +14,7 @@ export function GetEmployeeByAny(query) {
     params: query
   })
 }
-export function FixPhoneNumber(query) {
-  return request({
-    url: '/Employee/FixPhoneNumber',
-    method: 'get',
-    params: query
-  })
-}
+
 export function GetByListQ(data) {
   return request({
     url: '/Employee/GetByListQ',
@@ -70,8 +64,8 @@ export function GetEmployeeById(query) {
   return request({
     url: '/Employee/GetEmployeeById',
     method: 'get',
-    params:  query 
-    
+    params:  query
+
   })
 }
 

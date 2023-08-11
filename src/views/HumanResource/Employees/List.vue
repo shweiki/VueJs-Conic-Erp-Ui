@@ -3,7 +3,6 @@
     <el-card class="box-card">
       <el-row type="flex">
         <el-col :span="12">
-          <el-button @click="FixPhoneNumber">FixPhoneNumber</el-button>
           <el-popover placement="left" width="400">
             <p>ارسال عبر</p>
             <div style="text-align: right; margin: 0">
@@ -69,7 +68,7 @@
             @click="handleFilter"
           >
             {{ $t("table.search") }}
-        </el-button>
+          </el-button>
         </el-col>
         <el-col :span="6">
           <RadioOprations
@@ -228,8 +227,7 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
-import { GetByListQ, FixPhoneNumber } from "@/api/Employee";
+import { GetByListQ } from "@/api/Employee";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations";
@@ -278,7 +276,6 @@ export default {
     this.getList();
   },
   methods: {
-    FixPhoneNumber,
     getList() {
       this.listLoading = true;
       GetByListQ(this.listQuery).then((response) => {

@@ -21,13 +21,7 @@ export function GetDriverByAny(query) {
     params: query
   })
 }
-export function FixPhoneNumber(query) {
-  return request({
-    url: '/Driver/FixPhoneNumber',
-    method: 'get',
-    params: query
-  })
-}
+
 export function GetByListQ(data) {
   return request({
     url: '/Driver/GetByListQ',
@@ -84,24 +78,24 @@ export function GetDriverById(query) {
   return request({
     url: '/Driver/GetDriverById',
     method: 'get',
-    params:  query 
-    
+    params:  query
+
   })
 }
 export function DriverActivation(query) {
   return request({
     url: '/Driver/DriverActivation',
     method: 'get',
-    params:  query 
-    
+    params:  query
+
   })
 }
 export function DriverDeActivation(query) {
   return request({
     url: '/Driver/DriverDeActivation',
     method: 'get',
-    params:  query 
-    
+    params:  query
+
   })
 }
 export function Create(data) {

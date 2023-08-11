@@ -170,7 +170,6 @@ import VuePhoneNumberInput, { async } from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
-import { SendSMS } from "@/api/Sms";
 
 export default {
   name: "Employee",
@@ -254,12 +253,7 @@ export default {
                   duration: 2000,
                 });
                 this.$router.push({ path: `/HumanResource/Edit/${response}` });
-                SendSMS(
-                  this.tempForm.PhoneNumber1,
-                  "عزيزي " +
-                    this.tempForm.Name +
-                    " نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح "
-                );
+
               })
               .catch((error) => {
                 console.log(error);
