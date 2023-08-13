@@ -11,7 +11,7 @@
         tableData.filter(
           (data) =>
             !search ||
-            data.UserName.toLowerCase().includes(search.toLowerCase())
+            data.User.UserName.toLowerCase().includes(search.toLowerCase())
         )
       " style="width: 100%" max-height="750" v-loading="loading">
         <el-table-column prop="avatar" width="120">
@@ -25,13 +25,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="UserName" width="120">
+        <el-table-column prop="User.UserName" width="120">
           <template slot="header" slot-scope="{}">
             <el-input v-model="search" v-bind:placeholder="$t('permission.UserName')" />
           </template>
         </el-table-column>
-        <el-table-column label="Email" prop="Email"></el-table-column>
-        <el-table-column label="Phone Number" prop="PhoneNumber"></el-table-column>
+        <el-table-column label="Email" prop="User.Email"></el-table-column>
+        <el-table-column label="Phone Number" prop="User.PhoneNumber"></el-table-column>
 
         <el-table-column align="left">
           <template slot-scope="scope">
@@ -39,7 +39,7 @@
 
             <el-tag :key="role.Name" v-for="role in scope.row.Roles" effect="plain" closable
               :disable-transitions="false" @close="RemoveRole(scope.row.UserName, role.Name)">{{ role.Name }}</el-tag>
-            <el-button type="danger" icon="el-icon-unlock" :size="$store.getters.size" @click="UnLockOut(scope.row.Id)">
+            <el-button type="danger" icon="el-icon-unlock" :size="$store.getters.size" @click="UnLockOut(scope.row.User.Id)">
             </el-button>
             <el-button type="success" icon="el-icon-plus" :size="$store.getters.size"
               @click="dialogAddRoleVisible = true"></el-button>
@@ -227,8 +227,7 @@ export default {
       GetUsers()
         .then((response) => {
           // handle success
-console.log(response)
-          this.tableData = response;
+           this.tableData = response;
           GetRoles()
             .then((response) => {
               // handle success
