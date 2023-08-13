@@ -22,11 +22,7 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
-              <el-input
-                type="text"
-                ref="MemberName"
-                v-model="tempForm.Name"
-              ></el-input>
+              <el-input type="text" ref="MemberName" v-model="tempForm.Name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -47,7 +43,7 @@
                 v-model="tempForm.DateofBirth"
                 type="date"
                 placeholder="تاريخ ميلاد"
-                :format="$store.getters.settings.DateTimeFormat.replace(' HH:mm','')"
+                :format="$store.getters.settings.DateTimeFormat.replace(' HH:mm', '')"
               ></el-date-picker>
               <!--
               <birth-datepicker
@@ -103,10 +99,7 @@
                 },
               ]"
             >
-              <el-input
-                type="text"
-                v-model="tempForm.Email"
-              ></el-input> </el-form-item
+              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
           ></el-col>
         </el-row>
 
@@ -152,23 +145,15 @@
           ></el-col>
         </el-row>
 
-        <el-form-item
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
+        <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-input type="textarea" v-model="tempForm.Description"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="Visible = false">{{
-          $t("AddVendors.Cancel")
+        <el-button @click="Visible = false">{{ $t("AddVendors.Cancel") }}</el-button>
+        <el-button :loading="createLoading" type="primary" @click="createData()">{{
+          $t("AddVendors.Save")
         }}</el-button>
-        <el-button
-          :loading="createLoading"
-          type="primary"
-          @click="createData()"
-          >{{ $t("AddVendors.Save") }}</el-button
-        >
       </div>
     </el-dialog>
   </div>
@@ -261,12 +246,13 @@ export default {
                   duration: 2000,
                 });
                 this.$router.push({ path: `/Gym/Edit/${response}` });
-                SendSMS(
-                  this.tempForm.PhoneNumber1,
-                  "عزيزي " +
+                SendSMS({
+                  tonumber: this.tempForm.PhoneNumber1,
+                  message:
+                    "عزيزي " +
                     this.tempForm.Name +
-                    " نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح "
-                );
+                    " نرحّب بك في High Fit ,تم تسجيل عضويتك بنجاح ",
+                });
               })
               .catch((error) => {
                 console.log(error);

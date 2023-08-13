@@ -615,8 +615,7 @@ export default {
     MembersCount: 'Members Count',
     CheckBlackList: "Check Black List",
     SendSMS: "Send SMS",
-    FixPhoneNumber: "Fix Phone Number",
-    SendBy: "Send By",
+     SendBy: "Send By",
     Export: "Export",
     SearchAll: "Search By Any Acount Name Or Id"
   },

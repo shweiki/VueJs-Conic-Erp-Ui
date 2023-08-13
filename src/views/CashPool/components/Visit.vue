@@ -181,9 +181,8 @@ import checkPermission from "@/utils/permission";
 import CashPoolDialog from "./CashPoolDialog.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import SelectInComeAccounts from "@/components/TreeAccount/SelectInComeAccounts.vue";
-import { parseTime } from "@/utils";
 import { VisualizationReportHtml, PrintReport } from "@/report/FunctionalityReport";
-import { Send as SendEmailTo } from "@/api/Email";
+import { SendTo as SendEmailTo } from "@/api/Email";
 
 export default {
   name: "Visit",

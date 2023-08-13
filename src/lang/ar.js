@@ -645,8 +645,7 @@ export default {
     MembersCount: 'عدد المشتركين',
     CheckBlackList: 'فحص القائمة السوداء',
     SendSMS: 'ارسال رسالة',
-    FixPhoneNumber: 'إصلاح رقم الهاتف',
-    SendBy: 'إرسال عبر',
+     SendBy: 'إرسال عبر',
     Export: 'إستخراج',
     SearchAll: ' البحث حسب اسم الحساب أو رقمه'
   },
