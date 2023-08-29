@@ -39,19 +39,28 @@
                 },
               ]"
             >
-              <el-date-picker
+              <Fake-Date type="date"
+                :Value="tempForm.DateofBirth"
+                @Set="
+                  (v) => {
+                    tempForm.DateofBirth = v;
+                  }
+                "
+              />
+              <!--
+                <el-date-picker
                 v-model="tempForm.DateofBirth"
                 type="date"
                 placeholder="تاريخ ميلاد"
                 :format="$store.getters.settings.DateTimeFormat.replace(' HH:mm', '')"
               ></el-date-picker>
-              <!--
+
               <birth-datepicker
                 style="width :100%"
                 attachment="bottom right"
                 delimiter="/"
                 v-model="tempForm.DateofBirth"
-              />-->
+              /> -->
               <el-tag type="success" effect="dark">
                 العمر
                 {{ getAge(tempForm.DateofBirth) }}
@@ -166,10 +175,11 @@ import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
 import { SendSMS } from "@/api/Sms";
+import FakeDate from "@/components/Date/FakeDate.vue";
 
 export default {
   name: "Member",
-  components: { VuePhoneNumberInput, birthDatepicker },
+  components: { FakeDate, VuePhoneNumberInput, birthDatepicker },
   data() {
     return {
       Visible: false,

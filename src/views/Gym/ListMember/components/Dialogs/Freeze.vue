@@ -18,6 +18,17 @@
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item prop="FreezeBetween" label="الفترة">
+              <Search-By-Date
+                :Value="FreezeBetween"
+                @Set="
+                  (v) => {
+                    FreezeBetween[0] = v[0];
+                    FreezeBetween[1] = v[1];
+                  }
+                "
+                style="width: 80%"
+              />
+              <!--
               <el-date-picker
                 v-model="FreezeBetween"
                 :format="$store.getters.settings.DateTimeFormat"
@@ -29,7 +40,7 @@
                 v-bind:end-placeholder="$t('Sales.To')"
                 :default-time="['00:00:00', '23:59:59']"
                 style="width: 80%"
-              ></el-date-picker>
+              ></el-date-picker>-->
             </el-form-item>
           </el-col>
         </el-row>
@@ -138,7 +149,7 @@ export default {
         Description: "",
         MemberShipMovementId: this.MemberShipMovementId,
       },
-      FreezeBetween: "",
+      FreezeBetween: [],
       Visibles: false,
       Days: 0,
       ValidateNote: "",

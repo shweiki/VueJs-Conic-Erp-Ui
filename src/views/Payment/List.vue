@@ -62,7 +62,7 @@
             @click="handleFilter"
           >
             {{ $t("table.search") }}
-        </el-button>
+          </el-button>
         </el-col>
       </el-row>
     </div>
@@ -197,7 +197,6 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
 import { GetByListQ } from "@/api/Payment";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -208,7 +207,6 @@ import RadioOprations from "@/components/Oprationsys/RadioOprations";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 
 import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";

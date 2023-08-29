@@ -1,14 +1,13 @@
 <template>
   <div>
     <!-- <span class="demonstration">{{ $t("Sales.ByDate") }}</span>
-     --><el-date-picker
+     -->
+    <el-date-picker
       v-model="date"
       :size="$store.getters.size"
       :format="$store.getters.settings.DateTimeFormat"
       v-bind:type="
-        $store.getters.settings.DateTimeFormat.length > 10
-          ? 'datetimerange'
-          : 'daterange'
+        $store.getters.settings.DateTimeFormat.length > 10 ? 'datetimerange' : 'daterange'
       "
       align="right"
       v-bind:range-separator="$t('Sales.until')"
@@ -69,7 +68,7 @@ export default {
     } else {
       //start = start.setHours(0, 0, 0, 0);
       end = end.setHours(23, 59, 59, 999);
-     this.SetVal([start, end]);
+      this.SetVal([start, end]);
     }
     //  this.date = [new Date(), new Date()];
   },
