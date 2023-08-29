@@ -235,7 +235,6 @@ export default {
           this.tempForm = response;
           this.getAge();
           this.loading = false;
-          //this.GetMemberLogFromDevices(val);
           this.setTagsViewTitle();
           // set page title
           this.setPageTitle();
@@ -297,46 +296,7 @@ export default {
 
       this.tempForm.Age = age;
     },
-    GetMemberLogFromDevices(MemberId) {
-      GetUserLog({
-        DeviceId: this.$store.getters.Devices[0].Id,
-        UserId: MemberId,
-      }).then((response) => {
-        if (response) {
-          console.log(response);
-          this.$notify({
-            title: "تم",
-            message:
-              "تم سحب البيانات من جهاز " +
-              this.$store.getters.Devices[0].Name +
-              "  " +
-              response +
-              "",
-            type: "success",
-            duration: 2000,
-          });
-          GetUserLog({
-            DeviceId: this.$store.getters.Devices[1].Id,
-            UserId: MemberId,
-          }).then((response) => {
-            if (response) {
-              console.log(response);
-              this.$notify({
-                title: "تم",
-                message:
-                  "تم سحب البيانات من جهاز " +
-                  this.$store.getters.Devices[1].Name +
-                  "  " +
-                  response +
-                  "",
-                type: "success",
-                duration: 2000,
-              });
-            }
-          });
-        }
-      });
-    },
+
     setTagsViewTitle() {
       const title = this.$t("route.EditMember");
       const route = Object.assign({}, this.tempRoute, {

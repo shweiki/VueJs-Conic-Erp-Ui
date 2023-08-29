@@ -36,13 +36,6 @@ export function SetUser(query) {
     params: query
   })
 }
-export function GetUserLog(query) {
-  return request({
-    url: '/Device/GetUserLog',
-    method: 'get',
-    params: query
-  })
-}
 
 export function GetById(query) {
   return request({
@@ -73,20 +66,7 @@ export function SetAll(query) {
     params: query
   })
 }
- export function SetAllMember(query) {
-  return request({
-    url: '/Device/SetAllMember',
-    method: 'get',
-    params: query
-  })
-}
-export function GetAllFingerPrints(query) {
-  return request({
-    url: '/Device/GetAllFingerPrints',
-    method: 'get',
-    params: query
-  })
-}
+
 export function GetAllLog(query) {
   return request({
     url: '/Device/GetAllLog',

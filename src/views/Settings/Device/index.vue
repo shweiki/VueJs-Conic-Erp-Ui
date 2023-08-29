@@ -33,17 +33,13 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot-scope="scope">
-            <el-button @click="GetAllFingerPrints(scope.row.Id, 'Member')" :size="$store.getters.size" type="info">سحب
-              جميع بصمات الوجه المشتركين</el-button>
-            <el-button @click="GetAllFingerPrints(scope.row.Id, 'Employee')" :size="$store.getters.size" type="info">سحب
-              جميع بصمات الوجه الموظفين</el-button>
             <el-button @click="GetAllLog(scope.row.Id, 'Member')" :size="$store.getters.size" type="primary">
               سحب جميع سجلات المشتركين
             </el-button>
             <el-button @click="GetAllLog(scope.row.Id, 'Employee')" :size="$store.getters.size" type="primary">
               سحب جميع سجلات الموظفين
             </el-button>
-            <el-button @click="SetAllMember(scope.row.Id)" :size="$store.getters.size" type="warning">
+            <el-button @click="SetAll(scope.row.Id ,'Member')" :size="$store.getters.size" type="warning">
               ارسال جميع معلومات المشتركين</el-button>
             <el-button @click="SetAll(scope.row.Id, 'Employee')" :size="$store.getters.size" type="warning">
               ارسال جميع معلومات الموظفين</el-button>
@@ -65,10 +61,8 @@
 <script>
 import {
   GetDevice,
-  GetAllFingerPrints,
   GetAllLog,
   SetAll,
-  SetAllMember,
   ClearUserLog,
   ClearAdministrators,
   RestartDevice,
@@ -122,36 +116,6 @@ export default {
           console.log(error);
         });
     }, 
-    SetAllMember(id) {
-      SetAllMember({ DeviceId: id })
-        .then((response) => {
-          // handle success
-          this.response = response;
-
-          console.log(response);
-        })
-        .catch((error) => {
-          // handle error
-          this.response = error;
-
-          console.log(error);
-        });
-    },
-    GetAllFingerPrints(id, TableName) {
-      GetAllFingerPrints({ DeviceId: id, TableName: TableName })
-        .then((response) => {
-          // handle success
-          this.response = response;
-
-          console.log(response);
-        })
-        .catch((error) => {
-          // handle error
-          this.response = error;
-
-          console.log(error);
-        });
-    },
     GetAllLog(id, TableName) {
       GetAllLog({ DeviceId: id, TableName: TableName })
         .then((response) => {
