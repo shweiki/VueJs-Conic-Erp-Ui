@@ -2,152 +2,109 @@
   <div class="app-container">
     <el-row type="flex">
       <el-col :span="4">
-        <el-input
-          v-model="listQuery.Any"
-          placeholder="Search By Any Acount Name Or Id"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
+        <el-input v-model="listQuery.Any" placeholder="Search By Any Acount Name Or Id" class="filter-item"
+          @keyup.enter.native="handleFilter" />
       </el-col>
       <el-col :span="8">
-        <Search-By-Date
-          v-permission="['admin']"
-          :Value="[listQuery.DateFrom, listQuery.DateTo]"
-          @Set="
-            (v) => {
-              listQuery.DateFrom = v[0];
-              listQuery.DateTo = v[1];
-              handleFilter();
-            }
-          "
-        />
+        <Search-By-Date v-permission="['admin']" :Value="[listQuery.DateFrom, listQuery.DateTo]" @Set="(v) => {
+          listQuery.DateFrom = v[0];
+          listQuery.DateTo = v[1];
+          handleFilter();
+        }
+          " />
       </el-col>
       <el-col :span="3">
-        <user-select
-          v-permission="['admin']"
-          @Set="
-            (v) => {
-              listQuery.User = v;
-              handleFilter();
-            }
-          "
-        />
+        <user-select v-permission="['admin']" :Value="listQuery.User" @Set="(v) => {
+          listQuery.User = v;
+          handleFilter();
+        }
+          " />
       </el-col>
       <el-col :span="3">
-        <Sort-Options
-          :Value="listQuery.Sort"
-          @Set="
-            (v) => {
-              listQuery.Sort = v;
-              handleFilter();
-            }
-          "
-        />
+        <Sort-Options :Value="listQuery.Sort" @Set="(v) => {
+          listQuery.Sort = v;
+          handleFilter();
+        }
+          " />
       </el-col>
       <el-col :span="6">
-        <Drawer-Print
-          v-permission="['admin']"
-          style="float: left"
-          Type="ItemsSales"
-          :Data="{
-            Totals: Totals,
-            Items() {
-              var res = [];
-              for (var i = 0; i < list.length; i++) {
-                list[i].InventoryMovements.map((m) => {
-                  var find = res.findIndex((value) => value.Name == m.Name);
-                  if (find != -1) res[find].TotalCount += m.Qty;
-                  else {
-                    res.push({
-                      Name: m.Name,
-                      TotalCount: m.Qty,
-                      AvgPrice: m.SellingPrice.toFixed($store.getters.settings.ToFixed),
-                      CostPrice: m.CostPrice,
-                      Ingredients: JSON.parse(m.Ingredients) || [],
-                    });
-                  }
-                });
-              }
-              return res;
-            },
-            Dates: [listQuery.DateFrom, listQuery.DateTo],
-          }"
-        />
+        <Drawer-Print v-permission="['admin']" style="float: left" Type="ItemsSales" :Data="{
+          Totals: Totals,
+          Items() {
+            var res = [];
+            for (var i = 0; i < list.length; i++) {
+              list[i].InventoryMovements.map((m) => {
+                var find = res.findIndex((value) => value.Name == m.Name);
+                if (find != -1) res[find].TotalCount += m.Qty;
+                else {
+                  res.push({
+                    Name: m.Name,
+                    TotalCount: m.Qty,
+                    AvgPrice: m.SellingPrice.toFixed($store.getters.settings.ToFixed),
+                    CostPrice: m.CostPrice,
+                    Ingredients: JSON.parse(m.Ingredients) || [],
+                  });
+                }
+              });
+            }
+            return res;
+          },
+          Dates: [listQuery.DateFrom, listQuery.DateTo],
+        }" />
 
-        <Drawer-Print
-          v-permission="['admin']"
-          style="float: left"
-          Type="ItemsIngredients"
-          :Data="{
-            Items() {
-              var res = [];
-              var res2 = [];
-              for (var i = 0; i < list.length; i++) {
-                list[i].InventoryMovements.map((m) => {
-                  var find = res.findIndex((value) => value.Name == m.Name);
-                  if (find != -1) res[find].TotalCount += m.Qty;
-                  else {
-                    res.push({
-                      Name: m.Name,
-                      TotalCount: m.Qty,
-                      AvgPrice: m.SellingPrice.toFixed($store.getters.settings.ToFixed),
-                      CostPrice: m.CostPrice,
-                      Ingredients: JSON.parse(m.Ingredients) || [],
-                    });
-                  }
-                });
-              }
-              for (var i = 0; i < res.length; i++) {
-                res[i].Ingredients.map((m) => {
-                  var find = res2.findIndex((value) => value.Name == m.Name);
-                  if (find != -1) res2[find].TotalCount += res[i].TotalCount * m.Qty;
-                  else {
-                    res2.push({
-                      Name: m.Name,
-                      TotalCount: res[i].TotalCount * m.Qty,
-                    });
-                  }
-                });
-              }
-              return res2;
-            },
-            Dates: [listQuery.DateFrom, listQuery.DateTo],
-          }"
-        />
-        <Drawer-Print
-          v-permission="['admin']"
-          style="float: left"
-          Type="SaleInvoicesList"
-          :Data="{
-            Totals: Totals,
-            Items: list,
-            Dates: [listQuery.DateFrom, listQuery.DateTo],
-          }"
-        />
+        <Drawer-Print v-permission="['admin']" style="float: left" Type="ItemsIngredients" :Data="{
+          Items() {
+            var res = [];
+            var res2 = [];
+            for (var i = 0; i < list.length; i++) {
+              list[i].InventoryMovements.map((m) => {
+                var find = res.findIndex((value) => value.Name == m.Name);
+                if (find != -1) res[find].TotalCount += m.Qty;
+                else {
+                  res.push({
+                    Name: m.Name,
+                    TotalCount: m.Qty,
+                    AvgPrice: m.SellingPrice.toFixed($store.getters.settings.ToFixed),
+                    CostPrice: m.CostPrice,
+                    Ingredients: JSON.parse(m.Ingredients) || [],
+                  });
+                }
+              });
+            }
+            for (var i = 0; i < res.length; i++) {
+              res[i].Ingredients.map((m) => {
+                var find = res2.findIndex((value) => value.Name == m.Name);
+                if (find != -1) res2[find].TotalCount += res[i].TotalCount * m.Qty;
+                else {
+                  res2.push({
+                    Name: m.Name,
+                    TotalCount: res[i].TotalCount * m.Qty,
+                  });
+                }
+              });
+            }
+            return res2;
+          },
+          Dates: [listQuery.DateFrom, listQuery.DateTo],
+        }" />
+        <Drawer-Print v-permission="['admin']" style="float: left" Type="SaleInvoicesList" :Data="{
+          Totals: Totals,
+          Items: list,
+          Dates: [listQuery.DateFrom, listQuery.DateTo],
+        }" />
         <Export :list="list" Type="SaleInvoicesList" />
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleFilter"
-        >
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
           {{ $t("table.search") }}
         </el-button>
       </el-col>
     </el-row>
 
     <el-col :span="24">
-      <Radio-Oprations
-        :value="listQuery.Status"
-        TableName="SalesInvoice"
-        @Set="
-          (v) => {
-            listQuery.Status = v;
-            handleFilter();
-          }
-        "
-    /></el-col>
+      <Radio-Oprations :value="listQuery.Status" TableName="SalesInvoice" @Set="(v) => {
+        listQuery.Status = v;
+        handleFilter();
+      }
+        " /></el-col>
     <el-row type="flex">
       <el-col v-permission="['admin']" :span="24">
         <el-divider direction="vertical"></el-divider>
@@ -181,37 +138,19 @@
       </el-col>
     </el-row>
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%"
-      @sort-change="sortChange"
-    >
-      <el-table-column
-        v-bind:label="$t('Vendors.ID')"
-        prop="Id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
+      @sort-change="sortChange">
+      <el-table-column v-bind:label="$t('Vendors.ID')" prop="Id" sortable="custom" align="center" width="80"
+        :class-name="getSortClass('id')">
         <template slot-scope="{ row }">
           <el-tag type="primary" disable-transitions>
-            <strong
-              style="font-size: 10px; cursor: pointer"
-              @click="
-                () => {
-                  let r = $router.resolve({
-                    path: '/Sales/Edit/' + row.Id,
-                  });
-                  window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
-                }
-              "
-              >{{ row.Id }}</strong
-            >
+            <strong style="font-size: 10px; cursor: pointer" @click="() => {
+              let r = $router.resolve({
+                path: '/Sales/Edit/' + row.Id,
+              });
+              window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
+            }
+              ">{{ row.Id }}</strong>
           </el-tag>
         </template>
       </el-table-column>
@@ -222,23 +161,14 @@
       </el-table-column>
       <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
       </el-table-column>
-      <el-table-column
-        prop="PaymentMethod"
-        sortable
-        v-bind:label="$t('CashPool.Pay')"
-        width="150"
-        align="center"
-      ></el-table-column>
+      <el-table-column prop="PaymentMethod" sortable v-bind:label="$t('CashPool.Pay')" width="150"
+        align="center"></el-table-column>
       <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
         <template slot-scope="scope">{{
           scope.row.Discount.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column
-        v-bind:label="$t('NewPurchaseInvoice.Tax')"
-        width="120"
-        align="center"
-      >
+      <el-table-column v-bind:label="$t('NewPurchaseInvoice.Tax')" width="120" align="center">
         <template slot-scope="scope">{{
           scope.row.Tax.toFixed($store.getters.settings.ToFixed)
         }}</template>
@@ -258,66 +188,42 @@
         <template slot-scope="scope">
           <el-row type="flex">
             <el-col :span="8">
-              <Next-Oprations
-                :ObjId="scope.row.Id"
-                :Status="scope.row.Status"
-                TableName="SalesInvoice"
-                @Done="handleFilter"
-            /></el-col>
+              <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="SalesInvoice"
+                @Done="handleFilter" /></el-col>
             <el-col :span="8">
-              <Drawer-Print Type="SaleInvoice" :Data="scope.row"
-            /></el-col>
-            <el-col :span="8"
-              ><Dialog-Action-Log TableName="SalesInvoice" :ObjId="scope.row.Id"
-            /></el-col>
+              <Drawer-Print Type="SaleInvoice" :Data="scope.row" /></el-col>
+            <el-col :span="8"><Dialog-Action-Log TableName="SalesInvoice" :ObjId="scope.row.Id" /></el-col>
           </el-row>
         </template>
       </el-table-column>
       <el-table-column type="expand" align="center">
         <template slot-scope="props">
           <el-table :data="props.row.InventoryMovements">
-            <el-table-column
-              prop="Name"
-              v-bind:label="$t('CashPool.Items')"
-              width="130"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="Qty"
-              v-bind:label="$t('CashPool.quantity')"
-              align="center"
-            ></el-table-column>
+            <el-table-column prop="Name" v-bind:label="$t('CashPool.Items')" width="130" align="center"></el-table-column>
+            <el-table-column prop="Qty" v-bind:label="$t('CashPool.quantity')" align="center"></el-table-column>
             <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
               <template slot-scope="scope">{{
                 scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed)
               }}</template>
             </el-table-column>
             <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-              <template slot-scope="scope"
-                >{{
-                  (scope.row.SellingPrice * scope.row.Qty).toFixed(
-                    $store.getters.settings.ToFixed
-                  )
-                }}
-                JOD</template
-              >
+              <template slot-scope="scope">{{
+                (scope.row.SellingPrice * scope.row.Qty).toFixed(
+                  $store.getters.settings.ToFixed
+                )
+              }}
+                JOD</template>
             </el-table-column>
           </el-table>
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="Totals.Rows > 0"
-      :total="Totals.Rows"
-      :page.sync="listQuery.Page"
-      :limit.sync="listQuery.limit"
-      @pagination="getList"
-    />
+    <pagination v-show="Totals.Rows > 0" :total="Totals.Rows" :page.sync="listQuery.Page" :limit.sync="listQuery.limit"
+      @pagination="getList" />
   </div>
 </template>
 
 <script>
-import Cookies from "js-cookie";
 import { GetByListQ } from "@/api/SaleInvoice";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 import SearchByDate from "@/components/Date/SearchByDate";
@@ -375,7 +281,7 @@ export default {
     };
   },
   created() {
-    this.getList();
+    //  this.getList();
   },
   methods: {
     getList() {
@@ -383,6 +289,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        this.listQuery.User = undefined
         localStorage.setItem("SaleInvoice_ListQuery", JSON.stringify(this.listQuery));
         this.listLoading = false;
       });

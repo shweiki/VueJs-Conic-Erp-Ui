@@ -1,125 +1,78 @@
 <template>
   <div>
-    <el-button
-      :disabled="Enable"
-      type="primary"
-      icon="el-icon-plus"
-      @click="Visibles = true"
-      >اشتراك</el-button
-    >
+    <el-button :disabled="Enable" type="primary" icon="el-icon-plus" @click="Visibles = true">اشتراك</el-button>
     <el-dialog style="margin-top: -13vh" title="تسجيل اشتراك" :visible.sync="Visibles">
       <el-form :model="tempForm" ref="dataForm">
-        <el-form-item
-          label="الفترة"
-          prop="Type"
-          :rules="[
-            {
-              required: true,
-              message: 'الرجاء اختيار الفترة',
-              trigger: 'blur',
-            },
-          ]"
-        >
+        <el-form-item label="الفترة" prop="Type" :rules="[
+          {
+            required: true,
+            message: 'الرجاء اختيار الفترة',
+            trigger: 'blur',
+          },
+        ]">
           <el-radio-group v-model="tempForm.Type" @change="calc">
             <el-radio label="Morning" border>Morning</el-radio>
             <el-radio label="FullDay" border>Full Day</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item
-          label="إشتراك"
-          prop="MembershipId"
-          :rules="[
-            {
-              required: true,
-              message: 'الرجاء اختيار نوع اشتراك',
-              trigger: 'blur',
-            },
-          ]"
-        >
-          <Select-Memberships
-            @Set="
-              (v) => {
-                Membership = v;
-                tempForm.MembershipId = v.Id;
-                calc();
-              }
-            "
-          />
+        <el-form-item label="إشتراك" prop="MembershipId" :rules="[
+          {
+            required: true,
+            message: 'الرجاء اختيار نوع اشتراك',
+            trigger: 'blur',
+          },
+        ]">
+          <Select-Memberships @Set="(v) => {
+            Membership = v;
+            tempForm.MembershipId = v.Id;
+            calc();
+          }
+            " />
         </el-form-item>
-        <el-form-item
-          label="تاريخ بدء"
-          prop="StartDate"
-          :rules="[
-            {
-              required: true,
-              message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur',
-            },
-          ]"
-        >
-          <Fake-Date
-            :Value="tempForm.StartDate"
-            @Set="
-              (v) => {
-                tempForm.StartDate = v;
-                calc();
-              }
-            "
-          />
+        <el-form-item label="تاريخ بدء" prop="StartDate" :rules="[
+          {
+            required: true,
+            message: 'لايمكن ترك التاريخ فارغ',
+            trigger: 'blur',
+          },
+        ]">
+          <Fake-Date :Value="tempForm.StartDate" @Set="(v) => {
+            tempForm.StartDate = v;
+            calc();
+          }
+            " />
         </el-form-item>
-        <el-form-item
-          label="تاريخ انتهاء"
-          prop="EndDate"
-          :rules="[
-            {
-              required: true,
-              message: 'لايمكن ترك التاريخ فارغ',
-              trigger: 'blur',
-            },
-          ]"
-        >
-          <Fake-Date
-            :Value="tempForm.EndDate"
-            @Set="
-              (v) => {
-                tempForm.EndDate = v;
-              }
-            "
-          />
+        <el-form-item label="تاريخ انتهاء" prop="EndDate" :rules="[
+          {
+            required: true,
+            message: 'لايمكن ترك التاريخ فارغ',
+            trigger: 'blur',
+          },
+        ]">
+          <Fake-Date :Value="tempForm.EndDate" @Set="(v) => {
+            tempForm.EndDate = v;
+          }
+            " />
         </el-form-item>
         <el-form-item label="خصم" prop="Discount">
-          <Select-Discount
-            :Price="Price"
-            @Set="
-              (v) => {
-                tempForm.Discount = v;
-                calc();
-              }
-            "
-          />
+          <Select-Discount :Price="Price" @Set="(v) => {
+            tempForm.Discount = v;
+            calc();
+          }
+            " />
         </el-form-item>
-        <el-form-item
-          label="سبب الخصم"
-          prop="DiscountDescription"
-          :rules="[
-            {
-              required: true,
-              message: 'لايمكن ترك الخصم فارغ',
-              trigger: 'blur',
-            },
-          ]"
-        >
-          <el-input
-            style="width: 220px"
-            v-model="tempForm.DiscountDescription"
-          ></el-input>
+        <el-form-item label="سبب الخصم" prop="DiscountDescription" :rules="[
+          {
+            required: true,
+            message: 'لايمكن ترك الخصم فارغ',
+            trigger: 'blur',
+          },
+        ]">
+          <el-input style="width: 220px" v-model="tempForm.DiscountDescription"></el-input>
         </el-form-item>
 
-        <el-form-item
-          :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
-          v-bind:label="$t('AddVendors.Description')"
-          prop="Description"
-        >
+        <el-form-item :rules="[{ required: true, message: 'لايمكن تركه فارغ', trigger: 'blur' }]"
+          v-bind:label="$t('AddVendors.Description')" prop="Description">
           <el-radio-group v-model="tempForm.Description">
             <el-radio label="تجديد اشتراك" border>تجديد اشتراك</el-radio>
             <el-radio label="مشترك جديد" border>مشترك جديد</el-radio>
@@ -132,21 +85,14 @@
         </el-form-item>
         <el-row type="flex">
           <el-col :span="24">
-            <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              v-bind:label="$t('AddVendors.EditorName')"
-            >
-              <Editors-User
-                :Value="tempForm.EditorName"
-                @Set="(v) => (tempForm.EditorName = v)"
-              />
+            <el-form-item prop="EditorName" :rules="[
+              {
+                required: true,
+                message: 'لايمكن ترك محرر السند فارغ',
+                trigger: 'blur',
+              },
+            ]" v-bind:label="$t('AddVendors.EditorName')">
+              <Editors-User :Value="tempForm.EditorName" @Set="(v) => (tempForm.EditorName = v)" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -160,10 +106,8 @@
       </div>
       <el-col :span="12">
         <span>{{ $t("Account.InCome") }}</span>
-        <Select-In-Come-Accounts
-          :InComeAccountId="$store.getters.settings.MembershipMovement.InComeAccountId"
-          @Set="(v) => (InComeAccountId = v.value)"
-        />
+        <Select-In-Come-Accounts :InComeAccountId="$store.getters.settings.MembershipMovement.InComeAccountId"
+          @Set="(v) => (InComeAccountId = v.value)" />
       </el-col>
     </el-dialog>
   </div>
@@ -187,7 +131,7 @@ export default {
     EditorsUser,
     SelectMemberships,
     SelectDiscount,
-    SelectInComeAccounts,
+    SelectInComeAccounts
   },
   props: {
     AccountId: {
@@ -377,7 +321,7 @@ export default {
             IsPrime: true,
             InventoryMovements: [],
           };
-          for (var i = 0; i < NumberDays / 30; i++) {
+          for (var i = 0; i < Math.floor(NumberDays / 30); i++) {
             SaleInvoice.InventoryMovements.push({
               Id: undefined,
               ItemsId: Service.ItemId,

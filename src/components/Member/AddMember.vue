@@ -1,24 +1,9 @@
 <template>
   <div>
-    <el-button
-      type="warning"
-      icon="el-icon-circle-plus"
-      @click="Visible = true"
-    ></el-button>
+    <el-button type="warning" icon="el-icon-circle-plus" @click="Visible = true"></el-button>
 
-    <el-dialog
-      style="margin-top: -13vh"
-      title="مشترك جديد"
-      :visible.sync="Visible"
-      @opened="$refs['MemberName'].focus()"
-    >
-      <el-form
-        :model="tempForm"
-        :rules="rulesForm"
-        ref="dataForm"
-        class="demo-form-inline"
-        label-position="top"
-      >
+    <el-dialog style="margin-top: -13vh" title="مشترك جديد" :visible.sync="Visible" @opened="$refs['MemberName'].focus()">
+      <el-form :model="tempForm" :rules="rulesForm" ref="dataForm" class="demo-form-inline" label-position="top">
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item v-bind:label="$t('CashDrawer.Name')" prop="Name">
@@ -28,39 +13,18 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="24">
-            <el-form-item
-              label="تاريخ ميلاد"
-              prop="DateofBirth"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك التاريخ فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-            >
-              <Fake-Date type="date"
-                :Value="tempForm.DateofBirth"
-                @Set="
-                  (v) => {
-                    tempForm.DateofBirth = v;
-                  }
-                "
-              />
-              <!--
-                <el-date-picker
-                v-model="tempForm.DateofBirth"
-                type="date"
-                placeholder="تاريخ ميلاد"
-                :format="$store.getters.settings.DateTimeFormat.replace(' HH:mm', '')"
-              ></el-date-picker>
+            <el-form-item label="تاريخ ميلاد" prop="DateofBirth" :rules="[
+              {
+                required: true,
+                message: 'لايمكن ترك التاريخ فارغ',
+                trigger: 'blur',
+              },
+            ]">
+              <el-date-picker v-model="tempForm.DateofBirth" type="date" placeholder="تاريخ ميلاد"
+                :format="$store.getters.settings.DateTimeFormat.replace(' HH:mm', '')"></el-date-picker>
 
-              <birth-datepicker
-                style="width :100%"
-                attachment="bottom right"
-                delimiter="/"
-                v-model="tempForm.DateofBirth"
-              /> -->
+             <!-- <birth-datepicker style="width :100%" attachment="bottom right" delimiter="/"
+                v-model="tempForm.DateofBirth" />-->
               <el-tag type="success" effect="dark">
                 العمر
                 {{ getAge(tempForm.DateofBirth) }}
@@ -70,88 +34,56 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="12">
-            <el-form-item
-              label="الرقم الوطني"
-              prop="Ssn"
-              v-bind:rules="
-                $store.getters.settings.Member.SsnIsRequired == true
-                  ? [
-                      {
-                        required: true,
-                        message: 'لايمكن ترك الرقم الوطني فارغ',
-                        trigger: 'blur',
-                      },
-                    ]
-                  : []
-              "
-            >
-              <el-input
-                type="text"
-                v-model="tempForm.Ssn"
-                placeholder="الرقم الوطني"
-              ></el-input> </el-form-item
-          ></el-col>
-          <el-col :span="12">
-            <el-form-item
-              v-bind:label="$t('AddVendors.Email')"
-              prop="Email"
-              :rules="[
+            <el-form-item label="الرقم الوطني" prop="Ssn" v-bind:rules="$store.getters.settings.Member.SsnIsRequired == true
+              ? [
                 {
-                  required: false,
-                  message: 'Please input email address',
+                  required: true,
+                  message: 'لايمكن ترك الرقم الوطني فارغ',
                   trigger: 'blur',
                 },
-                {
-                  type: 'email',
-                  message: 'Please input correct email address',
-                  trigger: ['blur', 'change'],
-                },
-              ]"
-            >
-              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item
-          ></el-col>
+              ]
+              : []
+              ">
+              <el-input type="text" v-model="tempForm.Ssn" placeholder="الرقم الوطني"></el-input> </el-form-item></el-col>
+          <el-col :span="12">
+            <el-form-item v-bind:label="$t('AddVendors.Email')" prop="Email" :rules="[
+              {
+                required: false,
+                message: 'Please input email address',
+                trigger: 'blur',
+              },
+              {
+                type: 'email',
+                message: 'Please input correct email address',
+                trigger: ['blur', 'change'],
+              },
+            ]">
+              <el-input type="text" v-model="tempForm.Email"></el-input> </el-form-item></el-col>
         </el-row>
 
         <el-row type="flex">
           <el-col :span="12">
-            <el-form-item
-              v-bind:label="$t('AddVendors.PhoneNumber1')"
-              prop="PhoneNumber1"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك الرقم الهاتف فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-            >
-              <VuePhoneNumberInput
-                :translations="{
-                  countrySelectorLabel: 'رمز البلد',
-                  countrySelectorError: 'تاكد من رقم',
-                  phoneNumberLabel: 'رقم الهاتف',
-                }"
-                default-country-code="JO"
-                v-model="tempForm.PhoneNumber1"
-                :ignored-countries="['LI']"
-              /> </el-form-item
-          ></el-col>
+            <el-form-item v-bind:label="$t('AddVendors.PhoneNumber1')" prop="PhoneNumber1" :rules="[
+              {
+                required: true,
+                message: 'لايمكن ترك الرقم الهاتف فارغ',
+                trigger: 'blur',
+              },
+            ]">
+              <VuePhoneNumberInput :translations="{
+                countrySelectorLabel: 'رمز البلد',
+                countrySelectorError: 'تاكد من رقم',
+                phoneNumberLabel: 'رقم الهاتف',
+              }" default-country-code="JO" v-model="tempForm.PhoneNumber1" :ignored-countries="['LI']" />
+            </el-form-item></el-col>
           <el-col :span="12">
-            <el-form-item
-              v-bind:label="$t('AddVendors.PhoneNumber2')"
-              prop="PhoneNumber2"
-            >
-              <VuePhoneNumberInput
-                :translations="{
-                  countrySelectorLabel: 'رمز البلد',
-                  countrySelectorError: 'تاكد من رقم',
-                  phoneNumberLabel: 'رقم الهاتف',
-                }"
-                default-country-code="JO"
-                v-model="tempForm.PhoneNumber2"
-                :ignored-countries="['LI']"
-              /> </el-form-item
-          ></el-col>
+            <el-form-item v-bind:label="$t('AddVendors.PhoneNumber2')" prop="PhoneNumber2">
+              <VuePhoneNumberInput :translations="{
+                countrySelectorLabel: 'رمز البلد',
+                countrySelectorError: 'تاكد من رقم',
+                phoneNumberLabel: 'رقم الهاتف',
+              }" default-country-code="JO" v-model="tempForm.PhoneNumber2" :ignored-countries="['LI']" />
+            </el-form-item></el-col>
         </el-row>
 
         <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
@@ -175,11 +107,14 @@ import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
 import { SendSMS } from "@/api/Sms";
-import FakeDate from "@/components/Date/FakeDate.vue";
-
+import {
+  LocalDateTime,
+  DateTimeFormatter,
+  Instant
+} from '@js-joda/core'
 export default {
   name: "Member",
-  components: { FakeDate, VuePhoneNumberInput, birthDatepicker },
+  components: { VuePhoneNumberInput, birthDatepicker },
   data() {
     return {
       Visible: false,
@@ -244,7 +179,9 @@ export default {
             );
           }
           if (!IsExist) {
-            this.tempForm.DateofBirth = new Date(this.tempForm.DateofBirth);
+            this.tempForm.DateofBirth = LocalDateTime.ofInstant(Instant.ofEpochMilli(this.tempForm.DateofBirth)).format(
+              DateTimeFormatter.ofPattern('yyyy-MM-dd')
+            )
             Create(this.tempForm)
               .then((response) => {
                 this.Visible = false;

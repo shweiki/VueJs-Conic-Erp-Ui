@@ -2,71 +2,43 @@
   <div>
     <el-button icon="el-icon-edit" @click="Visibles = true"></el-button>
 
-    <el-dialog
-      style="margin-top: -13vh; text-align: center"
-      title="تسجيل تجميد"
-      @opened="getdata"
-      :visible.sync="Visibles"
-    >
-      <el-form
-        :model="tempForm"
-        ref="dataForm"
-        label-position="top"
-        class="demo-form-inline"
-      >
+    <el-dialog style="margin-top: -13vh; text-align: center" title="تسجيل تجميد" @opened="getdata"
+      :visible.sync="Visibles">
+      <el-form :model="tempForm" ref="dataForm" label-position="top" class="demo-form-inline">
         عدد الايام المسموحة لتجميد : من {{ MinFreezeLimit }} الى {{ MaxFreezeLimit }} ايام
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item prop="FreezeBetween" label="الفترة">
-              <el-date-picker
-                v-model="FreezeBetween"
-                format="yyyy-MM-dd"
-                type="daterange"
-                align="left"
-                unlink-panels
-                v-bind:range-separator="$t('Sales.until')"
-                v-bind:start-placeholder="$t('Sales.From')"
-                v-bind:end-placeholder="$t('Sales.To')"
-                :default-time="['00:00:00', '23:59:59']"
-                style="width: 100%"
-              ></el-date-picker>
+              <el-date-picker v-model="FreezeBetween" format="yyyy-MM-dd" type="daterange" align="left" unlink-panels
+                v-bind:range-separator="$t('Sales.until')" v-bind:start-placeholder="$t('Sales.From')"
+                v-bind:end-placeholder="$t('Sales.To')" :default-time="['00:00:00', '23:59:59']"
+                style="width: 100%"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="24">
-            <el-form-item
-              prop="Description"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك ملاحظات فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              v-bind:label="$t('AddVendors.Description')"
-            >
+            <el-form-item prop="Description" :rules="[
+              {
+                required: true,
+                message: 'لايمكن ترك ملاحظات فارغ',
+                trigger: 'blur',
+              },
+            ]" v-bind:label="$t('AddVendors.Description')">
               <el-input v-model="tempForm.Description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="24">
-            <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              v-bind:label="$t('AddVendors.EditorName')"
-            >
-              <Editors-User
-                :Value="tempForm.EditorName"
-                @Set="(v) => (tempForm.EditorName = v)"
-              />
+            <el-form-item prop="EditorName" :rules="[
+              {
+                required: true,
+                message: 'لايمكن ترك محرر السند فارغ',
+                trigger: 'blur',
+              },
+            ]" v-bind:label="$t('AddVendors.EditorName')">
+              <Editors-User :Value="tempForm.EditorName" @Set="(v) => (tempForm.EditorName = v)" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -77,7 +49,7 @@
               Math.round(
                 Math.abs(
                   (new Date(FreezeBetween[0]) - new Date(FreezeBetween[1])) /
-                    (24 * 60 * 60 * 1000)
+                  (24 * 60 * 60 * 1000)
                 )
               )
             }}
@@ -103,7 +75,11 @@
 <script>
 import { Edit, GetById } from "@/api/MembershipMovementOrder";
 import EditorsUser from "@/components/Gym/EditorsUser";
-
+import {
+  LocalDateTime,
+  DateTimeFormatter,
+  Instant
+} from '@js-joda/core'
 export default {
   components: { EditorsUser },
 
@@ -152,7 +128,7 @@ export default {
       this.Days = Math.round(
         Math.abs(
           (new Date(this.FreezeBetween[0]) - new Date(this.FreezeBetween[1])) /
-            (24 * 60 * 60 * 1000)
+          (24 * 60 * 60 * 1000)
         )
       );
       console.log(this.Days);
@@ -160,8 +136,10 @@ export default {
         this.$refs["dataForm"].validate((valid) => {
           if (valid) {
             this.EnableSave = true;
-            this.tempForm.StartDate = this.FreezeBetween[0];
-            this.tempForm.EndDate = this.FreezeBetween[1];
+            this.tempForm.StartDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[0])).format(
+              DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm'))
+            this.tempForm.EndDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[1])).format(
+              DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm'))
             Edit(this.tempForm)
               .then((response) => {
                 if (response) {

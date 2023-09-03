@@ -251,6 +251,7 @@ export default {
       GetByListQ(this.listQuery).then((response) => {
         this.list = response.items;
         this.Totals = response.Totals;
+        this.listQuery.User = undefined
         localStorage.setItem("Payment_ListQuery", JSON.stringify(this.listQuery));
         this.listLoading = false;
       });

@@ -1,18 +1,6 @@
 <template>
-  <el-select
-    v-model="value"
-    placeholder="Users"
-    clearable
-    class="filter-item"
-    style="width: 130px"
-    @change="SetVal"
-  >
-    <el-option
-      v-for="item in options"
-      :key="item.key"
-      :label="item.UserName"
-      :value="item.UserName"
-    />
+  <el-select v-model="value" placeholder="Users" clearable class="filter-item" style="width: 130px" @change="SetVal">
+    <el-option v-for="item in options" :key="item.key" :label="item.User.UserName" :value="item.User.UserName" />
   </el-select>
 </template>
 <script>
@@ -40,7 +28,7 @@ export default {
   methods: {
     SetVal(val) {
       if (val && val != "" && val != null) {
-        this.$emit("Set", this.options.find((obj) => obj.UserName == val).UserName);
+        this.$emit("Set", this.options.find((obj) => obj.User.UserName === val).User.UserName);
       } else {
         this.$emit("Set", null);
       }
