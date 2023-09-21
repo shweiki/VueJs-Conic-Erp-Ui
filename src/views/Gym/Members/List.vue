@@ -2,7 +2,6 @@
   <div class="app-container">
     <el-card class="box-card">
       <div class="filter-container">
-
         <el-button @click="CheckBlackListActionLogMembers">{{
           $t("Members.CheckBlackList")
         }}</el-button>
@@ -249,12 +248,12 @@
 </template>
 
 <script>
-import { GetByListQ,    CheckBlackListActionLogMembers } from "@/api/Member";
+import { GetByListQ, CheckBlackListActionLogMembers } from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
 import permission from "@/directive/permission/index.js";
-import lastLog from "@/components/Gym/LastLog.vue";
+import lastLog from "@/views/Gym/components/LastLog";
 
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
@@ -302,7 +301,7 @@ export default {
     // this.getList();
   },
   methods: {
-     CheckBlackListActionLogMembers,
+    CheckBlackListActionLogMembers,
     getList() {
       this.listLoading = true;
 

@@ -53,7 +53,7 @@ import permission from "@/directive/permission/index.js";
 import MemberSearch from "@/components/Member/MemberSearch.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
-import LastLog from "@/components/Gym/LastLog.vue";
+import LastLog from "@/views/Gym/components/LastLog.vue";
 import { GetActiveMember } from "@/api/Member";
 
 //import { GetActiveMember } from "@/api/Member";

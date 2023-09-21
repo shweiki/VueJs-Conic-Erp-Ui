@@ -7,14 +7,26 @@
 
         <span>جميع الاجهزة</span>
       </div>
-      <el-table v-loading="loading" :data="
-        tableData.filter(
-          (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
-        )
-      " fit border max-height="900" highlight-current-row style="width: 100%">
+      <el-table
+        v-loading="loading"
+        :data="
+          tableData.filter(
+            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
+          )
+        "
+        fit
+        border
+        max-height="900"
+        highlight-current-row
+        style="width: 100%"
+      >
         <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-refresh"
+              @click="getdata()"
+            ></el-button>
           </template>
         </el-table-column>
         <el-table-column prop="Name" align="center">
@@ -22,10 +34,22 @@
             <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
-        <el-table-column prop="Ip" :label="$t('Classification.Ip')" align="center"></el-table-column>
-        <el-table-column prop="Port" :label="$t('Classification.Port')" align="center"></el-table-column>
-        <el-table-column v-bind:label="$t('Classification.Notes')" prop="Description" width="220"
-          align="center"></el-table-column>
+        <el-table-column
+          prop="Ip"
+          :label="$t('Classification.Ip')"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="Port"
+          :label="$t('Classification.Port')"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          v-bind:label="$t('Classification.Notes')"
+          prop="Description"
+          width="220"
+          align="center"
+        ></el-table-column>
         <el-table-column :label="$t('Classification.Edit')" align="center">
           <template slot-scope="scope">
             <edit-device :DeviceId="scope.row.Id" />
@@ -33,24 +57,46 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot-scope="scope">
-            <el-button @click="GetAllLog(scope.row.Id, 'Member')" :size="$store.getters.size" type="primary">
-              سحب جميع سجلات المشتركين
+            <el-button
+              @click="GetLogData(scope.row.Ip)"
+              :size="$store.getters.size"
+              type="primary"
+            >
+              سحب جميع سجلات
             </el-button>
-            <el-button @click="GetAllLog(scope.row.Id, 'Employee')" :size="$store.getters.size" type="primary">
-              سحب جميع سجلات الموظفين
+
+            <el-button
+              @click="EnrollAllUser(scope.row.Ip)"
+              :size="$store.getters.size"
+              type="warning"
+            >
+              ارسال جميع معلومات
             </el-button>
-            <el-button @click="SetAll(scope.row.Id ,'Member')" :size="$store.getters.size" type="warning">
-              ارسال جميع معلومات المشتركين</el-button>
-            <el-button @click="SetAll(scope.row.Id, 'Employee')" :size="$store.getters.size" type="warning">
-              ارسال جميع معلومات الموظفين</el-button>
-            <el-button @click="ClearUserLog(scope.row.Id)" :size="$store.getters.size" type="danger">مسح سجلات
-              المشتركين</el-button>
-            <el-button @click="ClearAdministrators(scope.row.Id)" :size="$store.getters.size" type="success">Clear
-              Administrators</el-button>
-            <el-button @click="TurnOff(scope.row.Id)" :size="$store.getters.size" type="danger">إيقاف تشغيل
-              الجهاز</el-button>
-            <el-button @click="RestartDevice(scope.row.Id)" :size="$store.getters.size" type="success">اعادة تشغيل
-              الجهاز</el-button>
+
+            <el-button
+              @click="ClearLog(scope.row.Ip)"
+              :size="$store.getters.size"
+              type="danger"
+              >مسح سجلات المشتركين</el-button
+            >
+            <el-button
+              @click="ClearAdministrators(scope.row.Ip)"
+              :size="$store.getters.size"
+              type="success"
+              >Clear Administrators</el-button
+            >
+            <el-button
+              @click="TurnOffDevice(scope.row.Ip)"
+              :size="$store.getters.size"
+              type="danger"
+              >إيقاف تشغيل الجهاز</el-button
+            >
+            <el-button
+              @click="RestartDevice(scope.row.Ip)"
+              :size="$store.getters.size"
+              type="success"
+              >اعادة تشغيل الجهاز</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -59,23 +105,18 @@
 </template>
 
 <script>
-import {
-  GetDevice,
-  GetAllLog,
-  SetAll,
-  ClearUserLog,
-  ClearAdministrators,
-  RestartDevice,
-  TurnOff,
-} from "@/api/Device";
+import { GetDevice } from "@/api/Device";
 import AddDevice from "@/components/Device/AddDevice.vue";
 import EditDevice from "@/components/Device/EditDevice.vue";
+import { connection } from "@/utils/signalR";
+import { getToken } from "@/utils/auth";
 
 export default {
   name: "Device",
   components: { AddDevice, EditDevice },
   data() {
     return {
+      signalRConnection: null,
       tableData: [],
       loading: true,
       search: "",
@@ -84,6 +125,7 @@ export default {
   },
   created() {
     this.getdata();
+    this.signalRConnection = connection();
   },
   methods: {
     getdata() {
@@ -101,93 +143,69 @@ export default {
           console.log(error);
         });
     },
-    SetAll(id, TableName) {
-      SetAll({ DeviceId: id, TableName: TableName })
-        .then((response) => {
-          // handle success
-          this.response = response;
-
-          console.log(response);
-        })
-        .catch((error) => {
-          // handle error
-          this.response = error;
-
-          console.log(error);
-        });
-    }, 
-    GetAllLog(id, TableName) {
-      GetAllLog({ DeviceId: id, TableName: TableName })
-        .then((response) => {
-          // handle success
-          this.response = response;
-
-          console.log(response);
-        })
-        .catch((error) => {
-          // handle error
-          this.response = error;
-
-          console.log(error);
-        });
+    async EnrollAllUser(Ip) {
+      this.loading = true;
+      try {
+        await this.signalRConnection.invoke(
+          "EnrollServerUsers",
+          Ip,
+          getToken().replace("Bearer ", "")
+        );
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.loading = false;
+      }
     },
-    ClearUserLog(id) {
-      ClearUserLog({ DeviceId: id })
-        .then((response) => {
-          // handle success
-          this.response = response;
-
-          console.log(response);
-        })
-        .catch((error) => {
-          // handle error
-          this.response = error;
-
-          console.log(error);
-        });
+    async GetLogData(Ip) {
+      this.loading = true;
+      try {
+        await this.signalRConnection.invoke("GetLogData", Ip);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.loading = false;
+      }
     },
-    ClearAdministrators(id) {
-      ClearAdministrators({ DeviceId: id })
-        .then((response) => {
-          // handle success
-          this.response = response;
-
-          console.log(response);
-        })
-        .catch((error) => {
-          // handle error
-          this.response = error;
-
-          console.log(error);
-        });
+    async ClearLog(Ip) {
+      this.loading = true;
+      try {
+        await this.signalRConnection.invoke("ClearLog", Ip);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.loading = false;
+      }
     },
-    RestartDevice(id) {
-      RestartDevice({ DeviceId: id })
-        .then((response) => {
-          // handle success
-          this.response = response;
-          console.log(response);
-        })
-        .catch((error) => {
-          // handle error
-          this.response = error;
-
-          console.log(error);
-        });
+    async ClearAdministrators(Ip) {
+      this.loading = true;
+      try {
+        await this.signalRConnection.invoke("ClearAdministrators", Ip);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.loading = false;
+      }
     },
-    TurnOff(id) {
-      TurnOff({ DeviceId: id })
-        .then((response) => {
-          // handle success
-          this.response = response;
-          console.log(response);
-        })
-        .catch((error) => {
-          // handle error
-          this.response = error;
-
-          console.log(error);
-        });
+    async RestartDevice(Ip) {
+      this.loading = true;
+      try {
+        await this.signalRConnection.invoke("RestartDevice", Ip);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async TurnOffDevice(Ip) {
+      this.loading = true;
+      try {
+        await this.signalRConnection.invoke("TurnOffDevice", Ip);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.loading = false;
+      }
     },
   },
 };

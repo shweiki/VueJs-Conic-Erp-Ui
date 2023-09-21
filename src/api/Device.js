@@ -22,21 +22,6 @@ export function FeelDevice(query) {
   })
 }
 
-export function StartEnrollUser(query) {
-  return request({
-    url: '/Device/StartEnrollUser',
-    method: 'get',
-    params: query
-  })
-}
-export function SetUser(query) {
-  return request({
-    url: '/Device/SetUser',
-    method: 'get',
-    params: query
-  })
-}
-
 export function GetById(query) {
   return request({
     url: '/Device/GetById',
@@ -59,47 +44,6 @@ export function Edit(data) {
     data: qs.stringify(data)
   })
 }
-export function SetAll(query) {
-  return request({
-    url: '/Device/SetAll',
-    method: 'get',
-    params: query
-  })
-}
-
-export function GetAllLog(query) {
-  return request({
-    url: '/Device/GetAllLog',
-    method: 'get',
-    params: query
-  })
-} export function ClearUserLog(query) {
-  return request({
-    url: '/Device/ClearUserLog',
-    method: 'get',
-    params: query
-  })
-} export function RestartDevice(query) {
-  return request({
-    url: '/Device/RestartDevice',
-    method: 'get',
-    params: query
-  })
-} export function TurnOff(query) {
-  return request({
-    url: '/Device/TurnOff',
-    method: 'get',
-    params: query
-  })
-}
-export function ClearAdministrators(query) {
-  return request({
-    url: '/Device/ClearAdministrators',
-    method: 'get',
-    params: query
-  })
-}
-
 export function OpenCashDrawer(query) {
   return request({
     url: '/Device/OpenCashDrawer',

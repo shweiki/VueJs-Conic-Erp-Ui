@@ -3,27 +3,21 @@
     <el-button-group v-for="item in options" :key="item.Id">
       <el-button
         :loading="loading"
-        @click="SetOnDevice(item.Id, item.Name)"
+        @click="EnrollUserOnDevice(item.Ip)"
         type="info"
         icon="el-icon-arrow-left"
         >تحديث البيانات الى{{ item.Name }}</el-button
       >
       <el-button
         :loading="loading"
-        @click="StartEnrollUserOnDevice(item.Id, item.Name)"
-        type="primary"
-        icon="el-icon-arrow-right"
-        >انشاء بصمة وجه {{ item.Name }}</el-button
-      ><el-button
-        :loading="loading"
-        @click="ConnectDevice(item.Id, item.Name)"
+        @click="ConnectDevice(item.Ip)"
         :size="$store.getters.size"
         type="warning"
         >اتصال</el-button
       >
       <el-button
         :loading="loading"
-        @click="RestartDevice(item.Id, item.Name)"
+        @click="RestartDevice(item.Ip)"
         :size="$store.getters.size"
         type="success"
         >اعادة تشغيل الجهاز</el-button
@@ -34,13 +28,8 @@
   </el-popover>
 </template>
 <script>
-import {
-  GetDevice,
-  SetUser,
-  StartEnrollUser,
-  RestartDevice,
-  CheckDevice,
-} from "@/api/Device";
+import { connection } from "@/utils/signalR";
+import { GetDevice } from "@/api/Device";
 
 export default {
   props: ["ObjectId", "TableName", "Name"],
@@ -48,113 +37,45 @@ export default {
     return {
       loading: false,
       options: [],
+      signalRConnection: null,
     };
   },
   created() {
     GetDevice().then((response) => {
       this.options = response;
+      this.signalRConnection = connection();
     });
   },
   methods: {
-    SetOnDevice(DeviceId, Name) {
+    async EnrollUserOnDevice(Ip) {
       this.loading = true;
-      SetUser({
-        DeviceId: DeviceId,
-        UserId: this.ObjectId,
-        Name: this.Name,
-        TableName: this.TableName,
-      }).then((response) => {
-        if (response == "Device Is Not Connected") {
-          this.$notify({
-            title: "تم",
-            message: "الجهاز " + Name + " - غير متصل ) " + response + "( ",
-            type: "error",
-            duration: 3000,
-            position: "top-right",
-          });
-        } else {
-          this.$notify({
-            title: "تم",
-            message: "تم ارسال البيانات لاجهاز " + Name + "  " + response + " ",
-            type: "success",
-            duration: 3000,
-            position: "top-right",
-          });
-        }
+      try {
+        await this.signalRConnection.invoke("EnrollUser", Ip, this.ObjectId, this.Name);
+      } catch (err) {
+        console.error(err);
+      } finally {
         this.loading = false;
-      });
+      }
     },
-    StartEnrollUserOnDevice(DeviceId, Name) {
+    async ConnectDevice(Ip) {
       this.loading = true;
-      StartEnrollUser({
-        DeviceId: DeviceId,
-        UserId: this.ObjectId,
-      }).then((response) => {
-        if (response == "Device Is Not Connected") {
-          this.$notify({
-            title: "تم",
-            message: "الجهاز " + Name + " - غير متصل ) " + response + "( ",
-            type: "error",
-            duration: 3000,
-            position: "top-right",
-          });
-        } else {
-          this.$notify({
-            title: "تم",
-            message: "بدء " + Name + "  " + response + " ",
-            type: "success",
-            duration: 3000,
-            position: "top-right",
-          });
-        }
+      try {
+        await this.signalRConnection.invoke("ConnectDevice", Ip);
+      } catch (err) {
+        console.error(err);
+      } finally {
         this.loading = false;
-      });
+      }
     },
-    ConnectDevice(id, Name) {
+    async RestartDevice(Ip) {
       this.loading = true;
-      CheckDevice({ Id: id }).then((response) => {
-        if (!response) {
-          this.$notify({
-            title: "تم",
-            message: "الجهاز " + Name + " - غير متصل ) " + response + "( ",
-            type: "error",
-            duration: 3000,
-            position: "top-right",
-          });
-        } else {
-          this.$notify({
-            title: "تم",
-            message: "تم إتصال " + Name + "  " + response + " ",
-            type: "success",
-            duration: 3000,
-            position: "top-right",
-          });
-        }
+      try {
+        await this.signalRConnection.invoke("RestartDevice", Ip);
+      } catch (err) {
+        console.error(err);
+      } finally {
         this.loading = false;
-      });
-    },
-    RestartDevice(id, Name) {
-      this.loading = true;
-      RestartDevice({ DeviceId: id }).then((response) => {
-        if (response == "Device Is Not Connected") {
-          this.$notify({
-            title: "تم",
-            message: "الجهاز " + Name + " - غير متصل ) " + response + "( ",
-            type: "error",
-            duration: 3000,
-            position: "top-right",
-          });
-        } else {
-          this.$notify({
-            title: "تم",
-            message: "اعادة تشغيل  " + Name + "  " + response + " ",
-            type: "success",
-            duration: 3000,
-            position: "top-right",
-          });
-        }
-        this.loading = false;
-      });
+      }
     },
   },
 };

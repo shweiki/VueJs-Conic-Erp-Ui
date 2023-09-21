@@ -67,8 +67,8 @@
                   >({{ Log.User.ActiveMemberShip.NumberClass }}\{{
                     Log.User.ActiveMemberShip.NumberClass -
                     Log.User.ActiveMemberShip.VisitsUsed
-                  }})</el-tag
-                >
+                  }})
+                </el-tag>
               </el-col>
               <el-col v-if="Log.User.ActiveMemberShip != null" :span="3">
                 <el-tag
@@ -98,12 +98,14 @@ import { GetByStatus } from "@/api/DeviceLog";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
 import MemberSearch from "@/components/Member/MemberSearch.vue";
+import { connection } from "@/utils/signalR";
 
 export default {
   name: "MemberLog",
   components: { StatusTag, AddDeviceLog, MemberSearch },
   data() {
     return {
+      signalRConnection: null,
       loading: false,
       MembersLogs: [],
       reverse: false,
@@ -126,7 +128,12 @@ export default {
     },
   },
   created() {
-    // this.getdata();
+    this.signalRConnection = connection();
+
+    this.signalRConnection.on("SendEventLog", (log) => {
+      // console.log("SendEventLog", JSON.parse(log));
+      this.MembersLogs.unshift(JSON.parse(log));
+    });
   },
   methods: {
     getdata() {

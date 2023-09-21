@@ -252,7 +252,7 @@ import PanThumb from "@/components/PanThumb/index.vue";
 import WebCam from "@/components/WebCam";
 import ImageCropper from "@/components/ImageCropper";
 
-import LastLog from "@/components/Gym/LastLog.vue";
+import LastLog from "@/views/Gym/components/LastLog.vue";
 
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";

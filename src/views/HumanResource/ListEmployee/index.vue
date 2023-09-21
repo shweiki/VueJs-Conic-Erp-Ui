@@ -41,7 +41,7 @@ import permission from "@/directive/permission/index.js";
 import EmployeeSearch from "./components/EmployeeSearch.vue";
 import PanThumb from "@/components/PanThumb";
 import WebCam from "@/components/WebCam";
-import LastLog from "@/components/Gym/LastLog.vue";
+import LastLog from "@/views/Gym/components/LastLog.vue";
 import { GetActiveEmployee } from "@/api/Employee";
 
 export default {

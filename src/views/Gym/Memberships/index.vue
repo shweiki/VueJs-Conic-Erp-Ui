@@ -334,7 +334,7 @@
 <script>
 import { GetMembership, Create, Edit } from "@/api/Membership";
 import StatusTag from "@/components/Oprationsys/StatusTag";
-import AddMembership from "@/components/Gym/AddMembership.vue";
+import AddMembership from "@/views/Gym/components/AddMembership.vue";
 import { ChangeObjStatus } from "@/api/Oprationsys";
 import NextOprations from "@/components/Oprationsys/NextOprations";
 

@@ -22,7 +22,7 @@ import AOS from 'aos'
 import 'aos/dist/aos.css' // You can also use <link> for styles
 // ..
 if (process.env.NODE_ENV !== "development") {
-  console.log = function () { };
+ // console.log = function () { };
 }
 store.dispatch('settings/GetSetting').then(res => { });
 

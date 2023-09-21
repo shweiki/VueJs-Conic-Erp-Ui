@@ -109,7 +109,7 @@
 
 <script>
 import { GetMembershipMovementByMembershipId } from "@/api/MembershipMovement";
-import SelectAllMemberships from "@/components/Gym/SelectAllMemberships.vue";
+import SelectAllMemberships from "@/views/Gym/components/SelectAllMemberships.vue";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import {
   LocalDateTime,

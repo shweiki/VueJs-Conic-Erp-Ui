@@ -195,7 +195,7 @@ import ImageCropper from "@/components/ImageCropper";
 import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
-import LastLog from "@/components/Gym/LastLog.vue";
+import LastLog from "@/views/Gym/components/LastLog.vue";
 
 export default {
   components: {

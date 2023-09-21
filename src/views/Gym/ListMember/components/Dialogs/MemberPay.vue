@@ -109,7 +109,7 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
 import FakeDate from "@/components/Date/FakeDate";
 //import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
 import RadioPaymentMethodFromSettings from "@/components/PaymentMethod/RadioPaymentMethodFromSettings.vue";
-import EditorsUser from "@/components/Gym/EditorsUser.vue";
+import EditorsUser from "@/views/Gym/components/EditorsUser.vue";
 import { SendSMS } from "@/api/Sms";
 
 export default {

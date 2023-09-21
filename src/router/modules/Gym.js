@@ -28,7 +28,7 @@ const GymRouter = {
     },
     {
       path: 'MembersLog',
-      component: () => import('@/components/Gym/MemberLog.vue'),
+      component: () => import('@/views/Gym/components/MemberLog.vue'),
       name: 'MembersLog',
       meta: {
         title: 'MembersLog', icon: 'cost'

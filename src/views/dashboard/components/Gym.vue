@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import MembershipmentOrdar from "@/components/Gym/MembershipmentOrdar.vue";
-import Receivables from "@/components/Gym/Receivables";
-import Payable from "@/components/Gym/Payable";
+import MembershipmentOrdar from "@/views/Gym/components/MembershipmentOrdar.vue";
+import Receivables from "@/views/Gym/components/Receivables";
+import Payable from "@/views/Gym/components/Payable";
 import LowOrderItem from "@/components/Item/LowOrderItem.vue";
 import EXPItem from "@/components/Item/EXPItem.vue";
 

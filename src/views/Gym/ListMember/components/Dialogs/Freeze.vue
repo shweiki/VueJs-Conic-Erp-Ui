@@ -72,7 +72,7 @@
 
 <script>
 import { Create } from "@/api/MembershipMovementOrder";
-import EditorsUser from "@/components/Gym/EditorsUser";
+import EditorsUser from "@/views/Gym/components/EditorsUser";
 import {
   LocalDateTime,
   DateTimeFormatter,

@@ -51,11 +51,9 @@
                 @focus="$event.target.select()"
               ></el-input-number>
             </el-form-item>
-          </el-col>      <el-col :span="4">
-            <el-form-item
-              v-bind:label="$t('Members.NumberClass')"
-              prop="NumberClass"
-            >
+          </el-col>
+          <el-col :span="4">
+            <el-form-item v-bind:label="$t('Members.NumberClass')" prop="NumberClass">
               <el-input-number
                 v-model="tempForm.NumberClass"
                 :step="1"
@@ -153,6 +151,7 @@
 
 <script>
 import { Create } from "@/api/Membership";
+
 export default {
   name: "Membership",
   data() {
@@ -196,7 +195,7 @@ export default {
         Id: undefined,
         Name: "",
         NumberDays: 30,
-        NumberClass:30,
+        NumberClass: 30,
         MorningPrice: 0.0,
         FullDayPrice: 0.0,
         Tax: 0.0,

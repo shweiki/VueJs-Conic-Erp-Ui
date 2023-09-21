@@ -163,9 +163,9 @@
 <script>
 import { Edit, GetMembershipMovementById } from "@/api/MembershipMovement";
 import FakeDate from "@/components/Date/FakeDate";
-import SelectAllMemberships from "@/components/Gym/SelectAllMemberships.vue";
+import SelectAllMemberships from "@/views/Gym/components/SelectAllMemberships.vue";
 import SelectDiscount from "@/components/Discount/SelectDiscount.vue";
-import EditorsUser from "@/components/Gym/EditorsUser";
+import EditorsUser from "@/views/Gym/components/EditorsUser";
 import { LocalDateTime, Instant } from "@js-joda/core";
 import { GetActiveService } from "@/api/Service";
 import { Create as CreateSaleInvoice } from "@/api/SaleInvoice";

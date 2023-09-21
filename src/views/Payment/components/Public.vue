@@ -158,7 +158,7 @@ import FakeDate from "@/components/Date/FakeDate";
 import { CreateEntry, EditEntryByFktable } from "@/api/EntryAccounting";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
-import EditorsUser from "@/components/Gym/EditorsUser";
+import EditorsUser from "@/views/Gym/components/EditorsUser";
 import SearchBy from "@/components/DynamicComponents/SearchBy.vue";
 
 export default {

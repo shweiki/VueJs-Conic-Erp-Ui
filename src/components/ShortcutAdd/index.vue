@@ -50,7 +50,7 @@ import AddItem from "@/components/Item/AddItem.vue";
 import AddMember from "@/components/Member/AddMember.vue";
 import AddVendor from "@/components/Vendor/AddVendor.vue";
 import AddInventory from "../Add/AddInventory.vue";
-import AddMembership from "../Gym/AddMembership.vue";
+import AddMembership from "../../views/Gym/components/AddMembership.vue";
 import AddCash from "../Add/AddCash.vue";
 import AddCheque from "../Add/AddCheque.vue";
 import AddMenuItem from "../Add/AddMenuItem.vue";

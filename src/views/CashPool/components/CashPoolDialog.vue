@@ -190,7 +190,7 @@
   </div>
 </template>
 <script>
-import EditorsUser from "@/components/Gym/EditorsUser.vue";
+import EditorsUser from "@/views/Gym/components/EditorsUser.vue";
 import Description from "@/components/Description/Input.vue";
 import permission from "@/directive/permission/index.js";
 

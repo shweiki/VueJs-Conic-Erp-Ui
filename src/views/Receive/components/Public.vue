@@ -156,7 +156,7 @@ import { CreateEntry, EditEntryByFktable } from "@/api/EntryAccounting";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
 import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
 import RadioReceiveMethod from "@/components/ReceiveMethod/RadioReceiveMethod.vue";
-import EditorsUser from "@/components/Gym/EditorsUser";
+import EditorsUser from "@/views/Gym/components/EditorsUser";
 
 export default {
   name: "NewReceive",
