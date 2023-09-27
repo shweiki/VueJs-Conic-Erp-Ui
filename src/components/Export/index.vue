@@ -6,7 +6,7 @@
 
     <el-button
       v-waves
-      :loading="downloadLoading"
+      :loading="loading"
       class="filter-item"
       type="primary"
       icon="el-icon-download"
@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       // list: null,
-      downloadLoading: false,
+      loading: false,
       filename: "",
       autoWidth: true,
       bookType: "xlsx",
@@ -50,7 +50,7 @@ export default {
   created() {},
   methods: {
     handleDownload() {
-      this.downloadLoading = true;
+      this.loading = true;
       import("@/report/Excel/Export2ExcelOrginal").then((excel) => {
         const tHeader = Object.keys(this.list[0]);
         const filterVal = Object.keys(this.list[0]);
@@ -67,7 +67,7 @@ export default {
           autoWidth: this.autoWidth,
           bookType: this.bookType,
         });
-        this.downloadLoading = false;
+        this.loading = false;
       });
     },
     formatJson(filterVal, jsonData) {

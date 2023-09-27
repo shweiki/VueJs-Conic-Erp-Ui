@@ -1,23 +1,21 @@
 <template>
   <div>
-    <el-card class="box-card">
-      <el-divider direction="vertical"></el-divider>
-      <span>{{$t("PanelGroup.Total")}}</span>
-      <el-divider direction="vertical"></el-divider>
-      <span>
-        {{
-          tableData
-            .reduce((a, b) => a + (b.TotalCredit - b.TotalDebit), 0)
-            .toFixed($store.getters.settings.ToFixed)
-        }}
-      </span>
-      <el-button
-        style="float: left"
-        icon="el-icon-printer"
-        type="success"
-        @click="print(tableData)"
-      ></el-button>
-    </el-card>
+    <el-divider direction="vertical"></el-divider>
+    <span>{{ $t("PanelGroup.Total") }}</span>
+    <el-divider direction="vertical"></el-divider>
+    <span>
+      {{
+        tableData
+          .reduce((a, b) => a + (b.TotalCredit - b.TotalDebit), 0)
+          .toFixed($store.getters.settings.ToFixed)
+      }}
+    </span>
+    <el-button
+      style="float: left"
+      icon="el-icon-printer"
+      type="success"
+      @click="print(tableData)"
+    ></el-button>
     <el-table
       v-loading="loading"
       :data="
@@ -95,14 +93,12 @@ import { GetReceivablesMember } from "@/api/Member";
 export default {
   data() {
     return {
-      loading: true,
+      loading: false,
       tableData: [],
       search: "",
     };
   },
-  created() {
-    this.getdata();
-  },
+  created() {},
   methods: {
     getdata() {
       this.loading = true;
@@ -111,11 +107,13 @@ export default {
           // handle success
           console.log(response);
           this.tableData = response;
-          this.loading = false;
         })
         .catch((error) => {
           // handle error
           console.log(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     print(data) {

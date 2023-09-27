@@ -2,10 +2,10 @@
   <el-card class="box-card">
     <el-tabs v-model="activeTab" tab-position="top">
       <el-tab-pane v-bind:label="$t('PanelGroup.Receivables')" name="Receivables">
-        <receivables />
+        <Receivables />
       </el-tab-pane>
       <el-tab-pane v-bind:label="$t('PanelGroup.Creditor')" name="Payable">
-        <payable />
+        <Payable />
       </el-tab-pane>
       <el-tab-pane v-bind:label="$t('PanelGroup.MinimumOrder')" name="LowOrderItem">
         <low-order-item />
@@ -13,7 +13,10 @@
       <el-tab-pane v-bind:label="$t('PanelGroup.expiredItems')" name="EXPItem">
         <EXPItem />
       </el-tab-pane>
-      <el-tab-pane label="طلبات التجميد و اضافي" name="MembershipmentOrdar">
+      <el-tab-pane
+        v-bind:label="$t('PanelGroup.MembershipmentOrdar')"
+        name="MembershipmentOrdar"
+      >
         <Membershipment-Ordar />
       </el-tab-pane>
     </el-tabs>

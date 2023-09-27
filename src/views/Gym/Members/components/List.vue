@@ -1,135 +1,138 @@
 <template>
   <div class="app-container">
-    <el-card class="box-card">
-      <div class="filter-container">
-        <el-button @click="CheckBlackListActionLogMembers">{{
-          $t("Members.CheckBlackList")
+    <div class="filter-container">
+      <el-popover placement="left" width="400">
+        <p>{{ $t("Members.SendBy") }}</p>
+        <div style="text-align: right; margin: 0">
+          <el-input
+            type="textarea"
+            v-model="SmsBody"
+            :rules="[
+              {
+                required: true,
+                message: 'لايمكن ترك الخصم فارغ',
+                trigger: 'blur',
+              },
+            ]"
+          ></el-input>
+          <el-button
+            icon="el-icon-circle-plus"
+            type="primary"
+            :size="$store.getters.size"
+            @click="SendSms()"
+            >SMS</el-button
+          >
+          <el-button
+            icon="el-icon-circle-plus"
+            type="primary"
+            :size="$store.getters.size"
+            @click="SendEmail()"
+            >{{ $t("Vendors.Email") }}</el-button
+          >
+        </div>
+        <el-button icon="el-icon-circle-plus" slot="reference">{{
+          $t("Members.SendSMS")
         }}</el-button>
-        <el-popover placement="left" width="400">
-          <p>{{ $t("Members.SendBy") }}</p>
-          <div style="text-align: right; margin: 0">
-            <el-input
-              type="textarea"
-              v-model="SmsBody"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك الخصم فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-            ></el-input>
-            <el-button
-              icon="el-icon-circle-plus"
-              type="primary"
-              :size="$store.getters.size"
-              @click="SendSms()"
-              >SMS</el-button
-            >
-            <el-button
-              icon="el-icon-circle-plus"
-              type="primary"
-              :size="$store.getters.size"
-              @click="SendEmail()"
-              >{{ $t("Vendors.Email") }}</el-button
-            >
-          </div>
-          <el-button icon="el-icon-circle-plus" slot="reference">{{
-            $t("Members.SendSMS")
-          }}</el-button>
-        </el-popover>
-        <el-col :span="1">
-          <Add-Member />
+      </el-popover>
+      <el-col :span="1">
+        <Add-Member />
+      </el-col>
+      <el-col :span="1">
+        <merge-two-members @Done="getList()" />
+      </el-col>
+      <el-row type="flex">
+        <el-col :span="12">
+          <el-input
+            clearable
+            v-model="listQuery.Any"
+            v-bind:placeholder="$t('Members.SearchAll')"
+            class="filter-item"
+            @keyup.enter.native="handleFilter"
+          />
         </el-col>
-        <el-col :span="1">
-          <merge-two-members @Done="getList()" />
-        </el-col>
-        <el-row type="flex">
-          <el-col :span="12">
-            <el-input
-              clearable
-              v-model="listQuery.Any"
-              v-bind:placeholder="$t('Members.SearchAll')"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
-          </el-col>
-          <el-col :span="3">
-            <Sort-Options
-              :Value="listQuery.Sort"
-              @Set="
-                (v) => {
-                  listQuery.Sort = v;
-                  handleFilter();
-                }
-              "
-            />
-          </el-col>
-          <el-col :span="6">
-            <Export :list="list" />
-            <el-col :span="1">
-              <drawer-print
-                Type="MemberList"
-                :Data="{
-                  Totals: Totals,
-                  Items: list,
-                }"
-              />
-            </el-col>
-            <el-button
-              v-waves
-              class="filter-item"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleFilter"
-            >
-              {{ $t("Members.Search") }}
-            </el-button>
-          </el-col>
-        </el-row>
-        <el-col :span="24">
-          <Radio-Oprations
-            :value="listQuery.Status"
-            TableName="Member"
+        <el-col :span="3">
+          <Sort-Options
+            :Value="listQuery.Sort"
             @Set="
               (v) => {
-                listQuery.Status = v;
+                listQuery.Sort = v;
                 handleFilter();
               }
             "
           />
         </el-col>
-      </div>
-
-      <el-row type="flex">
-        <el-col v-permission="['admin']" :span="24">
-          <el-divider direction="vertical"></el-divider>
-          <span>{{ $t("Vendors.PersonsCount") }}</span>
-          <el-divider direction="vertical"></el-divider>
-          <span>{{ Totals.Rows }}</span>
-          <el-divider direction="vertical"></el-divider>
-
-          <span>{{ $t("Vendors.TotalCredit") }}</span>
-          <el-divider direction="vertical"></el-divider>
-          <span
-            >{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+        <el-col :span="2"> <Export :list="list" /></el-col>
+        <el-col :span="2">
+          <el-button
+            v-waves
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            @click="handleFilter"
           >
-          <el-divider direction="vertical"></el-divider>
-
-          <span>{{ $t("Vendors.TotalDebit") }}</span>
-          <el-divider direction="vertical"></el-divider>
-          <span
-            >{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span
+            {{ $t("Members.Search") }}
+          </el-button>
+        </el-col>
+        <el-col :span="3">
+          <el-button
+            :loading="loadingExport"
+            v-waves
+            class="filter-item"
+            type="success"
+            icon="el-icon-download"
+            @click="exportDataOfMembersToExcel"
           >
-          <el-divider direction="vertical"></el-divider>
-
-          <span>{{ $t("MinOrd.Balance") }}</span>
-          <el-divider direction="vertical"></el-divider>
-          <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-          <el-divider direction="vertical"></el-divider>
+            {{ $t("Members.ExportDataOfMembers") }}
+          </el-button>
+        </el-col>
+        <el-col :span="1">
+          <drawer-print
+            Type="MemberList"
+            :Data="{
+              Totals: Totals,
+              Items: list,
+            }"
+          />
         </el-col>
       </el-row>
-    </el-card>
+      <el-col :span="24">
+        <Radio-Oprations
+          :value="listQuery.Status"
+          TableName="Member"
+          @Set="
+            (v) => {
+              listQuery.Status = v;
+              handleFilter();
+            }
+          "
+        />
+      </el-col>
+    </div>
+
+    <el-row type="flex">
+      <el-col v-permission="['admin']" :span="24">
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ $t("Vendors.PersonsCount") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Rows }}</span>
+        <el-divider direction="vertical"></el-divider>
+
+        <span>{{ $t("Vendors.TotalCredit") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.TotalCredit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+
+        <span>{{ $t("Vendors.TotalDebit") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.TotalDebit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+
+        <span>{{ $t("MinOrd.Balance") }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
+        <el-divider direction="vertical"></el-divider>
+      </el-col>
+    </el-row>
 
     <el-table
       v-loading="listLoading"
@@ -248,7 +251,7 @@
 </template>
 
 <script>
-import { GetByListQ, CheckBlackListActionLogMembers } from "@/api/Member";
+import { GetByListQ, ExportDataOfMembers } from "@/api/Member";
 import NextOprations from "@/components/Oprationsys/NextOprations.vue";
 import StatusTag from "@/components/Oprationsys/StatusTag";
 import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
@@ -259,12 +262,20 @@ import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import { SendMultiSMS } from "@/api/Sms";
 import AddMember from "@/components/Member/AddMember.vue";
-import MergeTwoMembers from "./components/MergeTwoMembers.vue";
+import MergeTwoMembers from "./MergeTwoMembers.vue";
 import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
 import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
+import {
+  LocalDateTime,
+  LocalDate,
+  LocalTime,
+  DateTimeFormatter,
+  Instant,
+} from "@js-joda/core";
 export default {
   props: ["DblClickRow"],
   components: {
@@ -286,6 +297,8 @@ export default {
       list: [],
       Totals: { Rows: 0, Totals: 0, TotalDebit: 0, TotalCredit: 0 },
       listLoading: false,
+      loadingExport: false,
+      zip: new JSZip(),
       Selection: [],
       SmsBody: "",
       listQuery: JSON.parse(localStorage.getItem("Member_ListQuery") || null) || {
@@ -301,16 +314,84 @@ export default {
     // this.getList();
   },
   methods: {
-    CheckBlackListActionLogMembers,
     getList() {
       this.listLoading = true;
 
-      GetByListQ(this.listQuery).then((response) => {
-        this.list = response.items;
-        this.Totals = response.Totals;
-        localStorage.setItem("Member_ListQuery", JSON.stringify(this.listQuery));
-        this.listLoading = false;
+      GetByListQ(this.listQuery)
+        .then((response) => {
+          this.list = response.items;
+          this.Totals = response.Totals;
+          localStorage.setItem("Member_ListQuery", JSON.stringify(this.listQuery));
+        })
+        .finally(() => {
+          this.listLoading = false;
+        });
+    },
+    exportDataOfMembersToExcel() {
+      this.loadingExport = true;
+
+      ExportDataOfMembers()
+        .then(async (response) => {
+          let today = LocalDateTime.ofInstant(Instant.ofEpochMilli(new Date())).format(
+            DateTimeFormatter.ofPattern("yyyy-MM-dd")
+          );
+
+          Promise.all([
+            this.ExporToExcel(response.Memebers, `Memebers ${today}`),
+            this.ExporToExcel(
+              response.MembershipMovements,
+              `Membership Movements ${today}`
+            ),
+            this.ExporToExcel(
+              response.MembershipMovementOrders,
+              `Membership Movement Orders ${today}`
+            ),
+          ]).then((values) => {
+            this.zip.generateAsync({ type: "blob" }).then((content) => {
+              // see FileSaver.js
+              saveAs(content, `Members Data ${today}.zip`);
+            });
+          });
+        })
+        .finally(() => {
+          this.loadingExport = false;
+        });
+    },
+    ExporToExcel(data, filename) {
+      return new Promise((resolve, reject) => {
+        import("@/report/Excel/Export2ExcelOrginal").then((excel) => {
+          const tHeader = Object.keys(data[0]);
+          const filterVal = Object.keys(data[0]);
+          const list = data;
+          let formatJson = this.formatJson(filterVal, list);
+          resolve(
+            this.zip.file(
+              `${filename}.xlsx`,
+              excel.export_json_to_blob({
+                header: tHeader,
+                data: formatJson,
+                filename: filename,
+                autoWidth: false,
+                bookType: "xlsx",
+              })
+            )
+          );
+        });
       });
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map((v) =>
+        filterVal.map((j) => {
+          if (j === "timestamp") {
+            return parseTime(v[j], "{y}-{m}-{d} {h}:{i}");
+          }
+          if (j === "FakeDate") {
+            return parseTime(v[j], "{y}-{m}-{d} {h}:{i}");
+          } else {
+            return v[j];
+          }
+        })
+      );
     },
     handleFilter() {
       this.listQuery.Page = 1;

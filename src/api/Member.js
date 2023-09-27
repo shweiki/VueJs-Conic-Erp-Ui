@@ -74,6 +74,14 @@ export function GetMemberById(query) {
 
   })
 }
+export function ExportDataOfMembers(query) {
+  return request({
+    url: '/Member/ExportDataOfMembers',
+    method: 'get',
+    params: query
+
+  })
+}
 
 
 export function Create(data) {
@@ -99,9 +107,4 @@ export function CheckMembers() {
     method: 'get',
   })
 }
-export function CheckBlackListActionLogMembers() {
-  return request({
-    url: '/Member/CheckBlackListActionLogMembers',
-    method: 'get',
-  })
-}
+

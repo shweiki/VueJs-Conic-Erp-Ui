@@ -1,18 +1,12 @@
 <template>
   <div>
-    <el-button
-      type="primary"
-      icon="el-icon-search"
-      @click="Open = true"
-    ></el-button>
+    <el-button type="primary" icon="el-icon-search" @click="Open = true"></el-button>
 
     <el-dialog
       width="80%"
       style="margin-top: -13vh"
       :show-close="false"
-      v-bind:title="
-        $t('Vendors.Search') + '/ هاتف / الرقم الوطني /  رقم العضوية'
-      "
+      v-bind:title="$t('Vendors.Search') + '/ هاتف / الرقم الوطني /  رقم العضوية'"
       :visible.sync="Open"
       @closed="focus"
     >
@@ -29,7 +23,7 @@
 </template>
 
 <script>
-import List from "@/views/Gym/Members/List.vue";
+import List from "@/views/Gym/Members/components/List.vue";
 export default {
   components: { List },
   data() {
