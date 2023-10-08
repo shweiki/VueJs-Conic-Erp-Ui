@@ -5,9 +5,9 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.NODE_ENV == "development" ? process.env.VUE_APP_BASE_API : window.location.protocol + "//" + window.location.host + "/",//'http://localhost:5000'
+  baseURL: process.env.NODE_ENV === 'development' ? process.env.VUE_APP_BASE_API : window.location.protocol + '//' + window.location.host + '/', // 'http://localhost:5000'
   // baseUrl || url = base url + request url
-  timeout: 100000,// request timeout
+  timeout: 100000 // request timeout
   // withCredentials: true,
 })
 // request interceptor
@@ -22,7 +22,6 @@ service.interceptors.request.use(
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
       config.headers['Authorization'] = getToken()
-
     }
     return config
   },
@@ -47,7 +46,6 @@ service.interceptors.response.use(
    */
   response => {
     const res = response
-
 
     if (res.status !== 200 && res.status !== 201) {
       Message({

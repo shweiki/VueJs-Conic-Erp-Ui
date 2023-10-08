@@ -1,5 +1,5 @@
-import request from '@/utils/RequestApi'
-import qs from 'qs';
+import request from '@/utils/requestApi'
+import qs from 'qs'
 
 export function Create(data) {
   return request({
@@ -54,14 +54,6 @@ export function GetMembershipMovementByMembershipId(query) {
 export function GetMembershipMovementByDateIn(query) {
   return request({
     url: '/MembershipMovement/GetMembershipMovementByDateIn',
-    method: 'get',
-    params: query
-  })
-}
-
-export function CheckEntryAccountForMembershipMovement(query) {
-  return request({
-    url: '/MembershipMovement/CheckEntryAccountForMembershipMovement',
     method: 'get',
     params: query
   })

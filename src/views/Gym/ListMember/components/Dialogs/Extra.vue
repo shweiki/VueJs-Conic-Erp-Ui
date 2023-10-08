@@ -5,17 +5,16 @@
       type="success"
       icon="el-icon-plus"
       @click="Visibles = true"
-      >ايام إضافية</el-button
-    >
+    >ايام إضافية</el-button>
     <el-dialog
       style="margin-top: -13vh"
       title="تسجيل ايام اضافية"
       :visible.sync="Visibles"
     >
       <el-form
+        ref="dataForm"
         label-position="top"
         :model="tempForm"
-        ref="dataForm"
         class="demo-form-inline"
       >
         <el-row type="flex">
@@ -26,7 +25,7 @@
                 :min="1"
                 :max="100"
                 @focus="$event.target.select()"
-              ></el-input-number>
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -41,9 +40,9 @@
                   trigger: 'blur',
                 },
               ]"
-              v-bind:label="$t('AddVendors.Description')"
+              :label="$t('AddVendors.Description')"
             >
-              <el-input v-model="tempForm.Description"></el-input>
+              <el-input v-model="tempForm.Description" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -58,10 +57,10 @@
                   trigger: 'blur',
                 },
               ]"
-              v-bind:label="$t('AddVendors.EditorName')"
+              :label="$t('AddVendors.EditorName')"
             >
               <Editors-User
-                :Value="tempForm.EditorName"
+                :value="tempForm.EditorName"
                 @Set="(v) => (tempForm.EditorName = v)"
               />
             </el-form-item>
@@ -79,65 +78,65 @@
 </template>
 
 <script>
-import { Create } from "@/api/MembershipMovementOrder";
-import EditorsUser from "@/views/Gym/components/EditorsUser";
+import { Create } from '@/api/MembershipMovementOrder'
+import EditorsUser from '@/views/Gym/components/EditorsUser'
 export default {
   components: { EditorsUser },
   props: {
     MemberShipMovementId: {
       type: Number,
-      required: true,
+      required: true
     },
-    EndDate: null,
+    EndDate: null
   },
   data() {
     return {
       EnableSave: false,
       tempForm: {
         Id: undefined,
-        Type: "Extra",
+        Type: 'Extra',
         StartDate: new Date(this.EndDate),
         EndDate: new Date(),
         Status: 0,
-        Description: "",
-        EditorName: "",
-        MemberShipMovementId: this.MemberShipMovementId,
+        Description: '',
+        EditorName: '',
+        MemberShipMovementId: this.MemberShipMovementId
       },
       Extra: 0,
-      Description: "",
-      Visibles: false,
-    };
+      Description: '',
+      Visibles: false
+    }
   },
   methods: {
     create() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.EnableSave = true;
+          this.EnableSave = true
           this.tempForm.EndDate = new Date(
             this.tempForm.EndDate.setTime(
               this.tempForm.StartDate.getTime() + 3600 * 1000 * 24 * this.Extra
             )
-          );
+          )
           Create(this.tempForm).then((response) => {
             if (response) {
-              this.Visibles = false;
-              this.EnableSave = false;
+              this.Visibles = false
+              this.EnableSave = false
               this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                duration: 2000,
-              });
+                title: 'تم ',
+                message: 'تم الإضافة بنجاح',
+                type: 'success',
+                duration: 2000
+              })
               this.$nextTick(() => {
                 this.$router.replace({
-                  path: "/redirect" + this.$route.fullPath,
-                });
-              });
+                  path: '/redirect' + this.$route.fullPath
+                })
+              })
             }
-          });
+          })
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>

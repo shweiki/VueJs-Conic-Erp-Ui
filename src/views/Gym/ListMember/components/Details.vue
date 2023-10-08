@@ -7,7 +7,7 @@
             <span>رقم العضوية</span>
           </el-col>
           <el-col :span="4">
-            <el-input disabled v-model="Member.Id"></el-input>
+            <el-input v-model="Member.Id" disabled />
             <!--
             <el-col :span="12">
               <el-input disabled v-model="Member.Tag"></el-input>
@@ -17,7 +17,7 @@
             <span>اسم المشترك</span>
           </el-col>
           <el-col :span="12">
-            <el-input disabled v-model="Member.Name"></el-input>
+            <el-input v-model="Member.Name" disabled />
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -25,7 +25,7 @@
             <span>العمر</span>
           </el-col>
           <el-col :span="8">
-            <el-input disabled v-model="Member.Age"></el-input>
+            <el-input v-model="Member.Age" disabled />
           </el-col>
           <el-col :span="4">
             <span>تاريخ الميلاد</span>
@@ -36,7 +36,7 @@
               type="date"
               format="yyyy-MM-dd"
               disabled
-            ></el-date-picker>
+            />
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -44,13 +44,13 @@
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
-            <last-log :UserId="Member.Id" TableName="Member" />
+            <last-log :user-id="Member.Id" table-name="Member" />
           </el-col>
           <el-col :span="4">
             <span>رقم الهاتف</span>
           </el-col>
           <el-col :span="8">
-            <el-input disabled v-model="Member.PhoneNumber1"></el-input>
+            <el-input v-model="Member.PhoneNumber1" disabled />
           </el-col>
         </el-row>
 
@@ -61,11 +61,11 @@
           <el-col :span="8">
             <el-date-picker
               v-if="Member.ActiveMemberShip"
+              v-model="Member.ActiveMemberShip.StartDate"
               format="yyyy-MM-dd"
               disabled
-              v-model="Member.ActiveMemberShip.StartDate"
               type="date"
-            ></el-date-picker>
+            />
           </el-col>
           <el-col :span="4">
             <span>تاريخ الانتهاء</span>
@@ -73,23 +73,23 @@
           <el-col :span="8">
             <el-date-picker
               v-if="Member.ActiveMemberShip"
+              v-model="Member.ActiveMemberShip.EndDate"
               format="yyyy-MM-dd"
               disabled
-              v-model="Member.ActiveMemberShip.EndDate"
               type="date"
-            ></el-date-picker>
+            />
           </el-col>
         </el-row>
         <el-row v-if="Member.ActiveMemberShip" type="flex">
-          <el-col :span="6"
-            ><span style="color: dodgerblue">الايام</span> \
+          <el-col
+            :span="6"
+          ><span style="color: dodgerblue">الايام</span> \
 
             <span style="color: orangered"> الحصص </span>
           </el-col>
           <el-col :span="3">
             (
-            <span style="color: dodgerblue">{{ Member.ActiveMemberShip.Remaining }}</span
-            >\ {{ Member.ActiveMemberShip.TotalDays }})
+            <span style="color: dodgerblue">{{ Member.ActiveMemberShip.Remaining }}</span>\ {{ Member.ActiveMemberShip.TotalDays }})
           </el-col>
           <el-col :span="3">
             (
@@ -98,16 +98,13 @@
                 Member.ActiveMemberShip.NumberClass - Member.ActiveMemberShip.VisitsUsed
               }}
             </span>
-            \{{ Member.ActiveMemberShip.NumberClass }})</el-col
-          >
+            \{{ Member.ActiveMemberShip.NumberClass }})</el-col>
           <el-col :span="4">
             <span>نوع الاشتراك</span>
           </el-col>
           <el-col :span="8">
-            <el-tag
-              >{{ Member.ActiveMemberShip.Type + " - "
-              }}{{ Member.ActiveMemberShip.Name }}</el-tag
-            >
+            <el-tag>{{ Member.ActiveMemberShip.Type + " - "
+            }}{{ Member.ActiveMemberShip.Name }}</el-tag>
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -125,7 +122,7 @@
             <span>حالة المشترك</span>
           </el-col>
           <el-col :span="8">
-            <Status-Tag :Status="Member.Status" TableName="Member" />
+            <Status-Tag :status="Member.Status" table-name="Member" />
           </el-col>
         </el-row>
       </el-col>
@@ -141,38 +138,44 @@
               type="primary"
               icon="el-icon-upload"
               @click="imagecropperShow = true"
-            ></el-button>
+            />
             <image-cropper
               v-show="imagecropperShow"
               :key="imagecropperKey"
               :width="150"
               :height="150"
               lang-type="ar"
-              TableName="Member"
-              :ObjectId="Member.Id"
+              table-name="Member"
+              :object-id="Member.Id"
               @close="close"
               @crop-upload-success="cropSuccess"
             />
-            <WebCam TableName="Member" :ObjectId="Member.Id" />
+            <WebCam table-name="Member" :object-id="Member.Id" />
           </pan-thumb>
 
           <el-col :span="24">
-            <el-tag v-if="Member.HaveFaceOnDevice == true" type="success"
-              >يوجد بصمة وجه</el-tag
-            >
-            <el-tag v-if="Member.HaveFaceOnDevice == false" type="danger"
-              >لا يوجد بصمة وجه</el-tag
-            >
+            <el-tag
+              v-if="Member.HaveFaceOnDevice == true"
+              type="success"
+            >يوجد بصمة وجه</el-tag>
+            <el-tag
+              v-if="Member.HaveFaceOnDevice == false"
+              type="danger"
+            >لا يوجد بصمة وجه</el-tag>
           </el-col>
-          <el-col :span="24" v-if="Member.Status != -2">
-            <el-button @click="dialogOprationVisible = true" type="danger" plain
-              >Black List</el-button
-            >
+          <el-col v-if="Member.Status != -2" :span="24">
+            <el-button
+              type="danger"
+              plain
+              @click="dialogOprationVisible = true"
+            >Black List</el-button>
           </el-col>
-          <el-col :span="24" v-if="checkPermission(['admin']) && Member.Status == -2">
-            <el-button @click="dialogOprationVisible2 = true" type="success" plain
-              >الغاء Black List</el-button
-            >
+          <el-col v-if="checkPermission(['admin']) && Member.Status == -2" :span="24">
+            <el-button
+              type="success"
+              plain
+              @click="dialogOprationVisible2 = true"
+            >الغاء Black List</el-button>
           </el-col>
         </div>
       </el-col>
@@ -201,13 +204,14 @@
             },
           ]"
         >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input v-model="tempOpration.Description" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="danger" @click="BlackList()"
-          >ارسال الى القائمة السوداء</el-button
-        >
+        <el-button
+          type="danger"
+          @click="BlackList()"
+        >ارسال الى القائمة السوداء</el-button>
       </div>
     </el-dialog>
     <el-dialog
@@ -234,30 +238,30 @@
             },
           ]"
         >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input v-model="tempOpration.Description" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="success" @click="RemoveBlackList()">فك الرفض</el-button>
-        <Dialog-Action-Log TableName="Member" :ObjId="Member.Id" />
+        <Dialog-Action-Log table-name="Member" :obj-id="Member.Id" />
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import checkPermission from "@/utils/permission";
+import checkPermission from '@/utils/permission'
 
-import PanThumb from "@/components/PanThumb/index.vue";
-import WebCam from "@/components/WebCam";
-import ImageCropper from "@/components/ImageCropper";
+import PanThumb from '@/components/PanThumb/index.vue'
+import WebCam from '@/components/WebCam'
+import ImageCropper from '@/components/ImageCropper'
 
-import LastLog from "@/views/Gym/components/LastLog.vue";
+import LastLog from '@/views/Gym/components/LastLog.vue'
 
-import { ChangeObjStatusByTableName } from "@/api/Oprationsys";
-import StatusTag from "@/components/Oprationsys/StatusTag";
-import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
-import { GetProfilePictureByObjId } from "@/api/File";
+import { ChangeObjStatusByTableName } from '@/api/Oprationsys'
+import StatusTag from '@/components/Oprationsys/StatusTag'
+import DialogActionLog from '@/components/ActionLog/DialogActionLog.vue'
+import { GetProfilePictureByObjId } from '@/api/File'
 
 export default {
   components: {
@@ -266,24 +270,12 @@ export default {
     WebCam,
     StatusTag,
     ImageCropper,
-    DialogActionLog,
+    DialogActionLog
   },
   props: {
     Member: {
       type: Object,
-      required: true,
-    },
-  },
-  watch: {
-    Member(value) {
-      if (value) {
-        this.GetImage(value.Id);
-      }
-    },
-  },
-  created() {
-    if (this.Member) {
-      this.GetImage(this.Member.Id);
+      required: true
     }
   },
   data() {
@@ -296,77 +288,89 @@ export default {
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: "",
-      },
-    };
+        Description: ''
+      }
+    }
+  },
+  watch: {
+    Member(value) {
+      if (value) {
+        this.GetImage(value.Id)
+      }
+    }
+  },
+  created() {
+    if (this.Member) {
+      this.GetImage(this.Member.Id)
+    }
   },
   methods: {
     checkPermission,
     GetImage(Id) {
-      GetProfilePictureByObjId({ TableName: "Member", ObjId: Id })
+      GetProfilePictureByObjId({ TableName: 'Member', ObjId: Id })
         .then((response) => {
-          if (response) this.avatar = response;
-          else this.avatar = this.$store.getters.CompanyInfo.Logo;
+          if (response) this.avatar = response
+          else this.avatar = this.$store.getters.CompanyInfo.Logo
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     RemoveBlackList() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs['dataOpration'].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({
             ObjId: this.Member.Id,
-            TableName: "Member",
+            TableName: 'Member',
             Status: -1,
-            Description: this.tempOpration.Description,
+            Description: this.tempOpration.Description
           }).then((response) => {
             this.$notify({
-              title: "تم ",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              duration: 2000,
-            });
+              title: 'تم ',
+              message: 'تم الإضافة بنجاح',
+              type: 'success',
+              duration: 2000
+            })
             this.$nextTick(() => {
               this.$router.replace({
-                path: "/redirect" + this.$route.fullPath,
-              });
-            });
-          });
+                path: '/redirect' + this.$route.fullPath
+              })
+            })
+          })
         }
-      });
+      })
     },
     BlackList() {
-      this.$refs["dataOpration"].validate((valid) => {
+      this.$refs['dataOpration'].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({
             ObjId: this.Member.Id,
-            TableName: "Member",
+            TableName: 'Member',
             Status: -2,
-            Description: this.tempOpration.Description,
+            Description: this.tempOpration.Description
           }).then((response) => {
             this.$notify({
-              title: "تم ",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              duration: 2000,
-            });
+              title: 'تم ',
+              message: 'تم الإضافة بنجاح',
+              type: 'success',
+              duration: 2000
+            })
             this.$nextTick(() => {
               this.$router.replace({
-                path: "/redirect" + this.$route.fullPath,
-              });
-            });
-          });
+                path: '/redirect' + this.$route.fullPath
+              })
+            })
+          })
         }
-      });
+      })
     },
     cropSuccess(resData) {
-      this.imagecropperShow = false;
-      this.imagecropperKey = this.imagecropperKey + 1;
+      this.imagecropperShow = false
+      this.imagecropperKey = this.imagecropperKey + 1
     },
     close() {
-      this.imagecropperShow = false;
-    },
-  },
-};
+      this.imagecropperShow = false
+    }
+  }
+}
 </script>

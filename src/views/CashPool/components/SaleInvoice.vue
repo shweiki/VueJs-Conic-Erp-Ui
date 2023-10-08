@@ -444,7 +444,7 @@ export default {
             FakeDate: new Date(),
             Description: "",
             Status: 0,
-            Type: "CashPool",
+            Type: "SaleInvoiceCashPool",
             EntryMovements: [
               {
                 Id: undefined,

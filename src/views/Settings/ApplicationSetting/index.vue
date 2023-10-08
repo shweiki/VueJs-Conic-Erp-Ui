@@ -11,8 +11,6 @@
             <el-button type="success" @click="CheckUpdate">Check UpDate</el-button>
             <el-button type="success" @click="RestSetting">Rest Defualt Setting</el-button>
             <el-button type="success" @click="getPrinterDevice">get Printer Device</el-button>
-            <el-button type="success" @click="FixBase64ToPathWithLoaded">Fix Base64 To Path With Loaded</el-button>
-            <el-button type="success" @click="CheckEntryAccountForMembershipMovement">Check Entry Account For Membership Movement</el-button>
           </div>
           <el-row type="flex">
             <el-col :span="8">
@@ -25,20 +23,20 @@
             <el-col :span="8">
               <span>{{ $t("Settings.PointOfSaleLayout") }}</span>
               <el-select v-model="PointOfSaleLayout" placeholder="PointOfSaleLayout">
-                <el-option label="SuperMarket" value="SuperMarket"> </el-option>
-                <el-option label="CarsSpare" value="CarsSpare"> </el-option>
-                <el-option label="Restaurant" value="Restaurant"> </el-option>
-                <el-option label="Pharmacy" value="Pharmacy"> </el-option>
-                <el-option label="Gym" value="Gym"> </el-option>
-                <el-option label="Public" value="Public"> </el-option>
-                <el-option label="KidsPlayArea" value="KidsPlayArea"> </el-option>
-                <el-option label="BillOfEntery" value="BillOfEntery"> </el-option>
+                <el-option label="SuperMarket" value="SuperMarket" />
+                <el-option label="CarsSpare" value="CarsSpare" />
+                <el-option label="Restaurant" value="Restaurant" />
+                <el-option label="Pharmacy" value="Pharmacy" />
+                <el-option label="Gym" value="Gym" />
+                <el-option label="Public" value="Public" />
+                <el-option label="KidsPlayArea" value="KidsPlayArea" />
+                <el-option label="BillOfEntery" value="BillOfEntery" />
               </el-select>
             </el-col>
             <el-col :span="8">
               <span>{{ $t("Settings.CashPoolLayout") }}</span>
               <el-select v-model="CashPoolLayout" placeholder="CashPoolLayout">
-                <el-option label="Restaurant" value="Restaurant"> </el-option>
+                <el-option label="Restaurant" value="Restaurant" />
               </el-select>
             </el-col>
             <el-col :span="8">
@@ -50,14 +48,14 @@
             <el-col :span="8">
               <span>{{ $t("Settings.PurchaseLayout") }}</span>
               <el-select v-model="PurchaseLayout" placeholder="PurchaseLayout">
-                <el-option label="Public" value="Public"> </el-option>
-                <el-option label="Pharmacy" value="Pharmacy"> </el-option>
+                <el-option label="Public" value="Public" />
+                <el-option label="Pharmacy" value="Pharmacy" />
               </el-select>
             </el-col>
             <el-col :span="8">
               <span>{{ $t("Settings.WorkShopLayout") }}</span>
               <el-select v-model="WorkShopLayout" placeholder="WorkShopLayout">
-                <el-option label="Pubilc" value="Pubilc"> </el-option>
+                <el-option label="Pubilc" value="Pubilc" />
               </el-select>
             </el-col>
           </el-row>
@@ -107,202 +105,190 @@
 </template>
 
 <script>
-import { CheckUpdate, RestDefualtSetting } from "@/api/Setting";
-import Settings from "@/layout/components/Settings/index";
-import getPrinterDevice from "@/utils/get-printers";
-import { FixBase64ToPathWithLoaded } from "@/api/File";
-import { CheckEntryAccountForMembershipMovement } from "@/api/MembershipMovement";
+import { RestDefualtSetting } from '@/api/Setting'
+import Settings from '@/layout/components/Settings/index'
+import getPrinterDevice from '@/utils/get-printers'
 
 export default {
   components: { Settings },
 
   computed: {
     isShowJob() {
-      return this.$store.state.settings.language;
+      return this.$store.state.settings.language
     },
     DateTimeFormat: {
       get() {
-        return this.$store.state.settings.DateTimeFormat;
+        return this.$store.state.settings.DateTimeFormat
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "DateTimeFormat",
-          value: val,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'DateTimeFormat',
+          value: val
+        })
+      }
     },
     CashDrawerCOM: {
       get() {
-        return JSON.stringify(this.$store.state.settings.CashDrawerCOM);
+        return JSON.stringify(this.$store.state.settings.CashDrawerCOM)
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "CashDrawerCOM",
-          value: JSON.parse(val),
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'CashDrawerCOM',
+          value: JSON.parse(val)
+        })
+      }
     },
     fixedHeader: {
       get() {
-        return this.$store.state.settings.fixedHeader;
+        return this.$store.state.settings.fixedHeader
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "fixedHeader",
-          value: val,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'fixedHeader',
+          value: val
+        })
+      }
     },
     tagsView: {
       get() {
-        return this.$store.state.settings.tagsView;
+        return this.$store.state.settings.tagsView
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "tagsView",
-          value: val,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'tagsView',
+          value: val
+        })
+      }
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.settings.sidebarLogo;
+        return this.$store.state.settings.sidebarLogo
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "sidebarLogo",
-          value: val,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'sidebarLogo',
+          value: val
+        })
+      }
     },
     BarcodeIsId: {
       get() {
-        return this.$store.state.settings.BarcodeIsId;
+        return this.$store.state.settings.BarcodeIsId
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "BarcodeIsId",
-          value: val,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'BarcodeIsId',
+          value: val
+        })
+      }
     },
     WithOutCheckItemIsExist: {
       get() {
-        return this.$store.state.settings.WithOutCheckItemIsExist;
+        return this.$store.state.settings.WithOutCheckItemIsExist
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "WithOutCheckItemIsExist",
-          value: val,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'WithOutCheckItemIsExist',
+          value: val
+        })
+      }
     },
     sidebarOpen: {
       get() {
-        return this.$store.state.settings.sidebarOpen;
+        return this.$store.state.settings.sidebarOpen
       },
       set(val) {
-        this.$store.dispatch("app/toggleSideBar");
-        this.$store.dispatch("settings/changeSetting", {
-          key: "sidebarOpen",
-          value: val,
-        });
-      },
+        this.$store.dispatch('app/toggleSideBar')
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'sidebarOpen',
+          value: val
+        })
+      }
     },
     showSettings: {
       get() {
-        return this.$store.state.settings.showSettings;
+        return this.$store.state.settings.showSettings
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "showSettings",
-          value: val,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'showSettings',
+          value: val
+        })
+      }
     },
     showRestOfBill: {
       get() {
-        return this.$store.state.settings.showRestOfBill;
+        return this.$store.state.settings.showRestOfBill
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "showRestOfBill",
-          value: val,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'showRestOfBill',
+          value: val
+        })
+      }
     },
     PointOfSaleLayout: {
       get() {
-        return this.$store.state.settings.PointOfSale.Layout;
+        return this.$store.state.settings.PointOfSale.Layout
       },
       set(val) {
-        this.$store.state.settings.PointOfSale.Layout = val;
+        this.$store.state.settings.PointOfSale.Layout = val
 
-        this.$store.dispatch("settings/changeSetting", {
-          key: "PointOfSale",
-          value: this.$store.state.settings.PointOfSale,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'PointOfSale',
+          value: this.$store.state.settings.PointOfSale
+        })
+      }
     },
     PurchaseLayout: {
       get() {
-        return this.$store.state.settings.Purchase.Layout;
+        return this.$store.state.settings.Purchase.Layout
       },
       set(val) {
-        this.$store.state.settings.Purchase.Layout = val;
+        this.$store.state.settings.Purchase.Layout = val
 
-        this.$store.dispatch("settings/changeSetting", {
-          key: "Purchase",
-          value: this.$store.state.settings.Purchase,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'Purchase',
+          value: this.$store.state.settings.Purchase
+        })
+      }
     },
     CashPoolLayout: {
       get() {
-        return this.$store.state.settings.CashPoolLayout;
+        return this.$store.state.settings.CashPoolLayout
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "CashPoolLayout",
-          value: val,
-        });
-      },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'CashPoolLayout',
+          value: val
+        })
+      }
     },
     WorkShopLayout: {
       get() {
-        return this.$store.state.settings.WorkShopLayout;
+        return this.$store.state.settings.WorkShopLayout
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "WorkShopLayout",
-          value: val,
-        });
-      },
-    },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'WorkShopLayout',
+          value: val
+        })
+      }
+    }
   },
   methods: {
     getPrinterDevice,
-    
+
     RestSetting() {
       RestDefualtSetting().then((res) => {
-        if (res) location.reload();
-      });
-    },
-    FixBase64ToPathWithLoaded() {
-      FixBase64ToPathWithLoaded().then((res) => {
-        if (res) location.reload();
-      });
-    },
-    CheckEntryAccountForMembershipMovement() {
-      CheckEntryAccountForMembershipMovement().then((res) => {
-        if (res) location.reload();
-      });
+        if (res) location.reload()
+      })
     },
     CheckUpdate() {
-      this.loading = true;
-      var wshShell = new ActiveXObject("WScript.Shell");
-      wshShell.Run("C:\\ConicErpDeploy-main\\Update.bat");
-      this.loading = false;
+      this.loading = true
+      var wshShell = new ActiveXObject('WScript.Shell')
+      wshShell.Run('C:\\ConicErpDeploy-main\\Update.bat')
+      this.loading = false
       /*
       CheckUpdate()
         .then((response) => {
@@ -314,9 +300,9 @@ export default {
           // handle error
           console.log(error);
         });*/
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

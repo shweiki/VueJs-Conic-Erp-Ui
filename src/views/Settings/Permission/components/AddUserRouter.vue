@@ -1,21 +1,11 @@
 <template>
   <div>
-    <el-button
-      style="width: 100px"
-      type="warning"
-      icon="el-icon-s-platform"
-      @click="OpenDialog()"
-    >
-      صلاحيات</el-button
-    >
-    <el-dialog
-      style="margin-top: -13vh"
-      title="صلاحيات توجه"
-      :visible.sync="dialogVisible"
-    >
+    <el-button style="width: 100px" type="warning" icon="el-icon-s-platform" @click="OpenDialog()">
+      صلاحيات</el-button>
+    <el-dialog style="margin-top: -13vh" title="صلاحيات توجه" :visible.sync="dialogVisible">
       <el-form label-width="80px" label-position="left">
         <el-form-item label="Redirect">
-          <el-input v-model="Redirect" :size="$store.getters.size" />
+          <el-input v-model="redirect" :size="$store.getters.size" />
         </el-form-item>
         <el-form-item label="Menus">
           <el-tree
@@ -30,9 +20,7 @@
         </el-form-item>
       </el-form>
       <div style="text-align: right">
-        <el-button type="danger" @click="dialogVisible = false"
-          >Cancel</el-button
-        >
+        <el-button type="danger" @click="dialogVisible = false">Cancel</el-button>
         <el-button type="primary" @click="confirmRouter">Confirm</el-button>
       </div>
     </el-dialog>
@@ -40,23 +28,22 @@
 </template>
 
 <script>
-import path from "path";
-import { deepClone } from "@/utils";
-import { AddUserRouter, getRoutes } from "@/api/Role";
+import path from 'path'
+import { AddUserRouter, getRoutes } from '@/api/Role'
 
 export default {
   props: {
-    UserId: {
+    userId: {
       type: String,
-      default: ""
+      default: ''
     },
-    Router: {
+    router: {
       type: String,
-      default: ""
+      default: ''
     },
-    Redirect: {
+    redirect: {
       type: String,
-      default: "/"
+      default: '/'
     }
   },
   data() {
@@ -65,58 +52,56 @@ export default {
       dialogVisible: false,
       checkStrictly: false,
       defaultProps: {
-        children: "children",
-        label: "title"
+        children: 'children',
+        label: 'title'
       }
-    };
+    }
   },
   computed: {
     routesData() {
-      return this.routes;
+      return this.routes
     }
   },
   created() {
-    this.getRoutes();
+    this.getRoutes()
   },
   methods: {
     OpenDialog() {
-      this.checkStrictly = true;
+      this.checkStrictly = true
       this.$nextTick(() => {
-         this.$refs.tree.setCheckedKeys(JSON.parse(this.Router));
+        this.$refs.tree.setCheckedKeys(JSON.parse(this.router))
 
-        this.checkStrictly = false;
-      });
-      this.dialogVisible = true;
+        this.checkStrictly = false
+      })
+      this.dialogVisible = true
     },
     async getRoutes() {
-      const res = await getRoutes();
-      this.serviceRoutes = res;
-       this.routes = this.generateRoutes(res);
+      const res = await getRoutes()
+      this.serviceRoutes = res
+      this.routes = this.generateRoutes(res)
     },
     confirmRouter() {
-      console.log( "routerxxxxx",
-      this.$refs.tree.getCheckedKeys());
       AddUserRouter({
-        UserId: this.UserId,
+        UserId: this.userId,
         Router: JSON.stringify(this.$refs.tree.getCheckedKeys()),
-        DefulateRedirect: this.Redirect
+        DefulateRedirect: this.redirect
       })
         .then(response => {
-          this.dialogVisible = false;
+          this.dialogVisible = false
           this.$notify({
-            title: "تم ",
-            message: "تم الإضافة بنجاح",
-            type: "success",
+            title: 'تم ',
+            message: 'تم الإضافة بنجاح',
+            type: 'success',
             duration: 2000
-          });
+          })
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     // Reshape the routes structure so that it looks the same as the sidebar
-    generateRoutes(routes, basePath = "/") {
-      const res = [];
+    generateRoutes(routes, basePath = '/') {
+      const res = []
 
       for (let route of routes) {
         // skip some route
@@ -127,42 +112,42 @@ export default {
         const onlyOneShowingChild = this.onlyOneShowingChild(
           route.children,
           route
-        );
+        )
 
         if (route.children && onlyOneShowingChild && !route.alwaysShow) {
-          route = onlyOneShowingChild;
+          route = onlyOneShowingChild
         }
 
         const data = {
           path: path.resolve(basePath, route.path),
           title: route.meta && route.meta.title
-        };
+        }
 
         // recursive child routes
         if (route.children) {
-          data.children = this.generateRoutes(route.children, data.path);
+          data.children = this.generateRoutes(route.children, data.path)
         }
-        res.push(data);
+        res.push(data)
       }
-      return res;
+      return res
     },
     generateArr(routes) {
-      let data = [];
+      let data = []
       routes.forEach(route => {
-        data.push(route);
+        data.push(route)
         if (route.children) {
-          const temp = this.generateArr(route.children);
+          const temp = this.generateArr(route.children)
           if (temp.length > 0) {
-            data = [...data, ...temp];
+            data = [...data, ...temp]
           }
         }
-      });
-      return data;
+      })
+      return data
     },
-    generateTree(routes, basePath = "/", checkedKeys) {
-      const res = [];
+    generateTree(routes, basePath = '/', checkedKeys) {
+      const res = []
       for (const route of routes) {
-        const routePath = path.resolve(basePath, route.path);
+        const routePath = path.resolve(basePath, route.path)
 
         // recursive child routes
         if (route.children) {
@@ -170,41 +155,41 @@ export default {
             route.children,
             routePath,
             checkedKeys
-          );
+          )
         }
 
         if (
           checkedKeys.includes(routePath) ||
           (route.children && route.children.length >= 1)
         ) {
-          res.push(route);
+          res.push(route)
         }
       }
-      return res;
+      return res
     },
 
     // reference: src/view/layout/components/Sidebar/SidebarItem.vue
     onlyOneShowingChild(children = [], parent) {
-      let onlyOneChild = null;
-      const showingChildren = children.filter(item => !item.hidden);
+      let onlyOneChild = null
+      const showingChildren = children.filter(item => !item.hidden)
 
       // When there is only one child route, the child route is displayed by default
       if (showingChildren.length === 1) {
-        onlyOneChild = showingChildren[0];
-        onlyOneChild.path = path.resolve(parent.path, onlyOneChild.path);
-        return onlyOneChild;
+        onlyOneChild = showingChildren[0]
+        onlyOneChild.path = path.resolve(parent.path, onlyOneChild.path)
+        return onlyOneChild
       }
 
       // Show parent if there are no child route to display
       if (showingChildren.length === 0) {
-        onlyOneChild = { ...parent, path: "", noShowingChildren: true };
-        return onlyOneChild;
+        onlyOneChild = { ...parent, path: '', noShowingChildren: true }
+        return onlyOneChild
       }
 
-      return false;
+      return false
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -212,6 +197,7 @@ export default {
   .roles-table {
     margin-top: 30px;
   }
+
   .permission-tree {
     margin-bottom: 30px;
   }

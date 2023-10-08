@@ -1,18 +1,18 @@
 <template>
-  <el-row type="flex" v-if="tempForm">
+  <el-row v-if="tempForm" type="flex">
     <!--    <el-col :span="6" :xs="24">
         <member-log />
       </el-col>-->
 
-    <el-col :span="24" :xs="24" v-loading="loading">
+    <el-col v-loading="loading" :span="24" :xs="24">
       <Member-Search />
 
       <el-card
         class="box-card"
-        v-bind:class="{ BlackList: tempForm.Status === -2 ? true : false }"
+        :class="{ BlackList: tempForm.Status === -2 ? true : false }"
       >
         <el-row type="flex">
-          <el-col :span="5" v-if="tempForm.Status != -2">
+          <el-col v-if="tempForm.Status != -2" :span="5">
             <el-row type="flex">
               <el-col :span="24">
                 <el-button
@@ -20,19 +20,18 @@
                   type="info"
                   icon="el-icon-zoom-in"
                   @click="$router.replace({ path: '/redirect' + '/Gym/ListMember' })"
-                  >جميع مشتركين</el-button
-                >
+                >جميع مشتركين</el-button>
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
                 <Member-Ship-Movement
+                  :member-id="tempForm.Id"
+                  :account-id="tempForm.AccountId"
+                  :name="tempForm.Name"
+                  :enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
                   @Done="getdata"
-                  :MemberId="tempForm.Id"
-                  :AccountId="tempForm.AccountId"
-                  :Name="tempForm.Name"
-                  :Enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
                 />
               </el-col>
             </el-row>
@@ -40,10 +39,10 @@
             <el-row type="flex">
               <el-col :span="24">
                 <Member-Pay
+                  :member-id="tempForm.Id"
+                  :name="tempForm.Name"
+                  :number-phone1="tempForm.PhoneNumber1"
                   @Done="getdata"
-                  :MemberId="tempForm.Id"
-                  :Name="tempForm.Name"
-                  :NumberPhone1="tempForm.PhoneNumber1"
                 />
               </el-col>
             </el-row>
@@ -51,28 +50,28 @@
             <el-row type="flex">
               <el-col :span="24">
                 <Member-Ship-Movement-With-Pay
+                  :member-id="tempForm.Id"
+                  :account-id="tempForm.AccountId"
+                  :name="tempForm.Name"
+                  :number-phone1="tempForm.PhoneNumber1"
+                  :enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
                   @Done="getdata"
-                  :MemberId="tempForm.Id"
-                  :AccountId="tempForm.AccountId"
-                  :Name="tempForm.Name"
-                  :NumberPhone1="tempForm.PhoneNumber1"
-                  :Enable="tempForm.TotalCredit - tempForm.TotalDebit > 0 ? true : false"
                 />
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
-                <Service-Invoice :MemberId="tempForm.Id" />
+                <Service-Invoice :member-id="tempForm.Id" />
               </el-col>
             </el-row>
 
             <el-row type="flex">
               <el-col :span="24">
                 <Massage
-                  :NumberPhone1="tempForm.PhoneNumber1"
-                  :NumberPhone2="tempForm.PhoneNumber2"
-                  :Email="tempForm.Email"
+                  :number-phone1="tempForm.PhoneNumber1"
+                  :number-phone2="tempForm.PhoneNumber2"
+                  :email="tempForm.Email"
                 />
               </el-col>
             </el-row>
@@ -80,15 +79,15 @@
             <el-row v-if="tempForm.MembershipsCount > 0 || checkPermission(['admin'])">
               <el-col :span="24">
                 <send-to-device
-                  :ObjectId="tempForm.Id"
-                  :Name="tempForm.Name"
-                  TableName="Member"
+                  :object-id="tempForm.Id"
+                  :name="tempForm.Name"
+                  table-name="Member"
                 />
               </el-col>
             </el-row>
           </el-col>
           <el-col :span="19">
-            <Details :Member="tempForm" />
+            <Details :member="tempForm" />
           </el-col>
         </el-row>
       </el-card>
@@ -96,48 +95,48 @@
       <el-card class="box-card">
         <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
           <el-tab-pane label="تواصل" name="communication">
-            <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>
+            <span slot="label"><i class="el-icon-refresh" /> تواصل</span>
             <Communication />
           </el-tab-pane>
 
           <el-tab-pane label="مستندات" name="Documents">
-            <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
-            <Documents :ObjectId="tempForm.Id" TableName="Member" />
+            <span slot="label"><i class="el-icon-refresh" /> مستندات</span>
+            <Documents :object-id="tempForm.Id" table-name="Member" />
           </el-tab-pane>
 
           <el-tab-pane label="مالية" name="account">
-            <span slot="label"><i class="el-icon-refresh"></i> مالية</span>
-            <Account :EntryMovements="EntryMovements" :AccountId="tempForm.AccountId" />
+            <span slot="label"><i class="el-icon-refresh" /> مالية</span>
+            <Account :entry-movements="EntryMovements" :account-id="tempForm.AccountId" />
           </el-tab-pane>
           <el-tab-pane label="مبيعات" name="SaleInvoice">
-            <span slot="label"><i class="el-icon-refresh"></i> مبيعات</span>
-            <Sale-Invoice :ServiceInvoices="ServiceInvoices" />
+            <span slot="label"><i class="el-icon-refresh" /> مبيعات</span>
+            <Sale-Invoice :service-invoices="ServiceInvoices" />
           </el-tab-pane>
           <el-tab-pane label="مقبوضات" name="Payment">
-            <span slot="label"><i class="el-icon-refresh"></i> مقبوضات</span>
-            <Payment :Payments="Payments" />
+            <span slot="label"><i class="el-icon-refresh" /> مقبوضات</span>
+            <Payment :payments="Payments" />
           </el-tab-pane>
 
           <el-tab-pane label="خدمات" name="Service">
-            <span slot="label"><i class="el-icon-refresh"></i> خدمات</span>
-            <Service :ServiceInvoices="ServiceInvoices" />
+            <span slot="label"><i class="el-icon-refresh" /> خدمات</span>
+            <Service :service-invoices="ServiceInvoices" />
           </el-tab-pane>
 
           <el-tab-pane label="زيارات" name="timeline">
-            <span slot="label"><i class="el-icon-refresh"></i> زيارات</span>
-            <TimeLine TableName="Member" :UserId="tempForm.Id" />
+            <span slot="label"><i class="el-icon-refresh" /> زيارات</span>
+            <TimeLine table-name="Member" :user-id="tempForm.Id" />
           </el-tab-pane>
           <el-tab-pane label="اشتراكات" name="activity">
-            <span slot="label"><i class="el-icon-refresh"></i> اشتراكات</span>
+            <span slot="label"><i class="el-icon-refresh" /> اشتراكات</span>
             <Activity
+              :membership-movements="MembershipMovements"
               @Done="GetMembershipMovement"
-              :MembershipMovements="MembershipMovements"
             />
           </el-tab-pane>
 
           <el-tab-pane label="بيانات" name="Details">
-            <span slot="label"><i class="el-icon-refresh"></i> بيانات</span>
-            <User-Card :Member="tempForm" />
+            <span slot="label"><i class="el-icon-refresh" /> بيانات</span>
+            <User-Card :member="tempForm" />
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -146,43 +145,41 @@
 </template>
 
 <script>
-//import MemberLog from "@/components/Gym/MemberLog.vue";
+// import MemberLog from "@/components/Gym/MemberLog.vue";
 
-import Details from "./Details.vue";
-import UserCard from "./UserCard.vue";
-import MemberShipMovementWithPay from "./Dialogs/MemberShipMovementWithPay.vue";
-import MemberShipMovement from "./Dialogs/MemberShipMovement.vue";
-import MemberPay from "./Dialogs/MemberPay.vue";
-import ServiceInvoice from "./Dialogs/ServiceInvoice.vue";
-import MemberSearch from "@/components/Member/MemberSearch.vue";
-import Payment from "./Payment.vue";
-import SaleInvoice from "./SaleInvoice.vue";
-import Activity from "./Activity.vue";
-import Account from "./Account.vue";
-import Service from "./Service.vue";
-import TimeLine from "./TimeLine.vue";
-import Communication from "./Communication.vue";
-import Documents from "@/components/Documents/Documents.vue";
-import DeviceLog from "@/components/Device/DeviceLog.vue";
+import Details from './Details.vue'
+import UserCard from './UserCard.vue'
+import MemberShipMovementWithPay from './Dialogs/MemberShipMovementWithPay.vue'
+import MemberShipMovement from './Dialogs/MemberShipMovement.vue'
+import MemberPay from './Dialogs/MemberPay.vue'
+import ServiceInvoice from './Dialogs/ServiceInvoice.vue'
+import MemberSearch from '@/components/Member/MemberSearch.vue'
+import Payment from './Payment.vue'
+import SaleInvoice from './SaleInvoice.vue'
+import Activity from './Activity.vue'
+import Account from './Account.vue'
+import Service from './Service.vue'
+import TimeLine from './TimeLine.vue'
+import Communication from './Communication.vue'
+import Documents from '@/components/Documents/Documents.vue'
 
-import { GetMemberById } from "@/api/Member";
-import { GetMembershipMovementByMemberId } from "@/api/MembershipMovement";
-import { GetPaymentsByMemberId } from "@/api/Payment";
-import { GetEntryMovementsByAccountId } from "@/api/EntryMovement";
-import { GetSaleInvoiceByMemberId } from "@/api/SaleInvoice";
-import SendToDevice from "@/components/Device/SendToDevice.vue";
+import { GetMemberById } from '@/api/Member'
+import { GetMembershipMovementByMemberId } from '@/api/MembershipMovement'
+import { GetPaymentsByMemberId } from '@/api/Payment'
+import { GetEntryMovementsByAccountId } from '@/api/EntryMovement'
+import { GetSaleInvoiceByMemberId } from '@/api/SaleInvoice'
+import SendToDevice from '@/components/Device/SendToDevice.vue'
 
-import checkPermission from "@/utils/permission";
+import checkPermission from '@/utils/permission'
 
-import Massage from "@/components/Massage/index.vue";
+import Massage from '@/components/Massage/index.vue'
 
 export default {
-  name: "Profile",
+  name: 'Profile',
   components: {
     Details,
     UserCard,
     Activity,
-    DeviceLog,
     Account,
     Service,
     Payment,
@@ -196,17 +193,17 @@ export default {
     SendToDevice,
     Documents,
     SaleInvoice,
-    TimeLine,
+    TimeLine
   },
   props: {
     isEdit: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   data() {
     return {
-      activeTab: "Details",
+      activeTab: 'Details',
       loading: true,
       tempRoute: {},
       tempForm: null,
@@ -215,101 +212,105 @@ export default {
       EntryMovements: [],
       ServiceInvoices: [],
       SaleInvoices: [],
-      log: [],
-    };
+      log: []
+    }
   },
   created() {
     if (this.isEdit) {
-      this.getdata(this.$route.params && this.$route.params.id);
+      this.getdata(this.$route.params && this.$route.params.id)
       // console.log(this.$route.params )
     }
-    this.tempRoute = Object.assign({}, this.$route);
+    this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
     checkPermission,
     getdata(val = this.$route.params && this.$route.params.id) {
       GetMemberById({ Id: val })
         .then((response) => {
-          response.Id = response.Id.toString();
+          response.Id = response.Id.toString()
 
-          this.tempForm = response;
-          this.getAge();
-          this.loading = false;
-          this.setTagsViewTitle();
+          this.tempForm = response
+          this.getAge()
+          this.loading = false
+          this.setTagsViewTitle()
           // set page title
-          this.setPageTitle();
+          this.setPageTitle()
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     tabClick(tab, event) {
-      if (tab.label == "اشتراكات") this.GetMembershipMovement();
-      if (tab.label == "مقبوضات")
+      if (tab.label === 'اشتراكات') this.GetMembershipMovement()
+      if (tab.label === 'مقبوضات') {
         GetPaymentsByMemberId({
-          MemberId: this.tempForm.Id,
+          MemberId: this.tempForm.Id
         }).then((response) => {
-          this.Payments = response.reverse();
-        });
-      if (tab.label == "مبيعات")
+          this.Payments = response.reverse()
+        })
+      }
+      if (tab.label === 'مبيعات') {
         GetSaleInvoiceByMemberId({
           Id: this.tempForm.Id,
-          IsService: false,
+          IsService: false
         }).then((response) => {
-          this.ServiceInvoices = response.reverse();
-        });
-      if (tab.label == "مالية")
+          this.ServiceInvoices = response.reverse()
+        })
+      }
+      if (tab.label === 'مالية') {
         GetEntryMovementsByAccountId({
-          AccountId: this.tempForm.AccountId,
+          AccountId: this.tempForm.AccountId
         }).then((response) => {
           this.EntryMovements = response.map((curr, i, array) => {
             curr.TotalRow =
-              array[i != 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit);
-            return curr;
-          });
-        });
-      if (tab.label == "خدمات")
+              array[i !== 0 ? i - 1 : i].TotalRow - (curr.Debit - curr.Credit)
+            return curr
+          })
+        })
+      }
+      if (tab.label === 'خدمات') {
         GetSaleInvoiceByMemberId({
           Id: this.tempForm.Id,
-          IsService: true,
+          IsService: true
         }).then((response) => {
-          console.log("log :", response);
-          this.ServiceInvoices = response.reverse();
-        });
+          console.log('log :', response)
+          this.ServiceInvoices = response.reverse()
+        })
+      }
     },
     GetMembershipMovement() {
       GetMembershipMovementByMemberId({
-        MemberId: this.tempForm.Id,
+        MemberId: this.tempForm.Id
       }).then((response) => {
         //    console.log("log :", response);
-        this.MembershipMovements = response.reverse();
-      });
+        this.MembershipMovements = response.reverse()
+      })
     },
     getAge() {
-      var today = new Date();
-      var birthDate = new Date(this.tempForm.DateofBirth);
-      var age = today.getFullYear() - birthDate.getFullYear();
-      var m = today.getMonth() - birthDate.getMonth();
+      var today = new Date()
+      var birthDate = new Date(this.tempForm.DateofBirth)
+      var age = today.getFullYear() - birthDate.getFullYear()
+      var m = today.getMonth() - birthDate.getMonth()
       if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age = age - 1;
+        age = age - 1
       }
 
-      this.tempForm.Age = age;
+      this.tempForm.Age = age
     },
 
     setTagsViewTitle() {
-      const title = this.$t("route.EditMember");
+      const title = this.$t('route.EditMember')
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`,
-      });
-      this.$store.dispatch("tagsView/updateVisitedView", route);
+        title: `${title}-${this.tempForm.Id}`
+      })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = this.$t("route.EditMember");
-      document.title = `${title} - ${this.tempForm.Id}`;
-    },
-  },
-};
+      const title = this.$t('route.EditMember')
+      document.title = `${title} - ${this.tempForm.Id}`
+    }
+  }
+}
 </script>
 <style>
 .el-date-editor.el-input,

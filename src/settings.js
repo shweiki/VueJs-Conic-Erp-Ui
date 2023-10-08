@@ -1,13 +1,13 @@
 module.exports = {
-  theme: "#74b9ff",
-  size: "mini",
+  theme: '#74b9ff',
+  size: 'mini',
   customtheme: false,
   showSettings: true,
   tagsView: true,
-  CashDrawerCOM: { COM: "COM7", OpenKeyBoard: "F4" },
+  CashDrawerCOM: { COM: 'COM7', OpenKeyBoard: 'F4' },
   fixedHeader: false,
-  SidebarImage: "",
-  loginBackground: "",
+  SidebarImage: '',
+  loginBackground: '',
   showSidebar: true,
   sidebarLogo: true,
   sidebarOpen: true,
@@ -20,19 +20,19 @@ module.exports = {
   ToFixed: 2,
   LimitQurey: 20,
   LimitGetInvoice: 200,
-  PaymentMethods: ["Cash", "Visa", "Receivables", "Cheque", "ZainCash", "CliQ"],
-  errorLog: "production",
-  DateTimeFormat: "yyyy-MM-dd HH:mm",
+  PaymentMethods: ['Cash', 'Visa', 'Receivables', 'Cheque', 'ZainCash', 'CliQ'],
+  errorLog: 'production',
+  DateTimeFormat: 'yyyy-MM-dd HH:mm',
   StatusQuery: 0,
   Member: {
     CheckMemberIsExist: true,
-    SsnIsRequired: false,
+    SsnIsRequired: false
   },
   Employee: {
-    CheckEmployeeIsExist: true,
+    CheckEmployeeIsExist: true
   },
   Dashboard: {
-    Layout: "Public",
+    Layout: 'Public',
     ShowPanelGroup: {
       Items: true,
       Members: true,
@@ -42,82 +42,82 @@ module.exports = {
       Suppliers: true,
       Purchases: true,
       Sales: true,
-      Visits: true,
+      Visits: true
     }
   },
   PointOfSale: {
-    Layout: "Public",
+    Layout: 'Public',
     WithImage: false,
     QtyCounter: false,
     CreateEntry: false,
     CreateDelivery: false,
     CheckQtyItem: false,
-    DeliveryUrl: "http://localhost:8090/test1/OrderDelivery/Create"
+    DeliveryUrl: 'http://localhost:8090/test1/OrderDelivery/Create'
   },
   Purchase: {
-    Layout: "Public",
+    Layout: 'Public',
     BillOfEntery: true,
     CalBillOfEnteryFromScratch: true,
     QtyCounter: false,
-    CreateEntry: false,
+    CreateEntry: false
   },
-  CashPoolLayout: "Restaurant",
-  WorkShopLayout: "Pubilc",
+  CashPoolLayout: 'Restaurant',
+  WorkShopLayout: 'Pubilc',
   Payment: {
-    Layout: "Public",
+    Layout: 'Public',
     CreateEntry: true
   },
   Receive: {
-    Layout: "Public",
+    Layout: 'Public',
     CreateEntry: true
   },
   MembershipMovement: {
     OneInBodyFreeForeach30Days: false,
-    InComeAccountId: 2,
+    InComeAccountId: 3
   },
   Visit: {
-    Layout: "Public",
+    Layout: 'Public',
     CreateEntry: false
   },
-  timeQuery: ["00:00:00", "23:59:59"],
-  printers: ["Casher", "WorkTable1", "WorkTable2"],
-  windowStyle: "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=55,left=500",
+  timeQuery: ['00:00:00', '23:59:59'],
+  printers: ['Casher', 'WorkTable1', 'WorkTable2'],
+  windowStyle: 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1100,height=550,top=55,left=500',
   pickerOptions: {
     shortcuts: [{
-      text: "اليوم",
+      text: 'اليوم',
       days: 0,
-      default: false,
+      default: false
 
     },
     {
-      text: "البارحة",
+      text: 'البارحة',
       days: 1,
-      default: true,
+      default: true
     },
     {
-      text: "قبل أسبوع",
+      text: 'قبل أسبوع',
       days: 7,
-      default: false,
+      default: false
     },
     {
-      text: "قبل شهر",
+      text: 'قبل شهر',
       days: 30,
-      default: false,
+      default: false
     },
     {
-      text: "قبل 3 أشهر",
+      text: 'قبل 3 أشهر',
       days: 90,
-      default: false,
+      default: false
     },
     {
-      text: "قبل 1 سنة",
+      text: 'قبل 1 سنة',
       days: 365,
-      default: false,
-    },
-    ],
+      default: false
+    }
+    ]
   },
   ItemMoveDec: [{
-    value: "value",
-    label: "label"
-  },]
+    value: 'value',
+    label: 'label'
+  }]
 }

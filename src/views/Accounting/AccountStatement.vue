@@ -4,22 +4,30 @@
       <div class="filter-container">
         <el-row type="flex">
           <el-col :span="18">
-            <SearchBy Type="AccountSearchAny" :AccountId="listQuery.AccountId" @Set="
-              (v) => {
-                Account = v;
-                listQuery.AccountId = v.Id;
-              }
-            " />
+            <SearchBy
+              type="AccountSearchAny"
+              :account-id="listQuery.AccountId"
+              @Set="
+                (v) => {
+                  Account = v;
+                  listQuery.AccountId = v.Id;
+                }
+              "
+            />
           </el-col>
           <el-col :span="2">
             <el-popover placement="right" width="400" trigger="click">
-              <SearchBy Type="AccountSearchAny" :AccountId="listQuery.MergeAccountId" @Set="
-                (v) => {
-                  //  Account = v;
-                  listQuery.MergeAccountId = v.Id;
-                }
-              " />
-              <el-button type="primary" icon="fa fa-object-group" slot="reference">
+              <SearchBy
+                type="AccountSearchAny"
+                :account-id="listQuery.MergeAccountId"
+                @Set="
+                  (v) => {
+                    //  Account = v;
+                    listQuery.MergeAccountId = v.Id;
+                  }
+                "
+              />
+              <el-button slot="reference" type="primary" icon="fa fa-object-group">
                 دمج
               </el-button>
             </el-popover>
@@ -27,12 +35,15 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="10">
-            <Search-By-Date :Value="[listQuery.DateFrom, listQuery.DateTo]" @Set="
-              (v) => {
-                listQuery.DateFrom = v[0];
-                listQuery.DateTo = v[1];
-              }
-            " />
+            <Search-By-Date
+              :value="[listQuery.DateFrom, listQuery.DateTo]"
+              @Set="
+                (v) => {
+                  listQuery.DateFrom = v[0];
+                  listQuery.DateTo = v[1];
+                }
+              "
+            />
           </el-col>
 
           <el-col :span="9">
@@ -42,57 +53,62 @@
             </el-button>
           </el-col>
           <el-col :span="1">
-            <Drawer-Print Type="AccountStatement" :Data="{
-              Name: Account.Name,
-              Id: Account.Id,
-              Code: Account.Code,
-              DateFrom: listQuery.DateFrom,
-              DateTo: listQuery.DateTo,
-              EntryMovement: list,
-              TotalCredit: Totals.Credit,
-              TotalDebit: Totals.Debit,
-              TotalDebitCredit: Totals.Totals,
-              TotalRows: Totals.Rows,
-            }" /></el-col>
+            <Drawer-Print
+              type="AccountStatement"
+              :data="{
+                Name: Account.Name,
+                Id: Account.Id,
+                Code: Account.Code,
+                DateFrom: listQuery.DateFrom,
+                DateTo: listQuery.DateTo,
+                EntryMovement: list,
+                TotalCredit: Totals.Credit,
+                TotalDebit: Totals.Debit,
+                TotalDebitCredit: Totals.Totals,
+                TotalRows: Totals.Rows,
+              }"
+            /></el-col>
           <el-col :span="2">
             <DrawerAddEntry />
           </el-col>
         </el-row>
       </div>
 
-      <el-divider direction="vertical"></el-divider>
+      <el-divider direction="vertical" />
       <span>عدد القيود</span>
-      <el-divider direction="vertical"></el-divider>
+      <el-divider direction="vertical" />
       <span>{{ Totals.Rows }}</span>
-      <el-divider direction="vertical"></el-divider>
+      <el-divider direction="vertical" />
 
       <span>مجموع المدين</span>
-      <el-divider direction="vertical"></el-divider>
+      <el-divider direction="vertical" />
       <span>{{ Totals.Credit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+      <el-divider direction="vertical" />
 
       <span>مجموع الدائن</span>
-      <el-divider direction="vertical"></el-divider>
+      <el-divider direction="vertical" />
       <span>{{ Totals.Debit.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+      <el-divider direction="vertical" />
 
       <span>الرصيد</span>
-      <el-divider direction="vertical"></el-divider>
+      <el-divider direction="vertical" />
       <span>{{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }} JOD</span>
-      <el-divider direction="vertical"></el-divider>
+      <el-divider direction="vertical" />
 
       <el-table v-loading="listLoading" :data="list" fit border highlight-current-row style="width: 100%">
-        <el-table-column v-bind:label="$t('Accounting.EntryId')" prop="EntryId" width="80" align="center">
-        </el-table-column>
+        <el-table-column :label="$t('Accounting.EntryId')" prop="EntryId" width="80" align="center" />
         <el-table-column label="التاريخ" align="center" width="140">
           <template slot-scope="{ row }">
             <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('Accounting.FktableDescription')" prop="FkDescription"
-          align="center"></el-table-column>
-        <el-table-column v-bind:label="$t('Accounting.Notes')" prop="Description" align="center"></el-table-column>
-        <el-table-column label="رقم الحركة" prop="Fktable" align="center" width="80"></el-table-column>
+        <el-table-column
+          :label="$t('Accounting.FktableDescription')"
+          prop="FkDescription"
+          align="center"
+        />
+        <el-table-column :label="$t('Accounting.Notes')" prop="Description" align="center" />
+        <el-table-column label="رقم الحركة" prop="Fktable" align="center" width="80" />
         <el-table-column label="نوع الحركة" prop="TableName" align="center">
           <template slot-scope="{ row }">
             <router-link v-if="row.Type == 'Manual'" :to="'/EntryAccounting/Edit/' + row.EntryId">
@@ -141,9 +157,9 @@
             scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
           }}</template>
         </el-table-column>
-        <el-table-column v-bind:label="$t('Sales.Status')" width="100" align="center">
+        <el-table-column :label="$t('Sales.Status')" width="100" align="center">
           <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="EntryAccounting" />
+            <Status-Tag :status="scope.row.Status" table-name="EntryAccounting" />
           </template>
         </el-table-column>
       </el-table>
@@ -151,28 +167,24 @@
   </div>
 </template>
 <script>
-import Cookies from 'js-cookie'
-import { GetAccountStatement } from "@/api/EntryAccounting";
-import SearchByDate from "@/components/Date/SearchByDate";
-import StatusTag from "@/components/Oprationsys/StatusTag";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-import permission from "@/directive/permission/index.js";
-import AccountSearchAny from "@/components/TreeAccount/AccountSearchAny.vue";
-import waves from "@/directive/waves"; // waves directive
-import SearchBy from "@/components/DynamicComponents/SearchBy.vue";
-import { parseTime } from "@/utils";
-import Export from "@/components/Export";
-import DrawerAddEntry from "@/views/Accounting/EntryAccounting/components/DrawerAddEntry.vue";
+import { GetAccountStatement } from '@/api/EntryAccounting'
+import SearchByDate from '@/components/Date/SearchByDate'
+import StatusTag from '@/components/Oprationsys/StatusTag'
+import DrawerPrint from '@/components/PrintRepot/DrawerPrint.vue'
+import permission from '@/directive/permission/index.js'
+import waves from '@/directive/waves' // waves directive
+import SearchBy from '@/components/DynamicComponents/SearchBy.vue'
+import Export from '@/components/Export'
+import DrawerAddEntry from '@/views/Accounting/EntryAccounting/components/DrawerAddEntry.vue'
 
 export default {
   components: {
     StatusTag,
     SearchByDate,
     DrawerPrint,
-    AccountSearchAny,
     SearchBy,
     Export,
-    DrawerAddEntry,
+    DrawerAddEntry
   },
   directives: { waves, permission },
   data() {
@@ -181,38 +193,38 @@ export default {
       Totals: { Rows: 0, Totals: 0, Debit: 0, Credit: 0 },
       listLoading: false,
       listQuery: JSON.parse(localStorage.getItem('AccountStatement_ListQuery') || null) || {
-        DateFrom: "",
-        DateTo: "",
+        DateFrom: '',
+        DateTo: '',
         AccountId: undefined,
-        MergeAccountId: undefined,
+        MergeAccountId: undefined
       },
-      Account: {},
-    };
+      Account: {}
+    }
   },
   methods: {
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
 
       GetAccountStatement(this.listQuery).then((response) => {
         this.list = response.items.map((curr, i, array) => {
-          let lastTotal = i != 0 ? array[i - 1].TotalRow : 0;
+          const lastTotal = i !== 0 ? array[i - 1].TotalRow : 0
           //  console.log("lastTotal", lastTotal);
 
-          curr.TotalRow += lastTotal;
+          curr.TotalRow += lastTotal
 
           //  console.log(curr.TotalRow);
 
-          return curr;
-        });
-        this.Totals = response.Totals;
+          return curr
+        })
+        this.Totals = response.Totals
         localStorage.setItem('AccountStatement_ListQuery', JSON.stringify(this.listQuery))
 
-        this.listLoading = false;
-      });
+        this.listLoading = false
+      })
     },
     handleFilter() {
-      this.getList();
-    },
-  },
-};
+      this.getList()
+    }
+  }
+}
 </script>

@@ -2,54 +2,53 @@
   <div class="app-container" style="direction: rtl">
     <el-table height="500" :data="MembershipMovements" fit border highlight-current-row>
       >
-      <el-table-column prop="Id" label="رقم" align="center"></el-table-column>
+      <el-table-column prop="Id" label="رقم" align="center" />
 
-      <el-table-column prop="Name" label="الاشتراك" align="center"></el-table-column>
+      <el-table-column prop="Name" label="الاشتراك" align="center" />
       <el-table-column prop="TotalDays" label="مجموع الايام" align="center">
         <template slot-scope="scope">
           {{ scope.row.TotalDays }}
-          <el-tag type="warning" v-if="scope.row.Status > 0">
+          <el-tag v-if="scope.row.Status > 0" type="warning">
             رصيد التجميد :
             {{
               scope.row.MaxFreezeLimitDays -
-              scope.row.MembershipMovementOrders.reduce(
-                (a, b) =>
-                  a +
-                  (b.Status != 0 && b.Status != -1 && b.Status != -2 && b.Type != "Extra"
-                    ? Math.round(
+                scope.row.MembershipMovementOrders.reduce(
+                  (a, b) =>
+                    a +
+                    (b.Status != 0 && b.Status != -1 && b.Status != -2 && b.Type != "Extra"
+                      ? Math.round(
                         Math.abs(
                           (new Date(b.StartDate) - new Date(b.EndDate)) /
                             (24 * 60 * 60 * 1000)
                         )
                       )
-                    : 0),
-                0
-              )
+                      : 0),
+                  0
+                )
             }}
-          </el-tag></template
-        >
+          </el-tag></template>
       </el-table-column>
       <el-table-column label="تاريخ البدء" align="center" width="150">
         <template slot-scope="scope">
           <el-date-picker
+            v-model="scope.row.StartDate"
             format="yyyy-MM-dd"
             disabled
-            v-model="scope.row.StartDate"
-          ></el-date-picker>
+          />
         </template>
       </el-table-column>
       <el-table-column label="تاريخ الانتهاء" align="center" width="150">
         <template slot-scope="scope">
           <el-date-picker
+            v-model="scope.row.EndDate"
             format="yyyy-MM-dd"
             disabled
-            v-model="scope.row.EndDate"
-          ></el-date-picker>
+          />
         </template>
       </el-table-column>
       <el-table-column label="الحالة" width="100" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="MembershipMovement" />
+          <Status-Tag :status="scope.row.Status" table-name="MembershipMovement" />
         </template>
       </el-table-column>
       <el-table-column label="#" align="center">
@@ -62,60 +61,60 @@
                     (a, b) =>
                       a +
                       (b.Status != 0 &&
-                      b.Status != -1 &&
-                      b.Status != -2 &&
-                      b.Type != 'Extra'
+                        b.Status != -1 &&
+                        b.Status != -2 &&
+                        b.Type != 'Extra'
                         ? Math.round(
-                            Math.abs(
-                              (new Date(b.StartDate) - new Date(b.EndDate)) /
-                                (24 * 60 * 60 * 1000)
-                            )
-                          )
-                        : 0),
-                    0
-                  ) >=
-                scope.row.MinFreezeLimitDays
-              "
-              :MemberShipMovementId="scope.row.Id"
-              :MaxFreezeLimit="
-                scope.row.MaxFreezeLimitDays -
-                scope.row.MembershipMovementOrders.reduce(
-                  (a, b) =>
-                    a +
-                    (b.Status != 0 &&
-                    b.Status != -1 &&
-                    b.Status != -2 &&
-                    b.Type != 'Extra'
-                      ? Math.round(
                           Math.abs(
                             (new Date(b.StartDate) - new Date(b.EndDate)) /
                               (24 * 60 * 60 * 1000)
                           )
                         )
-                      : 0),
-                  0
-                )
+                        : 0),
+                    0
+                  ) >=
+                  scope.row.MinFreezeLimitDays
               "
-              :MinFreezeLimit="scope.row.MinFreezeLimitDays"
+              :member-ship-movement-id="scope.row.Id"
+              :max-freeze-limit="
+                scope.row.MaxFreezeLimitDays -
+                  scope.row.MembershipMovementOrders.reduce(
+                    (a, b) =>
+                      a +
+                      (b.Status != 0 &&
+                        b.Status != -1 &&
+                        b.Status != -2 &&
+                        b.Type != 'Extra'
+                        ? Math.round(
+                          Math.abs(
+                            (new Date(b.StartDate) - new Date(b.EndDate)) /
+                              (24 * 60 * 60 * 1000)
+                          )
+                        )
+                        : 0),
+                    0
+                  )
+              "
+              :min-freeze-limit="scope.row.MinFreezeLimitDays"
             />
-            <extra :MemberShipMovementId="scope.row.Id" :EndDate="scope.row.EndDate" />
+            <extra :member-ship-movement-id="scope.row.Id" :end-date="scope.row.EndDate" />
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="محرر" align="center" prop="EditorName"></el-table-column>
+      <el-table-column label="محرر" align="center" prop="EditorName" />
       <el-table-column v-if="checkPermission(['admin'])">
         <template slot-scope="scope">
           <el-row>
             <el-col :span="12">
               <Member-Ship-Movement-Edit
+                :membership-movement-id="scope.row.Id"
                 @Done="Done()"
-                :MembershipMovementId="scope.row.Id"
               />
             </el-col>
             <el-col :span="12">
               <Member-Ship-Movement-Delete
+                :membership-movement-id="scope.row.Id"
                 @Done="Done()"
-                :MembershipMovementId="scope.row.Id"
               />
             </el-col>
           </el-row>
@@ -124,25 +123,25 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table :data="props.row.MembershipMovementOrders">
-            <el-table-column label="#" prop="Id" align="center"></el-table-column>
-            <el-table-column label="النوع" prop="Type" align="center"></el-table-column>
+            <el-table-column label="#" prop="Id" align="center" />
+            <el-table-column label="النوع" prop="Type" align="center" />
 
             <el-table-column width="160" label="تاريخ البدء" align="center">
               <template slot-scope="scope">
                 <el-date-picker
+                  v-model="scope.row.StartDate"
                   format="yyyy-MM-dd"
                   disabled
-                  v-model="scope.row.StartDate"
-                ></el-date-picker>
+                />
               </template>
             </el-table-column>
             <el-table-column width="160" label="تاريخ الانتهاء" align="center">
               <template slot-scope="scope">
                 <el-date-picker
+                  v-model="scope.row.EndDate"
                   format="yyyy-MM-dd"
                   disabled
-                  v-model="scope.row.EndDate"
-                ></el-date-picker>
+                />
               </template>
             </el-table-column>
             <el-table-column label="مجموع الايام" align="center">
@@ -161,12 +160,12 @@
               label="ملاحظات"
               align="center"
               prop="Description"
-            ></el-table-column>
+            />
             <el-table-column label="الحالة" align="center">
               <template slot-scope="scope">
                 <Status-Tag
-                  :Status="scope.row.Status"
-                  TableName="MembershipMovementOrder"
+                  :status="scope.row.Status"
+                  table-name="MembershipMovementOrder"
                 />
               </template>
             </el-table-column>
@@ -174,36 +173,36 @@
               label="محرر"
               align="center"
               prop="EditorName"
-            ></el-table-column>
-            <el-table-column width="80" v-if="checkPermission(['admin'])">
+            />
+            <el-table-column v-if="checkPermission(['admin'])" width="80">
               <template slot-scope="scope">
                 <el-col :span="12">
-                  <DeleteFreeze :MemberShipMovementOrderId="scope.row.Id" />
+                  <DeleteFreeze :member-ship-movement-order-id="scope.row.Id" />
                 </el-col>
-                <el-col :span="12" v-if="scope.row.Status == 1">
+                <el-col v-if="scope.row.Status == 1" :span="12">
                   <EditFreeze
-                    :MaxFreezeLimit="
+                    :max-freeze-limit="
                       props.row.MaxFreezeLimitDays -
-                      props.row.MembershipMovementOrders.reduce(
-                        (a, b) =>
-                          a +
-                          (b.Status != 0 &&
-                          b.Status != -1 &&
-                          b.Status != -2 &&
-                          b.Id != scope.row.Id &&
-                          b.Type != 'Extra'
-                            ? Math.round(
+                        props.row.MembershipMovementOrders.reduce(
+                          (a, b) =>
+                            a +
+                            (b.Status != 0 &&
+                              b.Status != -1 &&
+                              b.Status != -2 &&
+                              b.Id != scope.row.Id &&
+                              b.Type != 'Extra'
+                              ? Math.round(
                                 Math.abs(
                                   (new Date(b.StartDate) - new Date(b.EndDate)) /
                                     (24 * 60 * 60 * 1000)
                                 )
                               )
-                            : 0),
-                        0
-                      )
+                              : 0),
+                          0
+                        )
                     "
-                    :MinFreezeLimit="props.row.MinFreezeLimitDays"
-                    :MemberShipMovementOrderId="scope.row.Id"
+                    :min-freeze-limit="props.row.MinFreezeLimitDays"
+                    :member-ship-movement-order-id="scope.row.Id"
                   />
                 </el-col>
               </template>
@@ -216,14 +215,14 @@
 </template>
 
 <script>
-import checkPermission from "@/utils/permission";
-import StatusTag from "@/components/Oprationsys/StatusTag";
-import Freeze from "./Dialogs/Freeze";
-import Extra from "./Dialogs/Extra";
-import MemberShipMovementEdit from "./Dialogs/MemberShipMovementEdit.vue";
-import MemberShipMovementDelete from "./Dialogs/MemberShipMovementDelete.vue";
-import EditFreeze from "./Dialogs/Edit-Freeze.vue";
-import DeleteFreeze from "./Dialogs/Delete-Freeze.vue";
+import checkPermission from '@/utils/permission'
+import StatusTag from '@/components/Oprationsys/StatusTag'
+import Freeze from './Dialogs/Freeze'
+import Extra from './Dialogs/Extra'
+import MemberShipMovementEdit from './Dialogs/MemberShipMovementEdit.vue'
+import MemberShipMovementDelete from './Dialogs/MemberShipMovementDelete.vue'
+import EditFreeze from './Dialogs/Edit-Freeze.vue'
+import DeleteFreeze from './Dialogs/Delete-Freeze.vue'
 
 export default {
   components: {
@@ -233,23 +232,23 @@ export default {
     MemberShipMovementDelete,
     EditFreeze,
     DeleteFreeze,
-    StatusTag,
+    StatusTag
   },
   props: {
     MembershipMovements: {
       type: Array,
       default: () => {
-        return null;
-      },
-    },
+        return null
+      }
+    }
   },
   methods: {
     checkPermission,
     Done() {
       this.$nextTick(() => {
-        this.$emit("Done");
-      });
-    },
-  },
-};
+        this.$emit('Done')
+      })
+    }
+  }
+}
 </script>

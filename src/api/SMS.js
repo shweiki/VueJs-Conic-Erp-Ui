@@ -1,4 +1,4 @@
-import request from '@/utils/RequestApi'
+import request from '@/utils/requestApi'
 import store from '@/store'
 import qs from 'qs';
 

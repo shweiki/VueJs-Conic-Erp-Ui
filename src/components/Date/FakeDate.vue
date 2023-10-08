@@ -1,7 +1,15 @@
 <template>
-  <el-date-picker v-model="date" style="width: 80%" clear-icon="false" :size="$store.getters.size" :type="type"
-    v-bind:placeholder="$t('CashPool.Date')" :format="$store.getters.settings.DateTimeFormat" :disabled="disabled"
-    @change="SetVal" />
+  <el-date-picker
+    v-model="date"
+    style="width: 80%"
+    clear-icon="false"
+    :size="$store.getters.size"
+    :type="type"
+    :placeholder="$t('CashPool.Date')"
+    :format="$store.getters.settings.DateTimeFormat"
+    :disabled="disabled"
+    @change="SetVal"
+  />
 </template>
 <script>
 import {
@@ -28,12 +36,12 @@ export default {
   },
   watch: {
     Value(val) {
-      if (val !== '') this.SetVal(new Date(val));
-      else this.SetVal(new Date());
+      if (val !== '') this.SetVal(new Date(val))
+      else this.SetVal(new Date())
     }
   },
   created() {
-    if (this.Value !== '') this.SetVal(new Date(this.Value));
+    if (this.Value !== '') this.SetVal(new Date(this.Value))
     else this.SetVal(new Date()) //   this.date = new Date();
   },
   methods: {

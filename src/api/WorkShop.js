@@ -1,4 +1,4 @@
-import request from '@/utils/RequestApi'
+import request from '@/utils/requestApi'
 import qs from 'qs';
 export function GetWorkShop(query) {
     return request({

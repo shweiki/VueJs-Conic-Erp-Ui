@@ -1,6 +1,5 @@
-import request from '@/utils/RequestApi'
-import qs from 'qs';
-
+import request from '@/utils/requestApi'
+import qs from 'qs'
 
 export function Create(data) {
   return request({
@@ -21,16 +20,7 @@ export function GetProfilePictureByObjId(query) {
   return request({
     url: '/Files/GetProfilePictureByObjId',
     method: 'get',
-    params:  query 
-    
-  })
-}
-export function FixBase64ToPathWithLoaded(query) {
-  return request({
-    url: '/Files/FixBase64ToPathWithLoaded',
-    method: 'get',
-    params:  query 
-    
+    params: query
   })
 }
 
@@ -38,15 +28,14 @@ export function GetFileByObjId(query) {
   return request({
     url: '/Files/GetFileByObjId',
     method: 'get',
-    params:  query 
-    
+    params: query
   })
 }
 export function GetFilesByObjId(query) {
   return request({
     url: '/Files/GetFilesByObjId',
     method: 'get',
-    params:  query 
-    
+    params: query
+
   })
 }

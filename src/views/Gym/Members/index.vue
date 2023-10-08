@@ -4,7 +4,7 @@
       <el-tab-pane
         v-for="item in tabMapOptions"
         :key="item.key"
-        v-bind:label="$t('PanelGroup.' + item.label)"
+        :label="$t('PanelGroup.' + item.label)"
         :name="item.key"
       >
         <keep-alive>
@@ -20,41 +20,41 @@
 </template>
 
 <script>
-import TabPane from "./components/TabPane";
+import TabPane from './components/TabPane'
 
 export default {
-  name: "Tab",
+  name: 'Tab',
   components: { TabPane },
   data() {
     return {
       tabMapOptions: [
-        { label: "MemberList", key: "ML" },
-        { label: "Receivables", key: "RM" },
-        { label: "Payable", key: "PM" },
-        { label: "MembershipmentOrdar", key: "MO" },
+        { label: 'MemberList', key: 'ML' },
+        { label: 'Receivables', key: 'RM' },
+        { label: 'Payable', key: 'PM' },
+        { label: 'MembershipmentOrdar', key: 'MO' }
       ],
-      activeName: "ML",
-      createdTimes: 0,
-    };
+      activeName: 'ML',
+      createdTimes: 0
+    }
   },
   watch: {
     activeName(val) {
-      this.$router.push(`${this.$route.path}?tab=${val}`);
-    },
+      this.$router.push(`${this.$route.path}?tab=${val}`)
+    }
   },
   created() {
     // init the default selected tab
-    const tab = this.$route.query.tab;
+    const tab = this.$route.query.tab
     if (tab) {
-      this.activeName = tab;
+      this.activeName = tab
     }
   },
   methods: {
     showCreatedTimes() {
-      this.createdTimes = this.createdTimes + 1;
-    },
-  },
-};
+      this.createdTimes = this.createdTimes + 1
+    }
+  }
+}
 </script>
 
 <style scoped>
