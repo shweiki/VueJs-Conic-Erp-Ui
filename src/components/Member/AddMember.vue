@@ -46,8 +46,6 @@
                 :format="$store.getters.settings.DateTimeFormat.replace(' HH:mm', '')"
               ></el-date-picker>
 
-              <!-- <birth-datepicker style="width :100%" attachment="bottom right" delimiter="/"
-                v-model="tempForm.DateofBirth" />-->
               <el-tag type="success" effect="dark">
                 العمر
                 {{ getAge(tempForm.DateofBirth) }}
@@ -157,14 +155,13 @@
 
 <script>
 import { Create, CheckMemberIsExist } from "@/api/Member";
-import VuePhoneNumberInput, { async } from "vue-phone-number-input";
+import VuePhoneNumberInput   from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
 import { SendSMS } from "@/api/Sms";
 import { LocalDateTime, DateTimeFormatter, Instant } from "@js-joda/core";
-import { connection } from "@/utils/signalR";
-import { GetDevice } from "@/api/Device";
+ import { GetDevice } from "@/api/Device";
 
 export default {
   name: "Member",
@@ -291,10 +288,10 @@ export default {
       });
     },
     getAge(BD) {
-      var today = new Date();
-      var birthDate = new Date(BD);
-      var age = today.getFullYear() - birthDate.getFullYear();
-      var m = today.getMonth() - birthDate.getMonth();
+      let today = new Date();
+      let birthDate = new Date(BD);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      let m = today.getMonth() - birthDate.getMonth();
       if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         age = age - 1;
       }
@@ -303,13 +300,12 @@ export default {
     },
     StartEnrollUser(objectId, name) {
       try {
-        this.signalRConnection = connection();
 
         GetDevice()
           .then((response) => {
             // handle success
             response.forEach(async (element) => {
-              await this.signalRConnection.invoke(
+              await this.$socket.invoke(
                 "EnrollUser",
                 element.Ip,
                 objectId,
@@ -324,7 +320,6 @@ export default {
           });
       } catch (err) {
         console.error(err);
-      } finally {
       }
     },
   },

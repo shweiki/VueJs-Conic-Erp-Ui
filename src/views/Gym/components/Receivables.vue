@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-divider direction="vertical"></el-divider>
+    <el-divider direction="vertical" />
     <span>{{ $t("PanelGroup.Total") }}</span>
-    <el-divider direction="vertical"></el-divider>
+    <el-divider direction="vertical" />
     <span>
       {{
         tableData
@@ -15,8 +15,9 @@
       icon="el-icon-printer"
       type="success"
       @click="print(tableData)"
-    ></el-button>
+    />
     <el-table
+      ref="multipleTable"
       v-loading="loading"
       :data="
         tableData.filter(
@@ -28,17 +29,16 @@
       border
       height="500"
       highlight-current-row
-      ref="multipleTable"
     >
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="#" prop="Id" width="120" align="center">
         <template slot="header" slot-scope="{}">
-          <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+          <el-button type="primary" icon="el-icon-refresh" @click="getdata()" />
         </template>
       </el-table-column>
       <el-table-column prop="Name" align="center">
         <template slot="header" slot-scope="{}">
-          <el-input v-model="search" v-bind:placeholder="$t('Members.Search')">
+          <el-input v-model="search" :placeholder="$t('Members.Search')">
             <template slot="append">{{ tableData.length }}</template>
           </el-input>
         </template>
@@ -49,15 +49,15 @@
         </template>
       </el-table-column>
       <el-table-column
-        v-bind:label="$t('Members.Phone1')"
+        :label="$t('Members.Phone1')"
         prop="PhoneNumber1"
         width="120"
-      ></el-table-column>
+      />
 
       <el-table-column
         prop="totalCredit"
         sortable
-        v-bind:label="$t('Account.Credit')"
+        :label="$t('Account.Credit')"
         width="120"
         align="center"
       >
@@ -66,7 +66,7 @@
         }}</template>
       </el-table-column>
       <el-table-column
-        v-bind:label="$t('Account.Debit')"
+        :label="$t('Account.Debit')"
         prop="totalDebit"
         sortable
         width="120"
@@ -76,7 +76,7 @@
           scope.row.TotalDebit.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
+      <el-table-column :label="$t('Account.funds')" width="120" align="center">
         <template slot-scope="scope">{{
           (scope.row.TotalCredit - scope.row.TotalDebit).toFixed(
             $store.getters.settings.ToFixed
@@ -88,33 +88,34 @@
 </template>
 
 <script>
-import { GetReceivablesMember } from "@/api/Member";
+import { GetReceivablesMember } from '@/api/Member'
+import printJS from 'print-js'
 
 export default {
   data() {
     return {
       loading: false,
       tableData: [],
-      search: "",
-    };
+      search: ''
+    }
   },
   created() {},
   methods: {
     getdata() {
-      this.loading = true;
+      this.loading = true
       GetReceivablesMember()
         .then((response) => {
           // handle success
-          console.log(response);
-          this.tableData = response;
+          console.log(response)
+          this.tableData = response
         })
         .catch((error) => {
           // handle error
-          console.log(error);
+          console.log(error)
         })
         .finally(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
     print(data) {
       data = data.map((Item) => ({
@@ -124,37 +125,37 @@ export default {
         دائن: Item.TotalDebit.toFixed(this.$store.getters.settings.ToFixed),
         مدين: Item.TotalCredit.toFixed(this.$store.getters.settings.ToFixed),
         الاسم: Item.Name,
-        رقم: Item.Id,
-      }));
+        رقم: Item.Id
+      }))
       printJS({
         printable: data,
-        properties: ["الرصيد", "دائن", "مدين", "الاسم", "رقم"],
-        type: "json",
+        properties: ['الرصيد', 'دائن', 'مدين', 'الاسم', 'رقم'],
+        type: 'json',
         header:
-          "<center> <h2>" +
+          '<center> <h2>' +
           this.tableData
             .reduce((a, b) => a + (b.TotalCredit - b.TotalDebit), 0)
             .toFixed(this.$store.getters.settings.ToFixed) +
           "</h2></center><h3 style='float:right'>  التاريخ  : " +
           this.formatDate(new Date()) +
-          "</h3>",
+          '</h3>',
 
-        gridHeaderStyle: "color: red;  border: 2px solid #3971A5;",
-        gridStyle: "border: 2px solid #3971A5; text-align: center;",
-      });
+        gridHeaderStyle: 'color: red;  border: 2px solid #3971A5;',
+        gridStyle: 'border: 2px solid #3971A5; text-align: center;'
+      })
     },
     formatDate(date) {
-      let d = new Date(date),
-        day = "" + d.getDate(),
-        month = "" + (d.getMonth() + 1),
-        year = d.getFullYear();
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
+      const d = new Date(date)
+      let day = '' + d.getDate()
+      let month = '' + (d.getMonth() + 1)
+      const year = d.getFullYear()
+      if (month.length < 2) month = '0' + month
+      if (day.length < 2) day = '0' + day
 
-      return [day, month, year].join("/");
-    },
-  },
-};
+      return [day, month, year].join('/')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

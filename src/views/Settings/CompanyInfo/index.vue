@@ -15,7 +15,7 @@
                 type="primary"
                 icon="el-icon-upload"
                 @click="imagecropperShow = true"
-              ></el-button>
+              />
             </pan-thumb>
 
             <image-cropper
@@ -24,77 +24,77 @@
               :width="150"
               :height="150"
               lang-type="ar"
-              TableName="CompanyInfo"
-              :ObjectId="1"
+              table-name="CompanyInfo"
+              :object-id="1"
               @close="close"
               @crop-upload-success="cropSuccess"
               @SetImage="SetBaseImage"
             />
           </el-col>
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Company.NickName')" prop="nickName">
-              <el-input type="text" v-model="tempForm.nickName"></el-input>
+            <el-form-item :label="$t('Company.NickName')" prop="nickName">
+              <el-input v-model="tempForm.nickName" type="text" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-bind:label="$t('Company.Name')" prop="Name">
-              <el-input type="text" v-model="tempForm.Name"></el-input>
+            <el-form-item :label="$t('Company.Name')" prop="Name">
+              <el-input v-model="tempForm.Name" type="text" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="24">
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Company.Fax')" prop="Fax">
-              <el-input type="text" v-model="tempForm.Fax"></el-input>
+            <el-form-item :label="$t('Company.Fax')" prop="Fax">
+              <el-input v-model="tempForm.Fax" type="text" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Company.Address')" prop="address">
-              <el-input type="text" v-model="tempForm.Address"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="24">
-          <el-col :span="12">
-            <el-form-item v-bind:label="$t('Company.PhoneNumber2')" prop="PhoneNumber2">
-              <el-input type="text" v-model="tempForm.PhoneNumber2"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-bind:label="$t('Company.PhoneNumber1')" prop="PhoneNumber1">
-              <el-input type="text" v-model="tempForm.PhoneNumber1"></el-input>
+            <el-form-item :label="$t('Company.Address')" prop="address">
+              <el-input v-model="tempForm.Address" type="text" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="24">
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Company.TaxNumber')" prop="TaxNumber">
-              <el-input type="text" v-model="tempForm.TaxNumber"></el-input>
+            <el-form-item :label="$t('Company.PhoneNumber2')" prop="PhoneNumber2">
+              <el-input v-model="tempForm.PhoneNumber2" type="text" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Company.RateNumber')" prop="RateNumber">
-              <el-input type="text" v-model="tempForm.RateNumber"></el-input>
+            <el-form-item :label="$t('Company.PhoneNumber1')" prop="PhoneNumber1">
+              <el-input v-model="tempForm.PhoneNumber1" type="text" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="24">
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Company.Website')" prop="website">
-              <el-input type="text" v-model="tempForm.Website"></el-input>
+            <el-form-item :label="$t('Company.TaxNumber')" prop="TaxNumber">
+              <el-input v-model="tempForm.TaxNumber" type="text" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('Company.Email')" prop="Email">
-              <el-input type="text" v-model="tempForm.Email"></el-input>
+            <el-form-item :label="$t('Company.RateNumber')" prop="RateNumber">
+              <el-input v-model="tempForm.RateNumber" type="text" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item :label="$t('Company.Website')" prop="website">
+              <el-input v-model="tempForm.Website" type="text" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="$t('Company.Email')" prop="Email">
+              <el-input v-model="tempForm.Email" type="text" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item
-          v-bind:label="$t('Company.BusinessDescription')"
+          :label="$t('Company.BusinessDescription')"
           prop="BusinessDescription"
         >
-          <el-input type="textarea" v-model="tempForm.BusinessDescription"></el-input>
+          <el-input v-model="tempForm.BusinessDescription" type="textarea" />
         </el-form-item>
       </el-form>
 
@@ -106,102 +106,100 @@
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
-import { GetCompanyInfo, Edit } from "@/api/CompanyInfo";
-import ImageCropper from "@/components/ImageCropper";
-import PanThumb from "@/components/PanThumb";
+import { GetCompanyInfo, Edit } from '@/api/CompanyInfo'
+import ImageCropper from '@/components/ImageCropper'
+import PanThumb from '@/components/PanThumb'
 export default {
-  name: "TinymceDemo",
-  components: { Tinymce, ImageCropper, PanThumb },
+  components: { ImageCropper, PanThumb },
   data() {
     return {
       imagecropperShow: false,
       imagecropperKey: 0,
       tempForm: {
         Id: undefined,
-        Name: "",
-        NickName: "",
-        TaxNumber: "",
-        Logo: "",
-        BusinessDescription: "",
-        RateNumber: "",
-        Address: "",
-        PhoneNumber1: "",
-        PhoneNumber2: "",
-        Fax: "",
-        Email: "",
-        Website: "",
+        Name: '',
+        NickName: '',
+        TaxNumber: '',
+        Logo: '',
+        BusinessDescription: '',
+        RateNumber: '',
+        Address: '',
+        PhoneNumber1: '',
+        PhoneNumber2: '',
+        Fax: '',
+        Email: '',
+        Website: ''
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur",
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur'
           },
           {
             min: 3,
             max: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
   created() {
-    this.getdata();
+    this.getdata()
   },
   methods: {
     SetBaseImage(base) {
-      console.log(base);
-      this.tempForm.Logo = base;
+      console.log(base)
+      this.tempForm.Logo = base
     },
     cropSuccess(resData) {
-      console.log("i'm here " + resData);
-      this.imagecropperShow = false;
-      this.imagecropperKey = this.imagecropperKey + 1;
+      console.log("i'm here " + resData)
+      this.imagecropperShow = false
+      this.imagecropperKey = this.imagecropperKey + 1
     },
     close() {
-      this.imagecropperShow = false;
+      this.imagecropperShow = false
     },
     getdata() {
       GetCompanyInfo()
         .then((response) => {
           // handle success
-          if (response) this.tempForm = response;
-          this.loading = false;
+          if (response) this.tempForm = response
+          this.loading = false
         })
         .catch((error) => {
           // handle error
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
             .then((response) => {
-              this.getdata();
-              this.dialogFormVisible = false;
+              this.getdata()
+              this.dialogFormVisible = false
               this.$notify({
-                title: "تم",
-                message: "تم التعديل بنجاح",
-                type: "success",
-                duration: 2000,
-              });
+                title: 'تم',
+                message: 'تم التعديل بنجاح',
+                type: 'success',
+                duration: 2000
+              })
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

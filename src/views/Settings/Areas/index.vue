@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" >
+      <div slot="header">
         <Add-Dialog @Done="getdata()" />
         <span>{{ $t("Area.Areas") }}</span>
       </div>
@@ -23,69 +23,68 @@
             <el-button
               type="success"
               icon="el-icon-refresh"
-              @click="getdata()"
               :size="$store.getters.size"
-            ></el-button>
+              @click="getdata()"
+            />
           </template>
         </el-table-column>
         <el-table-column
-          v-bind:label="$t('Area.City')"
+          :label="$t('Area.City')"
           prop="Adress1"
           width="200"
           align="center"
         >
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Area.City')" />
+            <el-input v-model="search" :placeholder="$t('Area.City')" />
           </template>
         </el-table-column>
         <el-table-column
-          v-bind:label="$t('Area.Address1')"
+          :label="$t('Area.Address1')"
           prop="Adress2"
           width="200"
           align="center"
-        ></el-table-column>
+        />
         <el-table-column
-          v-bind:label="$t('Area.Address2')"
+          :label="$t('Area.Address2')"
           prop="Adress3"
           width="120"
           align="center"
-        ></el-table-column>
+        />
         <el-table-column
-          v-bind:label="$t('Area.DelievryPrice')"
+          :label="$t('Area.DelievryPrice')"
           prop="DelievryPrice"
           width="120"
           align="center"
-        ></el-table-column>
+        />
 
-      <el-table-column
-          v-bind:label="$t('Classification.Status')"
+        <el-table-column
+          :label="$t('Classification.Status')"
           width="120"
           align="center"
         >
           <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="Area" />
+            <Status-Tag :status="scope.row.Status" table-name="Area" />
           </template>
         </el-table-column>
-          <el-table-column align="right" width="200">
+        <el-table-column align="right" width="200">
           <template slot-scope="scope">
             <el-button
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-            ></el-button>
-              <Next-Oprations
-                :ObjId="scope.row.Id"
-                :Status="scope.row.Status"
-                TableName="Area"
-                @Done="getdata"
             />
-             <Dialog-Action-Log TableName="Area" :ObjId="scope.row.Id" />
-         
-             
+            <Next-Oprations
+              :obj-id="scope.row.Id"
+              :status="scope.row.Status"
+              table-name="Area"
+              @Done="getdata"
+            />
+            <Dialog-Action-Log table-name="Area" :obj-id="scope.row.Id" />
+
           </template>
-        </el-table-column>  
+        </el-table-column>
       </el-table>
     </el-card>
-       <el-dialog
+    <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
       :title="textMapForm[dialogFormStatus]"
@@ -98,16 +97,16 @@
         label-position="top"
         label-width="70px"
       >
-        <el-form-item v-bind:label="$t('Area.City')" prop="Adress1">
-          <el-input type="text" v-model="tempForm.Adress1"></el-input>
+        <el-form-item :label="$t('Area.City')" prop="Adress1">
+          <el-input v-model="tempForm.Adress1" type="text" />
         </el-form-item>
-        <el-form-item v-bind:label="$t('Area.Address1')" prop="Adress2">
-          <el-input type="textarea" v-model="tempForm.Adress2"></el-input>
+        <el-form-item :label="$t('Area.Address1')" prop="Adress2">
+          <el-input v-model="tempForm.Adress2" type="textarea" />
         </el-form-item>
-        <el-form-item v-bind:label="$t('Area.Address2')" prop="Adress3">
-          <el-input type="textarea" v-model="tempForm.Adress3"></el-input>
+        <el-form-item :label="$t('Area.Address2')" prop="Adress3">
+          <el-input v-model="tempForm.Adress3" type="textarea" />
         </el-form-item>
-         <el-form-item v-bind:label="$t('Area.DelievryPrice')" prop="DelievryPrice">
+        <el-form-item :label="$t('Area.DelievryPrice')" prop="DelievryPrice">
           <el-input-number
             v-model="tempForm.DelievryPrice"
             :precision="2"
@@ -115,7 +114,7 @@
             :min="0.0"
             :max="1500"
             @focus="$event.target.select()"
-          ></el-input-number>
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -123,8 +122,7 @@
         <el-button
           type="primary"
           @click="dialogFormStatus === 'create' ? createData() : updateData()"
-          >حفظ</el-button
-        >
+        >حفظ</el-button>
       </div>
     </el-dialog>
     <el-dialog
@@ -142,10 +140,10 @@
         style="width: 400px margin-left:50px"
       >
         <el-form-item
-          v-bind:label="$t('Classification.OperationNote')"
+          :label="$t('Classification.OperationNote')"
           prop="Description"
         >
-          <el-input type="textarea" v-model="tempOpration.Description"></el-input>
+          <el-input v-model="tempOpration.Description" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -157,14 +155,14 @@
   </div>
 </template>
 <script>
-import { GetAreas, Edit } from "@/api/Area";
-import AddDialog from "@/views/Settings/Areas/AddDialog.vue";
-import { ChangeObjStatus } from "@/api/Oprationsys";
-import StatusTag from "@/components/Oprationsys/StatusTag";
-import NextOprations from "@/components/Oprationsys/NextOprations";
-import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
+import { GetAreas, Edit } from '@/api/Area'
+import AddDialog from '@/views/Settings/Areas/AddDialog.vue'
+import { ChangeObjStatus } from '@/api/Oprationsys'
+import StatusTag from '@/components/Oprationsys/StatusTag'
+import NextOprations from '@/components/Oprationsys/NextOprations'
+import DialogActionLog from '@/components/ActionLog/DialogActionLog.vue'
 export default {
-  name: "Area",
+  name: 'Area',
   components: { StatusTag, NextOprations, AddDialog, DialogActionLog },
   data() {
     return {
@@ -172,163 +170,162 @@ export default {
       loading: true,
       dialogFormVisible: false,
       dialogOprationVisible: false,
-      dialogFormStatus: "",
-      search: "",
+      dialogFormStatus: '',
+      search: '',
       textMapForm: {
-        update: "تعديل",
-        create: "إضافة",
+        update: 'تعديل',
+        create: 'إضافة'
       },
-           textOpration: {
-        OprationDescription: "",
-        ArabicOprationDescription: "",
-        IconClass: "",
-        ClassName: "",
+      textOpration: {
+        OprationDescription: '',
+        ArabicOprationDescription: '',
+        IconClass: '',
+        ClassName: ''
       },
-        tempForm: {
+      tempForm: {
         Id: undefined,
-        Adress1: "",
-        Adress2: "",
-        Adress3: "",
-        DelievryPrice: 0.0,
+        Adress1: '',
+        Adress2: '',
+        Adress3: '',
+        DelievryPrice: 0.0
       },
-            rulesForm: {
+      rulesForm: {
         Name: [
           {
             required: true,
-            message: "يجب إدخال اسم ",
-            trigger: "blur",
+            message: 'يجب إدخال اسم ',
+            trigger: 'blur'
           },
           {
             min: 3,
             max: 50,
-            message: "الرجاء إدخال اسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
+            message: 'الرجاء إدخال اسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف',
+            trigger: 'blur'
+          }
+        ]
       },
-          tempOpration: {
+      tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
-        Description: "",
+        Description: ''
       },
-           rulesOpration: {
+      rulesOpration: {
         Description: [
           {
             required: true,
-            message: "يجب إدخال ملاحظة للعملية",
-            trigger: "blur",
+            message: 'يجب إدخال ملاحظة للعملية',
+            trigger: 'blur'
           },
           {
             min: 5,
             max: 150,
-            message: "الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            message: 'الرجاء إدخال اسم لا يقل عن 5 حروف و لا يزيد عن 150 حرف',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
   created() {
-    this.getdata();
+    this.getdata()
   },
   methods: {
     getdata() {
-      this.loading = true;
+      this.loading = true
       GetAreas()
         .then((response) => {
           // handle success
-          console.log(response);
-          this.tableData = response;
-          this.loading = false;
+          console.log(response)
+          this.tableData = response
+          this.loading = false
         })
         .catch((error) => {
           // handle error
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-      resetTempForm() {
+    resetTempForm() {
       this.tempForm = {
         Id: undefined,
-        Adress1: "",
-        Adress2: "",
-        Adress3: "",
-        DelievryPrice: 0.0,
-      };
+        Adress1: '',
+        Adress2: '',
+        Adress3: '',
+        DelievryPrice: 0.0
+      }
     },
 
     handleUpdate(row) {
-      console.log(row);
-      this.tempForm.Id = row.Id;
-      this.tempForm.Adress1 = row.Adress1;
-      this.tempForm.Adress2 = row.Adress2;
-      this.tempForm.Adress3 = row.Adress3;
-      this.tempForm.DelievryPrice = row.DelievryPrice;
-      this.dialogFormStatus = "update";
-      this.dialogFormVisible = true;
-      
+      console.log(row)
+      this.tempForm.Id = row.Id
+      this.tempForm.Adress1 = row.Adress1
+      this.tempForm.Adress2 = row.Adress2
+      this.tempForm.Adress3 = row.Adress3
+      this.tempForm.DelievryPrice = row.DelievryPrice
+      this.dialogFormStatus = 'update'
+      this.dialogFormVisible = true
     },
     updateData() {
-      this.$refs["AreaForm"].validate((valid) => {
+      this.$refs['AreaForm'].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
             .then((response) => {
-              this.getdata();
-              this.dialogFormVisible = false;
+              this.getdata()
+              this.dialogFormVisible = false
               this.$notify({
-                message: "تم التعديل بنجاح",
-                type: "success",
-                duration: 2000,
-              });
+                message: 'تم التعديل بنجاح',
+                type: 'success',
+                duration: 2000
+              })
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
-        handleOprationsys(ObjId, Opration) {
-      this.dialogOprationVisible = true;
+    handleOprationsys(ObjId, Opration) {
+      this.dialogOprationVisible = true
       // text
-      this.textOpration.OprationDescription = Opration.OprationDescription;
-      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription;
-      this.textOpration.IconClass = Opration.IconClass;
-      this.textOpration.ClassName = Opration.ClassName;
-      /// temp
-      this.tempOpration.ObjId = ObjId;
-      this.tempOpration.OprationId = Opration.Id;
-      this.tempOpration.Description = "";
+      this.textOpration.OprationDescription = Opration.OprationDescription
+      this.textOpration.ArabicOprationDescription = Opration.ArabicOprationDescription
+      this.textOpration.IconClass = Opration.IconClass
+      this.textOpration.ClassName = Opration.ClassName
+      // / temp
+      this.tempOpration.ObjId = ObjId
+      this.tempOpration.OprationId = Opration.Id
+      this.tempOpration.Description = ''
     },
-       createOprationData() {
-      this.$refs["dataOpration"].validate((valid) => {
+    createOprationData() {
+      this.$refs['dataOpration'].validate((valid) => {
         if (valid) {
-          console.log(this.tempOpration);
+          console.log(this.tempOpration)
           ChangeObjStatus({
             ObjId: this.tempOpration.ObjId,
             OprationId: this.tempOpration.OprationId,
-            Description: this.tempOpration.Description,
+            Description: this.tempOpration.Description
           })
             .then((response) => {
-              this.getdata();
-              this.dialogOprationVisible = false;
+              this.getdata()
+              this.dialogOprationVisible = false
               this.$notify({
-                title: "تم  ",
-                message: "تمت العملية بنجاح",
-                type: "success",
-                duration: 2000,
-              });
+                title: 'تم  ',
+                message: 'تمت العملية بنجاح',
+                type: 'success',
+                duration: 2000
+              })
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>

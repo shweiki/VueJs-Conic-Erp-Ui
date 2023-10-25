@@ -1,40 +1,40 @@
 <template>
-  <el-input disabled v-model="lastLog"></el-input>
+  <el-input v-model="lastLog" disabled />
 </template>
 <script>
-import { GetlastLogByUserId } from "@/api/DeviceLog";
-import { parseTime } from "@/utils";
+import { GetlastLogByUserId } from '@/api/DeviceLog'
+import { parseTime } from '@/utils'
 
 export default {
   props: {
-    UserId: {
+    userId: {
       type: String,
-      required: true,
+      required: true
     },
-    TableName: {
+    tableName: {
       type: String,
-      required: true,
-    },
-  },
-  watch: {
-    UserId(val) {
-      if (val) this.GetlastLog(val);
-    },
+      required: true
+    }
   },
   data() {
     return {
-      lastLog: "لا يوجد",
-    };
+      lastLog: 'لا يوجد'
+    }
+  },
+  watch: {
+    UserId(val) {
+      if (val) this.GetlastLog(val)
+    }
   },
   methods: {
     GetlastLog(val) {
       GetlastLogByUserId({
         UserId: val, // || this.UserId,
-        TableName: this.TableName,
+        TableName: this.TableName
       }).then((res) => {
-        if (res) this.lastLog = parseTime(res, "{y}-{m}-{d} {h}:{i}");
-      });
-    },
-  },
-};
+        if (res) this.lastLog = parseTime(res, '{y}-{m}-{d} {h}:{i}')
+      })
+    }
+  }
+}
 </script>

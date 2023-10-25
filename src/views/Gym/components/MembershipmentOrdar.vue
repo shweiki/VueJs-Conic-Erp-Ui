@@ -1,22 +1,25 @@
 <template>
   <div>
-    <el-button style="float: left" type="success" icon="fa fa-save" @click="approval()"
-      >موافقة</el-button
-    >
+    <el-button
+      style="float: left"
+      type="success"
+      icon="fa fa-save"
+      @click="approval()"
+    >موافقة</el-button>
     <el-table
+      ref="multipleTable"
       v-loading="loading"
       :data="tableData"
       fit
       border
       height="500"
       highlight-current-row
-      ref="multipleTable"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="50" align="center"></el-table-column>
+      <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="#" prop="Id" width="120" align="center">
         <template slot="header" slot-scope="{}">
-          <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
+          <el-button type="primary" icon="el-icon-refresh" @click="getdata()" />
         </template>
       </el-table-column>
       <el-table-column prop="Name" label="الاشتراك" align="center">
@@ -30,25 +33,25 @@
         prop="MembershipMovementType"
         label="الفترة"
         align="center"
-      ></el-table-column>
-      <el-table-column prop="Type" label="طلب" align="center"></el-table-column>
+      />
+      <el-table-column prop="Type" label="طلب" align="center" />
 
       <el-table-column label="تاريخ البدء" align="center">
         <template slot-scope="scope">
           <el-date-picker
+            v-model="scope.row.StartDate"
             :format="$store.getters.settings.DateTimeFormat"
             disabled
-            v-model="scope.row.StartDate"
-          ></el-date-picker>
+          />
         </template>
       </el-table-column>
       <el-table-column label="تاريخ الانتهاء" align="center">
         <template slot-scope="scope">
           <el-date-picker
+            v-model="scope.row.EndDate"
             :format="$store.getters.settings.DateTimeFormat"
             disabled
-            v-model="scope.row.EndDate"
-          ></el-date-picker>
+          />
         </template>
       </el-table-column>
       <el-table-column label="مجموع الايام" align="center">
@@ -67,15 +70,15 @@
         align="center"
         label="ملاحظات"
         prop="Description"
-      ></el-table-column>
-      <el-table-column label="محرر" align="center" prop="EditorName"></el-table-column>
+      />
+      <el-table-column label="محرر" align="center" prop="EditorName" />
 
       <el-table-column width="120" align="center">
         <template slot-scope="scope">
           <Next-Oprations
-            :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="MembershipMovementOrder"
+            :obj-id="scope.row.Id"
+            :status="scope.row.Status"
+            table-name="MembershipMovementOrder"
             @Done="getdata"
           />
         </template>
@@ -85,9 +88,9 @@
 </template>
 
 <script>
-import { GetMembershipMovementOrderByStatus } from "@/api/MembershipMovementOrder";
-import { ChangeArrObjStatus } from "@/api/Oprationsys";
-import NextOprations from "@/components/Oprationsys/NextOprations";
+import { GetMembershipMovementOrderByStatus } from '@/api/MembershipMovementOrder'
+import { ChangeArrObjStatus } from '@/api/Oprationsys'
+import NextOprations from '@/components/Oprationsys/NextOprations'
 
 export default {
   components: { NextOprations },
@@ -95,55 +98,56 @@ export default {
     return {
       loading: true,
       tableData: [],
-      Selection: [],
-    };
+      Selection: []
+    }
   },
   created() {
-    this.getdata();
+    this.getdata()
   },
   methods: {
     getdata() {
-      this.loading = true;
+      this.loading = true
       GetMembershipMovementOrderByStatus({ Status: 0 })
         .then((response) => {
           // handle success
-          console.log(response);
-          this.tableData = response;
-          this.loading = false;
+          console.log(response)
+          this.tableData = response
+          this.loading = false
         })
         .catch((error) => {
           // handle error
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
 
     handleSelectionChange(val) {
-      this.Selection = val;
+      this.Selection = val
     },
     approval() {
-      if (this.Selection.length > 0)
+      if (this.Selection.length > 0) {
         ChangeArrObjStatus({
           ObjsId: this.Selection.map((x) => x.Id),
-          TableName: "MembershipMovementOrder",
+          TableName: 'MembershipMovementOrder',
           Status: 1,
-          Description: "طلب تجميد او زيادة موافق عليه",
+          Description: 'طلب تجميد او زيادة موافق عليه'
         }).then((response) => {
-          this.getdata();
+          this.getdata()
           this.$notify({
-            title: "تم ",
-            message: "تم الإضافة بنجاح",
-            type: "success",
-            duration: 2000,
-          });
+            title: 'تم ',
+            message: 'تم الإضافة بنجاح',
+            type: 'success',
+            duration: 2000
+          })
           this.$nextTick(() => {
             this.$router.replace({
-              path: "/redirect" + this.$route.fullPath,
-            });
-          });
-        });
-    },
-  },
-};
+              path: '/redirect' + this.$route.fullPath
+            })
+          })
+        })
+      }
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

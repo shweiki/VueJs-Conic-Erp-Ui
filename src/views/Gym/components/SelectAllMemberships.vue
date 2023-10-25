@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="block">
-      <el-select v-model="value" @change="SetVal" placeholder="اشتراكات">
+      <el-select v-model="value" placeholder="اشتراكات" @change="SetVal">
         <el-option
           v-for="item in options"
           :key="item.Id"
@@ -9,9 +9,9 @@
           :value="item.Id"
         >
           <span style="float: left">{{ item.Name }}</span>
-          <span style="float: right; color: #8492a6; font-size: 13px"
-            >يوم {{ item.NumberDays }}</span
-          >
+          <span
+            style="float: right; color: #8492a6; font-size: 13px"
+          >يوم {{ item.NumberDays }}</span>
         </el-option>
       </el-select>
     </div>
@@ -24,16 +24,16 @@
   </div>
 </template>
 <script>
-import { GetMembership } from "@/api/Membership";
+import { GetMembership } from '@/api/Membership'
 
 export default {
-  props: ["MembershipId"],
+  props: ['membershipId'],
   data() {
     return {
       options: [
         {
           Id: 0,
-          Name: "لا يوجد بيانات",
+          Name: 'لا يوجد بيانات',
           Description: null,
           FullDayPrice: 0,
           MinFreezeLimitDays: 0,
@@ -44,34 +44,30 @@ export default {
           Tax: 0,
           Rate: 0,
           NumberClass: 0,
-          TotalMembers: 0,
-        },
+          TotalMembers: 0
+        }
       ],
       value: 2,
-      temp:{}
-    };
+      temp: {}
+    }
   },
   watch: {
     MembershipId(val) {
-      if (val) this.SetVal(val);
-    },
+      if (val) this.SetVal(val)
+    }
   },
   created() {
-    GetMembership()
-      .then((response) => {
-        this.options = response;
-        this.SetVal(response[0].Id);
-      })
-      .catch((error) => {
-        reject(error);
-      });
+    GetMembership().then((response) => {
+      this.options = response
+      this.SetVal(response[0].Id)
+    })
   },
   methods: {
     SetVal(val = 0) {
-      this.temp = this.options.find((obj) => obj.Id == val);
-      this.value = val;
-      this.$emit("Set", this.temp);
-    },
-  },
-};
+      this.temp = this.options.find((obj) => obj.Id === val)
+      this.value = val
+      this.$emit('Set', this.temp)
+    }
+  }
+}
 </script>

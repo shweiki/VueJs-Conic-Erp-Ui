@@ -26,77 +26,73 @@
               type="primary"
               icon="el-icon-refresh"
               @click="getdata()"
-            ></el-button>
+            />
           </template>
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot="header" slot-scope="{}">
-            <el-input v-model="search" v-bind:placeholder="$t('Classification.Name')" />
+            <el-input v-model="search" :placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
         <el-table-column
           prop="Ip"
           :label="$t('Classification.Ip')"
           align="center"
-        ></el-table-column>
+        />
         <el-table-column
           prop="Port"
           :label="$t('Classification.Port')"
           align="center"
-        ></el-table-column>
+        />
         <el-table-column
-          v-bind:label="$t('Classification.Notes')"
+          :label="$t('Classification.Notes')"
           prop="Description"
           width="220"
           align="center"
-        ></el-table-column>
+        />
         <el-table-column :label="$t('Classification.Edit')" align="center">
           <template slot-scope="scope">
-            <edit-device :DeviceId="scope.row.Id" />
+            <edit-device :device-id="scope.row.Id" />
           </template>
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot-scope="scope">
             <el-button
-              @click="GetLogData(scope.row.Ip)"
               :size="$store.getters.size"
               type="primary"
+              @click="GetLogData(scope.row.Ip)"
             >
               سحب جميع سجلات
             </el-button>
 
             <el-button
-              @click="EnrollAllUser(scope.row.Ip)"
               :size="$store.getters.size"
               type="warning"
+              @click="EnrollAllUser(scope.row.Ip)"
             >
               ارسال جميع معلومات
             </el-button>
 
             <el-button
+              :size="$store.getters.size"
+              type="danger"
               @click="ClearLog(scope.row.Ip)"
-              :size="$store.getters.size"
-              type="danger"
-              >مسح سجلات المشتركين</el-button
-            >
+            >مسح سجلات المشتركين</el-button>
             <el-button
+              :size="$store.getters.size"
+              type="success"
               @click="ClearAdministrators(scope.row.Ip)"
-              :size="$store.getters.size"
-              type="success"
-              >Clear Administrators</el-button
-            >
+            >Clear Administrators</el-button>
             <el-button
-              @click="TurnOffDevice(scope.row.Ip)"
               :size="$store.getters.size"
               type="danger"
-              >إيقاف تشغيل الجهاز</el-button
-            >
+              @click="TurnOffDevice(scope.row.Ip)"
+            >إيقاف تشغيل الجهاز</el-button>
             <el-button
-              @click="RestartDevice(scope.row.Ip)"
               :size="$store.getters.size"
               type="success"
-              >اعادة تشغيل الجهاز</el-button
-            >
+              @click="RestartDevice(scope.row.Ip)"
+            >اعادة تشغيل الجهاز</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -105,108 +101,105 @@
 </template>
 
 <script>
-import { GetDevice } from "@/api/Device";
-import AddDevice from "@/components/Device/AddDevice.vue";
-import EditDevice from "@/components/Device/EditDevice.vue";
-import { connection } from "@/utils/signalR";
-import { getToken } from "@/utils/auth";
+import { GetDevice } from '@/api/Device'
+import AddDevice from '@/components/Device/AddDevice.vue'
+import EditDevice from '@/components/Device/EditDevice.vue'
+import { getToken } from '@/utils/auth'
 
 export default {
-  name: "Device",
+  name: 'Device',
   components: { AddDevice, EditDevice },
   data() {
     return {
-      signalRConnection: null,
       tableData: [],
       loading: true,
-      search: "",
-      response: "",
-    };
+      search: '',
+      response: ''
+    }
   },
   created() {
-    this.getdata();
-    this.signalRConnection = connection();
+    this.getdata()
   },
   methods: {
     getdata() {
-      this.loading = true;
+      this.loading = true
       GetDevice()
         .then((response) => {
           // handle success
-          console.log(response);
-          this.tableData = response;
-          this.loading = false;
+          console.log(response)
+          this.tableData = response
+          this.loading = false
         })
         .catch((error) => {
           // handle error
-          this.response = error;
-          console.log(error);
-        });
+          this.response = error
+          console.log(error)
+        })
     },
     async EnrollAllUser(Ip) {
-      this.loading = true;
+      this.loading = true
       try {
-        await this.signalRConnection.invoke(
-          "EnrollServerUsers",
+        await this.$socket.invoke(
+          'EnrollServerUsers',
           Ip,
-          getToken().replace("Bearer ", "")
-        );
+          getToken().replace('Bearer ', '')
+        )
       } catch (err) {
-        console.error(err);
+        console.error(err)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     async GetLogData(Ip) {
-      this.loading = true;
+      this.loading = true
       try {
-        await this.signalRConnection.invoke("GetLogData", Ip);
+        await this.$socket.invoke('GetLogData', Ip)
       } catch (err) {
-        console.error(err);
+        console.error(err)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     async ClearLog(Ip) {
-      this.loading = true;
+      this.loading = true
       try {
-        await this.signalRConnection.invoke("ClearLog", Ip);
+        await this.$socket.invoke('ClearLog', Ip)
       } catch (err) {
-        console.error(err);
+        console.error(err)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     async ClearAdministrators(Ip) {
-      this.loading = true;
+      this.loading = true
       try {
-        await this.signalRConnection.invoke("ClearAdministrators", Ip);
+        await this.$socket.invoke('ClearAdministrators', Ip)
       } catch (err) {
-        console.error(err);
+        console.error(err)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     async RestartDevice(Ip) {
-      this.loading = true;
+      this.loading = true
       try {
-        await this.signalRConnection.invoke("RestartDevice", Ip);
+        await this.$socket.invoke('RestartDevice', Ip)
       } catch (err) {
-        console.error(err);
+        console.error(err)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
     async TurnOffDevice(Ip) {
-      this.loading = true;
+      this.loading = true
       try {
-        await this.signalRConnection.invoke("TurnOffDevice", Ip);
+        await this.$socket.invoke('TurnOffDevice', Ip)
       } catch (err) {
-        console.error(err);
+        console.error(err)
       } finally {
-        this.loading = false;
+        this.loading = false
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

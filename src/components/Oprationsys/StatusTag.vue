@@ -5,49 +5,49 @@
 </template>
 <script>
 export default {
-  name: "StatusTag",
+  name: 'StatusTag',
   props: {
-    Status: Number,
-    TableName: String,
+    status: Number,
+    tableName: String
   },
   data() {
     return {
-      Opration: {},
-    };
+      Opration: {}
+    }
   },
   watch: {
     Status(val) {
-      this.getdata();
-    },
+      this.getdata()
+    }
   },
   created() {
-    this.getdata();
+    this.getdata()
   },
   methods: {
     getdata() {
       //  console.log("  this.Opration ", this.Status);
       this.Opration = this.$store.getters.Oprations.find((obj) => {
-        return obj.TableName == this.TableName && obj.Status == this.Status;
-      });
-      this.Opration == undefined
+        return obj.TableName === this.tableName && obj.Status === this.status
+      })
+      this.Opration = this.Opration === undefined
         ? (this.Opration = {
-            ArabicOprationDescription: "-",
-            ClassName: "success",
-            Color: null,
-            ControllerName: "-",
-            IconClass: "el-icon-finished",
-            Id: 0,
-            OprationDescription: "- ",
-            OprationName: "-",
-            ReferenceStatus: null,
-            RoleName: null,
-            Status: 0,
-            TableName: "-",
-          })
-        : this.Opration;
-    },
-  },
-};
+          ArabicOprationDescription: '-',
+          ClassName: 'success',
+          Color: null,
+          ControllerName: '-',
+          IconClass: 'el-icon-finished',
+          Id: 0,
+          OprationDescription: '- ',
+          OprationName: '-',
+          ReferenceStatus: null,
+          RoleName: null,
+          Status: 0,
+          TableName: '-'
+        })
+        : this.Opration
+    }
+  }
+}
 </script>
 <style scoped>
 .price {

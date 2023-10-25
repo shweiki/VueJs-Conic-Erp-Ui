@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <div id="progressBar"></div>
-    <div id="progressBarContainer"></div>
+    <div id="progressBar" />
+    <div id="progressBarContainer" />
     <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: "App",
+  name: 'App',
+  created() {
 
-};
+  }
+}
 </script>
 <style>
 ::-webkit-scrollbar {

@@ -18,7 +18,7 @@ const mutations = {
 const actions = {
   GetSetting({ commit }) {
     return new Promise((resolve, reject) => {
-      var setting = JSON.parse(localStorage.getItem('Application_Setting') || 'null') || null
+      const setting = JSON.parse(localStorage.getItem('Application_Setting') || 'null') || null
       if (setting) {
         Object.keys(setting).forEach(key => {
           commit('CHANGE_SETTING', {
@@ -50,7 +50,7 @@ const actions = {
             })
           }
           Object.keys(defaultSettings).forEach(key => {
-            if (!state.hasOwnProperty(key)) {
+            if (!state.hasOwn(key)) {
               store.dispatch('settings/changeSetting', {
                 key: key,
                 value: defaultSettings[key]

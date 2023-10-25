@@ -20,11 +20,12 @@ import VueNativeNotification from 'vue-native-notification'
 
 import AOS from 'aos'
 import 'aos/dist/aos.css' // You can also use <link> for styles
-// ..
-if (process.env.NODE_ENV !== "development") {
- // console.log = function () { };
-}
-store.dispatch('settings/GetSetting').then(res => { });
+
+import VueSignalR from '@latelier/vue-signalr'
+
+Vue.use(VueSignalR, process.env.VUE_APP_BASE_DeviceHub)
+
+store.dispatch('settings/GetSetting').then(res => { })
 
 Vue.use(VueNativeNotification, {
   // Automatic permission request before
@@ -39,8 +40,8 @@ const pluginOptions = {
   globalOptions: { currency: 'JOD' }
 }
 Vue.directive('focus', {
-  inserted: function (el, binding, vnode) {
-    Vue.nextTick(function () {
+  inserted: function(el, binding, vnode) {
+    Vue.nextTick(function() {
       el.focus()
     })
   }
