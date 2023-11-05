@@ -6,10 +6,10 @@
         <el-col :span="8">
           <el-button icon="el-icon-sort" @click="reverse = !reverse" />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <Add-Device-Log table-name="Member" />
         </el-col>
-        <el-col :span="4">
+        <el-col :span="2">
           <el-button
             :loading="loading"
             type="primary"
@@ -19,9 +19,18 @@
           />
         </el-col>
         <el-col :span="4">
-          <el-tag
-            :type="$socket.socket != undefined ? 'success' : 'danger'"
-          ><i class="el-icon-connection" /></el-tag>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="deviceState"
+            placement="bottom"
+          >
+            <el-tag
+              :type="deviceIsConnect ? 'success' : 'danger'"
+            ><i
+              class="el-icon-connection"
+            />{{ deviceState }}</el-tag>
+          </el-tooltip>
         </el-col>
       </el-row>
       <el-row type="flex">
@@ -115,6 +124,8 @@ export default {
     return {
       loading: false,
       MembersLogs: [],
+      deviceState: 'socket is not work',
+      deviceIsConnect: false,
       reverse: false,
       listQuery: {
         Page: 0,
@@ -135,7 +146,18 @@ export default {
     }
   },
   created() {
-    this.startConnection()
+    this.$socket.start({
+      log: true // Logging is optional but very helpful during development
+    })
+  },
+  sockets: {
+    SendEventLog(log) {
+      this.MembersLogs.unshift(JSON.parse(log))
+    },
+    DeviceState({ deviceIsConnect, msg }) {
+      this.deviceIsConnect = deviceIsConnect
+      this.deviceState = msg
+    }
   },
   methods: {
     getdata() {
@@ -156,14 +178,6 @@ export default {
     load() {
       this.listQuery.Page += 1
       this.getdata()
-    },
-    startConnection() {
-      this.$socket.start({
-        log: true // Logging is optional but very helpful during development
-      })
-      this.$socket.on('SendEventLog', (log) => {
-        this.MembersLogs.unshift(JSON.parse(log))
-      })
     }
   }
 }

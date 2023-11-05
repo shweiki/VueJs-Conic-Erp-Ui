@@ -28,7 +28,7 @@
 import { GetDevice } from '@/api/Device'
 
 export default {
-  props: ['ObjectId', 'TableName', 'Name'],
+  props: ['objectId', 'tableName', 'name'],
   data() {
     return {
       loading: false,
@@ -44,7 +44,7 @@ export default {
     async EnrollUserOnDevice(Ip) {
       this.loading = true
       try {
-        await this.$socket.invoke('EnrollUser', Ip, this.ObjectId, this.Name)
+        await this.$socket.invoke('EnrollUser', Ip, this.objectId, this.name)
       } catch (err) {
         console.error(err)
       } finally {
