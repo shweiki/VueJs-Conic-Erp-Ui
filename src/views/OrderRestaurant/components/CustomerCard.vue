@@ -24,7 +24,7 @@
       <el-col :span="12">
         <Radio-Oprations             :value="listQuery.Status"
 
-          TableName="CustomerOrder"
+          tableName="CustomerOrder"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -56,8 +56,8 @@
                     <div class="card-panel-icon-wrapper icon-people">
                       <Status-Icon
                         class="card-panel-icon"
-                        :Status="option.Status"
-                        TableName="CustomerOrder"
+                        :status="option.Status"
+                        tableName="CustomerOrder"
                       />
                     </div>
                   </el-col>
@@ -127,7 +127,7 @@
                         </el-button>
                       </el-popconfirm>
                     </div>
-               
+
                   </el-col>
                 </el-row>
                 <!-- <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">

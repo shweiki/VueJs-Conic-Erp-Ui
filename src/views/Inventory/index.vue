@@ -64,7 +64,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="InventoryItem" />
+            <Status-Tag :status="scope.row.Status" tableName="InventoryItem" />
           </template>
         </el-table-column>
 
@@ -79,8 +79,8 @@
             <el-col :span="8">
               <Next-Oprations
                 :ObjId="scope.row.Id"
-                :Status="scope.row.Status"
-                TableName="InventoryItem"
+                :status="scope.row.Status"
+                tableName="InventoryItem"
                 @Done="handleFilter"
               />
             </el-col>
@@ -239,7 +239,7 @@ export default {
         IconClass: "",
         ClassName: ""
       },
-   
+
       tempOpration: {
         ObjId: undefined,
         OprationId: undefined,
@@ -393,7 +393,7 @@ export default {
       this.tempOpration.OprationId = Opration.Id;
       this.tempOpration.Description = "";
     },
- 
+
     updateData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {

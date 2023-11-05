@@ -14,7 +14,7 @@
               icon="el-icon-upload"
               @click="imagecropperShow = true"
             ></el-button>
-            <web-cam TableName="Employee" :ObjectId="Employee.Id" />
+            <web-cam tableName="Employee" :ObjectId="Employee.Id" />
           </pan-thumb>
           <image-cropper
             v-show="imagecropperShow"
@@ -22,7 +22,7 @@
             :width="150"
             :height="150"
             lang-type="ar"
-            TableName="Employee"
+            tableName="Employee"
             :ObjectId="Employee.Id"
             @close="close"
             @crop-upload-success="cropSuccess"
@@ -90,7 +90,7 @@
             <span>اخر دوام</span>
           </el-col>
           <el-col :span="8">
-            <last-log :UserId="Employee.Id" TableName="Employee" />
+            <last-log :UserId="Employee.Id" tableName="Employee" />
           </el-col>
           <el-col :span="4">
             <span>رقم الهاتف</span>
@@ -115,7 +115,7 @@
             <span>حالة الموظف</span>
           </el-col>
           <el-col :span="8">
-            <Status-Tag :Status="Employee.Status" TableName="Employee" />
+            <Status-Tag :status="Employee.Status" tableName="Employee" />
           </el-col>
         </el-row>
       </el-col>
@@ -180,7 +180,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="success" @click="RemoveResignationList()">فك إستقالة</el-button>
-        <Dialog-Action-Log TableName="Employee" :ObjId="Employee.Id" />
+        <Dialog-Action-Log tableName="Employee" :ObjId="Employee.Id" />
       </div>
     </el-dialog>
   </div>

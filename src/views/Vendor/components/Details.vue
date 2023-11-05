@@ -14,7 +14,7 @@
               icon="el-icon-upload"
               @click="imagecropperShow = true"
             ></el-button>
-            <web-cam TableName="Vendor" :ObjectId="Vendor.Id" />
+            <web-cam tableName="Vendor" :ObjectId="Vendor.Id" />
           </pan-thumb>
           <image-cropper
             v-show="imagecropperShow"
@@ -22,7 +22,7 @@
             :width="150"
             :height="150"
             lang-type="ar"
-            TableName="Vendor"
+            tableName="Vendor"
             :ObjectId="Vendor.Id"
             @close="close"
             @crop-upload-success="cropSuccess"
@@ -77,7 +77,7 @@
             <span>حالة </span>
           </el-col>
           <el-col :span="8">
-            <Status-Tag :Status="Vendor.Status" TableName="Vendor" />
+            <Status-Tag :status="Vendor.Status" tableName="Vendor" />
           </el-col>
         </el-row>
       </el-col>

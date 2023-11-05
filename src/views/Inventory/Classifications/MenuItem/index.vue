@@ -51,7 +51,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="MenuItem" />
+            <Status-Tag :status="scope.row.Status" tableName="MenuItem" />
           </template>
         </el-table-column>
         <el-table-column align="right" width="200">
@@ -62,8 +62,8 @@
             ></el-button>
             <Next-Oprations
               :ObjId="scope.row.Id"
-              :Status="scope.row.Status"
-              TableName="MenuItem"
+              :status="scope.row.Status"
+              tableName="MenuItem"
               @Done="getdata"
             />
           </template>

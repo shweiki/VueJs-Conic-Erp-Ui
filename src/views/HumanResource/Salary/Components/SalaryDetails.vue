@@ -31,7 +31,7 @@
               <div slot="header" class="clearfix">
                 احتساب الراتب :
                 <span>
-                  <Status-Tag :Status="tempForm.Status" TableName="SalaryPayment" />
+                  <Status-Tag :status="tempForm.Status" tableName="SalaryPayment" />
                 </span>
               </div>
               <el-descriptions class="margin-top" :column="3" border>
@@ -155,7 +155,7 @@
         </el-card> </el-col
     ></el-row>
     <Device-Log
-      TableName="Employee"
+      tableName="Employee"
       :UserId="tempForm.EmployeeId"
       :Name="tempForm.Name"
       :FromDate="tempForm.SalaryFrom"

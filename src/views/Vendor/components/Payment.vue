@@ -45,7 +45,7 @@
       </el-table-column>
       <el-table-column label="الحالة" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="Payment" />
+          <Status-Tag :status="scope.row.Status" tableName="Payment" />
         </template>
       </el-table-column>
     </el-table>

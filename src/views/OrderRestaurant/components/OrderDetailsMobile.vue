@@ -113,9 +113,9 @@
             <i class="el-icon-s-flag"></i>
             {{ $t("OrderInventories.Status") }}
           </template>
-          <Status-Tag :Status="Temp.Status" TableName="OrderRestaurant" />
+          <Status-Tag :status="Temp.Status" tableName="OrderRestaurant" />
         </el-descriptions-item>
-        
+
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
           :content-style="{ 'text-align': 'right' }"
@@ -136,7 +136,7 @@
           </template>
           <el-tag size="small">{{ Temp.TotalPrice }}</el-tag>
         </el-descriptions-item>
-     
+
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
           :content-style="{ 'text-align': 'right' }"

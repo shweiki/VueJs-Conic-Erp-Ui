@@ -41,7 +41,7 @@
     <el-row type="flex">
       <el-col :span="24">
         <Radio-Oprations             :value="listQuery.Status"
- TableName="CashPool" @Set="
+ tableName="CashPool" @Set="
           (v) => {
             listQuery.Status = v;
           }
@@ -176,14 +176,14 @@
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="CashPool" />
+          <Status-Tag :status="scope.row.Status" tableName="CashPool" />
         </template>
       </el-table-column>
       <el-table-column align="center">
         <template slot-scope="scope">
-          <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="CashPool" @Done="handleFilter" />
+          <Next-Oprations :ObjId="scope.row.Id" :status="scope.row.Status" tableName="CashPool" @Done="handleFilter" />
           <Drawer-Print Type="CashPool" :Data="scope.row" />
-          <Dialog-Action-Log TableName="CashPool" :ObjId="scope.row.Id" />
+          <Dialog-Action-Log tableName="CashPool" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
     </el-table>

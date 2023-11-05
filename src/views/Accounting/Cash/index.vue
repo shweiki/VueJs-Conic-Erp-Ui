@@ -64,7 +64,7 @@
         ></el-table-column>
         <el-table-column v-bind:label="$t('Items.Status')" align="center" width="100">
           <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="Cash" />
+            <Status-Tag :status="scope.row.Status" tableName="Cash" />
           </template>
         </el-table-column>
         <el-table-column width="150" align="center">
@@ -79,12 +79,12 @@
             <el-col :span="8">
               <Next-Oprations
                 :ObjId="scope.row.Id"
-                :Status="scope.row.Status"
-                TableName="Cash"
+                :status="scope.row.Status"
+                tableName="Cash"
                 @Done="getdata"
             /></el-col>
              <el-col :span="8">
-               <Dialog-Action-Log TableName="Cash" :ObjId="scope.row.Id" />
+               <Dialog-Action-Log tableName="Cash" :ObjId="scope.row.Id" />
                </el-col>
           </template>
         </el-table-column>

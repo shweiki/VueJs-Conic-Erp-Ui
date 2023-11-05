@@ -7,8 +7,15 @@
 export default {
   name: 'StatusTag',
   props: {
-    status: Number,
-    tableName: String
+    status: {
+      type: Number,
+      required: true
+    },
+    tableName: {
+      type: String,
+      required: true
+    }
+
   },
   data() {
     return {

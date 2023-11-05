@@ -98,7 +98,7 @@
       <el-col :span="24">
         <Radio-Oprations
           :value="listQuery.Status"
-          TableName="Member"
+          tableName="Member"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -182,7 +182,7 @@
       ></el-table-column>
       <el-table-column width="150" v-bind:label="$t('Visit.LastVisit')" align="center">
         <template slot-scope="scope">
-          <last-log :UserId="scope.row.Id" TableName="Member" />
+          <last-log :userId="scope.row.Id.toString()" tableName="Member" />
         </template>
       </el-table-column>
       <el-table-column
@@ -224,17 +224,17 @@
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="Member" />
+          <Status-Tag :status="scope.row.Status" tableName="Member" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <el-row>
             <!--   <el-col :span="12">
-              <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="Member" @Done="handleFilter" />
+              <Next-Oprations :ObjId="scope.row.Id" :status="scope.row.Status" tableName="Member" @Done="handleFilter" />
             </el-col>-->
             <el-col :span="24">
-              <Dialog-Action-Log TableName="Member" :ObjId="scope.row.Id"
+              <Dialog-Action-Log tableName="Member" :objId="scope.row.Id.toString()"
             /></el-col>
           </el-row>
         </template>

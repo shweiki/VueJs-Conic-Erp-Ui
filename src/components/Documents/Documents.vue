@@ -2,7 +2,7 @@
   <div class="demo-image__preview">
     <el-row type="flex">
       <el-col :span="6">
-        <button-scan :ObjectId="ObjectId" :TableName="TableName" />
+        <button-scan :ObjectId="ObjectId" :tableName="TableName" />
       </el-col>
       <el-col :span="6">
         <el-button
@@ -16,13 +16,13 @@
           :width="150"
           :height="150"
           lang-type="ar"
-          :TableName="TableName"
+          :tableName="TableName"
           :ObjectId="ObjectId"
           @close="close"
           @crop-upload-success="cropSuccess"
       /></el-col>
       <el-col :span="6">
-        <web-cam :TableName="TableName" :ObjectId="ObjectId" />
+        <web-cam :tableName="TableName" :ObjectId="ObjectId" />
       </el-col>
       <el-col :span="6">
         <el-button type="primary" @click="GetFiles" icon="el-icon-refresh"></el-button>

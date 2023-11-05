@@ -18,7 +18,7 @@
             /></el-tab-pane>
             <el-tab-pane v-if="isEdit" label="مستندات" name="Documents">
               <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
-              <Documents :ObjectId="tempForm.Id" TableName="Item" />
+              <Documents :ObjectId="tempForm.Id" tableName="Item" />
             </el-tab-pane>
           </el-tabs>
         </el-card>

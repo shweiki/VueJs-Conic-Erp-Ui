@@ -83,7 +83,7 @@
     <el-card class="box-card">
       <Radio-Oprations
         :value="listQuery.Status"
-        TableName="Vendor"
+        tableName="Vendor"
         @Set="
           (v) => {
             listQuery.Status = v;
@@ -198,7 +198,7 @@
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="Vendor" />
+          <Status-Tag :status="scope.row.Status" tableName="Vendor" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
@@ -208,8 +208,8 @@
             <el-col :span="12">
               <Next-Oprations
                 :ObjId="scope.row.Id"
-                :Status="scope.row.Status"
-                TableName="Vendor"
+                :status="scope.row.Status"
+                tableName="Vendor"
                 @Done="handleFilter"
             /></el-col>
           </el-row>

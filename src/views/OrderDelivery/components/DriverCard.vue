@@ -24,7 +24,7 @@
       <el-col :span="10">
         <Radio-Oprations             :value="listQuery.Status"
 
-          TableName="DriverOrder"
+          tableName="DriverOrder"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -56,8 +56,8 @@
                     <div class="card-panel-icon-wrapper icon-people">
                       <Status-Icon
                         class="card-panel-icon"
-                        :Status="option.Status"
-                        TableName="DriverOrder"
+                        :status="option.Status"
+                        tableName="DriverOrder"
                       />
                     </div>
                   </el-col>

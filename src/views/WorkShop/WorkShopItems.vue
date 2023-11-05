@@ -96,7 +96,7 @@
       <el-col :span="6">
         <Radio-Oprations
           :value="listQuery.Status"
-          TableName="PurchaseInvoice"
+          tableName="PurchaseInvoice"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -181,15 +181,15 @@
 
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="PurchaseInvoice" />
+          <Status-Tag :status="scope.row.Status" tableName="PurchaseInvoice" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <Next-Oprations
             :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="PurchaseInvoice"
+            :status="scope.row.Status"
+            tableName="PurchaseInvoice"
             @Done="handleFilter"
           />
           <Drawer-Print Type="PurchaseInvoice" :Data="scope.row" />

@@ -15,9 +15,9 @@
       </el-col>
       <el-col :span="12">
         <Button-Oprations
-          TableName="Visit"
+          tableName="Visit"
           :ArrObjIds="Selection.map((x) => x.Id)"
-          :Status="1"
+          :status="1"
           @Done="
             (v) => {
               getList();

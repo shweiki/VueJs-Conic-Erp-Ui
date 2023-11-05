@@ -24,7 +24,7 @@
         <AddAccountDialog />
       </el-col>
       <el-col :span="18">
-        <Radio-Oprations TableName="Account" @Set="
+        <Radio-Oprations tableName="Account" @Set="
           (v) => {
             listQuery.Status = v;
             handleFilter();
@@ -99,15 +99,15 @@
       <el-table-column v-bind:label="$t('Account.Status')" align="center" width="70">
         <template slot-scope="scope">
           <EditAccount :AccountId="scope.row.Id" />
-          <StatusTag :Status="scope.row.Status" TableName="Account" />
+          <StatusTag :status="scope.row.Status" tableName="Account" />
         </template>
       </el-table-column>
 
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
-          <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="Account" @Done="handleFilter" />
+          <Next-Oprations :ObjId="scope.row.Id" :status="scope.row.Status" tableName="Account" @Done="handleFilter" />
           <Drawer-Print Type="Account" :Data="scope.row" />
-          <Dialog-Action-Log TableName="Account" :ObjId="scope.row.Id" />
+          <Dialog-Action-Log tableName="Account" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
     </el-table>

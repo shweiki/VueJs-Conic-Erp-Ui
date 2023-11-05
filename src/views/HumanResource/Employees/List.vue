@@ -72,7 +72,7 @@
         </el-col>
         <el-col :span="6">
           <RadioOprations
-            TableName="Employee"
+            tableName="Employee"
             :default="listQuery.Status"
             @Set="
               (v) => {
@@ -167,7 +167,7 @@
       ></el-table-column>
       <el-table-column width="150" v-bind:label="$t('Visit.LastVisit')" align="center">
         <template slot-scope="scope">
-          <LastLog :UserId="scope.row.Id" TableName="Employee" />
+          <LastLog :UserId="scope.row.Id" tableName="Employee" />
         </template>
       </el-table-column>
       <el-table-column
@@ -201,18 +201,18 @@
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="Employee" />
+          <Status-Tag :status="scope.row.Status" tableName="Employee" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <Next-Oprations
             :ObjId="scope.row.Id"
-            :Status="scope.row.Status"
-            TableName="Employee"
+            :status="scope.row.Status"
+            tableName="Employee"
             @Done="handleFilter"
           />
-          <Dialog-Action-Log TableName="Employee" :ObjId="scope.row.Id" />
+          <Dialog-Action-Log tableName="Employee" :ObjId="scope.row.Id" />
         </template>
       </el-table-column>
     </el-table>

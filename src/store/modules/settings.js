@@ -50,7 +50,8 @@ const actions = {
             })
           }
           Object.keys(defaultSettings).forEach(key => {
-            if (!state.hasOwn(key)) {
+            if (!state.hasOwnProperty(key)) {
+              //  if (!state.hasOwn(key)) {
               store.dispatch('settings/changeSetting', {
                 key: key,
                 value: defaultSettings[key]
@@ -59,11 +60,11 @@ const actions = {
 
             localStorage.setItem('Application_Setting', JSON.stringify(state))
             resolve(response)
-          }).catch(error => {
-            localStorage.removeItem('Application_Setting')
-            console.log(error)
-            reject(error)
           })
+        }).catch(error => {
+          localStorage.removeItem('Application_Setting')
+          console.log(error)
+          reject(error)
         })
       }
     })

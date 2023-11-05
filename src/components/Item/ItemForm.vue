@@ -31,14 +31,14 @@
               icon="el-icon-upload"
               @click="imagecropperShow = true"
             ></el-button>
-            <web-cam TableName="Item" :ObjectId="tempForm.Id" />
+            <web-cam tableName="Item" :ObjectId="tempForm.Id" />
             <image-cropper
               v-show="imagecropperShow"
               :key="imagecropperKey"
               :width="150"
               :height="150"
               lang-type="ar"
-              TableName="Item"
+              tableName="Item"
               :ObjectId="tempForm.Id"
               @close="close"
               @crop-upload-success="cropSuccess"

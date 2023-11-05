@@ -17,7 +17,7 @@
         <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
       </el-col>
       <el-col :span="3">
-        <Add-Device-Log TableName="Member" />
+        <Add-Device-Log tableName="Member" />
       </el-col>
       <el-col :span="4">
         <el-button

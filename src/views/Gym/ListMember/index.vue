@@ -34,7 +34,7 @@
               >
               <el-col :span="12">
                 <span>اخر زيارة</span>
-                <last-log :UserId="member.MemberId" TableName="Member" />
+                <last-log :UserId="member.MemberId" tableName="Member" />
               </el-col>
             </el-row>
             <el-col :span="24">

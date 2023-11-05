@@ -59,7 +59,7 @@
     </div>
     <Radio-Oprations             :value="listQuery.Status"
 
-      TableName="DriverOrder"
+      tableName="DriverOrder"
       @Set="
         (v) => {
           listQuery.Status = v;
@@ -109,7 +109,7 @@
 
       <el-table-column v-bind:label="$t('Sales.Status')" width="160" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="DriverOrder" />
+          <Status-Tag :status="scope.row.Status" tableName="DriverOrder" />
         </template>
       </el-table-column>
     </el-table>

@@ -55,12 +55,12 @@
                 :width="150"
                 :height="150"
                 lang-type="ar"
-                TableName="Item"
+                tableName="Item"
                 :ObjectId="tempForm.Id"
                 @close="close"
                 @crop-upload-success="cropSuccess"
               />
-              <WebCam TableName="Item" :ObjectId="tempForm.Id" /> </pan-thumb></el-col
+              <WebCam tableName="Item" :ObjectId="tempForm.Id" /> </pan-thumb></el-col
         ></el-row>
 
         <el-row type="flex">

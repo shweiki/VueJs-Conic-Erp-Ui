@@ -14,7 +14,7 @@
     >
       <div slot="title" class="dialog-footer">
         <el-col :span="4">
-          <Add-Device-Log :Fk="Fk" TableName="Employee" @Done="Done" />
+          <Add-Device-Log :Fk="Fk" tableName="Employee" @Done="Done" />
         </el-col>
         <el-col :span="20">
           <el-divider> سيجلات الدوام </el-divider>

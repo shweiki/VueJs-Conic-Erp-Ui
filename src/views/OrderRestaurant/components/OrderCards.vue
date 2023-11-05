@@ -16,7 +16,7 @@
       </el-col>
       <el-col :span="14">
         <Radio-Oprations             :value="listQuery.Status"
- TableName="OrderRestaurant" @Set="
+ tableName="OrderRestaurant" @Set="
           (v) => {
             listQuery.Status = v;
             handleFilter();
@@ -38,7 +38,7 @@
                 <el-row :gutter="20">
                   <el-col :span="8">
                     <div class="card-panel-icon-wrapper icon-people">
-                      <Status-Icon class="card-panel-icon" :Status="option.Status" TableName="OrderRestaurant" />
+                      <Status-Icon class="card-panel-icon" :status="option.Status" tableName="OrderRestaurant" />
                     </div>
                   </el-col>
                   <el-col :span="4">

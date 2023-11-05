@@ -1,29 +1,29 @@
 <template>
   <div>
-    <el-button type="success" icon="el-icon-data-line" @click="getdata()"></el-button>
+    <el-button type="success" icon="el-icon-data-line" @click="getdata()" />
 
     <el-dialog style="margin-top: -13vh" :visible.sync="Visible">
       <el-timeline>
         <el-timeline-item
           v-for="(log, index) in actionlogs"
           :key="index"
-          v-bind:timestamp="
+          :timestamp="
             formatDate(new Date(log.PostingDateTime), 'no') +
-            ' - ' +
-            tConvert(new Date(log.PostingDateTime))
+              ' - ' +
+              tConvert(new Date(log.PostingDateTime))
           "
           placement="top"
-          v-bind:color="
+          :color="
             $store.getters.Oprations.find((obj) => {
               return obj.Id == log.OprationId;
             }).Color
           "
-          v-bind:icon="
+          :icon="
             $store.getters.Oprations.find((obj) => {
               return obj.Id == log.OprationId;
             }).IconClass
           "
-          v-bind:type="
+          :type="
             $store.getters.Oprations.find((obj) => {
               return obj.Id == log.OprationId;
             }).ClassName
@@ -42,54 +42,54 @@
 </template>
 
 <script>
-import { GetLogByObjTable } from "@/api/ActionLog";
+import { GetLogByObjTable } from '@/api/ActionLog'
 
 export default {
   props: {
-    TableName: {
+    tableName: {
       type: String,
-      required: true,
+      required: true
     },
-    ObjId: {
+    objId: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       Visible: false,
-      actionlogs: [],
-    };
+      actionlogs: []
+    }
   },
   methods: {
     getdata() {
-      GetLogByObjTable({ TableName: this.TableName, Id: this.ObjId }).then((response) => {
+      GetLogByObjTable({ TableName: this.tableName, Id: this.objId }).then((response) => {
         // handle success
-        this.actionlogs = response;
+        this.actionlogs = response
 
-        this.Visible = true;
-      });
+        this.Visible = true
+      })
     },
     tConvert(date) {
-      let hours = date.getHours();
-      let minutes = date.getMinutes();
-      let ampm = hours >= 12 ? "PM" : "AM";
-      hours = hours % 12;
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      let strTime = " " + hours + ":" + minutes + "  " + ampm;
-      return strTime;
+      let hours = date.getHours()
+      let minutes = date.getMinutes()
+      const ampm = hours >= 12 ? 'PM' : 'AM'
+      hours = hours % 12
+      hours = hours || 12 // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0' + minutes : minutes
+      const strTime = ' ' + hours + ':' + minutes + '  ' + ampm
+      return strTime
     },
     formatDate(date) {
-      let d = new Date(date),
-        day = "" + d.getDate(),
-        month = "" + (d.getMonth() + 1),
-        year = d.getFullYear();
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
+      const d = new Date(date)
+      let day = '' + d.getDate()
+      let month = '' + (d.getMonth() + 1)
+      const year = d.getFullYear()
+      if (month.length < 2) month = '0' + month
+      if (day.length < 2) day = '0' + day
 
-      return [day, month, year].join("/");
-    },
-  },
-};
+      return [day, month, year].join('/')
+    }
+  }
+}
 </script>

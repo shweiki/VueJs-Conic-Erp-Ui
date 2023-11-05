@@ -114,14 +114,14 @@
           </template>
           <el-row type="flex">
             <el-col :span="10">
-              <Dialog-Action-Log TableName="OrderRestaurant" :ObjId="Temp.Id" />
+              <Dialog-Action-Log tableName="OrderRestaurant" :ObjId="Temp.Id" />
             </el-col>
             <el-col :span="14">
-              <Status-Tag :Status="Temp.Status" TableName="OrderRestaurant" />
+              <Status-Tag :status="Temp.Status" tableName="OrderRestaurant" />
             </el-col>
           </el-row>
         </el-descriptions-item>
- 
+
         <el-descriptions-item
           :label-style="{ 'text-align': 'right' }"
           :content-style="{ 'text-align': 'right' }"
@@ -142,7 +142,7 @@
           </template>
           <el-tag size="small">{{ Temp.TotalPrice }}</el-tag>
         </el-descriptions-item>
-       
+
         <el-descriptions-item
           :span="2"
           :label-style="{ 'text-align': 'right' }"

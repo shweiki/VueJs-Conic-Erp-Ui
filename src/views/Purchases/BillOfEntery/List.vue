@@ -88,7 +88,7 @@
       <el-col :span="8">
         <Radio-Oprations
           :value="listQuery.Status"
-          TableName="BillOfEntery"
+          tableName="BillOfEntery"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -159,7 +159,7 @@
         <template slot-scope="scope">
           <el-row type="flex">
             <el-col :span="24">
-              <Status-Tag :Status="scope.row.Status" TableName="BillOfEntery" />
+              <Status-Tag :status="scope.row.Status" tableName="BillOfEntery" />
             </el-col>
           </el-row>
         </template>
@@ -180,8 +180,8 @@
             <el-col :span="8">
               <Next-Oprations
                 :ObjId="scope.row.Id"
-                :Status="scope.row.Status"
-                TableName="BillOfEntery"
+                :status="scope.row.Status"
+                tableName="BillOfEntery"
                 @Done="handleFilter"
               />
             </el-col>
@@ -253,7 +253,7 @@
               </el-table-column>
               <el-table-column label="الحالة" align="center">
                 <template slot-scope="scope">
-                  <Status-Tag :Status="scope.row.Status" TableName="BillOfEntery" />
+                  <Status-Tag :status="scope.row.Status" tableName="BillOfEntery" />
                 </template>
               </el-table-column>
               <el-table-column type="expand" align="center">

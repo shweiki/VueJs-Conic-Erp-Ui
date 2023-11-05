@@ -23,7 +23,7 @@ export default {
   props: {
     membershipId: {
       type: String,
-      required: true
+      required: false
     }
   },
   data() {

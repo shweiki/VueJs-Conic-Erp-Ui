@@ -62,8 +62,8 @@
           </el-col>
           <el-col :span="8">
             <Status-Tag
-              :Status="DriverForm.IsActive"
-              TableName="DriverIsActive"
+              :status="DriverForm.IsActive"
+              tableName="DriverIsActive"
             />
           </el-col>
         </el-row>

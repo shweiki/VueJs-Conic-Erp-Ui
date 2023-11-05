@@ -66,7 +66,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="OriginItem" />
+            <Status-Tag :status="scope.row.Status" tableName="OriginItem" />
           </template>
         </el-table-column>
 

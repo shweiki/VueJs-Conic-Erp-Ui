@@ -53,7 +53,7 @@
       </el-col>
       <el-col :span="14">
         <Radio-Oprations              :value="listQuery.Status"
-TableName="OrderDelivery" @Set="
+tableName="OrderDelivery" @Set="
           (v) => {
             listQuery.Status = v;
             handleFilter();
@@ -112,14 +112,14 @@ TableName="OrderDelivery" @Set="
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="OrderDelivery" />
+          <Status-Tag :status="scope.row.Status" tableName="OrderDelivery" />
         </template>
       </el-table-column>
       <el-table-column label="#" width="100" align="center">
         <template slot-scope="scope">
-          <Dialog-Action-Log TableName="OrderDelivery" :ObjId="scope.row.Id" />
+          <Dialog-Action-Log tableName="OrderDelivery" :ObjId="scope.row.Id" />
           <Drawer-Print Type="OrderDelivery" :Data="scope.row" />
-          <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="OrderDelivery" @Done="getList" />
+          <Next-Oprations :ObjId="scope.row.Id" :status="scope.row.Status" tableName="OrderDelivery" @Done="getList" />
         </template>
       </el-table-column>
     </el-table>

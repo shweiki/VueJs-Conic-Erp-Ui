@@ -23,7 +23,7 @@
               <el-col :span="12"> --- </el-col>
               <el-col :span="12">
                 <span>اخر دوام</span>
-                <last-log :UserId="item.Id" TableName="Employee" />
+                <last-log :UserId="item.Id" tableName="Employee" />
               </el-col>
             </el-row>
             <el-col :span="24">

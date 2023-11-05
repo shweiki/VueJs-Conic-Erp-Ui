@@ -100,7 +100,7 @@
     </el-row>
 
     <el-col :span="24">
-      <Radio-Oprations :value="listQuery.Status" TableName="SalesInvoice" @Set="(v) => {
+      <Radio-Oprations :value="listQuery.Status" tableName="SalesInvoice" @Set="(v) => {
         listQuery.Status = v;
         handleFilter();
       }
@@ -181,18 +181,18 @@
       </el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="SalesInvoice" />
+          <Status-Tag :status="scope.row.Status" tableName="SalesInvoice" />
         </template>
       </el-table-column>
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <el-row type="flex">
             <el-col :span="8">
-              <Next-Oprations :ObjId="scope.row.Id" :Status="scope.row.Status" TableName="SalesInvoice"
+              <Next-Oprations :ObjId="scope.row.Id" :status="scope.row.Status" tableName="SalesInvoice"
                 @Done="handleFilter" /></el-col>
             <el-col :span="8">
               <Drawer-Print Type="SaleInvoice" :Data="scope.row" /></el-col>
-            <el-col :span="8"><Dialog-Action-Log TableName="SalesInvoice" :ObjId="scope.row.Id" /></el-col>
+            <el-col :span="8"><Dialog-Action-Log tableName="SalesInvoice" :ObjId="scope.row.Id" /></el-col>
           </el-row>
         </template>
       </el-table-column>

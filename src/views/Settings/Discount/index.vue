@@ -76,7 +76,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="Discount" />
+            <Status-Tag :status="scope.row.Status" tableName="Discount" />
             <el-button
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"

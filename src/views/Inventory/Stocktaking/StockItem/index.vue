@@ -10,7 +10,7 @@
             }
           "
         />
-        <!-- <el-button 
+        <!-- <el-button
               style="float: left; "
               icon="el-icon-printer"
               type="primary"
@@ -56,7 +56,7 @@
         ></el-table-column>
         <el-table-column v-bind:label="$t('Stocks.Status')" width="120" align="center">
           <template slot-scope="scope">
-            <Status-Tag :Status="scope.row.Status" TableName="StockItem" />
+            <Status-Tag :status="scope.row.Status" tableName="StockItem" />
           </template>
         </el-table-column>
         <el-table-column width="200" align="center">

@@ -58,7 +58,7 @@
             </el-tab-pane>
             <el-tab-pane label="مستندات" name="Documents">
               <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
-              <Documents :ObjectId="tempForm.Id" TableName="Vendor" />
+              <Documents :ObjectId="tempForm.Id" tableName="Vendor" />
             </el-tab-pane>
             <el-tab-pane label="مالية" name="account">
               <span slot="label"><i class="el-icon-refresh"></i> مالية</span>

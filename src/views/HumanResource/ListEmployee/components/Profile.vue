@@ -36,7 +36,7 @@
                 <send-to-device
                   :ObjectId="tempForm.Id"
                   :Name="tempForm.Name"
-                  TableName="Employee"
+                  tableName="Employee"
                 />
               </el-col>
             </el-col>
@@ -47,7 +47,7 @@
           <el-tabs v-model="activeTab" tab-position="top" @tab-click="tabClick">
             <el-tab-pane label="دوامات" name="DeviceLog">
               <span slot="label"><i class="el-icon-refresh"></i> دوامات</span>
-              <DeviceLog TableName="Employee" :UserId="tempForm.Id" />
+              <DeviceLog tableName="Employee" :UserId="tempForm.Id" />
             </el-tab-pane>
 
             <el-tab-pane label="مالية" name="account">
@@ -61,7 +61,7 @@
             </el-tab-pane>
             <el-tab-pane label="مستندات" name="Documents">
               <span slot="label"><i class="el-icon-refresh"></i> مستندات</span>
-              <Documents :ObjectId="tempForm.Id" TableName="Employee" />
+              <Documents :ObjectId="tempForm.Id" tableName="Employee" />
             </el-tab-pane>
             <el-tab-pane label="تواصل" name="communication">
               <span slot="label"><i class="el-icon-refresh"></i> تواصل</span>

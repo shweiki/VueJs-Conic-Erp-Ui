@@ -184,7 +184,7 @@
       </el-form>
     </el-card>
     <el-card v-if="tempForm.Id != undefined" class="box-card">
-      <Documents :ObjectId="tempForm.Id" TableName="AccountingEntry" />
+      <Documents :ObjectId="tempForm.Id" tableName="AccountingEntry" />
     </el-card>
   </div>
 </template>

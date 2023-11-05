@@ -19,7 +19,7 @@
             icon="el-icon-upload"
             @click="imagecropperShow = true"
           ></el-button>
-          <web-cam TableName="User" :ObjectId="user.phone" />
+          <web-cam tableName="User" :ObjectId="user.phone" />
         </pan-thumb>
         <image-cropper
           v-show="imagecropperShow"
@@ -27,7 +27,7 @@
           :width="150"
           :height="150"
           lang-type="ar"
-          TableName="User"
+          tableName="User"
           :ObjectId="user.phone"
           @close="close"
           @crop-upload-success="cropSuccess"

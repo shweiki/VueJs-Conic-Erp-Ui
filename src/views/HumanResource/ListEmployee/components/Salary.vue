@@ -46,7 +46,7 @@
       ></el-table-column>
       <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :Status="scope.row.Status" TableName="SalaryPayment" />
+          <Status-Tag :status="scope.row.Status" tableName="SalaryPayment" />
         </template>
       </el-table-column>
       <el-table-column label="#" width="260">
