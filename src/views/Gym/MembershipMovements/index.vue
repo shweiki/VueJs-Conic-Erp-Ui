@@ -108,55 +108,52 @@
 </template>
 
 <script>
-import { GetMembershipMovementByMembershipId } from "@/api/MembershipMovement";
-import SelectAllMemberships from "@/views/Gym/components/SelectAllMemberships.vue";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import { GetMembershipMovementByMembershipId } from '@/api/MembershipMovement'
+import SelectAllMemberships from '@/views/Gym/components/SelectAllMemberships.vue'
+import DrawerPrint from '@/components/PrintRepot/DrawerPrint.vue'
 import {
-  LocalDateTime,
   LocalDate,
-  LocalTime,
   DateTimeFormatter,
-  Instant,
-} from "@js-joda/core";
+  Instant
+} from '@js-joda/core'
 export default {
   components: { SelectAllMemberships, DrawerPrint },
   data() {
     return {
       tableData: [],
       Selection: [],
-      FreezeBetween: "",
-      Description: "",
+      FreezeBetween: '',
+      Description: '',
       Visibles: false,
       Days: 0,
       loading: false,
-      search: "",
-      MembershipId: "",
-      DateIn: "",
-    };
+      search: '',
+      MembershipId: '',
+      DateIn: ''
+    }
   },
 
   methods: {
     getdata() {
-      let date;
-      this.loading = true;
-      if (this.DateIn != "") {
+      let date
+      this.loading = true
+      if (this.DateIn !== '') {
         date = LocalDate.ofInstant(Instant.ofEpochMilli(this.DateIn))
           .atStartOfDay()
-          .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+          .format(DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm'))
       }
 
       GetMembershipMovementByMembershipId({
         MembershipId: this.MembershipId,
-        DateIn: date,
+        DateIn: date
       }).then((response) => {
-        //console.log(response)
-        this.tableData = response;
-        this.loading = false;
-      });
+        this.tableData = response
+        this.loading = false
+      })
     },
     handleSelectionChange(val) {
-      this.Selection = val;
-    },
-  },
-};
+      this.Selection = val
+    }
+  }
+}
 </script>

@@ -37,3 +37,10 @@ English | [Arabic](./README.AR.md)
 Conic Erp is a app for managment orgniztion and small business 
 
 Copyright (c) 2021-present Conic-Isv
+
+
+node -v  14.21.2
+
+npm -v 6.14.17
+
+yarn -v 1.22.19
