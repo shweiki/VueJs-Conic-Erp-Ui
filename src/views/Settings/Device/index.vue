@@ -128,12 +128,14 @@ export default {
           // handle success
           console.log(response)
           this.tableData = response
-          this.loading = false
+          this.$socket.start()
         })
         .catch((error) => {
           // handle error
           this.response = error
           console.log(error)
+        }).finally(() => {
+          this.loading = false
         })
     },
     async EnrollAllUser(Ip) {

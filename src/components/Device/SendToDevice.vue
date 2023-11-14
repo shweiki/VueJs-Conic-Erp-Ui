@@ -28,7 +28,20 @@
 import { GetDevice } from '@/api/Device'
 
 export default {
-  props: ['objectId', 'tableName', 'name'],
+  props: {
+    objectId: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    tableName: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       loading: false,
@@ -38,7 +51,17 @@ export default {
   created() {
     GetDevice().then((response) => {
       this.options = response
+      this.$socket.start()
     })
+  },
+  sockets: {
+    SendEventLog(log) {
+
+    },
+    DeviceState({ deviceIsConnect, msg }) {
+      this.deviceIsConnect = deviceIsConnect
+      this.deviceState = msg
+    }
   },
   methods: {
     async EnrollUserOnDevice(Ip) {

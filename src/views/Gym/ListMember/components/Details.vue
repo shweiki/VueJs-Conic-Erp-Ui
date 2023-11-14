@@ -7,17 +7,13 @@
             <span>رقم العضوية</span>
           </el-col>
           <el-col :span="4">
-            <el-input v-model="Member.Id" disabled />
-            <!--
-            <el-col :span="12">
-              <el-input disabled v-model="Member.Tag"></el-input>
-            </el-col>-->
+            <el-input v-model="member.Id" disabled />
           </el-col>
           <el-col :span="4">
             <span>اسم المشترك</span>
           </el-col>
           <el-col :span="12">
-            <el-input v-model="Member.Name" disabled />
+            <el-input v-model="member.Name" disabled />
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -25,14 +21,14 @@
             <span>العمر</span>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="Member.Age" disabled />
+            <el-input v-model="member.Age" disabled />
           </el-col>
           <el-col :span="4">
             <span>تاريخ الميلاد</span>
           </el-col>
           <el-col :span="8">
             <el-date-picker
-              v-model="Member.DateofBirth"
+              v-model="member.DateofBirth"
               type="date"
               format="yyyy-MM-dd"
               disabled
@@ -44,13 +40,13 @@
             <span>اخر زيارة</span>
           </el-col>
           <el-col :span="8">
-            <last-log :user-id="Member.Id" table-name="Member" />
+            <last-log :user-id="member.Id" table-name="Member" />
           </el-col>
           <el-col :span="4">
             <span>رقم الهاتف</span>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="Member.PhoneNumber1" disabled />
+            <el-input v-model="member.PhoneNumber1" disabled />
           </el-col>
         </el-row>
 
@@ -60,8 +56,8 @@
           </el-col>
           <el-col :span="8">
             <el-date-picker
-              v-if="Member.ActiveMemberShip"
-              v-model="Member.ActiveMemberShip.StartDate"
+              v-if="member.ActiveMemberShip"
+              v-model="member.ActiveMemberShip.StartDate"
               format="yyyy-MM-dd"
               disabled
               type="date"
@@ -72,15 +68,15 @@
           </el-col>
           <el-col :span="8">
             <el-date-picker
-              v-if="Member.ActiveMemberShip"
-              v-model="Member.ActiveMemberShip.EndDate"
+              v-if="member.ActiveMemberShip"
+              v-model="member.ActiveMemberShip.EndDate"
               format="yyyy-MM-dd"
               disabled
               type="date"
             />
           </el-col>
         </el-row>
-        <el-row v-if="Member.ActiveMemberShip" type="flex">
+        <el-row v-if="member.ActiveMemberShip" type="flex">
           <el-col
             :span="6"
           ><span style="color: dodgerblue">الايام</span> \
@@ -89,22 +85,22 @@
           </el-col>
           <el-col :span="3">
             (
-            <span style="color: dodgerblue">{{ Member.ActiveMemberShip.Remaining }}</span>\ {{ Member.ActiveMemberShip.TotalDays }})
+            <span style="color: dodgerblue">{{ member.ActiveMemberShip.Remaining }}</span>\ {{ member.ActiveMemberShip.TotalDays }})
           </el-col>
           <el-col :span="3">
             (
             <span style="color: orangered">
               {{
-                Member.ActiveMemberShip.NumberClass - Member.ActiveMemberShip.VisitsUsed
+                member.ActiveMemberShip.NumberClass - member.ActiveMemberShip.VisitsUsed
               }}
             </span>
-            \{{ Member.ActiveMemberShip.NumberClass }})</el-col>
+            \{{ member.ActiveMemberShip.NumberClass }})</el-col>
           <el-col :span="4">
             <span>نوع الاشتراك</span>
           </el-col>
           <el-col :span="8">
-            <el-tag>{{ Member.ActiveMemberShip.Type + " - "
-            }}{{ Member.ActiveMemberShip.Name }}</el-tag>
+            <el-tag>{{ member.ActiveMemberShip.Type + " - "
+            }}{{ member.ActiveMemberShip.Name }}</el-tag>
           </el-col>
         </el-row>
         <el-row type="flex">
@@ -113,7 +109,7 @@
           </el-col>
           <el-col :span="8">
             <span>{{
-              (Member.TotalCredit - Member.TotalDebit).toFixed(
+              (member.TotalCredit - member.TotalDebit).toFixed(
                 this.$store.getters.settings.ToFixed
               ) + $t("MemberList.JOD")
             }}</span>
@@ -122,7 +118,7 @@
             <span>حالة المشترك</span>
           </el-col>
           <el-col :span="8">
-            <Status-Tag :status="Member.Status" table-name="Member" />
+            <Status-Tag :status="member.Status" table-name="Member" />
           </el-col>
         </el-row>
       </el-col>
@@ -146,31 +142,31 @@
               :height="150"
               lang-type="ar"
               table-name="Member"
-              :object-id="Member.Id"
+              :object-id="member.Id"
               @close="close"
               @crop-upload-success="cropSuccess"
             />
-            <WebCam table-name="Member" :object-id="Member.Id" />
+            <WebCam table-name="Member" :object-id="member.Id" />
           </pan-thumb>
 
           <el-col :span="24">
             <el-tag
-              v-if="Member.HaveFaceOnDevice == true"
+              v-if="member.HaveFaceOnDevice == true"
               type="success"
             >يوجد بصمة وجه</el-tag>
             <el-tag
-              v-if="Member.HaveFaceOnDevice == false"
+              v-if="member.HaveFaceOnDevice == false"
               type="danger"
             >لا يوجد بصمة وجه</el-tag>
           </el-col>
-          <el-col v-if="Member.Status != -2" :span="24">
+          <el-col v-if="member.Status != -2" :span="24">
             <el-button
               type="danger"
               plain
               @click="dialogOprationVisible = true"
             >Black List</el-button>
           </el-col>
-          <el-col v-if="checkPermission(['admin']) && Member.Status == -2" :span="24">
+          <el-col v-if="checkPermission(['admin']) && member.Status == -2" :span="24">
             <el-button
               type="success"
               plain
@@ -243,7 +239,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="success" @click="RemoveBlackList()">فك الرفض</el-button>
-        <Dialog-Action-Log table-name="Member" :obj-id="Member.Id" />
+        <Dialog-Action-Log table-name="Member" :obj-id="member.Id" />
       </div>
     </el-dialog>
   </div>
@@ -273,7 +269,7 @@ export default {
     DialogActionLog
   },
   props: {
-    Member: {
+    member: {
       type: Object,
       required: true
     }
@@ -293,15 +289,15 @@ export default {
     }
   },
   watch: {
-    Member(value) {
+    member(value) {
       if (value) {
         this.GetImage(value.Id)
       }
     }
   },
   created() {
-    if (this.Member) {
-      this.GetImage(this.Member.Id)
+    if (this.member) {
+      this.GetImage(this.member.Id)
     }
   },
   methods: {
@@ -320,7 +316,7 @@ export default {
       this.$refs['dataOpration'].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({
-            ObjId: this.Member.Id,
+            ObjId: this.member.Id,
             TableName: 'Member',
             Status: -1,
             Description: this.tempOpration.Description
@@ -344,7 +340,7 @@ export default {
       this.$refs['dataOpration'].validate((valid) => {
         if (valid) {
           ChangeObjStatusByTableName({
-            ObjId: this.Member.Id,
+            ObjId: this.member.Id,
             TableName: 'Member',
             Status: -2,
             Description: this.tempOpration.Description

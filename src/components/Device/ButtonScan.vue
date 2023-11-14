@@ -15,88 +15,88 @@
     ></el-button>
   </el-popover> -->
 
-  <el-button icon="el-icon-receiving" type="success" @click="scanToJpg"></el-button>
+  <el-button icon="el-icon-receiving" type="success" @click="scanToJpg" />
 </template>
 <script>
-// var scanner = require("scanner.js");
-import { Create } from "@/api/File";
+
+import { Create } from '@/api/File'
 export default {
   props: {
-    ObjectId: {
+    objectId: {
       type: String,
-      required: true,
+      required: true
     },
-    TableName: {
+    tableName: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       loading: false,
-      imagesScanned: [],
-    };
+      imagesScanned: []
+    }
   },
   methods: {
     scanToJpg() {
       scanner.scan(this.displayImagesOnPage, {
         output_settings: [
           {
-            type: "return-base64",
-            format: "jpg",
-          },
-        ],
-      });
+            type: 'return-base64',
+            format: 'jpg'
+          }
+        ]
+      })
     },
     createData(scannedImage) {
-      let file = {
+      const file = {
         Id: undefined,
-        FileType: "image",
-        File: scannedImage.src.replace(/^data:image\/(png|jpg|jpeg);base64,/, ""),
+        FileType: 'image',
+        File: scannedImage.src.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''),
         Status: 0,
-        TableName: this.TableName,
-        FKTable: this.ObjectId,
-      };
+        TableName: this.tableName,
+        FKTable: this.objectId
+      }
       Create(file).then((response) => {
         if (response) {
-          this.imagesScanned.splice(0, 1);
-          if (this.imagesScanned.length != 0) {
-            this.createData();
+          this.imagesScanned.splice(0, 1)
+          if (this.imagesScanned.length !== 0) {
+            this.createData()
           } else {
-            this.Visibles = false;
+            this.Visibles = false
             this.$notify({
-              title: "تم ",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              duration: 2000,
-            });
+              title: 'تم ',
+              message: 'تم الإضافة بنجاح',
+              type: 'success',
+              duration: 2000
+            })
           }
         }
-      });
+      })
     },
     displayImagesOnPage(successful, mesg, response) {
       if (!successful) {
         // On error
-        console.error("Failed: " + mesg);
-        return;
+        console.error('Failed: ' + mesg)
+        return
       }
-      if (successful && mesg != null && mesg.toLowerCase().indexOf("user cancel") >= 0) {
+      if (successful && mesg != null && mesg.toLowerCase().indexOf('user cancel') >= 0) {
         // User cancelled.
-        console.info("User cancelled");
-        return;
+        console.info('User cancelled')
+        return
       }
 
-      var scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
+      var scannedImages = scanner.getScannedImages(response, true, false) // returns an array of ScannedImage
       for (var i = 0; scannedImages instanceof Array && i < scannedImages.length; i++) {
-        var scannedImage = scannedImages[i];
-        this.imagesScanned.push(scannedImage);
-        this.createData(scannedImage);
+        var scannedImage = scannedImages[i]
+        this.imagesScanned.push(scannedImage)
+        this.createData(scannedImage)
 
         // this.processScannedImage(scannedImage);
       }
     },
     processScannedImage(scannedImage) {
-      this.imagesScanned.push(scannedImage);
+      this.imagesScanned.push(scannedImage)
       //  var elementImg = scanner.createDomElementFromModel({
       //    name: "img",
       //    attributes: {
@@ -105,9 +105,9 @@ export default {
       //      },
       //    });
       // document.getElementById("images").appendChild(elementImg);
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style>
 img.scanned {

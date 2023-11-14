@@ -61,9 +61,6 @@
           scope.row.TotalRow.toFixed($store.getters.settings.ToFixed)
         }}</template>
       </el-table-column>
-      <!--<el-table-column v-bind:label="$t('Account.funds')" width="120" align="center">
-        <template slot-scope="scope">{{ (scope.row.Credit - scope.row.Debit).toFixed(this.$store.getters.settings.ToFixed) }}</template>
-      </el-table-column>-->
     </el-table>
   </div>
 </template>

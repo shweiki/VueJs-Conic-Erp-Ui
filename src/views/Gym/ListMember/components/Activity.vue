@@ -1,6 +1,6 @@
 <template>
   <div class="app-container" style="direction: rtl">
-    <el-table height="500" :data="MembershipMovements" fit border highlight-current-row>
+    <el-table height="500" :data="membershipMovements" fit border highlight-current-row>
       >
       <el-table-column prop="Id" label="رقم" align="center" />
 
@@ -235,7 +235,7 @@ export default {
     StatusTag
   },
   props: {
-    MembershipMovements: {
+    membershipMovements: {
       type: Array,
       default: () => {
         return null

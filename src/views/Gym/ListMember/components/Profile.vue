@@ -1,9 +1,5 @@
 <template>
   <el-row v-if="tempForm" type="flex">
-    <!--    <el-col :span="6" :xs="24">
-        <member-log />
-      </el-col>-->
-
     <el-col v-loading="loading" :span="24" :xs="24">
       <Member-Search />
 
@@ -145,8 +141,6 @@
 </template>
 
 <script>
-// import MemberLog from "@/components/Gym/MemberLog.vue";
-
 import Details from './Details.vue'
 import UserCard from './UserCard.vue'
 import MemberShipMovementWithPay from './Dialogs/MemberShipMovementWithPay.vue'
@@ -282,7 +276,6 @@ export default {
       GetMembershipMovementByMemberId({
         MemberId: this.tempForm.Id
       }).then((response) => {
-        //    console.log("log :", response);
         this.MembershipMovements = response.reverse()
       })
     },
