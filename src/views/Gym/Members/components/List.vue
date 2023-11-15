@@ -230,9 +230,6 @@
       <el-table-column width="180" align="center">
         <template slot-scope="scope">
           <el-row>
-            <!--   <el-col :span="12">
-              <Next-Oprations :ObjId="scope.row.Id" :status="scope.row.Status" tableName="Member" @Done="handleFilter" />
-            </el-col>-->
             <el-col :span="24">
               <Dialog-Action-Log tableName="Member" :objId="scope.row.Id.toString()"
             /></el-col>

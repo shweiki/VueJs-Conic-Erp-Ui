@@ -5,16 +5,14 @@
         <el-row type="flex">
           <el-col :span="9">
             <el-date-picker
-              :clearable="false"
               v-model="DateIn"
-              @change="FilterByDateIn"
+              :clearable="false"
               type="date"
               placeholder="بحث حسب تاريخ ما بين البدء و الانتهاء"
-            >
-            </el-date-picker
-          ></el-col>
+              @change="FilterByDateIn"
+            /></el-col>
           <el-col :span="6">
-            <Export :list="tableData" Type="Members" />
+            <Export :list="tableData" type="Members" />
           </el-col>
           <el-col :span="3">
             <el-button
@@ -22,8 +20,7 @@
               type="primary"
               icon="el-icon-plus"
               @click="Visibles = true"
-              >تجميد</el-button
-            >
+            >تجميد</el-button>
           </el-col>
           <el-col :span="6">
             <el-button
@@ -31,12 +28,11 @@
               type="primary"
               :size="$store.getters.size"
               @click="$store.dispatch('Members/CheckMembers')"
-              >CheckMemberShips</el-button
-            ></el-col
-          >
+            >CheckMemberShips</el-button></el-col>
         </el-row>
       </div>
       <el-table
+        ref="multipleTable"
         v-loading="loading"
         :data="tableData"
         fit
@@ -44,10 +40,9 @@
         highlight-current-row
         max-height="500"
         style="width: 100%"
-        ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             Ids
@@ -58,19 +53,17 @@
           prop="MembershipName"
           label="الاشتراك"
           align="center"
-        ></el-table-column>
+        />
 
         <el-table-column
           prop="MemberName"
           label="المشترك"
           align="center"
-        ></el-table-column>
-        <el-table-column prop="Type" label="الفترة" align="center"></el-table-column>
+        />
+        <el-table-column prop="Type" label="الفترة" align="center" />
 
-        <el-table-column prop="StartDate" label="تاريخ البدء" align="center" sortable>
-        </el-table-column>
-        <el-table-column prop="EndDate" label="تاريخ الانتهاء" align="center" sortable>
-        </el-table-column>
+        <el-table-column prop="StartDate" label="تاريخ البدء" align="center" sortable />
+        <el-table-column prop="EndDate" label="تاريخ الانتهاء" align="center" sortable />
       </el-table>
     </el-card>
     <div>
@@ -85,19 +78,19 @@
                   type="daterange"
                   align="left"
                   unlink-panels
-                  v-bind:range-separator="$t('Sales.until')"
-                  v-bind:start-placeholder="$t('Sales.From')"
-                  v-bind:end-placeholder="$t('Sales.To')"
+                  :range-separator="$t('Sales.until')"
+                  :start-placeholder="$t('Sales.From')"
+                  :end-placeholder="$t('Sales.To')"
                   :default-time="['00:00:00', '23:59:59']"
                   style="width: 80%"
-                ></el-date-picker>
+                />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row type="flex">
             <el-col :span="24">
-              <el-form-item v-bind:label="$t('AddVendors.Description')">
-                <el-input v-model="Description"></el-input>
+              <el-form-item :label="$t('AddVendors.Description')">
+                <el-input v-model="Description" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -128,100 +121,86 @@
 </template>
 
 <script>
-import Export from "@/components/Export";
-import {
-  GetMembershipMovementByStatus,
-  GetMembershipMovementByDateIn,
-} from "@/api/MembershipMovement";
-import { CreateMulti } from "@/api/MembershipMovementOrder";
-import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import { LocalDate, LocalTime, DateTimeFormatter, Instant } from "@js-joda/core";
+import Export from '@/components/Export'
+import permission from '@/directive/permission/index.js'
+
+import waves from '@/directive/waves' // waves directive
+import {GetMembershipMovementList} from '@/api/MembershipMovement'
+import { CreateMulti } from '@/api/MembershipMovementOrder'
+import { LocalDate, LocalTime, DateTimeFormatter, Instant } from '@js-joda/core'
+
 export default {
-  components: { RadioOprations, Export },
+  components: { Export },
+  directives: { waves, permission },
+
   data() {
     return {
       tableData: [],
       Selection: [],
-      FreezeBetween: "",
-      Description: "",
+      FreezeBetween: '',
+      Description: '',
       Visibles: false,
       Days: 0,
       loading: false,
-      search: "",
-      DateIn: "",
-    };
+      search: '',
+      DateIn: ''
+    }
   },
 
   methods: {
     getdata(val) {
-      console.log(val);
-      this.loading = true;
-      GetMembershipMovementByStatus({ Status: val }).then((response) => {
-        //console.log(response)
-        this.tableData = response;
-        this.loading = false;
-      });
-    },
-    FilterByDateIn(val) {
-      this.loading = true;
-      let date = LocalDate.ofInstant(Instant.ofEpochMilli(val))
-        .atStartOfDay()
-        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-      GetMembershipMovementByDateIn({
-        DateIn: date,
-      }).then((response) => {
-        //console.log(response)
-        this.tableData = response;
-        this.loading = false;
-      });
+      console.log(val)
+      this.loading = true
+      GetMembershipMovementList({ Status: val }).then((response) => {
+        // console.log(response)
+        this.tableData = response
+        this.loading = false
+      })
     },
     handleSelectionChange(val) {
-      this.Selection = val;
+      this.Selection = val
     },
     createFreeze() {
-      let createFreeze100 = [];
-      for (var i = 0; i < this.Selection.length; i++) {
-        if (this.Selection.length > 0) {
-          createFreeze100.push(this.Selection.splice(0, 98));
-        } else {
-          break;
-        }
-      }
+      const chunkSize = 3
+      const chunks = []
 
-      createFreeze100.forEach((element) => {
-        let date = [
+      for (let i = 0; i < this.Selection.length; i += chunkSize) {
+        chunks.push(this.Selection.slice(i, i + chunkSize))
+      }
+      chunks.forEach((element) => {
+        const date = [
           LocalDate.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[0]))
             .atStartOfDay()
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+            .format(DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm')),
           LocalDate.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[1]))
             .atTime(LocalTime.MAX)
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-        ];
+            .format(DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm'))
+        ]
         CreateMulti({
           collection: element.map((x) => {
             return {
               Id: undefined,
-              Type: "Freeze",
+              Type: 'Freeze',
               StartDate: date[0],
               EndDate: date[1],
               Status: 2,
               Description: this.Description,
-              MemberShipMovementId: x.Id,
-            };
-          }),
+              MemberShipMovementId: x.Id
+            }
+          })
         }).then((response) => {
           if (response) {
-            this.Visibles = false;
+            this.Visibles = false
             this.$notify({
-              title: "تم ",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              duration: 2000,
-            });
+              title: 'تم ',
+              message: 'تم الإضافة بنجاح',
+              type: 'success',
+              duration: 2000
+            })
           }
-        });
-      });
-    },
-  },
-};
+        })
+      })
+    }
+  }
+}
 </script>

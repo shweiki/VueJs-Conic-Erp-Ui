@@ -25,23 +25,26 @@
       </div>
       <div style="text-align: center">
         <div v-permission="['admin']">
-          <span style="color: #ff5722; font-size: large"
-            >مبيعات النقدية :
+          <span
+            style="color: #ff5722; font-size: large"
+          >مبيعات النقدية :
             {{ Totals.Cash.toFixed($store.getters.settings.ToFixed) }}
           </span>
-          <el-divider></el-divider>
+          <el-divider />
 
-          <span style="color: #ff5722; font-size: large"
-            >مبيعات الفيزا :
+          <span
+            style="color: #ff5722; font-size: large"
+          >مبيعات الفيزا :
             {{ Totals.Visa.toFixed($store.getters.settings.ToFixed) }}
           </span>
-          <el-divider></el-divider>
+          <el-divider />
 
-          <span style="color: #ff5722; font-size: large"
-            >مجموع المبيعات :
+          <span
+            style="color: #ff5722; font-size: large"
+          >مجموع المبيعات :
             {{ Totals.Totals.toFixed($store.getters.settings.ToFixed) }}
           </span>
-          <el-divider></el-divider>
+          <el-divider />
         </div>
         <el-form ref="F-CashPool" :model="tempForm">
           <el-row type="flex">
@@ -50,10 +53,10 @@
             </el-col>
             <el-col :span="12">
               <currency-input
-                class="currency-input"
                 v-model="tempForm.TotalCash"
+                class="currency-input"
                 @focus="$event.target.select()"
-            /></el-col>
+              /></el-col>
           </el-row>
           <el-row type="flex">
             <el-col :span="12">
@@ -61,10 +64,10 @@
             </el-col>
             <el-col :span="12">
               <currency-input
-                class="currency-input"
                 v-model="tempForm.TotalCoins"
+                class="currency-input"
                 @focus="$event.target.select()"
-            /></el-col>
+              /></el-col>
           </el-row>
           <el-row type="flex">
             <el-col :span="12">
@@ -72,10 +75,10 @@
             </el-col>
             <el-col :span="12">
               <currency-input
-                class="currency-input"
                 v-model="tempForm.TotalVisa"
+                class="currency-input"
                 @focus="$event.target.select()"
-            /></el-col>
+              /></el-col>
           </el-row>
           <el-row type="flex">
             <el-col :span="12">
@@ -83,10 +86,10 @@
             </el-col>
             <el-col :span="12">
               <currency-input
-                class="currency-input"
                 v-model="tempForm.TotalReject"
+                class="currency-input"
                 @focus="$event.target.select()"
-            /></el-col>
+              /></el-col>
           </el-row>
 
           <el-row v-permission="['admin']" type="flex">
@@ -95,10 +98,10 @@
             </el-col>
             <el-col :span="12">
               <currency-input
-                class="currency-input"
                 v-model="tempForm.TotalOutlay"
+                class="currency-input"
                 @focus="$event.target.select()"
-            /></el-col>
+              /></el-col>
           </el-row>
           <el-row type="flex">
             <el-col :span="12">
@@ -106,10 +109,10 @@
             </el-col>
             <el-col :span="12">
               <currency-input
-                class="currency-input"
                 v-model="tempForm.TotalRestitution"
+                class="currency-input"
                 @focus="$event.target.select()"
-            /></el-col>
+              /></el-col>
           </el-row>
           <el-row type="flex">
             <el-col :span="24">
@@ -128,28 +131,10 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row type="flex">
-            <el-col :span="24">
-              <el-form-item
-                prop="EditorName"
-                :rules="[
-                  {
-                    required: true,
-                    message: 'لايمكن ترك محرر السند فارغ',
-                    trigger: 'blur',
-                  },
-                ]"
-                v-bind:label="$t('AddVendors.EditorName')"
-              >
-                <Editors-User
-                  :Value="tempForm.EditorName"
-                  @Set="(v) => (tempForm.EditorName = v)"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <span v-permission="['admin']" style="color: #ff5722; font-size: x-large"
-            >النتيجة :
+          <span
+            v-permission="['admin']"
+            style="color: #ff5722; font-size: x-large"
+          >النتيجة :
             {{
               (
                 tempForm.TotalCash +
@@ -169,41 +154,33 @@
                 tempForm.TotalRestitution +
                 tempForm.TotalOutlay -
                 Totals.Totals >=
-              0
+                0
                 ? tempForm.TotalCash +
-                    tempForm.TotalCoins +
-                    tempForm.TotalVisa +
-                    tempForm.TotalReject +
-                    tempForm.TotalRestitution +
-                    tempForm.TotalOutlay -
-                    Totals.Totals ==
+                  tempForm.TotalCoins +
+                  tempForm.TotalVisa +
+                  tempForm.TotalReject +
+                  tempForm.TotalRestitution +
+                  tempForm.TotalOutlay -
+                  Totals.Totals ==
                   0
                   ? "مطابق"
                   : "زيادة"
                 : "نقص"
-            }})</span
-          >
-          <el-divider></el-divider>
+            }})</span>
+          <el-divider />
         </el-form>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import EditorsUser from "@/views/Gym/components/EditorsUser.vue";
-import Description from "@/components/Description/Input.vue";
-import permission from "@/directive/permission/index.js";
+import Description from '@/components/Description/Input.vue'
+import permission from '@/directive/permission/index.js'
 
 export default {
-  components: { EditorsUser, Description },
-  props: ["Data", "Open", "Totals", "Type"],
-  watch: {
-    Open(val) {
-      this.Show = val;
-    },
-  },
+  components: { Description },
   directives: { permission },
-
+  props: ['Data', 'Open', 'Totals', 'Type'],
   data() {
     return {
       Show: false,
@@ -218,12 +195,16 @@ export default {
         TotalOutlay: 0,
         TotalRestitution: 0,
         Status: 0,
-        Description: "",
-        EditorName: "",
+        Description: '',
         TableName: this.Type,
-        Fktable: this.Data.map((x) => x.Id),
-      },
-    };
+        Fktable: this.Data.map((x) => x.Id)
+      }
+    }
+  },
+  watch: {
+    Open(val) {
+      this.Show = val
+    }
   },
   methods: {
     restForm() {
@@ -237,37 +218,36 @@ export default {
         TotalOutlay: 0,
         TotalRestitution: 0,
         Status: 0,
-        Description: "",
-        EditorName: "",
+        Description: '',
         TableName: this.Type,
-        Fktable: this.Data.map((x) => x.Id),
-      };
+        Fktable: this.Data.map((x) => x.Id)
+      }
     },
     createData() {
-      this.$refs["F-CashPool"].validate((valid) => {
+      this.$refs['F-CashPool'].validate((valid) => {
         if (valid && this.Data.length > 0) {
-          this.createLoading = true;
-          this.tempForm.TableName = this.Type;
-          this.tempForm.Totals = this.Totals;
-          this.tempForm.DateTime = new Date();
-          this.tempForm.Fktable = this.Data.map((x) => x.Id).toString();
-          this.$emit("Done", this.tempForm);
-          this.createLoading = false;
+          this.createLoading = true
+          this.tempForm.TableName = this.Type
+          this.tempForm.Totals = this.Totals
+          this.tempForm.DateTime = new Date()
+          this.tempForm.Fktable = this.Data.map((x) => x.Id).toString()
+          this.$emit('Done', this.tempForm)
+          this.createLoading = false
         } else {
-          console.log(valid);
-          return false;
+          console.log(valid)
+          return false
         }
-      });
+      })
     },
     handleClose(done) {
-      this.$confirm("هل انت متاكد من الخروج")
+      this.$confirm('هل انت متاكد من الخروج')
         .then((_) => {
-          this.Show = false;
-          this.$emit("Closed");
-          done();
+          this.Show = false
+          this.$emit('Closed')
+          done()
         })
-        .catch((_) => {});
-    },
-  },
-};
+        .catch((_) => {})
+    }
+  }
+}
 </script>

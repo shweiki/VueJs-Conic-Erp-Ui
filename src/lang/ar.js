@@ -356,7 +356,7 @@ export default {
     Description: 'الوصف',
     Cancel: 'إلغاء',
     Save: 'حفظ',
-    EditorName: 'محرر السند',
+    CreatedBy: 'محرر',
     Region: 'المنطقة',
     BonId: 'رقم البيان'
 

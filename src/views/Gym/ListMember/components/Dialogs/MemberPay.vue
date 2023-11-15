@@ -71,26 +71,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
-          <el-col :span="24">
-            <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              :label="$t('AddVendors.EditorName')"
-            >
-              <Editors-User
-                :value="tempForm.EditorName"
-                @Set="(v) => (tempForm.EditorName = v)"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
@@ -107,13 +87,11 @@ import { Create as CreatePayment } from '@/api/Payment'
 // report
 import DrawerPrint from '@/components/PrintRepot/DrawerPrint.vue'
 import FakeDate from '@/components/Date/FakeDate'
-// import RadioPaymentMethod from "@/components/PaymentMethod/RadioPaymentMethod.vue";
 import RadioPaymentMethodFromSettings from '@/components/PaymentMethod/RadioPaymentMethodFromSettings.vue'
-import EditorsUser from '@/views/Gym/components/EditorsUser.vue'
 import { SendSMS } from '@/api/Sms'
 
 export default {
-  components: { EditorsUser, DrawerPrint, FakeDate, RadioPaymentMethodFromSettings },
+  components: { DrawerPrint, FakeDate, RadioPaymentMethodFromSettings },
   props: {
     memberId: {
       type: String,
@@ -146,7 +124,6 @@ export default {
         VendorId: undefined,
         IsPrime: true,
         MemberId: undefined,
-        EditorName: '',
         Type: ''
       },
       Visibles: false
@@ -165,7 +142,6 @@ export default {
         VendorId: undefined,
         IsPrime: true,
         MemberId: undefined,
-        EditorName: '',
         Type: ''
       }
     },

@@ -7,7 +7,7 @@ const SettingsRouter = {
   name: 'Settings',
   meta: {
     title: 'Settings',
-    icon: 'setting',
+    icon: 'setting'
   },
   children: [
 
@@ -17,7 +17,7 @@ const SettingsRouter = {
       name: 'Oprationsys',
       meta: {
         title: 'Oprationsys', icon: 'execution'
-      },
+      }
     },
     {
       path: 'Discount',
@@ -25,7 +25,7 @@ const SettingsRouter = {
       name: 'Discount',
       meta: {
         title: 'Discount', icon: 'company'
-      },
+      }
     },
     {
       path: 'Area',
@@ -33,15 +33,7 @@ const SettingsRouter = {
       name: 'Areas',
       meta: {
         title: 'Areas', icon: 'company'
-      },
-    },
-    {
-      path: 'Editors',
-      component: () => import('@/views/Settings/EditorsUsers/index'),
-      name: 'Editors',
-      meta: {
-        title: 'Editors', icon: 'company'
-      },
+      }
     },
     {
       path: 'BackupRestore',
@@ -49,7 +41,7 @@ const SettingsRouter = {
       name: 'BackupRestore',
       meta: {
         title: 'BackupRestore', icon: 'company'
-      },
+      }
     },
     {
       path: 'Device',
@@ -57,7 +49,7 @@ const SettingsRouter = {
       name: 'Devices',
       meta: {
         title: 'Devices', icon: 'company'
-      },
+      }
     },
     {
       path: 'CompanyInfo',
@@ -65,7 +57,7 @@ const SettingsRouter = {
       name: 'CompanyInfo',
       meta: {
         title: 'CompanyInfo', icon: 'company'
-      },
+      }
     },
     {
       path: 'Permission',
@@ -73,8 +65,8 @@ const SettingsRouter = {
       name: 'Permission',
       meta: {
         title: 'Permissions',
-        icon: 'key',
-      },
+        icon: 'key'
+      }
     },
     {
       path: 'ApplicationSetting',
@@ -82,8 +74,8 @@ const SettingsRouter = {
       name: 'ApplicationSetting',
       meta: {
         title: 'ApplicationSetting',
-        icon: 'key',
-      },
+        icon: 'key'
+      }
     },
     {
       path: 'JsonEditorSetting',
@@ -91,8 +83,8 @@ const SettingsRouter = {
       name: 'JsonEditorSetting',
       meta: {
         title: 'JsonEditorSetting',
-        icon: 'key',
-      },
+        icon: 'key'
+      }
     }
 
   ]

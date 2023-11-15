@@ -71,7 +71,7 @@
         label="ملاحظات"
         prop="Description"
       />
-      <el-table-column label="محرر" align="center" prop="EditorName" />
+      <el-table-column label="محرر" align="center" prop="CreatedBy" />
 
       <el-table-column width="120" align="center">
         <template slot-scope="scope">

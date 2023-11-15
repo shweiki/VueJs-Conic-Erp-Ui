@@ -121,23 +121,6 @@
         <el-form-item :label="$t('NewPurchaseInvoice.TotalJD')">
           <span>JOD {{ tempForm.TotalAmmount }}</span>
         </el-form-item>
-        <el-row type="flex">
-          <el-col :span="24">
-            <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              :label="$t('AddVendors.EditorName')"
-            >
-              <Editors-User :value="tempForm.EditorName" @Set="(v) => (tempForm.EditorName = v)" />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -159,7 +142,6 @@
 
 <script>
 import { Create } from '@/api/MembershipMovement'
-import EditorsUser from '@/views/Gym/components/EditorsUser.vue'
 import SelectMemberships from '@/views/Gym/components/SelectMemberships.vue'
 import FakeDate from '@/components/Date/FakeDate.vue'
 import SelectDiscount from '@/components/Discount/SelectDiscount.vue'
@@ -172,7 +154,6 @@ import SelectInComeAccounts from '@/components/TreeAccount/SelectInComeAccounts.
 export default {
   components: {
     FakeDate,
-    EditorsUser,
     SelectMemberships,
     SelectDiscount,
     SelectInComeAccounts
@@ -207,7 +188,6 @@ export default {
         DiscountDescription: '',
         Description: '',
         Status: 1,
-        EditorName: '',
         MemberId: undefined,
         MembershipId: undefined
       },

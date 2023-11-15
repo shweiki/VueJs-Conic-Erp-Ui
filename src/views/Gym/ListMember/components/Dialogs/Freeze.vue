@@ -41,23 +41,6 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="24">
-            <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              :label="$t('AddVendors.EditorName')"
-            >
-              <Editors-User :value="tempForm.EditorName" @Set="(v) => (tempForm.EditorName = v)" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex">
-          <el-col :span="24">
             مجموع الايام حسب الفترة المطلوبة
             {{
               Math.round(
@@ -88,15 +71,12 @@
 
 <script>
 import { Create } from '@/api/MembershipMovementOrder'
-import EditorsUser from '@/views/Gym/components/EditorsUser'
 import {
   LocalDateTime,
   DateTimeFormatter,
   Instant
 } from '@js-joda/core'
 export default {
-  components: { EditorsUser },
-
   props: {
     MemberShipMovementId: {
       type: Number,
@@ -124,7 +104,6 @@ export default {
         StartDate: '',
         EndDate: '',
         Status: 0,
-        EditorName: '',
         Description: '',
         MemberShipMovementId: this.MemberShipMovementId
       },

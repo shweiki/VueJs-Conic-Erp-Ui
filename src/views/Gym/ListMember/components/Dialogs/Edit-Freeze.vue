@@ -1,44 +1,47 @@
 <template>
   <div>
-    <el-button icon="el-icon-edit" @click="Visibles = true"></el-button>
+    <el-button icon="el-icon-edit" @click="Visibles = true" />
 
-    <el-dialog style="margin-top: -13vh; text-align: center" title="تسجيل تجميد" @opened="getdata"
-      :visible.sync="Visibles">
-      <el-form :model="tempForm" ref="dataForm" label-position="top" class="demo-form-inline">
+    <el-dialog
+      style="margin-top: -13vh; text-align: center"
+      title="تسجيل تجميد"
+      :visible.sync="Visibles"
+      @opened="getdata"
+    >
+      <el-form ref="dataForm" :model="tempForm" label-position="top" class="demo-form-inline">
         عدد الايام المسموحة لتجميد : من {{ MinFreezeLimit }} الى {{ MaxFreezeLimit }} ايام
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item prop="FreezeBetween" label="الفترة">
-              <el-date-picker v-model="FreezeBetween" format="yyyy-MM-dd" type="daterange" align="left" unlink-panels
-                v-bind:range-separator="$t('Sales.until')" v-bind:start-placeholder="$t('Sales.From')"
-                v-bind:end-placeholder="$t('Sales.To')" :default-time="['00:00:00', '23:59:59']"
-                style="width: 100%"></el-date-picker>
+              <el-date-picker
+                v-model="FreezeBetween"
+                format="yyyy-MM-dd"
+                type="daterange"
+                align="left"
+                unlink-panels
+                :range-separator="$t('Sales.until')"
+                :start-placeholder="$t('Sales.From')"
+                :end-placeholder="$t('Sales.To')"
+                :default-time="['00:00:00', '23:59:59']"
+                style="width: 100%"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="24">
-            <el-form-item prop="Description" :rules="[
-              {
-                required: true,
-                message: 'لايمكن ترك ملاحظات فارغ',
-                trigger: 'blur',
-              },
-            ]" v-bind:label="$t('AddVendors.Description')">
-              <el-input v-model="tempForm.Description"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex">
-          <el-col :span="24">
-            <el-form-item prop="EditorName" :rules="[
-              {
-                required: true,
-                message: 'لايمكن ترك محرر السند فارغ',
-                trigger: 'blur',
-              },
-            ]" v-bind:label="$t('AddVendors.EditorName')">
-              <Editors-User :Value="tempForm.EditorName" @Set="(v) => (tempForm.EditorName = v)" />
+            <el-form-item
+              prop="Description"
+              :rules="[
+                {
+                  required: true,
+                  message: 'لايمكن ترك ملاحظات فارغ',
+                  trigger: 'blur',
+                },
+              ]"
+              :label="$t('AddVendors.Description')"
+            >
+              <el-input v-model="tempForm.Description" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -49,7 +52,7 @@
               Math.round(
                 Math.abs(
                   (new Date(FreezeBetween[0]) - new Date(FreezeBetween[1])) /
-                  (24 * 60 * 60 * 1000)
+                    (24 * 60 * 60 * 1000)
                 )
               )
             }}
@@ -73,33 +76,30 @@
 </template>
 
 <script>
-import { Edit, GetById } from "@/api/MembershipMovementOrder";
-import EditorsUser from "@/views/Gym/components/EditorsUser";
+import { Edit, GetById } from '@/api/MembershipMovementOrder'
 import {
   LocalDateTime,
   DateTimeFormatter,
   Instant
 } from '@js-joda/core'
 export default {
-  components: { EditorsUser },
-
   props: {
     MemberShipMovementOrderId: {
       type: Number,
-      required: true,
+      required: true
     },
     MinFreezeLimit: {
       type: Number,
       default: () => {
-        return undefined;
-      },
+        return undefined
+      }
     },
     MaxFreezeLimit: {
       type: Number,
       default: () => {
-        return undefined;
-      },
-    },
+        return undefined
+      }
+    }
   },
   data() {
     return {
@@ -108,21 +108,21 @@ export default {
       FreezeBetween: [],
       Visibles: false,
       Days: 0,
-      ValidateNote: "",
-    };
+      ValidateNote: ''
+    }
   },
   methods: {
     getdata() {
       GetById({ Id: this.MemberShipMovementOrderId })
         .then((response) => {
-          console.log(response);
-          this.tempForm = response;
-          this.FreezeBetween = [this.tempForm.StartDate, this.tempForm.EndDate];
-          this.Visibles = true;
+          console.log(response)
+          this.tempForm = response
+          this.FreezeBetween = [this.tempForm.StartDate, this.tempForm.EndDate]
+          this.Visibles = true
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     create() {
       this.Days = Math.round(
@@ -130,12 +130,12 @@ export default {
           (new Date(this.FreezeBetween[0]) - new Date(this.FreezeBetween[1])) /
           (24 * 60 * 60 * 1000)
         )
-      );
-      console.log(this.Days);
+      )
+      console.log(this.Days)
       if (this.Days >= this.MinFreezeLimit && this.Days <= this.MaxFreezeLimit) {
-        this.$refs["dataForm"].validate((valid) => {
+        this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            this.EnableSave = true;
+            this.EnableSave = true
             this.tempForm.StartDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[0])).format(
               DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm'))
             this.tempForm.EndDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(this.FreezeBetween[1])).format(
@@ -143,30 +143,30 @@ export default {
             Edit(this.tempForm)
               .then((response) => {
                 if (response) {
-                  this.Visibles = false;
-                  this.EnableSave = false;
+                  this.Visibles = false
+                  this.EnableSave = false
                   this.$notify({
-                    title: "تم ",
-                    message: "تم تعديل بنجاح",
-                    type: "success",
-                    duration: 2000,
-                  });
+                    title: 'تم ',
+                    message: 'تم تعديل بنجاح',
+                    type: 'success',
+                    duration: 2000
+                  })
                   this.$nextTick(() => {
                     this.$router.replace({
-                      path: "/redirect" + this.$route.fullPath,
-                    });
-                  });
+                      path: '/redirect' + this.$route.fullPath
+                    })
+                  })
                 }
               })
               .catch((error) => {
-                console.log(error);
-              });
+                console.log(error)
+              })
           }
-        });
+        })
       } else {
-        this.ValidateNote = "عدد الايام المطلوب تجميدها غير المسموح بها";
+        this.ValidateNote = 'عدد الايام المطلوب تجميدها غير المسموح بها'
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

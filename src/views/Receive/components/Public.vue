@@ -15,8 +15,7 @@
             type="success"
             icon="fa fa-save"
             @click="isEdit != true ? createData() : updateData()"
-            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-          >
+          >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button>
           <router-link
             class="pan-btn tiffany-btn"
             style="
@@ -27,14 +26,13 @@
             "
             icon="el-icon-plus"
             to="/Receive/List"
-            >{{ $t("route.ListReceive") }}</router-link
-          >
+          >{{ $t("route.ListReceive") }}</router-link>
         </div>
         <el-row type="flex">
           <el-col :span="4">
             <el-form-item
               prop="FakeDate"
-              v-bind:label="$t('NewPurchaseInvoice.ReleaseDate')"
+              :label="$t('NewPurchaseInvoice.ReleaseDate')"
               :rules="[
                 {
                   required: true,
@@ -44,7 +42,7 @@
               ]"
             >
               <Fake-Date
-                :Value="tempForm.FakeDate"
+                :value="tempForm.FakeDate"
                 @Set="(v) => (tempForm.FakeDate = v)"
               />
             </el-form-item>
@@ -62,7 +60,7 @@
               ]"
             >
               <Vendor-Search-Any
-                :Id="tempForm.VendorId"
+                :id="tempForm.VendorId"
                 @Set="
                   (v) => {
                     AccountId = v.AccountId;
@@ -75,15 +73,15 @@
           <el-col :span="8">
             <el-form-item label="طريقة الصرف" prop="ReceiveMethod">
               <Radio-Receive-Method
-                Type="Receive"
-                :VendorId="tempForm.VendorId"
+                type="Receive"
+                :vendor-id="tempForm.VendorId"
                 @Set="(v) => (tempForm.ReceiveMethod = v)"
               />
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="باسم" prop="Name">
-              <el-input placeholder="اسم المستلم" v-model="tempForm.Name"></el-input>
+              <el-input v-model="tempForm.Name" placeholder="اسم المستلم" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -91,6 +89,7 @@
           <el-col :span="12">
             <el-form-item label="القيمة المصروفة">
               <currency-input
+                v-model="tempForm.TotalAmmount"
                 :rules="[
                   {
                     required: true,
@@ -99,35 +98,14 @@
                   },
                 ]"
                 class="currency-input"
-                v-model="tempForm.TotalAmmount"
                 :value-range="{ min: 0.01, max: 1000000 }"
                 @focus="$event.target.select()"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
-              <el-input v-model="tempForm.Description"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex">
-          <el-col :span="24">
-            <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              v-bind:label="$t('AddVendors.EditorName')"
-            >
-              <Editors-User
-                :Value="tempForm.EditorName"
-                @Set="(v) => (tempForm.EditorName = v)"
-              />
+            <el-form-item :label="$t('AddVendors.Description')" prop="Description">
+              <el-input v-model="tempForm.Description" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -150,113 +128,108 @@
   </div>
 </template>
 <script>
-import { Create, Edit, GetById } from "@/api/Receive";
-import FakeDate from "@/components/Date/FakeDate";
-import { CreateEntry, EditEntryByFktable } from "@/api/EntryAccounting";
-import VendorSearchAny from "@/components/Vendor/VendorSearchAny.vue";
-import SelectCashAccounts from "@/components/TreeAccount/SelectCashAccounts.vue";
-import RadioReceiveMethod from "@/components/ReceiveMethod/RadioReceiveMethod.vue";
-import EditorsUser from "@/views/Gym/components/EditorsUser";
+import { Create, Edit, GetById } from '@/api/Receive'
+import FakeDate from '@/components/Date/FakeDate'
+import { CreateEntry, EditEntryByFktable } from '@/api/EntryAccounting'
+import VendorSearchAny from '@/components/Vendor/VendorSearchAny.vue'
+import SelectCashAccounts from '@/components/TreeAccount/SelectCashAccounts.vue'
+import RadioReceiveMethod from '@/components/ReceiveMethod/RadioReceiveMethod.vue'
 
 export default {
-  name: "NewReceive",
   components: {
     FakeDate,
     VendorSearchAny,
     SelectCashAccounts,
-    RadioReceiveMethod,
-    EditorsUser,
+    RadioReceiveMethod
   },
   props: {
     isEdit: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
-      ValidateNote: "",
+      ValidateNote: '',
       DisabledSave: false,
       tempForm: {
         Id: undefined,
-        Name: "",
-        FakeDate: "",
-        ReceiveMethod: "Cash",
+        Name: '',
+        FakeDate: '',
+        ReceiveMethod: 'Cash',
         TotalAmmount: 0,
-        Description: "",
+        Description: '',
         Status: 0,
         VendorId: 2,
         IsPrime: true,
         MemberId: undefined,
-        EditorName: "",
-        Type: "",
+        Type: ''
       },
       AccountId: undefined,
       CashAccountId: undefined,
-      tempRoute: {},
-    };
+      tempRoute: {}
+    }
   },
   created() {
     if (this.isEdit) {
-      this.getdata(this.$route.params && this.$route.params.id);
+      this.getdata(this.$route.params && this.$route.params.id)
     }
-    this.tempRoute = Object.assign({}, this.$route);
+    this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
     restTempForm() {
       this.tempForm = {
         Id: undefined,
-        Name: "",
-        FakeDate: "",
-        Receive: "Cash",
+        Name: '',
+        FakeDate: '',
+        Receive: 'Cash',
         TotalAmmount: 0,
-        Description: "",
+        Description: '',
         Status: 0,
         VendorId: undefined,
         IsPrime: true,
         MemberId: undefined,
-        EditorName: "",
-        Type: "",
-      };
-      this.AccountId = undefined;
+        Type: ''
+      }
+      this.AccountId = undefined
     },
     getdata(val) {
       GetById({ Id: val })
         .then((response) => {
-          this.tempForm = response;
+          this.tempForm = response
           // set tagsview title
-          this.setTagsViewTitle();
+          this.setTagsViewTitle()
           // set page title
-          this.setPageTitle();
+          this.setPageTitle()
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     updateData() {
-      this.$refs["tempForm"].validate((valid) => {
+      this.$refs['tempForm'].validate((valid) => {
         if (valid && this.tempForm.TotalAmmount > 0) {
           Edit(this.tempForm)
             .then((response) => {
               if (response && this.$store.getters.settings.Receive.CreateEntry == true) {
                 EditEntryByFktable({
-                  TableName: "Receive",
+                  TableName: 'Receive',
                   Fktable: this.tempForm.Id,
                   collection: {
                     Id: undefined,
                     FakeDate: this.tempForm.FakeDate,
-                    Description: "",
-                    Type: "Receive",
+                    Description: '',
+                    Type: 'Receive',
                     EntryMovements: [
                       {
                         Id: undefined,
                         AccountId: this.AccountId,
                         Debit: 0.0,
                         Credit: this.tempForm.TotalAmmount,
-                        Description: "سند صرف رقم " + this.tempForm.Id + " ",
+                        Description: 'سند صرف رقم ' + this.tempForm.Id + ' ',
                         EntryId: undefined,
-                        TableName: "Receive",
-                        Fktable: this.tempForm.Id,
+                        TableName: 'Receive',
+                        Fktable: this.tempForm.Id
                       },
                       {
                         Id: undefined,
@@ -264,167 +237,167 @@ export default {
                         Credit: 0.0,
                         Debit: this.tempForm.TotalAmmount,
                         Description:
-                          " صرف الى " +
+                          ' صرف الى ' +
                           this.tempForm.Name +
-                          "   رقم " +
+                          '   رقم ' +
                           this.tempForm.Id +
-                          " ",
+                          ' ',
                         EntryId: undefined,
-                        TableName: "Receive",
-                        Fktable: this.tempForm.Id,
-                      },
-                    ],
-                  },
+                        TableName: 'Receive',
+                        Fktable: this.tempForm.Id
+                      }
+                    ]
+                  }
                 }).then((res) => {
                   if (res) {
                     this.$notify({
-                      message: "تم تسجيل سند صرف مع قيد محاسبي بنجاح",
-                      title: "تم الإضافة بنجاح",
-                      type: "success",
-                      position: "top-left",
+                      message: 'تم تسجيل سند صرف مع قيد محاسبي بنجاح',
+                      title: 'تم الإضافة بنجاح',
+                      type: 'success',
+                      position: 'top-left',
                       duration: 1000,
-                      showClose: false,
-                    });
-                    this.$confirm("هل تريد العودة ")
+                      showClose: false
+                    })
+                    this.$confirm('هل تريد العودة ')
                       .then((_) => {
-                        this.$router.back();
+                        this.$router.back()
                       })
-                      .catch((_) => {});
+                      .catch((_) => {})
                   }
-                });
+                })
               } else if (response) {
                 this.$notify({
-                  title: "تم إضافة  بنجاح",
-                  message: "تم إضافة بنجاح",
-                  type: "success",
-                  position: "top-left",
+                  title: 'تم إضافة  بنجاح',
+                  message: 'تم إضافة بنجاح',
+                  type: 'success',
+                  position: 'top-left',
                   duration: 1000,
-                  showClose: false,
-                });
-                this.restTempForm();
-                this.$confirm("هل تريد العودة ")
+                  showClose: false
+                })
+                this.restTempForm()
+                this.$confirm('هل تريد العودة ')
                   .then((_) => {
-                    this.$router.back();
+                    this.$router.back()
                   })
-                  .catch((_) => {});
+                  .catch((_) => {})
               } else {
                 this.$notify({
-                  title: "مشكلة",
-                  message: "حصلت مشكلة في عملية الحفظ",
-                  type: "error",
-                  position: "top-left",
+                  title: 'مشكلة',
+                  message: 'حصلت مشكلة في عملية الحفظ',
+                  type: 'error',
+                  position: 'top-left',
                   duration: 1000,
-                  showClose: false,
-                });
+                  showClose: false
+                })
               }
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
-          return false;
+          this.ValidateNote = 'القيمة الإجمالية تساوي صفر  '
+          return false
         }
-      });
+      })
     },
     createData() {
-      this.$refs["tempForm"].validate((valid) => {
+      this.$refs['tempForm'].validate((valid) => {
         if (valid && this.tempForm.TotalAmmount > 0) {
-          this.DisabledSave = true;
+          this.DisabledSave = true
           Create(this.tempForm)
             .then((response) => {
               if (response && this.$store.getters.settings.Receive.CreateEntry == true) {
                 CreateEntry({
                   Id: undefined,
                   FakeDate: this.tempForm.FakeDate,
-                  Description: "",
-                  Type: "Receive",
+                  Description: '',
+                  Type: 'Receive',
                   EntryMovements: [
                     {
                       Id: undefined,
                       AccountId: this.AccountId,
                       Debit: 0.0,
                       Credit: this.tempForm.TotalAmmount,
-                      Description: "سند صرف رقم " + response + " ",
+                      Description: 'سند صرف رقم ' + response + ' ',
                       EntryId: undefined,
-                      TableName: "Receive",
-                      Fktable: response,
+                      TableName: 'Receive',
+                      Fktable: response
                     },
                     {
                       Id: undefined,
                       AccountId: this.CashAccountId,
                       Credit: 0.0,
                       Debit: this.tempForm.TotalAmmount,
-                      Description: "سند صرف رقم " + response + " ",
+                      Description: 'سند صرف رقم ' + response + ' ',
                       EntryId: undefined,
-                      TableName: "Receive",
-                      Fktable: response,
-                    },
-                  ],
+                      TableName: 'Receive',
+                      Fktable: response
+                    }
+                  ]
                 }).then((res) => {
                   if (res) {
                     this.$notify({
-                      message: "تم تسجيل سند صرف مع قيد محاسبي بنجاح",
-                      title: "تم الإضافة بنجاح",
-                      type: "success",
-                      position: "top-left",
+                      message: 'تم تسجيل سند صرف مع قيد محاسبي بنجاح',
+                      title: 'تم الإضافة بنجاح',
+                      type: 'success',
+                      position: 'top-left',
                       duration: 1000,
-                      showClose: false,
-                    });
-                    this.restTempForm();
-                    this.$confirm("هل تريد العودة ")
+                      showClose: false
+                    })
+                    this.restTempForm()
+                    this.$confirm('هل تريد العودة ')
                       .then((_) => {
-                        this.$router.back();
+                        this.$router.back()
                       })
-                      .catch((_) => {});
+                      .catch((_) => {})
                   }
-                });
+                })
               } else if (response) {
                 this.$notify({
-                  title: "تم إضافة  بنجاح",
-                  message: "تم إضافة بنجاح",
-                  type: "success",
-                  position: "top-left",
+                  title: 'تم إضافة  بنجاح',
+                  message: 'تم إضافة بنجاح',
+                  type: 'success',
+                  position: 'top-left',
                   duration: 1000,
-                  showClose: false,
-                });
-                this.restTempForm();
-                this.$confirm("هل تريد العودة ")
+                  showClose: false
+                })
+                this.restTempForm()
+                this.$confirm('هل تريد العودة ')
                   .then((_) => {
-                    this.$router.push({ path: `/Receive/List` });
+                    this.$router.push({ path: `/Receive/List` })
                   })
-                  .catch((_) => {});
+                  .catch((_) => {})
               } else {
                 this.$notify({
-                  title: "مشكلة",
-                  message: "حصلت مشكلة في عملية الحفظ",
-                  type: "error",
-                  position: "top-left",
+                  title: 'مشكلة',
+                  message: 'حصلت مشكلة في عملية الحفظ',
+                  type: 'error',
+                  position: 'top-left',
                   duration: 1000,
-                  showClose: false,
-                });
+                  showClose: false
+                })
               }
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
-          return false;
+          this.ValidateNote = 'القيمة الإجمالية تساوي صفر  '
+          return false
         }
-      });
+      })
     },
     setTagsViewTitle() {
-      const title = this.$t("route.EditReceive");
+      const title = this.$t('route.EditReceive')
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`,
-      });
-      this.$store.dispatch("tagsView/updateVisitedView", route);
+        title: `${title}-${this.tempForm.Id}`
+      })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = this.$t("route.EditReceive");
-      document.title = `${title} - ${this.tempForm.Id}`;
-    },
-  },
-};
+      const title = this.$t('route.EditReceive')
+      document.title = `${title} - ${this.tempForm.Id}`
+    }
+  }
+}
 </script>

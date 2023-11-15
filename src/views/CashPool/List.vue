@@ -107,7 +107,7 @@
           <span>{{ row.DateTime | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('AddVendors.EditorName')" prop="EditorName" align="center">
+      <el-table-column v-bind:label="$t('AddVendors.CreatedBy')" prop="CreatedBy" align="center">
       </el-table-column>
       <el-table-column v-bind:label="$t('AddVendors.Description')" prop="Description" align="center">
       </el-table-column>

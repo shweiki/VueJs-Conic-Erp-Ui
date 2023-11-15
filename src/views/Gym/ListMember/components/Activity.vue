@@ -101,7 +101,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="محرر" align="center" prop="EditorName" />
+      <el-table-column label="محرر" align="center" prop="CreatedBy" />
       <el-table-column v-if="checkPermission(['admin'])">
         <template slot-scope="scope">
           <el-row>
@@ -172,7 +172,7 @@
             <el-table-column
               label="محرر"
               align="center"
-              prop="EditorName"
+              prop="CreatedBy"
             />
             <el-table-column v-if="checkPermission(['admin'])" width="80">
               <template slot-scope="scope">

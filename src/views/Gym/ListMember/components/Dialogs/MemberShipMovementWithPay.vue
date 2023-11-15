@@ -119,23 +119,6 @@
             <el-radio label border />
           </el-radio-group>
         </el-form-item>
-        <el-row type="flex">
-          <el-col :span="24">
-            <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              :label="$t('AddVendors.EditorName')"
-            >
-              <Editors-User :value="tempForm.EditorName" @Set="(v) => (tempForm.EditorName = v)" />
-            </el-form-item>
-          </el-col>
-        </el-row>
         <el-form-item
           prop="Type"
           label="
@@ -175,23 +158,6 @@
         <el-form-item :label="$t('AddVendors.Description')" prop="Description">
           <el-input v-model="Payment.Description" style="width: 220px" />
         </el-form-item>
-        <el-row type="flex">
-          <el-col :span="24">
-            <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              :label="$t('AddVendors.EditorName')"
-            >
-              <Editors-User :value="Payment.EditorName" @Set="(v) => (Payment.EditorName = v)" />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
@@ -212,7 +178,6 @@ import { Create as CreatePayment } from '@/api/Payment'
 import DrawerPrint from '@/components/PrintRepot/DrawerPrint.vue'
 import { SendSMS } from '@/api/Sms'
 import { Create } from '@/api/MembershipMovement'
-import EditorsUser from '@/views/Gym/components/EditorsUser.vue'
 import SelectMemberships from '@/views/Gym/components/SelectMemberships.vue'
 import FakeDate from '@/components/Date/FakeDate.vue'
 import SelectDiscount from '@/components/Discount/SelectDiscount.vue'
@@ -226,7 +191,6 @@ import RadioPaymentMethod from '@/components/PaymentMethod/RadioPaymentMethod.vu
 export default {
   components: {
     FakeDate,
-    EditorsUser,
     SelectMemberships,
     SelectDiscount,
     DrawerPrint,
@@ -275,7 +239,6 @@ export default {
         DiscountDescription: '',
         Description: '',
         Status: 1,
-        EditorName: '',
         MemberId: undefined,
         MembershipId: undefined
       },
@@ -290,7 +253,6 @@ export default {
         Status: 0,
         VendorId: undefined,
         IsPrime: true,
-        EditorName: '',
         MemberId: undefined,
         Type: ''
       },

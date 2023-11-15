@@ -46,26 +46,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
-          <el-col :span="24">
-            <el-form-item
-              prop="EditorName"
-              :rules="[
-                {
-                  required: true,
-                  message: 'لايمكن ترك محرر السند فارغ',
-                  trigger: 'blur',
-                },
-              ]"
-              :label="$t('AddVendors.EditorName')"
-            >
-              <Editors-User
-                :value="tempForm.EditorName"
-                @Set="(v) => (tempForm.EditorName = v)"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="Visibles = false">{{ $t("AddVendors.Cancel") }}</el-button>
@@ -79,9 +59,7 @@
 
 <script>
 import { Create } from '@/api/MembershipMovementOrder'
-import EditorsUser from '@/views/Gym/components/EditorsUser'
 export default {
-  components: { EditorsUser },
   props: {
     MemberShipMovementId: {
       type: Number,
@@ -99,7 +77,6 @@ export default {
         EndDate: new Date(),
         Status: 0,
         Description: '',
-        EditorName: '',
         MemberShipMovementId: this.MemberShipMovementId
       },
       Extra: 0,

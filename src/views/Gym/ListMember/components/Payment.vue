@@ -7,60 +7,60 @@
             type="primary"
             icon="el-icon-refresh"
             @click="getdata()"
-          ></el-button>
+          />
         </template>
       </el-table-column>
       <el-table-column
         prop="ObjectId"
         label="رقم المشترك"
         align="center"
-      ></el-table-column>
+      />
       <el-table-column label="التاريخ" align="center" width="150">
         <template slot-scope="scope">
           <el-date-picker
+            v-model="scope.row.FakeDate"
             :format="$store.getters.settings.DateTimeFormat"
             disabled
-            v-model="scope.row.FakeDate"
-          ></el-date-picker>
+          />
         </template>
       </el-table-column>
       <el-table-column
         prop="PaymentMethod"
-        v-bind:label="$t('CashPool.Pay')"
+        :label="$t('CashPool.Pay')"
         align="center"
-      ></el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
-        <template slot-scope="scope"
-          >{{
-            scope.row.TotalAmmount.toFixed($store.getters.settings.ToFixed)
-          }}
-          JOD</template
-        >
+      />
+      <el-table-column :label="$t('CashPool.Total')" align="center">
+        <template
+          slot-scope="scope"
+        >{{
+          scope.row.TotalAmmount.toFixed($store.getters.settings.ToFixed)
+        }}
+          JOD</template>
       </el-table-column>
       <el-table-column label="#" align="center">
         <template slot-scope="scope">
-          <Drawer-Print Type="Payment" :Data="scope.row" />
+          <Drawer-Print type="Payment" :data="scope.row" />
         </template>
       </el-table-column>
       <el-table-column label="الحالة" align="center">
         <template slot-scope="scope">
-          <Status-Tag :status="scope.row.Status" tableName="Payment" />
+          <Status-Tag :status="scope.row.Status" table-name="Payment" />
         </template>
       </el-table-column>
       <el-table-column
         label="محرر"
         align="center"
-        prop="EditorName"
-      ></el-table-column>
+        prop="CreatedBy"
+      />
     </el-table>
   </div>
 </template>
 
 <script>
-import checkPermission from "@/utils/permission";
-import StatusTag from "@/components/Oprationsys/StatusTag";
+import checkPermission from '@/utils/permission'
+import StatusTag from '@/components/Oprationsys/StatusTag'
 
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
+import DrawerPrint from '@/components/PrintRepot/DrawerPrint.vue'
 
 export default {
   components: { StatusTag, DrawerPrint },
@@ -68,12 +68,12 @@ export default {
     Payments: {
       type: Array,
       default: () => {
-        return null;
-      },
-    },
+        return null
+      }
+    }
   },
   methods: {
-    checkPermission,
-  },
-};
+    checkPermission
+  }
+}
 </script>

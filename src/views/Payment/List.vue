@@ -160,7 +160,7 @@
         width="150"
         align="center"
       ></el-table-column>
-      <el-table-column label="المحرر" prop="EditorName" align="center"> </el-table-column>
+      <el-table-column label="المحرر" prop="CreatedBy" align="center"> </el-table-column>
       <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalAmmount.toFixed($store.getters.settings.ToFixed) }}

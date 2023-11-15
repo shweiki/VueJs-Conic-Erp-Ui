@@ -89,8 +89,8 @@ export default {
               value: "PaymentMethod : {{PaymentMethod}}"
             },
             {
-              name: "EditorName",
-              value: "EditorName : {{EditorName}}"
+              name: "CreatedBy",
+              value: "CreatedBy : {{CreatedBy}}"
             },
             {
               name: "Description",
