@@ -3,14 +3,6 @@
     <el-card class="box-card">
       <div slot="header">
         <el-row type="flex">
-          <el-col :span="9">
-            <el-date-picker
-              v-model="DateIn"
-              :clearable="false"
-              type="date"
-              placeholder="بحث حسب تاريخ ما بين البدء و الانتهاء"
-              @change="FilterByDateIn"
-            /></el-col>
           <el-col :span="6">
             <Export :list="tableData" type="Members" />
           </el-col>
@@ -29,6 +21,17 @@
               :size="$store.getters.size"
               @click="$store.dispatch('Members/CheckMembers')"
             >CheckMemberShips</el-button></el-col>
+          <el-col :span="2">
+            <el-button
+              v-waves
+              class="filter-item"
+              type="primary"
+              icon="el-icon-search"
+              @click="handleFilter"
+            >
+              {{ $t("Members.Search") }}
+            </el-button>
+          </el-col>
         </el-row>
       </div>
       <el-table
@@ -125,14 +128,13 @@ import Export from '@/components/Export'
 import permission from '@/directive/permission/index.js'
 
 import waves from '@/directive/waves' // waves directive
-import {GetMembershipMovementList} from '@/api/MembershipMovement'
+import { GetMembershipMovementList } from '@/api/MembershipMovement'
 import { CreateMulti } from '@/api/MembershipMovementOrder'
 import { LocalDate, LocalTime, DateTimeFormatter, Instant } from '@js-joda/core'
 
 export default {
   components: { Export },
   directives: { waves, permission },
-
   data() {
     return {
       tableData: [],
@@ -143,15 +145,21 @@ export default {
       Days: 0,
       loading: false,
       search: '',
-      DateIn: ''
+      DateIn: '',
+      listQuery: JSON.parse(localStorage.getItem('MembershipMovement_ListQuery') || null) || {
+        Page: 1,
+        Any: '',
+        limit: this.$store.getters.settings.LimitQurey,
+        Sort: '-id',
+        Status: null
+      }
     }
   },
 
   methods: {
-    getdata(val) {
-      console.log(val)
+    getList() {
       this.loading = true
-      GetMembershipMovementList({ Status: val }).then((response) => {
+      GetMembershipMovementList(this.listQuery).then((response) => {
         // console.log(response)
         this.tableData = response
         this.loading = false
@@ -159,6 +167,10 @@ export default {
     },
     handleSelectionChange(val) {
       this.Selection = val
+    },
+    handleFilter() {
+      this.listQuery.Page = 1
+      this.getList()
     },
     createFreeze() {
       const chunkSize = 3
