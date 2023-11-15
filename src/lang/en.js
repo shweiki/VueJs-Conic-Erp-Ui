@@ -299,7 +299,8 @@ export default {
     Sales: 'Sales',
     Customers: 'Customers',
     Provider: 'Provider',
-    Purchases: 'Purchases'
+    Purchases: 'Purchases',
+    MovementEnquiry: 'Movement Enquiry'
   },
   Vendors: {
     ID: 'ID',

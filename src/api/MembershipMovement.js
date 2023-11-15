@@ -65,3 +65,11 @@ export function GetMembershipMovementList(query) {
     params: query
   })
 }
+
+export function GetMembershipMovementByCreatedUser(query) {
+  return request({
+    url: '/MembershipMovement/GetMembershipMovementByMembershipId',
+    method: 'get',
+    params: query
+  })
+}

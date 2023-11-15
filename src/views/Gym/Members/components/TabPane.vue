@@ -1,6 +1,7 @@
 <template>
   <el-row>
     <List v-if="type == 'ML'" />
+    <MovementEnquiry v-if="type == 'ME'" />
 
     <MembershipmentOrdar v-if="type == 'MO'" />
 
@@ -12,6 +13,7 @@
 
 <script>
 import List from "@/views/Gym/Members/components/List.vue";
+import MovementEnquiry from "@/views/Gym/Members/components/MovementEnquiry.vue";
 import MembershipmentOrdar from "@/views/Gym/components/MembershipmentOrdar.vue";
 import Receivables from "@/views/Gym/components/Receivables";
 import Payable from "@/views/Gym/components/Payable";
@@ -21,6 +23,7 @@ export default {
     MembershipmentOrdar,
     Receivables,
     Payable,
+    MovementEnquiry
   },
   filters: {
     statusFilter(status) {

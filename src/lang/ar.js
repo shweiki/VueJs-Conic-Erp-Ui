@@ -324,7 +324,9 @@ export default {
     Sales: 'مبيعات',
     Customers: 'العملاء',
     Provider: 'المزودون',
-    Purchases: 'المشتريات'
+    Purchases: 'المشتريات',
+    MovementEnquiry: 'إستعلام الحركات'
+
   },
   Vendors: {
     ID: 'الرقم',

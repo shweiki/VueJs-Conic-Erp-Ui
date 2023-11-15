@@ -31,7 +31,8 @@ export default {
         { label: 'MemberList', key: 'ML' },
         { label: 'Receivables', key: 'RM' },
         { label: 'Payable', key: 'PM' },
-        { label: 'MembershipmentOrdar', key: 'MO' }
+        { label: 'MembershipmentOrdar', key: 'MO' },
+        { label: 'MovementEnquiry', key: 'ME' }
       ],
       activeName: 'ML',
       createdTimes: 0
