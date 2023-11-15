@@ -152,7 +152,7 @@ import { Create as CreateSaleInvoice } from '@/api/SaleInvoice'
 export default {
   components: { FakeDate, SelectAllMemberships, SelectDiscount },
   props: {
-    MembershipMovementId: {
+    membershipMovementId: {
       type: Number,
       required: true
     }
@@ -187,7 +187,7 @@ export default {
   },
   methods: {
     getdata() {
-      GetMembershipMovementById({ Id: this.MembershipMovementId })
+      GetMembershipMovementById({ Id: this.membershipMovementId })
         .then((response) => {
           console.log(response)
           this.tempForm = response
@@ -211,13 +211,11 @@ export default {
           Edit(this.tempForm)
             .then((response) => {
               if (response) {
-                //  if(this.Discount.ValueOfDays >0)
-                // this.AddExtraToMembership((this.Discount.ValueOfDays ), response)
                 this.Visibles = false
                 this.EnableSave = false
                 if (
                   this.$store.getters.settings.MembershipMovement
-                    .OneInBodyFreeForeach30Days == true
+                    .OneInBodyFreeForeach30Days === true
                 ) { this.OneInBodyFreeForeach30Days(this.Membership.NumberDays) }
                 this.$notify({
                   title: 'تم ',
@@ -226,7 +224,6 @@ export default {
                   duration: 2000
                 })
                 this.$nextTick(() => {
-                  //  this.$emit("Done");
                   this.$router.replace({
                     path: '/redirect' + this.$route.fullPath
                   })
@@ -245,64 +242,17 @@ export default {
     calc() {
       const Membership = this.Membership
       this.Price =
-        this.tempForm.Type == 'Morning'
+        this.tempForm.Type === 'Morning'
           ? Membership.MorningPrice
           : Membership.FullDayPrice
       this.tempForm.TotalAmmount = this.Price - this.tempForm.Discount
-      //  this.tempForm.MemberId = this.MemberId;
-      // this.tempForm.EndDate = LocalDateTime.ofInstant(
-      //   Instant.ofEpochMilli(new Date(this.tempForm.StartDate))
-      // )
-      //   .plusDays(Membership.NumberDays)
-      //   .toString();
-    },
-    AddExtraToMembership(Days, MemberShipMovementId) {
-      const MembershipMovementOrder = {
-        Id: undefined,
-        Type: 'Extra',
-        StartDate: new Date(this.tempForm.EndDate),
-        EndDate: new Date(),
-        Status: 0,
-        Description: this.Description,
-        MemberShipMovementId: MemberShipMovementId
-      }
-      MembershipMovementOrder.EndDate = new Date(
-        MembershipMovementOrder.EndDate.setTime(
-          MembershipMovementOrder.StartDate.getTime() + 3600 * 1000 * 24 * Days
-        )
-      )
-      Create(MembershipMovementOrder).then((response) => {
-        if (response) {
-        }
-      })
-    },
-    AddExtraToMembership(Days, MemberShipMovementId) {
-      const MembershipMovementOrder = {
-        Id: undefined,
-        Type: 'Extra',
-        StartDate: new Date(this.tempForm.EndDate),
-        EndDate: new Date(),
-        Status: 0,
-        Description: this.Description,
-        MemberShipMovementId: MemberShipMovementId
-      }
-      MembershipMovementOrder.EndDate = new Date(
-        MembershipMovementOrder.EndDate.setTime(
-          MembershipMovementOrder.StartDate.getTime() + 3600 * 1000 * 24 * Days
-        )
-      )
-      Create(MembershipMovementOrder).then((response) => {
-        if (response) {
-        }
-      })
     },
     OneInBodyFreeForeach30Days(NumberDays) {
       if (NumberDays < 30) return false
       GetActiveService()
         .then((response) => {
-          //   console.log(response);
           const Service = response.find(
-            (obj) => obj.Name == 'One InBody Free Foreach 30 Days'
+            (obj) => obj.Name === 'One InBody Free Foreach 30 Days'
           )
           const SaleInvoice = {
             Id: undefined,
@@ -317,7 +267,7 @@ export default {
             IsPrime: true,
             InventoryMovements: []
           }
-          for (var i = 0; i < NumberDays / 30; i++) {
+          for (let i = 0; i < NumberDays / 30; i++) {
             SaleInvoice.InventoryMovements.push({
               Id: undefined,
               ItemsId: Service.ItemId,
