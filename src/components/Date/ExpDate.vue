@@ -1,49 +1,48 @@
 <template>
   <el-date-picker
+    v-model="date"
     style="width: 80%"
     clear-icon="false"
     :size="$store.getters.size"
-    @change="SetVal"
-    v-model="date"
     type="date"
-    v-bind:placeholder="$t('CashPool.Date')"
+    :placeholder="$t('CashPool.Date')"
     :format="$store.getters.settings.DateTimeFormat"
-  ></el-date-picker>
+    @change="SetVal"
+  />
 </template>
 <script>
 import {
   LocalDateTime,
-  LocalDate,
-  LocalTime,
+
   DateTimeFormatter,
-  Instant,
-} from "@js-joda/core";
+  Instant
+} from '@js-joda/core'
 export default {
-  props: {
-    Value: String,
+  value: {
+    type: String,
+    default: null
   },
   data() {
     return {
-      date: "",
-    };
-  },
-  created() {
-    this.SetVal(new Date(this.Value));
+      date: ''
+    }
   },
   watch: {
-    Value(val) {
-      console.log(val);
-      if (val != "") this.SetVal(new Date(val));
-      else this.SetVal(new Date());
-    },
+    value(val) {
+      if (val !== '') this.SetVal(new Date(val))
+      else this.SetVal(new Date())
+    }
+  },
+  created() {
+    this.SetVal(new Date(this.Value))
   },
   methods: {
     SetVal(val) {
       this.date = LocalDateTime.ofInstant(Instant.ofEpochMilli(val)).format(
-        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-      );
-      this.$emit("Set", this.date);
-    },
-  },
-};
+        DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm')
+      )
+      this.$emit('Set', this.date)
+    }
+  }
+}
 </script>

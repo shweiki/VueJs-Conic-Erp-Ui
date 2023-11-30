@@ -29,7 +29,7 @@ export default {
     };
   },
   watch: {
-    Value(val) {
+    value(val) {
       this.SetVal(val);
     },
   },

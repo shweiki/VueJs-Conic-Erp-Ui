@@ -2,26 +2,36 @@
   <section class="overview-block-ptb">
     <el-row type="flex">
       <el-col :span="4">
-        <el-input v-model="listQuery.Any" placeholder="Search By Any  Name Or Id" class="filter-item"
-          @keyup.enter.native="handleFilter" />
+        <el-input
+          v-model="listQuery.Any"
+          placeholder="Search By Any  Name Or Id"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
       </el-col>
 
       <el-col :span="3">
-        <Sort-Options :Value="listQuery.Sort" @Set="
-          (v) => {
-            listQuery.Sort = v;
-            handleFilter();
-          }
-        " />
+        <Sort-Options
+          :value="listQuery.Sort"
+          @Set="
+            (v) => {
+              listQuery.Sort = v;
+              handleFilter();
+            }
+          "
+        />
       </el-col>
       <el-col :span="14">
-        <Radio-Oprations             :value="listQuery.Status"
- tableName="OrderRestaurant" @Set="
-          (v) => {
-            listQuery.Status = v;
-            handleFilter();
-          }
-        " />
+        <Radio-Oprations
+          :value="listQuery.Status"
+          table-name="OrderRestaurant"
+          @Set="
+            (v) => {
+              listQuery.Status = v;
+              handleFilter();
+            }
+          "
+        />
       </el-col>
       <el-col :span="2">
         <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -38,7 +48,7 @@
                 <el-row :gutter="20">
                   <el-col :span="8">
                     <div class="card-panel-icon-wrapper icon-people">
-                      <Status-Icon class="card-panel-icon" :status="option.Status" tableName="OrderRestaurant" />
+                      <Status-Icon class="card-panel-icon" :status="option.Status" table-name="OrderRestaurant" />
                     </div>
                   </el-col>
                   <el-col :span="4">
@@ -87,10 +97,10 @@
                 <el-row :gutter="24">
                   <el-col :span="12">
                     <div class="card-panel-description">
-                      <div class="card-panel-id" v-if="option.Vendor != null">
+                      <div v-if="option.Vendor != null" class="card-panel-id">
                         {{ option.Vendor.Name }}
                       </div>
-                      <div class="card-panel-id" v-else>لا يوجد زبون</div>
+                      <div v-else class="card-panel-id">لا يوجد زبون</div>
                     </div>
                   </el-col>
                   <el-col :span="12">
@@ -100,21 +110,31 @@
                   </el-col>
                 </el-row>
                 <el-row v-if="option.Status == 2">
-                  <el-popconfirm confirm-button-text="نعم" cancel-button-text="لا, شكرا" confirm-button-type="warning"
-                    icon="el-icon-info" :title="` ${option.Id} تأكيد انتهاء محاسبة طلب رقم`"
-                    @confirm="OrdrerCheck(option.Id)">
+                  <el-popconfirm
+                    confirm-button-text="نعم"
+                    cancel-button-text="لا, شكرا"
+                    confirm-button-type="warning"
+                    icon="el-icon-info"
+                    :title="` ${option.Id} تأكيد انتهاء محاسبة طلب رقم`"
+                    @confirm="OrdrerCheck(option.Id)"
+                  >
                     <el-button slot="reference" type="warning" :size="$store.getters.size">تمت المحاسبة
                     </el-button>
                   </el-popconfirm>
                 </el-row>
                 <el-row v-if="$store.getters.device != 'mobile'" :gutter="24">
-                  <order-delivered :Temp="option" @Done="handleFilter()" />
-                  <order-details :Temp="option" />
+                  <order-delivered :temp="option" @Done="handleFilter()" />
+                  <order-details :temp="option" />
                   <el-col :span="12" style="padding-top: 10px">
                     <div v-if="option.Status == 3">
-                      <el-popconfirm confirm-button-text="ترحيل" cancel-button-text="لا, شكرا"
-                        confirm-button-type="warning" icon="el-icon-info" :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`"
-                        @confirm="HasDone(option.Id)">
+                      <el-popconfirm
+                        confirm-button-text="ترحيل"
+                        cancel-button-text="لا, شكرا"
+                        confirm-button-type="warning"
+                        icon="el-icon-info"
+                        :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`"
+                        @confirm="HasDone(option.Id)"
+                      >
                         <el-button slot="reference" style="float: right" type="warning" :size="$store.getters.size">ترحيل
                           الطلب
                         </el-button>
@@ -123,16 +143,22 @@
                   </el-col>
                 </el-row>
                 <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
-                  <el-col :span="12" v-if="option.Status == 3" style="padding-top: 18px">
-                    <el-popconfirm confirm-button-text="ترحيل" cancel-button-text="لا, شكرا" confirm-button-type="warning"
-                      icon="el-icon-info" :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`" @confirm="HasDone(option.Id)">
+                  <el-col v-if="option.Status == 3" :span="12" style="padding-top: 18px">
+                    <el-popconfirm
+                      confirm-button-text="ترحيل"
+                      cancel-button-text="لا, شكرا"
+                      confirm-button-type="warning"
+                      icon="el-icon-info"
+                      :title="`تأكيد الطلب رقم  ${option.Id} وترحيله`"
+                      @confirm="HasDone(option.Id)"
+                    >
                       <el-button slot="reference" style="float: right" type="warning" :size="$store.getters.size">ترحيل
                         الطلب
                       </el-button>
                     </el-popconfirm>
                   </el-col>
-                  <order-delivered-mobile :Temp="option" @Done="handleFilter()" />
-                  <order-details-mobile :Temp="option" caller="Manager" />
+                  <order-delivered-mobile :temp="option" @Done="handleFilter()" />
+                  <order-details-mobile :temp="option" caller="Manager" />
                 </el-row>
               </div>
             </el-col>
@@ -140,22 +166,27 @@
         </el-row>
       </div>
     </div>
-    <pagination v-show="Totals.Rows > 0" :total="Totals.Rows" :page.sync="listQuery.Page" :limit.sync="listQuery.limit"
-      @pagination="getList" />
+    <pagination
+      v-show="Totals.Rows > 0"
+      :total="Totals.Rows"
+      :page.sync="listQuery.Page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
   </section>
 </template>
 <script>
 import Cookies from 'js-cookie'
-import OrderDetails from "./OrderDetails.vue";
-import OrderDelivered from "./OrderDelivered.vue";
-import { GetOrderRestaurant, OrderDone, OrdrerCheckout } from "@/api/OrderRestaurant";
-import waves from "@/directive/waves"; // waves directive
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
-import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
-import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
-import OrderDeliveredMobile from "./OrderDeliveredMobile.vue";
-import OrderDetailsMobile from "./OrderDetailsMobile.vue";
+import OrderDetails from './OrderDetails.vue'
+import OrderDelivered from './OrderDelivered.vue'
+import { GetOrderRestaurant, OrderDone, OrdrerCheckout } from '@/api/OrderRestaurant'
+import waves from '@/directive/waves' // waves directive
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import SortOptions from '@/components/SortOptions' // secondary package based on el-pagination
+import RadioOprations from '@/components/Oprationsys/RadioOprations.vue'
+import StatusIcon from '@/components/Oprationsys/StatusIcon.vue'
+import OrderDeliveredMobile from './OrderDeliveredMobile.vue'
+import OrderDetailsMobile from './OrderDetailsMobile.vue'
 
 export default {
   components: {
@@ -166,7 +197,7 @@ export default {
     RadioOprations,
     StatusIcon,
     OrderDeliveredMobile,
-    OrderDetailsMobile,
+    OrderDetailsMobile
   },
   directives: { waves },
   data() {
@@ -176,76 +207,76 @@ export default {
       listLoading: false,
       listQuery: JSON.parse(localStorage.getItem('OrderCards_ListQuery') || null) || {
         Page: 1,
-        Any: "",
+        Any: '',
         limit: this.$store.getters.settings.LimitQurey,
-        Sort: "-id",
-        Status: undefined,
-      },
-    };
+        Sort: '-id',
+        Status: undefined
+      }
+    }
   },
   created() {
-    this.handleFilter();
+    this.handleFilter()
   },
   methods: {
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       GetOrderRestaurant(this.listQuery)
         .then((res) => {
           // handle success
-          this.list = res.items;
-          this.Totals = res.Totals;
+          this.list = res.items
+          this.Totals = res.Totals
           localStorage.setItem('OrderCards_ListQuery', JSON.stringify(this.listQuery))
-          this.listLoading = false;
+          this.listLoading = false
         })
         .catch((error) => {
           // handle error
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     handleFilter() {
-      this.listQuery.Page = 1;
-      this.getList();
+      this.listQuery.Page = 1
+      this.getList()
     },
     HasDone(id) {
       OrderDone({ id: id }).then((res) => {
         if (res) {
           this.$notify({
-            title: "تم ارسال بنجاح",
-            message: "تم ارسال بنجاح - " + +" ",
-            type: "success",
-            position: "top-left",
-          });
-          this.getList();
+            title: 'تم ارسال بنجاح',
+            message: 'تم ارسال بنجاح - ' + +' ',
+            type: 'success',
+            position: 'top-left'
+          })
+          this.getList()
         } else {
           this.$notify.error({
-            title: "error",
-            message: "حصلت مشكلة ما",
-            position: "top-left",
-          });
+            title: 'error',
+            message: 'حصلت مشكلة ما',
+            position: 'top-left'
+          })
         }
-      });
+      })
     },
     OrdrerCheck(id) {
       OrdrerCheckout({ id: id }).then((res) => {
         if (res) {
           this.$notify({
-            title: "تم ارسال بنجاح",
-            message: "تم ارسال بنجاح - " + +" ",
-            type: "success",
-            position: "top-left",
-          });
-          this.getdata();
+            title: 'تم ارسال بنجاح',
+            message: 'تم ارسال بنجاح - ' + +' ',
+            type: 'success',
+            position: 'top-left'
+          })
+          this.getdata()
         } else {
           this.$notify.error({
-            title: "error",
-            message: "حصلت مشكلة ما",
-            position: "top-left",
-          });
+            title: 'error',
+            message: 'حصلت مشكلة ما',
+            position: 'top-left'
+          })
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

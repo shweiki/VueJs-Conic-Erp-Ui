@@ -34,17 +34,17 @@
 </template>
 
 <script>
-import SuperMarket from "./components/SuperMarket";
-import CarsSpare from "./components/CarsSpare";
-import Restaurant from "./components/Restaurant";
-import Pharmacy from "./components/Pharmacy.vue";
-import Gym from "./components/Gym.vue";
-import KidsPlayArea from "./components/KidsPlayArea.vue";
-import Public from "./components/Public.vue";
-import BillOfEntery from "./components/BillOfEntery.vue";
+import SuperMarket from './components/SuperMarket'
+import CarsSpare from './components/CarsSpare'
+import Restaurant from './components/Restaurant'
+import Pharmacy from './components/Pharmacy.vue'
+import Gym from './components/Gym.vue'
+import KidsPlayArea from './components/KidsPlayArea.vue'
+import Public from './components/Public.vue'
+import BillOfEntery from './components/BillOfEntery.vue'
 
 export default {
-  name: "CreateInvoice",
-  components: { SuperMarket, CarsSpare, Restaurant, Pharmacy, Gym, Public, KidsPlayArea ,BillOfEntery},
-};
+  name: 'CreateInvoice',
+  components: { SuperMarket, CarsSpare, Restaurant, Pharmacy, Gym, Public, KidsPlayArea, BillOfEntery }
+}
 </script>

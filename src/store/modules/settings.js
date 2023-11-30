@@ -33,16 +33,6 @@ const actions = {
           if (response.length > 0) {
             response.map(x => {
               const obj = JSON.parse(x.Description)
-              if (obj.key === 'pickerOptions') {
-                obj.value.shortcuts.map(OP => {
-                  OP.onClick = function(picker) {
-                    const end = new Date()
-                    const start = new Date()
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * OP.days)
-                    picker.$emit('pick', [start.setHours(0, 0, 0, 0), end.setHours(23, 59, 59, 999)])
-                  }
-                })
-              }
               if (obj.key === 'customtheme' && obj.value) {
                 toggleClass(document.body, 'custom-theme')
               }

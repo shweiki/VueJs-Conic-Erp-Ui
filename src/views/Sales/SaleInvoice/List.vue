@@ -6,26 +6,26 @@
           @keyup.enter.native="handleFilter" />
       </el-col>
       <el-col :span="8">
-        <Search-By-Date v-permission="['admin']" :Value="[listQuery.DateFrom, listQuery.DateTo]" @Set="(v) => {
+        <Search-By-Date v-permission="['admin']" :value="[listQuery.DateFrom, listQuery.DateTo]" @Set="(v) => {
           listQuery.DateFrom = v[0];
           listQuery.DateTo = v[1];
           handleFilter();
         }
-          " />
+        " />
       </el-col>
       <el-col :span="3">
-        <user-select v-permission="['admin']" :Value="listQuery.User" @Set="(v) => {
+        <user-select v-permission="['admin']" :value="listQuery.User" @Set="(v) => {
           listQuery.User = v;
           handleFilter();
         }
-          " />
+        " />
       </el-col>
       <el-col :span="3">
-        <Sort-Options :Value="listQuery.Sort" @Set="(v) => {
+        <Sort-Options :value="listQuery.Sort" @Set="(v) => {
           listQuery.Sort = v;
           handleFilter();
         }
-          " />
+        " />
       </el-col>
       <el-col :span="6">
         <Drawer-Print v-permission="['admin']" style="float: left" Type="ItemsSales" :Data="{
@@ -104,7 +104,7 @@
         listQuery.Status = v;
         handleFilter();
       }
-        " /></el-col>
+      " /></el-col>
     <el-row type="flex">
       <el-col v-permission="['admin']" :span="24">
         <el-divider direction="vertical"></el-divider>
@@ -150,7 +150,7 @@
               });
               window.open(r.href, r.route.name, $store.getters.settings.windowStyle);
             }
-              ">{{ row.Id }}</strong>
+            ">{{ row.Id }}</strong>
           </el-tag>
         </template>
       </el-table-column>
@@ -279,9 +279,6 @@ export default {
         Status: undefined,
       },
     };
-  },
-  created() {
-    //  this.getList();
   },
   methods: {
     getList() {

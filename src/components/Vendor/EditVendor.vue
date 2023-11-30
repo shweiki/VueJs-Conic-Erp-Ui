@@ -148,7 +148,7 @@
         </el-form-item>
         <el-form-item v-bind:label="$t('AddVendors.Region')" prop="Region">
           <Select-Region
-            :Value="tempForm.Region"
+            :value="tempForm.Region"
             @SetRegion="
               (v) => {
                 tempForm.Region = v;

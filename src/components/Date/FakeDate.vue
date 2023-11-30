@@ -19,7 +19,10 @@ import {
 } from '@js-joda/core'
 export default {
   props: {
-    Value: String,
+    value: {
+      type: String,
+      default: null
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -35,14 +38,14 @@ export default {
     }
   },
   watch: {
-    Value(val) {
+    value(val) {
       if (val !== '') this.SetVal(new Date(val))
       else this.SetVal(new Date())
     }
   },
   created() {
-    if (this.Value !== '') this.SetVal(new Date(this.Value))
-    else this.SetVal(new Date()) //   this.date = new Date();
+    if (this.value !== '') this.SetVal(new Date(this.value))
+    else this.SetVal(new Date())
   },
   methods: {
     SetVal(val) {

@@ -1,9 +1,14 @@
 <template>
   <div class="app-container" style="direction: rtl">
     <el-table height="500" :data="membershipMovements" fit border highlight-current-row>
-      >
-      <el-table-column prop="Id" label="رقم" align="center" />
 
+      <el-table-column prop="Id" label="رقم" align="center">
+        <template slot-scope="{ row }">
+          <el-tag type="primary" disable-transitions>
+            <strong>{{ row.Id }}</strong>
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="Name" label="الاشتراك" align="center" />
       <el-table-column prop="TotalDays" label="مجموع الايام" align="center">
         <template slot-scope="scope">

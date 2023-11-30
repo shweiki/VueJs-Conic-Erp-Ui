@@ -11,87 +11,85 @@
       type="primary"
       icon="el-icon-download"
       @click="handleDownload"
-    >
-    </el-button>
+    />
     <el-button
+      slot="reference"
       class="filter-item"
-      v-bind:disabled="list[0] == null"
+      :disabled="list[0] == null"
       icon="el-icon-document"
       type="primary"
-      slot="reference"
-      >{{ $t("Members.Export") }}</el-button
-    >
+    >{{ $t("Members.Export") }}</el-button>
   </el-popover>
 </template>
 
 <script>
-import { parseTime } from "@/utils/index";
+import { parseTime } from '@/utils/index'
 // options components
-import FilenameOption from "./components/FilenameOption";
-import AutoWidthOption from "./components/AutoWidthOption";
-import BookTypeOption from "./components/BookTypeOption";
-import waves from "@/directive/waves"; // waves directive
-import permission from "@/directive/permission/index.js";
+import FilenameOption from './components/FilenameOption'
+import AutoWidthOption from './components/AutoWidthOption'
+import BookTypeOption from './components/BookTypeOption'
+import waves from '@/directive/waves' // waves directive
+import permission from '@/directive/permission/index.js'
 
 export default {
-  name: "Export",
-  props: ["list", "Type"],
+  name: 'Export',
   directives: { waves, permission },
   components: { FilenameOption, AutoWidthOption, BookTypeOption },
+  props: ['list', 'type'],
   data() {
     return {
       // list: null,
       loading: false,
-      filename: "",
+      filename: '',
       autoWidth: true,
-      bookType: "xlsx",
-    };
+      bookType: 'xlsx'
+    }
   },
   created() {},
   methods: {
     handleDownload() {
-      this.loading = true;
-      import("@/report/Excel/Export2ExcelOrginal").then((excel) => {
-        const tHeader = Object.keys(this.list[0]);
-        const filterVal = Object.keys(this.list[0]);
-        const list = this.list;
-        let formatJson = this.formatJson(filterVal, list);
+      this.loading = true
+      import('@/report/Excel/Export2ExcelOrginal').then((excel) => {
+        const tHeader = Object.keys(this.list[0])
+        const filterVal = Object.keys(this.list[0])
+        const list = this.list
+        const formatJson = this.formatJson(filterVal, list)
 
-        if (this.Type && this.Type != "") {
-          this.filename = this.Type + " " + this.filename;
+        if (this.type && this.type !== '') {
+          this.filename = this.type + ' ' + this.filename
         }
         excel.export_json_to_excel({
           header: tHeader,
           data: formatJson,
           filename: this.filename,
           autoWidth: this.autoWidth,
-          bookType: this.bookType,
-        });
-        this.loading = false;
-      });
+          bookType: this.bookType
+        })
+        this.loading = false
+      })
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map((v) =>
         filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j], "{y}-{m}-{d} {h}:{i}");
+          if (j === 'timestamp') {
+            return parseTime(v[j], '{y}-{m}-{d} {h}:{i}')
           }
-          if (j === "InventoryMovements") {
-            return JSON.stringify(v[j]);
+          if (j === 'InventoryMovements') {
+            return JSON.stringify(v[j])
           }
-          if (j === "ActionLogs") {
-            return JSON.stringify(v[j]);
+          if (j === 'ActionLogs') {
+            return JSON.stringify(v[j])
           }
-          if (j === "FakeDate") {
-            return parseTime(v[j], "{y}-{m}-{d} {h}:{i}");
+          if (j === 'FakeDate') {
+            return parseTime(v[j], '{y}-{m}-{d} {h}:{i}')
           } else {
-            return v[j];
+            return v[j]
           }
         })
-      );
-    },
-  },
-};
+      )
+    }
+  }
+}
 </script>
 
 <style>

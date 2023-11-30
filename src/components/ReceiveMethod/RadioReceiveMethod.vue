@@ -1,5 +1,5 @@
 <template>
-  <el-radio-group @change="SetVal" v-model="value" text-color="#f78123">
+  <el-radio-group v-model="value" text-color="#f78123" @change="SetVal">
     <el-radio label="Cash" border>{{ $t("NewPurchaseInvoice.Cash") }}</el-radio>
     <el-radio v-if="VendorId != 2" label="Cheque" border>{{
       $t("NewPurchaseInvoice.Cheque")
@@ -8,27 +8,27 @@
 </template>
 <script>
 export default {
-  props: ["VendorId", "Type"],
+  props: ['VendorId', 'Type'],
   data() {
     return {
-      value: "Cash",
-    };
+      value: 'Cash'
+    }
   },
   watch: {
     value(v) {
-      this.SetVal(v);
-    },
+      this.SetVal(v)
+    }
   },
   created() {
-    this.SetVal(this.value);
+    this.SetVal(this.value)
   },
   methods: {
     SetVal(val) {
-      this.$emit("Set", val);
-      this.value = val;
-    },
-  },
-};
+      this.$emit('Set', val)
+      this.value = val
+    }
+  }
+}
 </script>
 <style scoped>
 .el-radio.is-bordered {

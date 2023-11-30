@@ -4,16 +4,16 @@
       <!--    <el-col :span="6" :xs="24">
         <member-log />
       </el-col>-->
-      <el-col :span="24" :xs="24" v-loading="loading">
+      <el-col v-loading="loading" :span="24" :xs="24">
         <member-search />
 
         <el-col
+          v-for="(member, index) in ActiveMembers"
+          :key="index"
           style="padding: 1.5px"
           :xs="8"
           :sm="8"
           :md="8"
-          v-for="(member, index) in ActiveMembers"
-          :key="index"
         >
           <el-card
             :body-style="{ padding: '0px' }"
@@ -28,17 +28,17 @@
               </router-link>
             </div>
             <el-row type="flex">
-              <el-col :span="12"
-                >{{ $t("MemberList.MembershipType")
-                }}{{ member.MembershipName }}</el-col
-              >
+              <el-col
+                :span="12"
+              >{{ $t("MemberList.MembershipType")
+              }}{{ member.MembershipName }}</el-col>
               <el-col :span="12">
                 <span>اخر زيارة</span>
-                <last-log :UserId="member.MemberId" tableName="Member" />
+                <last-log :user-id="member.MemberId" table-name="Member" />
               </el-col>
             </el-row>
             <el-col :span="24">
-              <el-input disabled v-model="member.PhoneNumber1"></el-input>
+              <el-input v-model="member.PhoneNumber1" disabled />
             </el-col>
           </el-card>
         </el-col>
@@ -48,49 +48,45 @@
 </template>
 
 <script>
-import permission from "@/directive/permission/index.js";
-// import MemberLog from "@/components/Gym/MemberLog.vue";
-import MemberSearch from "@/components/Member/MemberSearch.vue";
-import PanThumb from "@/components/PanThumb";
-import WebCam from "@/components/WebCam";
-import LastLog from "@/views/Gym/components/LastLog.vue";
-import { GetActiveMember } from "@/api/Member";
+import permission from '@/directive/permission/index.js'
+import MemberSearch from '@/components/Member/MemberSearch.vue'
+import LastLog from '@/views/Gym/components/LastLog.vue'
+import { GetActiveMember } from '@/api/Member'
 
-//import { GetActiveMember } from "@/api/Member";
 
 export default {
-  name: "MemberList",
+  name: 'MemberList',
   directives: { permission },
-  components: { MemberSearch, PanThumb, WebCam, LastLog },
+  components: { MemberSearch, LastLog },
   data() {
     return {
       loading: true,
       Totals: {},
-      ActiveMembers: [],
-    };
+      ActiveMembers: []
+    }
   },
 
   created() {
     // this.getdata();
-    this.getdata();
+    this.getdata()
   },
   methods: {
     getdata() {
-      this.loading = true;
+      this.loading = true
       GetActiveMember()
         .then((response) => {
-          this.ActiveMembers = response.items;
-          this.Totals = response.Totals;
-          this.loading = false;
+          this.ActiveMembers = response.items
+          this.Totals = response.Totals
+          this.loading = false
         })
         .catch((error) => {
-          this.loading = false;
+          this.loading = false
 
-          console.log(error);
-        });
-    },
-  },
-};
+          console.log(error)
+        })
+    }
+  }
+}
 </script>
 <style scoped>
 .ItemName {

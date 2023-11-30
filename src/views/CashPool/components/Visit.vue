@@ -2,35 +2,18 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
-        <el-button
-          :size="$store.getters.size"
-          v-bind:disabled="
-            tableData.length <= 0 || (this.$route.params && this.$route.params.id) != null
-          "
-          icon="fa fa-save"
-          style="float: left"
-          type="primary"
-          @click="OpenCashPoolDialog = true"
-        />
+        <el-button :size="$store.getters.size" v-bind:disabled="tableData.length <= 0 || (this.$route.params && this.$route.params.id) != null
+          " icon="fa fa-save" style="float: left" type="primary" @click="OpenCashPoolDialog = true" />
         <Drawer-Print style="float: left" Type="CashPool" :Data="CashPool" />
-        <Drawer-Print
-          v-permission="['admin']"
-          style="float: left"
-          Type="VisitsList"
-          :Data="{
-            Totals: Totals,
-            Items: tableData,
-            Dates: [new Date(), new Date()],
-          }"
-        />
+        <Drawer-Print v-permission="['admin']" style="float: left" Type="VisitsList" :Data="{
+          Totals: Totals,
+          Items: tableData,
+          Dates: [new Date(), new Date()],
+        }" />
 
         <el-col :span="6">
-          <el-switch
-            v-bind:disabled="!checkPermission(['admin'])"
-            v-model="AutoSent"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-          ></el-switch>
+          <el-switch v-bind:disabled="!checkPermission(['admin'])" v-model="AutoSent" active-color="#13ce66"
+            inactive-color="#ff4949"></el-switch>
         </el-col>
         <el-row type="flex">
           <el-col :span="12">
@@ -76,41 +59,24 @@
       </div>
     </el-card>
     <el-card class="box-card">
-      <el-table
-        height="600"
-        :data="tableData"
-        fit
-        border
-        highlight-current-row
-        ref="multipleTable"
-      >
+      <el-table height="600" :data="tableData" fit border highlight-current-row ref="multipleTable">
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata()"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata()"></el-button>
           </template>
           <template slot-scope="{ row }">
             <el-tag type="primary" disable-transitions>
-              <strong
-                style="font-size: 10px; cursor: pointer"
-                @click="
-                  () => {
-                    let r = $router.resolve({
-                      path: '/Visit/Edit/' + row.Id,
-                    });
-                    window.open(
-                      r.href,
-                      r.route.name,
-                      $store.getters.settings.windowStyle
-                    );
-                  }
-                "
-                >{{ row.Id }}</strong
-              ></el-tag
-            >
+              <strong style="font-size: 10px; cursor: pointer" @click="() => {
+                  let r = $router.resolve({
+                    path: '/Visit/Edit/' + row.Id,
+                  });
+                  window.open(
+                    r.href,
+                    r.route.name,
+                    $store.getters.settings.windowStyle
+                  );
+                }
+                ">{{ row.Id }}</strong></el-tag>
           </template>
         </el-table-column>
         <el-table-column v-bind:label="$t('Sales.Date')" width="150px" align="center">
@@ -122,18 +88,9 @@
         <el-table-column v-bind:label="$t('AddVendors.Name')" prop="Name" align="center">
         </el-table-column>
 
-        <el-table-column
-          v-bind:label="$t('CashPool.Pay')"
-          width="120"
-          align="center"
-          prop="PaymentMethod"
-        >
+        <el-table-column v-bind:label="$t('CashPool.Pay')" width="120" align="center" prop="PaymentMethod">
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('CashPool.Discount')"
-          width="120"
-          align="center"
-        >
+        <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
           <template slot-scope="scope">{{
             scope.row.Discount.toFixed($store.getters.settings.ToFixed)
           }}</template>
@@ -152,18 +109,10 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <Cash-Pool-Dialog
-      :Totals="Totals"
-      Type="Visit"
-      :Data="tableData"
-      :Open="OpenCashPoolDialog"
-      @Closed="
-        () => {
-          OpenCashPoolDialog = false;
-        }
-      "
-      @Done="(v) => createData(v)"
-    />
+    <Cash-Pool-Dialog :Totals="Totals" Type="Visit" :Data="tableData" :Open="OpenCashPoolDialog" @Closed="() => {
+        OpenCashPoolDialog = false;
+      }
+      " @Done="(v) => createData(v)" />
   </div>
 </template>
 
@@ -284,7 +233,8 @@ export default {
       });
       CreateCashPool(v).then(async (res) => {
         if (res) {
-          v.Id = res;
+          v.Id = res.Id
+          v.CreatedBy = res.CreatedBy
           this.CashPool = v;
           var Entry = {
             Id: undefined,

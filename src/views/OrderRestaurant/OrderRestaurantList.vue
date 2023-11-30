@@ -12,7 +12,7 @@
         </el-col>
         <el-col :span="8">
           <Search-By-Date
-            :Value="[listQuery.DateFrom, listQuery.DateTo]"
+            :value="[listQuery.DateFrom, listQuery.DateTo]"
             @Set="
               (v) => {
                 listQuery.DateFrom = v[0];
@@ -25,7 +25,7 @@
 
         <el-col :span="3">
           <Sort-Options
-            :Value="listQuery.Sort"
+            :value="listQuery.Sort"
             @Set="
               (v) => {
                 listQuery.Sort = v;
@@ -45,7 +45,7 @@
             @click="handleFilter"
           >
             {{ $t("table.search") }}
-        </el-button>
+          </el-button>
         </el-col>
         <!-- <el-col :span="6">
           <el-switch
@@ -61,9 +61,10 @@
     <el-row :gutter="20">
 
       <el-col :span="24">
-        <Radio-Oprations             :value="listQuery.Status"
+        <Radio-Oprations
+          :value="listQuery.Status"
 
-          tableName="OrderRestaurant"
+          table-name="OrderRestaurant"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -85,12 +86,12 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <h3 style="float: right; padding-right: 20px">محتويات الطلب :</h3>
-          <br />
+          <br>
           <h4 style="float: right; padding-top: 5px">{{ props.row.Content }}</h4>
         </template>
       </el-table-column>
       <el-table-column
-        v-bind:label="$t('Vendors.ID')"
+        :label="$t('Vendors.ID')"
         prop="Id"
         sortable="custom"
         align="center"
@@ -101,7 +102,7 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Date')" width="120px" align="center">
+      <el-table-column :label="$t('Sales.Date')" width="120px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
@@ -110,60 +111,57 @@
         <el-table-column
           sortable
           prop="Name"
-          v-bind:label="$t('AddVendors.Name')"
+          :label="$t('AddVendors.Name')"
           align="center"
-        >
-        </el-table-column>
+        />
         <el-table-column
           prop="PhoneNumber"
-          v-bind:label="$t('MemberList.Phone')"
+          :label="$t('MemberList.Phone')"
           width="100"
           align="center"
-        ></el-table-column>
+        />
         <el-table-column
           prop="TableNo"
           label="Table No"
           width="130"
           align="center"
-        ></el-table-column>
+        />
       </el-table-column>
-      <el-table-column v-bind:label="$t('Area.TotalPill')" width="100" align="center">
+      <el-table-column :label="$t('Area.TotalPill')" width="100" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalPill.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
-      <el-table-column v-bind:label="$t('CashPool.Amountv')" width="100" align="center">
+      <el-table-column :label="$t('CashPool.Amountv')" width="100" align="center">
         <template slot-scope="{ row }">
           {{ row.TotalPrice.toFixed($store.getters.settings.ToFixed) }}
           JOD
         </template>
       </el-table-column>
       <el-table-column
-        v-bind:label="$t('Vendors.Name')"
+        :label="$t('Vendors.Name')"
         prop="Vendor.Name"
         align="center"
-      >
-      </el-table-column>
+      />
       <el-table-column
-        v-bind:label="$t('Vendors.Description')"
+        :label="$t('Vendors.Description')"
         prop="Description"
         align="center"
-      >
-      </el-table-column>
-      <el-table-column v-bind:label="$t('Sales.Status')" width="120" align="center">
+      />
+      <el-table-column :label="$t('Sales.Status')" width="120" align="center">
         <template slot-scope="scope">
-          <Status-Tag :status="scope.row.Status" tableName="OrderRestaurant" />
+          <Status-Tag :status="scope.row.Status" table-name="OrderRestaurant" />
         </template>
       </el-table-column>
       <el-table-column label="#" width="100" align="center">
         <template slot-scope="scope">
-          <Dialog-Action-Log tableName="OrderRestaurant" :ObjId="scope.row.Id" />
+          <Dialog-Action-Log table-name="OrderRestaurant" :obj-id="scope.row.Id" />
 
           <Next-Oprations
-            :ObjId="scope.row.Id"
+            :obj-id="scope.row.Id"
             :status="scope.row.Status"
-            tableName="OrderRestaurant"
+            table-name="OrderRestaurant"
             @Done="getList"
           />
         </template>
@@ -180,19 +178,19 @@
 </template>
 
 <script>
-import { GetByListQ } from "@/api/OrderRestaurant";
-import NextOprations from "@/components/Oprationsys/NextOprations";
-import SearchByDate from "@/components/Date/SearchByDate.vue";
-import StatusTag from "@/components/Oprationsys/StatusTag";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
-import DialogActionLog from "@/components/ActionLog/DialogActionLog.vue";
-import RadioOprations from "@/components/Oprationsys/RadioOprations";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
-import AddOrder from "./components/AddOrder.vue";
-import Export from "@/components/Export";
+import { GetByListQ } from '@/api/OrderRestaurant'
+import NextOprations from '@/components/Oprationsys/NextOprations'
+import SearchByDate from '@/components/Date/SearchByDate.vue'
+import StatusTag from '@/components/Oprationsys/StatusTag'
+import DrawerPrint from '@/components/PrintRepot/DrawerPrint'
+import DialogActionLog from '@/components/ActionLog/DialogActionLog.vue'
+import RadioOprations from '@/components/Oprationsys/RadioOprations'
+import waves from '@/directive/waves' // waves directive
+import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import SortOptions from '@/components/SortOptions' // secondary package based on el-pagination
+import AddOrder from './components/AddOrder.vue'
+import Export from '@/components/Export'
 
 export default {
 
@@ -206,7 +204,7 @@ export default {
     DialogActionLog,
     RadioOprations,
     AddOrder,
-    Export,
+    Export
   },
   directives: { waves },
   data() {
@@ -216,64 +214,64 @@ export default {
       listLoading: false,
       listQuery: {
         Page: 1,
-        Any: "",
+        Any: '',
         limit: this.$store.getters.settings.LimitQurey,
-        Sort: "-id",
+        Sort: '-id',
         User: undefined,
-        DateFrom: "",
-        DateTo: "",
-        Status: undefined,
-      },
-    };
+        DateFrom: '',
+        DateTo: '',
+        Status: undefined
+      }
+    }
   },
   computed: {
     IsAuto: {
       get() {
-        return this.$store.state.settings.OrderIsAutomatic;
+        return this.$store.state.settings.OrderIsAutomatic
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "OrderIsAutomatic",
-          value: val,
-        });
-      },
-    },
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'OrderIsAutomatic',
+          value: val
+        })
+      }
+    }
   },
   created() {
     // this.getList();
   },
   methods: {
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
 
       GetByListQ(this.listQuery).then((response) => {
-        this.list = response.items;
-        this.Totals = response.Totals;
-        this.listLoading = false;
-      });
+        this.list = response.items
+        this.Totals = response.Totals
+        this.listLoading = false
+      })
     },
     handleFilter() {
-      this.listQuery.Page = 1;
-      this.getList();
+      this.listQuery.Page = 1
+      this.getList()
     },
     sortChange(data) {
-      const { prop, order } = data;
-      if (prop === "Id") {
-        this.sortById(order);
+      const { prop, order } = data
+      if (prop === 'Id') {
+        this.sortById(order)
       }
     },
     sortById(order) {
-      if (order === "ascending") {
-        this.listQuery.Sort = "+id";
+      if (order === 'ascending') {
+        this.listQuery.Sort = '+id'
       } else {
-        this.listQuery.Sort = "-id";
+        this.listQuery.Sort = '-id'
       }
-      this.handleFilter();
+      this.handleFilter()
     },
-    getSortClass: function (key) {
-      const sort = this.listQuery.Sort;
-      return sort === `+${key}` ? "ascending" : "descending";
-    },
-  },
-};
+    getSortClass: function(key) {
+      const sort = this.listQuery.Sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
+    }
+  }
+}
 </script>

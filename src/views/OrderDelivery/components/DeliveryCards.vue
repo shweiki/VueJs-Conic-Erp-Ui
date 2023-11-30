@@ -12,7 +12,7 @@
 
       <el-col :span="3">
         <Sort-Options
-          :Value="listQuery.Sort"
+          :value="listQuery.Sort"
           @Set="
             (v) => {
               listQuery.Sort = v;
@@ -22,9 +22,10 @@
         />
       </el-col>
       <el-col :span="14">
-        <Radio-Oprations             :value="listQuery.Status"
+        <Radio-Oprations
+          :value="listQuery.Status"
 
-          tableName="OrderDelivery"
+          table-name="OrderDelivery"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -57,7 +58,7 @@
                       <Status-Icon
                         class="card-panel-icon"
                         :status="option.Status"
-                        tableName="OrderDelivery"
+                        table-name="OrderDelivery"
                       />
                     </div>
                   </el-col>
@@ -107,10 +108,10 @@
                 <el-row :gutter="24">
                   <el-col :span="12">
                     <div class="card-panel-description">
-                      <div class="card-panel-id" v-if="option.Driver != null">
+                      <div v-if="option.Driver != null" class="card-panel-id">
                         {{ option.Driver.Name }}
                       </div>
-                      <div class="card-panel-id" v-else>لا يوجد سائق</div>
+                      <div v-else class="card-panel-id">لا يوجد سائق</div>
                     </div>
                   </el-col>
                   <el-col :span="12">
@@ -120,8 +121,8 @@
                   </el-col>
                 </el-row>
                 <el-row v-if="$store.getters.device != 'mobile'" :gutter="24">
-                  <driver-to-order :Temp="option" @Done="handleFilter()" />
-                  <order-details :Temp="option" />
+                  <driver-to-order :temp="option" @Done="handleFilter()" />
+                  <order-details :temp="option" />
                   <el-col :span="12" style="padding-top: 10px">
                     <div v-if="option.Status == 3">
                       <el-popconfirm
@@ -137,14 +138,14 @@
                           style="float: right"
                           type="warning"
                           :size="$store.getters.size"
-                          >ترحيل الطلب
+                        >ترحيل الطلب
                         </el-button>
                       </el-popconfirm>
                     </div>
                   </el-col>
                 </el-row>
                 <el-row v-if="$store.getters.device === 'mobile'" :gutter="24">
-                  <el-col :span="12" v-if="option.Status == 3" style="padding-top: 18px">
+                  <el-col v-if="option.Status == 3" :span="12" style="padding-top: 18px">
                     <el-popconfirm
                       confirm-button-text="ترحيل"
                       cancel-button-text="لا, شكرا"
@@ -158,12 +159,12 @@
                         style="float: right"
                         type="warning"
                         :size="$store.getters.size"
-                        >ترحيل الطلب
+                      >ترحيل الطلب
                       </el-button>
                     </el-popconfirm>
                   </el-col>
-                  <driver-to-order-mobile :Temp="option" @Done="handleFilter()" />
-                  <order-details-mobile :Temp="option" caller="Manager" />
+                  <driver-to-order-mobile :temp="option" @Done="handleFilter()" />
+                  <order-details-mobile :temp="option" caller="Manager" />
                 </el-row>
               </div>
             </el-col>
@@ -181,19 +182,19 @@
   </section>
 </template>
 <script>
-import OrderDetails from "./OrderDetails.vue";
-import DriverToOrder from "./DriverToOrder.vue";
-import { GetOrderDelivery, OrderDone } from "@/api/OrderDelivery";
-import waves from "@/directive/waves"; // waves directive
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-import SortOptions from "@/components/SortOptions"; // secondary package based on el-pagination
-import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
-import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
-import DriverToOrderMobile from "./DriverToOrderMobile.vue";
-import OrderDetailsMobile from "./OrderDetailsMobile.vue";
+import OrderDetails from './OrderDetails.vue'
+import DriverToOrder from './DriverToOrder.vue'
+import { GetOrderDelivery, OrderDone } from '@/api/OrderDelivery'
+import waves from '@/directive/waves' // waves directive
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import SortOptions from '@/components/SortOptions' // secondary package based on el-pagination
+import RadioOprations from '@/components/Oprationsys/RadioOprations.vue'
+import StatusIcon from '@/components/Oprationsys/StatusIcon.vue'
+import DriverToOrderMobile from './DriverToOrderMobile.vue'
+import OrderDetailsMobile from './OrderDetailsMobile.vue'
 
 export default {
-  name: "DeliveryCards",
+  name: 'DeliveryCards',
   components: {
     OrderDetails,
     DriverToOrder,
@@ -202,7 +203,7 @@ export default {
     RadioOprations,
     StatusIcon,
     DriverToOrderMobile,
-    OrderDetailsMobile,
+    OrderDetailsMobile
   },
   directives: { waves },
   data() {
@@ -212,56 +213,56 @@ export default {
       listLoading: false,
       listQuery: {
         Page: 1,
-        Any: "",
+        Any: '',
         limit: this.$store.getters.settings.LimitQurey,
-        Sort: "-id",
-        Status: undefined,
-      },
-    };
+        Sort: '-id',
+        Status: undefined
+      }
+    }
   },
   created() {
-    this.handleFilter();
+    this.handleFilter()
   },
   methods: {
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       GetOrderDelivery(this.listQuery)
         .then((res) => {
           // handle success
-          this.list = res.items;
-          this.Totals = res.Totals;
-          this.listLoading = false;
+          this.list = res.items
+          this.Totals = res.Totals
+          this.listLoading = false
         })
         .catch((error) => {
           // handle error
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     handleFilter() {
-      this.listQuery.Page = 1;
-      this.getList();
+      this.listQuery.Page = 1
+      this.getList()
     },
     HasDone(id) {
       OrderDone({ id: id }).then((res) => {
         if (res) {
           this.$notify({
-            title: "تم ارسال بنجاح",
-            message: "تم ارسال بنجاح - " + +" ",
-            type: "success",
-            position: "top-left",
-          });
-          this.getList();
+            title: 'تم ارسال بنجاح',
+            message: 'تم ارسال بنجاح - ' + +' ',
+            type: 'success',
+            position: 'top-left'
+          })
+          this.getList()
         } else {
           this.$notify.error({
-            title: "error",
-            message: "حصلت مشكلة ما",
-            position: "top-left",
-          });
+            title: 'error',
+            message: 'حصلت مشكلة ما',
+            position: 'top-left'
+          })
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

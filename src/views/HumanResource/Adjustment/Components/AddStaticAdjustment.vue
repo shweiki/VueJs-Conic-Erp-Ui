@@ -5,9 +5,9 @@
       icon="el-icon-circle-plus"
       @click="dialogFormVisible = true"
     >
-    <span style="font-size: 14px;">
-    اضافة تسوية دورية
-    </span>
+      <span style="font-size: 14px;">
+        اضافة تسوية دورية
+      </span>
     </el-button>
     <el-dialog
       style="margin-top: -13vh"
@@ -35,44 +35,44 @@
         label-width="70px"
       >
         <el-row :gutter="24">
-           <el-col :span="24">
-           <el-form-item
-          
-          prop="ChequeNumber"
-        >
-         <el-row :gutter="20" type="flex">
-          <el-col :span="12">
-        <el-divider content-position="right"> إسم التسوية الدورية </el-divider>
-        </el-col>
-        </el-row>
-          <el-input type="text" v-model="tempForm.Name"></el-input>
-        </el-form-item>
-           </el-col>
+          <el-col :span="24">
+            <el-form-item
+
+              prop="ChequeNumber"
+            >
+              <el-row :gutter="20" type="flex">
+                <el-col :span="12">
+                  <el-divider content-position="right"> إسم التسوية الدورية </el-divider>
+                </el-col>
+              </el-row>
+              <el-input v-model="tempForm.Name" type="text" />
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="20" type="flex">
           <el-col :span="12">
-        <el-divider content-position="right"> نوع التسوية الدورية </el-divider>
-        </el-col>
+            <el-divider content-position="right"> نوع التسوية الدورية </el-divider>
+          </el-col>
         </el-row>
-<el-row :gutter="20">
-  <el-col :span="24">
-    <el-radio-group v-model="type">
-      <el-radio-button label="1"> زيادة</el-radio-button>
-      <el-radio-button label="2"> خصم</el-radio-button>
-    </el-radio-group>
-  </el-col>
-  <br><br>
-  </el-row>
-<el-row :gutter="20">
-  <el-col :span="24">
-         <el-radio v-model="radio" label="1" >بالقيمة النقدية</el-radio>
-         <el-radio v-model="radio" label="2" >بالقيمة المئوية</el-radio>
-  </el-col>
-  <br><br>
-  </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-radio-group v-model="type">
+              <el-radio-button label="1"> زيادة</el-radio-button>
+              <el-radio-button label="2"> خصم</el-radio-button>
+            </el-radio-group>
+          </el-col>
+          <br><br>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-radio v-model="radio" label="1">بالقيمة النقدية</el-radio>
+            <el-radio v-model="radio" label="2">بالقيمة المئوية</el-radio>
+          </el-col>
+          <br><br>
+        </el-row>
 
-        <el-row :gutter="20" >
-          <el-col :span="23" v-if="radio == 1">
+        <el-row :gutter="20">
+          <el-col v-if="radio == 1" :span="23">
             <el-form-item
               prop="AdjustmentAmount"
             >
@@ -83,10 +83,10 @@
                 :min="0.0"
                 :max="1500"
                 @focus="$event.target.select()"
-              ></el-input-number>
+              />
             </el-form-item>
           </el-col>
-            <el-col :span="23" v-if="radio == 2">
+          <el-col v-if="radio == 2" :span="23">
             <el-form-item
               prop="AdjustmentAmount"
             >
@@ -97,7 +97,7 @@
                 :min="0.01"
                 :max="100"
                 @focus="$event.target.select()"
-              ></el-input-number>
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -106,90 +106,91 @@
   </div>
 </template>
 <script>
-import { Create } from "@/api/Adjustment";
+import { Create } from '@/api/Adjustment'
 export default {
-  name: "StaticAdjustment",
+  name: 'StaticAdjustment',
   data() {
     return {
       radio: '1',
-      type:'1',
+      type: '1',
       dialogFormVisible: false,
       tempForm: {
         Id: undefined,
-        Name: "",
-        AdjustmentAmount:1.000,
-        Type: "",
-        IsStaticAdjustment: true,
+        Name: '',
+        AdjustmentAmount: 1.000,
+        Type: '',
+        IsStaticAdjustment: true
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur"
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur'
           },
           {
             min: 3,
             max: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur"
+            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
+            trigger: 'blur'
           }
         ]
       }
-    };
+    }
   },
   created() {
-    this.resetTempForm();
+    this.resetTempForm()
   },
   methods: {
     resetTempForm() {
       this.tempForm = {
         Id: undefined,
-        Name: "",
-        AdjustmentAmount:0.0,
-        Desription: "",
-      };
+        Name: '',
+        AdjustmentAmount: 0.0,
+        Desription: ''
+      }
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
-       if (this.type==2){
-            if(this.radio==1){
-              this.tempForm.Type= "CashValue";
-              this.tempForm.AdjustmentAmount= -this.tempForm.AdjustmentAmount;
-            };
-            if(this.radio==2){
-              this.tempForm.Type="Percentage";
-              this.tempForm.AdjustmentAmount = -(this.tempForm.AdjustmentAmount)/100;
-              };
+          if (this.type === 2) {
+            if (this.radio === 1) {
+              this.tempForm.Type = 'CashValue'
+              this.tempForm.AdjustmentAmount = -this.tempForm.AdjustmentAmount
+            }
+            if (this.radio === 2) {
+              this.tempForm.Type = 'Percentage'
+              this.tempForm.AdjustmentAmount = -(this.tempForm.AdjustmentAmount) / 100
+            }
           }
-          if (this.type==1){
-            if(this.radio==1){this.tempForm.Type= "CashValue";};
-            if(this.radio==2){
-              this.tempForm.AdjustmentAmount = (this.tempForm.AdjustmentAmount)/100;
-              this.tempForm.Type="Percentage";};
+          if (this.type === 1) {
+            if (this.radio === 1) { this.tempForm.Type = 'CashValue' }
+            if (this.radio === 2) {
+              this.tempForm.AdjustmentAmount = (this.tempForm.AdjustmentAmount) / 100
+              this.tempForm.Type = 'Percentage'
+            }
           }
-          this.tempForm.IsStaticAdjustment = true;
+          this.tempForm.IsStaticAdjustment = true
           Create(this.tempForm)
             .then(response => {
-              this.dialogFormVisible = false;
+              this.dialogFormVisible = false
               this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
+                title: 'تم ',
+                message: 'تم الإضافة بنجاح',
+                type: 'success',
                 duration: 2000
-              });
+              })
             })
             .catch(error => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
-    },
-    
+      })
+    }
+
   }
-};
+}
 </script>

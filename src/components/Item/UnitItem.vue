@@ -1,10 +1,12 @@
 <template>
   <div>
-    <el-col :span="2"
-      ><Add-Unit-Item @Success="(v) => options.push({ value: v.Name, label: v.Name })"
+    <el-col
+      :span="2"
+    ><Add-Unit-Item
+      @Success="(v) => options.push({ value: v.Name, label: v.Name })"
     /></el-col>
-    <el-col :span="20"></el-col>
-    <el-drag-select @change="SetVal" v-model="value" multiple placeholder="وحدات قياس">
+    <el-col :span="20" />
+    <el-drag-select v-model="value" multiple placeholder="وحدات قياس" @change="SetVal">
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -19,37 +21,37 @@
 </template>
 
 <script>
-import ElDragSelect from "@/components/DragSelect"; // base on element-ui
-import { GetActiveUnitItem } from "@/api/UnitItem";
-import AddUnitItem from "@/components/Add/AddUnitItem.vue"; // base on element-ui
+import ElDragSelect from '@/components/DragSelect' // base on element-ui
+import { GetActiveUnitItem } from '@/api/UnitItem'
+import AddUnitItem from '@/components/Add/AddUnitItem.vue' // base on element-ui
 
 export default {
-  props: ["Value"],
   components: { ElDragSelect, AddUnitItem },
+  props: ['Value'],
   data() {
     return {
       value: [],
-      options: [],
-    };
+      options: []
+    }
   },
   mounted() {
-    if (this.Value) this.value = Array.from(this.Value.split(","));
+    if (this.Value) this.value = Array.from(this.Value.split(','))
     GetActiveUnitItem()
       .then((response) => {
         // handle success
-        console.log(response);
-        this.options = response;
-        this.loading = false;
+        console.log(response)
+        this.options = response
+        this.loading = false
       })
       .catch((error) => {
         // handle error
-        console.log(error);
-      });
+        console.log(error)
+      })
   },
   methods: {
     SetVal(val) {
-      this.$emit("Set", val.toString());
-    },
-  },
-};
+      this.$emit('Set', val.toString())
+    }
+  }
+}
 </script>

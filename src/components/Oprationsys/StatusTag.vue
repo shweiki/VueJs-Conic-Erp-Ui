@@ -32,12 +32,11 @@ export default {
   },
   methods: {
     getdata() {
-      //  console.log("  this.Opration ", this.Status);
       this.Opration = this.$store.getters.Oprations.find((obj) => {
         return obj.TableName === this.tableName && obj.Status === this.status
       })
-      this.Opration = this.Opration === undefined
-        ? (this.Opration = {
+      if (this.Opration === undefined) {
+        this.Opration = {
           ArabicOprationDescription: '-',
           ClassName: 'success',
           Color: null,
@@ -50,8 +49,8 @@ export default {
           RoleName: null,
           Status: 0,
           TableName: '-'
-        })
-        : this.Opration
+        }
+      }
     }
   }
 }

@@ -10,50 +10,44 @@
       type="primary"
       @click="SetVal(value)"
     />
-    <el-button circle icon="el-icon-edit" slot="reference"></el-button>
+    <el-button slot="reference" circle icon="el-icon-edit" />
   </el-popover>
 </template>
 <script>
-import { EditPaymentMethod as EditSalePaymentMethod } from "@/api/SaleInvoice";
-import { EditPaymentMethod as EditPaymentPaymentMethod } from "@/api/Payment";
+import { EditPaymentMethod as EditSalePaymentMethod } from '@/api/SaleInvoice'
+import { EditPaymentMethod as EditPaymentPaymentMethod } from '@/api/Payment'
 
 export default {
-  props: ["ID", "Type", "Value", "VendorId"],
+  props: ['ID', 'Type', 'Value', 'VendorId'],
   data() {
     return {
-      value: "",
-    };
+      value: ''
+    }
   },
   created() {
-    this.value = this.Value;
+    this.value = this.Value
   },
   methods: {
     SetVal(val) {
-      if (this.Type == "SaleInvoice") {
+      if (this.Type === 'SaleInvoice') {
         EditSalePaymentMethod({
           ID: this.ID,
-          PaymentMethod: val,
+          PaymentMethod: val
         })
           .then((response) => {
-            if (response) this.$emit("Done", val);
+            if (response) this.$emit('Done', val)
           })
-          .catch((error) => {
-            reject(error);
-          });
       }
-      if (this.Type == "Payment") {
+      if (this.Type === 'Payment') {
         EditPaymentPaymentMethod({
           ID: this.ID,
-          PaymentMethod: val,
+          PaymentMethod: val
         })
           .then((response) => {
-            if (response) this.$emit("Done", val);
+            if (response) this.$emit('Done', val)
           })
-          .catch((error) => {
-            reject(error);
-          });
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

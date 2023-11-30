@@ -57,7 +57,7 @@ export default {
     };
   },
   watch: {
-    Value(val) {
+    value(val) {
       if (val) this.SetVal(val);
       else this.SetVal("");
     }

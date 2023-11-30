@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="block">
-      <el-select v-model="value" placeholder="اشتراكات" @change="SetVal">
+      <el-select v-model="value" placeholder="اشتراكات" :clearable="clearable" @change="SetVal">
         <el-option
           v-for="item in options"
           :key="item.Id"
@@ -15,7 +15,7 @@
         </el-option>
       </el-select>
     </div>
-    <div class="block">
+    <div v-if="withDescription" class="block">
       <el-tag>{{ temp.Name }}</el-tag>
       <el-tag>يوم {{ temp.NumberDays }}</el-tag>
 
@@ -27,7 +27,21 @@
 import { GetMembership } from '@/api/Membership'
 
 export default {
-  props: ['membershipId'],
+  props: {
+    membershipId: {
+      type: Number,
+      default: 0,
+      required: false
+    },
+    withDescription: {
+      type: Boolean,
+      default: true
+    },
+    clearable: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       options: [
@@ -47,26 +61,29 @@ export default {
           TotalMembers: 0
         }
       ],
-      value: 2,
+      value: '',
       temp: {}
     }
   },
   watch: {
-    MembershipId(val) {
+    membershipId(val) {
       if (val) this.SetVal(val)
     }
   },
   created() {
     GetMembership().then((response) => {
       this.options = response
-      this.SetVal(response[0].Id)
     })
   },
   methods: {
-    SetVal(val = 0) {
-      this.temp = this.options.find((obj) => obj.Id === val)
-      this.value = val
-      this.$emit('Set', this.temp)
+    SetVal(val) {
+      if (val && val != null) {
+        this.temp = this.options.find((obj) => obj.Id === val)
+        this.value = val
+        this.$emit('Set', this.temp)
+      } else {
+        this.$emit('Set', { Id: undefined })
+      }
     }
   }
 }

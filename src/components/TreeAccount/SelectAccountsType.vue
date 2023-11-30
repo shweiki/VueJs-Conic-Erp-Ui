@@ -53,7 +53,7 @@ export default {
     this.value = this.Value;
   },
   watch: {
-    Value(v) {
+    value(v) {
       console.log(v);
       this.SetVal(v);
     },

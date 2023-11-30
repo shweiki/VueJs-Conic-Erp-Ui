@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <List v-if="type == 'ML'" />
-    <MovementEnquiry v-if="type == 'ME'" />
+    <MembershipMovementList v-if="type == 'ME'" />
 
     <MembershipmentOrdar v-if="type == 'MO'" />
 
@@ -12,34 +12,34 @@
 </template>
 
 <script>
-import List from "@/views/Gym/Members/components/List.vue";
-import MovementEnquiry from "@/views/Gym/Members/components/MovementEnquiry.vue";
-import MembershipmentOrdar from "@/views/Gym/components/MembershipmentOrdar.vue";
-import Receivables from "@/views/Gym/components/Receivables";
-import Payable from "@/views/Gym/components/Payable";
+import List from '@/views/Gym/Members/components/List.vue'
+import MembershipMovementList from '@/views/Gym/Members/components/MembershipMovementList.vue'
+import MembershipmentOrdar from '@/views/Gym/components/MembershipmentOrdar.vue'
+import Receivables from '@/views/Gym/components/Receivables'
+import Payable from '@/views/Gym/components/Payable'
 export default {
   components: {
     List,
     MembershipmentOrdar,
     Receivables,
     Payable,
-    MovementEnquiry
+    MembershipMovementList
   },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "info",
-        deleted: "danger",
-      };
-      return statusMap[status];
-    },
+        published: 'success',
+        draft: 'info',
+        deleted: 'danger'
+      }
+      return statusMap[status]
+    }
   },
   props: {
     type: {
       type: String,
-      default: "ML",
-    },
+      default: 'ML'
+    }
   },
   data() {
     return {
@@ -48,21 +48,21 @@ export default {
         page: 1,
         limit: 5,
         type: this.type,
-        sort: "+id",
+        sort: '+id'
       },
-      loading: false,
-    };
+      loading: false
+    }
   },
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
     getList() {
-      this.loading = true;
-      this.$emit("create"); // for test
+      this.loading = true
+      this.$emit('create') // for test
 
-      this.loading = false;
-    },
-  },
-};
+      this.loading = false
+    }
+  }
+}
 </script>

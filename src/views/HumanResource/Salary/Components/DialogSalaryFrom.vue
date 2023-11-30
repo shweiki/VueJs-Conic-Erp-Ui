@@ -3,31 +3,30 @@
     <el-button
       type="primary"
       :size="$store.getters.size"
-      v-bind:icon="isEdit ? 'el-icon-edit' : 'el-icon-plus'"
+      :icon="isEdit ? 'el-icon-edit' : 'el-icon-plus'"
       @click="Visibles = true"
-      >{{ isEdit ? "تعديل" : "إضافة" }} الراتب</el-button
-    >
+    >{{ isEdit ? "تعديل" : "إضافة" }} الراتب</el-button>
     <el-dialog
-      @opened="getDate"
       style="margin-top: -13vh"
       title="تعديل الراتب"
       :visible.sync="Visibles"
+      @opened="getDate"
     >
       <el-form
-        :model="tempForm"
         ref="SalaryForm"
+        :model="tempForm"
         label-position="top"
         class="demo-form-inline"
       >
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item prop="EmployeeId" label="الرقم الوظيفي ">
-              <el-input disabled v-model="tempForm.EmployeeId"></el-input>
+              <el-input v-model="tempForm.EmployeeId" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="15">
             <el-form-item prop="Name" label="اسم الموظف">
-              <el-input disabled v-model="tempForm.Name"></el-input>
+              <el-input v-model="tempForm.Name" disabled />
             </el-form-item>
           </el-col>
         </el-row>
@@ -35,16 +34,15 @@
           <el-col :span="24">
             <el-form-item label="الفترة" prop="SalaryFrom">
               <Search-By-Date
-                :withOptions="false"
-                :Value="[tempForm.SalaryFrom, tempForm.SalaryTo]"
+                :with-options="false"
+                :value="[tempForm.SalaryFrom, tempForm.SalaryTo]"
                 @Set="
                   (v) => {
                     tempForm.SalaryFrom = v[0];
                     tempForm.SalaryTo = v[1];
                   }
                 "
-            /></el-form-item> </el-col
-        ></el-row>
+              /></el-form-item> </el-col></el-row>
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item label="الراتب الكلي" prop="GrossSalary">
@@ -55,9 +53,8 @@
                 :min="0.0"
                 :max="5000"
                 @focus="$event.target.select()"
-              ></el-input-number>
-            </el-form-item> </el-col
-          ><el-col :span="12">
+              />
+            </el-form-item> </el-col><el-col :span="12">
             <el-form-item label="ساعات الدوام " prop="WorkingHours">
               <el-input-number
                 v-model="tempForm.WorkingHours"
@@ -65,7 +62,7 @@
                 :min="0.0"
                 :max="15"
                 @focus="$event.target.select()"
-              ></el-input-number>
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -81,10 +78,10 @@
 </template>
 
 <script>
-import { Create, Edit, GetById } from "@/api/Salary";
-import permission from "@/directive/permission/index.js";
-import SearchByDate from "@/components/Date/SearchByDate.vue";
-import { GetLastSalaryById } from "@/api/Salary";
+import { Create, Edit, GetById } from '@/api/Salary'
+import permission from '@/directive/permission/index.js'
+import SearchByDate from '@/components/Date/SearchByDate.vue'
+import { GetLastSalaryById } from '@/api/Salary'
 
 export default {
   components: { SearchByDate },
@@ -93,108 +90,107 @@ export default {
     isEdit: {
       type: Boolean,
       default: () => {
-        return false;
-      },
+        return false
+      }
     },
     Id: {
       type: Number,
-      default: undefined,
+      default: undefined
     },
     EmployeeId: {
       type: Number,
-      default: undefined,
+      default: undefined
     },
     EmployeeName: {
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return {
       tempForm: {
         Id: undefined,
         EmployeeId: 0,
-        Name: "",
+        Name: '',
         GrossSalary: 0.0,
         NetSalary: 0.0,
         WorkingHours: 0,
-        SalaryFrom: "",
-        SalaryTo: "",
-        Status: 0,
+        SalaryFrom: '',
+        SalaryTo: '',
+        Status: 0
       },
-      Visibles: false,
-    };
+      Visibles: false
+    }
   },
 
   methods: {
     getDate() {
       if (this.isEdit && this.Id > 0) {
         GetById({ Id: this.Id }).then((res) => {
-          this.tempForm = res;
-        });
+          this.tempForm = res
+        })
       } else {
         if (this.EmployeeId != undefined && this.EmployeeId > 0) {
-          this.tempForm.EmployeeId = this.EmployeeId;
+          this.tempForm.EmployeeId = this.EmployeeId
 
           GetLastSalaryById({ Id: this.EmployeeId }).then((res) => {
             if (res) {
-              this.tempForm.GrossSalary = res.GrossSalary;
-              this.tempForm.WorkingHours = res.WorkingHours;
-              this.tempForm.SalaryFrom = res.SalaryFrom;
-              this.tempForm.SalaryTo = res.SalaryTo;
+              this.tempForm.GrossSalary = res.GrossSalary
+              this.tempForm.WorkingHours = res.WorkingHours
+              this.tempForm.SalaryFrom = res.SalaryFrom
+              this.tempForm.SalaryTo = res.SalaryTo
             }
-          });
+          })
         }
-        if (this.EmployeeName != undefined && this.EmployeeName != "")
-          this.tempForm.Name = this.EmployeeName;
+        if (this.EmployeeName != undefined && this.EmployeeName != '') { this.tempForm.Name = this.EmployeeName }
       }
     },
     confirmData() {
-      this.$refs["SalaryForm"].validate(async (valid) => {
+      this.$refs['SalaryForm'].validate(async(valid) => {
         if (valid) {
-          let Done;
+          let Done
           if (this.isEdit != true) {
             Done = await Create(this.tempForm)
               .then((res) => {
-                if (res) return res;
-                else return false;
+                if (res) return res
+                else return false
               })
               .catch((error) => {
-                return false;
-              });
+                return false
+              })
           } else {
             Done = await Edit(this.tempForm)
               .then((res) => {
-                if (res) return res;
-                else return false;
+                if (res) return res
+                else return false
               })
               .catch((error) => {
-                return false;
-              });
+                return false
+              })
           }
           if (Done) {
-            this.Visibles = false;
+            this.Visibles = false
             this.$notify({
-              title: "تم " + this.isEdit ? "تعديل" : "إضافة" + "  بنجاح",
-              message: "تم " + this.isEdit ? "تعديل" : "إضافة" + " ",
-              type: "success",
-              position: "top-left",
+              title: 'تم ' + this.isEdit ? 'تعديل' : 'إضافة' + '  بنجاح',
+              message: 'تم ' + this.isEdit ? 'تعديل' : 'إضافة' + ' ',
+              type: 'success',
+              position: 'top-left',
               duration: 1000,
-              showClose: false,
-            });
+              showClose: false
+            })
           } else {
-            this.Visibles = false;
+            this.Visibles = false
             this.$notify({
-              title: "مشكلة",
-              message: "حصلت مشكلة في عملية الحفظ",
-              type: "error",
-              position: "top-left",
+              title: 'مشكلة',
+              message: 'حصلت مشكلة في عملية الحفظ',
+              type: 'error',
+              position: 'top-left',
               duration: 1000,
-              showClose: false,
-            });
+              showClose: false
+            })
           }
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>

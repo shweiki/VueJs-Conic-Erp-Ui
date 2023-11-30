@@ -61,7 +61,7 @@
               ]"
             >
               <Fake-Date
-                :Value="tempForm.FakeDate"
+                :value="tempForm.FakeDate"
                 @Set="(v) => (tempForm.FakeDate = v)"
               />
             </el-form-item>
@@ -116,7 +116,7 @@
               ]"
             >
               <Fake-Date
-                :Value="tempForm.InvoicePurchaseDate"
+                :value="tempForm.InvoicePurchaseDate"
                 @Set="(v) => (tempForm.InvoicePurchaseDate = v)"
               />
             </el-form-item>

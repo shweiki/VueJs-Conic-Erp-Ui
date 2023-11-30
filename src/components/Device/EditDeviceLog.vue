@@ -9,8 +9,8 @@
 
     <el-dialog style="margin-top: -13vh" title="تعديل " :visible.sync="Visibles">
       <el-form
-        :model="Temp"
         ref="DeviceLogForm"
+        :model="Temp"
         label-position="top"
         class="demo-form-inline"
       >
@@ -18,7 +18,7 @@
           <el-col :span="12">
             <el-form-item prop="Fk" label="الموظف">
               <employee-search-any
-                :EmployeeId="Temp.Fk"
+                :employee-id="Temp.Fk"
                 @Set="
                   (v) => {
                     Temp.TableName = 'Employee';
@@ -29,14 +29,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <select-device :Value="Temp.DeviceId" @Set="(v) => (Temp.DeviceId = v.Id)" />
+            <select-device :value="Temp.DeviceId" @Set="(v) => (Temp.DeviceId = v.Id)" />
           </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="DateTime">
+            <el-form-item :label="$t('AddVendors.Description')" prop="DateTime">
               <Fake-Date
-                :Value="Temp.DateTime"
+                :value="Temp.DateTime"
                 @Set="
                   (v) => {
                     Temp.DateTime = v;
@@ -46,8 +46,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
-              <el-input v-model="Temp.Description"></el-input>
+            <el-form-item :label="$t('AddVendors.Description')" prop="Description">
+              <el-input v-model="Temp.Description" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -61,48 +61,48 @@
 </template>
 
 <script>
-import { GetById, Edit } from "@/api/DeviceLog";
-import permission from "@/directive/permission/index.js";
-import FakeDate from "@/components/Date/FakeDate.vue";
-import SelectDevice from "./SelectDevice.vue";
-import EmployeeSearchAny from "../HumanResource/EmployeeSearchAny.vue";
+import { GetById, Edit } from '@/api/DeviceLog'
+import permission from '@/directive/permission/index.js'
+import FakeDate from '@/components/Date/FakeDate.vue'
+import SelectDevice from './SelectDevice.vue'
+import EmployeeSearchAny from '../HumanResource/EmployeeSearchAny.vue'
 export default {
-  name: "EditDeviceLog",
-  props: ["Id"],
+  name: 'EditDeviceLog',
   components: { FakeDate, SelectDevice, EmployeeSearchAny },
   directives: { permission },
+  props: ['Id'],
   data() {
     return {
       Temp: {},
-      Visibles: false,
-    };
+      Visibles: false
+    }
   },
   created() {
     GetById({ Id: this.Id }).then((res) => {
-      this.Temp = res;
-    });
+      this.Temp = res
+    })
   },
   methods: {
     Edit() {
-      this.$refs["DeviceLogForm"].validate((valid) => {
+      this.$refs['DeviceLogForm'].validate((valid) => {
         if (valid) {
           Edit(this.Temp)
             .then((response) => {
-              this.Visibles = false;
+              this.Visibles = false
               this.$notify({
-                title: "تم ",
-                message: "تم تعديل بنجاح",
-                type: "success",
-                duration: 2000,
-              });
-              this.$emit("Done");
+                title: 'تم ',
+                message: 'تم تعديل بنجاح',
+                type: 'success',
+                duration: 2000
+              })
+              this.$emit('Done')
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>

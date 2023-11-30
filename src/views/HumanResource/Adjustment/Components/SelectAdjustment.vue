@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-col :span="24">
-      <el-select @change="SetVal" v-model="value" filterable placeholder="التسوية">
+      <el-select v-model="value" filterable placeholder="التسوية" @change="SetVal">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -18,67 +18,64 @@
   </div>
 </template>
 <script>
-import { GetAdjustmentLabel } from "@/api/Adjustment";
+import { GetAdjustmentLabel } from '@/api/Adjustment'
 export default {
-  props: ["Value", "GrossSalary", "ExtraHours", "DelayHours"],
+  props: ['Value', 'GrossSalary', 'ExtraHours', 'DelayHours'],
   data() {
     return {
       value: 1,
-      options: [],
-    };
+      options: []
+    }
   },
   watch: {
-    Value(val) {
-      if (val != null && val != undefined) {
-        this.SetVal(val);
+    value(val) {
+      if (val != null && val !== undefined) {
+        this.SetVal(val)
       }
     },
     GrossSalary(val) {
       if (val > 0) {
-        this.GrossSalary = val;
+        this.GrossSalary = val
       }
     },
     ExtraHours(val) {
       if (val > 0) {
-        this.ExtraHours = val;
+        this.ExtraHours = val
       }
     },
     DelayHours(val) {
       if (val < 0) {
-        this.DelayHours = val;
+        this.DelayHours = val
       }
-    },
+    }
   },
   mounted() {
-    this.getdata();
+    this.getdata()
   },
   methods: {
     getdata() {
       GetAdjustmentLabel()
         .then((res) => {
-          this.options = res;
-          this.SetVal(this.value);
+          this.options = res
+          this.SetVal(this.value)
         })
         .catch((error) => {
           // handle error
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     SetVal(val) {
       if (val) {
-        let dis = this.options.find((obj) => obj.value == val);
-        console.log("dis", dis, this.GrossSalary, this.ExtraHours, this.DelayHours);
-        this.$emit("SetAdjustment", val);
-        if (dis != undefined && dis != null) {
-          if (dis.type == "Percentage")
-            this.$emit("SetAdjustmentAmount", dis.amount * (this.GrossSalary || 1));
-          if (dis.type == "Hours" && dis.amount > 0)
-            this.$emit("SetAdjustmentAmount", dis.amount * (this.ExtraHours || 1));
-          if (dis.type == "Hours" && dis.amount < 0)
-            this.$emit("SetAdjustmentAmount", dis.amount * (this.DelayHours || 1));
+        const dis = this.options.find((obj) => obj.value === val)
+        console.log('dis', dis, this.GrossSalary, this.ExtraHours, this.DelayHours)
+        this.$emit('SetAdjustment', val)
+        if (dis !== undefined && dis != null) {
+          if (dis.type === 'Percentage') { this.$emit('SetAdjustmentAmount', dis.amount * (this.GrossSalary || 1)) }
+          if (dis.type === 'Hours' && dis.amount > 0) { this.$emit('SetAdjustmentAmount', dis.amount * (this.ExtraHours || 1)) }
+          if (dis.type === 'Hours' && dis.amount < 0) { this.$emit('SetAdjustmentAmount', dis.amount * (this.DelayHours || 1)) }
         }
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

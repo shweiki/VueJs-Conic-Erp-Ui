@@ -4,36 +4,45 @@
   </el-select>
 </template>
 <script>
-import { GetUsersNames } from "@/api/User";
+import { GetUsersNames } from '@/api/User'
 
 export default {
-  props: ["Value"],
+  props: {
+    all: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
-      value: "",
-      options: [],
-    };
+      value: '',
+      options: []
+    }
   },
   watch: {
-    Value(val) {
-      if (val) this.SetVal(val);
-    },
+    value(val) {
+      if (val) this.SetVal(val)
+    }
   },
   created() {
     GetUsersNames().then((res) => {
-      this.options = res;
-      //   this.SetVal(response[0].UserName);
-    });
+      if (this.all) {
+        this.options.push({ User: { Id: 0, UserName: 'all' }})
+        this.options.push(...res)
+      } else {
+        this.options = res
+      }
+    })
   },
   methods: {
     SetVal(val) {
-      if (val && val != "" && val != null) {
-        this.$emit("Set", this.options.find((obj) => obj.User.UserName === val).User.UserName);
+      if (val && val !== '' && val != null) {
+        this.$emit('Set', this.options.find((obj) => obj.User.UserName === val).User.UserName)
       } else {
-        this.$emit("Set", null);
+        this.$emit('Set', null)
       }
-      this.value = val;
-    },
-  },
-};
+      this.value = val
+    }
+  }
+}
 </script>

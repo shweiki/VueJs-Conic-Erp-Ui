@@ -2,54 +2,27 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
-        <el-button
-          :size="$store.getters.size"
-          v-bind:disabled="
-            tableData.length <= 0 || (this.$route.params && this.$route.params.id) != null
-          "
-          icon="fa fa-save"
-          style="float: left"
-          type="primary"
-          @click="OpenCashPoolDialog = true"
-        />
+        <el-button :size="$store.getters.size" v-bind:disabled="tableData.length <= 0 || (this.$route.params && this.$route.params.id) != null
+          " icon="fa fa-save" style="float: left" type="primary" @click="OpenCashPoolDialog = true" />
         <Drawer-Print style="float: left" Type="CashPool" :Data="CashPool" />
-        <Drawer-Print
-          v-permission="['admin']"
-          style="float: left"
-          Type="SaleInvoicesList"
-          :Data="{
-            Totals: Totals,
-            Items: tableData,
-            Dates: [new Date(), new Date()],
-          }"
-        />
-        <Drawer-Print
-          v-permission="['admin']"
-          style="float: left"
-          Type="ItemsSales"
-          :Data="{
-            Totals: Totals,
-            Items: ItemsSales(tableData),
-            Dates: [new Date(), new Date()],
-          }"
-        />
-        <Drawer-Print
-          v-permission="['admin']"
-          style="float: left"
-          Type="ItemsIngredients"
-          :Data="{
-            Items: ItemsIngredients(tableData),
-            Dates: [new Date(), new Date()],
-          }"
-        />
+        <Drawer-Print v-permission="['admin']" style="float: left" Type="SaleInvoicesList" :Data="{
+          Totals: Totals,
+          Items: tableData,
+          Dates: [new Date(), new Date()],
+        }" />
+        <Drawer-Print v-permission="['admin']" style="float: left" Type="ItemsSales" :Data="{
+          Totals: Totals,
+          Items: ItemsSales(tableData),
+          Dates: [new Date(), new Date()],
+        }" />
+        <Drawer-Print v-permission="['admin']" style="float: left" Type="ItemsIngredients" :Data="{
+          Items: ItemsIngredients(tableData),
+          Dates: [new Date(), new Date()],
+        }" />
 
         <el-col :span="6">
-          <el-switch
-            v-bind:disabled="!checkPermission(['admin'])"
-            v-model="AutoSent"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-          ></el-switch>
+          <el-switch v-bind:disabled="!checkPermission(['admin'])" v-model="AutoSent" active-color="#13ce66"
+            inactive-color="#ff4949"></el-switch>
         </el-col>
         <el-row type="flex">
           <el-col :span="12">
@@ -105,29 +78,11 @@
     </el-card>
     <el-card v-permission="['admin']" class="box-card">
       <span>{{ $t("CashPool.Note") }}</span>
-      <el-table
-        height="250"
-        v-bind:data="ItemsSales(tableData)"
-        fit
-        border
-        highlight-current-row
-      >
+      <el-table height="250" v-bind:data="ItemsSales(tableData)" fit border highlight-current-row>
         <el-table-column prop="Name" label="الصنف" align="center"></el-table-column>
-        <el-table-column
-          prop="TotalCount"
-          label="العدد المباع"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="CostPrice"
-          label="سعر تكلفة"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="AvgPrice"
-          label="سعر البيع"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="TotalCount" label="العدد المباع" align="center"></el-table-column>
+        <el-table-column prop="CostPrice" label="سعر تكلفة" align="center"></el-table-column>
+        <el-table-column prop="AvgPrice" label="سعر البيع" align="center"></el-table-column>
         <el-table-column align="center">
           <template slot="header" slot-scope="{}">
             المجموع الربح
@@ -163,14 +118,7 @@
       </el-table>
     </el-card>
     <el-card class="box-card">
-      <el-table
-        height="600"
-        :data="tableData"
-        fit
-        border
-        highlight-current-row
-        ref="multipleTable"
-      >
+      <el-table height="600" :data="tableData" fit border highlight-current-row ref="multipleTable">
         <el-table-column label="#" prop="Id" width="120" align="center">
           <template slot="header" slot-scope="{}">
             <el-button type="primary" icon="el-icon-refresh" @click="getdata()">
@@ -179,79 +127,42 @@
 
           <template slot-scope="{ row }">
             <el-tag type="primary" disable-transitions>
-              <strong
-                style="font-size: 10px; cursor: pointer"
-                @click="
-                  () => {
-                    let r = $router.resolve({
-                      path: '/Sales/Edit/' + row.Id,
-                    });
-                    window.open(
-                      r.href,
-                      r.route.name,
-                      $store.getters.settings.windowStyle
-                    );
-                  }
-                "
-                >{{ row.Id }}</strong
-              ></el-tag
-            >
+              <strong style="font-size: 10px; cursor: pointer" @click="() => {
+                  let r = $router.resolve({
+                    path: '/Sales/Edit/' + row.Id,
+                  });
+                  window.open(
+                    r.href,
+                    r.route.name,
+                    $store.getters.settings.windowStyle
+                  );
+                }
+                ">{{ row.Id }}</strong></el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="FakeDate"
-          v-bind:label="$t('CashPool.Date')"
-          width="140"
-          align="center"
-        >
+        <el-table-column prop="FakeDate" v-bind:label="$t('CashPool.Date')" width="140" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.FakeDate | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="Name"
-          v-bind:label="$t('CashPool.Customer')"
-          align="center"
-        >
+        <el-table-column prop="Name" v-bind:label="$t('CashPool.Customer')" align="center">
           <template slot-scope="scope">
             <strong style="font-size: 10px; cursor: pointer">{{ scope.row.Name }}</strong>
           </template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('table.type')"
-          width="80"
-          align="center"
-          prop="Type"
-        >
+        <el-table-column v-bind:label="$t('table.type')" width="80" align="center" prop="Type">
         </el-table-column>
-        <el-table-column
-          prop="PaymentMethod"
-          v-bind:label="$t('CashPool.Pay')"
-          width="100"
-          align="center"
-        >
+        <el-table-column prop="PaymentMethod" v-bind:label="$t('CashPool.Pay')" width="100" align="center">
           <template slot-scope="scope">
-            <edit-payment-method
-              :VendorId="scope.row.VendorId"
-              :Value="scope.row.PaymentMethod"
-              Type="SaleInvoice"
-              :ID="scope.row.Id"
-              @Done="
-                (v) => {
+            <edit-payment-method :VendorId="scope.row.VendorId" :value="scope.row.PaymentMethod" Type="SaleInvoice"
+              :ID="scope.row.Id" @Done="(v) => {
                   getdata();
                 }
-              "
-            />
-            {{ $t("NewPurchaseInvoice." + scope.row.PaymentMethod + "") }}</template
-          >
+                " />
+            {{ $t("NewPurchaseInvoice." + scope.row.PaymentMethod + "") }}</template>
         </el-table-column>
-        <el-table-column
-          v-bind:label="$t('CashPool.Discount')"
-          width="120"
-          align="center"
-        >
-          <template slot-scope="scope"
-            >{{ scope.row.Discount.toFixed($store.getters.settings.ToFixed) }}
+        <el-table-column v-bind:label="$t('CashPool.Discount')" width="120" align="center">
+          <template slot-scope="scope">{{ scope.row.Discount.toFixed($store.getters.settings.ToFixed) }}
           </template>
         </el-table-column>
         <el-table-column v-bind:label="$t('CashPool.Amountv')" width="120" align="center">
@@ -273,20 +184,11 @@
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-table :data="props.row.InventoryMovements">
-              <el-table-column
-                prop="Name"
-                v-bind:label="$t('CashPool.Items')"
-                width="130"
-                align="center"
-              ></el-table-column>
-              <el-table-column
-                prop="Qty"
-                v-bind:label="$t('CashPool.quantity')"
-                align="center"
-              ></el-table-column>
+              <el-table-column prop="Name" v-bind:label="$t('CashPool.Items')" width="130"
+                align="center"></el-table-column>
+              <el-table-column prop="Qty" v-bind:label="$t('CashPool.quantity')" align="center"></el-table-column>
               <el-table-column v-bind:label="$t('CashPool.Price')" align="center">
-                <template slot-scope="scope"
-                  >{{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
+                <template slot-scope="scope">{{ scope.row.SellingPrice.toFixed($store.getters.settings.ToFixed) }}
                 </template>
               </el-table-column>
               <el-table-column v-bind:label="$t('CashPool.Total')" align="center">
@@ -304,18 +206,10 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <Cash-Pool-Dialog
-      :Totals="Totals"
-      Type="SaleInvoice"
-      :Data="tableData"
-      :Open="OpenCashPoolDialog"
-      @Closed="
-        () => {
-          OpenCashPoolDialog = false;
-        }
-      "
-      @Done="(v) => createData(v)"
-    />
+    <Cash-Pool-Dialog :Totals="Totals" Type="SaleInvoice" :Data="tableData" :Open="OpenCashPoolDialog" @Closed="() => {
+        OpenCashPoolDialog = false;
+      }
+      " @Done="(v) => createData(v)" />
   </div>
 </template>
 
@@ -437,9 +331,10 @@ export default {
       });
       CreateCashPool(v).then(async (res) => {
         if (res) {
-          v.Id = res;
+          v.Id = res.Id
+          v.CreatedBy = res.CreatedBy
           this.CashPool = v;
-          var Entry = {
+          let Entry = {
             Id: undefined,
             FakeDate: new Date(),
             Description: "",

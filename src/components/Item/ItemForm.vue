@@ -12,8 +12,8 @@
     <el-form ref="dataForm" :rules="rulesForm" :model="tempForm">
       <el-row type="flex">
         <el-col :span="16">
-          <el-form-item v-bind:label="$t('Items.ItemName')" prop="Name">
-            <el-input ref="ItemName" type="text" v-model="tempForm.Name"></el-input>
+          <el-form-item :label="$t('Items.ItemName')" prop="Name">
+            <el-input ref="ItemName" v-model="tempForm.Name" type="text" />
             <el-checkbox v-model="tempForm.IsPrime">اظهار على شاشة المبيعات</el-checkbox>
             <el-checkbox v-model="tempForm.TakeBon">تتبع جمركي</el-checkbox>
           </el-form-item>
@@ -30,25 +30,24 @@
               type="primary"
               icon="el-icon-upload"
               @click="imagecropperShow = true"
-            ></el-button>
-            <web-cam tableName="Item" :ObjectId="tempForm.Id" />
+            />
+            <web-cam table-name="Item" :object-id="tempForm.Id" />
             <image-cropper
               v-show="imagecropperShow"
               :key="imagecropperKey"
               :width="150"
               :height="150"
               lang-type="ar"
-              tableName="Item"
-              :ObjectId="tempForm.Id"
+              table-name="Item"
+              :object-id="tempForm.Id"
               @close="close"
               @crop-upload-success="cropSuccess"
             />
-          </pan-thumb> </el-col
-      ></el-row>
+          </pan-thumb> </el-col></el-row>
 
       <el-row type="flex">
         <el-col :span="8">
-          <el-form-item v-bind:label="$t('Items.Cost')" prop="CostPrice">
+          <el-form-item :label="$t('Items.Cost')" prop="CostPrice">
             <el-input-number
               v-model="tempForm.CostPrice"
               :precision="2"
@@ -56,11 +55,11 @@
               :min="0.0"
               :max="1500"
               @focus="$event.target.select()"
-            ></el-input-number>
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item v-bind:label="$t('Items.PurchaseCost')" prop="OtherPrice">
+          <el-form-item :label="$t('Items.PurchaseCost')" prop="OtherPrice">
             <el-input-number
               v-model="tempForm.OtherPrice"
               :precision="2"
@@ -68,11 +67,11 @@
               :min="0.0"
               :max="1500"
               @focus="$event.target.select()"
-            ></el-input-number>
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item v-bind:label="$t('Items.SellingPrice')" prop="SellingPrice">
+          <el-form-item :label="$t('Items.SellingPrice')" prop="SellingPrice">
             <el-input-number
               v-model="tempForm.SellingPrice"
               :precision="2"
@@ -80,23 +79,23 @@
               :min="0.0"
               :max="1500"
               @focus="$event.target.select()"
-            ></el-input-number>
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row type="flex">
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Items.LowerOrder')" prop="LowOrder">
+          <el-form-item :label="$t('Items.LowerOrder')" prop="LowOrder">
             <el-input-number
               v-model="tempForm.LowOrder"
               :min="1"
               :max="100000000"
               @focus="$event.target.select()"
-            ></el-input-number>
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Items.Tax')" prop="Tax">
+          <el-form-item :label="$t('Items.Tax')" prop="Tax">
             <el-input-number
               v-model="tempForm.Tax"
               :precision="2"
@@ -110,9 +109,9 @@
       </el-row>
       <el-row type="flex" justify="space-around">
         <el-col :span="10">
-          <el-form-item v-bind:label="$t('Items.MenuItem')" prop="MenuItem">
+          <el-form-item :label="$t('Items.MenuItem')" prop="MenuItem">
             <Menu-Item
-              :Value="tempForm.MenuItem"
+              :value="tempForm.MenuItem"
               @Set="
                 (v) => {
                   tempForm.MenuItem = v;
@@ -122,9 +121,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item v-bind:label="$t('Items.UnitItem')" prop="UnitItem">
+          <el-form-item :label="$t('Items.UnitItem')" prop="UnitItem">
             <Unit-Item
-              :Value="tempForm.UnitItem"
+              :value="tempForm.UnitItem"
               @Set="
                 (v) => {
                   tempForm.UnitItem = v;
@@ -136,13 +135,13 @@
       </el-row>
       <el-row type="flex">
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Items.Barcode')" prop="Barcode">
-            <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode"></el-input>
+          <el-form-item :label="$t('Items.Barcode')" prop="Barcode">
+            <el-input v-model="tempForm.Barcode" suffix-icon="fa fa-barcode" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Items.Notes')" prop="Description">
-            <el-input type="textarea" v-model="tempForm.Description"></el-input>
+          <el-form-item :label="$t('Items.Notes')" prop="Description">
+            <el-input v-model="tempForm.Description" type="textarea" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -151,48 +150,43 @@
 </template>
 
 <script>
-import { CreateItem as Create, Edit, GetItemById } from "@/api/Item";
-import PanThumb from "@/components/PanThumb";
-import WebCam from "@/components/WebCam";
-import ImageCropper from "@/components/ImageCropper";
-import { GetFileByObjId } from "@/api/File";
-import permission from "@/directive/permission/index.js";
-import MenuItem from "./MenuItem";
-import UnitItem from "./UnitItem";
+import { CreateItem as Create, Edit, GetItemById } from '@/api/Item'
+import PanThumb from '@/components/PanThumb'
+import WebCam from '@/components/WebCam'
+import ImageCropper from '@/components/ImageCropper'
+import { GetFileByObjId } from '@/api/File'
+import permission from '@/directive/permission/index.js'
+import MenuItem from './MenuItem'
+import UnitItem from './UnitItem'
 
 export default {
-  name: "ItemForm",
+  name: 'ItemForm',
   components: {
     PanThumb,
     WebCam,
     ImageCropper,
     MenuItem,
-    UnitItem,
+    UnitItem
   },
+  directives: { permission },
   props: {
-    ItemId: {
+    itemId: {
       type: Number,
-      default: undefined,
+      default: undefined
     },
     isEdit: {
       type: Boolean,
-      default: false,
-    },
-  },
-  directives: { permission },
-  mounted() {
-    if (this.isEdit) {
-      this.getdata(this.ItemId || this.$route.params.id);
+      default: false
     }
   },
   data() {
     return {
-      activeNames: "Info",
+      activeNames: 'Info',
       imagecropperShow: false,
       imagecropperKey: 0,
       tempForm: {
         Id: undefined,
-        Name: "",
+        Name: '',
         CostPrice: 0.0,
         SellingPrice: 0.0,
         OtherPrice: 0.0,
@@ -201,44 +195,49 @@ export default {
         Rate: 0,
         IsPrime: false,
         TakeBon: false,
-        Barcode: "",
-        Description: "",
+        Barcode: '',
+        Description: '',
         Ingredients: null,
-        UnitItem: "",
+        UnitItem: ''
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur",
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur'
           },
           {
             min: 3,
             max: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
+  },
+  mounted() {
+    if (this.isEdit) {
+      this.getdata(this.itemId || this.$route.params.id)
+    }
   },
   methods: {
     getdata(v) {
       GetItemById({ Id: v }).then((response) => {
         // handle success
-        this.tempForm = response;
-        console.log("this.tempForm.Id", this.$store.getters.CompanyInfo.Logo);
-        this.GetImageItem(this.tempForm.Id);
-      });
+        this.tempForm = response
+        console.log('this.tempForm.Id', this.$store.getters.CompanyInfo.Logo)
+        this.GetImageItem(this.tempForm.Id)
+      })
     },
     focus() {
-      this.$emit("focus");
+      this.$emit('focus')
     },
     restTemp() {
       this.tempForm = {
         Id: undefined,
-        Name: "",
+        Name: '',
         CostPrice: 0.0,
         SellingPrice: 0.0,
         OtherPrice: 0.0,
@@ -247,74 +246,74 @@ export default {
         Rate: 0,
         IsPrime: false,
         TakeBon: false,
-        Barcode: "",
-        Description: "",
+        Barcode: '',
+        Description: '',
         Ingredients: null,
-        UnitItem: "",
-      };
+        UnitItem: ''
+      }
     },
     confirmData() {
-      this.$refs["dataForm"].validate(async (valid) => {
+      this.$refs['dataForm'].validate(async(valid) => {
         if (valid) {
-          let Done;
-          if (this.isEdit != true) {
+          let Done
+          if (this.isEdit !== true) {
             Done = await Create(this.tempForm)
               .then((res) => {
                 if (res) {
-                  return true;
-                } else return false;
+                  return true
+                } else return false
               })
               .catch((error) => {
-                return false;
-              });
+                return false
+              })
           } else {
             Done = await Edit(this.tempForm)
               .then((res) => {
-                if (res) return true;
-                else return false;
+                if (res) return true
+                else return false
               })
               .catch((error) => {
-                return false;
-              });
+                return false
+              })
           }
-          console.log(("done", this.isEdit));
+          console.log(('done', this.isEdit))
 
           if (Done) {
-            this.restTemp();
+            this.restTemp()
             this.$notify({
-              title: "تم " + this.isEdit == true ? "تعديل" : "إضافة" + " ",
-              message: "تم " + this.isEdit == true ? "تعديل" : "إضافة" + "   بنجاح",
-              type: "success",
-              position: "top-left",
+              title: 'تم ' + this.isEdit == true ? 'تعديل' : 'إضافة' + ' ',
+              message: 'تم ' + this.isEdit == true ? 'تعديل' : 'إضافة' + '   بنجاح',
+              type: 'success',
+              position: 'top-left',
               duration: 1000,
-              showClose: false,
-            });
+              showClose: false
+            })
           }
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     GetImageItem(ID) {
-      GetFileByObjId({ TableName: "Item", ObjId: ID })
+      GetFileByObjId({ TableName: 'Item', ObjId: ID })
         .then((response) => {
-          if (response) this.tempForm.Avatar = response.FileUrl;
-          else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo || "";
+          if (response) this.tempForm.Avatar = response.FileUrl
+          else this.tempForm.Avatar = this.$store.getters.CompanyInfo.Logo || ''
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     cropSuccess(resData) {
-      this.imagecropperShow = false;
-      this.imagecropperKey = this.imagecropperKey + 1;
+      this.imagecropperShow = false
+      this.imagecropperKey = this.imagecropperKey + 1
     },
     close() {
-      this.imagecropperShow = false;
-    },
-  },
-};
+      this.imagecropperShow = false
+    }
+  }
+}
 </script>
 <style scoped>
 .el-collapse-item {

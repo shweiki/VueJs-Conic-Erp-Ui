@@ -58,9 +58,9 @@ export function GetMembershipMovementByDateIn(query) {
     params: query
   })
 }
-export function GetMembershipMovementList(query) {
+export function GetByListQ(query) {
   return request({
-    url: '/MembershipMovement/GetMembershipMovementList',
+    url: '/MembershipMovement/GetByListQ',
     method: 'get',
     params: query
   })

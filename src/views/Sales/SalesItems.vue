@@ -21,7 +21,7 @@
       </el-col>
       <el-col :span="8">
         <Search-By-Date
-          :Value="[listQuery.DateFrom, listQuery.DateTo]"
+          :value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
             (v) => {
               listQuery.DateFrom = v[0];
@@ -43,7 +43,7 @@
       </el-col>
       <el-col :span="3">
         <Sort-Options
-          :Value="listQuery.Sort"
+          :value="listQuery.Sort"
           @Set="
             (v) => {
               listQuery.Sort = v;

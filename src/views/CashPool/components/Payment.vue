@@ -25,7 +25,8 @@
               style="float: left"
               type="primary"
               @click="OpenCashPoolDialog = true"
-            />
+            /> </el-col>
+          <el-col :span="2">
             <Drawer-Print
               v-permission="['admin']"
               style="float: left"
@@ -238,9 +239,10 @@ export default {
       CreateCashPool(v)
         .then(async(res) => {
           if (res) {
-            v.Id = res
+            v.Id = res.Id
+            v.CreatedBy = res.CreatedBy
             this.CashPool = v
-            var Entry = {
+            let Entry = {
               Id: undefined,
               FakeDate: new Date(),
               Description: '',

@@ -5,24 +5,23 @@
       type="success"
       icon="el-icon-plus"
       @click="Visibles = true"
-      >إضافة قيد</el-button
-    >
+    >إضافة قيد</el-button>
     <el-dialog
       style="margin-top: -13vh"
       title="تسجيل قيد محاسبي"
       :visible.sync="Visibles"
     >
       <el-form
+        ref="dataForm"
         label-position="top"
         :model="tempForm"
-        ref="dataForm"
         class="demo-form-inline"
       >
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item
               prop="Type"
-              v-bind:label="$t('OrderInventories.OrderType')"
+              :label="$t('OrderInventories.OrderType')"
               :rules="[
                 {
                   required: true,
@@ -40,11 +39,11 @@
           <el-col :span="12">
             <el-form-item prop="Value" label="القيمة">
               <el-input-number
-                @focus="$event.target.select()"
                 v-model="Value"
                 :min="0.01"
                 :max="100000"
-              ></el-input-number>
+                @focus="$event.target.select()"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -59,9 +58,9 @@
                   trigger: 'blur'
                 }
               ]"
-              v-bind:label="$t('AddVendors.Description')"
+              :label="$t('AddVendors.Description')"
             >
-              <el-input v-model="tempForm.Description"></el-input>
+              <el-input v-model="tempForm.Description" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -79,7 +78,7 @@
 </template>
 
 <script>
-import { CreateEntry } from "@/api/EntryAccounting";
+import { CreateEntry } from '@/api/EntryAccounting'
 
 export default {
   props: {
@@ -96,19 +95,19 @@ export default {
     return {
       EnableSave: false,
       Value: 1,
-      Type: "Credit",
+      Type: 'Credit',
       tempForm: {
         Id: undefined,
         FakeDate: new Date(),
-        Description: "",
-        Type: "Manual",
+        Description: '',
+        Type: 'Manual',
         EntryMovements: [
           {
             Id: undefined,
             AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
-            Description: "",
+            Description: '',
             EntryId: undefined
           },
           {
@@ -116,52 +115,52 @@ export default {
             AccountId: undefined,
             Debit: 0.0,
             Credit: 0.0,
-            Description: "",
+            Description: '',
             EntryId: undefined
           }
         ]
       },
       Visibles: false
-    };
+    }
   },
   methods: {
     create() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          this.EnableSave = true;
-          this.tempForm.EntryMovements[0].AccountId = this.AccountId1;
-          this.tempForm.EntryMovements[0].Description = this.tempForm.Description;
-          this.Type == "Credit"
+          this.EnableSave = true
+          this.tempForm.EntryMovements[0].AccountId = this.AccountId1
+          this.tempForm.EntryMovements[0].Description = this.tempForm.Description
+          this.Type === 'Credit'
             ? (this.tempForm.EntryMovements[0].Debit = this.Value)
-            : (this.tempForm.EntryMovements[0].Credit = this.Value);
-          this.Type == "Credit"
+            : (this.tempForm.EntryMovements[0].Credit = this.Value)
+          this.Type === 'Credit'
             ? (this.tempForm.EntryMovements[1].Credit = this.Value)
-            : (this.tempForm.EntryMovements[1].Debit = this.Value);
+            : (this.tempForm.EntryMovements[1].Debit = this.Value)
 
-          this.tempForm.EntryMovements[1].AccountId = this.AccountId2;
-          this.tempForm.EntryMovements[1].Description = this.tempForm.Description;
+          this.tempForm.EntryMovements[1].AccountId = this.AccountId2
+          this.tempForm.EntryMovements[1].Description = this.tempForm.Description
 
           CreateEntry(this.tempForm).then(response => {
             if (response) {
-              this.Visibles = false;
-              this.EnableSave = false;
+              this.Visibles = false
+              this.EnableSave = false
 
               this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
+                title: 'تم ',
+                message: 'تم الإضافة بنجاح',
+                type: 'success',
                 duration: 2000
-              });
+              })
               this.$nextTick(() => {
                 this.$router.replace({
-                  path: "/redirect" + this.$route.fullPath
-                });
-              });
+                  path: '/redirect' + this.$route.fullPath
+                })
+              })
             }
-          });
+          })
         }
-      });
+      })
     }
   }
-};
+}
 </script>

@@ -20,13 +20,13 @@ export default {
       Printer: ""
     };
   },
- 
+
   created() {
     this.Printer = this.Value;
     this.printers = this.$store.getters.printers;
   },
   watch: {
-    Value(v) {
+    value(v) {
       console.log(v);
       this.SetVal(v);
     }

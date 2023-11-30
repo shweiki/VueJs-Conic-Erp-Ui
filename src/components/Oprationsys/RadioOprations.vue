@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-radio-group style="direction: ltr" v-model="Status" @change="SetVal">
+    <el-radio-group v-model="Status" style="direction: ltr" @change="SetVal">
       <el-radio-button
         v-for="op in $store.getters.Oprations.filter((Item) => {
-          return Item.TableName == TableName;
+          return Item.TableName == tableName;
         })"
         :key="op.Id"
-        v-bind:label="op.Status"
+        :label="op.Status"
         :fill="op.Color"
-        >{{ op.OprationDescription }}
-        <i v-if="op.IconClass != null" :class="op.IconClass"></i>
+      >{{ op.OprationDescription }}
+        <i v-if="op.IconClass != null" :class="op.IconClass" />
       </el-radio-button>
       <el-radio-button label="null">{{ $t("OperationSys.All") }}</el-radio-button>
     </el-radio-group>
@@ -17,28 +17,38 @@
 </template>
 <script>
 export default {
-  props: ["TableName", "value"],
+  props: {
+    value: {
+      type: Number,
+      required: true
+    },
+    tableName: {
+      type: String,
+      required: true
+    }
+
+  },
   data() {
     return {
       Oprations: [],
-      Status: null,
-    };
-  },
-  created() {
-    this.Status = this.value;
+      Status: null
+    }
   },
   watch: {
     value(val) {
-      if (val != null && val != "") {
-        this.Status = val;
+      if (val != null && val !== '') {
+        this.Status = val
       }
-    },
+    }
+  },
+  created() {
+    this.Status = this.value
   },
   methods: {
     SetVal(val) {
-      this.Status = val;
-      this.$emit("Set", this.Status);
-    },
-  },
-};
+      this.Status = val
+      this.$emit('Set', this.Status)
+    }
+  }
+}
 </script>

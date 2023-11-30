@@ -3,10 +3,10 @@
     <el-button
       type="success"
       icon="el-icon-edit"
+      :disabled="AccountId == undefined"
+
       @click="getdata()"
-      
-      v-bind:disabled="AccountId == undefined"
-    ></el-button>
+    />
     <el-dialog
       style="margin-top: -13vh"
       :show-close="false"
@@ -33,21 +33,21 @@
         label-position="top"
         label-width="70px"
       >
-        <el-form-item v-bind:label="$t('Account.AccType')" prop="Type">
+        <el-form-item :label="$t('Account.AccType')" prop="Type">
           <select-accounts-type
-            :Value="tempForm.Type"
+            :value="tempForm.Type"
             @Set="(v) => (tempForm.Type = v)"
           />
         </el-form-item>
-        <el-form-item v-bind:label="$t('Account.AccName')" prop="Name">
-          <el-input ref="Name" type="text" v-model="tempForm.Name"></el-input>
+        <el-form-item :label="$t('Account.AccName')" prop="Name">
+          <el-input ref="Name" v-model="tempForm.Name" type="text" />
         </el-form-item>
-        <el-form-item v-bind:label="$t('Account.Code')" prop="Code">
-          <el-input type="text" v-model="tempForm.Code"></el-input>
+        <el-form-item :label="$t('Account.Code')" prop="Code">
+          <el-input v-model="tempForm.Code" type="text" />
         </el-form-item>
         <el-form-item label="تحت قائمة" prop="ParentId">
           <SelectParent
-            :Value="tempForm.ParentId"
+            :value="tempForm.ParentId"
             @Set="
               (v) => {
                 tempForm.ParentId = v.Code;
@@ -55,8 +55,8 @@
             "
           />
         </el-form-item>
-        <el-form-item v-bind:label="$t('Account.Notes')" prop="Description">
-          <el-input type="textarea" v-model="tempForm.Description"></el-input>
+        <el-form-item :label="$t('Account.Notes')" prop="Description">
+          <el-input v-model="tempForm.Description" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -70,78 +70,78 @@
 </template>
 
 <script>
-import { Edit, GetById } from "@/api/Account";
-import SelectAccountsType from "@/components/TreeAccount/SelectAccountsType.vue";
-import SelectParent from "@/components/TreeAccount/SelectParent.vue";
+import { Edit, GetById } from '@/api/Account'
+import SelectAccountsType from '@/components/TreeAccount/SelectAccountsType.vue'
+import SelectParent from '@/components/TreeAccount/SelectParent.vue'
 
 export default {
   components: { SelectAccountsType, SelectParent },
   props: {
     AccountId: {
       type: Number,
-      default: undefined,
-    },
+      default: undefined
+    }
   },
   data() {
     return {
       Visible: false,
       tempForm: {
         Id: undefined,
-        Name: "",
+        Name: '',
         Status: 0,
-        Code: "",
+        Code: '',
         Type: undefined,
-        Description: "",
-        ParentId: 0,
+        Description: '',
+        ParentId: 0
       },
       rulesForm: {
         Name: [
           {
             required: true,
-            message: "الرجاء ادخال الاسم",
-            trigger: "blur",
+            message: 'الرجاء ادخال الاسم',
+            trigger: 'blur'
           },
           {
             min: 3,
             max: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            message: 'الرجاء إدخال إسم لا يقل عن 3 حروف و لا يزيد عن 50 حرف',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
   methods: {
     getdata() {
       GetById({ Id: this.AccountId }).then((response) => {
         // handle success
-        this.tempForm = response;
-        this.Visible = true;
-      });
+        this.tempForm = response
+        this.Visible = true
+      })
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
             .then((response) => {
-              this.$emit("Done");
-              this.Visible = false;
+              this.$emit('Done')
+              this.Visible = false
               this.$notify({
-                title: "تم ",
-                message: "تم تعديل بنجاح",
-                type: "success",
-                duration: 2000,
-              });
+                title: 'تم ',
+                message: 'تم تعديل بنجاح',
+                type: 'success',
+                duration: 2000
+              })
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>

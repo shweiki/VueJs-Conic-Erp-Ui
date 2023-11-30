@@ -12,7 +12,7 @@
 
       <el-col :span="3">
         <Sort-Options
-          :Value="listQuery.Sort"
+          :value="listQuery.Sort"
           @Set="
             (v) => {
               listQuery.Sort = v;
@@ -22,9 +22,10 @@
         />
       </el-col>
       <el-col :span="12">
-        <Radio-Oprations             :value="listQuery.Status"
+        <Radio-Oprations
+          :value="listQuery.Status"
 
-          tableName="CustomerOrder"
+          table-name="CustomerOrder"
           @Set="
             (v) => {
               listQuery.Status = v;
@@ -57,7 +58,7 @@
                       <Status-Icon
                         class="card-panel-icon"
                         :status="option.Status"
-                        tableName="CustomerOrder"
+                        table-name="CustomerOrder"
                       />
                     </div>
                   </el-col>
@@ -109,7 +110,7 @@
                   </el-col>
                 </el-row>
                 <el-row :gutter="24">
-                  <order-details-mobile :Temp="option" caller="Driver" />
+                  <order-details-mobile :temp="option" caller="Driver" />
                   <el-col :span="12" style="padding-top: 10px">
                     <div v-if="option.Status == 1">
                       <el-popconfirm
@@ -123,7 +124,7 @@
                           slot="reference"
                           type="success"
                           :size="$store.getters.size"
-                          >طلب الفاتورة
+                        >طلب الفاتورة
                         </el-button>
                       </el-popconfirm>
                     </div>
@@ -150,22 +151,22 @@
   </section>
 </template>
 <script>
-import OrderDetailsMobile from "./OrderDetailsMobile.vue";
-import { GetCustomerOrder, VendorDone, OrdrerCheckout } from "@/api/OrderRestaurant";
-import { mapGetters } from "vuex";
-import RadioOprations from "@/components/Oprationsys/RadioOprations.vue";
-import StatusIcon from "@/components/Oprationsys/StatusIcon.vue";
-import waves from "@/directive/waves";
-import Pagination from "@/components/Pagination";
-import SortOptions from "@/components/SortOptions";
+import OrderDetailsMobile from './OrderDetailsMobile.vue'
+import { GetCustomerOrder, VendorDone, OrdrerCheckout } from '@/api/OrderRestaurant'
+import { mapGetters } from 'vuex'
+import RadioOprations from '@/components/Oprationsys/RadioOprations.vue'
+import StatusIcon from '@/components/Oprationsys/StatusIcon.vue'
+import waves from '@/directive/waves'
+import Pagination from '@/components/Pagination'
+import SortOptions from '@/components/SortOptions'
 export default {
-  name: "CustomerCard",
+  name: 'CustomerCard',
   components: {
     OrderDetailsMobile,
     RadioOprations,
     StatusIcon,
     Pagination,
-    SortOptions,
+    SortOptions
   },
   directives: { waves },
   data() {
@@ -176,26 +177,26 @@ export default {
       listLoading: false,
       listQuery: {
         Page: 1,
-        Any: "",
+        Any: '',
         limit: this.$store.getters.settings.LimitQurey,
-        Sort: "+id",
-        Status: undefined,
-      },
-    };
+        Sort: '+id',
+        Status: undefined
+      }
+    }
   },
   computed: {
-    ...mapGetters(["Id", "name"]),
+    ...mapGetters(['Id', 'name'])
   },
   created() {
-    this.handleFilter();
+    this.handleFilter()
   },
   methods: {
     getdata() {
       this.user = {
         Id: this.Id,
-        name: this.name,
-      };
-      this.listLoading = true;
+        name: this.name
+      }
+      this.listLoading = true
       GetCustomerOrder({
         id: this.user.Id,
         name: this.user.name,
@@ -203,46 +204,46 @@ export default {
         Any: this.listQuery.Any,
         limit: this.listQuery.limit,
         Sort: this.listQuery.Sort,
-        Status: this.listQuery.Status,
+        Status: this.listQuery.Status
       })
         .then((response) => {
           // handle success
-          this.list = response.items;
-          this.Totals = response.Totals;
-          //this.DeliveryData = response;
-          this.listLoading = false;
+          this.list = response.items
+          this.Totals = response.Totals
+          // this.DeliveryData = response;
+          this.listLoading = false
         })
         .catch((error) => {
           // handle error
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     handleFilter() {
-      this.listQuery.Page = 1;
-      this.getdata();
+      this.listQuery.Page = 1
+      this.getdata()
     },
     VDone(id) {
       VendorDone({ id: id }).then((res) => {
         if (res) {
           this.$notify({
-            title: "تم ارسال بنجاح",
-            message: "تم ارسال بنجاح - " + +" ",
-            type: "success",
-            position: "top-left",
-          });
-          this.getdata();
+            title: 'تم ارسال بنجاح',
+            message: 'تم ارسال بنجاح - ' + +' ',
+            type: 'success',
+            position: 'top-left'
+          })
+          this.getdata()
         } else {
           this.$notify.error({
-            title: "error",
-            message: "حصلت مشكلة ما",
-            position: "top-left",
-          });
+            title: 'error',
+            message: 'حصلت مشكلة ما',
+            position: 'top-left'
+          })
         }
-      });
-    },
+      })
+    }
 
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -15,15 +15,13 @@
             type=" "
             icon="fa fa-save"
             @click="isEdit != true ? createData() : updateData()"
-            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-          >
+          >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button>
           <router-link
             class="pan-btn tiffany-btn"
             style="float: left; margin-left: 20px; padding: 10px 15px; border-radius: 6px"
             icon="el-icon-plus"
             to="/OrderInventories/List"
-            >{{ $t("route.OrderInventory") }}</router-link
-          >
+          >{{ $t("route.OrderInventory") }}</router-link>
           <span>{{ $t("OrderInventories.StoreMovement") }}</span>
           <p style="color: #F56C6Cfont-size: 16pxtext-align: center">
             {{ ValidateNote }}
@@ -33,7 +31,7 @@
           <el-col :span="6">
             <el-form-item
               prop="OrderType"
-              v-bind:label="$t('OrderInventories.OrderType')"
+              :label="$t('OrderInventories.OrderType')"
               :rules="[
                 {
                   required: true,
@@ -43,15 +41,15 @@
               ]"
             >
               <el-radio-group v-model="tempForm.OrderType">
-                <el-radio-button label="ادخال بضاعة اول المدة / بونص"></el-radio-button>
-                <el-radio-button label="اخراج: هدايا / عروض / تالف"></el-radio-button>
+                <el-radio-button label="ادخال بضاعة اول المدة / بونص" />
+                <el-radio-button label="اخراج: هدايا / عروض / تالف" />
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item
               prop="FakeDate"
-              v-bind:label="$t('NewPurchaseInvoice.ReleaseDate')"
+              :label="$t('NewPurchaseInvoice.ReleaseDate')"
               :rules="[
                 {
                   required: true,
@@ -63,22 +61,22 @@
               <el-date-picker
                 v-model="tempForm.FakeDate"
                 type="date"
-                v-bind:placeholder="$t('Sales.Date')"
+                :placeholder="$t('Sales.Date')"
                 :format="$store.getters.settings.DateTimeFormat"
-              ></el-date-picker>
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item
               prop="Description"
-              v-bind:label="$t('OrderInventories.Statement')"
+              :label="$t('OrderInventories.Statement')"
             >
-              <el-input type="textarea" v-model="tempForm.Description"></el-input>
+              <el-input v-model="tempForm.Description" type="textarea" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-card style="background: #545454" :body-style="{ padding: '1px' }">
-          <Items-Search :WithBarCode="true" @add="AddItem" />
+          <Items-Search :with-bar-code="true" @add="AddItem" />
         </el-card>
         <el-form-item prop="InventoryMovements">
           <el-table
@@ -89,38 +87,40 @@
             highlight-current-row
           >
             <el-table-column align="center">
-              <template slot="header" slot-scope="{}"
-                >{{ $t("OrderInventories.Items") }} ({{
-                  tempForm.InventoryMovements.length.toFixed(
-                    $store.getters.settings.ToFixed
-                  )
-                }})</template
-              >
+              <template
+                slot="header"
+                slot-scope="{}"
+              >{{ $t("OrderInventories.Items") }} ({{
+                tempForm.InventoryMovements.length.toFixed(
+                  $store.getters.settings.ToFixed
+                )
+              }})</template>
               <template slot-scope="scope">
                 {{ tempForm.InventoryMovements[scope.$index].Name }}
-                <edit-item :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId" />
+                <edit-item :item-id="tempForm.InventoryMovements[scope.$index].ItemsId" />
               </template>
             </el-table-column>
 
             <el-table-column width="150" align="center">
-              <template slot="header" slot-scope="{}"
-                >{{ $t("CashPool.quantity") }} ({{
-                  tempForm.InventoryMovements.reduce(
-                    (a, b) => a + (b["Qty"] || 0),
-                    0
-                  ).toFixed($store.getters.settings.ToFixed)
-                }})</template
-              >
+              <template
+                slot="header"
+                slot-scope="{}"
+              >{{ $t("CashPool.quantity") }} ({{
+                tempForm.InventoryMovements.reduce(
+                  (a, b) => a + (b["Qty"] || 0),
+                  0
+                ).toFixed($store.getters.settings.ToFixed)
+              }})</template>
               <template slot-scope="scope">
                 <el-input-number
-                  controls-position="right"
                   v-model="tempForm.InventoryMovements[scope.$index].Qty"
+                  controls-position="right"
                   :precision="2"
                   :step="1"
                   :min="0.0"
                   :max="1000000"
                   @focus="$event.target.select()"
-                ></el-input-number>
+                />
               </template>
             </el-table-column>
             <el-table-column align="center">
@@ -147,13 +147,13 @@
             <el-table-column label="EXP" width="175" align="center">
               <template slot-scope="scope">
                 <Select-Item-Exp-Column
+                  :value="tempForm.InventoryMovements[scope.$index].EXP"
+                  :item-id="tempForm.InventoryMovements[scope.$index].ItemsId"
                   @SetVal="
                     (v) => {
                       tempForm.InventoryMovements[scope.$index].EXP = v;
                     }
                   "
-                  :Value="tempForm.InventoryMovements[scope.$index].EXP"
-                  :ItemId="tempForm.InventoryMovements[scope.$index].ItemsId"
                 />
               </template>
             </el-table-column>
@@ -163,7 +163,7 @@
               }}</template>
               <template slot-scope="scope">
                 <radio-active-inventory
-                  :InventoryId="tempForm.InventoryMovements[scope.$index].InventoryItemId"
+                  :inventory-id="tempForm.InventoryMovements[scope.$index].InventoryItemId"
                   @Set="
                     (v) =>
                       (tempForm.InventoryMovements[scope.$index].InventoryItemId =
@@ -174,7 +174,7 @@
             </el-table-column>
             <el-table-column
               align="center"
-              v-bind:label="$t('Vendors.Description')"
+              :label="$t('Vendors.Description')"
               width="250"
             >
               <template slot-scope="scope">
@@ -188,15 +188,15 @@
                   >
                     <template slot="prepend">
                       <el-button
-                        @click="Copy(scope.row.Description)"
                         icon="fa fa-copy"
-                      ></el-button>
+                        @click="Copy(scope.row.Description)"
+                      />
                     </template>
                     <template slot="append">
                       <el-button
-                        @click="Paste(scope.$index)"
                         icon="fa fa-paste"
-                      ></el-button>
+                        @click="Paste(scope.$index)"
+                      />
                     </template>
                   </el-input>
                 </el-form-item>
@@ -208,7 +208,7 @@
                   type="danger"
                   icon="el-icon-delete"
                   @click="RemoveItem(scope.$index)"
-                ></el-button>
+                />
               </template>
             </el-table-column>
           </el-table>
@@ -218,185 +218,183 @@
   </div>
 </template>
 <script>
-import { Create, Edit, GetOrderInventoryById } from "@/api/OrderInventory";
-import ItemsSearch from "@/components/Item/ItemsSearch.vue";
-import EditItem from "@/components/Item/EditItem";
-import ExpDate from "@/components/Date/ExpDate.vue";
-import SelectItemExpColumn from "@/components/Item/SelectItemExpColumn.vue";
-import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
+import { Create, Edit, GetOrderInventoryById } from '@/api/OrderInventory'
+import ItemsSearch from '@/components/Item/ItemsSearch.vue'
+import EditItem from '@/components/Item/EditItem'
+import SelectItemExpColumn from '@/components/Item/SelectItemExpColumn.vue'
+import RadioActiveInventory from '@/components/Inventory/RadioActiveInventory.vue'
 
 export default {
-  name: "NewOrderInventories",
+  name: 'NewOrderInventories',
   components: {
     ItemsSearch,
     EditItem,
-    ExpDate,
     SelectItemExpColumn,
-    RadioActiveInventory,
+    RadioActiveInventory
   },
   props: {
     isEdit: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
-      ValidateNote: "",
+      ValidateNote: '',
       tempForm: {
         Id: undefined,
         FakeDate: new Date(),
-        OrderType: "ادخال: بضاعة اول المدة / بونص",
-        Description: "",
-        InventoryMovements: [],
+        OrderType: 'ادخال: بضاعة اول المدة / بونص',
+        Description: '',
+        InventoryMovements: []
       },
       rules: {
         InventoryMovements: [
           {
-            type: "array",
+            type: 'array',
             required: true,
-            message: "لا يمكن إستكمال عملية مخزن من غير إضافة أصناف",
-            trigger: "change",
-          },
-        ],
+            message: 'لا يمكن إستكمال عملية مخزن من غير إضافة أصناف',
+            trigger: 'change'
+          }
+        ]
       },
-      Items: [],
-    };
+      Items: []
+    }
   },
   created() {
     if (this.isEdit) {
-      this.getdata(this.$route.params && this.$route.params.id);
+      this.getdata(this.$route.params && this.$route.params.id)
     }
-    this.tempRoute = Object.assign({}, this.$route);
+    this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
     restTempForm() {
       this.tempForm = {
         Id: undefined,
         FakeDate: new Date(),
-        OrderType: "ادخال: بضاعة اول المدة / بونص",
-        Description: "",
-        InventoryMovements: [],
-      };
+        OrderType: 'ادخال: بضاعة اول المدة / بونص',
+        Description: '',
+        InventoryMovements: []
+      }
     },
     AddItem(item) {
       this.tempForm.InventoryMovements.unshift({
         Id: undefined,
-        TypeMove: "In",
+        TypeMove: 'In',
         ItemsId: item.Id,
         Status: 0,
         Qty: 1.0,
         SellingPrice: 0,
         Tax: 0.0,
-        Description: "",
+        Description: '',
         InventoryItemId: 1,
         Name: item.Name,
         OrderInventoryId: undefined,
-        Item: item,
-      });
+        Item: item
+      })
     },
 
     Copy(Text) {
-      this.Text = Text;
+      this.Text = Text
     },
     Paste(Index) {
-      this.tempForm.InventoryMovements[Index].Description = this.Text;
+      this.tempForm.InventoryMovements[Index].Description = this.Text
     },
     getdata(val) {
       GetOrderInventoryById({ Id: val })
         .then((response) => {
-          console.log(response);
-          this.tempForm = response;
+          console.log(response)
+          this.tempForm = response
 
           // set tagsview title
-          this.setTagsViewTitle();
+          this.setTagsViewTitle()
 
           // set page title
-          this.setPageTitle();
+          this.setPageTitle()
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     RemoveItem(index) {
-      this.tempForm.InventoryMovements.splice(index, 1);
+      this.tempForm.InventoryMovements.splice(index, 1)
     },
     createData() {
-      this.$refs["tempForm"].validate((valid) => {
+      this.$refs['tempForm'].validate((valid) => {
         if (valid) {
           Create(this.tempForm)
             .then((response) => {
               this.$notify({
-                title: "تم الإضافة بنجاح",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                position: "top-left",
+                title: 'تم الإضافة بنجاح',
+                message: 'تم الإضافة بنجاح',
+                type: 'success',
+                position: 'top-left',
                 duration: 1000,
                 showClose: false,
                 onClose: () => {
                   if (response) {
-                    this.restTempForm();
+                    this.restTempForm()
                     /*    this.$nextTick(() => {
                       this.$router.replace({
                         path: "/redirect" + "/OrderInventories/List"
                       });
                     });*/
                   }
-                },
-              });
+                }
+              })
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     updateData() {
-      this.$refs["tempForm"].validate((valid) => {
+      this.$refs['tempForm'].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
             .then((response) => {
               this.$notify({
-                title: "تم تعديل  بنجاح",
-                message: "تم تعديل بنجاح",
-                type: "success",
-                position: "top-left",
+                title: 'تم تعديل  بنجاح',
+                message: 'تم تعديل بنجاح',
+                type: 'success',
+                position: 'top-left',
                 duration: 1000,
                 showClose: false,
                 onClose: () => {
                   if (response) {
                     this.$nextTick(() => {
                       this.$router.replace({
-                        path: "/redirect" + "/OrderInventories/List",
-                      });
-                    });
+                        path: '/redirect' + '/OrderInventories/List'
+                      })
+                    })
                   }
-                },
-              });
+                }
+              })
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     setTagsViewTitle() {
-      const title = this.$t("route.EditOrderInventory");
+      const title = this.$t('route.EditOrderInventory')
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`,
-      });
-      this.$store.dispatch("tagsView/updateVisitedView", route);
+        title: `${title}-${this.tempForm.Id}`
+      })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = this.$t("route.EditOrderInventory");
-      document.title = `${title} - ${this.tempForm.Id}`;
-    },
-  },
-};
+      const title = this.$t('route.EditOrderInventory')
+      document.title = `${title} - ${this.tempForm.Id}`
+    }
+  }
+}
 </script>

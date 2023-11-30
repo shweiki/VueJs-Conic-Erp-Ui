@@ -3,7 +3,7 @@
     <el-row type="flex">
       <el-col :span="14">
         <Search-By-Date
-          :Value="[listQuery.DateFrom, listQuery.DateTo]"
+          :value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
             (v) => {
               listQuery.DateFrom = v[0];
@@ -14,10 +14,10 @@
         />
       </el-col>
       <el-col :span="3">
-        <el-button @click="reverse = !reverse" icon="el-icon-sort"></el-button>
+        <el-button icon="el-icon-sort" @click="reverse = !reverse" />
       </el-col>
       <el-col :span="3">
-        <Add-Device-Log tableName="Member" />
+        <Add-Device-Log table-name="Member" />
       </el-col>
       <el-col :span="4">
         <el-button
@@ -25,18 +25,17 @@
           type="primary"
           icon="el-icon-search"
           @click="getdata"
-        >
-        </el-button>
+        />
       </el-col>
     </el-row>
 
     <el-row type="flex">
       <el-col :span="24">
-        <el-divider direction="vertical"></el-divider>
+        <el-divider direction="vertical" />
         <span>العدد</span>
-        <el-divider direction="vertical"></el-divider>
+        <el-divider direction="vertical" />
         <span>{{ timeline.length }}</span>
-        <el-divider direction="vertical"></el-divider>
+        <el-divider direction="vertical" />
       </el-col>
     </el-row>
     <el-row :gutter="30">
@@ -55,56 +54,44 @@
               size="large"
               :timestamp="item.DateTime"
               :hide-timestamp="true"
-              ><span style="color: green">{{ item.Name }}</span>
+            ><span style="color: green">{{ item.Name }}</span>
 
               <el-time-picker
-                :size="$store.getters.size"
                 v-model="item.DateTime"
+                :size="$store.getters.size"
                 :format="$store.getters.settings.DateTimeFormat"
                 disabled
               />
             </el-timeline-item>
           </el-timeline>
-        </el-card> </el-col
-    ></el-row>
+        </el-card> </el-col></el-row>
   </div>
 </template>
 
 <script>
-import { GetLogByUserId } from "@/api/DeviceLog";
-import SearchByDate from "@/components/Date/SearchByDate.vue";
-import AddDeviceLog from "@/components/Device/AddDeviceLog.vue";
+import { GetLogByUserId } from '@/api/DeviceLog'
+import SearchByDate from '@/components/Date/SearchByDate.vue'
+import AddDeviceLog from '@/components/Device/AddDeviceLog.vue'
 
 export default {
   components: { SearchByDate, AddDeviceLog },
   props: {
     UserId: {
       type: String,
-      required: true,
+      required: true
     },
     TableName: {
       type: String,
-      required: true,
+      required: true
     },
     DateFrom: {
       type: String,
-      required: false,
+      required: false
     },
     DateTo: {
       type: String,
-      required: false,
-    },
-  },
-  watch: {
-    UserId(val) {
-      // if (val) this.getdata();
-    },
-    DateFrom(val) {
-      if (val != "" || val != undefined) this.listQuery.DateFrom = val;
-    },
-    DateTo(val) {
-      if (val != "" || val != undefined) this.listQuery.DateTo = val;
-    },
+      required: false
+    }
   },
   data() {
     return {
@@ -112,37 +99,48 @@ export default {
       reverse: true,
       timeline: [],
       listQuery: JSON.parse(
-        localStorage.getItem("TimeLineDeviceLog_ListQuery") || null
+        localStorage.getItem('TimeLineDeviceLog_ListQuery') || null
       ) || {
-        DateFrom: "",
-        DateTo: "",
+        DateFrom: '',
+        DateTo: '',
         TableName: this.TableName,
-        UserId: this.UserId,
-      },
-    };
+        UserId: this.UserId
+      }
+    }
+  },
+  watch: {
+    UserId(val) {
+      // if (val) this.getdata();
+    },
+    DateFrom(val) {
+      if (val != '' || val != undefined) this.listQuery.DateFrom = val
+    },
+    DateTo(val) {
+      if (val != '' || val != undefined) this.listQuery.DateTo = val
+    }
   },
 
   methods: {
     getdata() {
       if (this.UserId) {
-        this.loading = true;
-        this.listQuery.UserId = this.UserId;
+        this.loading = true
+        this.listQuery.UserId = this.UserId
         GetLogByUserId(this.listQuery)
           .then((response) => {
-            this.timeline = response;
-            //.sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
+            this.timeline = response
+            // .sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
             localStorage.setItem(
-              "TimeLineDeviceLog_ListQuery",
+              'TimeLineDeviceLog_ListQuery',
               JSON.stringify(this.listQuery)
-            );
-            this.loading = false;
+            )
+            this.loading = false
           })
           .catch((error) => {
-            reject(error);
-            this.loading = false;
-          });
+            reject(error)
+            this.loading = false
+          })
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

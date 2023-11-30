@@ -43,7 +43,7 @@
         </el-col>
         <el-col :span="4">
           <printers
-            :Value="tempForm.Printer"
+            :value="tempForm.Printer"
             @change="
               (v) => {
                 tempForm.Printer = v;

@@ -12,7 +12,7 @@
         </el-col>
         <el-col :span="3">
           <Sort-Options
-            :Value="listQuery.Sort"
+            :value="listQuery.Sort"
             @Set="
               (v) => {
                 listQuery.Sort = v;

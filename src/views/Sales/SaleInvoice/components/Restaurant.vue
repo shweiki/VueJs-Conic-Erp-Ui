@@ -33,7 +33,6 @@
                       }
                     "
                   />
-                  <!--  <vendor-select @Set="v => (tempForm.Vendor = v)" />-->
                 </el-form-item>
               </el-col>
               <el-col v-permission="['admin']" :span="4">
@@ -48,7 +47,7 @@
                   ]"
                 >
                   <Fake-Date
-                    :Value="tempForm.FakeDate"
+                    :value="tempForm.FakeDate"
                     @Set="(v) => (tempForm.FakeDate = v)"
                   />
                 </el-form-item>
@@ -99,7 +98,6 @@
               <template slot="paneL">
                 <split-pane split="horizontal" :min-percent="5" :default-percent="6.5">
                   <template slot="paneR">
-                    <!--  <items-search :WithBarCode="false" @add="AddItem" />-->
                     <Items-Category
                       :WithImage="$store.getters.settings.PointOfSale.WithImage"
                       @add="AddItem"
@@ -212,14 +210,6 @@
                             <el-radio-button label="Visa" border
                               ><i class="el-icon-bank-card"></i>بطاقة
                             </el-radio-button>
-                            <!--
-                            <el-radio-button
-                              v-if="tempForm.VendorId != 2"
-                              label="Receivables"
-                              border
-                              ><i class="el-icon-s-custom"></i
-                              >ذمم</el-radio-button
-                            > -->
                           </el-radio-group>
                         </el-form-item>
                       </el-col>
@@ -293,9 +283,6 @@
                           @focus="$event.target.select()"
                         ></el-input-number>
                       </el-col>
-                      <!--    <el-col :span="6">{{
-                          $t("NewPurchaseInvoice.TotalDiscount")
-                        }}</el-col> -->
                     </el-row>
                     <el-row type="flex" class="card">
                       <el-col
@@ -475,14 +462,12 @@ import VendorSelect from "@/components/Vendor/VendorSelect";
 import VendorSearchAny from "@/components/Vendor/VendorSearchAny";
 
 import FakeDate from "@/components/Date/FakeDate";
-import { PrintReport, VisualizationReportHtml } from "@/report/FunctionalityReport";
+import { PrintReport } from "@/report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 import { Create as CreateDelivery, CreateWithDriver } from "@/api/OrderDelivery";
 
-//import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
-//import { NumericInput } from "numeric-keyboard";
 import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DeliveryEl from "@/components/Sales/DeliveryEl.vue";
@@ -492,7 +477,6 @@ import { Create as CreateVendor, CheckIsExist as CheckVendorIsExist } from "@/ap
 import { SendSMS } from "@/api/Sms";
 import { Now } from "@/utils";
 
-//import VueTouchKeyboard from "vue-touch-keyboard";
 
 export default {
   Name: "NewSaleInvoice",
@@ -644,7 +628,6 @@ export default {
     createData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
         if (valid) {
-          this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
           let Total =
             this.tempForm.InventoryMovements.reduce((prev, cur) => {
@@ -672,19 +655,19 @@ export default {
 
                   if (
                     this.OldInvoice.Type == "Delivery" &&
-                    this.$store.getters.settings.PointOfSale.CreateDelivery == true &&
-                    this.$store.getters.settings.OrderIsAutomatic == false
+                    this.$store.getters.settings.PointOfSale.CreateDelivery === true &&
+                    this.$store.getters.settings.OrderIsAutomatic === false
                   ) {
                     this.CreateDelivery(this.OldInvoice);
                   }
                   if (
                     this.OldInvoice.Type == "Delivery" &&
-                    this.$store.getters.settings.PointOfSale.CreateDelivery == true &&
-                    this.$store.getters.settings.OrderIsAutomatic == true
+                    this.$store.getters.settings.PointOfSale.CreateDelivery === true &&
+                    this.$store.getters.settings.OrderIsAutomatic === true
                   ) {
                     this.CreateWithDriver(this.OldInvoice);
                   }
-                  if (this.AutoPrint == true) {
+                  if (this.AutoPrint === true) {
                     PrintReport("SaleInvoice", this.OldInvoice, true);
                   }
                   if (
@@ -734,10 +717,9 @@ export default {
       });
     },
     async CreateDelivery(temp) {
-      let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
 
-      var items = temp.InventoryMovements;
-      var itemsnames = items.map(function (item) {
+      const items = temp.InventoryMovements;
+      const itemsnames = items.map(function (item) {
         return item["Name"] + " [ " + item["Description"] + " ] ";
       });
       CreateDelivery({
@@ -774,9 +756,8 @@ export default {
       });
     },
     async CreateWithDriver(temp) {
-      let ReportContentHtml = await VisualizationReportHtml("Delivery", temp);
-      var items = temp.InventoryMovements;
-      var names = items.map(function (item) {
+      const  items = temp.InventoryMovements;
+      const names = items.map(function (item) {
         return item["Name"];
       });
       CreateWithDriver({
@@ -858,7 +839,6 @@ export default {
     updateData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
         if (valid) {
-          this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
           let Total =
             this.tempForm.InventoryMovements.reduce((prev, cur) => {
@@ -886,7 +866,7 @@ export default {
                   this.OldInvoice = this.tempForm;
                   this.DisabledSave = false;
                   this.OpenRestOfBill = false;
-                  if (this.AutoPrint == true) {
+                  if (this.AutoPrint === true) {
                     PrintReport("SaleInvoice", this.OldInvoice, true);
                   }
                   if (this.AutoSendSMS && this.OldInvoice.Type == "Delivery")

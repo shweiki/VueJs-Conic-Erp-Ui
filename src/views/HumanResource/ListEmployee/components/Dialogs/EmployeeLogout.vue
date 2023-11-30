@@ -10,8 +10,8 @@
     </el-button>
     <el-dialog style="margin-top: -13vh" title="تسجيل خروج" :visible.sync="Visibles">
       <el-form
-        :model="Temp"
         ref="EmployeeLogForm"
+        :model="Temp"
         label-position="top"
         class="demo-form-inline"
       >
@@ -25,12 +25,12 @@
                   }
                 "
               /> -->
-              <el-input disabled v-model="Name"></el-input>
+              <el-input v-model="Name" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item prop="EmployeeId" label="الرقم الوظيفي">
-              <el-input disabled v-model="Id"></el-input>
+              <el-input v-model="Id" disabled />
             </el-form-item>
           </el-col>
         </el-row>
@@ -38,7 +38,7 @@
           <el-col :span="12">
             <el-form-item label="وقت الخروج" prop="EndDateTime">
               <Fake-Date
-                :Value="Temp.EndDateTime"
+                :value="Temp.EndDateTime"
                 @Set="
                   (v) => {
                     Temp.EndDateTime = v;
@@ -48,8 +48,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-bind:label="$t('AddVendors.Description')" prop="Description">
-              <el-input v-model="Temp.Description"></el-input>
+            <el-form-item :label="$t('AddVendors.Description')" prop="Description">
+              <el-input v-model="Temp.Description" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -65,48 +65,48 @@
 </template>
 
 <script>
-import EmployeeSearchAny from "@/components/HumanResource/EmployeeSearchAny";
-import permission from "@/directive/permission/index.js";
-import FakeDate from "@/components/Date/FakeDate.vue";
+import EmployeeSearchAny from '@/components/HumanResource/EmployeeSearchAny'
+import permission from '@/directive/permission/index.js'
+import FakeDate from '@/components/Date/FakeDate.vue'
 export default {
   components: { EmployeeSearchAny, FakeDate },
   directives: { permission },
-  props: ["Name", "Id"],
+  props: ['Name', 'Id'],
   data() {
     return {
       Temp: {
         Id: undefined,
         EmployeeId: undefined,
-        StartDateTime: "",
-        EndDateTime: "",
+        StartDateTime: '',
+        EndDateTime: '',
         DeviceId: 1,
         Status: 0,
-        Description: "Manual User Register Employee Logout",
+        Description: 'Manual User Register Employee Logout'
       },
-      Visibles: false,
-    };
+      Visibles: false
+    }
   },
   methods: {
     create() {
-      this.$refs["EmployeeLogForm"].validate((valid) => {
+      this.$refs['EmployeeLogForm'].validate((valid) => {
         if (valid) {
-          this.Temp.EmployeeId = this.Id;
+          this.Temp.EmployeeId = this.Id
           Logout(this.Temp)
             .then((response) => {
-              this.Visibles = false;
+              this.Visibles = false
               this.$notify({
-                title: "تم ",
-                message: "تم الإضافة بنجاح",
-                type: "success",
-                duration: 2000,
-              });
+                title: 'تم ',
+                message: 'تم الإضافة بنجاح',
+                type: 'success',
+                duration: 2000
+              })
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>

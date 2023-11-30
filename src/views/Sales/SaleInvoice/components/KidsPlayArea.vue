@@ -296,7 +296,6 @@
                               }
                             "
                           />
-                          <!--  <vendor-select @Set="v => (tempForm.Vendor = v)" />-->
                         </el-form-item>
                       </el-col>
                       <el-col v-permission="['admin']" :span="8">
@@ -311,7 +310,7 @@
                           ]"
                         >
                           <Fake-Date
-                            :Value="tempForm.FakeDate"
+                            :value="tempForm.FakeDate"
                             @Set="(v) => (tempForm.FakeDate = v)"
                           />
                         </el-form-item>
@@ -401,14 +400,10 @@ import { PrintReport } from "@/report/FunctionalityReport";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 
-//import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
-//import { NumericInput } from "numeric-keyboard";
 import { OpenCashDrawer } from "@/api/Device";
 import Description from "@/components/Item/Description.vue";
 import DrawerSearchInvoice from "@/components/Sales/DrawerSearchInvoice.vue";
-
-//import VueTouchKeyboard from "vue-touch-keyboard";
 
 export default {
   Name: "NewSaleInvoice",
@@ -520,7 +515,7 @@ export default {
     AddItem(Item, Qty) {
       let SellingPrice = Item.SellingPrice;
       if (this.PriceMethod == "wholesale") SellingPrice = Item.OtherPrice;
-      var find = this.$store.getters.settings.PointOfSale.QtyCounter
+      const find = this.$store.getters.settings.PointOfSale.QtyCounter
         ? this.tempForm.InventoryMovements.findIndex((value) => value.ItemsId == Item.Id)
         : -1;
       if (find != -1) this.tempForm.InventoryMovements[find].Qty += Qty;
@@ -545,7 +540,6 @@ export default {
       this.tempForm.InventoryMovements.splice(index, 1);
     },
     focusBarcode() {
-      //  this.$refs["barcode"].focus();
     },
     OpenCashDrawer() {
       OpenCashDrawer({ Com: this.$store.state.settings.CashDrawerCOM.COM })

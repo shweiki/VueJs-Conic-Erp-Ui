@@ -21,7 +21,7 @@
                   ]"
                 >
                   <Fake-Date
-                    :Value="tempForm.FakeDate"
+                    :value="tempForm.FakeDate"
                     @Set="(v) => (tempForm.FakeDate = v)"
                   />
                 </el-form-item>
@@ -331,12 +331,6 @@
                       ></el-badge>
                     </el-col>
                     <el-col :span="6">
-                      <!--   <el-switch
-                        @change="focusBarcode"
-                        v-model="AutoPrint"
-                        active-color="#13ce66"
-                        inactive-color="#ff4949"
-                      ></el-switch> -->
                       <Drawer-Print
                         v-if="OldInvoice == null ? false : true"
                         Type="SaleInvoice"
@@ -454,16 +448,13 @@ import DrawerPrint from "@/components/PrintRepot/DrawerPrint";
 
 import { Create, Edit, GetSaleInvoiceById } from "@/api/SaleInvoice";
 
-//import { GetActiveMember } from "@/api/Member";
 import splitPane from "vue-splitpane";
-//import { NumericInput } from "numeric-keyboard";
 import { OpenCashDrawer } from "@/api/Device";
 import RightMenu from "@/components/RightMenu";
 
 import FakeDate from "@/components/Date/FakeDate";
 import RadioActiveInventory from "@/components/Inventory/RadioActiveInventory.vue";
 
-//import VueTouchKeyboard from "vue-touch-keyboard";
 
 export default {
   Name: "NewSaleInvoice",
@@ -543,24 +534,6 @@ export default {
   },
   mounted() {
     this.focusBarcode();
-    /*
-    window.addEventListener("keypress", (e) => {
-      e = e || window.event;
-      if (e.which == "13") {
-        if (!this.enterPressed) {
-          this.isEdit != true ? this.createData() : this.updateData();
-          return;
-        }
-        this.enterPressed = true;
-        setTimeout( ()=> {
-          this.enterPressed = false;
-        }, 100);
-      }
-
-      //debugger
-      console.log("key", e.code);
-    });
-    */
   },
   methods: {
     focusBarcode() {
@@ -582,7 +555,7 @@ export default {
     },
     AddItem(Item, Qty) {
       this.focusBarcode();
-      var find = this.tempForm.InventoryMovements.findIndex(
+      const find = this.tempForm.InventoryMovements.findIndex(
         (value) => value.ItemsId == Item.Id
       );
       if (find != -1) this.tempForm.InventoryMovements[find].Qty += Qty;
@@ -634,7 +607,6 @@ export default {
     },
     createData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
-        this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
         this.tempForm.Tax = parseInt(this.tempForm.Tax);
         if (
           valid &&
@@ -659,7 +631,7 @@ export default {
                   this.ValidateDescription = "";
                   this.tempForm.Id = response.Id;
                   this.OldInvoice = this.tempForm;
-                  this.AutoPrint ? this.Print() : undefined;
+                  this.AutoPrint  ? this.Print() : undefined;
                   this.restTempForm();
                   this.DisabledSave = false;
                   this.focusBarcode();
@@ -682,7 +654,6 @@ export default {
     updateData() {
       this.$refs["F-SaleInvoice"].validate((valid) => {
         if (valid) {
-          this.tempForm.PaymentMethod = this.tempForm.PaymentMethod;
           this.tempForm.Tax = parseInt(this.tempForm.Tax);
           if (
             this.tempForm.InventoryMovements.reduce((prev, cur) => {

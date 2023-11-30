@@ -1,19 +1,19 @@
 <template>
   <div>
     <el-button
-      v-bind:disabled="Data != null ? false : true"
-      v-bind:style="Css"
+      :disabled="Data != null ? false : true"
+      :style="Css"
       icon="el-icon-printer"
       type="info"
       @click="drawer = true"
-    ></el-button>
+    />
     <el-drawer
       size="50%"
       title="نماذج"
       :visible.sync="drawer"
       :direction="direction"
     >
-      <el-col :span="8" v-for="item in Reports" :key="item.Id">
+      <el-col v-for="item in Reports" :key="item.Id" :span="8">
         <el-form-item label="تلقائي">
           <el-switch
             v-model="item.AutoPrint"
@@ -21,10 +21,10 @@
             inactive-color="#ff4949"
             active-value="true"
             inactive-value="false"
-          ></el-switch>
+          />
         </el-form-item>
         <printers
-          :Value="item.Printer"
+          :value="item.Printer"
           @change="
             v => {
               item.Printer = v;
@@ -37,8 +37,7 @@
           icon="el-icon-send"
           type="primary"
           @click="JSPM(item.Printer, 'Report-' + item.Id)"
-          >{{ item.Name }}</el-button
-        >
+        >{{ item.Name }}</el-button>
 
         <el-button
           type="success"
@@ -51,30 +50,29 @@
           @click="$router.push({ path: `/Reports/Edit/${item.Id}` })"
         />
         <div
+          :id="'Report-' + item.Id"
           style="direction: ltr;"
-          v-bind:id="'Report-' + item.Id"
           class="editor-content"
           v-html="item.Html"
         />
       </el-col>
-      ></el-drawer
-    >
-    <img id="qr_code" style="display: none" />
+      ></el-drawer>
+    <img id="qr_code" style="display: none">
   </div>
 </template>
 <script>
-import { OrderReceipt } from "@/report/OrderReceipt.js";
-import { OrderReceipt2 } from "@/report/OrderReceipt2.js";
-import { ShawermaSheesh } from "@/report/ShawermaSheesh";
-import printJS from "print-js";
-import JSPM from "jsprintmanager";
-import * as htmlToImage from "html-to-image";
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
-import Printers from "@/components/Printers/index.vue";
-import { GetByListQ } from "@/api/Report";
+import { OrderReceipt } from '@/report/OrderReceipt.js'
+import { OrderReceipt2 } from '@/report/OrderReceipt2.js'
+import { ShawermaSheesh } from '@/report/ShawermaSheesh'
+import printJS from 'print-js'
+import JSPM from 'jsprintmanager'
+import * as htmlToImage from 'html-to-image'
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image'
+import Printers from '@/components/Printers/index.vue'
+import { GetByListQ } from '@/api/Report'
 
 export default {
-  name: "PrintButton",
+  name: 'PrintButton',
   components: {
     Printers
   },
@@ -90,28 +88,28 @@ export default {
   data() {
     return {
       drawer: false,
-      direction: "rtl",
+      direction: 'rtl',
       Reports: []
-    };
+    }
   },
   watch: {
     Data(val) {
       this.Reports.forEach((item, index) => {
         if (item.AutoPrint && this.AutoPrint) {
-          this.eval(item.Name, item.Printer);
+          this.eval(item.Name, item.Printer)
         }
-        this.Visualization(val, item.Keys, item.Html, index);
-      });
+        this.Visualization(val, item.Keys, item.Html, index)
+      })
     }
   },
   created() {
     GetByListQ({
       Page: 1,
-      Any: "SaleInvoice",
+      Any: 'SaleInvoice',
       limit: 5,
-      Sort: "-id",
+      Sort: '-id',
       Status: 0
-    }).then(r => (this.Reports = r.items));
+    }).then(r => (this.Reports = r.items))
   },
   methods: {
     ShawermaSheesh,
@@ -120,62 +118,62 @@ export default {
     printJS,
     eval(funName, printer) {
       eval(
-        "this." +
+        'this.' +
           funName +
-          "(" +
+          '(' +
           JSON.stringify(this.Data) +
-          (printer ? ",`" + printer + "`)" : ")")
-      );
+          (printer ? ',`' + printer + '`)' : ')')
+      )
     },
     JSPM(printer, el) {
       if (printer) {
-        let cpj = new JSPM.ClientPrintJob();
-        cpj.clientPrinter = new JSPM.InstalledPrinter(printer);
+        const cpj = new JSPM.ClientPrintJob()
+        cpj.clientPrinter = new JSPM.InstalledPrinter(printer)
         htmlToImage
           .toBlob(document.getElementById(el))
           .then(function(dataUrl) {
-            console.log(dataUrl);
+            console.log(dataUrl)
 
             cpj.files.push(
               new JSPM.PrintFile(
                 dataUrl,
                 JSPM.FileSourceType.BLOB,
-                el + ".png",
+                el + '.png',
                 1
               )
-            );
-            cpj.sendToClient();
+            )
+            cpj.sendToClient()
           })
           .catch(function(error) {
-            console.error("oops, something went wrong!", error);
-          });
+            console.error('oops, something went wrong!', error)
+          })
       }
     },
     Visualization(Data, Keys, Html, index) {
       Object.keys(JSON.parse(Keys)).forEach(key => {
-        Html = Html.replace("{{" + key + "}}", Data[key]);
-      });
+        Html = Html.replace('{{' + key + '}}', Data[key])
+      })
 
-      let res = Html.slice(
+      const res = Html.slice(
         Html.search('<tr id="forach"'),
-        Html.indexOf("</tr>", Html.search('<tr id="forach"')) + 5
-      );
+        Html.indexOf('</tr>', Html.search('<tr id="forach"')) + 5
+      )
 
-      let tabelInventoryMovements = "";
+      const tabelInventoryMovements = ''
       Data.InventoryMovements.forEach(element => {
         Object.keys(element).forEach(key => {
-          Html = Html.replace("[InventoryMovements." + key + "]", element[key]);
-        });
-      });
-      Html = Html.replace(res, tabelInventoryMovements);
+          Html = Html.replace('[InventoryMovements.' + key + ']', element[key])
+        })
+      })
+      Html = Html.replace(res, tabelInventoryMovements)
 
-      this.Reports[index].Html = Html;
+      this.Reports[index].Html = Html
     },
     focus() {
-      this.$emit("focus");
+      this.$emit('focus')
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .icon-item {

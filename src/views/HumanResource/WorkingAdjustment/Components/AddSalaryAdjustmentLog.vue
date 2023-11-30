@@ -26,20 +26,20 @@
         </el-col>
       </div>
       <el-form
-        :model="tempForm"
         ref="EmployeeLogForm"
+        :model="tempForm"
         label-position="top"
         class="demo-form-inline"
       >
         <el-row type="flex">
           <el-col :span="12">
             <el-form-item prop="EmployeeName" label="اسم الموظف">
-              <el-input disabled v-model="EmployeeName"></el-input>
+              <el-input v-model="EmployeeName" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item prop="EmployeeId" label="الرقم الوظيفي">
-              <el-input disabled v-model="EmployeeId"></el-input>
+              <el-input v-model="EmployeeId" disabled />
             </el-form-item>
           </el-col>
         </el-row>
@@ -47,10 +47,10 @@
           <el-col :span="12">
             <el-form-item prop="AdjustmentId" label="التسوية">
               <Select-Adjustment
-                :GrossSalary="GrossSalary"
-                :ExtraHours="ExtraHours"
-                :DelayHours="DelayHours"
-                :Value="tempForm.AdjustmentId"
+                :gross-salary="GrossSalary"
+                :extra-hours="ExtraHours"
+                :delay-hours="DelayHours"
+                :value="tempForm.AdjustmentId"
                 @SetAdjustment="
                   (v) => {
                     tempForm.AdjustmentId = v;
@@ -67,6 +67,7 @@
           <el-col :span="12">
             <el-form-item label="القيمة ">
               <currency-input
+                v-model="tempForm.AdjustmentAmmount"
                 :rules="[
                   {
                     required: true,
@@ -75,7 +76,6 @@
                   },
                 ]"
                 class="currency-input"
-                v-model="tempForm.AdjustmentAmmount"
                 :value-range="{ min: -10000, max: 10000 }"
                 @focus="$event.target.select()"
               />
@@ -83,43 +83,43 @@
           </el-col>
         </el-row>
         <el-form-item prop="Description" label="ملاحظات ">
-          <el-input v-model="tempForm.Description"></el-input>
+          <el-input v-model="tempForm.Description" />
         </el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
-import SelectAdjustment from "../../Adjustment/Components/SelectAdjustment.vue";
-import { Create } from "@/api/SalaryAdjustmentLog";
+import SelectAdjustment from '../../Adjustment/Components/SelectAdjustment.vue'
+import { Create } from '@/api/SalaryAdjustmentLog'
 
 export default {
-  name: "Adjustment",
-  props: [
-    "EmployeeId",
-    "EmployeeName",
-    "SalaryPaymentId",
-    "GrossSalary",
-    "ExtraHours",
-    "DelayHours",
-  ],
+  name: 'Adjustment',
   components: { SelectAdjustment },
+  props: [
+    'EmployeeId',
+    'EmployeeName',
+    'SalaryPaymentId',
+    'GrossSalary',
+    'ExtraHours',
+    'DelayHours'
+  ],
   data() {
     return {
       dialogFormVisible: false,
       tempForm: {
         Id: undefined,
         AdjustmentAmmount: 0.0,
-        Description: "",
+        Description: '',
         Status: 0,
         AdjustmentId: undefined,
-        SalaryPaymentId: undefined,
-      },
-    };
+        SalaryPaymentId: undefined
+      }
+    }
   },
 
   created() {
-    this.resetTempForm();
+    this.resetTempForm()
   },
   methods: {
     getData(val) {},
@@ -127,29 +127,29 @@ export default {
       this.tempForm = {
         Id: undefined,
         AdjustmentAmmount: 0.0,
-        Description: "",
+        Description: '',
         Status: 0,
         AdjustmentId: undefined,
-        SalaryPaymentId: undefined,
-      };
+        SalaryPaymentId: undefined
+      }
     },
     createData() {
-      this.$refs["dataForm"];
-      this.tempForm.SalaryPaymentId = this.SalaryPaymentId;
+      this.$refs['dataForm']
+      this.tempForm.SalaryPaymentId = this.SalaryPaymentId
       Create(this.tempForm)
         .then((response) => {
-          this.dialogFormVisible = false;
+          this.dialogFormVisible = false
           this.$notify({
-            title: "تم ",
-            message: "تم الإضافة بنجاح",
-            type: "success",
-            duration: 2000,
-          });
+            title: 'تم ',
+            message: 'تم الإضافة بنجاح',
+            type: 'success',
+            duration: 2000
+          })
         })
         .catch((error) => {
-          console.log(error);
-        });
-    },
-  },
-};
+          console.log(error)
+        })
+    }
+  }
+}
 </script>

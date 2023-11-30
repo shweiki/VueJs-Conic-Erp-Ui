@@ -10,9 +10,9 @@
       <el-row class="card" type="flex">
         <el-col :span="18">
           <Drawer-Print
-            v-bind:disabled="OldVisit == null ? false : true"
-            Type="Visit"
-            :Data="OldVisit"
+            :disabled="OldVisit == null ? false : true"
+            type="Visit"
+            :data="OldVisit"
           />
         </el-col>
         <el-col :span="3">
@@ -20,7 +20,7 @@
             v-model="AutoPrint"
             active-color="#13ce66"
             inactive-color="#ff4949"
-          ></el-switch>
+          />
         </el-col>
         <el-col :span="3">
           <el-button
@@ -29,15 +29,14 @@
             type="success"
             icon="fa fa-save"
             @click="confirmData()"
-            >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button
-          >
+          >{{ isEdit != true ? "حفظ" : "تعديل" }}</el-button>
         </el-col>
       </el-row>
       <el-row type="flex">
         <el-col :span="12">
           <el-form-item
             prop="FakeDate"
-            v-bind:label="$t('Visit.ReleaseDate')"
+            :label="$t('Visit.ReleaseDate')"
             :rules="[
               {
                 required: true,
@@ -46,11 +45,11 @@
               },
             ]"
           >
-            <Fake-Date :Value="tempForm.FakeDate" @Set="(v) => (tempForm.FakeDate = v)" />
+            <Fake-Date :value="tempForm.FakeDate" @Set="(v) => (tempForm.FakeDate = v)" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Visit.PaymentMethod')" prop="PaymentMethod">
+          <el-form-item :label="$t('Visit.PaymentMethod')" prop="PaymentMethod">
             <el-radio-group v-model="tempForm.PaymentMethod" text-color="#f78123">
               <el-radio label="Cash" border>{{ $t("Visit.Cash") }}</el-radio>
               <el-radio label="Visa" border>{{ $t("Visit.Visa") }}</el-radio>
@@ -62,7 +61,7 @@
       <el-row type="flex">
         <el-col :span="12">
           <el-form-item
-            v-bind:label="$t('Visit.Name')"
+            :label="$t('Visit.Name')"
             prop="Name"
             :rules="[
               {
@@ -73,86 +72,85 @@
             ]"
           >
             <el-input
-              required
               v-model="tempForm.Name"
+              required
               :size="$store.getters.size"
               suffix-icon="fa fa-child"
-            ></el-input>
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Visit.PhoneNumber')">
+          <el-form-item :label="$t('Visit.PhoneNumber')">
             <el-input
-              required
               v-model="tempForm.PhoneNumber"
+              required
               :size="$store.getters.size"
               suffix-icon="fa fa-mobile-alt"
-            ></el-input>
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row v-if="tempForm.PaymentMethod != 'Coupon'" type="flex">
         <el-col :span="8">
-          <el-form-item v-bind:label="$t('Visit.PersonCount')" prop="PersonCount">
+          <el-form-item :label="$t('Visit.PersonCount')" prop="PersonCount">
             <el-input-number
-              :size="$store.getters.size"
               v-model="tempForm.PersonCount"
+              :size="$store.getters.size"
               :precision="0"
               :step="1"
               :min="1"
               :max="1000000"
               @focus="$event.target.select()"
-            >
-            </el-input-number>
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item v-bind:label="$t('Visit.HourCount')" prop="HourCount">
+          <el-form-item :label="$t('Visit.HourCount')" prop="HourCount">
             <el-input-number
-              :size="$store.getters.size"
               v-model="tempForm.HourCount"
+              :size="$store.getters.size"
               :precision="2"
               :step="0.5"
               :min="0.5"
               :max="18"
               @focus="$event.target.select()"
-            ></el-input-number>
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item v-bind:label="$t('Visit.HourPrice')" prop="HourPrice">
+          <el-form-item :label="$t('Visit.HourPrice')" prop="HourPrice">
             <el-input-number
-              v-bind:disabled="!checkPermission(['admin'])"
-              :size="$store.getters.size"
               v-model="tempForm.HourPrice"
+              :disabled="!checkPermission(['admin'])"
+              :size="$store.getters.size"
               :precision="0"
               :step="1"
               :min="1"
               :max="1000000"
               @focus="$event.target.select()"
-            ></el-input-number>
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row v-if="tempForm.PaymentMethod == 'Coupon'" type="flex">
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Visit.CouponId')" prop="CouponId">
+          <el-form-item :label="$t('Visit.CouponId')" prop="CouponId">
             <el-input
-              :size="$store.getters.size"
               v-model="tempForm.CouponId"
-              @focus="$event.target.select()"
+              :size="$store.getters.size"
               suffix-icon="fa fa-ticket-alt"
-            ></el-input>
+              @focus="$event.target.select()"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item v-bind:label="$t('Visit.CouponNoteId')" prop="CouponNoteId">
+          <el-form-item :label="$t('Visit.CouponNoteId')" prop="CouponNoteId">
             <el-input
-              :size="$store.getters.size"
               v-model="tempForm.CouponNoteId"
-              @focus="$event.target.select()"
+              :size="$store.getters.size"
               suffix-icon="fa fa-book"
-            ></el-input>
+              @focus="$event.target.select()"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -167,7 +165,7 @@
         <el-col :span="8">
           <span style="font-size: 18px">{{ $t("Visit.statement") }}</span>
           <el-form-item prop="Description">
-            <el-input type="textarea" v-model="tempForm.Description"></el-input>
+            <el-input v-model="tempForm.Description" type="textarea" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -180,74 +178,72 @@
               :min="0.0"
               :max="100"
               @focus="$event.target.select()"
-            ></el-input-number>
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8" class="TotalAmmount card">
           <span>{{ $t("Visit.TotalJD") }}</span>
-          <span
-            >{{
-              (
-                tempForm.PersonCount * (tempForm.HourCount * 2) * tempForm.HourPrice -
-                tempForm.Discount
-              ).toFixed($store.getters.settings.ToFixed)
-            }}
-            JOD</span
-          >
+          <span>{{
+            (
+              tempForm.PersonCount * (tempForm.HourCount * 2) * tempForm.HourPrice -
+              tempForm.Discount
+            ).toFixed($store.getters.settings.ToFixed)
+          }}
+            JOD</span>
         </el-col>
       </el-row>
     </el-form>
   </div>
 </template>
 <script>
-import { Create, Edit, GetById } from "@/api/Visit";
-import FakeDate from "@/components/Date/FakeDate";
-import checkPermission from "@/utils/permission";
-import { PrintReport } from "@/report/FunctionalityReport";
-import DrawerPrint from "@/components/PrintRepot/DrawerPrint.vue";
-import { Now, addMinutes } from "@/utils";
+import { Create, Edit, GetById } from '@/api/Visit'
+import FakeDate from '@/components/Date/FakeDate'
+import checkPermission from '@/utils/permission'
+import { PrintReport } from '@/report/FunctionalityReport'
+import DrawerPrint from '@/components/PrintRepot/DrawerPrint.vue'
+import { Now, addMinutes } from '@/utils'
 
 export default {
-  name: "Visit",
+  name: 'Visit',
   components: {
     FakeDate,
-    DrawerPrint,
+    DrawerPrint
   },
   props: {
     isEdit: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
       OldVisit: null,
       AutoPrint: true,
-      ValidateNote: "",
+      ValidateNote: '',
       DisabledSave: false,
       tempForm: {
         Id: undefined,
-        Name: "",
+        Name: '',
         Tax: 0.0,
-        FakeDate: "",
-        PaymentMethod: "Cash",
+        FakeDate: '',
+        PaymentMethod: 'Cash',
         Discount: 0,
         Status: 0,
         PersonCount: 1,
         HourCount: 0.5,
         HourPrice: 1,
-        PhoneNumber: "",
-        Type: "",
-        Description: "",
+        PhoneNumber: '',
+        Type: '',
+        Description: ''
       },
-      tempRoute: {},
-    };
+      tempRoute: {}
+    }
   },
   created() {
     if (this.isEdit) {
-      this.getdata(this.$route.params && this.$route.params.id);
+      this.getdata(this.$route.params && this.$route.params.id)
     }
-    this.tempRoute = Object.assign({}, this.$route);
+    this.tempRoute = Object.assign({}, this.$route)
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
@@ -258,126 +254,126 @@ export default {
       GetById({ Id: val })
         .then((response) => {
           //  console.log(response);
-          this.tempForm = response;
+          this.tempForm = response
           // set tagsview title
-          this.setTagsViewTitle();
+          this.setTagsViewTitle()
           // set page title
-          this.setPageTitle();
+          this.setPageTitle()
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     restTempForm() {
       this.tempForm = {
         Id: undefined,
-        Name: "",
+        Name: '',
         Tax: 0.0,
-        FakeDate: "",
-        PaymentMethod: "Cash",
+        FakeDate: '',
+        PaymentMethod: 'Cash',
         Discount: 0,
         Status: 0,
         PersonCount: 1,
         HourCount: 0.5,
         HourPrice: 1,
-        PhoneNumber: "",
-        Type: "",
-        Description: "",
-      };
+        PhoneNumber: '',
+        Type: '',
+        Description: ''
+      }
     },
     confirmData() {
-      this.$refs["tempForm"].validate(async (valid) => {
-        if (this.tempForm.PaymentMethod == "Coupon") {
-          this.tempForm.PersonCount = 1;
-          this.tempForm.HourCount = 0.5;
-          this.tempForm.HourPrice = 0;
+      this.$refs['tempForm'].validate(async(valid) => {
+        if (this.tempForm.PaymentMethod == 'Coupon') {
+          this.tempForm.PersonCount = 1
+          this.tempForm.HourCount = 0.5
+          this.tempForm.HourPrice = 0
           this.tempForm.Description =
-            "كوبون رقم " +
+            'كوبون رقم ' +
             this.tempForm.CouponId +
-            " من دفتر رقم " +
+            ' من دفتر رقم ' +
             this.tempForm.CouponNoteId +
-            " ";
+            ' '
         }
         this.tempForm.Total = (
           this.tempForm.PersonCount *
             (this.tempForm.HourCount * 2) *
             this.tempForm.HourPrice -
           this.tempForm.Discount
-        ).toFixed(this.$store.getters.settings.ToFixed);
+        ).toFixed(this.$store.getters.settings.ToFixed)
         if (valid) {
-          this.tempForm.Tax = parseInt(this.tempForm.Tax);
-          this.DisabledSave = true;
-          this.tempForm.FakeDate = Now();
-          this.tempForm.TimeOut = addMinutes(new Date(), this.tempForm.HourCount);
-          let Done;
+          this.tempForm.Tax = parseInt(this.tempForm.Tax)
+          this.DisabledSave = true
+          this.tempForm.FakeDate = Now()
+          this.tempForm.TimeOut = addMinutes(new Date(), this.tempForm.HourCount)
+          let Done
           if (this.isEdit != true) {
             Done = await Create(this.tempForm)
               .then((res) => {
                 if (res) {
-                  return res;
-                } else return false;
+                  return res
+                } else return false
               })
               .catch((error) => {
-                return false;
-              });
+                return false
+              })
           } else {
             Done = await Edit(this.tempForm)
               .then((res) => {
-                if (res) return res;
-                else return false;
+                if (res) return res
+                else return false
               })
               .catch((error) => {
-                return false;
-              });
+                return false
+              })
           }
           if (Done) {
-            this.tempForm.Id = Done;
-            this.OldVisit = this.tempForm;
+            this.tempForm.Id = Done
+            this.OldVisit = this.tempForm
             if (this.AutoPrint == true) {
-              PrintReport("Visit", this.OldVisit);
+              PrintReport('Visit', this.OldVisit)
             }
-            this.DisabledSave = false;
-            this.restTempForm();
+            this.DisabledSave = false
+            this.restTempForm()
             this.$notify({
-              title: "تم الإضافة بنجاح",
-              message: "تم الإضافة بنجاح",
-              type: "success",
-              position: "top-left",
+              title: 'تم الإضافة بنجاح',
+              message: 'تم الإضافة بنجاح',
+              type: 'success',
+              position: 'top-left',
               duration: 1000,
-              showClose: false,
-            });
+              showClose: false
+            })
           } else {
             this.$notify({
-              title: "مشكلة",
-              message: "حصلت مشكلة في عملية الحفظ",
-              type: "error",
-              position: "top-left",
+              title: 'مشكلة',
+              message: 'حصلت مشكلة في عملية الحفظ',
+              type: 'error',
+              position: 'top-left',
               duration: 1000,
-              showClose: false,
-            });
+              showClose: false
+            })
           }
-          this.restTempForm();
-          this.DisabledSave = false;
+          this.restTempForm()
+          this.DisabledSave = false
         } else {
-          this.ValidateNote = "القيمة الإجمالية تساوي صفر  ";
-          this.DisabledSave = false;
-          return false;
+          this.ValidateNote = 'القيمة الإجمالية تساوي صفر  '
+          this.DisabledSave = false
+          return false
         }
-      });
+      })
     },
     setTagsViewTitle() {
-      const title = this.$t("route.EditVisit");
+      const title = this.$t('route.EditVisit')
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.tempForm.Id}`,
-      });
-      this.$store.dispatch("tagsView/updateVisitdView", route);
+        title: `${title}-${this.tempForm.Id}`
+      })
+      this.$store.dispatch('tagsView/updateVisitdView', route)
     },
     setPageTitle() {
-      const title = this.$t("route.EditVisit");
-      document.title = `${title} - ${this.tempForm.Id}`;
-    },
-  },
-};
+      const title = this.$t('route.EditVisit')
+      document.title = `${title} - ${this.tempForm.Id}`
+    }
+  }
+}
 </script>
 <style scoped>
 .card {
