@@ -1,5 +1,5 @@
 import request from '@/utils/requestApi'
-import qs from 'qs';
+import qs from 'qs'
 import store from '@/store'
 import { asyncRoutes, constantRoutes } from '@/router'
 

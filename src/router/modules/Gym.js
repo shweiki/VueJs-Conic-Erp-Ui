@@ -15,7 +15,7 @@ const GymRouter = {
       name: 'ListMember',
       meta: {
         title: 'ListMember', icon: 'cost'
-      },
+      }
     },
     {
       path: 'Edit/:id(\\d+)',
@@ -32,7 +32,7 @@ const GymRouter = {
       name: 'MembersLog',
       meta: {
         title: 'MembersLog', icon: 'cost'
-      },
+      }
     },
     {
       path: 'MembersList',
@@ -48,7 +48,7 @@ const GymRouter = {
       name: 'Memberships',
       meta: {
         title: 'Memberships', icon: 'accounts'
-      },
+      }
     },
     {
       path: 'MembershipMovements',
@@ -64,7 +64,7 @@ const GymRouter = {
       name: 'MembershipMovementsDateIn',
       meta: {
         title: 'MembershipMovementsDateIn', icon: 'accounts'
-      },
+      }
     },
     {
       path: 'Services',
@@ -72,10 +72,8 @@ const GymRouter = {
       name: 'Services',
       meta: {
         title: 'Services', icon: 'accounts'
-      },
+      }
     }
-
-
   ]
 }
 

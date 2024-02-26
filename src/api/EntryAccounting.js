@@ -1,5 +1,5 @@
 import request from '@/utils/requestApi'
-import qs from 'qs';
+import qs from 'qs'
 import i18n from "@/lang";
 
 export function GetEntryAccounting(query) {

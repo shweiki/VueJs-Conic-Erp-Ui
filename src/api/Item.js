@@ -1,5 +1,5 @@
 import request from '@/utils/requestApi'
-import qs from 'qs';
+import qs from 'qs'
 export function GetItem(query) {
   return request({
     url: '/Item/GetItem',

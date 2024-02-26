@@ -1,6 +1,6 @@
 import request from '@/utils/requestApi'
 import store from '@/store'
-import qs from 'qs';
+import qs from 'qs'
 
 export function SendSMS(data) {
   return request({
