@@ -24,7 +24,7 @@ const GymRouter = {
       meta: {
         title: 'Edit Member', noCache: true, activeMenu: '/Gym/ListMember/index'
       },
-      hidden: true,
+      hidden: true
     },
     {
       path: 'MembersLog',
@@ -40,7 +40,7 @@ const GymRouter = {
       name: 'Members',
       meta: {
         title: 'Members', icon: 'cost'
-      },
+      }
     },
     {
       path: 'Memberships',
@@ -56,7 +56,7 @@ const GymRouter = {
       name: 'MembershipMovements',
       meta: {
         title: 'MembershipMovements', icon: 'accounts'
-      },
+      }
     },
     {
       path: 'MembershipMovementsDateIn',
