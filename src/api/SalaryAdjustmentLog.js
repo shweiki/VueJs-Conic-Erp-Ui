@@ -1,5 +1,5 @@
 import request from '@/utils/requestApi'
-import qs from 'qs';
+import qs from 'qs'
 
 
 export function Create(data) {
@@ -27,15 +27,15 @@ export function GetById(query) {
   return request({
     url: '/SalaryAdjustmentLog/GetById',
     method: 'get',
-    params:  query 
+    params:  query
   })
 }
 export function GetWorkingAdjustmentBySalaryId(query) {
   return request({
     url: '/SalaryAdjustmentLog/GetSalaryAdjustmentLogBySalaryId',
     method: 'get',
-    params:  query 
-    
+    params:  query
+
   })
 }
 export function GetByListQ(data) {

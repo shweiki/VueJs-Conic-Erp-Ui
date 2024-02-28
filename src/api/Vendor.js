@@ -1,5 +1,5 @@
 import request from '@/utils/requestApi'
-import qs from 'qs';
+import qs from 'qs'
 export function GetVendor(query) {
   return request({
     url: '/Vendor/GetVendor',
@@ -67,7 +67,7 @@ export function GetVendorCheque(query) {
       params: query
     })
   }
-  
+
   export function CreateCustomer(data) {
     return request({
       url: '/Vendor/CreateCustomer',

@@ -1,5 +1,5 @@
 import request from '@/utils/requestApi'
-import qs from 'qs';
+import qs from 'qs'
 export function GetDeviceLog(query) {
   return request({
     url: '/DeviceLog/GetDeviceLog',
@@ -11,7 +11,7 @@ export function GetById(query) {
   return request({
     url: '/DeviceLog/GetById',
     method: 'get',
-    params:  query
+    params: query
 
   })
 }
@@ -19,8 +19,7 @@ export function GetByStatus(query) {
   return request({
     url: '/DeviceLog/GetByStatus',
     method: 'get',
-    params:  query
-
+    params: query
   })
 }
 
@@ -28,7 +27,7 @@ export function GetlastLogByUserId(query) {
   return request({
     url: '/DeviceLog/GetlastLogByUserId',
     method: 'get',
-    params:  query
+    params: query
 
   })
 }
@@ -37,7 +36,7 @@ export function GetLogByUserId(query) {
   return request({
     url: '/DeviceLog/GetLogByUserId',
     method: 'get',
-    params:  query
+    params: query
 
   })
 }
