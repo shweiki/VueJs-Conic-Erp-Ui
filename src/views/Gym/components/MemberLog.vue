@@ -162,6 +162,8 @@ export default {
   methods: {
     getdata() {
       this.loading = true
+
+      this.listQuery.Page = 1
       GetByStatus(this.listQuery)
         .then((response) => {
           // this.MembersLogs = response

@@ -85,7 +85,7 @@ export default {
     return {
       Temp: {
         Id: undefined,
-        Type: 'Manual',
+        Type: 'In',
         Fk: undefined,
         FkName: '',
         DateTime: '',

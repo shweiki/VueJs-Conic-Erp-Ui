@@ -35,6 +35,14 @@ const GymRouter = {
       },
     },
     {
+      path: 'MembersLogMonitoring',
+      component: () => import('@/views/Gym/components/MembersLogMonitoring.vue'),
+      name: 'MembersLogMonitoring',
+      meta: {
+        title: 'MembersLogMonitoring', icon: 'cost'
+      },
+    },
+    {
       path: 'MembersList',
       component: () => import('@/views/Gym/Members'),
       name: 'Members',

@@ -118,7 +118,8 @@ export default {
     CustomerOrderList: 'Customer Orders List',
     MembersLog: 'Members Log',
     UploadReport: 'Upload Report',
-    ForUploadBioLab: 'For Upload Bio Lab'
+    ForUploadBioLab: 'For Upload Bio Lab',
+    MembersLogMonitoring: 'Members Log Monitoring'
   },
   Settings: {
     settings: 'Settings',

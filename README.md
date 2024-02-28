@@ -1,5 +1,8 @@
-# VueJs-Conic-Erp-Ui
- 
+# VueJs-Conic-Erp-Ui 
+
+<div style="max-width: 100px!important;"><img src="https://em-content.zobj.net/source/telegram/386/flag-palestinian-territories_1f1f5-1f1f8.webp" loading="lazy" alt="Telemoji (November 2023)" ></div>
+
+
 <p align="center">
   <img width="320" src="">
 </p>
@@ -34,13 +37,22 @@ English | [Arabic](./README.AR.md)
 
 ## Introduction
 
-Conic Erp is a app for managment orgniztion and small business 
+Conic-ERP is an app for management organizations and small businesses.
 
-Copyright (c) 2021-present Conic-Isv
+Copyright &copy; 2021-present Conic-ISV
 
+### Versions
 
-node -v  14.21.2
+|  Name  |   Version   |
+| ------ | :---------: |
+|  [Node](#node)  | ==14.21.2== |
+|  [NPM](https://www.npmjs.com/package/npm/v/6.14.17)   | ==6.14.17== |
+|  [Yarn](https://classic.yarnpkg.com/latest.msi)  | ==1.22.19== |
 
-npm -v 6.14.17
+### <a id= "node"></a> Node Download
 
-yarn -v 1.22.19
+Windows 32-bit Installer [v14.21.2](https://nodejs.org/dist/v14.21.2/node-v14.21.2-x86.msi)
+
+Windows 64-bit Installer [v14.21.2](https://nodejs.org/dist/v14.21.2/node-v14.21.2-x64.msi)
+
+Node Version Manager (NVM) [v1.1.12](https://github.com/coreybutler/nvm-windows/releases/download/1.1.12/nvm-setup.exe)

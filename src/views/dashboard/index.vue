@@ -75,7 +75,7 @@ export default {
       });
       }
 
- 
+
     },
     handleSetLineChartData(type) {
       this.lineChartData = this.Totals[type];

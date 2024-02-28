@@ -144,7 +144,8 @@ export default {
     CustomerOrderList: 'قائمة الطلبات',
     MembersLog: 'سجل المشتركين',
     UploadReport: 'رفع تقرير',
-    ForUploadBioLab: 'تقارير بيو لاب'
+    ForUploadBioLab: 'تقارير بيو لاب',
+    MembersLogMonitoring: 'مراقبة سجل المشتركين'
   },
   Settings: {
     settings: 'اعدادات',
