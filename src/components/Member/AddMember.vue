@@ -159,7 +159,7 @@ import VuePhoneNumberInput   from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import birthDatepicker from "vue-birth-datepicker";
 import "vue-birth-datepicker/dist/vueBirthDatepicker.css"; //into your styles
-import { SendSMS } from "@/api/Sms";
+import { SendSMS } from "@/api/SMS";
 import { LocalDateTime, DateTimeFormatter, Instant } from "@js-joda/core";
  import { GetDevice } from "@/api/Device";
 

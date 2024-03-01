@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row type="flex">
-      <el-col :span="14">
+      <el-col :span="10">
         <Search-By-Date
           :value="[listQuery.DateFrom, listQuery.DateTo]"
           @Set="
@@ -13,13 +13,21 @@
           "
         />
       </el-col>
+      <el-col :span="5">
+        <el-select v-model="operation" filterable placeholder="العملية" @change="setOperations">
+          <el-option :style="'background-color:'+item.color + (item.Id == '0'?';': '20;') +'margin: 4px; border-radius: 8px;'" v-for="item in operations" :key="item.Id" :label="item.Name" :value="item.Id" class="options">
+            <span style="display: flex; color: #8492a6; font-size: 16px; width:100%; justify-content: space-between; align-items: center;">
+              <i :style="'color:' + (item.Id == 0?'#656b74;': item.color +';')" :class="item.icon"></i> {{ item.Name }}</span>
+          </el-option>
+        </el-select>
+      </el-col>
       <el-col :span="3">
-        <el-button icon="el-icon-sort" @click="reverse = !reverse" />
+        <el-button title="Reverse | عكس النتائج" icon="el-icon-sort" @click="reverse = !reverse" />
       </el-col>
       <el-col :span="3">
         <Add-Device-Log table-name="Member" />
       </el-col>
-      <el-col :span="4">
+      <el-col :span="3">
         <el-button
           class="filter-item"
           type="primary"
@@ -45,26 +53,30 @@
             :reverse="reverse"
             style="height: 350px; overflow: scroll; width: 90%"
           >
+          <!-- :type="item.Type == 'In'? 'primary' : 'secondary'" -->
             <el-timeline-item
               v-for="(item, index) of timeline"
               :key="index"
-              icon="el-icon-more"
-              type="primary"
-              color="#00000"
+              :icon="item.Type == 'In'? 'el-icon-download' : 'el-icon-upload2'"
+              :type="item.Type == 'In'? 'primary' : 'success'"
+              :color="item.Type == 'In'? '#66BB6A' : '#7986cb'"
               size="large"
               :timestamp="item.DateTime"
               :hide-timestamp="true"
-            ><span style="color: green">{{ item.Name }}</span>
+            ><span :style="item.Type == 'In'? 'color: #66BB6A' : 'color:#7986cb'">تسجيل {{item.Type == 'In'? 'دخول' : 'خروج'}}</span>
 
               <el-time-picker
                 v-model="item.DateTime"
                 :size="$store.getters.size"
                 :format="$store.getters.settings.DateTimeFormat"
+                :class="item.Type == 'In'? 'login' : 'logout'"
                 disabled
               />
             </el-timeline-item>
           </el-timeline>
-        </el-card> </el-col></el-row>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -98,6 +110,12 @@ export default {
       loading: false,
       reverse: true,
       timeline: [],
+      timelineFullArray: [],
+      operation: 0,
+      operations: [
+        {Id:0, Name:'الكل', icon:'el-icon-d-caret', color:'#F5F7FA'},
+        {Id:1, Name:'دخول', icon:'el-icon-download', color:'#66BB6A'},
+        {Id:2, Name:'خروج', icon:'el-icon-upload2', color:'#7986cb'}],
       listQuery: JSON.parse(
         localStorage.getItem('TimeLineDeviceLog_ListQuery') || null
       ) || {
@@ -128,6 +146,7 @@ export default {
         GetLogByUserId(this.listQuery)
           .then((response) => {
             this.timeline = response
+            this.timelineFullArray = response
             // .sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
             localStorage.setItem(
               'TimeLineDeviceLog_ListQuery',
@@ -140,7 +159,29 @@ export default {
             this.loading = false
           })
       }
+    },
+    setOperations(val) {
+      console.log('this.timeline',this.timelineFullArray)
+      switch(val) {
+        case 1: this.timeline = this.timelineFullArray.filter(item => item.Type == "In"); break;
+        case 2: this.timeline = this.timelineFullArray.filter(item => item.Type == "Out"); break;
+        case 0: this.timeline = this.timelineFullArray; break;
+        default: this.timeline = this.timelineFullArray; break;
+      }
     }
   }
 }
 </script>
+<style>
+.login input:disabled {
+  background-color: #66bb6a40 !important;
+  margin-top: 6px;
+  }
+.logout input:disabled {
+  background-color: #7986cb40 !important;
+  margin-top: 6px;
+  }
+.options:hover {
+  background-color: rgba(0, 0, 0, 0.099) !important;
+}
+</style>

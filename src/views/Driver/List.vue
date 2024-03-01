@@ -178,7 +178,7 @@ import permission from "@/directive/permission/index.js";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import AddDriver from "@/components/Drivers/AddDriver.vue";
-import { SendMultiSMS } from "@/api/Sms";
+import { SendMultiSMS } from "@/api/SMS";
 import SortOptions from "@/components/SortOptions";
 import Export from "@/components/Export";
 

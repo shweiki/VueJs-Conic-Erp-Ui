@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button v-permission="['admin']" type="primary" icon="el-icon-plus" @click="Visibles = true" />
+    <el-button title="Add Log" v-permission="['admin']" type="primary" icon="el-icon-plus" @click="Visibles = true" />
 
     <el-dialog style="margin-top: -13vh" title="تسجيل دخول" :visible.sync="Visibles">
       <el-form ref="DeviceLogForm" :model="Temp" :rules="rulesForm" label-position="top" class="demo-form-inline">

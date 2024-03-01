@@ -268,7 +268,7 @@ import {
   CheckIsExist as CheckVendorIsExist
 } from '@/api/Vendor'
 import { mapGetters } from 'vuex'
-import { SendSMS } from '@/api/Sms'
+import { SendSMS } from '@/api/SMS'
 import { Now } from '@/utils'
 
 export default {

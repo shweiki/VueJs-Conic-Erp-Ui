@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { SendSMS } from "@/api/Sms";
+import { SendSMS } from "@/api/SMS";
 import axios from "axios";
 
 export default {

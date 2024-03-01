@@ -176,7 +176,7 @@
 <script>
 import { Create as CreatePayment } from '@/api/Payment'
 import DrawerPrint from '@/components/PrintRepot/DrawerPrint.vue'
-import { SendSMS } from '@/api/Sms'
+import { SendSMS } from '@/api/SMS'
 import { Create } from '@/api/MembershipMovement'
 import SelectMemberships from '@/views/Gym/components/SelectMemberships.vue'
 import FakeDate from '@/components/Date/FakeDate.vue'

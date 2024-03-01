@@ -88,7 +88,7 @@ import { Create as CreatePayment } from '@/api/Payment'
 import DrawerPrint from '@/components/PrintRepot/DrawerPrint.vue'
 import FakeDate from '@/components/Date/FakeDate'
 import RadioPaymentMethodFromSettings from '@/components/PaymentMethod/RadioPaymentMethodFromSettings.vue'
-import { SendSMS } from '@/api/Sms'
+import { SendSMS } from '@/api/SMS'
 
 export default {
   components: { DrawerPrint, FakeDate, RadioPaymentMethodFromSettings },
