@@ -3,24 +3,21 @@
  */
 import {
   LocalDateTime,
-  LocalDate,
-  LocalTime,
-  DateTimeFormatter,
-  Instant,
-} from "@js-joda/core";
 
+  DateTimeFormatter,
+  Instant
+} from '@js-joda/core'
 
 export function Now() {
-  let val = LocalDateTime.ofInstant(Instant.ofEpochMilli(Date.now())).format(
-    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-  );
+  const val = LocalDateTime.ofInstant(Instant.ofEpochMilli(Date.now())).format(
+    DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm')
+  )
   return val
-
 }
 export function addMinutes(dt, minutes) {
-  let val = LocalDateTime.ofInstant(Instant.ofEpochMilli(dt)).plusMinutes(minutes * 60).format(
-    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-  );
+  const val = LocalDateTime.ofInstant(Instant.ofEpochMilli(dt)).plusMinutes(minutes * 60).format(
+    DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm')
+  )
   return val
 }
 /**
@@ -42,23 +39,23 @@ export function TimeConvert(time) {
     }
     date = new Date(time)
   }
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  let strTime = " " + hours + ":" + minutes + "  " + ampm;
-  return strTime;
+  let hours = date.getHours()
+  let minutes = date.getMinutes()
+  const ampm = hours >= 12 ? 'PM' : 'AM'
+  hours = hours % 12
+  hours = hours || 12 // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0' + minutes : minutes
+  const strTime = ' ' + hours + ':' + minutes + '  ' + ampm
+  return strTime
 }
-export function MinutesConvert(MinutesCount, delmiter = ":") {
-  var num = MinutesCount;
-  var hours = (num / 60);
-  var rhours = Math.floor(hours);
-  var minutes = (hours - rhours) * 60;
-  var rminutes = Math.round(minutes);
-  //console.log(minutes, rminutes)
-  return rhours + delmiter + rminutes;
+export function MinutesConvert(MinutesCount, delmiter = ':') {
+  var num = MinutesCount
+  var hours = (num / 60)
+  var rhours = Math.floor(hours)
+  var minutes = (hours - rhours) * 60
+  var rminutes = Math.round(minutes)
+  // console.log(minutes, rminutes)
+  return rhours + delmiter + rminutes
 }
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
@@ -296,7 +293,7 @@ export function getTime(type) {
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
-  const later = function () {
+  const later = function() {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp
 
@@ -313,7 +310,7 @@ export function debounce(func, wait, immediate) {
     }
   }
 
-  return function (...args) {
+  return function(...args) {
     context = this
     timestamp = +new Date()
     const callNow = immediate && !timeout
