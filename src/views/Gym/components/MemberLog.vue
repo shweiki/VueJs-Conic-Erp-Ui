@@ -10,94 +10,55 @@
           <Add-Device-Log table-name="Member" />
         </el-col>
         <el-col :span="2">
-          <el-button
-            :loading="loading"
-            type="primary"
-            icon="el-icon-refresh"
-            :size="$store.getters.size"
-            @click="getdata()"
-          />
+          <el-button :loading="loading" type="primary" icon="el-icon-refresh" :size="$store.getters.size"
+            @click="getdata()" />
         </el-col>
         <el-col :span="4">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            :content="deviceState"
-            placement="bottom"
-          >
-            <el-tag
-              :type="deviceIsConnect ? 'success' : 'danger'"
-            ><i
-              class="el-icon-connection"
-            />{{ deviceState }}</el-tag>
+          <el-tooltip class="item" effect="dark" :content="deviceState" placement="bottom">
+            <el-tag :type="deviceIsConnect ? 'success' : 'danger'"><i class="el-icon-connection" />{{ deviceState
+              }}</el-tag>
           </el-tooltip>
         </el-col>
       </el-row>
       <el-row type="flex">
         <el-col :span="24">
-          <el-timeline
-            v-infinite-scroll="load"
-            infinite-scroll-disabled="disabled"
-            :reverse="reverse"
-            style="
+          <el-timeline :v-infinite-scroll="load" :infinite-scroll-disabled="disabled" :reverse="reverse" style="
               margin-top: 15px;
               height: 550px;
               overflow: auto;
               text-align: center;
-            "
-          >
-            <el-timeline-item
-              v-for="(Log, index) in MembersLogs"
-              :key="index"
-              :icon="Log.User.Style.IconClass"
-              :color="Log.User.Style.Color"
-              :size="$store.getters.size"
-              :timestamp="Log.DateTime"
-              :hide-timestamp="true"
-              class="infinite-list-item"
-            >
+            ">
+            <el-timeline-item v-for="(Log, index) in MembersLogs" :key="index" :icon="Log.User.Style.IconClass"
+              :color="Log.User.Style.Color" :size="$store.getters.size" :timestamp="Log.DateTime" :hide-timestamp="true"
+              class="infinite-list-item">
               <el-row type="flex">
                 <el-col :span="6">
-                  <el-time-picker
-                    v-model="Log.DateTime"
-                    :size="$store.getters.size"
-                    format="hh:mm A"
-                    disabled
-                  /></el-col>
+                  <el-time-picker v-model="Log.DateTime" :size="$store.getters.size" format="hh:mm A"
+                    disabled /></el-col>
                 <el-col :span="5">
-                  <el-tag
-                    :color="Log.User.Style.Color"
-                    @click="$router.push({ path: '/Gym/Edit/' + Log.Fk })"
-                  ><strong style="font-size: 10px; cursor: pointer">{{
-                    Log.User.Name
-                  }}</strong></el-tag>
+                  <el-tag :color="Log.User.Style.Color" @click="$router.push({ path: '/Gym/Edit/' + Log.Fk })"><strong
+                      style="font-size: 10px; cursor: pointer">{{
+      Log.User.Name
+    }}</strong></el-tag>
                 </el-col>
                 <el-col :span="4">
                   <Status-Tag :status="Log.User.Status" table-name="Member" />
                 </el-col>
                 <el-col v-if="Log.User.ActiveMemberShip != null" :span="3">
-                  <el-tag
-                    style="color: orangered"
-                  >({{ Log.User.ActiveMemberShip.NumberClass }}\{{
-                    Log.User.ActiveMemberShip.NumberClass -
-                      Log.User.ActiveMemberShip.VisitsUsed
-                  }})
+                  <el-tag style="color: orangered">({{ Log.User.ActiveMemberShip.NumberClass }}\{{
+      Log.User.ActiveMemberShip.NumberClass -
+      Log.User.ActiveMemberShip.VisitsUsed
+    }})
                   </el-tag>
                 </el-col>
                 <el-col v-if="Log.User.ActiveMemberShip != null" :span="3">
-                  <el-tag
-                    :type="
-                      Log.User.ActiveMemberShip.Type == 'Morning'
-                        ? 'warning'
-                        : 'success'
-                    "
-                  >{{ Log.User.ActiveMemberShip.Type }}</el-tag>
+                  <el-tag :type="Log.User.ActiveMemberShip.Type == 'Morning'
+      ? 'warning'
+      : 'success'
+      ">{{ Log.User.ActiveMemberShip.Type }}</el-tag>
                 </el-col>
                 <el-col :span="3">
-                  <el-tag
-                    v-if="Log.User.TotalCredit - Log.User.TotalDebit > 0"
-                    type="info"
-                  >مدين</el-tag>
+                  <el-tag v-if="Log.User.TotalCredit - Log.User.TotalDebit > 0" type="info">مدين</el-tag>
                 </el-col>
               </el-row>
             </el-timeline-item>
@@ -128,7 +89,7 @@ export default {
       deviceIsConnect: false,
       reverse: false,
       listQuery: {
-        Page: 0,
+        Page: 1,
         Any: '',
         limit: this.$store.getters.settings.LimitQurey,
         Sort: '-id',
@@ -146,6 +107,7 @@ export default {
     }
   },
   created() {
+    this.getdata()
     this.$socket.start({
       log: true // Logging is optional but very helpful during development
     })
@@ -162,14 +124,15 @@ export default {
   methods: {
     getdata() {
       this.loading = true
-
-      this.listQuery.Page = 1
       GetByStatus(this.listQuery)
         .then((response) => {
           // this.MembersLogs = response
           Array.prototype.push.apply(this.MembersLogs, response)
           // .sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime) );
-          if (response.length === 0) this.listQuery.Page = 13
+          this.listQuery.Page++
+          if (response.length < this.listQuery.limit) {
+            this.listQuery.Page = 13
+          }
           //  localStorage.setItem('MemberLog_ListQuery', JSON.stringify(this.listQuery))
         })
         .catch()
@@ -178,7 +141,6 @@ export default {
         })
     },
     load() {
-      this.listQuery.Page += 1
       this.getdata()
     }
   }
