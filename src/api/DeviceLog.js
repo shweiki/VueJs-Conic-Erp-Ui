@@ -60,7 +60,7 @@ export function GetLogin(query) {
   return request({
     url: '/DeviceLog/GetLogin',
     method: 'get',
-    params:  query
+    params: query
 
   })
 }
@@ -69,7 +69,7 @@ export function GetLogout(query) {
   return request({
     url: '/DeviceLog/GetLogout',
     method: 'get',
-    params:  query
+    params: query
 
   })
 }

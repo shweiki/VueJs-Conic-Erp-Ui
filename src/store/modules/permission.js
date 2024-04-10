@@ -1,4 +1,4 @@
-import { asyncRoutes, constantRoutes, router } from '@/router'
+import { asyncRoutes, constantRoutes } from '@/router'
 import path from 'path'
 
 /**

@@ -518,6 +518,7 @@ export default {
     UnitName: 'Unit Name',
     SearchBy: 'Search By Name',
     Address: 'Address',
+    Type: 'Type',
     Ip: 'Ip',
     Port: 'Port',
     LastSetDateTime: 'Last Set For Date Time',

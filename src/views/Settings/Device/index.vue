@@ -9,10 +9,8 @@
       </div>
       <el-table
         v-loading="loading"
-        :data="
-          tableData.filter(
-            (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase())
-          )
+        :data="tableData.filter(
+          (data) => !search || data.Name.toLowerCase().includes(search.toLowerCase()))
         "
         fit
         border
@@ -22,11 +20,7 @@
       >
         <el-table-column prop="Id" width="80" align="center">
           <template slot="header" slot-scope="{}">
-            <el-button
-              type="primary"
-              icon="el-icon-refresh"
-              @click="getdata()"
-            />
+            <el-button type="primary" icon="el-icon-refresh" @click="getdata()" />
           </template>
         </el-table-column>
         <el-table-column prop="Name" align="center">
@@ -34,22 +28,10 @@
             <el-input v-model="search" :placeholder="$t('Classification.Name')" />
           </template>
         </el-table-column>
-        <el-table-column
-          prop="Ip"
-          :label="$t('Classification.Ip')"
-          align="center"
-        />
-        <el-table-column
-          prop="Port"
-          :label="$t('Classification.Port')"
-          align="center"
-        />
-        <el-table-column
-          :label="$t('Classification.Notes')"
-          prop="Description"
-          width="220"
-          align="center"
-        />
+        <el-table-column prop="Ip" :label="$t('Classification.Ip')" align="center" />
+        <el-table-column prop="Type" :label="$t('Classification.Type')" align="center" />
+        <el-table-column prop="Port" :label="$t('Classification.Port')" align="center" />
+        <el-table-column :label="$t('Classification.Notes')" prop="Description" width="220" align="center" />
         <el-table-column :label="$t('Classification.Edit')" align="center">
           <template slot-scope="scope">
             <edit-device :device-id="scope.row.Id" />
@@ -57,42 +39,22 @@
         </el-table-column>
         <el-table-column prop="Name" align="center">
           <template slot-scope="scope">
-            <el-button
-              :size="$store.getters.size"
-              type="primary"
-              @click="GetLogData(scope.row.Ip)"
-            >
+            <el-button :size="$store.getters.size" type="primary" @click="GetLogData(scope.row.Ip)">
               سحب جميع سجلات
             </el-button>
 
-            <el-button
-              :size="$store.getters.size"
-              type="warning"
-              @click="EnrollAllUser(scope.row.Ip)"
-            >
+            <el-button :size="$store.getters.size" type="warning" @click="EnrollAllUser(scope.row.Ip)">
               ارسال جميع معلومات
             </el-button>
 
-            <el-button
-              :size="$store.getters.size"
-              type="danger"
-              @click="ClearLog(scope.row.Ip)"
-            >مسح سجلات المشتركين</el-button>
-            <el-button
-              :size="$store.getters.size"
-              type="success"
-              @click="ClearAdministrators(scope.row.Ip)"
-            >Clear Administrators</el-button>
-            <el-button
-              :size="$store.getters.size"
-              type="danger"
-              @click="TurnOffDevice(scope.row.Ip)"
-            >إيقاف تشغيل الجهاز</el-button>
-            <el-button
-              :size="$store.getters.size"
-              type="success"
-              @click="RestartDevice(scope.row.Ip)"
-            >اعادة تشغيل الجهاز</el-button>
+            <el-button :size="$store.getters.size" type="danger" @click="ClearLog(scope.row.Ip)">مسح سجلات
+              المشتركين</el-button>
+            <el-button :size="$store.getters.size" type="success" @click="ClearAdministrators(scope.row.Ip)">Clear
+              Administrators</el-button>
+            <el-button :size="$store.getters.size" type="danger" @click="TurnOffDevice(scope.row.Ip)">إيقاف تشغيل
+              الجهاز</el-button>
+            <el-button :size="$store.getters.size" type="success" @click="RestartDevice(scope.row.Ip)">اعادة تشغيل
+              الجهاز</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -105,6 +67,7 @@ import { GetDevice } from '@/api/Device'
 import AddDevice from '@/components/Device/AddDevice.vue'
 import EditDevice from '@/components/Device/EditDevice.vue'
 import { getToken } from '@/utils/auth'
+import { Message } from 'element-ui'
 
 export default {
   name: 'Device',
@@ -119,6 +82,24 @@ export default {
   },
   created() {
     this.getdata()
+  },
+  sockets: {
+    SendEventLog(log) {
+    },
+    DeviceState({ deviceIsConnect, msg }) {
+      Message({
+        message: msg,
+        type: 'warning',
+        duration: 5 * 1000
+      })
+    },
+    SendMessage(msg) {
+      Message({
+        message: msg,
+        type: 'warning',
+        duration: 5 * 1000
+      })
+    }
   },
   methods: {
     getdata() {

@@ -20,7 +20,6 @@ const getters = {
   errorLogs: state => state.errorLog.logs,
   settings: state => state.settings,
   CompanyInfo: state => state.CompanyInfo.CompanyInfo,
-  Oprations: state => state.CompanyInfo.Oprations,
-  FeelDevice: state => state.Devices.FeelDevice
+  Oprations: state => state.CompanyInfo.Oprations
 }
 export default getters

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button icon="el-icon-edit" circle @click="getdata()"></el-button>
+    <el-button icon="el-icon-edit" circle @click="getdata()" />
 
     <el-dialog style="margin-top: -13vh" :show-close="false" :visible.sync="Visibles">
       <div slot="title" class="dialog-footer">
@@ -17,32 +17,35 @@
         </el-col>
       </div>
       <el-form
-        ref="dataForm"
+        ref="DeviceForm"
         :rules="rulesForm"
         :model="tempForm"
         label-position="top"
         label-width="70px"
       >
-        <el-form-item v-bind:label="$t('Classification.Name')" prop="Name">
-          <el-input type="text" v-model="tempForm.Name"></el-input>
+        <el-form-item :label="$t('Classification.Name')" prop="Name">
+          <el-input v-model="tempForm.Name" type="text" />
         </el-form-item>
-        <el-form-item v-bind:label="$t('Ip')" prop="Ip">
-          <el-input type="text" v-model="tempForm.Ip"></el-input>
+        <el-form-item :label="$t('Classification.Type')" prop="Type">
+          <el-input v-model="tempForm.Type" type="text" />
         </el-form-item>
-        <el-form-item v-bind:label="$t('Classification.Port')" prop="Port">
-          <el-input type="text" v-model="tempForm.Port"></el-input>
+        <el-form-item :label="$t('Classification.Ip')" prop="Ip">
+          <el-input v-model="tempForm.Ip" type="text" />
         </el-form-item>
-        <el-form-item prop="Feel" label="تحسس من الجهاز دائما">
-          <el-switch v-model="tempForm.Feel"></el-switch>
+        <el-form-item :label="$t('Classification.Port')" prop="Port">
+          <el-input v-model="tempForm.Port" type="text" />
+        </el-form-item>
+        <el-form-item prop="AutoConnect" label="اتصال دائما">
+          <el-switch v-model="tempForm.AutoConnect" />
         </el-form-item>
         <el-form-item
-          v-bind:label="$t('Classification.LastSetDateTime')"
+          :label="$t('Classification.LastSetDateTime')"
           prop="LastSetDateTime"
         >
-          <el-input type="text" v-model="tempForm.LastSetDateTime"></el-input>
+          <el-input v-model="tempForm.LastSetDateTime" type="text" />
         </el-form-item>
-        <el-form-item v-bind:label="$t('Classification.Notes')" prop="Description">
-          <el-input type="textarea" v-model="tempForm.Description"></el-input>
+        <el-form-item :label="$t('Classification.Notes')" prop="Description">
+          <el-input v-model="tempForm.Description" type="textarea" />
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -50,14 +53,14 @@
 </template>
 
 <script>
-import { Edit, GetById } from "@/api/Device";
+import { Edit, GetById } from '@/api/Device'
 
 export default {
   props: {
-    DeviceId: {
+    deviceId: {
       type: Number,
-      default: undefined,
-    },
+      default: undefined
+    }
   },
   data() {
     return {
@@ -67,50 +70,50 @@ export default {
         Name: [
           {
             required: true,
-            message: "يجب إدخال إسم ",
-            trigger: "blur",
+            message: 'يجب إدخال إسم ',
+            trigger: 'blur'
           },
           {
             min: 3,
             max: 50,
-            message: "الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            message: 'الرجاء إدخال إسم لا يقل عن 3 أحرف و لا يزيد عن 50 حرف',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
   methods: {
     getdata() {
-      GetById({ Id: this.DeviceId }).then((response) => {
+      GetById({ Id: this.deviceId }).then((response) => {
         // handle success
-        this.tempForm = response;
+        this.tempForm = response
 
-        this.Visibles = true;
-      });
+        this.Visibles = true
+      })
     },
     updateData() {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['DeviceForm'].validate((valid) => {
         if (valid) {
           Edit(this.tempForm)
             .then((response) => {
-              this.Visibles = false;
+              this.Visibles = false
               this.$notify({
-                title: "تم ",
-                message: "تم تعديل بنجاح",
-                type: "success",
-                duration: 2000,
-              });
+                title: 'تم ',
+                message: 'تم تعديل بنجاح',
+                type: 'success',
+                duration: 2000
+              })
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>

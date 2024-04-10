@@ -47,8 +47,6 @@ router.beforeEach(async(to, from, next) => {
           // set the replace: true, so the navigation will not leave a history record
           store.dispatch('CompanyInfo/GetCompanyInfo')
 
-          store.dispatch('Devices/FeelDevice')
-
           document.onkeydown = capturekey
           document.onkeypress = capturekey
           document.onkeyup = capturekey

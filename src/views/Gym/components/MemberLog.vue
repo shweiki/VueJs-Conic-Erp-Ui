@@ -10,52 +10,76 @@
           <Add-Device-Log table-name="Member" />
         </el-col>
         <el-col :span="2">
-          <el-button :loading="loading" type="primary" icon="el-icon-refresh" :size="$store.getters.size"
-            @click="getdata()" />
+          <el-button
+            :loading="loading"
+            type="primary"
+            icon="el-icon-refresh"
+            :size="$store.getters.size"
+            @click="getdata()"
+          />
         </el-col>
         <el-col :span="4">
           <el-tooltip class="item" effect="dark" :content="deviceState" placement="bottom">
             <el-tag :type="deviceIsConnect ? 'success' : 'danger'"><i class="el-icon-connection" />{{ deviceState
-              }}</el-tag>
+            }}</el-tag>
           </el-tooltip>
         </el-col>
       </el-row>
       <el-row type="flex">
         <el-col :span="24">
-          <el-timeline :v-infinite-scroll="load" :infinite-scroll-disabled="disabled" :reverse="reverse" style="
+          <el-timeline
+            :v-infinite-scroll="load"
+            :infinite-scroll-disabled="disabled"
+            :reverse="reverse"
+            style="
               margin-top: 15px;
               height: 550px;
               overflow: auto;
               text-align: center;
-            ">
-            <el-timeline-item v-for="(Log, index) in MembersLogs" :key="index" :icon="Log.User.Style.IconClass"
-              :color="Log.User.Style.Color" :size="$store.getters.size" :timestamp="Log.DateTime" :hide-timestamp="true"
-              class="infinite-list-item">
+            "
+          >
+            <el-timeline-item
+              v-for="(Log, index) in MembersLogs"
+              :key="index"
+              :icon="Log.User.Style.IconClass"
+              :color="Log.User.Style.Color"
+              :size="$store.getters.size"
+              :timestamp="Log.DateTime"
+              :hide-timestamp="true"
+              class="infinite-list-item"
+            >
               <el-row type="flex">
                 <el-col :span="6">
-                  <el-time-picker v-model="Log.DateTime" :size="$store.getters.size" format="hh:mm A"
-                    disabled /></el-col>
+                  <el-time-picker
+                    v-model="Log.DateTime"
+                    :size="$store.getters.size"
+                    format="hh:mm A"
+                    disabled
+                  /></el-col>
                 <el-col :span="5">
                   <el-tag :color="Log.User.Style.Color" @click="$router.push({ path: '/Gym/Edit/' + Log.Fk })"><strong
-                      style="font-size: 10px; cursor: pointer">{{
-      Log.User.Name
-    }}</strong></el-tag>
+                    style="font-size: 10px; cursor: pointer"
+                  >{{
+                    Log.User.Name
+                  }}</strong></el-tag>
                 </el-col>
                 <el-col :span="4">
                   <Status-Tag :status="Log.User.Status" table-name="Member" />
                 </el-col>
                 <el-col v-if="Log.User.ActiveMemberShip != null" :span="3">
                   <el-tag style="color: orangered">({{ Log.User.ActiveMemberShip.NumberClass }}\{{
-      Log.User.ActiveMemberShip.NumberClass -
-      Log.User.ActiveMemberShip.VisitsUsed
-    }})
+                    Log.User.ActiveMemberShip.NumberClass -
+                      Log.User.ActiveMemberShip.VisitsUsed
+                  }})
                   </el-tag>
                 </el-col>
                 <el-col v-if="Log.User.ActiveMemberShip != null" :span="3">
-                  <el-tag :type="Log.User.ActiveMemberShip.Type == 'Morning'
-      ? 'warning'
-      : 'success'
-      ">{{ Log.User.ActiveMemberShip.Type }}</el-tag>
+                  <el-tag
+                    :type="Log.User.ActiveMemberShip.Type == 'Morning'
+                      ? 'warning'
+                      : 'success'
+                    "
+                  >{{ Log.User.ActiveMemberShip.Type }}</el-tag>
                 </el-col>
                 <el-col :span="3">
                   <el-tag v-if="Log.User.TotalCredit - Log.User.TotalDebit > 0" type="info">مدين</el-tag>

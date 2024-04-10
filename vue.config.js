@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name =  'Conic Erp System' || defaultSettings.title // page title
+const name = 'Conic Erp System' || defaultSettings.title // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.

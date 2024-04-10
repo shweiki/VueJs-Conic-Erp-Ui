@@ -1,5 +1,9 @@
 import request from '@/utils/requestApi'
 import qs from 'qs'
+export const DeviceStatus = Object.freeze({
+  Deactivate: -1,
+  Active: 1
+})
 export function GetDevice(query) {
   return request({
     url: '/Device/GetDevice',
@@ -14,14 +18,6 @@ export function CheckDevice(query) {
     params: query
   })
 }
-export function FeelDevice(query) {
-  return request({
-    url: '/Device/FeelDevice',
-    method: 'get',
-    params: query
-  })
-}
-
 export function GetById(query) {
   return request({
     url: '/Device/GetById',

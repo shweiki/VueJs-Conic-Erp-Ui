@@ -551,6 +551,7 @@ export default {
     SearchBy: 'بحث حسب الإسم',
     Address: 'العنوان',
     Ip: 'الاي بي',
+    Type: 'النوع',
     Port: 'البورت',
     LastSetDateTime: 'اخر تعيين للوقت والتاريخ',
     Edit: 'تعديل'
